@@ -1,0 +1,2487 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Falagard version="7">
+    <WidgetLook name="FOTDSkin/Label">
+        <PropertyDefinition redrawOnWrite="true" initialValue="FFFFFFFF" type="Colour" name="NormalTextColour"/>
+        <PropertyDefinition redrawOnWrite="true" initialValue="FFDDDDDD" type="Colour" name="DisabledTextColour"/>
+        <PropertyDefinition redrawOnWrite="true" initialValue="CentreAligned" type="VerticalTextFormatting" name="VertFormatting"/>
+        <PropertyDefinition redrawOnWrite="true" initialValue="CentreAligned" type="HorizontalTextFormatting" name="HorzFormatting"/>
+        <Property name="Size" value="{{0, 128}, {0, 32}}" />
+        <ImagerySection name="Label">
+            <TextComponent>
+                <Area>
+                    <Dim type="LeftEdge">
+                        <AbsoluteDim value="0"/>
+                    </Dim>
+                    <Dim type="TopEdge">
+                        <AbsoluteDim value="0"/>
+                    </Dim>
+                    <Dim type="Width">
+                        <UnifiedDim scale="1" type="Width"/>
+                    </Dim>
+                    <Dim type="Height">
+                        <UnifiedDim scale="1" type="Height"/>
+                    </Dim>
+                </Area>
+                <VertFormatProperty name="VertFormatting"/>
+                <HorzFormatProperty name="HorzFormatting"/>
+            </TextComponent>
+        </ImagerySection>
+        <StateImagery name="Enabled">
+            <Layer>
+                <Section section="Label">
+                    <ColourProperty name="NormalTextColour"/>
+                </Section>
+            </Layer>
+        </StateImagery>
+        <StateImagery name="Disabled">
+            <Layer>
+                <Section section="Label">
+                    <ColourProperty name="DisabledTextColour"/>
+                </Section>
+            </Layer>
+        </StateImagery>
+    </WidgetLook>
+    <WidgetLook name="FOTDSkin/Button">
+        <PropertyDefinition initialValue="CentreAligned" type="VerticalTextFormatting" name="VertLabelFormatting"/>
+        <PropertyDefinition initialValue="CentreAligned" type="HorizontalTextFormatting" name="HorzLabelFormatting"/>
+        <Property name="Size" value="{{0, 96}, {0, 32}}" />
+        <ImagerySection name="label">
+            <TextComponent>
+                <Area>
+                    <Dim type="LeftEdge">
+                        <AbsoluteDim value="2"/>
+                    </Dim>
+                    <Dim type="TopEdge">
+                        <AbsoluteDim value="2"/>
+                    </Dim>
+                </Area>
+                <Colours topLeft="0000FF00" bottomLeft="0000FF00" topRight="0000FF00" bottomRight="0000FF00"/>
+                <VertFormatProperty name="VertLabelFormatting"/>
+                <HorzFormatProperty name="HorzLabelFormatting"/>
+            </TextComponent>
+            <TextComponent>
+                <VertFormatProperty name="VertLabelFormatting"/>
+                <HorzFormatProperty name="HorzLabelFormatting"/>
+            </TextComponent>
+        </ImagerySection>
+        <ImagerySection name="normal">
+            <FrameComponent>
+                <Image component="TopLeftCorner" name="FOTDSkin/ButtonNormalTL"/>
+                <Image component="TopRightCorner" name="FOTDSkin/ButtonNormalTR"/>
+                <Image component="BottomLeftCorner" name="FOTDSkin/ButtonNormalBL"/>
+                <Image component="BottomRightCorner" name="FOTDSkin/ButtonNormalBR"/>
+                <Image component="LeftEdge" name="FOTDSkin/ButtonNormalL"/>
+                <Image component="RightEdge" name="FOTDSkin/ButtonNormalR"/>
+                <Image component="TopEdge" name="FOTDSkin/ButtonNormalT"/>
+                <Image component="BottomEdge" name="FOTDSkin/ButtonNormalB"/>
+            </FrameComponent>
+            <ImageryComponent>
+                <Area>
+                    <Dim type="LeftEdge">
+                        <ImageDim name="FOTDSkin/ButtonNormalL" dimension="Width"/>
+                    </Dim>
+                    <Dim type="TopEdge">
+                        <ImageDim name="FOTDSkin/ButtonNormalT" dimension="Height"/>
+                    </Dim>
+                    <Dim type="RightEdge">
+                        <OperatorDim op="Subtract">
+                            <UnifiedDim scale="1" type="Width"/>
+                            <ImageDim name="FOTDSkin/ButtonNormalR" dimension="Width"/>
+                        </OperatorDim>
+                    </Dim>
+                    <Dim type="BottomEdge">
+                        <UnifiedDim scale=".5" type="Height"/>
+                    </Dim>
+                </Area>
+                <Image name="FOTDSkin/ButtonNormalFill1"/>
+                <VertFormat type="Stretched"/>
+                <HorzFormat type="Stretched"/>
+            </ImageryComponent>
+            <ImageryComponent>
+                <Area>
+                    <Dim type="LeftEdge">
+                        <ImageDim name="FOTDSkin/ButtonNormalL" dimension="Width"/>
+                    </Dim>
+                    <Dim type="TopEdge">
+                        <UnifiedDim scale=".5" type="Height"/>
+                    </Dim>
+                    <Dim type="RightEdge">
+                        <OperatorDim op="Subtract">
+                            <UnifiedDim scale="1" type="Width"/>
+                            <ImageDim name="FOTDSkin/ButtonNormalR" dimension="Width"/>
+                        </OperatorDim>
+                    </Dim>
+                    <Dim type="BottomEdge">
+                        <OperatorDim op="Subtract">
+                            <UnifiedDim scale="1" type="Height"/>
+                            <ImageDim name="FOTDSkin/ButtonNormalB" dimension="Height"/>
+                        </OperatorDim>
+                    </Dim>
+                </Area>
+                <Image name="FOTDSkin/ButtonNormalFill2"/>
+                <VertFormat type="Stretched"/>
+                <HorzFormat type="Stretched"/>
+            </ImageryComponent>
+        </ImagerySection>
+        <ImagerySection name="hover">
+            <FrameComponent>
+                <Image component="TopLeftCorner" name="FOTDSkin/ButtonHoverTL"/>
+                <Image component="TopRightCorner" name="FOTDSkin/ButtonHoverTR"/>
+                <Image component="BottomLeftCorner" name="FOTDSkin/ButtonHoverBL"/>
+                <Image component="BottomRightCorner" name="FOTDSkin/ButtonHoverBR"/>
+                <Image component="LeftEdge" name="FOTDSkin/ButtonHoverL"/>
+                <Image component="RightEdge" name="FOTDSkin/ButtonHoverR"/>
+                <Image component="TopEdge" name="FOTDSkin/ButtonHoverT"/>
+                <Image component="BottomEdge" name="FOTDSkin/ButtonHoverB"/>
+            </FrameComponent>
+            <ImageryComponent>
+                <Area>
+                    <Dim type="LeftEdge">
+                        <ImageDim name="FOTDSkin/ButtonHoverL" dimension="Width"/>
+                    </Dim>
+                    <Dim type="TopEdge">
+                        <ImageDim name="FOTDSkin/ButtonHoverT" dimension="Height"/>
+                    </Dim>
+                    <Dim type="RightEdge">
+                        <OperatorDim op="Subtract">
+                            <UnifiedDim scale="1" type="Width"/>
+                            <ImageDim name="FOTDSkin/ButtonHoverR" dimension="Width"/>
+                        </OperatorDim>
+                    </Dim>
+                    <Dim type="BottomEdge">
+                        <UnifiedDim scale=".5" type="Height"/>
+                    </Dim>
+                </Area>
+                <Image name="FOTDSkin/ButtonHoverFill1"/>
+                <VertFormat type="Stretched"/>
+                <HorzFormat type="Stretched"/>
+            </ImageryComponent>
+            <ImageryComponent>
+                <Area>
+                    <Dim type="LeftEdge">
+                        <ImageDim name="FOTDSkin/ButtonHoverL" dimension="Width"/>
+                    </Dim>
+                    <Dim type="TopEdge">
+                        <UnifiedDim scale=".5" type="Height"/>
+                    </Dim>
+                    <Dim type="RightEdge">
+                        <OperatorDim op="Subtract">
+                            <UnifiedDim scale="1" type="Width"/>
+                            <ImageDim name="FOTDSkin/ButtonHoverR" dimension="Width"/>
+                        </OperatorDim>
+                    </Dim>
+                    <Dim type="BottomEdge">
+                        <OperatorDim op="Subtract">
+                            <UnifiedDim scale="1" type="Height"/>
+                            <ImageDim name="FOTDSkin/ButtonHoverB" dimension="Height"/>
+                        </OperatorDim>
+                    </Dim>
+                </Area>
+                <Image name="FOTDSkin/ButtonHoverFill2"/>
+                <VertFormat type="Stretched"/>
+                <HorzFormat type="Stretched"/>
+            </ImageryComponent>
+        </ImagerySection>
+        <ImagerySection name="pushed">
+            <FrameComponent>
+                <Image component="TopLeftCorner" name="FOTDSkin/ButtonPushedTL"/>
+                <Image component="TopRightCorner" name="FOTDSkin/ButtonPushedTR"/>
+                <Image component="BottomLeftCorner" name="FOTDSkin/ButtonPushedBL"/>
+                <Image component="BottomRightCorner" name="FOTDSkin/ButtonPushedBR"/>
+                <Image component="LeftEdge" name="FOTDSkin/ButtonPushedL"/>
+                <Image component="RightEdge" name="FOTDSkin/ButtonPushedR"/>
+                <Image component="TopEdge" name="FOTDSkin/ButtonPushedT"/>
+                <Image component="BottomEdge" name="FOTDSkin/ButtonPushedB"/>
+            </FrameComponent>
+            <ImageryComponent>
+                <Area>
+                    <Dim type="LeftEdge">
+                        <ImageDim name="FOTDSkin/ButtonPushedL" dimension="Width"/>
+                    </Dim>
+                    <Dim type="TopEdge">
+                        <ImageDim name="FOTDSkin/ButtonPushedT" dimension="Height"/>
+                    </Dim>
+                    <Dim type="RightEdge">
+                        <OperatorDim op="Subtract">
+                            <UnifiedDim scale="1" type="Width"/>
+                            <ImageDim name="FOTDSkin/ButtonPushedR" dimension="Width"/>
+                        </OperatorDim>
+                    </Dim>
+                    <Dim type="BottomEdge">
+                        <UnifiedDim scale=".5" type="Height"/>
+                    </Dim>
+                </Area>
+                <Image name="FOTDSkin/ButtonPushedFill1"/>
+                <VertFormat type="Stretched"/>
+                <HorzFormat type="Stretched"/>
+            </ImageryComponent>
+            <ImageryComponent>
+                <Area>
+                    <Dim type="LeftEdge">
+                        <ImageDim name="FOTDSkin/ButtonPushedL" dimension="Width"/>
+                    </Dim>
+                    <Dim type="TopEdge">
+                        <UnifiedDim scale=".5" type="Height"/>
+                    </Dim>
+                    <Dim type="RightEdge">
+                        <OperatorDim op="Subtract">
+                            <UnifiedDim scale="1" type="Width"/>
+                            <ImageDim name="FOTDSkin/ButtonPushedR" dimension="Width"/>
+                        </OperatorDim>
+                    </Dim>
+                    <Dim type="BottomEdge">
+                        <OperatorDim op="Subtract">
+                            <UnifiedDim scale="1" type="Height"/>
+                            <ImageDim name="FOTDSkin/ButtonPushedB" dimension="Height"/>
+                        </OperatorDim>
+                    </Dim>
+                </Area>
+                <Image name="FOTDSkin/ButtonPushedFill2"/>
+                <VertFormat type="Stretched"/>
+                <HorzFormat type="Stretched"/>
+            </ImageryComponent>
+        </ImagerySection>
+        <StateImagery name="Normal">
+            <Layer>
+                <Section section="normal"/>
+                <Section section="label"/>
+            </Layer>
+        </StateImagery>
+        <StateImagery name="Hover">
+            <Layer>
+                <Section section="hover"/>
+                <Section section="label"/>
+            </Layer>
+        </StateImagery>
+        <StateImagery name="Pushed">
+            <Layer>
+                <Section section="pushed"/>
+                <Section section="label"/>
+            </Layer>
+        </StateImagery>
+        <StateImagery name="PushedOff">
+            <Layer>
+                <Section section="normal"/>
+                <Section section="label"/>
+            </Layer>
+        </StateImagery>
+        <StateImagery name="Disabled">
+            <Layer>
+                <Section section="normal"/>
+                <Section section="label"/>
+            </Layer>
+        </StateImagery>
+    </WidgetLook>
+    <WidgetLook name="FOTDSkin/ImageButton">
+        <PropertyDefinition redrawOnWrite="true" initialValue="" type="Image" name="NormalImage"/>
+        <PropertyDefinition redrawOnWrite="true" initialValue="" type="Image" name="HoverImage"/>
+        <PropertyDefinition redrawOnWrite="true" initialValue="" type="Image" name="PushedImage"/>
+        <PropertyDefinition redrawOnWrite="true" initialValue="" type="Image" name="DisabledImage"/>
+        <PropertyDefinition redrawOnWrite="true" initialValue="Stretched" type="VerticalFormatting" name="VertImageFormatting"/>
+        <PropertyDefinition redrawOnWrite="true" initialValue="Stretched" type="HorizontalFormatting" name="HorzImageFormatting"/>
+        <Property name="Size" value="{{0, 96}, {0, 32}}" />
+        <ImagerySection name="normal">
+            <ImageryComponent>
+                <ImageProperty name="NormalImage"/>
+                <VertFormatProperty name="VertImageFormatting"/>
+                <HorzFormatProperty name="HorzImageFormatting"/>
+            </ImageryComponent>
+        </ImagerySection>
+        <ImagerySection name="hover">
+            <ImageryComponent>
+                <ImageProperty name="HoverImage"/>
+                <VertFormatProperty name="VertImageFormatting"/>
+                <HorzFormatProperty name="HorzImageFormatting"/>
+            </ImageryComponent>
+        </ImagerySection>
+        <ImagerySection name="pushed">
+            <ImageryComponent>
+                <ImageProperty name="PushedImage"/>
+                <VertFormatProperty name="VertImageFormatting"/>
+                <HorzFormatProperty name="HorzImageFormatting"/>
+            </ImageryComponent>
+        </ImagerySection>
+        <ImagerySection name="disabled">
+            <ImageryComponent>
+                <ImageProperty name="DisabledImage"/>
+                <VertFormatProperty name="VertImageFormatting"/>
+                <HorzFormatProperty name="HorzImageFormatting"/>
+            </ImageryComponent>
+        </ImagerySection>
+        <StateImagery name="Normal">
+            <Layer>
+                <Section section="normal"/>
+            </Layer>
+        </StateImagery>
+        <StateImagery name="Hover">
+            <Layer>
+                <Section section="hover"/>
+            </Layer>
+        </StateImagery>
+        <StateImagery name="Pushed">
+            <Layer>
+                <Section section="pushed"/>
+            </Layer>
+        </StateImagery>
+        <StateImagery name="PushedOff">
+            <Layer>
+                <Section section="hover"/>
+            </Layer>
+        </StateImagery>
+        <StateImagery name="Disabled">
+            <Layer>
+                <Section section="disabled"/>
+            </Layer>
+        </StateImagery>
+    </WidgetLook>
+    <WidgetLook name="FOTDSkin/RadioButton">
+        <PropertyDefinition redrawOnWrite="true" initialValue="FFFFFFFF" type="ColourRect" name="LabelColour"/>
+        <Property name="Size" value="{{0, 256}, {0, 32}}" />
+        <ImagerySection name="label">
+            <TextComponent>
+                <Area>
+                    <Dim type="LeftEdge">
+                        <OperatorDim op="Add">
+                            <ImageDim name="FOTDSkin/RadioButtonNormal" dimension="Width"/>
+                            <AbsoluteDim value="3"/>
+                        </OperatorDim>
+                    </Dim>
+                </Area>
+                <ColourProperty name="LabelColour"/>
+                <VertFormat type="CentreAligned"/>
+                <HorzFormat type="LeftAligned"/>
+            </TextComponent>
+        </ImagerySection>
+        <ImagerySection name="normal">
+            <ImageryComponent>
+                <Image name="FOTDSkin/RadioButtonNormal"/>
+                <VertFormat type="CentreAligned"/>
+                <HorzFormat type="LeftAligned"/>
+            </ImageryComponent>
+        </ImagerySection>
+        <ImagerySection name="hover">
+            <ImageryComponent>
+                <Image name="FOTDSkin/RadioButtonHover"/>
+                <VertFormat type="CentreAligned"/>
+                <HorzFormat type="LeftAligned"/>
+            </ImageryComponent>
+        </ImagerySection>
+        <ImagerySection name="selected">
+            <ImageryComponent>
+                <Image name="FOTDSkin/RadioButtonChecked"/>
+                <VertFormat type="CentreAligned"/>
+                <HorzFormat type="LeftAligned"/>
+            </ImageryComponent>
+        </ImagerySection>
+        <StateImagery name="Normal">
+            <Layer>
+                <Section section="normal"/>
+                <Section section="label"/>
+            </Layer>
+        </StateImagery>
+        <StateImagery name="Hover">
+            <Layer>
+                <Section section="hover"/>
+                <Section section="label"/>
+            </Layer>
+        </StateImagery>
+        <StateImagery name="Pushed">
+            <Layer>
+                <Section section="selected"/>
+                <Section section="label"/>
+            </Layer>
+        </StateImagery>
+        <StateImagery name="Disabled">
+            <Layer>
+                <Section section="normal">
+                    <Colours topLeft="FF7F7F7F" bottomLeft="FF7F7F7F" topRight="FF7F7F7F" bottomRight="FF7F7F7F"/>
+                </Section>
+                <Section section="label">
+                    <Colours topLeft="FF7F7F7F" bottomLeft="FF7F7F7F" topRight="FF7F7F7F" bottomRight="FF7F7F7F"/>
+                </Section>
+            </Layer>
+        </StateImagery>
+        <StateImagery name="SelectedNormal">
+            <Layer>
+                <Section section="selected"/>
+                <Section section="label"/>
+            </Layer>
+        </StateImagery>
+        <StateImagery name="SelectedHover">
+            <Layer>
+                <Section section="hover"/>
+                <Section section="label"/>
+            </Layer>
+        </StateImagery>
+        <StateImagery name="SelectedPushed">
+            <Layer>
+                <Section section="normal"/>
+                <Section section="label"/>
+            </Layer>
+        </StateImagery>
+        <StateImagery name="SelectedDisabled">
+            <Layer>
+                <Section section="selected">
+                    <Colours topLeft="FF7F7F7F" bottomLeft="FF7F7F7F" topRight="FF7F7F7F" bottomRight="FF7F7F7F"/>
+                </Section>
+                <Section section="label">
+                    <Colours topLeft="FF7F7F7F" bottomLeft="FF7F7F7F" topRight="FF7F7F7F" bottomRight="FF7F7F7F"/>
+                </Section>
+            </Layer>
+        </StateImagery>
+    </WidgetLook>
+    <WidgetLook name="FOTDSkin/Checkbox">
+        <PropertyDefinition redrawOnWrite="true" initialValue="FFFFFFFF" type="ColourRect" name="LabelColour"/>
+        <Property name="Size" value="{{0, 128}, {0, 32}}" />
+        <ImagerySection name="label">
+            <TextComponent>
+                <Area>
+                    <Dim type="LeftEdge">
+                        <OperatorDim op="Add">
+                            <ImageDim name="FOTDSkin/CheckboxNormal" dimension="Width"/>
+                            <AbsoluteDim value="3"/>
+                        </OperatorDim>
+                    </Dim>
+                </Area>
+                <ColourProperty name="LabelColour"/>
+                <VertFormat type="CentreAligned"/>
+                <HorzFormat type="LeftAligned"/>
+            </TextComponent>
+        </ImagerySection>
+        <ImagerySection name="normal">
+            <ImageryComponent>
+                <Image name="FOTDSkin/CheckboxNormal"/>
+                <VertFormat type="CentreAligned"/>
+                <HorzFormat type="LeftAligned"/>
+            </ImageryComponent>
+        </ImagerySection>
+        <ImagerySection name="hover">
+            <ImageryComponent>
+                <Image name="FOTDSkin/CheckboxHover"/>
+                <VertFormat type="CentreAligned"/>
+                <HorzFormat type="LeftAligned"/>
+            </ImageryComponent>
+        </ImagerySection>
+        <ImagerySection name="selected">
+            <ImageryComponent>
+                <Image name="FOTDSkin/CheckboxChecked"/>
+                <VertFormat type="CentreAligned"/>
+                <HorzFormat type="LeftAligned"/>
+            </ImageryComponent>
+        </ImagerySection>
+        <StateImagery name="Normal">
+            <Layer>
+                <Section section="normal"/>
+                <Section section="label"/>
+            </Layer>
+        </StateImagery>
+        <StateImagery name="Hover">
+            <Layer>
+                <Section section="hover"/>
+                <Section section="label"/>
+            </Layer>
+        </StateImagery>
+        <StateImagery name="Pushed">
+            <Layer>
+                <Section section="selected"/>
+                <Section section="label"/>
+            </Layer>
+        </StateImagery>
+        <StateImagery name="Disabled">
+            <Layer>
+                <Section section="normal">
+                    <Colours topLeft="FF7F7F7F" bottomLeft="FF7F7F7F" topRight="FF7F7F7F" bottomRight="FF7F7F7F"/>
+                </Section>
+                <Section section="label">
+                    <Colours topLeft="FF7F7F7F" bottomLeft="FF7F7F7F" topRight="FF7F7F7F" bottomRight="FF7F7F7F"/>
+                </Section>
+            </Layer>
+        </StateImagery>
+        <StateImagery name="SelectedNormal">
+            <Layer>
+                <Section section="selected"/>
+                <Section section="label"/>
+            </Layer>
+        </StateImagery>
+        <StateImagery name="SelectedHover">
+            <Layer>
+                <Section section="hover"/>
+                <Section section="label"/>
+            </Layer>
+        </StateImagery>
+        <StateImagery name="SelectedPushed">
+            <Layer>
+                <Section section="normal"/>
+                <Section section="label"/>
+            </Layer>
+        </StateImagery>
+        <StateImagery name="SelectedDisabled">
+            <Layer>
+                <Section section="selected">
+                    <Colours topLeft="FF7F7F7F" bottomLeft="FF7F7F7F" topRight="FF7F7F7F" bottomRight="FF7F7F7F"/>
+                </Section>
+                <Section section="label">
+                    <Colours topLeft="FF7F7F7F" bottomLeft="FF7F7F7F" topRight="FF7F7F7F" bottomRight="FF7F7F7F"/>
+                </Section>
+            </Layer>
+        </StateImagery>
+    </WidgetLook>
+    <WidgetLook name="FOTDSkin/Titlebar">
+        <PropertyDefinition redrawOnWrite="true" initialValue="FFFFFFFF" type="ColourRect" name="CaptionColour"/>
+        <Property name="Size" value="{{0, 256}, {0, 32}}" />
+        <ImagerySection name="active">
+            <FrameComponent>
+                <Image component="TopLeftCorner" name="FOTDSkin/TitlebarActiveTL"/>
+                <Image component="TopRightCorner" name="FOTDSkin/TitlebarActiveTR"/>
+                <Image component="BottomLeftCorner" name="FOTDSkin/TitlebarActiveBL"/>
+                <Image component="BottomRightCorner" name="FOTDSkin/TitlebarActiveBR"/>
+                <Image component="LeftEdge" name="FOTDSkin/TitlebarActiveL"/>
+                <Image component="RightEdge" name="FOTDSkin/TitlebarActiveR"/>
+                <Image component="TopEdge" name="FOTDSkin/TitlebarActiveT"/>
+                <Image component="BottomEdge" name="FOTDSkin/TitlebarActiveB"/>
+            </FrameComponent>
+            <ImageryComponent>
+                <Area>
+                    <Dim type="LeftEdge">
+                        <ImageDim name="FOTDSkin/TitlebarActiveL" dimension="Width"/>
+                    </Dim>
+                    <Dim type="TopEdge">
+                        <ImageDim name="FOTDSkin/TitlebarActiveT" dimension="Height"/>
+                    </Dim>
+                    <Dim type="RightEdge">
+                        <OperatorDim op="Subtract">
+                            <UnifiedDim scale="1" type="Width"/>
+                            <ImageDim name="FOTDSkin/TitlebarActiveR" dimension="Width"/>
+                        </OperatorDim>
+                    </Dim>
+                    <Dim type="BottomEdge">
+                        <UnifiedDim scale=".5" type="Height"/>
+                    </Dim>
+                </Area>
+                <Image name="FOTDSkin/TitlebarActiveFill1"/>
+                <VertFormat type="Stretched"/>
+                <HorzFormat type="Stretched"/>
+            </ImageryComponent>
+            <ImageryComponent>
+                <Area>
+                    <Dim type="LeftEdge">
+                        <ImageDim name="FOTDSkin/TitlebarActiveL" dimension="Width"/>
+                    </Dim>
+                    <Dim type="TopEdge">
+                        <UnifiedDim scale=".5" type="Height"/>
+                    </Dim>
+                    <Dim type="RightEdge">
+                        <OperatorDim op="Subtract">
+                            <UnifiedDim scale="1" type="Width"/>
+                            <ImageDim name="FOTDSkin/TitlebarActiveR" dimension="Width"/>
+                        </OperatorDim>
+                    </Dim>
+                    <Dim type="BottomEdge">
+                        <OperatorDim op="Subtract">
+                            <UnifiedDim scale="1" type="Height"/>
+                            <ImageDim name="FOTDSkin/TitlebarActiveB" dimension="Height"/>
+                        </OperatorDim>
+                    </Dim>
+                </Area>
+                <Image name="FOTDSkin/TitlebarActiveFill2"/>
+                <VertFormat type="Stretched"/>
+                <HorzFormat type="Stretched"/>
+            </ImageryComponent>
+        </ImagerySection>
+        <ImagerySection name="inactive">
+            <FrameComponent>
+                <Image component="TopLeftCorner" name="FOTDSkin/TitlebarInactiveTL"/>
+                <Image component="TopRightCorner" name="FOTDSkin/TitlebarInactiveTR"/>
+                <Image component="BottomLeftCorner" name="FOTDSkin/TitlebarInactiveBL"/>
+                <Image component="BottomRightCorner" name="FOTDSkin/TitlebarInactiveBR"/>
+                <Image component="LeftEdge" name="FOTDSkin/TitlebarInactiveL"/>
+                <Image component="RightEdge" name="FOTDSkin/TitlebarInactiveR"/>
+                <Image component="TopEdge" name="FOTDSkin/TitlebarInactiveT"/>
+                <Image component="BottomEdge" name="FOTDSkin/TitlebarInactiveB"/>
+            </FrameComponent>
+            <ImageryComponent>
+                <Area>
+                    <Dim type="LeftEdge">
+                        <ImageDim name="FOTDSkin/TitlebarInactiveL" dimension="Width"/>
+                    </Dim>
+                    <Dim type="TopEdge">
+                        <ImageDim name="FOTDSkin/TitlebarInactiveT" dimension="Height"/>
+                    </Dim>
+                    <Dim type="RightEdge">
+                        <OperatorDim op="Subtract">
+                            <UnifiedDim scale="1" type="Width"/>
+                            <ImageDim name="FOTDSkin/TitlebarInactiveR" dimension="Width"/>
+                        </OperatorDim>
+                    </Dim>
+                    <Dim type="BottomEdge">
+                        <UnifiedDim scale=".5" type="Height"/>
+                    </Dim>
+                </Area>
+                <Image name="FOTDSkin/TitlebarInactiveFill1"/>
+                <VertFormat type="Stretched"/>
+                <HorzFormat type="Stretched"/>
+            </ImageryComponent>
+            <ImageryComponent>
+                <Area>
+                    <Dim type="LeftEdge">
+                        <ImageDim name="FOTDSkin/TitlebarInactiveL" dimension="Width"/>
+                    </Dim>
+                    <Dim type="TopEdge">
+                        <UnifiedDim scale=".5" type="Height"/>
+                    </Dim>
+                    <Dim type="RightEdge">
+                        <OperatorDim op="Subtract">
+                            <UnifiedDim scale="1" type="Width"/>
+                            <ImageDim name="FOTDSkin/TitlebarInactiveR" dimension="Width"/>
+                        </OperatorDim>
+                    </Dim>
+                    <Dim type="BottomEdge">
+                        <OperatorDim op="Subtract">
+                            <UnifiedDim scale="1" type="Height"/>
+                            <ImageDim name="FOTDSkin/TitlebarInactiveB" dimension="Height"/>
+                        </OperatorDim>
+                    </Dim>
+                </Area>
+                <Image name="FOTDSkin/TitlebarInactiveFill2"/>
+                <VertFormat type="Stretched"/>
+                <HorzFormat type="Stretched"/>
+            </ImageryComponent>
+        </ImagerySection>
+        <ImagerySection name="caption">
+            <TextComponent>
+                <Area>
+                    <Dim type="LeftEdge">
+                        <OperatorDim op="Add">
+                            <ImageDim name="FOTDSkin/TitlebarDummy1" dimension="Width"/>
+                            <AbsoluteDim value="1"/>
+                        </OperatorDim>
+                    </Dim>
+                    <Dim type="TopEdge">
+                        <AbsoluteDim value="2"/>
+                    </Dim>
+                </Area>
+                <Colours topLeft="FF000000" bottomLeft="FF000000" topRight="FF000000" bottomRight="FF000000"/>
+                <VertFormat type="CentreAligned"/>
+            </TextComponent>
+            <TextComponent>
+                <Area>
+                    <Dim type="LeftEdge">
+                        <ImageDim name="FOTDSkin/TitlebarDummy1" dimension="Width"/>
+                    </Dim>
+                </Area>
+                <ColourProperty name="CaptionColour"/>
+                <VertFormat type="CentreAligned"/>
+            </TextComponent>
+        </ImagerySection>
+        <StateImagery name="Active">
+            <Layer>
+                <Section section="active"/>
+                <Section section="caption"/>
+            </Layer>
+        </StateImagery>
+        <StateImagery name="Inactive">
+            <Layer>
+                <Section section="inactive"/>
+                <Section section="caption"/>
+            </Layer>
+        </StateImagery>
+    </WidgetLook>
+    <WidgetLook name="FOTDSkin/FrameWindow">
+        <PropertyLinkDefinition targetProperty="CaptionColour" widget="__auto_titlebar__" initialValue="FFFFFFFF" type="ColourRect" name="CaptionColour"/>
+        <PropertyLinkDefinition targetProperty="Font" widget="__auto_titlebar__" type="Font" name="TitlebarFont"/>
+        <Property name="AutoRenderingSurface" value="true"/>
+        <Property name="Size" value="{{0.3, 0}, {0.3, 0}}" />
+        <NamedArea name="ClientWithTitleWithFrame">
+            <Area>
+                <Dim type="LeftEdge">
+                    <ImageDim name="FOTDSkin/WindowClipL" dimension="Width"/>
+                </Dim>
+                <Dim type="TopEdge">
+                    <WidgetDim widget="__auto_titlebar__" dimension="BottomEdge"/>
+                </Dim>
+                <Dim type="RightEdge">
+                    <OperatorDim op="Subtract">
+                        <UnifiedDim scale="1" type="RightEdge"/>
+                        <ImageDim name="FOTDSkin/WindowClipR" dimension="Width"/>
+                    </OperatorDim>
+                </Dim>
+                <Dim type="BottomEdge">
+                    <OperatorDim op="Subtract">
+                        <UnifiedDim scale="1" type="BottomEdge"/>
+                        <ImageDim name="FOTDSkin/WindowClipB" dimension="Height"/>
+                    </OperatorDim>
+                </Dim>
+            </Area>
+        </NamedArea>
+        <NamedArea name="ClientWithTitleNoFrame">
+            <Area>
+                <Dim type="TopEdge">
+                    <WidgetDim widget="__auto_titlebar__" dimension="BottomEdge"/>
+                </Dim>
+            </Area>
+        </NamedArea>
+        <NamedArea name="ClientNoTitleWithFrame">
+            <Area>
+                <Dim type="LeftEdge">
+                    <ImageDim name="FOTDSkin/WindowClipL" dimension="Width"/>
+                </Dim>
+                <Dim type="TopEdge">
+                    <ImageDim name="FOTDSkin/WindowClipT" dimension="Height"/>
+                </Dim>
+                <Dim type="RightEdge">
+                    <OperatorDim op="Subtract">
+                        <UnifiedDim scale="1" type="RightEdge"/>
+                        <ImageDim name="FOTDSkin/WindowClipR" dimension="Width"/>
+                    </OperatorDim>
+                </Dim>
+                <Dim type="BottomEdge">
+                    <OperatorDim op="Subtract">
+                        <UnifiedDim scale="1" type="BottomEdge"/>
+                        <ImageDim name="FOTDSkin/WindowClipB" dimension="Height"/>
+                    </OperatorDim>
+                </Dim>
+            </Area>
+        </NamedArea>
+        <NamedArea name="ClientNoTitleNoFrame"/>
+        <Child nameSuffix="__auto_titlebar__" type="FOTDSkin/Titlebar">
+            <Area>
+                <Dim type="Height">
+                    <FontDim padding="16" type="LineSpacing"/>
+                </Dim>
+            </Area>
+            <Property name="AlwaysOnTop" value="False"/>
+            <Property name="NonClient" value="true"/>
+        </Child>
+        <Child nameSuffix="__auto_closebutton__" type="FOTDSkin/ImageButton">
+            <Area>
+                <Dim type="LeftEdge">
+                    <OperatorDim op="Subtract">
+                        <AbsoluteDim value="0"/>
+                        <ImageDim name="FOTDSkin/TitlebarActiveTR" dimension="Width"/>
+                    </OperatorDim>
+                </Dim>
+                <Dim type="TopEdge">
+                    <OperatorDim op="Multiply">
+                        <AbsoluteDim value="0.5"/>
+                        <OperatorDim op="Subtract">
+                            <WidgetDim widget="__auto_titlebar__" dimension="Height"/>
+                            <ImageDim name="FOTDSkin/CloseButtonNormal" dimension="Height"/>
+                        </OperatorDim>
+                    </OperatorDim>
+                </Dim>
+                <Dim type="Width">
+                    <ImageDim name="FOTDSkin/CloseButtonNormal" dimension="Width"/>
+                </Dim>
+                <Dim type="Height">
+                    <ImageDim name="FOTDSkin/CloseButtonNormal" dimension="Height"/>
+                </Dim>
+            </Area>
+            <HorzAlignment type="RightAligned"/>
+            <Property name="AlwaysOnTop" value="true"/>
+            <Property name="NonClient" value="true"/>
+            <Property name="NormalImage" value="FOTDSkin/CloseButtonNormal"/>
+            <Property name="HoverImage" value="FOTDSkin/CloseButtonNormal"/>
+            <Property name="PushedImage" value="FOTDSkin/CloseButtonPushed"/>
+        </Child>
+        <ImagerySection name="withtitle_frame">
+            <FrameComponent>
+                <Area>
+                    <Dim type="TopEdge">
+                        <WidgetDim widget="__auto_titlebar__" dimension="BottomEdge"/>
+                    </Dim>
+                </Area>
+                <Image component="BottomLeftCorner" name="FOTDSkin/WindowBL"/>
+                <Image component="BottomRightCorner" name="FOTDSkin/WindowBR"/>
+                <Image component="LeftEdge" name="FOTDSkin/WindowL"/>
+                <Image component="RightEdge" name="FOTDSkin/WindowR"/>
+                <Image component="BottomEdge" name="FOTDSkin/WindowB"/>
+                <Image component="Background" name="FOTDSkin/WindowFill"/>
+            </FrameComponent>
+        </ImagerySection>
+        <ImagerySection name="notitle_frame">
+            <FrameComponent>
+                <Image component="TopLeftCorner" name="FOTDSkin/WindowTL"/>
+                <Image component="TopRightCorner" name="FOTDSkin/WindowTR"/>
+                <Image component="BottomLeftCorner" name="FOTDSkin/WindowBL"/>
+                <Image component="BottomRightCorner" name="FOTDSkin/WindowBR"/>
+                <Image component="LeftEdge" name="FOTDSkin/WindowL"/>
+                <Image component="RightEdge" name="FOTDSkin/WindowR"/>
+                <Image component="TopEdge" name="FOTDSkin/WindowT"/>
+                <Image component="BottomEdge" name="FOTDSkin/WindowB"/>
+                <Image component="Background" name="FOTDSkin/WindowFill"/>
+            </FrameComponent>
+        </ImagerySection>
+        <ImagerySection name="withtitle_noframe_client_area">
+            <ImageryComponent>
+                <Area>
+                    <Dim type="TopEdge">
+                        <WidgetDim widget="__auto_titlebar__" dimension="Height"/>
+                    </Dim>
+                </Area>
+                <Image name="FOTDSkin/WindowFill"/>
+                <VertFormat type="Stretched"/>
+                <HorzFormat type="Stretched"/>
+            </ImageryComponent>
+        </ImagerySection>
+        <ImagerySection name="notitle_noframe_client_area">
+            <ImageryComponent>
+                <Image name="FOTDSkin/WindowFill"/>
+                <VertFormat type="Stretched"/>
+                <HorzFormat type="Stretched"/>
+            </ImageryComponent>
+        </ImagerySection>
+        <StateImagery name="ActiveWithTitleWithFrame">
+            <Layer>
+                <Section section="withtitle_frame"/>
+            </Layer>
+        </StateImagery>
+        <StateImagery name="InactiveWithTitleWithFrame">
+            <Layer>
+                <Section section="withtitle_frame"/>
+            </Layer>
+        </StateImagery>
+        <StateImagery name="DisabledWithTitleWithFrame">
+            <Layer>
+                <Section section="withtitle_frame">
+                    <Colours topLeft="FF7F7F7F" bottomLeft="FF7F7F7F" topRight="FF7F7F7F" bottomRight="FF7F7F7F"/>
+                </Section>
+            </Layer>
+        </StateImagery>
+        <StateImagery name="ActiveWithTitleNoFrame">
+            <Layer>
+                <Section section="withtitle_noframe_client_area"/>
+            </Layer>
+        </StateImagery>
+        <StateImagery name="InactiveWithTitleNoFrame">
+            <Layer>
+                <Section section="withtitle_noframe_client_area"/>
+            </Layer>
+        </StateImagery>
+        <StateImagery name="DisabledWithTitleNoFrame">
+            <Layer>
+                <Section section="withtitle_noframe_client_area">
+                    <Colours topLeft="FF7F7F7F" bottomLeft="FF7F7F7F" topRight="FF7F7F7F" bottomRight="FF7F7F7F"/>
+                </Section>
+            </Layer>
+        </StateImagery>
+        <StateImagery name="ActiveNoTitleWithFrame">
+            <Layer>
+                <Section section="notitle_frame"/>
+            </Layer>
+        </StateImagery>
+        <StateImagery name="InactiveNoTitleWithFrame">
+            <Layer>
+                <Section section="notitle_frame"/>
+            </Layer>
+        </StateImagery>
+        <StateImagery name="DisabledNoTitleWithFrame">
+            <Layer>
+                <Section section="notitle_frame">
+                    <Colours topLeft="FF7F7F7F" bottomLeft="FF7F7F7F" topRight="FF7F7F7F" bottomRight="FF7F7F7F"/>
+                </Section>
+            </Layer>
+        </StateImagery>
+        <StateImagery name="ActiveNoTitleNoFrame">
+            <Layer>
+                <Section section="notitle_noframe_client_area"/>
+            </Layer>
+        </StateImagery>
+        <StateImagery name="InactiveNoTitleNoFrame">
+            <Layer>
+                <Section section="notitle_noframe_client_area"/>
+            </Layer>
+        </StateImagery>
+        <StateImagery name="DisabledNoTitleNoFrame">
+            <Layer>
+                <Section section="notitle_noframe_client_area">
+                    <Colours topLeft="FF7F7F7F" bottomLeft="FF7F7F7F" topRight="FF7F7F7F" bottomRight="FF7F7F7F"/>
+                </Section>
+            </Layer>
+        </StateImagery>
+    </WidgetLook>
+    <WidgetLook name="FOTDSkin/Editbox">
+        <PropertyDefinition redrawOnWrite="true" initialValue="FFFFFFFF" type="ColourRect" name="NormalTextColour"/>
+        <PropertyDefinition redrawOnWrite="true" initialValue="FF000000" type="ColourRect" name="SelectedTextColour"/>
+        <PropertyDefinition redrawOnWrite="true" initialValue="FFB6D142" type="ColourRect" name="ActiveSelectionColour"/>
+        <PropertyDefinition redrawOnWrite="true" initialValue="FF808080" type="ColourRect" name="InactiveSelectionColour"/>
+        <Property name="MouseCursorImage" value="FOTDSkin/MouseTextBar"/>
+        <Property name="Size" value="{{0, 256}, {0, 32}}" />
+        <NamedArea name="TextArea">
+            <Area>
+                <Dim type="LeftEdge">
+                    <ImageDim name="FOTDSkin/EditboxL" dimension="Width"/>
+                </Dim>
+                <Dim type="TopEdge">
+                    <ImageDim name="FOTDSkin/EditboxT" dimension="Height"/>
+                </Dim>
+                <Dim type="RightEdge">
+                    <OperatorDim op="Subtract">
+                        <UnifiedDim scale="1" type="RightEdge"/>
+                        <ImageDim name="FOTDSkin/EditboxR" dimension="Width"/>
+                    </OperatorDim>
+                </Dim>
+                <Dim type="BottomEdge">
+                    <OperatorDim op="Subtract">
+                        <UnifiedDim scale="1" type="BottomEdge"/>
+                        <ImageDim name="FOTDSkin/EditboxB" dimension="Height"/>
+                    </OperatorDim>
+                </Dim>
+            </Area>
+        </NamedArea>
+        <ImagerySection name="container_normal">
+            <FrameComponent>
+                <Image component="TopLeftCorner" name="FOTDSkin/EditboxTL"/>
+                <Image component="TopRightCorner" name="FOTDSkin/EditboxTR"/>
+                <Image component="BottomLeftCorner" name="FOTDSkin/EditboxBL"/>
+                <Image component="BottomRightCorner" name="FOTDSkin/EditboxBR"/>
+                <Image component="LeftEdge" name="FOTDSkin/EditboxL"/>
+                <Image component="RightEdge" name="FOTDSkin/EditboxR"/>
+                <Image component="TopEdge" name="FOTDSkin/EditboxT"/>
+                <Image component="BottomEdge" name="FOTDSkin/EditboxB"/>
+                <Image component="Background" name="FOTDSkin/EditboxFill"/>
+            </FrameComponent>
+        </ImagerySection>
+        <ImagerySection name="selection">
+            <ImageryComponent>
+                <Image name="FOTDSkin/GenericBrush"/>
+                <VertFormat type="Stretched"/>
+                <HorzFormat type="Stretched"/>
+            </ImageryComponent>
+        </ImagerySection>
+        <ImagerySection name="Caret">
+            <ImageryComponent>
+                <Area>
+                    <Dim type="Width">
+                        <AbsoluteDim value="3"/>
+                    </Dim>
+                </Area>
+                <Image name="FOTDSkin/GenericBrush"/>
+                <VertFormat type="Stretched"/>
+                <HorzFormat type="Stretched"/>
+            </ImageryComponent>
+        </ImagerySection>
+        <StateImagery name="Enabled">
+            <Layer>
+                <Section section="container_normal"/>
+            </Layer>
+        </StateImagery>
+        <StateImagery name="ReadOnly">
+            <Layer>
+                <Section section="container_normal"/>
+            </Layer>
+        </StateImagery>
+        <StateImagery name="Disabled">
+            <Layer>
+                <Section section="container_normal">
+                    <Colours topLeft="FF7F7F7F" bottomLeft="FF7F7F7F" topRight="FF7F7F7F" bottomRight="FF7F7F7F"/>
+                </Section>
+            </Layer>
+        </StateImagery>
+        <StateImagery name="ActiveSelection">
+            <Layer>
+                <Section section="selection">
+                    <ColourProperty name="ActiveSelectionColour"/>
+                </Section>
+            </Layer>
+        </StateImagery>
+        <StateImagery name="InactiveSelection">
+            <Layer>
+                <Section section="selection">
+                    <ColourProperty name="InactiveSelectionColour"/>
+                </Section>
+            </Layer>
+        </StateImagery>
+    </WidgetLook>
+    <WidgetLook name="FOTDSkin/HorizontalScrollbarThumb">
+        <Property name="HorzFree" value="true"/>
+        <Property name="MouseInputPropagationEnabled" value="true"/>
+        <Property name="Size" value="{{0, 32}, {0, 32}}" />
+        <ImagerySection name="normal">
+            <ImageryComponent>
+                <Area>
+                    <Dim type="BottomEdge">
+                        <UnifiedDim scale=".5" type="Height"/>
+                    </Dim>
+                </Area>
+                <Image name="FOTDSkin/HorzThumbNormalTR"/>
+                <VertFormat type="Stretched"/>
+                <HorzFormat type="RightAligned"/>
+            </ImageryComponent>
+            <ImageryComponent>
+                <Area>
+                    <Dim type="TopEdge">
+                        <UnifiedDim scale=".5" type="Height"/>
+                    </Dim>
+                </Area>
+                <Image name="FOTDSkin/HorzThumbNormalBR"/>
+                <VertFormat type="Stretched"/>
+                <HorzFormat type="RightAligned"/>
+            </ImageryComponent>
+            <ImageryComponent>
+                <Area>
+                    <Dim type="BottomEdge">
+                        <UnifiedDim scale=".5" type="Height"/>
+                    </Dim>
+                </Area>
+                <Image name="FOTDSkin/HorzThumbNormalTL"/>
+                <VertFormat type="Stretched"/>
+            </ImageryComponent>
+            <ImageryComponent>
+                <Area>
+                    <Dim type="TopEdge">
+                        <UnifiedDim scale=".5" type="Height"/>
+                    </Dim>
+                </Area>
+                <Image name="FOTDSkin/HorzThumbNormalBL"/>
+                <VertFormat type="Stretched"/>
+            </ImageryComponent>
+            <ImageryComponent>
+                <Area>
+                    <Dim type="LeftEdge">
+                        <ImageDim name="FOTDSkin/HorzThumbNormalTL" dimension="Width"/>
+                    </Dim>
+                    <Dim type="RightEdge">
+                        <OperatorDim op="Subtract">
+                            <UnifiedDim scale="1" type="Width"/>
+                            <ImageDim name="FOTDSkin/HorzThumbNormalTR" dimension="Width"/>
+                        </OperatorDim>
+                    </Dim>
+                    <Dim type="BottomEdge">
+                        <UnifiedDim scale=".5" type="Height"/>
+                    </Dim>
+                </Area>
+                <Image name="FOTDSkin/HorzThumbNormalT"/>
+                <VertFormat type="Stretched"/>
+                <HorzFormat type="Stretched"/>
+            </ImageryComponent>
+            <ImageryComponent>
+                <Area>
+                    <Dim type="LeftEdge">
+                        <ImageDim name="FOTDSkin/HorzThumbNormalBL" dimension="Width"/>
+                    </Dim>
+                    <Dim type="TopEdge">
+                        <UnifiedDim scale=".5" type="Height"/>
+                    </Dim>
+                    <Dim type="RightEdge">
+                        <OperatorDim op="Subtract">
+                            <UnifiedDim scale="1" type="Width"/>
+                            <ImageDim name="FOTDSkin/HorzThumbNormalBR" dimension="Width"/>
+                        </OperatorDim>
+                    </Dim>
+                </Area>
+                <Image name="FOTDSkin/HorzThumbNormalB"/>
+                <VertFormat type="Stretched"/>
+                <HorzFormat type="Stretched"/>
+            </ImageryComponent>
+        </ImagerySection>
+        <ImagerySection name="hover">
+            <ImageryComponent>
+                <Area>
+                    <Dim type="BottomEdge">
+                        <UnifiedDim scale=".5" type="Height"/>
+                    </Dim>
+                </Area>
+                <Image name="FOTDSkin/HorzThumbHoverTR"/>
+                <VertFormat type="Stretched"/>
+                <HorzFormat type="RightAligned"/>
+            </ImageryComponent>
+            <ImageryComponent>
+                <Area>
+                    <Dim type="TopEdge">
+                        <UnifiedDim scale=".5" type="Height"/>
+                    </Dim>
+                </Area>
+                <Image name="FOTDSkin/HorzThumbHoverBR"/>
+                <VertFormat type="Stretched"/>
+                <HorzFormat type="RightAligned"/>
+            </ImageryComponent>
+            <ImageryComponent>
+                <Area>
+                    <Dim type="BottomEdge">
+                        <UnifiedDim scale=".5" type="Height"/>
+                    </Dim>
+                </Area>
+                <Image name="FOTDSkin/HorzThumbHoverTL"/>
+                <VertFormat type="Stretched"/>
+            </ImageryComponent>
+            <ImageryComponent>
+                <Area>
+                    <Dim type="TopEdge">
+                        <UnifiedDim scale=".5" type="Height"/>
+                    </Dim>
+                </Area>
+                <Image name="FOTDSkin/HorzThumbHoverBL"/>
+                <VertFormat type="Stretched"/>
+            </ImageryComponent>
+            <ImageryComponent>
+                <Area>
+                    <Dim type="LeftEdge">
+                        <ImageDim name="FOTDSkin/HorzThumbHoverTL" dimension="Width"/>
+                    </Dim>
+                    <Dim type="RightEdge">
+                        <OperatorDim op="Subtract">
+                            <UnifiedDim scale="1" type="Width"/>
+                            <ImageDim name="FOTDSkin/HorzThumbHoverTR" dimension="Width"/>
+                        </OperatorDim>
+                    </Dim>
+                    <Dim type="BottomEdge">
+                        <UnifiedDim scale=".5" type="Height"/>
+                    </Dim>
+                </Area>
+                <Image name="FOTDSkin/HorzThumbHoverT"/>
+                <VertFormat type="Stretched"/>
+                <HorzFormat type="Stretched"/>
+            </ImageryComponent>
+            <ImageryComponent>
+                <Area>
+                    <Dim type="LeftEdge">
+                        <ImageDim name="FOTDSkin/HorzThumbHoverBL" dimension="Width"/>
+                    </Dim>
+                    <Dim type="TopEdge">
+                        <UnifiedDim scale=".5" type="Height"/>
+                    </Dim>
+                    <Dim type="RightEdge">
+                        <OperatorDim op="Subtract">
+                            <UnifiedDim scale="1" type="Width"/>
+                            <ImageDim name="FOTDSkin/HorzThumbHoverBR" dimension="Width"/>
+                        </OperatorDim>
+                    </Dim>
+                </Area>
+                <Image name="FOTDSkin/HorzThumbHoverB"/>
+                <VertFormat type="Stretched"/>
+                <HorzFormat type="Stretched"/>
+            </ImageryComponent>
+        </ImagerySection>
+        <ImagerySection name="pushed">
+            <ImageryComponent>
+                <Area>
+                    <Dim type="BottomEdge">
+                        <UnifiedDim scale=".5" type="Height"/>
+                    </Dim>
+                </Area>
+                <Image name="FOTDSkin/HorzThumbPushedTR"/>
+                <VertFormat type="Stretched"/>
+                <HorzFormat type="RightAligned"/>
+            </ImageryComponent>
+            <ImageryComponent>
+                <Area>
+                    <Dim type="TopEdge">
+                        <UnifiedDim scale=".5" type="Height"/>
+                    </Dim>
+                </Area>
+                <Image name="FOTDSkin/HorzThumbPushedBR"/>
+                <VertFormat type="Stretched"/>
+                <HorzFormat type="RightAligned"/>
+            </ImageryComponent>
+            <ImageryComponent>
+                <Area>
+                    <Dim type="BottomEdge">
+                        <UnifiedDim scale=".5" type="Height"/>
+                    </Dim>
+                </Area>
+                <Image name="FOTDSkin/HorzThumbPushedTL"/>
+                <VertFormat type="Stretched"/>
+            </ImageryComponent>
+            <ImageryComponent>
+                <Area>
+                    <Dim type="TopEdge">
+                        <UnifiedDim scale=".5" type="Height"/>
+                    </Dim>
+                </Area>
+                <Image name="FOTDSkin/HorzThumbPushedBL"/>
+                <VertFormat type="Stretched"/>
+            </ImageryComponent>
+            <ImageryComponent>
+                <Area>
+                    <Dim type="LeftEdge">
+                        <ImageDim name="FOTDSkin/HorzThumbPushedTL" dimension="Width"/>
+                    </Dim>
+                    <Dim type="RightEdge">
+                        <OperatorDim op="Subtract">
+                            <UnifiedDim scale="1" type="Width"/>
+                            <ImageDim name="FOTDSkin/HorzThumbPushedTR" dimension="Width"/>
+                        </OperatorDim>
+                    </Dim>
+                    <Dim type="BottomEdge">
+                        <UnifiedDim scale=".5" type="Height"/>
+                    </Dim>
+                </Area>
+                <Image name="FOTDSkin/HorzThumbPushedT"/>
+                <VertFormat type="Stretched"/>
+                <HorzFormat type="Stretched"/>
+            </ImageryComponent>
+            <ImageryComponent>
+                <Area>
+                    <Dim type="LeftEdge">
+                        <ImageDim name="FOTDSkin/HorzThumbPushedBL" dimension="Width"/>
+                    </Dim>
+                    <Dim type="TopEdge">
+                        <UnifiedDim scale=".5" type="Height"/>
+                    </Dim>
+                    <Dim type="RightEdge">
+                        <OperatorDim op="Subtract">
+                            <UnifiedDim scale="1" type="Width"/>
+                            <ImageDim name="FOTDSkin/HorzThumbPushedBR" dimension="Width"/>
+                        </OperatorDim>
+                    </Dim>
+                </Area>
+                <Image name="FOTDSkin/HorzThumbPushedB"/>
+                <VertFormat type="Stretched"/>
+                <HorzFormat type="Stretched"/>
+            </ImageryComponent>
+        </ImagerySection>
+        <StateImagery name="Normal">
+            <Layer>
+                <Section section="normal"/>
+            </Layer>
+        </StateImagery>
+        <StateImagery name="Hover">
+            <Layer>
+                <Section section="hover"/>
+            </Layer>
+        </StateImagery>
+        <StateImagery name="Pushed">
+            <Layer>
+                <Section section="pushed"/>
+            </Layer>
+        </StateImagery>
+        <StateImagery name="Disabled">
+            <Layer>
+                <Section section="normal">
+                    <Colours topLeft="FF7F7F7F" bottomLeft="FF7F7F7F" topRight="FF7F7F7F" bottomRight="FF7F7F7F"/>
+                </Section>
+            </Layer>
+        </StateImagery>
+    </WidgetLook>
+    <WidgetLook name="FOTDSkin/HorizontalScrollbar">
+        <Property name="Size" value="{{1, 0}, {0, 32}}" />
+        <NamedArea name="ThumbTrackArea">
+            <Area>
+                <Dim type="TopEdge">
+                    <ImageDim name="FOTDSkin/HorzScrollbarT" dimension="Height"/>
+                </Dim>
+                <Dim type="BottomEdge">
+                    <OperatorDim op="Subtract">
+                        <UnifiedDim scale="1" type="Height"/>
+                        <ImageDim name="FOTDSkin/HorzScrollbarB" dimension="Height"/>
+                    </OperatorDim>
+                </Dim>
+                <Dim type="LeftEdge">
+                    <ImageDim name="FOTDSkin/ScrollLeftNormal" dimension="Width"/>
+                </Dim>
+                <Dim type="RightEdge">
+                    <OperatorDim op="Subtract">
+                        <UnifiedDim scale="1.0" type="RightEdge"/>
+                        <ImageDim name="FOTDSkin/ScrollRightNormal" dimension="Width"/>
+                    </OperatorDim>
+                </Dim>
+            </Area>
+        </NamedArea>
+        <Child nameSuffix="__auto_incbtn__" type="FOTDSkin/ImageButton">
+            <Area>
+                <Dim type="Width">
+                    <ImageDim name="FOTDSkin/ScrollRightNormal" dimension="Width"/>
+                </Dim>
+            </Area>
+            <HorzAlignment type="RightAligned"/>
+            <Property name="NormalImage" value="FOTDSkin/ScrollRightNormal"/>
+            <Property name="HoverImage" value="FOTDSkin/ScrollRightHover"/>
+            <Property name="PushedImage" value="FOTDSkin/ScrollRightPushed"/>
+        </Child>
+        <Child nameSuffix="__auto_decbtn__" type="FOTDSkin/ImageButton">
+            <Area>
+                <Dim type="Width">
+                    <ImageDim name="FOTDSkin/ScrollLeftNormal" dimension="Width"/>
+                </Dim>
+            </Area>
+            <Property name="NormalImage" value="FOTDSkin/ScrollLeftNormal"/>
+            <Property name="HoverImage" value="FOTDSkin/ScrollLeftHover"/>
+            <Property name="PushedImage" value="FOTDSkin/ScrollLeftNormal"/>
+        </Child>
+        <Child nameSuffix="__auto_thumb__" type="FOTDSkin/HorizontalScrollbarThumb">
+            <Area>
+                <Dim type="TopEdge">
+                    <ImageDim name="FOTDSkin/HorzScrollbarT" dimension="Height"/>
+                </Dim>
+                <Dim type="BottomEdge">
+                    <OperatorDim op="Subtract">
+                        <UnifiedDim scale="1" type="Height"/>
+                        <ImageDim name="FOTDSkin/HorzScrollbarB" dimension="Height"/>
+                    </OperatorDim>
+                </Dim>
+                <Dim type="Width">
+                    <UnifiedDim scale="0.1" type="Width"/>
+                </Dim>
+            </Area>
+            <Property name="MinSize" value="{{0,25},{0,0}}"/>
+        </Child>
+        <ImagerySection name="main">
+            <FrameComponent>
+                <Area>
+                    <Dim type="LeftEdge">
+                        <ImageDim name="FOTDSkin/ScrollLeftNormal" dimension="Width"/>
+                    </Dim>
+                    <Dim type="RightEdge">
+                        <OperatorDim op="Subtract">
+                            <UnifiedDim scale="1.0" type="RightEdge"/>
+                            <ImageDim name="FOTDSkin/ScrollRightNormal" dimension="Width"/>
+                        </OperatorDim>
+                    </Dim>
+                </Area>
+                <Image component="TopEdge" name="FOTDSkin/HorzScrollbarT"/>
+                <Image component="BottomEdge" name="FOTDSkin/HorzScrollbarB"/>
+            </FrameComponent>
+            <ImageryComponent>
+                <Area>
+                    <Dim type="TopEdge">
+                        <ImageDim name="FOTDSkin/HorzScrollbarT" dimension="Height"/>
+                    </Dim>
+                    <Dim type="BottomEdge">
+                        <UnifiedDim scale=".5" type="Height"/>
+                    </Dim>
+                    <Dim type="LeftEdge">
+                        <ImageDim name="FOTDSkin/ScrollLeftNormal" dimension="Width"/>
+                    </Dim>
+                    <Dim type="RightEdge">
+                        <OperatorDim op="Subtract">
+                            <UnifiedDim scale="1.0" type="RightEdge"/>
+                            <ImageDim name="FOTDSkin/ScrollRightNormal" dimension="Width"/>
+                        </OperatorDim>
+                    </Dim>
+                </Area>
+                <Image name="FOTDSkin/HorzScrollbarFill1"/>
+                <VertFormat type="Stretched"/>
+                <HorzFormat type="Stretched"/>
+            </ImageryComponent>
+            <ImageryComponent>
+                <Area>
+                    <Dim type="TopEdge">
+                        <UnifiedDim scale=".5" type="Height"/>
+                    </Dim>
+                    <Dim type="BottomEdge">
+                        <OperatorDim op="Subtract">
+                            <UnifiedDim scale="1" type="Height"/>
+                            <ImageDim name="FOTDSkin/HorzScrollbarB" dimension="Height"/>
+                        </OperatorDim>
+                    </Dim>
+                    <Dim type="LeftEdge">
+                        <ImageDim name="FOTDSkin/ScrollLeftNormal" dimension="Width"/>
+                    </Dim>
+                    <Dim type="RightEdge">
+                        <OperatorDim op="Subtract">
+                            <UnifiedDim scale="1.0" type="RightEdge"/>
+                            <ImageDim name="FOTDSkin/ScrollRightNormal" dimension="Width"/>
+                        </OperatorDim>
+                    </Dim>
+                </Area>
+                <Image name="FOTDSkin/HorzScrollbarFill2"/>
+                <VertFormat type="Stretched"/>
+                <HorzFormat type="Stretched"/>
+            </ImageryComponent>
+            <ImageryComponent>
+                <Area>
+                    <Dim type="TopEdge">
+                        <ImageDim name="FOTDSkin/HorzScrollbarT" dimension="Height"/>
+                    </Dim>
+                    <Dim type="BottomEdge">
+                        <OperatorDim op="Subtract">
+                            <UnifiedDim scale="1" type="Height"/>
+                            <ImageDim name="FOTDSkin/HorzScrollbarB" dimension="Height"/>
+                        </OperatorDim>
+                    </Dim>
+                    <Dim type="LeftEdge">
+                        <ImageDim name="FOTDSkin/ScrollLeftNormal" dimension="Width"/>
+                    </Dim>
+                    <Dim type="RightEdge">
+                        <WidgetDim widget="__auto_thumb__" dimension="LeftEdge"/>
+                    </Dim>
+                </Area>
+                <Image name="FOTDSkin/HorzThumbShadowL"/>
+                <VertFormat type="Stretched"/>
+                <HorzFormat type="RightAligned"/>
+            </ImageryComponent>
+            <ImageryComponent>
+                <Area>
+                    <Dim type="TopEdge">
+                        <ImageDim name="FOTDSkin/HorzScrollbarT" dimension="Height"/>
+                    </Dim>
+                    <Dim type="BottomEdge">
+                        <OperatorDim op="Subtract">
+                            <UnifiedDim scale="1" type="Height"/>
+                            <ImageDim name="FOTDSkin/HorzScrollbarB" dimension="Height"/>
+                        </OperatorDim>
+                    </Dim>
+                    <Dim type="LeftEdge">
+                        <WidgetDim widget="__auto_thumb__" dimension="RightEdge"/>
+                    </Dim>
+                    <Dim type="RightEdge">
+                        <OperatorDim op="Subtract">
+                            <UnifiedDim scale="1.0" type="RightEdge"/>
+                            <ImageDim name="FOTDSkin/ScrollRightNormal" dimension="Width"/>
+                        </OperatorDim>
+                    </Dim>
+                </Area>
+                <Image name="FOTDSkin/HorzThumbShadowR"/>
+                <VertFormat type="Stretched"/>
+            </ImageryComponent>
+        </ImagerySection>
+        <StateImagery name="Enabled">
+            <Layer>
+                <Section section="main"/>
+            </Layer>
+        </StateImagery>
+        <StateImagery name="Disabled">
+            <Layer>
+                <Section section="main">
+                    <Colours topLeft="FF7F7F7F" bottomLeft="FF7F7F7F" topRight="FF7F7F7F" bottomRight="FF7F7F7F"/>
+                </Section>
+            </Layer>
+        </StateImagery>
+    </WidgetLook>
+    <WidgetLook name="FOTDSkin/VerticalScrollbarThumb">
+        <Property name="VertFree" value="true"/>
+        <Property name="MouseInputPropagationEnabled" value="true"/>
+        <Property name="Size" value="{{0, 32}, {0, 32}}" />
+        <ImagerySection name="normal">
+            <ImageryComponent>
+                <Area>
+                    <Dim type="RightEdge">
+                        <UnifiedDim scale=".5" type="Width"/>
+                    </Dim>
+                </Area>
+                <Image name="FOTDSkin/VertThumbNormalBL"/>
+                <VertFormat type="BottomAligned"/>
+                <HorzFormat type="Stretched"/>
+            </ImageryComponent>
+            <ImageryComponent>
+                <Area>
+                    <Dim type="LeftEdge">
+                        <UnifiedDim scale=".5" type="Width"/>
+                    </Dim>
+                </Area>
+                <Image name="FOTDSkin/VertThumbNormalBR"/>
+                <VertFormat type="BottomAligned"/>
+                <HorzFormat type="Stretched"/>
+            </ImageryComponent>
+            <ImageryComponent>
+                <Area>
+                    <Dim type="RightEdge">
+                        <UnifiedDim scale=".5" type="Width"/>
+                    </Dim>
+                </Area>
+                <Image name="FOTDSkin/VertThumbNormalTL"/>
+                <HorzFormat type="Stretched"/>
+            </ImageryComponent>
+            <ImageryComponent>
+                <Area>
+                    <Dim type="LeftEdge">
+                        <UnifiedDim scale=".5" type="Width"/>
+                    </Dim>
+                </Area>
+                <Image name="FOTDSkin/VertThumbNormalTR"/>
+                <HorzFormat type="Stretched"/>
+            </ImageryComponent>
+            <ImageryComponent>
+                <Area>
+                    <Dim type="TopEdge">
+                        <ImageDim name="FOTDSkin/VertThumbNormalTL" dimension="Height"/>
+                    </Dim>
+                    <Dim type="BottomEdge">
+                        <OperatorDim op="Subtract">
+                            <UnifiedDim scale="1" type="Height"/>
+                            <ImageDim name="FOTDSkin/VertThumbNormalBL" dimension="Height"/>
+                        </OperatorDim>
+                    </Dim>
+                    <Dim type="RightEdge">
+                        <UnifiedDim scale=".5" type="Width"/>
+                    </Dim>
+                </Area>
+                <Image name="FOTDSkin/VertThumbNormalL"/>
+                <VertFormat type="Stretched"/>
+                <HorzFormat type="Stretched"/>
+            </ImageryComponent>
+            <ImageryComponent>
+                <Area>
+                    <Dim type="TopEdge">
+                        <ImageDim name="FOTDSkin/VertThumbNormalTR" dimension="Height"/>
+                    </Dim>
+                    <Dim type="LeftEdge">
+                        <UnifiedDim scale=".5" type="Width"/>
+                    </Dim>
+                    <Dim type="BottomEdge">
+                        <OperatorDim op="Subtract">
+                            <UnifiedDim scale="1" type="Height"/>
+                            <ImageDim name="FOTDSkin/VertThumbNormalBR" dimension="Height"/>
+                        </OperatorDim>
+                    </Dim>
+                </Area>
+                <Image name="FOTDSkin/VertThumbNormalR"/>
+                <VertFormat type="Stretched"/>
+                <HorzFormat type="Stretched"/>
+            </ImageryComponent>
+        </ImagerySection>
+        <ImagerySection name="hover">
+            <ImageryComponent>
+                <Area>
+                    <Dim type="RightEdge">
+                        <UnifiedDim scale=".5" type="Width"/>
+                    </Dim>
+                </Area>
+                <Image name="FOTDSkin/VertThumbHoverBL"/>
+                <VertFormat type="BottomAligned"/>
+                <HorzFormat type="Stretched"/>
+            </ImageryComponent>
+            <ImageryComponent>
+                <Area>
+                    <Dim type="LeftEdge">
+                        <UnifiedDim scale=".5" type="Width"/>
+                    </Dim>
+                </Area>
+                <Image name="FOTDSkin/VertThumbHoverBR"/>
+                <VertFormat type="BottomAligned"/>
+                <HorzFormat type="Stretched"/>
+            </ImageryComponent>
+            <ImageryComponent>
+                <Area>
+                    <Dim type="RightEdge">
+                        <UnifiedDim scale=".5" type="Width"/>
+                    </Dim>
+                </Area>
+                <Image name="FOTDSkin/VertThumbHoverTL"/>
+                <HorzFormat type="Stretched"/>
+            </ImageryComponent>
+            <ImageryComponent>
+                <Area>
+                    <Dim type="LeftEdge">
+                        <UnifiedDim scale=".5" type="Width"/>
+                    </Dim>
+                </Area>
+                <Image name="FOTDSkin/VertThumbHoverTR"/>
+                <HorzFormat type="Stretched"/>
+            </ImageryComponent>
+            <ImageryComponent>
+                <Area>
+                    <Dim type="TopEdge">
+                        <ImageDim name="FOTDSkin/VertThumbHoverTL" dimension="Height"/>
+                    </Dim>
+                    <Dim type="BottomEdge">
+                        <OperatorDim op="Subtract">
+                            <UnifiedDim scale="1" type="Height"/>
+                            <ImageDim name="FOTDSkin/VertThumbHoverBL" dimension="Height"/>
+                        </OperatorDim>
+                    </Dim>
+                    <Dim type="RightEdge">
+                        <UnifiedDim scale=".5" type="Width"/>
+                    </Dim>
+                </Area>
+                <Image name="FOTDSkin/VertThumbHoverL"/>
+                <VertFormat type="Stretched"/>
+                <HorzFormat type="Stretched"/>
+            </ImageryComponent>
+            <ImageryComponent>
+                <Area>
+                    <Dim type="TopEdge">
+                        <ImageDim name="FOTDSkin/VertThumbHoverTR" dimension="Height"/>
+                    </Dim>
+                    <Dim type="LeftEdge">
+                        <UnifiedDim scale=".5" type="Width"/>
+                    </Dim>
+                    <Dim type="BottomEdge">
+                        <OperatorDim op="Subtract">
+                            <UnifiedDim scale="1" type="Height"/>
+                            <ImageDim name="FOTDSkin/VertThumbHoverBR" dimension="Height"/>
+                        </OperatorDim>
+                    </Dim>
+                </Area>
+                <Image name="FOTDSkin/VertThumbHoverR"/>
+                <VertFormat type="Stretched"/>
+                <HorzFormat type="Stretched"/>
+            </ImageryComponent>
+        </ImagerySection>
+        <ImagerySection name="pushed">
+            <ImageryComponent>
+                <Area>
+                    <Dim type="RightEdge">
+                        <UnifiedDim scale=".5" type="Width"/>
+                    </Dim>
+                </Area>
+                <Image name="FOTDSkin/VertThumbPushedBL"/>
+                <VertFormat type="BottomAligned"/>
+                <HorzFormat type="Stretched"/>
+            </ImageryComponent>
+            <ImageryComponent>
+                <Area>
+                    <Dim type="LeftEdge">
+                        <UnifiedDim scale=".5" type="Width"/>
+                    </Dim>
+                </Area>
+                <Image name="FOTDSkin/VertThumbPushedBR"/>
+                <VertFormat type="BottomAligned"/>
+                <HorzFormat type="Stretched"/>
+            </ImageryComponent>
+            <ImageryComponent>
+                <Area>
+                    <Dim type="RightEdge">
+                        <UnifiedDim scale=".5" type="Width"/>
+                    </Dim>
+                </Area>
+                <Image name="FOTDSkin/VertThumbPushedTL"/>
+                <HorzFormat type="Stretched"/>
+            </ImageryComponent>
+            <ImageryComponent>
+                <Area>
+                    <Dim type="LeftEdge">
+                        <UnifiedDim scale=".5" type="Width"/>
+                    </Dim>
+                </Area>
+                <Image name="FOTDSkin/VertThumbPushedTR"/>
+                <HorzFormat type="Stretched"/>
+            </ImageryComponent>
+            <ImageryComponent>
+                <Area>
+                    <Dim type="TopEdge">
+                        <ImageDim name="FOTDSkin/VertThumbPushedTL" dimension="Height"/>
+                    </Dim>
+                    <Dim type="BottomEdge">
+                        <OperatorDim op="Subtract">
+                            <UnifiedDim scale="1" type="Height"/>
+                            <ImageDim name="FOTDSkin/VertThumbPushedBL" dimension="Height"/>
+                        </OperatorDim>
+                    </Dim>
+                    <Dim type="RightEdge">
+                        <UnifiedDim scale=".5" type="Width"/>
+                    </Dim>
+                </Area>
+                <Image name="FOTDSkin/VertThumbPushedL"/>
+                <VertFormat type="Stretched"/>
+                <HorzFormat type="Stretched"/>
+            </ImageryComponent>
+            <ImageryComponent>
+                <Area>
+                    <Dim type="TopEdge">
+                        <ImageDim name="FOTDSkin/VertThumbPushedTR" dimension="Height"/>
+                    </Dim>
+                    <Dim type="LeftEdge">
+                        <UnifiedDim scale=".5" type="Width"/>
+                    </Dim>
+                    <Dim type="BottomEdge">
+                        <OperatorDim op="Subtract">
+                            <UnifiedDim scale="1" type="Height"/>
+                            <ImageDim name="FOTDSkin/VertThumbPushedBR" dimension="Height"/>
+                        </OperatorDim>
+                    </Dim>
+                </Area>
+                <Image name="FOTDSkin/VertThumbPushedR"/>
+                <VertFormat type="Stretched"/>
+                <HorzFormat type="Stretched"/>
+            </ImageryComponent>
+        </ImagerySection>
+        <StateImagery name="Normal">
+            <Layer>
+                <Section section="normal"/>
+            </Layer>
+        </StateImagery>
+        <StateImagery name="Hover">
+            <Layer>
+                <Section section="hover"/>
+            </Layer>
+        </StateImagery>
+        <StateImagery name="Pushed">
+            <Layer>
+                <Section section="pushed"/>
+            </Layer>
+        </StateImagery>
+        <StateImagery name="Disabled">
+            <Layer>
+                <Section section="normal">
+                    <Colours topLeft="FF7F7F7F" bottomLeft="FF7F7F7F" topRight="FF7F7F7F" bottomRight="FF7F7F7F"/>
+                </Section>
+            </Layer>
+        </StateImagery>
+    </WidgetLook>
+    <WidgetLook name="FOTDSkin/VerticalScrollbar">
+        <Property name="VerticalScrollbar" value="true"/>
+        <Property name="Size" value="{{0, 32}, {1, 0}}" />
+        <NamedArea name="ThumbTrackArea">
+            <Area>
+                <Dim type="LeftEdge">
+                    <ImageDim name="FOTDSkin/VertScrollbarL" dimension="Width"/>
+                </Dim>
+                <Dim type="RightEdge">
+                    <OperatorDim op="Subtract">
+                        <UnifiedDim scale="1" type="Width"/>
+                        <ImageDim name="FOTDSkin/VertScrollbarR" dimension="Width"/>
+                    </OperatorDim>
+                </Dim>
+                <Dim type="TopEdge">
+                    <ImageDim name="FOTDSkin/ScrollUpNormal" dimension="Height"/>
+                </Dim>
+                <Dim type="BottomEdge">
+                    <OperatorDim op="Subtract">
+                        <UnifiedDim scale="1.0" type="BottomEdge"/>
+                        <ImageDim name="FOTDSkin/ScrollDownNormal" dimension="Height"/>
+                    </OperatorDim>
+                </Dim>
+            </Area>
+        </NamedArea>
+        <Child nameSuffix="__auto_incbtn__" type="FOTDSkin/ImageButton">
+            <Area>
+                <Dim type="Height">
+                    <ImageDim name="FOTDSkin/ScrollDownNormal" dimension="Height"/>
+                </Dim>
+            </Area>
+            <VertAlignment type="BottomAligned"/>
+            <Property name="NormalImage" value="FOTDSkin/ScrollDownNormal"/>
+            <Property name="HoverImage" value="FOTDSkin/ScrollDownHover"/>
+            <Property name="PushedImage" value="FOTDSkin/ScrollDownPushed"/>
+        </Child>
+        <Child nameSuffix="__auto_decbtn__" type="FOTDSkin/ImageButton">
+            <Area>
+                <Dim type="Height">
+                    <ImageDim name="FOTDSkin/ScrollUpNormal" dimension="Height"/>
+                </Dim>
+            </Area>
+            <Property name="NormalImage" value="FOTDSkin/ScrollUpNormal"/>
+            <Property name="HoverImage" value="FOTDSkin/ScrollUpHover"/>
+            <Property name="PushedImage" value="FOTDSkin/ScrollUpNormal"/>
+        </Child>
+        <Child nameSuffix="__auto_thumb__" type="FOTDSkin/VerticalScrollbarThumb">
+            <Area>
+                <Dim type="LeftEdge">
+                    <ImageDim name="FOTDSkin/VertScrollbarL" dimension="Width"/>
+                </Dim>
+                <Dim type="RightEdge">
+                    <OperatorDim op="Subtract">
+                        <UnifiedDim scale="1" type="Width"/>
+                        <ImageDim name="FOTDSkin/VertScrollbarR" dimension="Width"/>
+                    </OperatorDim>
+                </Dim>
+                <Dim type="Height">
+                    <UnifiedDim scale="0.1" type="Height"/>
+                </Dim>
+            </Area>
+            <Property name="MinSize" value="{{0,0},{0,25}}"/>
+        </Child>
+        <ImagerySection name="main">
+            <FrameComponent>
+                <Area>
+                    <Dim type="TopEdge">
+                        <ImageDim name="FOTDSkin/ScrollUpNormal" dimension="Height"/>
+                    </Dim>
+                    <Dim type="BottomEdge">
+                        <OperatorDim op="Subtract">
+                            <UnifiedDim scale="1.0" type="BottomEdge"/>
+                            <ImageDim name="FOTDSkin/ScrollDownNormal" dimension="Height"/>
+                        </OperatorDim>
+                    </Dim>
+                </Area>
+                <Image component="LeftEdge" name="FOTDSkin/VertScrollbarL"/>
+                <Image component="RightEdge" name="FOTDSkin/VertScrollbarR"/>
+            </FrameComponent>
+            <ImageryComponent>
+                <Area>
+                    <Dim type="LeftEdge">
+                        <ImageDim name="FOTDSkin/VertScrollbarL" dimension="Width"/>
+                    </Dim>
+                    <Dim type="RightEdge">
+                        <UnifiedDim scale=".5" type="Width"/>
+                    </Dim>
+                    <Dim type="TopEdge">
+                        <ImageDim name="FOTDSkin/ScrollUpNormal" dimension="Height"/>
+                    </Dim>
+                    <Dim type="BottomEdge">
+                        <OperatorDim op="Subtract">
+                            <UnifiedDim scale="1.0" type="BottomEdge"/>
+                            <ImageDim name="FOTDSkin/ScrollDownNormal" dimension="Height"/>
+                        </OperatorDim>
+                    </Dim>
+                </Area>
+                <Image name="FOTDSkin/VertScrollbarFill1"/>
+                <VertFormat type="Stretched"/>
+                <HorzFormat type="Stretched"/>
+            </ImageryComponent>
+            <ImageryComponent>
+                <Area>
+                    <Dim type="LeftEdge">
+                        <UnifiedDim scale=".5" type="Width"/>
+                    </Dim>
+                    <Dim type="RightEdge">
+                        <OperatorDim op="Subtract">
+                            <UnifiedDim scale="1" type="Width"/>
+                            <ImageDim name="FOTDSkin/VertScrollbarR" dimension="Width"/>
+                        </OperatorDim>
+                    </Dim>
+                    <Dim type="TopEdge">
+                        <ImageDim name="FOTDSkin/ScrollUpNormal" dimension="Height"/>
+                    </Dim>
+                    <Dim type="BottomEdge">
+                        <OperatorDim op="Subtract">
+                            <UnifiedDim scale="1.0" type="BottomEdge"/>
+                            <ImageDim name="FOTDSkin/ScrollDownNormal" dimension="Height"/>
+                        </OperatorDim>
+                    </Dim>
+                </Area>
+                <Image name="FOTDSkin/VertScrollbarFill2"/>
+                <VertFormat type="Stretched"/>
+                <HorzFormat type="Stretched"/>
+            </ImageryComponent>
+            <ImageryComponent>
+                <Area>
+                    <Dim type="LeftEdge">
+                        <ImageDim name="FOTDSkin/VertScrollbarL" dimension="Width"/>
+                    </Dim>
+                    <Dim type="RightEdge">
+                        <OperatorDim op="Subtract">
+                            <UnifiedDim scale="1" type="Width"/>
+                            <ImageDim name="FOTDSkin/VertScrollbarR" dimension="Width"/>
+                        </OperatorDim>
+                    </Dim>
+                    <Dim type="TopEdge">
+                        <ImageDim name="FOTDSkin/ScrollUpNormal" dimension="Height"/>
+                    </Dim>
+                    <Dim type="BottomEdge">
+                        <WidgetDim widget="__auto_thumb__" dimension="TopEdge"/>
+                    </Dim>
+                </Area>
+                <Image name="FOTDSkin/VertThumbShadowT"/>
+                <VertFormat type="BottomAligned"/>
+                <HorzFormat type="Stretched"/>
+            </ImageryComponent>
+            <ImageryComponent>
+                <Area>
+                    <Dim type="LeftEdge">
+                        <ImageDim name="FOTDSkin/VertScrollbarL" dimension="Width"/>
+                    </Dim>
+                    <Dim type="RightEdge">
+                        <OperatorDim op="Subtract">
+                            <UnifiedDim scale="1" type="Width"/>
+                            <ImageDim name="FOTDSkin/VertScrollbarR" dimension="Width"/>
+                        </OperatorDim>
+                    </Dim>
+                    <Dim type="TopEdge">
+                        <WidgetDim widget="__auto_thumb__" dimension="BottomEdge"/>
+                    </Dim>
+                    <Dim type="BottomEdge">
+                        <OperatorDim op="Subtract">
+                            <UnifiedDim scale="1.0" type="BottomEdge"/>
+                            <ImageDim name="FOTDSkin/ScrollDownNormal" dimension="Height"/>
+                        </OperatorDim>
+                    </Dim>
+                </Area>
+                <Image name="FOTDSkin/VertThumbShadowB"/>
+                <HorzFormat type="Stretched"/>
+            </ImageryComponent>
+        </ImagerySection>
+        <StateImagery name="Enabled">
+            <Layer>
+                <Section section="main"/>
+            </Layer>
+        </StateImagery>
+        <StateImagery name="Disabled">
+            <Layer>
+                <Section section="main">
+                    <Colours topLeft="FF7F7F7F" bottomLeft="FF7F7F7F" topRight="FF7F7F7F" bottomRight="FF7F7F7F"/>
+                </Section>
+            </Layer>
+        </StateImagery>
+    </WidgetLook>
+    <WidgetLook name="FOTDSkin/MultiLineEditbox">
+        <PropertyDefinition redrawOnWrite="true" initialValue="FFFFFFFF" type="ColourRect" name="NormalTextColour"/>
+        <PropertyDefinition redrawOnWrite="true" initialValue="FF000000" type="ColourRect" name="SelectedTextColour"/>
+        <PropertyDefinition redrawOnWrite="true" initialValue="FFB6D142" type="ColourRect" name="ActiveSelectionColour"/>
+        <PropertyDefinition redrawOnWrite="true" initialValue="FF808080" type="ColourRect" name="InactiveSelectionColour"/>
+        <Property name="MouseCursorImage" value="FOTDSkin/MouseTextBar"/>
+        <Property name="SelectionBrushImage" value="FOTDSkin/GenericBrush"/>
+        <Property name="Size" value="{{0, 256}, {0, 256}}" />
+        <NamedArea name="TextArea">
+            <Area>
+                <Dim type="LeftEdge">
+                    <ImageDim name="FOTDSkin/EditboxL" dimension="Width"/>
+                </Dim>
+                <Dim type="TopEdge">
+                    <ImageDim name="FOTDSkin/EditboxT" dimension="Height"/>
+                </Dim>
+                <Dim type="RightEdge">
+                    <OperatorDim op="Subtract">
+                        <UnifiedDim scale="1" type="RightEdge"/>
+                        <ImageDim name="FOTDSkin/EditboxR" dimension="Width"/>
+                    </OperatorDim>
+                </Dim>
+                <Dim type="BottomEdge">
+                    <OperatorDim op="Subtract">
+                        <UnifiedDim scale="1" type="BottomEdge"/>
+                        <ImageDim name="FOTDSkin/EditboxB" dimension="Height"/>
+                    </OperatorDim>
+                </Dim>
+            </Area>
+        </NamedArea>
+        <NamedArea name="TextAreaHScroll">
+            <Area>
+                <Dim type="LeftEdge">
+                    <ImageDim name="FOTDSkin/EditboxL" dimension="Width"/>
+                </Dim>
+                <Dim type="TopEdge">
+                    <ImageDim name="FOTDSkin/EditboxT" dimension="Height"/>
+                </Dim>
+                <Dim type="RightEdge">
+                    <OperatorDim op="Subtract">
+                        <UnifiedDim scale="1" type="RightEdge"/>
+                        <ImageDim name="FOTDSkin/EditboxR" dimension="Width"/>
+                    </OperatorDim>
+                </Dim>
+                <Dim type="BottomEdge">
+                    <OperatorDim op="Subtract">
+                        <UnifiedDim scale="1" type="BottomEdge"/>
+                        <WidgetDim widget="__auto_hscrollbar__" dimension="Height"/>
+                    </OperatorDim>
+                </Dim>
+            </Area>
+        </NamedArea>
+        <NamedArea name="TextAreaVScroll">
+            <Area>
+                <Dim type="LeftEdge">
+                    <ImageDim name="FOTDSkin/EditboxL" dimension="Width"/>
+                </Dim>
+                <Dim type="TopEdge">
+                    <ImageDim name="FOTDSkin/EditboxT" dimension="Height"/>
+                </Dim>
+                <Dim type="RightEdge">
+                    <OperatorDim op="Subtract">
+                        <UnifiedDim scale="1" type="RightEdge"/>
+                        <WidgetDim widget="__auto_vscrollbar__" dimension="Width"/>
+                    </OperatorDim>
+                </Dim>
+                <Dim type="BottomEdge">
+                    <OperatorDim op="Subtract">
+                        <UnifiedDim scale="1" type="BottomEdge"/>
+                        <ImageDim name="FOTDSkin/EditboxB" dimension="Height"/>
+                    </OperatorDim>
+                </Dim>
+            </Area>
+        </NamedArea>
+        <NamedArea name="TextAreaHVScroll">
+            <Area>
+                <Dim type="LeftEdge">
+                    <ImageDim name="FOTDSkin/EditboxL" dimension="Width"/>
+                </Dim>
+                <Dim type="TopEdge">
+                    <ImageDim name="FOTDSkin/EditboxT" dimension="Height"/>
+                </Dim>
+                <Dim type="RightEdge">
+                    <OperatorDim op="Subtract">
+                        <UnifiedDim scale="1" type="RightEdge"/>
+                        <WidgetDim widget="__auto_vscrollbar__" dimension="Width"/>
+                    </OperatorDim>
+                </Dim>
+                <Dim type="BottomEdge">
+                    <OperatorDim op="Subtract">
+                        <UnifiedDim scale="1" type="BottomEdge"/>
+                        <WidgetDim widget="__auto_hscrollbar__" dimension="Height"/>
+                    </OperatorDim>
+                </Dim>
+            </Area>
+        </NamedArea>
+        <Child nameSuffix="__auto_hscrollbar__" type="FOTDSkin/HorizontalScrollbar">
+            <Area>
+                <Dim type="Width">
+                    <UnifiedDim scale="1" type="Width" offset="-15"/>
+                </Dim>
+                <Dim type="Height">
+                    <AbsoluteDim value="15"/>
+                </Dim>
+            </Area>
+            <VertAlignment type="BottomAligned"/>
+        </Child>
+        <Child nameSuffix="__auto_vscrollbar__" type="FOTDSkin/VerticalScrollbar">
+            <Area>
+                <Dim type="Width">
+                    <AbsoluteDim value="15"/>
+                </Dim>
+                <Dim type="Height">
+                    <UnifiedDim scale="1" type="Height" offset="-15"/>
+                </Dim>
+            </Area>
+            <HorzAlignment type="RightAligned"/>
+        </Child>
+        <ImagerySection name="main">
+            <FrameComponent>
+                <Image component="TopLeftCorner" name="FOTDSkin/EditboxTL"/>
+                <Image component="TopRightCorner" name="FOTDSkin/EditboxTR"/>
+                <Image component="BottomLeftCorner" name="FOTDSkin/EditboxBL"/>
+                <Image component="BottomRightCorner" name="FOTDSkin/EditboxBR"/>
+                <Image component="LeftEdge" name="FOTDSkin/EditboxL"/>
+                <Image component="RightEdge" name="FOTDSkin/EditboxR"/>
+                <Image component="TopEdge" name="FOTDSkin/EditboxT"/>
+                <Image component="BottomEdge" name="FOTDSkin/EditboxB"/>
+                <Image component="Background" name="FOTDSkin/EditboxFill"/>
+            </FrameComponent>
+        </ImagerySection>
+        <ImagerySection name="Caret">
+            <ImageryComponent>
+                <Area>
+                    <Dim type="Width">
+                        <AbsoluteDim value="2"/>
+                    </Dim>
+                </Area>
+                <Image name="FOTDSkin/GenericBrush"/>
+                <VertFormat type="Stretched"/>
+                <HorzFormat type="Stretched"/>
+            </ImageryComponent>
+        </ImagerySection>
+        <StateImagery name="Enabled">
+            <Layer>
+                <Section section="main"/>
+            </Layer>
+        </StateImagery>
+        <StateImagery name="ReadOnly">
+            <Layer>
+                <Section section="main"/>
+            </Layer>
+        </StateImagery>
+        <StateImagery name="Disabled">
+            <Layer>
+                <Section section="main">
+                    <Colours topLeft="FF7F7F7F" bottomLeft="FF7F7F7F" topRight="FF7F7F7F" bottomRight="FF7F7F7F"/>
+                </Section>
+            </Layer>
+        </StateImagery>
+    </WidgetLook>
+    <WidgetLook name="FOTDSkin/ProgressBar">
+        <Property name="CurrentProgress" value=".01"/>
+        <Property name="Size" value="{{0, 256}, {0, 32}}" />
+        <NamedArea name="ProgressArea"/>
+        <ImagerySection name="progress_empty">
+            <FrameComponent>
+                <Image component="TopLeftCorner" name="FOTDSkin/ProgressEmptyTL"/>
+                <Image component="TopRightCorner" name="FOTDSkin/ProgressEmptyTR"/>
+                <Image component="BottomLeftCorner" name="FOTDSkin/ProgressEmptyBL"/>
+                <Image component="BottomRightCorner" name="FOTDSkin/ProgressEmptyBR"/>
+                <Image component="LeftEdge" name="FOTDSkin/ProgressEmptyL"/>
+                <Image component="RightEdge" name="FOTDSkin/ProgressEmptyR"/>
+                <Image component="TopEdge" name="FOTDSkin/ProgressEmptyT"/>
+                <Image component="BottomEdge" name="FOTDSkin/ProgressEmptyB"/>
+                <Image component="Background" name="FOTDSkin/ProgressEmptyFill"/>
+            </FrameComponent>
+        </ImagerySection>
+        <ImagerySection name="progress_full">
+            <FrameComponent>
+                <Image component="TopLeftCorner" name="FOTDSkin/ProgressFullTL"/>
+                <Image component="TopRightCorner" name="FOTDSkin/ProgressFullTR"/>
+                <Image component="BottomLeftCorner" name="FOTDSkin/ProgressFullBL"/>
+                <Image component="BottomRightCorner" name="FOTDSkin/ProgressFullBR"/>
+                <Image component="LeftEdge" name="FOTDSkin/ProgressFullL"/>
+                <Image component="RightEdge" name="FOTDSkin/ProgressFullR"/>
+                <Image component="TopEdge" name="FOTDSkin/ProgressFullT"/>
+                <Image component="BottomEdge" name="FOTDSkin/ProgressFullB"/>
+                <Image component="Background" name="FOTDSkin/ProgressFullFill"/>
+            </FrameComponent>
+        </ImagerySection>
+        <ImagerySection name="progress_shadow">
+            <ImageryComponent>
+                <Area>
+                    <Dim type="LeftEdge">
+                        <OperatorDim op="Multiply">
+                            <UnifiedDim scale="1" type="Width"/>
+                            <PropertyDim name="CurrentProgress"/>
+                        </OperatorDim>
+                    </Dim>
+                    <Dim type="RightEdge">
+                        <OperatorDim op="Subtract">
+                            <UnifiedDim scale="1" type="Width"/>
+                            <AbsoluteDim value="5"/>
+                        </OperatorDim>
+                    </Dim>
+                </Area>
+                <Image name="FOTDSkin/ProgressShadow"/>
+                <VertFormat type="Stretched"/>
+            </ImageryComponent>
+        </ImagerySection>
+        <StateImagery name="Enabled">
+            <Layer>
+                <Section section="progress_empty"/>
+                <Section section="progress_shadow"/>
+            </Layer>
+        </StateImagery>
+        <StateImagery name="Disabled">
+            <Layer>
+                <Section section="progress_empty">
+                    <Colours topLeft="FF7F7F7F" bottomLeft="FF7F7F7F" topRight="FF7F7F7F" bottomRight="FF7F7F7F"/>
+                </Section>
+            </Layer>
+        </StateImagery>
+        <StateImagery name="EnabledProgress">
+            <Layer>
+                <Section section="progress_full"/>
+            </Layer>
+        </StateImagery>
+        <StateImagery name="DisabledProgress">
+            <Layer>
+                <Section section="progress_full">
+                    <Colours topLeft="FF7F7F7F" bottomLeft="FF7F7F7F" topRight="FF7F7F7F" bottomRight="FF7F7F7F"/>
+                </Section>
+            </Layer>
+        </StateImagery>
+    </WidgetLook>
+    <WidgetLook name="FOTDSkin/HorizontalSliderThumb">
+        <Property name="HorzFree" value="true"/>
+        <Property name="MouseInputPropagationEnabled" value="true"/>
+        <Property name="Size" value="{{0, 32}, {0, 32}}" />
+        <ImagerySection name="normal">
+            <ImageryComponent>
+                <Image name="FOTDSkin/HorzSliderThumbNormal"/>
+                <VertFormat type="Stretched"/>
+                <HorzFormat type="Stretched"/>
+            </ImageryComponent>
+        </ImagerySection>
+        <ImagerySection name="hover">
+            <ImageryComponent>
+                <Image name="FOTDSkin/HorzSliderThumbHover"/>
+                <VertFormat type="Stretched"/>
+                <HorzFormat type="Stretched"/>
+            </ImageryComponent>
+        </ImagerySection>
+        <ImagerySection name="pushed">
+            <ImageryComponent>
+                <Image name="FOTDSkin/HorzSliderThumbPushed"/>
+                <VertFormat type="Stretched"/>
+                <HorzFormat type="Stretched"/>
+            </ImageryComponent>
+        </ImagerySection>
+        <StateImagery name="Normal">
+            <Layer>
+                <Section section="normal"/>
+            </Layer>
+        </StateImagery>
+        <StateImagery name="Hover">
+            <Layer>
+                <Section section="hover"/>
+            </Layer>
+        </StateImagery>
+        <StateImagery name="Pushed">
+            <Layer>
+                <Section section="pushed"/>
+            </Layer>
+        </StateImagery>
+        <StateImagery name="Disabled">
+            <Layer>
+                <Section section="normal">
+                    <Colours topLeft="FF7F7F7F" bottomLeft="FF7F7F7F" topRight="FF7F7F7F" bottomRight="FF7F7F7F"/>
+                </Section>
+            </Layer>
+        </StateImagery>
+    </WidgetLook>
+    <WidgetLook name="FOTDSkin/HorizontalSlider">
+        <Property name="MouseAutoRepeatEnabled" value="true"/>
+        <Property name="WantsMultiClickEvents" value="false"/>
+        <Property name="Size" value="{{0, 256}, {0, 32}}" />
+        <NamedArea name="ThumbTrackArea"/>
+        <Child nameSuffix="__auto_thumb__" type="FOTDSkin/HorizontalSliderThumb">
+            <Area>
+                <Dim type="LeftEdge">
+                    <AbsoluteDim value="0"/>
+                </Dim>
+                <Dim type="TopEdge">
+                    <AbsoluteDim value="0"/>
+                </Dim>
+                <Dim type="Width">
+                    <ImageDim name="FOTDSkin/HorzSliderThumbNormal" dimension="Width"/>
+                </Dim>
+                <Dim type="Height">
+                    <ImageDim name="FOTDSkin/HorzSliderThumbNormal" dimension="Height"/>
+                </Dim>
+            </Area>
+            <VertAlignment type="CentreAligned"/>
+        </Child>
+        <ImagerySection name="track">
+            <ImageryComponent>
+                <Image name="FOTDSkin/HorzSliderTrackL"/>
+                <VertFormat type="CentreAligned"/>
+            </ImageryComponent>
+            <ImageryComponent>
+                <Image name="FOTDSkin/HorzSliderTrackR"/>
+                <VertFormat type="CentreAligned"/>
+                <HorzFormat type="RightAligned"/>
+            </ImageryComponent>
+            <ImageryComponent>
+                <Area>
+                    <Dim type="LeftEdge">
+                        <ImageDim name="FOTDSkin/HorzSliderTrackL" dimension="Width"/>
+                    </Dim>
+                    <Dim type="RightEdge">
+                        <OperatorDim op="Subtract">
+                            <UnifiedDim scale="1" type="Width"/>
+                            <ImageDim name="FOTDSkin/HorzSliderTrackR" dimension="Width"/>
+                        </OperatorDim>
+                    </Dim>
+                </Area>
+                <Image name="FOTDSkin/HorzSliderTrackFill"/>
+                <VertFormat type="CentreAligned"/>
+                <HorzFormat type="Stretched"/>
+            </ImageryComponent>
+            <ImageryComponent>
+                <Area>
+                    <Dim type="RightEdge">
+                        <WidgetDim widget="__auto_thumb__" dimension="LeftEdge"/>
+                    </Dim>
+                </Area>
+                <Image name="FOTDSkin/HorzSliderShadowL"/>
+                <VertFormat type="CentreAligned"/>
+                <HorzFormat type="RightAligned"/>
+            </ImageryComponent>
+            <ImageryComponent>
+                <Area>
+                    <Dim type="LeftEdge">
+                        <WidgetDim widget="__auto_thumb__" dimension="RightEdge"/>
+                    </Dim>
+                </Area>
+                <Image name="FOTDSkin/HorzSliderShadowR"/>
+                <VertFormat type="CentreAligned"/>
+            </ImageryComponent>
+        </ImagerySection>
+        <StateImagery name="Enabled">
+            <Layer>
+                <Section section="track"/>
+            </Layer>
+        </StateImagery>
+        <StateImagery name="Disabled">
+            <Layer>
+                <Section section="track"/>
+            </Layer>
+        </StateImagery>
+    </WidgetLook>
+    <WidgetLook name="FOTDSkin/VerticalSliderThumb">
+        <Property name="VertFree" value="true"/>
+        <Property name="MouseInputPropagationEnabled" value="true"/>
+        <Property name="Size" value="{{0, 32}, {0, 32}}" />
+        <ImagerySection name="normal">
+            <ImageryComponent>
+                <Image name="FOTDSkin/VertSliderThumbNormal"/>
+                <VertFormat type="Stretched"/>
+                <HorzFormat type="Stretched"/>
+            </ImageryComponent>
+        </ImagerySection>
+        <ImagerySection name="hover">
+            <ImageryComponent>
+                <Image name="FOTDSkin/VertSliderThumbHover"/>
+                <VertFormat type="Stretched"/>
+                <HorzFormat type="Stretched"/>
+            </ImageryComponent>
+        </ImagerySection>
+        <ImagerySection name="pushed">
+            <ImageryComponent>
+                <Image name="FOTDSkin/VertSliderThumbPushed"/>
+                <VertFormat type="Stretched"/>
+                <HorzFormat type="Stretched"/>
+            </ImageryComponent>
+        </ImagerySection>
+        <StateImagery name="Normal">
+            <Layer>
+                <Section section="normal"/>
+            </Layer>
+        </StateImagery>
+        <StateImagery name="Hover">
+            <Layer>
+                <Section section="hover"/>
+            </Layer>
+        </StateImagery>
+        <StateImagery name="Pushed">
+            <Layer>
+                <Section section="pushed"/>
+            </Layer>
+        </StateImagery>
+        <StateImagery name="Disabled">
+            <Layer>
+                <Section section="normal">
+                    <Colours topLeft="FF7F7F7F" bottomLeft="FF7F7F7F" topRight="FF7F7F7F" bottomRight="FF7F7F7F"/>
+                </Section>
+            </Layer>
+        </StateImagery>
+    </WidgetLook>
+    <WidgetLook name="FOTDSkin/VerticalSlider">
+        <Property name="VerticalSlider" value="true"/>
+        <Property name="MouseAutoRepeatEnabled" value="true"/>
+        <Property name="WantsMultiClickEvents" value="false"/>
+        <Property name="Size" value="{{0, 32}, {0, 256}}" />
+        <NamedArea name="ThumbTrackArea"/>
+        <Child nameSuffix="__auto_thumb__" type="FOTDSkin/VerticalSliderThumb">
+            <Area>
+                <Dim type="LeftEdge">
+                    <AbsoluteDim value="0"/>
+                </Dim>
+                <Dim type="TopEdge">
+                    <AbsoluteDim value="0"/>
+                </Dim>
+                <Dim type="Width">
+                    <ImageDim name="FOTDSkin/VertSliderThumbNormal" dimension="Width"/>
+                </Dim>
+                <Dim type="Height">
+                    <ImageDim name="FOTDSkin/VertSliderThumbNormal" dimension="Height"/>
+                </Dim>
+            </Area>
+            <HorzAlignment type="CentreAligned"/>
+        </Child>
+        <ImagerySection name="track">
+            <ImageryComponent>
+                <Image name="FOTDSkin/VertSliderTrackT"/>
+                <HorzFormat type="CentreAligned"/>
+            </ImageryComponent>
+            <ImageryComponent>
+                <Image name="FOTDSkin/VertSliderTrackB"/>
+                <VertFormat type="BottomAligned"/>
+                <HorzFormat type="CentreAligned"/>
+            </ImageryComponent>
+            <ImageryComponent>
+                <Area>
+                    <Dim type="TopEdge">
+                        <ImageDim name="FOTDSkin/VertSliderTrackT" dimension="Height"/>
+                    </Dim>
+                    <Dim type="BottomEdge">
+                        <OperatorDim op="Subtract">
+                            <UnifiedDim scale="1" type="Height"/>
+                            <ImageDim name="FOTDSkin/VertSliderTrackB" dimension="Height"/>
+                        </OperatorDim>
+                    </Dim>
+                </Area>
+                <Image name="FOTDSkin/VertSliderTrackFill"/>
+                <VertFormat type="Stretched"/>
+                <HorzFormat type="CentreAligned"/>
+            </ImageryComponent>
+            <ImageryComponent>
+                <Area>
+                    <Dim type="BottomEdge">
+                        <WidgetDim widget="__auto_thumb__" dimension="TopEdge"/>
+                    </Dim>
+                </Area>
+                <Image name="FOTDSkin/VertSliderShadowT"/>
+                <VertFormat type="BottomAligned"/>
+                <HorzFormat type="CentreAligned"/>
+            </ImageryComponent>
+            <ImageryComponent>
+                <Area>
+                    <Dim type="TopEdge">
+                        <WidgetDim widget="__auto_thumb__" dimension="BottomEdge"/>
+                    </Dim>
+                </Area>
+                <Image name="FOTDSkin/VertSliderShadowB"/>
+                <HorzFormat type="CentreAligned"/>
+            </ImageryComponent>
+        </ImagerySection>
+        <StateImagery name="Enabled">
+            <Layer>
+                <Section section="track"/>
+            </Layer>
+        </StateImagery>
+        <StateImagery name="Disabled">
+            <Layer>
+                <Section section="track"/>
+            </Layer>
+        </StateImagery>
+    </WidgetLook>
+    <WidgetLook name="FOTDSkin/MenuItem">
+        <PropertyDefinition redrawOnWrite="true" initialValue="FFFFFFFF" type="ColourRect" name="LabelTextColour"/>
+        <Property name="WantsMultiClickEvents" value="false"/>
+        <Property name="Size" value="{{0, 128}, {0, 32}}" />
+        <NamedArea name="ContentSize">
+            <Area>
+                <Dim type="Width">
+                    <FontDim type="HorzExtent"/>
+                </Dim>
+                <Dim type="Height">
+                    <FontDim type="LineSpacing"/>
+                </Dim>
+            </Area>
+        </NamedArea>
+        <NamedArea name="HasPopupContentSize">
+            <Area>
+                <Dim type="Width">
+                    <FontDim type="HorzExtent"/>
+                </Dim>
+                <Dim type="Height">
+                    <FontDim type="LineSpacing"/>
+                </Dim>
+            </Area>
+        </NamedArea>
+        <ImagerySection name="label">
+            <TextComponent>
+                <VertFormat type="CentreAligned"/>
+                <HorzFormat type="LeftAligned"/>
+            </TextComponent>
+        </ImagerySection>
+        <ImagerySection name="frame">
+    </ImagerySection>
+        <ImagerySection name="popup_arrow">
+    </ImagerySection>
+        <StateImagery name="EnabledNormal">
+            <Layer>
+                <Section section="label">
+                    <ColourProperty name="LabelTextColour"/>
+                </Section>
+            </Layer>
+        </StateImagery>
+        <StateImagery name="EnabledHover">
+            <Layer>
+                <Section section="frame"/>
+                <Section section="label">
+                    <ColourProperty name="LabelTextColour"/>
+                </Section>
+            </Layer>
+        </StateImagery>
+        <StateImagery name="EnabledPushed">
+            <Layer>
+                <Section section="frame"/>
+                <Section section="label">
+                    <ColourProperty name="LabelTextColour"/>
+                </Section>
+            </Layer>
+        </StateImagery>
+        <StateImagery name="EnabledPopupOpen">
+            <Layer>
+                <Section section="frame"/>
+                <Section section="label">
+                    <ColourProperty name="LabelTextColour"/>
+                </Section>
+            </Layer>
+        </StateImagery>
+        <StateImagery name="DisabledNormal">
+            <Layer>
+                <Section section="label">
+                    <ColourProperty name="LabelTextColour"/>
+                </Section>
+            </Layer>
+        </StateImagery>
+        <StateImagery name="DisabledHover">
+            <Layer>
+                <Section section="frame"/>
+                <Section section="label">
+                    <ColourProperty name="LabelTextColour"/>
+                </Section>
+            </Layer>
+        </StateImagery>
+        <StateImagery name="DisabledPushed">
+            <Layer>
+                <Section section="frame"/>
+                <Section section="label">
+                    <ColourProperty name="LabelTextColour"/>
+                </Section>
+            </Layer>
+        </StateImagery>
+        <StateImagery name="DisabledPopupOpen">
+            <Layer>
+                <Section section="frame"/>
+                <Section section="label">
+                    <ColourProperty name="LabelTextColour"/>
+                </Section>
+            </Layer>
+        </StateImagery>
+        <StateImagery name="PopupClosedIcon">
+            <Layer>
+                <Section section="popup_arrow"/>
+            </Layer>
+        </StateImagery>
+        <StateImagery name="PopupOpenIcon">
+            <Layer>
+                <Section section="popup_arrow"/>
+            </Layer>
+        </StateImagery>
+    </WidgetLook>
+</Falagard>

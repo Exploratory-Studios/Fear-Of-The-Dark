@@ -68,7 +68,7 @@ void StartupScreen::onEntry() {
     initShaders();
 
     m_spriteBatch.init();
-    m_spriteFont.init("Assets/GUI/fonts/QuietHorror.ttf", 96);
+    m_spriteFont.init("../Assets/GUI/fonts/QuietHorror.ttf", 96);
 
     m_camera.init(m_window->getScreenWidth(), m_window->getScreenHeight());
     m_camera.setPosition(glm::vec2(m_window->getScreenWidth() / 2.0f, m_window->getScreenHeight() / 2.0f));
@@ -137,7 +137,7 @@ void StartupScreen::draw() {
 /// StartupScreen PRIVATE FUNCTIONS
 
 void StartupScreen::initShaders() {
-    m_textureProgram.compileShaders("Assets/Shaders/textureShading.vert", "Assets/Shaders/textureShading.frag");
+    m_textureProgram.compileShaders("../Assets/Shaders/textureShading.vert", "../Assets/Shaders/textureShading.frag");
     m_textureProgram.addAttribute("vertexPosition");
     m_textureProgram.addAttribute("vertexColour");
     m_textureProgram.addAttribute("vertexUV");
@@ -151,10 +151,10 @@ void StartupScreen::initUI() {
 void StartupScreen::initAnimations() {
 
     {
-        m_textAnimations.emplace_back(glm::vec2(m_window->getScreenWidth() / 2.0, m_window->getScreenHeight() * 0.75), 2.0f, 6.0f, 3.0f, GLEngine::ColourRGBA8(255.0f, 255.0f, 255.0f, 255.0f), "An experience bY", glm::vec2(1.0f, 1.0f), SPLASHSCREEN_STUDIO);
-        m_textAnimations.emplace_back(glm::vec2(m_window->getScreenWidth() / 2.0, m_window->getScreenHeight() * 0.05), 6.0f, 10.0f, 3.0f, GLEngine::ColourRGBA8(255.0f, 255.0f, 255.0f, 255.0f), "ExploratorY Studios", glm::vec2(1.25f, 1.25f), SPLASHSCREEN_STUDIO);
+        m_textAnimations.emplace_back(glm::vec2(m_window->getScreenWidth() / 2.0, m_window->getScreenHeight() * 0.75), 2.0f, 6.0f, 3.0f, GLEngine::ColourRGBA8(255.0f, 255.0f, 255.0f, 255.0f), "An experience by", glm::vec2(1.0f, 1.0f), SPLASHSCREEN_STUDIO);
+        m_textAnimations.emplace_back(glm::vec2(m_window->getScreenWidth() / 2.0, m_window->getScreenHeight() * 0.05), 6.0f, 10.0f, 3.0f, GLEngine::ColourRGBA8(255.0f, 255.0f, 255.0f, 255.0f), "Exploratory Studios", glm::vec2(1.25f, 1.25f), SPLASHSCREEN_STUDIO);
 
-        m_imageAnimations.emplace_back(glm::vec2(m_window->getScreenWidth() * 0.5f, m_window->getScreenHeight() * 0.5f), 2.0f, 10.0f, 3.0f, GLEngine::ColourRGBA8(200.0f, 200.0f, 200.0f, 255.0f), "Assets/Textures/StartupScreens/Studio/Logo.png", glm::vec2(200.0f, 200.0f), SPLASHSCREEN_STUDIO);
+        m_imageAnimations.emplace_back(glm::vec2(m_window->getScreenWidth() * 0.5f, m_window->getScreenHeight() * 0.5f), 2.0f, 10.0f, 3.0f, GLEngine::ColourRGBA8(200.0f, 200.0f, 200.0f, 255.0f), "../Assets/Textures/StartupScreens/Studio/Logo.png", glm::vec2(200.0f, 200.0f), SPLASHSCREEN_STUDIO);
     }
 
     {

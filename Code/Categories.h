@@ -37,13 +37,13 @@ class Place {
 
 namespace Category_Data {
 
-    const Place placeData[Categories::TOTAL_PLACES+1] = {Place(10, 22, 50, 6.5),   // CANADA
-                                                         Place(20, 22, 50, 6.5),   // ARCTIC
-                                                         Place(20, 22, 50, 3.5),   // AUSTRALIA
-                                                         Place(20, 22, 50, 3.5),   // USA
-                                                         Place(50, 22, 50, 6.5),   // RUSSIA
-                                                         Place(20, 22, 50, 6.5),   // N_AFRCA
-                                                         Place(20, 22, 50, 3.5),   // S_AFRCA
-                                                         Place(20, 22, 50, 3.5)};  // ASIA
+    const Place placeData[Categories::TOTAL_PLACES+1] = {Place(10, -60, 10, 7.5),
+                                                         Place(20, -45, 20, 4.3),
+                                                         Place(20, -30, 45, 1.5),
+                                                         Place(20, -15, 70, 6.2),
+                                                         Place(50, 15, 100, 1.75),
+                                                         Place(20, 30, 80, 8.5),
+                                                         Place(20, 45, 60, 0.5),
+                                                         Place(20, 60, 40, 7.6)};
 
 };

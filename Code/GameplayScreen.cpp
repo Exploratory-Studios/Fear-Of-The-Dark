@@ -30,7 +30,7 @@ void GameplayScreen::onEntry() {
     initShaders();
 
     m_spriteBatch.init();
-    m_spriteFont.init("Assets/GUI/fonts/QuietHorror.ttf", 96);
+    m_spriteFont.init("../Assets/GUI/fonts/QuietHorror.ttf", 96);
 
     m_camera.init(m_window->getScreenWidth(), m_window->getScreenHeight());
     m_camera.setPosition(m_camera.getPosition() + (glm::vec2(m_window->getScreenWidth() / 2, m_window->getScreenHeight() / 2)));
@@ -110,7 +110,7 @@ void GameplayScreen::checkInput() {
 }
 
 void GameplayScreen::initShaders() {
-    m_textureProgram.compileShaders("Assets/Shaders/textureShading.vert", "Assets/Shaders/textureShading.frag");
+    m_textureProgram.compileShaders("../Assets/Shaders/textureShading.vert", "../Assets/Shaders/textureShading.frag");
     m_textureProgram.addAttribute("vertexPosition");
     m_textureProgram.addAttribute("vertexColour");
     m_textureProgram.addAttribute("vertexUV");
@@ -119,7 +119,7 @@ void GameplayScreen::initShaders() {
 
 void GameplayScreen::initUI() {
     {
-        m_gui.init("Assets/GUI");
+        m_gui.init("../Assets/GUI");
         m_gui.loadScheme("FOTDSkin.scheme");
         m_gui.setFont("QuietHorror-22");
 

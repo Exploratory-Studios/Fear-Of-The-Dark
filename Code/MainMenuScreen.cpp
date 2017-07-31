@@ -32,7 +32,7 @@ void MainMenuScreen::onEntry() {
     initShaders();
 
     m_spriteBatch.init();
-    m_spriteFont.init("Assets/GUI/fonts/QuietHorror.ttf", 96);
+    m_spriteFont.init("../Assets/GUI/fonts/QuietHorror.ttf", 96);
 
     m_uiCamera.init(m_window->getScreenWidth(), m_window->getScreenHeight());
     m_uiCamera.setPosition(glm::vec2(m_window->getScreenWidth() / 2.0f, m_window->getScreenHeight() / 2.0f));
@@ -48,7 +48,7 @@ void MainMenuScreen::onEntry() {
 }
 
 void addBackgroundImage(std::vector<GLEngine::GLTexture>& backgroundImages, std::string filename) {
-    backgroundImages.emplace_back(GLEngine::ResourceManager::getTexture("Assets/Textures/MainMenuBackgrounds/" + filename));
+    backgroundImages.emplace_back(GLEngine::ResourceManager::getTexture("../Assets/Textures/MainMenuBackgrounds/" + filename));
 }
 
 void MainMenuScreen::onExit() {
@@ -145,7 +145,7 @@ void MainMenuScreen::draw() {
 
 void MainMenuScreen::initUI() {
     {
-        m_gui.init("Assets/GUI");
+        m_gui.init("../Assets/GUI");
         m_gui.loadScheme("VanillaSkin.scheme");
         m_gui.loadScheme("FOTDSkin.scheme");
 
@@ -184,7 +184,7 @@ void MainMenuScreen::initUI() {
 }
 
 void MainMenuScreen::initShaders() {
-    m_textureProgram.compileShaders("Assets/Shaders/textureShading.vert", "Assets/Shaders/textureShading.frag");
+    m_textureProgram.compileShaders("../Assets/Shaders/textureShading.vert", "../Assets/Shaders/textureShading.frag");
     m_textureProgram.addAttribute("vertexPosition");
     m_textureProgram.addAttribute("vertexColour");
     m_textureProgram.addAttribute("vertexUV");

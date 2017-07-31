@@ -8,14 +8,6 @@ void WorldManager::saveWorld(const World& world, std::string worldName) {
 
 }
 
-
-
-
-#include <iostream>
-
-
-
-
 void WorldManager::createWorld(unsigned int seed, std::string worldName) {
 
     // Set the real-world models of each chunk (randomly)

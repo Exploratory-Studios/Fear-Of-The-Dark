@@ -1,7 +1,7 @@
 #pragma once
 
 #define WORLD_HEIGHT 512
-#define CHUNK_SIZE 16
+#define CHUNK_SIZE 512
 
 #include <vector>
 #include <SpriteBatch.h>

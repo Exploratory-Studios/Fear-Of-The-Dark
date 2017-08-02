@@ -5,7 +5,11 @@
 #include <SpriteBatch.h>
 #include <glm/glm.hpp>
 
+<<<<<<< HEAD
+#define TILE_SIZE 4 /// This sets how big each square on the tile grid is
+=======
 #define TILE_SIZE 2 /// This sets how big each square on the tile grid is
+>>>>>>> 98b8385241da9920f404ce8b5264336ac8b85c16
 
 class Tile
 {

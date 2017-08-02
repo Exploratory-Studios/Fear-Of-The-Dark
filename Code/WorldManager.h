@@ -1,6 +1,10 @@
 #pragma once
 
+<<<<<<< HEAD
+#define WORLD_SIZE 8
+=======
 #define WORLD_SIZE 10
+>>>>>>> 98b8385241da9920f404ce8b5264336ac8b85c16
 
 #include <string>
 #include <vector>

@@ -8,6 +8,14 @@ void WorldManager::saveWorld(const World& world, std::string worldName) {
 
 }
 
+<<<<<<< HEAD
+
+
+#include <iostream>
+
+
+=======
+>>>>>>> 98b8385241da9920f404ce8b5264336ac8b85c16
 void WorldManager::createWorld(unsigned int seed, std::string worldName) {
 
     // Set the real-world models of each chunk (randomly)
@@ -42,6 +50,32 @@ void WorldManager::createWorld(unsigned int seed, std::string worldName) {
             extra *= Category_Data::placeData[(int)m_world->chunks[i].getPlace()].maxHeightDiff;
             //extra /= Category_Data::placeData[(int)m_world->chunks[i].getPlace()].flatness;
 
+<<<<<<< HEAD
+            float height = std::floor(Category_Data::placeData[(int)m_world->chunks[i].getPlace()].baseHeight + extra);
+
+            blockHeights[i * CHUNK_SIZE + j] = height;
+        }
+    }
+
+    for(int i = 0; i < WORLD_SIZE; i++) {
+        for(int j = 0; j < CHUNK_SIZE; j++) {
+
+            const float SMOOTHED_PORTION_D = 4;
+            const float SMOOTHED_PORTION = (SMOOTHED_PORTION_D - 1.0f) / SMOOTHED_PORTION_D;
+
+            if(i+1 < WORLD_SIZE && j > CHUNK_SIZE * SMOOTHED_PORTION) {
+                float smoother = 0.0f;
+                float a = blockHeights[i * CHUNK_SIZE + CHUNK_SIZE * SMOOTHED_PORTION];
+                float b = blockHeights[(i + 1) * CHUNK_SIZE + 1];
+
+                smoother = a - b;
+
+                float multiplier = ((float)j - (float)CHUNK_SIZE * SMOOTHED_PORTION) / ((float)CHUNK_SIZE / SMOOTHED_PORTION_D);
+
+                smoother *= -multiplier;
+                blockHeights[i * CHUNK_SIZE + j] = smoother + blockHeights[i * CHUNK_SIZE + CHUNK_SIZE * SMOOTHED_PORTION];
+            }
+=======
             float smoother = 0;
             if(i+1 < WORLD_SIZE && j > CHUNK_SIZE +1 ) {
 
@@ -56,6 +90,7 @@ void WorldManager::createWorld(unsigned int seed, std::string worldName) {
             float height = std::floor(Category_Data::placeData[(int)m_world->chunks[i].getPlace()].baseHeight + extra);
 
             blockHeights[i * CHUNK_SIZE + j] = height;
+>>>>>>> 98b8385241da9920f404ce8b5264336ac8b85c16
         }
 
         for(int x = 0; x < CHUNK_SIZE; x++) {

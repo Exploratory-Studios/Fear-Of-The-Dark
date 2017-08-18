@@ -1,8 +1,5 @@
 #pragma once
 
-#define WORLD_SIZE 8
-#define WORLD_SIZE 10
-
 #include <string>
 #include <vector>
 
@@ -10,6 +7,8 @@
 #include "Entity.h"
 #include "PerlinNoise/PerlinNoise.h"
 #include "Block.h"
+
+#include "PresetValues.h"
 //#include "Player.h"
 
 struct World {

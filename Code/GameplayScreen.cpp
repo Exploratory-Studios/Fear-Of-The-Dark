@@ -1,5 +1,7 @@
 #include "GameplayScreen.h"
 
+#include "Entity.h"
+
 GameplayScreen::GameplayScreen(GLEngine::Window* window, WorldManager* worldManager) : m_window(window), m_worldManager(worldManager)
 {
 
@@ -37,6 +39,8 @@ void GameplayScreen::onEntry() {
     m_uiCamera.init(m_window->getScreenWidth(), m_window->getScreenHeight());
 
     initUI();
+
+    testEnt.init(glm::vec2(60 * TILE_SIZE, 50 * TILE_SIZE), Categories::Entity_Type::MOB, 0);
 }
 
 void GameplayScreen::onExit() {
@@ -51,15 +55,22 @@ void GameplayScreen::update() {
 
     m_gui.update();
 
+    Tile tiles[WORLD_HEIGHT][CHUNK_SIZE] = m_worldManager->getWorld()->chunks[0].tiles; /// I hate myself
+
     if(m_gameState != GameState::PAUSE) {
         for(int i = 0; i < WORLD_SIZE; i++) {
             m_worldManager->getWorld()->chunks[i].update();
         }
     }
 
-    m_time++; // Change the increment if time is slowed or quicker (potion effects?)
+    std::vector<Entity> entities;
+
+    testEnt.collide(entities, tiles);
+    testEnt.update();
+
+    m_time++; /// Change the increment if time is slowed or quicker (potion effects?)
 }
-#include <iostream>
+
 void GameplayScreen::draw() {
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     glClearColor(0.1f, 0.1f, 0.8f, 1.0f);
@@ -82,6 +93,8 @@ void GameplayScreen::draw() {
             m_worldManager->getWorld()->chunks[i].draw(m_spriteBatch);
         }
     }
+
+    testEnt.draw(m_spriteBatch);
 
     m_spriteBatch.end();
     m_spriteBatch.renderBatch();

@@ -1,14 +1,12 @@
 #pragma once
 
-#define WORLD_HEIGHT 512
-#define CHUNK_SIZE 32
-#define CHUNK_SIZE 512
-
 #include <vector>
 #include <SpriteBatch.h>
 
 #include "Tile.h"
+
 #include "Categories.h"
+#include "PresetValues.h"
 
 class Chunk
 {

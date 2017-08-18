@@ -47,5 +47,7 @@ class GameplayScreen : public GLEngine::IGameScreen
 
         GameState m_gameState = GameState::PLAY;
 
+        Entity testEnt;
+
         float m_time = 0.0f;
 };

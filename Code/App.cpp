@@ -18,8 +18,8 @@ void App::addScreens() {
     m_startupScreen = std::make_unique<StartupScreen>(&m_window);               /// 0
     m_mainMenuScreen = std::make_unique<MainMenuScreen>(&m_window);             /// 1
     m_optionsMenuScreen = std::make_unique<OptionsMenuScreen>(&m_window);       /// 2
-    m_loadScreen = std::make_unique<LoadScreen>(&m_window, m_worldManager);                     /// 3
-    m_gameplayScreen = std::make_unique<GameplayScreen>(&m_window, m_worldManager);             /// 4
+    m_loadScreen = std::make_unique<LoadScreen>(&m_window, m_WorldIOManager);                     /// 3
+    m_gameplayScreen = std::make_unique<GameplayScreen>(&m_window, m_WorldIOManager);             /// 4
 
     /// MAKE SURE YOU ADD SCREENS IN THE ORDER OF THEIR INDICES
 

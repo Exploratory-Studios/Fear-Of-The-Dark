@@ -10,7 +10,7 @@
 
 #include "ScreenIndices.h"
 #include "WidgetLabel.h"
-#include "WorldManager.h"
+#include "WorldIOManager.h"
 
 enum class MiniScreen {
     MAIN,
@@ -39,7 +39,7 @@ class MiniScreenEntry {
 class LoadScreen : public GLEngine::IGameScreen
 {
     public:
-        LoadScreen(GLEngine::Window* window, WorldManager* worldManager);
+        LoadScreen(GLEngine::Window* window, WorldIOManager* WorldIOManager);
         virtual ~LoadScreen();
 
         virtual int getNextScreenIndex() const override;
@@ -82,5 +82,5 @@ class LoadScreen : public GLEngine::IGameScreen
         GLEngine::GLSLProgram m_textureProgram;
         GLEngine::SpriteFont m_spriteFont;
 
-        WorldManager* m_worldManager = nullptr;
+        WorldIOManager* m_WorldIOManager = nullptr;
 };

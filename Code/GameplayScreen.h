@@ -8,6 +8,7 @@
 #include <GLSLProgram.h>
 #include <SpriteFont.h>
 
+#include "WorldIOManager.h"
 #include "WorldManager.h"
 
 enum class GameState {
@@ -18,7 +19,7 @@ enum class GameState {
 class GameplayScreen : public GLEngine::IGameScreen
 {
     public:
-        GameplayScreen(GLEngine::Window* window, WorldManager* worldManager);
+        GameplayScreen(GLEngine::Window* window, WorldIOManager* WorldIOManager);
         virtual ~GameplayScreen();
 
         virtual int getNextScreenIndex() const override;
@@ -43,7 +44,8 @@ class GameplayScreen : public GLEngine::IGameScreen
         GLEngine::GLSLProgram m_textureProgram;
         GLEngine::SpriteFont m_spriteFont;
 
-        WorldManager* m_worldManager = nullptr;
+        WorldIOManager* m_WorldIOManager = nullptr;
+        WorldManager m_worldManager;
 
         GameState m_gameState = GameState::PLAY;
 

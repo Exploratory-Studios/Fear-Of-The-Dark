@@ -30,8 +30,7 @@ void Entity::init(glm::vec2 position, Categories::Entity_Type type, unsigned int
 }
 
 void Entity::update() {
-    //updateMovement();
-    m_position.y -= 1.0f;
+
 }
 
 void Entity::draw(GLEngine::SpriteBatch& sb) {
@@ -43,30 +42,20 @@ void Entity::draw(GLEngine::SpriteBatch& sb) {
     sb.draw(destRect, uvRect, m_texture.id, 0.0f, colour);
 }
 
-
-
-
-
-#include <iostream>
-
-
-
-
-
-void Entity::collide(std::vector<Entity>& entities, Tile chunkTiles[WORLD_HEIGHT][CHUNK_SIZE]) {
+void Entity::collide(std::vector<Entity*>& entities, Tile chunkTiles[WORLD_HEIGHT][CHUNK_SIZE]) {
 
 
     /// ENTITY COLLISION STARTS HERE
     for(auto e : entities) {
-        if(&e != this) {
-            if((e.getFaction() > Categories::Faction::NEUTRAL && m_faction < Categories::Faction::NEUTRAL) ||
-               (e.getFaction() < Categories::Faction::NEUTRAL && m_faction > Categories::Faction::NEUTRAL)) {
+        if(e != this) {
+            if((e->getFaction() > Categories::Faction::NEUTRAL && m_faction < Categories::Faction::NEUTRAL) ||
+               (e->getFaction() < Categories::Faction::NEUTRAL && m_faction > Categories::Faction::NEUTRAL)) {
                 /// They are different (opposing) factions. Make them collide with each other
 
-                if(e.getPosition().x < m_position.x + m_size.x && e.getPosition().x + e.getSize().x > m_position.x) {
-                    if(e.getPosition().y < m_position.y + m_size.y && e.getPosition().y + e.getSize().y > m_position.y) {
-                        e.setPosition(e.getPosition() + m_position / glm::vec2(2.0f));
-                        m_position = e.getPosition() + m_position / glm::vec2(-2.0f);
+                if(e->getPosition().x < m_position.x + m_size.x && e->getPosition().x + e->getSize().x > m_position.x) {
+                    if(e->getPosition().y < m_position.y + m_size.y && e->getPosition().y + e->getSize().y > m_position.y) {
+                        e->setPosition(e->getPosition() + m_position / glm::vec2(2.0f));
+                        m_position = e->getPosition() + m_position / glm::vec2(-2.0f);
                     }
                 }
             }
@@ -149,9 +138,9 @@ void Entity::collideWithTile(glm::vec2 tilePos) {
         if (std::max(xDepth, 0.0f) > std::max(yDepth, 0.0f)) {
             // X collsion depth is smaller so we push in X direction
             if (distVec.x < 0) {
-                m_position.x += xDepth / TILE_SIZE;
-            } else {
                 m_position.x -= xDepth / TILE_SIZE;
+            } else {
+                m_position.x += xDepth / TILE_SIZE;
             }
         } else {
             // Y collsion depth is smaller so we push in X direction

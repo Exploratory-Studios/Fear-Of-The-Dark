@@ -35,3 +35,7 @@ void Chunk::draw(GLEngine::SpriteBatch& sb) {
 void Chunk::setPlace(Categories::Places place) {
     m_place = place;
 }
+
+void Chunk::setTile(const Tile& newTile, const unsigned int& x, const unsigned int& y) {
+    tiles[y][x] = newTile;
+}

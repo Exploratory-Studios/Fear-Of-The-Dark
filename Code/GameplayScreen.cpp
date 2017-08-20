@@ -2,7 +2,7 @@
 
 #include "Entity.h"
 
-GameplayScreen::GameplayScreen(GLEngine::Window* window, WorldManager* worldManager) : m_window(window), m_worldManager(worldManager)
+GameplayScreen::GameplayScreen(GLEngine::Window* window, WorldIOManager* WorldIOManager) : m_window(window), m_WorldIOManager(WorldIOManager)
 {
 
 }
@@ -40,7 +40,7 @@ void GameplayScreen::onEntry() {
 
     initUI();
 
-    testEnt.init(glm::vec2(60 * TILE_SIZE, 50 * TILE_SIZE), Categories::Entity_Type::MOB, 0);
+    m_worldManager.init();
 }
 
 void GameplayScreen::onExit() {
@@ -55,18 +55,7 @@ void GameplayScreen::update() {
 
     m_gui.update();
 
-    Tile tiles[WORLD_HEIGHT][CHUNK_SIZE] = m_worldManager->getWorld()->chunks[0].tiles; /// I hate myself
-
-    if(m_gameState != GameState::PAUSE) {
-        for(int i = 0; i < WORLD_SIZE; i++) {
-            m_worldManager->getWorld()->chunks[i].update();
-        }
-    }
-
-    std::vector<Entity> entities;
-
-    testEnt.collide(entities, tiles);
-    testEnt.update();
+    m_worldManager.update();
 
     m_time++; /// Change the increment if time is slowed or quicker (potion effects?)
 }
@@ -90,11 +79,11 @@ void GameplayScreen::draw() {
 
     if(m_gameState != GameState::PAUSE) {
         for(int i = 0; i < WORLD_SIZE; i++) {
-            m_worldManager->getWorld()->chunks[i].draw(m_spriteBatch);
+            m_WorldIOManager->getWorld()->chunks[i].draw(m_spriteBatch);
         }
     }
 
-    testEnt.draw(m_spriteBatch);
+    m_worldManager.draw(m_spriteBatch);
 
     m_spriteBatch.end();
     m_spriteBatch.renderBatch();

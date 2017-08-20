@@ -2,7 +2,7 @@
 
 /// LoadScreen FUNCTIONS
 
-LoadScreen::LoadScreen(GLEngine::Window* window, WorldManager* worldManager) : m_window(window), m_worldManager(worldManager)
+LoadScreen::LoadScreen(GLEngine::Window* window, WorldIOManager* WorldIOManager) : m_window(window), m_WorldIOManager(WorldIOManager)
 {
 
 }
@@ -163,7 +163,7 @@ bool LoadScreen::onNewWorldCreateNewButtonClicked(const CEGUI::EventArgs& e) { /
         seed += (char)text[i];
     }
 
-    m_worldManager->createWorld(seed, m_newWorldNameEditbox->getText().c_str());
+    m_WorldIOManager->createWorld(seed, m_newWorldNameEditbox->getText().c_str());
 
     m_currentState = GLEngine::ScreenState::CHANGE_NEXT;
     m_nextScreenIndex = SCREEN_INDEX_GAMEPLAY;

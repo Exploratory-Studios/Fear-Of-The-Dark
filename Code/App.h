@@ -6,7 +6,7 @@
 #include "LoadScreen.h"
 #include "GameplayScreen.h"
 
-#include "WorldManager.h"
+#include "WorldIOManager.h"
 
 #include "ScreenIndices.h"
 
@@ -29,5 +29,5 @@ class App : public GLEngine::IMainGame
         std::unique_ptr<LoadScreen> m_loadScreen;
         std::unique_ptr<GameplayScreen> m_gameplayScreen;
 
-        WorldManager* m_worldManager = new WorldManager();
+        WorldIOManager* m_WorldIOManager = new WorldIOManager();
 };

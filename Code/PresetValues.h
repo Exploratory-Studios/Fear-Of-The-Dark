@@ -8,13 +8,13 @@
 
 /// World size variables
 // How many tiles in a chunk?
-#define CHUNK_SIZE 64
+#define CHUNK_SIZE 8
 // How many pixels to a tile?
-#define TILE_SIZE 12
+#define TILE_SIZE 4
 // How many tiles high is the world?
 #define WORLD_HEIGHT 512
 // How many chunks does the world have?
-#define WORLD_SIZE 1
+#define WORLD_SIZE 24
 
 
 

@@ -18,7 +18,7 @@ class Entity
         virtual void update();
         virtual void draw(GLEngine::SpriteBatch& sb);
 
-        void collide(std::vector<Entity*>& entities, Tile tiles[WORLD_HEIGHT][CHUNK_SIZE]);
+        void collide(std::vector<Entity*> entities, Tile tiles[WORLD_HEIGHT][CHUNK_SIZE]);
         void checkTilePosition(Tile tiles[WORLD_HEIGHT][CHUNK_SIZE] , std::vector<glm::vec2>& collideTilePositions, float xPos, float yPos);
         void collideWithTile(glm::vec2 tilePos);
 
@@ -28,7 +28,7 @@ class Entity
 
         void                           setPosition(glm::vec2 pos)   { m_position = pos; }
 
-    private:
+    protected:
         GLEngine::GLTexture m_texture;
 
         Categories::Faction m_faction;

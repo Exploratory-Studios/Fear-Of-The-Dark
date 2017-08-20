@@ -1,0 +1,60 @@
+<?xml version="1.0" ?>
+<GUIScheme version="5" name="FOTDSkin">
+    <Font filename="DejaVuSans-12.font" />
+    <Imageset filename="FOTDSkin.imageset" />
+    <LookNFeel filename="FOTDSkin.looknfeel" />
+    <WindowRendererSet filename="CEGUICoreWindowRendererSet" />
+
+    <FalagardMapping windowType="FOTDSkin/Label" targetType="DefaultWindow" renderer="Core/Default" lookNFeel="FOTDSkin/Label" />
+    <FalagardMapping windowType="FOTDSkin/Button" targetType="CEGUI/PushButton" renderer="Core/Button" lookNFeel="FOTDSkin/Button" />
+    <FalagardMapping windowType="FOTDSkin/ImageButton" targetType="CEGUI/PushButton" renderer="Core/Button" lookNFeel="FOTDSkin/ImageButton" />
+    <FalagardMapping windowType="FOTDSkin/RadioButton" targetType="CEGUI/RadioButton" renderer="Core/ToggleButton" lookNFeel="FOTDSkin/RadioButton" />
+    <FalagardMapping windowType="FOTDSkin/Checkbox" targetType="CEGUI/ToggleButton" renderer="Core/ToggleButton" lookNFeel="FOTDSkin/Checkbox" />
+    <FalagardMapping windowType="FOTDSkin/Titlebar" targetType="CEGUI/Titlebar" renderer="Core/Titlebar" lookNFeel="FOTDSkin/Titlebar" />
+    <FalagardMapping windowType="FOTDSkin/FrameWindow" targetType="CEGUI/FrameWindow" renderer="Core/FrameWindow" lookNFeel="FOTDSkin/FrameWindow" />
+    <FalagardMapping windowType="FOTDSkin/Editbox" targetType="CEGUI/Editbox" renderer="Core/Editbox" lookNFeel="FOTDSkin/Editbox" />
+	<FalagardMapping windowType="FOTDSkin/VerticalScrollbarThumb" targetType="CEGUI/Thumb" renderer="Core/Button" lookNFeel="FOTDSkin/VerticalScrollbarThumb" />
+	<FalagardMapping windowType="FOTDSkin/VerticalScrollbar" targetType="CEGUI/Scrollbar" renderer="Core/Scrollbar" lookNFeel="FOTDSkin/VerticalScrollbar" />
+	<FalagardMapping windowType="FOTDSkin/HorizontalScrollbarThumb" targetType="CEGUI/Thumb" renderer="Core/Button" lookNFeel="FOTDSkin/HorizontalScrollbarThumb" />
+	<FalagardMapping windowType="FOTDSkin/HorizontalScrollbar" targetType="CEGUI/Scrollbar" renderer="Core/Scrollbar" lookNFeel="FOTDSkin/HorizontalScrollbar" />
+	<FalagardMapping windowType="FOTDSkin/MultiLineEditbox" targetType="CEGUI/MultiLineEditbox" renderer="Core/MultiLineEditbox" lookNFeel="FOTDSkin/MultiLineEditbox" />
+	<FalagardMapping windowType="FOTDSkin/ProgressBar" targetType="CEGUI/ProgressBar" renderer="Core/ProgressBar" lookNFeel="FOTDSkin/ProgressBar" />
+	<FalagardMapping windowType="FOTDSkin/HorizontalSliderThumb" targetType="CEGUI/Thumb" renderer="Core/Button" lookNFeel="FOTDSkin/HorizontalSliderThumb" />
+	<FalagardMapping windowType="FOTDSkin/HorizontalSlider" targetType="CEGUI/Slider" renderer="Core/Slider" lookNFeel="FOTDSkin/HorizontalSlider" />
+	<FalagardMapping windowType="FOTDSkin/VerticalSliderThumb" targetType="CEGUI/Thumb" renderer="Core/Button" lookNFeel="FOTDSkin/VerticalSliderThumb" />
+	<FalagardMapping windowType="FOTDSkin/VerticalSlider" targetType="CEGUI/Slider" renderer="Core/Slider" lookNFeel="FOTDSkin/VerticalSlider" />
+
+	<FalagardMapping windowType="FOTDSkin/MenuItem" targetType="CEGUI/MenuItem" renderer="Core/MenuItem" lookNFeel="FOTDSkin/MenuItem" />
+<!--
+	<FalagardMapping windowType="FOTDSkin/Menubar" targetType="CEGUI/Menubar" renderer="Core/Menubar" lookNFeel="FOTDSkin/Menubar" />
+	<FalagardMapping windowType="FOTDSkin/PopupMenu" targetType="CEGUI/PopupMenu" renderer="Core/PopupMenu" lookNFeel="FOTDSkin/PopupMenu" />
+
+	<FalagardMapping windowType="FOTDSkin/TabButton" targetType="CEGUI/TabButton" renderer="Core/TabButton" lookNFeel="FOTDSkin/TabButton" />
+	<FalagardMapping windowType="FOTDSkin/TabButtonPane" targetType="DefaultWindow" renderer="Core/Default" lookNFeel="FOTDSkin/TabButtonPane" />
+	<FalagardMapping windowType="FOTDSkin/TabContentPane" targetType="DefaultWindow" renderer="Core/Default" lookNFeel="FOTDSkin/TabContentPane" />
+	<FalagardMapping windowType="FOTDSkin/TabControl" targetType="CEGUI/TabControl" renderer="Core/TabControl" lookNFeel="FOTDSkin/TabControl" />
+
+	<FalagardMapping windowType="FOTDSkin/ComboDropList" targetType="CEGUI/ComboDropList" renderer="Core/Listbox" lookNFeel="FOTDSkin/ComboDropList" />
+	<FalagardMapping windowType="FOTDSkin/ComboEditbox" targetType="CEGUI/Editbox"	 renderer="Core/Editbox" lookNFeel="FOTDSkin/ComboEditbox" />
+	<FalagardMapping windowType="FOTDSkin/Combobox" targetType="CEGUI/Combobox"	 renderer="Core/Default" lookNFeel="FOTDSkin/Combobox" />
+
+	<FalagardMapping windowType="FOTDSkin/ListboxItem" targetType="CEGUI/ItemEntry" renderer="Core/ItemEntry" lookNFeel="FOTDSkin/ListboxItem" />
+	<FalagardMapping windowType="FOTDSkin/ItemListbox" targetType="CEGUI/ItemListbox" renderer="Core/ItemListbox" lookNFeel="FOTDSkin/ItemListbox" />
+	<FalagardMapping windowType="FOTDSkin/Listbox" targetType="CEGUI/Listbox" renderer="Core/Listbox" lookNFeel="FOTDSkin/Listbox" />
+
+	<FalagardMapping windowType="FOTDSkin/ListHeaderSegment" targetType="CEGUI/ListHeaderSegment" renderer="Core/ListHeaderSegment" lookNFeel="FOTDSkin/ListHeaderSegment" />
+	<FalagardMapping windowType="FOTDSkin/ListHeader" targetType="CEGUI/ListHeader" renderer="Core/ListHeader" lookNFeel="FOTDSkin/ListHeader" />
+	<FalagardMapping windowType="FOTDSkin/MultiColumnList" targetType="CEGUI/MultiColumnList" renderer="Core/MultiColumnList" lookNFeel="FOTDSkin/MultiColumnList" />
+
+	<FalagardMapping windowType="FOTDSkin/ScrollablePane" targetType="CEGUI/ScrollablePane" renderer="Core/ScrollablePane" lookNFeel="FOTDSkin/ScrollablePane" />
+
+	<FalagardMapping windowType="FOTDSkin/Spinner" targetType="CEGUI/Spinner" renderer="Core/Default" lookNFeel="FOTDSkin/Spinner" />
+	<FalagardMapping windowType="FOTDSkin/Tooltip" targetType="CEGUI/Tooltip" renderer="Core/Tooltip" lookNFeel="FOTDSkin/Tooltip" />
+	<FalagardMapping windowType="FOTDSkin/StaticImage" targetType="DefaultWindow" renderer="Core/StaticImage" lookNFeel="FOTDSkin/StaticImage" />
+	<FalagardMapping windowType="FOTDSkin/StaticText" targetType="DefaultWindow" renderer="Core/StaticText" lookNFeel="FOTDSkin/StaticText" />
+	<FalagardMapping windowType="FOTDSkin/GroupBox" targetType="DefaultWindow" renderer="Core/Default" lookNFeel="FOTDSkin/GroupBox" />
+    <FalagardMapping windowType="FOTDSkin/Tree" targetType="CEGUI/Tree" renderer="Core/Tree" lookNFeel="FOTDSkin/Tree" />
+-->
+
+</GUIScheme>
+

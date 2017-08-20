@@ -13,18 +13,19 @@ class EntityManager
         EntityManager();
         virtual ~EntityManager();
 
-        void init(Player& entity, std::vector<Entity>& entities);
+        void init(Player* entity, std::vector<Entity*> entities);
 
         void update(std::vector<Chunk>& activatedChunks);
+        void draw(GLEngine::SpriteBatch& sb);
 
-        Player*                  getPlayer()     { if(m_player) return m_player;      }
-        std::vector<Entity*>     getEntities()   { if(!m_entities.empty()) return m_entities;    }
+        Player*                  getPlayer()     { return m_player; }
+        std::vector<Entity*>     getEntities()   { return m_entities; }
 
     private:
         void collideEntities(std::vector<Chunk>& activatedChunks);
         void moveEntities();
         void spawnEntities();
 
-        Player* m_player = nullptr;
-        std::vector<Entity*> m_entities = { nullptr };
+        Player* m_player;
+        std::vector<Entity*> m_entities;
 };

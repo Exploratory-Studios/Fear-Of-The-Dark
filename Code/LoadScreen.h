@@ -82,5 +82,5 @@ class LoadScreen : public GLEngine::IGameScreen
         GLEngine::GLSLProgram m_textureProgram;
         GLEngine::SpriteFont m_spriteFont;
 
-        WorldIOManager* m_WorldIOManager = nullptr;
+        WorldIOManager* m_worldIOManager = nullptr;
 };

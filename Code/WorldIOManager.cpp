@@ -80,10 +80,11 @@ void WorldIOManager::createWorld(unsigned int seed, std::string worldName) {
                 }
             }
 
-            Player player(glm::vec2(10 * TILE_SIZE, 10 * TILE_SIZE), Categories::Entity_Type::MOB, 0); //////////////
+            Player player(glm::vec2(10.5 * TILE_SIZE, 24 * TILE_SIZE));
+            m_world->player = player;
+
+            Entity ent(glm::vec2(10 * TILE_SIZE, 24 * TILE_SIZE), Categories::Entity_Type::MOB, 0);
+            m_world->entities.push_back(ent);
         }
     }
-
-    /// Finished for now. Next, make sure to change screens from load to gameplay(!) and have the gameplay screen
-    /// start a loop to display and update every block. Spatial partitioning (chunks) is a maybe tonight.
 }

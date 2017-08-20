@@ -34,10 +34,10 @@ class WorldIOManager
         */
 
         World* getWorld() { return m_world; } /// I'm using pointers so that the program can always
-                                               /// access the location of the same World, and the same
-                                               /// WorldIOManager. That way, I will never(!) get
-                                               /// duplicates of worlds that don't change at the same time.
+                                              /// access the location of the same World, and the same
+                                              /// WorldIOManager. That way, I will never(!) get
+                                              /// duplicates of worlds that don't change at the same time.
 
     private:
-        World* m_world = new World;
+        World* m_world = new World();
 };

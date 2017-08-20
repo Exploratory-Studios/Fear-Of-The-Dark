@@ -17,7 +17,7 @@ Entity::~Entity()
 void Entity::init(glm::vec2 position, Categories::Entity_Type type, unsigned int id) {
     m_position = position;
     switch(type) {
-        case Categories::Entity_Type::MOB:
+        case Categories::Entity_Type::MOB: /// Temporary
         {
             if(Category_Data::mobData[id].id == id) {
                 m_texture = GLEngine::ResourceManager::getTexture(Category_Data::mobData[id].texturePath);
@@ -42,7 +42,7 @@ void Entity::draw(GLEngine::SpriteBatch& sb) {
     sb.draw(destRect, uvRect, m_texture.id, 0.0f, colour);
 }
 
-void Entity::collide(std::vector<Entity*>& entities, Tile chunkTiles[WORLD_HEIGHT][CHUNK_SIZE]) {
+void Entity::collide(std::vector<Entity*> entities, Tile chunkTiles[WORLD_HEIGHT][CHUNK_SIZE]) {
 
 
     /// ENTITY COLLISION STARTS HERE

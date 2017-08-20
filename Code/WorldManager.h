@@ -17,7 +17,7 @@ class WorldManager
         WorldManager();
         virtual ~WorldManager();
 
-        void init();
+        void init(WorldIOManager* worldIOManager);
 
         void update();
         void draw(GLEngine::SpriteBatch& sb);
@@ -26,13 +26,13 @@ class WorldManager
         void activateChunks();
 
         EntityManager m_entityManager;
-        WorldIOManager* m_worldIOManager;
+        WorldIOManager* m_worldIOManager = nullptr;
 
-        Entity* m_player;                // NO
-        std::vector<Entity*> m_entities; // COPIES
+        Player m_player;                // NO
+        std::vector<Entity> m_entities; // COPIES
 
-        Chunk m_chunks[WORLD_SIZE];
+        Chunk* m_chunks[WORLD_SIZE];
 
-        std::vector<Chunk> m_activatedChunks;
-        unsigned int m_lastActivated;
+        std::vector<int> m_activatedChunks;
+        int m_lastActivated = -1;
 };

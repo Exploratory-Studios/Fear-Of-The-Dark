@@ -35,12 +35,13 @@ void GameplayScreen::onEntry() {
     m_spriteFont.init("../Assets/GUI/fonts/QuietHorror.ttf", 96);
 
     m_camera.init(m_window->getScreenWidth(), m_window->getScreenHeight());
+    m_camera.setScale(1.05f);
     m_camera.setPosition(m_camera.getPosition() + (glm::vec2(m_window->getScreenWidth() / 2, m_window->getScreenHeight() / 2)));
     m_uiCamera.init(m_window->getScreenWidth(), m_window->getScreenHeight());
 
     initUI();
 
-    m_worldManager.init();
+    m_worldManager.init(m_WorldIOManager);
 }
 
 void GameplayScreen::onExit() {
@@ -77,11 +78,11 @@ void GameplayScreen::draw() {
 
     m_spriteBatch.begin();
 
-    if(m_gameState != GameState::PAUSE) {
+    /*if(m_gameState != GameState::PAUSE) {
         for(int i = 0; i < WORLD_SIZE; i++) {
             m_WorldIOManager->getWorld()->chunks[i].draw(m_spriteBatch);
         }
-    }
+    }*/
 
     m_worldManager.draw(m_spriteBatch);
 

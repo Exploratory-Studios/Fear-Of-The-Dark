@@ -21,44 +21,45 @@ void WorldManager::init(WorldIOManager* worldIOManager) {
             entities.push_back(&m_worldIOManager->getWorld()->entities[i]);
         }
 
-        m_entityManager.init(&m_worldIOManager->getWorld()->player, entities);
-        m_player = m_worldIOManager->getWorld()->player;
-
-        for(int i = 0; i < WORLD_SIZE; i++) {
-            m_chunks[i] = &m_worldIOManager->getWorld()->chunks[i];
-        }
+        m_player = &m_worldIOManager->getWorld()->player;
+        m_entityManager.init(m_player, entities);
     }
 }
 
 void WorldManager::update() {
     activateChunks();
 
-    std::vector<Chunk> activated;
-
     for(int i = 0; i < m_activatedChunks.size(); i++) {
-        m_chunks[m_activatedChunks[i]]->update();
-        activated.push_back(*m_chunks[m_activatedChunks[i]]);
+        m_worldIOManager->getWorld()->chunks[m_activatedChunks[i]]->update();
     }
 
-    m_entityManager.update(activated);
+    m_entityManager.update(m_activatedChunks, m_worldIOManager->getWorld()->chunks);
 }
 
-void WorldManager::draw(GLEngine::SpriteBatch& sb) {
+void WorldManager::draw(GLEngine::SpriteBatch& sb, GLEngine::DebugRenderer& dr) {
     for(int i = 0; i < m_activatedChunks.size(); i++) {
-        m_chunks[m_activatedChunks[i]]->draw(sb);
+        m_worldIOManager->getWorld()->chunks[m_activatedChunks[i]]->draw(sb);
     }
-    m_entityManager.draw(sb);
+    m_entityManager.draw(sb, dr);
 }
-#include <iostream>
+
 /// Private Functions
 void WorldManager::activateChunks() {
 
-    int chunkIndex = std::floor(m_player.getPosition().x / TILE_SIZE / CHUNK_SIZE);
+    int chunkIndex = std::floor(m_player->getPosition().x / TILE_SIZE / CHUNK_SIZE);
 
     if(chunkIndex != m_lastActivated && chunkIndex >= 0) { // Make sure that we changed chunks
         m_activatedChunks.clear(); // I forgot I had this at my disposal :)
-        m_activatedChunks.push_back(chunkIndex);
+        const int viewDist = 3; // Must be odd
+
+        const int each = (viewDist - 1) / 2;
+
+        for(int i = -each; i <= each; i++) {
+            if(chunkIndex + i >= 0 && chunkIndex + i < WORLD_SIZE) {
+                m_activatedChunks.push_back(chunkIndex + i);
+            }
+        }
+
         m_lastActivated = chunkIndex;
-        std::cout << "Added Chunk " << chunkIndex;
     }
 }

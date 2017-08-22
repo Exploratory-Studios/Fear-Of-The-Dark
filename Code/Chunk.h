@@ -4,7 +4,6 @@
 #include <SpriteBatch.h>
 
 #include "Tile.h"
-#include "Entity.h"
 
 #include "PresetValues.h"
 
@@ -23,12 +22,9 @@ class Chunk
         void setTile(const Tile& newTile, const unsigned int& x, const unsigned int& y);
 
         Categories::Places      getPlace()                                                  { return m_place;       }
-        std::vector<Entity>&    getEntities()                                               { return m_entities;    }
 
-        Tile tiles[WORLD_HEIGHT][CHUNK_SIZE];
+        Tile tiles[WORLD_HEIGHT][TRUE_CHUNK_SIZE]; // 0th and 32nd elements overlap onto next and previous chunks (+1 is for overlap)
 
     private:
-        std::vector<Entity> m_entities;
-
         Categories::Places m_place;
 };

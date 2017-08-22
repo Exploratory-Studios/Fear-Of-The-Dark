@@ -1,6 +1,7 @@
 #pragma once
 
 #include <vector>
+#include <DebugRenderer.h>
 
 #include "Entity.h"
 #include "Player.h"
@@ -15,14 +16,14 @@ class EntityManager
 
         void init(Player* entity, std::vector<Entity*> entities);
 
-        void update(std::vector<Chunk>& activatedChunks);
-        void draw(GLEngine::SpriteBatch& sb);
+        void update(std::vector<int>& activatedChunks, Chunk* chunks[WORLD_SIZE]);
+        void draw(GLEngine::SpriteBatch& sb, GLEngine::DebugRenderer& dr);
 
         Player*                  getPlayer()     { return m_player; }
         std::vector<Entity*>     getEntities()   { return m_entities; }
 
     private:
-        void collideEntities(std::vector<Chunk>& activatedChunks);
+        void collideEntities(std::vector<int>& activatedChunks, Chunk* chunks[WORLD_SIZE]);
         void moveEntities();
         void spawnEntities();
 

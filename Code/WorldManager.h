@@ -20,7 +20,9 @@ class WorldManager
         void init(WorldIOManager* worldIOManager);
 
         void update();
-        void draw(GLEngine::SpriteBatch& sb);
+        void draw(GLEngine::SpriteBatch& sb, GLEngine::DebugRenderer& dr);
+
+        Player* getPlayer() { return m_player; }
 
     private:
         void activateChunks();
@@ -28,10 +30,7 @@ class WorldManager
         EntityManager m_entityManager;
         WorldIOManager* m_worldIOManager = nullptr;
 
-        Player m_player;                // NO
-        std::vector<Entity> m_entities; // COPIES
-
-        Chunk* m_chunks[WORLD_SIZE];
+        Player* m_player;                // NO
 
         std::vector<int> m_activatedChunks;
         int m_lastActivated = -1;

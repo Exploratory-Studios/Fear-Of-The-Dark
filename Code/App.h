@@ -29,5 +29,5 @@ class App : public GLEngine::IMainGame
         std::unique_ptr<LoadScreen> m_loadScreen;
         std::unique_ptr<GameplayScreen> m_gameplayScreen;
 
-        WorldIOManager* m_WorldIOManager = new WorldIOManager();
+        WorldIOManager* m_WorldIOManager = new WorldIOManager(&inputManager);
 };

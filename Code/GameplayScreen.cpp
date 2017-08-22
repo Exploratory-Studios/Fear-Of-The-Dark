@@ -35,11 +35,12 @@ void GameplayScreen::onEntry() {
     m_spriteFont.init("../Assets/GUI/fonts/QuietHorror.ttf", 96);
 
     m_camera.init(m_window->getScreenWidth(), m_window->getScreenHeight());
-    m_camera.setScale(1.05f);
     m_camera.setPosition(m_camera.getPosition() + (glm::vec2(m_window->getScreenWidth() / 2, m_window->getScreenHeight() / 2)));
     m_uiCamera.init(m_window->getScreenWidth(), m_window->getScreenHeight());
 
     initUI();
+
+    m_dr.init();
 
     m_worldManager.init(m_WorldIOManager);
 }
@@ -57,6 +58,8 @@ void GameplayScreen::update() {
     m_gui.update();
 
     m_worldManager.update();
+
+    m_camera.setPosition(m_worldManager.getPlayer()->getPosition());
 
     m_time++; /// Change the increment if time is slowed or quicker (potion effects?)
 }
@@ -84,10 +87,13 @@ void GameplayScreen::draw() {
         }
     }*/
 
-    m_worldManager.draw(m_spriteBatch);
+    m_worldManager.draw(m_spriteBatch, m_dr);
 
     m_spriteBatch.end();
     m_spriteBatch.renderBatch();
+
+    m_dr.end();
+    m_dr.render(projectionMatrix, 3);
 
     m_textureProgram.unuse();
 

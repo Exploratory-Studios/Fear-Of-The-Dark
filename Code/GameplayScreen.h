@@ -43,13 +43,12 @@ class GameplayScreen : public GLEngine::IGameScreen
         GLEngine::SpriteBatch m_spriteBatch;
         GLEngine::GLSLProgram m_textureProgram;
         GLEngine::SpriteFont m_spriteFont;
+        GLEngine::DebugRenderer m_dr;
 
         WorldIOManager* m_WorldIOManager = nullptr;
         WorldManager m_worldManager;
 
         GameState m_gameState = GameState::PLAY;
-
-        Entity testEnt;
 
         float m_time = 0.0f;
 };

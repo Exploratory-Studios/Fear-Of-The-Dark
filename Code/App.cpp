@@ -30,6 +30,8 @@ void App::addScreens() {
     m_screenList->addScreen(m_gameplayScreen.get());                            /// 4
 
     m_screenList->setScreen(m_startupScreen->getScreenIndex());
+
+    m_window.setScreenTitle("Fear Of The Dark");
 }
 
 void App::onExit() {

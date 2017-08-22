@@ -2,6 +2,7 @@
 
 #include <string>
 #include <vector>
+#include <InputManager.h>
 
 #include "PerlinNoise/PerlinNoise.h"
 
@@ -13,7 +14,7 @@
 #include "PresetValues.h"
 
 struct World {
-    Chunk chunks[WORLD_SIZE] = { }; // Chunk will hold a vector of tiles and positions.
+    Chunk* chunks[WORLD_SIZE] = { nullptr }; // Chunk will hold a vector of tiles and positions.
     std::vector<Entity> entities;
     Player player;
 };
@@ -22,7 +23,8 @@ class WorldIOManager
 {
     public:
         WorldIOManager() { }
-        WorldIOManager(World* world) : m_world(world) { }
+        WorldIOManager(World* world, GLEngine::InputManager* input) : m_world(world), m_input(input) { }
+        WorldIOManager(GLEngine::InputManager* input) : m_input(input) { }
 
         void loadWorld(std::string worldName);
         void saveWorld(const World& world, std::string worldName, const std::vector<Entity>& entities);
@@ -40,4 +42,5 @@ class WorldIOManager
 
     private:
         World* m_world = new World();
+        GLEngine::InputManager* m_input;
 };

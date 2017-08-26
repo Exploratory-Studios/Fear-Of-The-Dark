@@ -19,6 +19,7 @@ class Entity
 
         virtual void update(Chunk* chunks[WORLD_SIZE]);
         virtual void draw(GLEngine::SpriteBatch& sb, GLEngine::DebugRenderer& dr);
+        void move(float timeStepVariable);
 
         void collide(std::vector<Entity*> entities, int chunkI);
 
@@ -29,9 +30,10 @@ class Entity
 
         void                           setPosition(glm::vec2 pos)   { m_position = pos; }
 
+        int m_parentChunkIndex = -1;
     protected:
         void setParentChunk(Chunk* worldChunks[WORLD_SIZE]);
-        void checkTilePosition(Tile tiles[WORLD_HEIGHT][TRUE_CHUNK_SIZE], int chunkI, std::vector<glm::vec2>& collideTilePositions, float xPos, float yPos);
+        void checkTilePosition(Tile tiles[WORLD_HEIGHT][CHUNK_SIZE], int chunkI, std::vector<glm::vec2>& collideTilePositions, float xPos, float yPos);
         void collideWithTile(glm::vec2 tilePos);
 
         GLEngine::GLTexture m_texture;
@@ -41,8 +43,12 @@ class Entity
         glm::vec2 m_position;
         glm::vec2 m_size;
 
-        int m_parentChunkIndex = -1;
+        glm::vec2 m_velocity;
+
         Chunk* m_parentChunk = nullptr;
+
+        bool m_onGround = false;
+        bool m_wasOnGround = false;
 
 };
 

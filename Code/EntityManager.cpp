@@ -17,11 +17,11 @@ void EntityManager::init(Player* player, std::vector<Entity*> entities) {
     m_entities.push_back(m_player);
 }
 
-void EntityManager::update(std::vector<int>& activatedChunks, Chunk* chunks[WORLD_SIZE]) {
+void EntityManager::update(std::vector<int>& activatedChunks, Chunk* chunks[WORLD_SIZE], float timeStepVariable) {
     for(auto e : m_entities) {
         e->update(chunks);
     }
-    moveEntities();
+    moveEntities(timeStepVariable);
     spawnEntities();
     collideEntities(activatedChunks, chunks);
 }
@@ -33,7 +33,6 @@ void EntityManager::draw(GLEngine::SpriteBatch& sb, GLEngine::DebugRenderer& dr)
 }
 
 /// PRIVATE FUNCTIONS
-
 void EntityManager::collideEntities(std::vector<int>& activatedChunks, Chunk* chunks[WORLD_SIZE]) {
     for(auto e : m_entities) {
         for(int i = 0; i < activatedChunks.size(); i++) {
@@ -42,9 +41,9 @@ void EntityManager::collideEntities(std::vector<int>& activatedChunks, Chunk* ch
     }
 }
 
-void EntityManager::moveEntities() {
+void EntityManager::moveEntities(float timeStepVariable) {
     for(auto e : m_entities) {
-        //e->setPosition(e->getPosition() + glm::vec2(0.0f, -0.6f));
+        e->move(timeStepVariable);
     }
 }
 

@@ -26,7 +26,7 @@ void Chunk::update() {
 
 void Chunk::draw(GLEngine::SpriteBatch& sb) {
     for(int i = 0; i < WORLD_HEIGHT; i++) {
-        for(int j = 0; j < TRUE_CHUNK_SIZE; j++) {
+        for(int j = 0; j < CHUNK_SIZE; j++) {
             tiles[i][j].draw(sb);
         }
     }

@@ -33,7 +33,7 @@ class Tile
         glm::vec2 m_pos;
         glm::vec2 m_size = glm::vec2(1, 1);
 
-        GLEngine::GLTexture m_texture;
+        GLEngine::GLTexture m_texture = GLEngine::ResourceManager::getTexture("../Assets/Textures/Mobs/Mob0.png");
         GLEngine::ColourRGBA8 m_colour = GLEngine::ColourRGBA8(255.0f, 255.0f, 255.0f, 255.0f);
 
         unsigned int m_id;

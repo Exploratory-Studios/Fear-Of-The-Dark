@@ -26,14 +26,14 @@ void WorldManager::init(WorldIOManager* worldIOManager) {
     }
 }
 
-void WorldManager::update() {
+void WorldManager::update(float timeStepVariable) {
     activateChunks();
 
     for(int i = 0; i < m_activatedChunks.size(); i++) {
         m_worldIOManager->getWorld()->chunks[m_activatedChunks[i]]->update();
     }
 
-    m_entityManager.update(m_activatedChunks, m_worldIOManager->getWorld()->chunks);
+    m_entityManager.update(m_activatedChunks, m_worldIOManager->getWorld()->chunks, timeStepVariable);
 }
 
 void WorldManager::draw(GLEngine::SpriteBatch& sb, GLEngine::DebugRenderer& dr) {
@@ -50,12 +50,11 @@ void WorldManager::activateChunks() {
 
     if(chunkIndex != m_lastActivated && chunkIndex >= 0) { // Make sure that we changed chunks
         m_activatedChunks.clear(); // I forgot I had this at my disposal :)
-        const int viewDist = 3; // Must be odd
 
-        const int each = (viewDist - 1) / 2;
+        const int each = (VIEW_DIST - 1) / 2; // How many chunks on each side of the centre of the selection
 
         for(int i = -each; i <= each; i++) {
-            if(chunkIndex + i >= 0 && chunkIndex + i < WORLD_SIZE) {
+            if(chunkIndex + i >= 0 && chunkIndex + i <= WORLD_SIZE-1) {
                 m_activatedChunks.push_back(chunkIndex + i);
             }
         }

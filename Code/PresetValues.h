@@ -7,15 +7,18 @@
 
 
 /// World size variables
-// How many tiles in a chunk? Remember that 2 of those blocks will be dedicated to overlapping
+// How many tiles in a chunk?
 #define CHUNK_SIZE 32
-#define TRUE_CHUNK_SIZE CHUNK_SIZE + 2
 // How many pixels to a tile?
 #define TILE_SIZE 8
 // How many tiles high is the world?
 #define WORLD_HEIGHT 512
 // How many chunks does the world have?
-#define WORLD_SIZE 48
+#define WORLD_SIZE 5
+
+// How many chunks can you see? (Odd)
+#define VIEW_DIST 3
+
 
 
 
@@ -71,7 +74,7 @@ namespace Category_Data {
     const MobDatum mobData[Category_Data::TOTAL_MOBS] = {
                                                          MobDatum(0, 10.0f, "../Assets/Textures/Mobs/Mob0.png", glm::vec2(1.0f, 2.0f), Categories::Faction::BAD),
                                                          MobDatum(1, 20.0f, "../Assets/Textures/Mobs/Mob0.png", glm::vec2(1.0f, 2.0f), Categories::Faction::GOOD),
-                                                         MobDatum(2, 30.0f, "../Assets/Textures/Mobs/Mob2.png", glm::vec2(1.5f, 2.25f), Categories::Faction::BAD)
+                                                         MobDatum(2, 30.0f, "../Assets/Textures/Mobs/Mob2.png", glm::vec2(0.9f, 2.25f), Categories::Faction::BAD)
                                                         };
 
 };

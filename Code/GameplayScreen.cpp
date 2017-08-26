@@ -2,6 +2,8 @@
 
 #include "Entity.h"
 
+#include <SDL/SDL_timer.h>
+
 GameplayScreen::GameplayScreen(GLEngine::Window* window, WorldIOManager* WorldIOManager) : m_window(window), m_WorldIOManager(WorldIOManager)
 {
 
@@ -50,16 +52,23 @@ void GameplayScreen::onExit() {
 }
 
 void GameplayScreen::update() {
-    checkInput();
+    m_deltaTime = std::abs((60 / m_game->getFps()) + -1);
+    m_deltaTime++;
 
-    m_camera.update();
-    m_uiCamera.update();
+    for(int i = 0; i < m_deltaTime; i++) {
+        checkInput();
 
-    m_gui.update();
+        m_camera.update();
+        m_uiCamera.update();
 
-    m_worldManager.update();
+        m_gui.update();
 
-    m_camera.setPosition(m_worldManager.getPlayer()->getPosition());
+        m_camera.setPosition(m_worldManager.getPlayer()->getPosition());
+    }
+
+    m_worldManager.update(m_deltaTime);
+
+    m_deltaTime = 0;
 
     m_time++; /// Change the increment if time is slowed or quicker (potion effects?)
 }
@@ -81,12 +90,6 @@ void GameplayScreen::draw() {
 
     m_spriteBatch.begin();
 
-    /*if(m_gameState != GameState::PAUSE) {
-        for(int i = 0; i < WORLD_SIZE; i++) {
-            m_WorldIOManager->getWorld()->chunks[i].draw(m_spriteBatch);
-        }
-    }*/
-
     m_worldManager.draw(m_spriteBatch, m_dr);
 
     m_spriteBatch.end();
@@ -94,6 +97,25 @@ void GameplayScreen::draw() {
 
     m_dr.end();
     m_dr.render(projectionMatrix, 3);
+
+    m_textureProgram.unuse();
+
+    m_textureProgram.use();
+
+    // Camera matrix
+    projectionMatrix = m_uiCamera.getCameraMatrix();
+    pUniform = m_textureProgram.getUniformLocation("P");
+    glUniformMatrix4fv(pUniform, 1, GL_FALSE, &projectionMatrix[0][0]);
+
+    m_spriteBatch.begin();
+
+    char fpsStr[8];
+    std::sprintf(fpsStr, "%s%i", "FPS: ", (int)m_game->getFps());
+
+    m_spriteFont.draw(m_spriteBatch, fpsStr, glm::vec2(-m_window->getScreenWidth() / 2 + 50, m_window->getScreenHeight() / 2 - 50 - 96), glm::vec2(1), 0.0f, GLEngine::ColourRGBA8(255, 255, 255, 255));
+
+    m_spriteBatch.end();
+    m_spriteBatch.renderBatch();
 
     m_textureProgram.unuse();
 

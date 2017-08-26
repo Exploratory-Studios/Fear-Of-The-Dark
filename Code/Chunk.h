@@ -23,7 +23,7 @@ class Chunk
 
         Categories::Places      getPlace()                                                  { return m_place;       }
 
-        Tile tiles[WORLD_HEIGHT][TRUE_CHUNK_SIZE]; // 0th and 32nd elements overlap onto next and previous chunks (+1 is for overlap)
+        Tile tiles[WORLD_HEIGHT][CHUNK_SIZE];
 
     private:
         Categories::Places m_place;

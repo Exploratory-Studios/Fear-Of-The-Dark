@@ -8,6 +8,8 @@
 #include <GLSLProgram.h>
 #include <SpriteFont.h>
 
+#include <cstdio>
+
 #include "WorldIOManager.h"
 #include "WorldManager.h"
 
@@ -36,6 +38,9 @@ class GameplayScreen : public GLEngine::IGameScreen
         void initShaders();
         void initUI();
 
+        void drawHUD();
+        void drawWorld();
+
         GLEngine::Camera2D m_camera;
         GLEngine::Camera2D m_uiCamera;
         GLEngine::Window* m_window;
@@ -51,4 +56,5 @@ class GameplayScreen : public GLEngine::IGameScreen
         GameState m_gameState = GameState::PLAY;
 
         float m_time = 0.0f;
+        float m_deltaTime = 1.0f;
 };

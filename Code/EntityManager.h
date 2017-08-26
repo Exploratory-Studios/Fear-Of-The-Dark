@@ -8,6 +8,8 @@
 
 #include "WorldIOManager.h"
 
+#include "PresetValues.h"
+
 class EntityManager
 {
     public:
@@ -16,7 +18,7 @@ class EntityManager
 
         void init(Player* entity, std::vector<Entity*> entities);
 
-        void update(std::vector<int>& activatedChunks, Chunk* chunks[WORLD_SIZE]);
+        void update(std::vector<int>& activatedChunks, Chunk* chunks[WORLD_SIZE], float timeStepVariable);
         void draw(GLEngine::SpriteBatch& sb, GLEngine::DebugRenderer& dr);
 
         Player*                  getPlayer()     { return m_player; }
@@ -24,7 +26,7 @@ class EntityManager
 
     private:
         void collideEntities(std::vector<int>& activatedChunks, Chunk* chunks[WORLD_SIZE]);
-        void moveEntities();
+        void moveEntities(float timeStepVariable);
         void spawnEntities();
 
         Player* m_player;

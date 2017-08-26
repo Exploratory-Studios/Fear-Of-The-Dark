@@ -19,7 +19,7 @@ class WorldManager
 
         void init(WorldIOManager* worldIOManager);
 
-        void update();
+        void update(float timeStepVariable);
         void draw(GLEngine::SpriteBatch& sb, GLEngine::DebugRenderer& dr);
 
         Player* getPlayer() { return m_player; }

@@ -77,28 +77,12 @@ void WorldIOManager::createWorld(unsigned int seed, std::string worldName) {
                 }
             }
 
-//            for(int x = 1; x < CHUNK_SIZE+1; x++) {
-//                for(int y = 0; y < blockHeights[i * CHUNK_SIZE + x-1]; y++) {
-//                    m_world->chunks[i]->tiles[y][x] = (Block(glm::vec2((i * CHUNK_SIZE) + x - i * 5, y), (unsigned int)Categories::BlockIDs::DIRT));
-//                }
-//            }
-            /// Fill out the tiles, when x == 1-32
+            for(int x = 0; x < CHUNK_SIZE; x++) {
+                for(int y = 0; y < blockHeights[i * CHUNK_SIZE + x]; y++) {
+                    m_world->chunks[i]->tiles[y][x] = (Block(glm::vec2((i * CHUNK_SIZE) + x, y - i), (unsigned int)Categories::BlockIDs::DIRT));
+                }
+            }
         }
-
-        /// Fill out the tiles, when x == 0 or 33
-
-//        for(int i = 0; i < WORLD_SIZE; i++) {
-//            for(int x = 0; x < CHUNK_SIZE; x++) {
-//                for(int y = 0; y < blockHeights[i * CHUNK_SIZE + x]; y++) {
-//                    if(i > 0) {
-//                        m_world->chunks[i]->tiles[y][0] = m_world->chunks[i-1]->tiles[y][CHUNK_SIZE-1];
-//                    }
-//                    if(i < WORLD_SIZE-1) {
-//                        m_world->chunks[i]->tiles[y][CHUNK_SIZE] = m_world->chunks[i+1]->tiles[y][1];
-//                    }
-//                }
-//            }
-//        }
 
         Player player(glm::vec2(11.5 * TILE_SIZE, 48 * TILE_SIZE), m_input);
         m_world->player = player;

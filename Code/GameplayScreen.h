@@ -41,6 +41,8 @@ class GameplayScreen : public GLEngine::IGameScreen
         void drawHUD();
         void drawWorld();
 
+        void scrollEvent(const SDL_Event& evnt);
+
         GLEngine::Camera2D m_camera;
         GLEngine::Camera2D m_uiCamera;
         GLEngine::Window* m_window;
@@ -57,4 +59,6 @@ class GameplayScreen : public GLEngine::IGameScreen
 
         float m_time = 0.0f;
         float m_deltaTime = 1.0f;
+
+        float m_scale = 1.0f;
 };

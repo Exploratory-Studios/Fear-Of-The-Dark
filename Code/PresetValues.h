@@ -19,6 +19,11 @@
 // How many chunks can you see? (Odd)
 #define VIEW_DIST 3
 
+// What is the minimum scale of the camera?
+#define MIN_ZOOM 0.25
+// What is the maximum scale of the camera?
+#define MAX_ZOOM 7.5
+
 
 
 

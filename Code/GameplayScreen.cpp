@@ -63,7 +63,8 @@ void GameplayScreen::update() {
 
         m_gui.update();
 
-        m_camera.setPosition(m_worldManager.getPlayer()->getPosition());
+        m_camera.setPosition(m_worldManager.getPlayer()->getPosition() + m_worldManager.getPlayer()->getSize() / glm::vec2(2.0f));
+        m_camera.setScale(m_scale);
     }
 
     m_worldManager.update(m_deltaTime);
@@ -136,6 +137,9 @@ void GameplayScreen::checkInput() {
             case SDL_MOUSEBUTTONDOWN:
 
                 break;
+            case SDL_MOUSEWHEEL:
+                scrollEvent(evnt);
+                break;
         }
     }
 }
@@ -157,5 +161,14 @@ void GameplayScreen::initUI() {
         m_gui.setMouseCursor("FOTDSkin/MouseArrow");
         m_gui.showMouseCursor();
         SDL_ShowCursor(0);
+    }
+}
+
+void GameplayScreen::scrollEvent(const SDL_Event& evnt) {
+    m_scale += (float)evnt.wheel.y * m_scale / 10;
+    if(m_scale <= MIN_ZOOM) {
+        m_scale = MIN_ZOOM;
+    } else if(m_scale >= MAX_ZOOM) {
+        m_scale = MAX_ZOOM;
     }
 }

@@ -39,15 +39,14 @@ void Entity::update(Chunk* chunks[WORLD_SIZE]) {
 }
 
 void Entity::draw(GLEngine::SpriteBatch& sb, GLEngine::DebugRenderer& dr) {
-    glm::vec4 destRect = glm::vec4(m_position.x, m_position.y - 1, m_size.x * TILE_SIZE, m_size.y * TILE_SIZE);
+    glm::vec4 destRect = glm::vec4(m_position.x, m_position.y, m_size.x * TILE_SIZE, m_size.y * TILE_SIZE);
     glm::vec4 uvRect = glm::vec4(0.0f, 0.0f, 1.0f, 1.0f);
 
     GLEngine::ColourRGBA8 colour(255, 255, 255, 255);
 
     sb.draw(destRect, uvRect, m_texture.id, 0.0f, colour);
 
-    destRect.z += 1000;
-    dr.drawBox(destRect, GLEngine::ColourRGBA8(255, 255, 255, 255), 0.0f);
+    //dr.drawBox(destRect, GLEngine::ColourRGBA8(255, 255, 255, 255), 0.0f);
 }
 
 void Entity::move(float timeStepVariable) {
@@ -82,6 +81,7 @@ void Entity::collide(std::vector<Entity*> entities, int chunkI) {
             /// Many thanks to Ben Arnold. He taught me almost everything I know about programming through his Youtube channel, "Makinggameswithben"
             /// This is just a small piece of code that handles and reacts to dynamic rectangle and tile collisions
             std::vector<glm::vec2> collideTilePositions;
+            std::vector<glm::vec2> ingroundColliderPositions;
 
             float x = m_position.x, y = m_position.y, width = m_size.x * TILE_SIZE, height = m_size.y * TILE_SIZE;
 
@@ -99,21 +99,30 @@ void Entity::collide(std::vector<Entity*> entities, int chunkI) {
                               collideTilePositions,
                               posBR.x,
                               posBR.y);
+
             checkTilePosition(m_parentChunk->tiles,
                               chunkI,
                               collideTilePositions,
                               posBL.x,
                               posBL.y);
+
             checkTilePosition(m_parentChunk->tiles,
                               chunkI,
                               collideTilePositions,
                               posTL.x,
                               posTL.y);
+
             checkTilePosition(m_parentChunk->tiles,
                               chunkI,
                               collideTilePositions,
                               posTR.x,
                               posTR.y);
+
+            checkTilePosition(m_parentChunk->tiles,
+                              chunkI,
+                              ingroundColliderPositions,
+                              posBL.x + width / 2,
+                              posBL.y + 2);
 
 //            // Left Side
 //            checkTilePosition(m_parentChunk->tiles,
@@ -134,6 +143,9 @@ void Entity::collide(std::vector<Entity*> entities, int chunkI) {
 
             for (int i = 0; i < collideTilePositions.size(); i++) {
                 collideWithTile(collideTilePositions[i]);
+            }
+            if(ingroundColliderPositions.size() > 0) {
+                m_onGround = true;
             }
         }
         /// TILE COLLISION ENDS HERE
@@ -171,7 +183,7 @@ void Entity::checkTilePosition(Tile tiles[WORLD_HEIGHT][CHUNK_SIZE], int chunkI,
         collideTilePositions.push_back(glm::vec2((int)gridPos.x + 0.5, (int)gridPos.y - 0.5)); // CollideTilePositions are put in as gridspace coords
     }
 }
-
+#include <iostream>
 void Entity::collideWithTile(glm::vec2 tilePos) {
     // Find the distance between tile and rectangle's(!) axes(!) in percentage of it's axis (ex. (depth.x = 42) -> (size.x * .42))
     glm::vec2 centrePos = glm::vec2(m_position.x + m_size.x * TILE_SIZE / 2.0f, m_position.y - m_size.y * TILE_SIZE / 2.0f);
@@ -189,10 +201,11 @@ void Entity::collideWithTile(glm::vec2 tilePos) {
         m_velocity.x = 0;
     } else {
         if(distVec.y < 0) {
-            //m_position.y -= depthVec.y; // TILE ON TOP WORKS
+            m_position.y -= depthVec.y; // TILE ON TOP WORKS
         } else {
-            m_position.y += abs(depthVec.y) / 4; // TILE UNDERNEATH
-            m_onGround = true;
+            // TILE UNDERNEATH
+
+            m_position += abs(depthVec.y) / (m_size.y * TILE_SIZE) / 2;
         }
         m_velocity.y = 0;
     }

@@ -46,16 +46,26 @@ void Entity::draw(GLEngine::SpriteBatch& sb, GLEngine::DebugRenderer& dr) {
 
     sb.draw(destRect, uvRect, m_texture.id, 0.0f, colour);
 
-    //dr.drawBox(destRect, GLEngine::ColourRGBA8(255, 255, 255, 255), 0.0f);
+    dr.drawCircle(m_testPos, GLEngine::ColourRGBA8(255, 255, 255, 255), 4);
 }
 
 void Entity::move(float timeStepVariable) {
-    if(!m_onGround && !m_wasOnGround) {
-        m_velocity.y -= 0.02 * timeStepVariable;
+    if(!m_onGround) {
+        m_velocity.y -= 0.07 * timeStepVariable;
+    } else {
+        if(m_velocity.y < 0) {
+            m_velocity.y = 0;
+        }
     }
     m_position += m_velocity * glm::vec2(timeStepVariable);
 }
 
+
+
+
+
+
+#include <iostream>
 void Entity::collide(std::vector<Entity*> entities, int chunkI) {
 
     if(chunkI == m_parentChunkIndex) {
@@ -86,12 +96,12 @@ void Entity::collide(std::vector<Entity*> entities, int chunkI) {
             float x = m_position.x, y = m_position.y, width = m_size.x * TILE_SIZE, height = m_size.y * TILE_SIZE;
 
             x += m_velocity.x;
-            y += m_velocity.y / 2;
+            y += m_velocity.y;
 
-            glm::vec2 posTL(x, y);
-            glm::vec2 posTR(x + width, y);
-            glm::vec2 posBL(x, y + height);
-            glm::vec2 posBR(x + width, y + height);
+            glm::vec2 posBL(x, y);
+            glm::vec2 posBR(x + width, y);
+            glm::vec2 posTL(x, y + height);
+            glm::vec2 posTR(x + width, y + height);
 
             /// Check the corners
             checkTilePosition(m_parentChunk->tiles,
@@ -121,31 +131,24 @@ void Entity::collide(std::vector<Entity*> entities, int chunkI) {
             checkTilePosition(m_parentChunk->tiles,
                               chunkI,
                               ingroundColliderPositions,
-                              posBL.x + width / 2,
-                              posBL.y + 2);
+                              posBL.x + 2,
+                              posBL.y - 0.5);
 
-//            // Left Side
-//            checkTilePosition(m_parentChunk->tiles,
-//                              chunkI,
-//                              collideTilePositions,
-//                              m_position.x,
-//                              m_position.y - m_size.y * TILE_SIZE / 2.0f);
-//
-//            // Right Side
-//            checkTilePosition(m_parentChunk->tiles,
-//                              chunkI,
-//                              collideTilePositions,
-//                              m_position.x + m_size.x * TILE_SIZE,
-//                              m_position.y - m_size.y * TILE_SIZE / 2.0f);
+            checkTilePosition(m_parentChunk->tiles,
+                              chunkI,
+                              ingroundColliderPositions,
+                              posBR.x - 2,
+                              posBR.y - 0.5);
 
             // Do the collision
-            m_onGround = false;
+            if(ingroundColliderPositions.size() > 0) {
+                m_onGround = true;
+            } else {
+                m_onGround = false;
+            }
 
             for (int i = 0; i < collideTilePositions.size(); i++) {
                 collideWithTile(collideTilePositions[i]);
-            }
-            if(ingroundColliderPositions.size() > 0) {
-                m_onGround = true;
             }
         }
         /// TILE COLLISION ENDS HERE
@@ -180,35 +183,35 @@ void Entity::checkTilePosition(Tile tiles[WORLD_HEIGHT][CHUNK_SIZE], int chunkI,
 
     // If this is not an air tile, we should collide with it
     if (tiles[(int)gridPos.y][(int)gridPos.x].isSolid()) {
-        collideTilePositions.push_back(glm::vec2((int)gridPos.x + 0.5, (int)gridPos.y - 0.5)); // CollideTilePositions are put in as gridspace coords
+        collideTilePositions.push_back(glm::vec2((int)gridPos.x + 0.5, (int)gridPos.y + 0.5)); // CollideTilePositions are put in as gridspace coords
     }
 }
-#include <iostream>
+
 void Entity::collideWithTile(glm::vec2 tilePos) {
     // Find the distance between tile and rectangle's(!) axes(!) in percentage of it's axis (ex. (depth.x = 42) -> (size.x * .42))
     glm::vec2 centrePos = glm::vec2(m_position.x + m_size.x * TILE_SIZE / 2.0f, m_position.y - m_size.y * TILE_SIZE / 2.0f);
     glm::vec2 distVec = centrePos - (tilePos * glm::vec2(TILE_SIZE));
 
-    glm::vec2 depthVec = (abs(distVec) - glm::vec2(TILE_SIZE));
+    glm::vec2 depthVec = abs(distVec) - glm::vec2(TILE_SIZE) / m_size;
 
     // Determine if it's shorter to go in the X or Y direction
-    if(abs(depthVec.x) < abs(depthVec.y)) { // X direction is shorter // Maybe change these variables from depthvec to distvec and reverse the comparison to >
-        if(distVec.x < 0) {
-            m_position.x += depthVec.x; // TILE ON RIGHT worked
+    //if(abs(depthVec.x) > 0 && abs(depthVec.y) > 0) {
+        if(abs(depthVec.x) < abs(depthVec.y)) { // X direction is shorter // Maybe change these variables from depthvec to distvec and reverse the comparison to >
+            if(distVec.x < 0) {
+                m_position.x += depthVec.x; // TILE ON RIGHT WORKS
+            } else {
+                m_position.x -= depthVec.x; // TILE ON LEFT WORKS
+            }
+            m_velocity.x = 0;
         } else {
-            m_position.x -= depthVec.x; // TILE ON LEFT WORKS
+            if(distVec.y < 0) {
+                m_position.y -= depthVec.y; // TILE ON TOP WORKS
+            } else {
+                m_position.y += depthVec.y; // TILE ON BOTTOM WORKS
+            }
+            m_velocity.y = 0;
         }
-        m_velocity.x = 0;
-    } else {
-        if(distVec.y < 0) {
-            m_position.y -= depthVec.y; // TILE ON TOP WORKS
-        } else {
-            // TILE UNDERNEATH
-
-            m_position += abs(depthVec.y) / (m_size.y * TILE_SIZE) / 2;
-        }
-        m_velocity.y = 0;
-    }
+    //}
 
     // Go the (shorter) distance in the X or Y direction
 }

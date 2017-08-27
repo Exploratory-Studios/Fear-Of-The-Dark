@@ -21,9 +21,11 @@ void EntityManager::update(std::vector<int>& activatedChunks, Chunk* chunks[WORL
     for(auto e : m_entities) {
         e->update(chunks);
     }
+    for(int i = 0; i < timeStepVariable; i++) {
+        collideEntities(activatedChunks, chunks);
+        spawnEntities();
+    }
     moveEntities(timeStepVariable);
-    spawnEntities();
-    collideEntities(activatedChunks, chunks);
 }
 
 void EntityManager::draw(GLEngine::SpriteBatch& sb, GLEngine::DebugRenderer& dr) {

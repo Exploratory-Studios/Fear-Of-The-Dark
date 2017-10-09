@@ -43,11 +43,7 @@ class Entity
         glm::vec2 m_position;
         glm::vec2 m_size;
 
-
-
         glm::vec2 m_testPos;
-
-
 
         glm::vec2 m_velocity;
 

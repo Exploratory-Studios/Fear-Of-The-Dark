@@ -79,7 +79,7 @@ namespace Category_Data {
     const MobDatum mobData[Category_Data::TOTAL_MOBS] = {
                                                          MobDatum(0, 10.0f, "../Assets/Textures/Mobs/Mob0.png", glm::vec2(1.0f, 2.0f), Categories::Faction::BAD),
                                                          MobDatum(1, 20.0f, "../Assets/Textures/Mobs/Mob0.png", glm::vec2(1.0f, 2.0f), Categories::Faction::GOOD),
-                                                         MobDatum(2, 30.0f, "../Assets/Textures/Mobs/Mob2.png", glm::vec2(0.9f, 2.25f), Categories::Faction::BAD)
+                                                         MobDatum(2, 30.0f, "../Assets/Textures/Mobs/Mob0.png", glm::vec2(1.0f, 1.0f), Categories::Faction::BAD)
                                                         };
 
 };

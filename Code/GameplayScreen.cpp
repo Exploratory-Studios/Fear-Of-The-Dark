@@ -55,21 +55,17 @@ void GameplayScreen::update() {
     m_deltaTime = std::abs((60 / m_game->getFps()) + -1);
     m_deltaTime++;
 
-    for(int i = 0; i < m_deltaTime; i++) {
-        checkInput();
+    checkInput();
 
-        m_camera.update();
-        m_uiCamera.update();
+    m_camera.update();
+    m_uiCamera.update();
 
-        m_gui.update();
+    m_gui.update();
 
-        m_camera.setPosition(m_worldManager.getPlayer()->getPosition() + m_worldManager.getPlayer()->getSize() / glm::vec2(2.0f));
-        m_camera.setScale(m_scale);
-    }
+    m_camera.setPosition(m_worldManager.getPlayer()->getPosition() + m_worldManager.getPlayer()->getSize() / glm::vec2(2.0f));
+    m_camera.setScale(m_scale);
 
     m_worldManager.update(m_deltaTime);
-
-    m_deltaTime = 0;
 
     m_time++; /// Change the increment if time is slowed or quicker (potion effects?)
 }

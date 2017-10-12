@@ -19,7 +19,7 @@ Nevermind.....
 Adding in extra delta loop, updating everything. I hope this was the source.
 Didn't work. I think it may be caused by the entity's speed being changed so violently. Implementing changes...
 Nope.
-AHAHAHAHA!!! It was actually the fact that the collision reaction had a line that made sure that the depth was more than 0
+AHAHAHAHA!!! It was actually the fact that the collision reaction had a line that made sure that the depth was more than 0.
 0.0 is not the same as 0
 Got rid of the line of code. All collision (w/ blocks) works perfectly.
 Now comes the issue of a player being able to jump off the side of blocks. I have a suspicion that this is caused by
@@ -45,3 +45,45 @@ I changed to multiplication. Seems to have made things worse...
 depthVec being distVec - TILE_SIZE, it should be - (TILE_SIZE/2 + (size*TILE_SIZE)/2). It seems to have reduced error!
  - Player is a little glitchy (going up when they should be going out, bouncing), so I'll add more contact points and leave
 it there for now, even if it doesn't work. YAY! OK, bye now.
+
+
+Developer's log: Oct. 12, 2017
+
+	This morning, I will try to fix the small issues left with collision. Some reasons the bouncing may be happening are:
+ - Collision prediction is predicting too early
+ - Depth is being calculated incorrectly
+ - The nodes in each place on the player are placed different distances from the centre.
+	I got rid of the division of the depth when deciding which side the player should be pushed to. It seems to have not done anything,
+but upon further inspection, it seems like collision is smoother. It turns out that it is harder to go through corners now.
+ - After some testing, it seems like the left side of the x collision isn't quite doing its job. It's leaving that for the right side...
+Ugh. Now it seems like the left side is doing all the work... Ok, colliding with both sides gives back a positive number. I'll check the
+calculations for abs() or other errors. Alright! DepthVec is always positive, but distvec is not! changing depthvec to distvec in terms of
+comparing sides. I'll be back!
+
+	Back from school. It seems as though the depthvec is too high a number. I will check the depth calcs. Depth calcs are fine, I got
+rid of collision prediction because I think it was predicting too early and not being corrected in reaction................................................... TODO
+That fixed most things, but now the player is beginning to glitch in/out of blocks if travelling too quickly :/ I guess I'll fix prediction
+now.
+I have done so by calculating depth and distance, etc with the predicted position (not real), and then adding/subtracting the depth (minus
+the difference between the predicted and real positions) (see code)
+That means there are almost no issues with collision, EXCEPT: the player now stays the minimum distance away from a block when they stop
+applying force to it. Idea! What if in the collision reaction for hitting the top of a block, it sets the onGround to true? Implementing
+and testing... Ok, a simple problem: the player stays 'onGround' even when not colliding. Because it doesn't update the onGround
+when not colliding :/. Simple solution: set onGround to false every update. WOW! It works perfectly! And now my entities update about
+30% faster! I also just fixed the whole double-jumping up walls thing by making sure that the player only collided with the top of a block
+when not moving up. I think I can fix the wall-catching glitch the same way. implementing and testing... Didn't fix the wall glitch because
+the wall glitch is caused by the player moving down and into the top of a block in a wall. :/ Still not sure how to fix that one.............................. TODO
+
+Another issue is the fact that the player bounces up and down (very little) on the ground, but if you add {m_velocity.y = 0;} then the
+player can't jump at all... I guess just make sure that the player is not moving down when 'on_ground' is true.
+Now to test if wider entities work. They work! Mostly... They don't have nodes in the middle of their bodies, and as far as I know, neither
+do taller ones................................................................................................................................................ TODO
+Next I think I am going to add a cursor and block placement! It should be as simple as:
+1. Changing the mouse coords to world coords
+2. Checking what tile it is on
+3. Checking how close it is to the player
+4. Placing a new block
+But who am I kidding? This is programming.
+First problem: The cursor isn't showing up and there should be NO reason for that.
+Be back tomorrow, or later tonight.
+

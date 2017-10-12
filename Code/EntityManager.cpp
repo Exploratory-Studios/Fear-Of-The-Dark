@@ -18,12 +18,12 @@ void EntityManager::init(Player* player, std::vector<Entity*> entities) {
 }
 
 void EntityManager::update(std::vector<int>& activatedChunks, Chunk* chunks[WORLD_SIZE], float timeStepVariable) {
-    for(auto e : m_entities) {
-        e->update(chunks);
-    }
     for(int i = 0; i < timeStepVariable; i++) {
         collideEntities(activatedChunks, chunks);
         spawnEntities();
+    }
+    for(auto e : m_entities) {
+        e->update(chunks);
     }
     moveEntities(timeStepVariable);
 }

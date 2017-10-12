@@ -53,10 +53,11 @@ void Entity::move(float timeStepVariable) {
     if(!m_onGround) {
         m_velocity.y -= 0.07 * timeStepVariable;
     } else {
-        if(m_velocity.y < 0) {
-            m_velocity.y = 0;
+        if(m_velocity.y < 0.0f) {
+            m_velocity.y = 0.0f;
         }
     }
+    m_onGround = false;
     m_position += m_velocity * glm::vec2(timeStepVariable);
 }
 
@@ -80,12 +81,11 @@ void Entity::collide(std::vector<Entity*> entities, int chunkI) {
             /// Many thanks to Ben Arnold. He taught me almost everything I know about programming through his Youtube channel, "Makinggameswithben"
             /// This is just a small piece of code that handles and reacts to dynamic rectangle and tile collisions
             std::vector<glm::vec2> collideTilePositions;
-            std::vector<glm::vec2> ingroundColliderPositions;
 
             float x = m_position.x, y = m_position.y, width = m_size.x * TILE_SIZE, height = m_size.y * TILE_SIZE;
 
-            x += m_velocity.x / m_size.x;
-            y += m_velocity.y / m_size.y;
+            x += m_velocity.x;
+            y += m_velocity.y;
 
             glm::vec2 posBL(x, y);
             glm::vec2 posBR(x + width, y);
@@ -116,57 +116,6 @@ void Entity::collide(std::vector<Entity*> entities, int chunkI) {
                               collideTilePositions,
                               posTR.x,
                               posTR.y);
-
-
-
-            for(int i = 0; i < m_size.x - 1; i++) {
-                checkTilePosition(m_parentChunk->tiles,
-                                  chunkI,
-                                  collideTilePositions,
-                                  posTL.x + (i * TILE_SIZE),
-                                  posTL.y);
-
-                checkTilePosition(m_parentChunk->tiles,
-                                  chunkI,
-                                  collideTilePositions,
-                                  posBL.x + (i * TILE_SIZE),
-                                  posBL.y);
-            }
-
-            for(int i = 0; i < m_size.y - 1; i++) {
-                checkTilePosition(m_parentChunk->tiles,
-                                  chunkI,
-                                  collideTilePositions,
-                                  posTR.x,
-                                  posTR.y - (i * TILE_SIZE));
-
-                checkTilePosition(m_parentChunk->tiles,
-                                  chunkI,
-                                  collideTilePositions,
-                                  posTL.x,
-                                  posTL.y - (i * TILE_SIZE));
-            }
-
-
-
-            checkTilePosition(m_parentChunk->tiles,
-                              chunkI,
-                              ingroundColliderPositions,
-                              posBL.x + 0.01,
-                              posBL.y - 0.01);
-
-            checkTilePosition(m_parentChunk->tiles,
-                              chunkI,
-                              ingroundColliderPositions,
-                              posBR.x - 0.01,
-                              posBR.y - 0.01);
-
-            // Do the collision
-            if(ingroundColliderPositions.size() > 0) {
-                m_onGround = true;
-            } else {
-                m_onGround = false;
-            }
 
             for (int i = 0; i < collideTilePositions.size(); i++) {
                 collideWithTile(collideTilePositions[i]);
@@ -209,34 +158,32 @@ void Entity::checkTilePosition(Tile tiles[WORLD_HEIGHT][CHUNK_SIZE], int chunkI,
 }
 
 void Entity::collideWithTile(glm::vec2 tilePos) {
-    glm::vec2 centrePos = glm::vec2(m_position.x + (m_size.x * TILE_SIZE) / 2.0f, m_position.y + (m_size.y * TILE_SIZE) / 2.0f);
+    float x = m_position.x, y = m_position.y;
+    x += m_velocity.x; // To account for collision prediction,
+    y += m_velocity.y; // we check if the player is still colliding in real space, not predicted
+
+    glm::vec2 centrePos = glm::vec2(x + (m_size.x * TILE_SIZE) / 2.0f, y + (m_size.y * TILE_SIZE) / 2.0f);
 
     glm::vec2 distVec = centrePos - (tilePos * glm::vec2(TILE_SIZE));
 
-    glm::vec2 depthVec = abs(distVec) - (glm::vec2(TILE_SIZE/2) + (m_size * glm::vec2(TILE_SIZE)) / glm::vec2(2.0f));
-
-    m_testPos = centrePos - depthVec;
+    glm::vec2 depthVec = abs(abs(distVec) - (glm::vec2(TILE_SIZE / 2.0f) + m_size * glm::vec2(TILE_SIZE) / glm::vec2(2.0f)));
 
     // Determine if it's shorter to go in the X or Y direction
-    //if(abs(depthVec.x) > 0 && abs(depthVec.y) > 0) {
-        if(abs(depthVec.x / m_size.x) < abs(depthVec.y / m_size.y)) { // X direction is shorter // Maybe change these variables from depthvec to distvec and reverse the comparison to >
-            //depthVec /= m_size;
-            if(depthVec.x > 0) {
-                m_position.x += depthVec.x; // TILE ON LEFT WORKS
-            } else {
-                m_position.x -= depthVec.x; // TILE ON RIGHT WORKS
-            }
-            m_velocity.x = 0;
-        } else {
-            //depthVec *= m_size;
-            if(depthVec.y > 0) {
-                m_position.y += depthVec.y; // TILE ON BOTTOM WORKS
-            } else {
-                m_position.y -= depthVec.y; // TILE ON TOP WORKS
-            }
-            m_velocity.y = 0;
+    if(abs(depthVec.x * m_size.x) < abs(depthVec.y * m_size.y)) { // X direction is shorter // Maybe change these variables from depthvec to distvec and reverse the comparison to >
+        if(distVec.x < 0.0f) {
+            m_position.x -= depthVec.x - abs(m_velocity.x); // TILE ON RIGHT
+        } else if(distVec.x > 0.0f) {
+            m_position.x += depthVec.x - abs(m_velocity.x); // TILE ON LEFT
         }
-    //}
+        m_velocity.x = 0.0f;
+    } else {
+        m_onGround = false;
+        if(distVec.y < 0.0f && m_velocity.y >= 0.0f) {
+            m_position.y -= depthVec.y - abs(m_velocity.y); // TILE ON TOP
+        } else if(distVec.y > 0.0f && m_velocity.y <= 0.0f) {
+            m_position.y += depthVec.y - abs(m_velocity.y); // TILE ON BOTTOM
+            m_onGround = true;
+        }
+    }
 
-    // Go the (shorter) distance in the X or Y direction
 }

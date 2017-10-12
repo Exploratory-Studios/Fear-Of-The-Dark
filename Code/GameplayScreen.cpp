@@ -40,11 +40,11 @@ void GameplayScreen::onEntry() {
     m_camera.setPosition(m_camera.getPosition() + (glm::vec2(m_window->getScreenWidth() / 2, m_window->getScreenHeight() / 2)));
     m_uiCamera.init(m_window->getScreenWidth(), m_window->getScreenHeight());
 
-    initUI();
-
     m_dr.init();
 
     m_worldManager.init(m_WorldIOManager);
+
+    initUI();
 }
 
 void GameplayScreen::onExit() {
@@ -152,6 +152,7 @@ void GameplayScreen::initUI() {
     {
         m_gui.init("../Assets/GUI");
         m_gui.loadScheme("FOTDSkin.scheme");
+
         m_gui.setFont("QuietHorror-22");
 
         m_gui.setMouseCursor("FOTDSkin/MouseArrow");

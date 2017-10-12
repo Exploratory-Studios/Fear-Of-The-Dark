@@ -1,0 +1,47 @@
+
+SEARCH 'TODO' FOR THINGS YOU MUST DOOOOO!
+
+Developer's log: Oct. 9, 2017
+
+	Today I realized that instead of calculating the distance from the centres of the block AND the player, 
+I should be calculating the distance from the corner of the block and the centre of the player. Implementing now.
+
+Also, this was the first day of the devlog.
+
+OK! So the issue with collision was the fact that the depthVec was not being calculated correctly, getting the 
+absolute value of the entire calc instead of just the distVec.
+Next issue is the player floating. I think it will be an easy fix, just moving the ground sensors downwards (also
+moving them outwards so that the player won't slip off of edges)
+Fixed!
+Next issue is the entity being pushed out from the blocks (colliding) too violently. Trying to make it more
+constant... Not too sure how to do that. It may be caused by the collision box being moved forwards before the actual player...
+Nevermind.....
+Adding in extra delta loop, updating everything. I hope this was the source.
+Didn't work. I think it may be caused by the entity's speed being changed so violently. Implementing changes...
+Nope.
+AHAHAHAHA!!! It was actually the fact that the collision reaction had a line that made sure that the depth was more than 0
+0.0 is not the same as 0
+Got rid of the line of code. All collision (w/ blocks) works perfectly.
+Now comes the issue of a player being able to jump off the side of blocks. I have a suspicion that this is caused by
+the gravity sensors being too close to the sides of the player.
+I was right!
+Next issue is the fact that the player can catch on the sides of walls. I feel as though this is caused by the fact that
+the player can bring one of the collision sensors inside of a wall (normally getting it pushed out to the side) and the node
+gets stuck in between of two blocks... Skipping it for now.................................................................................................... TODO
+Next is the problem with taller entities. I tried to make more collision sensors (1 node per block space), but that didn't work.
+Next thing I'm going to try... I have no idea what to do...................................................................................................... TODO
+Now to implement entity collision (entity to entity)
+I'm going to try and 'passively' push entities away from each other (push 0.01 away constantly or something) so that they
+can still pass each other, and to reduce clumping............................................................................................................. TODO
+
+
+Developer's log: Oct. 11, 2017
+
+	Tonight I will spend a little bit of time contemplating what the issue is with taller entities, and how I can
+fix them. The following is a list of my thoughts:
+ - An initial thought was the fact that the collision prediction was dividing the predicted collision coords by the size.
+I changed to multiplication. Seems to have made things worse...
+ - If the height is more, the centre is more far away from the collision, making it seem as though it is deeper... Instead of  <----- WORKED
+depthVec being distVec - TILE_SIZE, it should be - (TILE_SIZE/2 + (size*TILE_SIZE)/2). It seems to have reduced error!
+ - Player is a little glitchy (going up when they should be going out, bouncing), so I'll add more contact points and leave
+it there for now, even if it doesn't work. YAY! OK, bye now.

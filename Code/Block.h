@@ -11,7 +11,9 @@
 class Block : public Tile
 {
     public:
+        Block();
         Block(glm::vec2 pos, unsigned int id);
+        void switchID(unsigned int newId);
 
     protected:
         /// Protected, taken from "Tile" class

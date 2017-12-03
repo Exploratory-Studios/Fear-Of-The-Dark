@@ -29,7 +29,7 @@ Next issue is the fact that the player can catch on the sides of walls. I feel a
 the player can bring one of the collision sensors inside of a wall (normally getting it pushed out to the side) and the node
 gets stuck in between of two blocks... Skipping it for now.................................................................................................... TODO
 Next is the problem with taller entities. I tried to make more collision sensors (1 node per block space), but that didn't work.
-Next thing I'm going to try... I have no idea what to do...................................................................................................... TODO
+Next thing I'm going to try... I have no idea what to do
 Now to implement entity collision (entity to entity)
 I'm going to try and 'passively' push entities away from each other (push 0.01 away constantly or something) so that they
 can still pass each other, and to reduce clumping............................................................................................................. TODO
@@ -61,7 +61,7 @@ calculations for abs() or other errors. Alright! DepthVec is always positive, bu
 comparing sides. I'll be back!
 
 	Back from school. It seems as though the depthvec is too high a number. I will check the depth calcs. Depth calcs are fine, I got
-rid of collision prediction because I think it was predicting too early and not being corrected in reaction................................................... TODO
+rid of collision prediction because I think it was predicting too early and not being corrected in reaction.
 That fixed most things, but now the player is beginning to glitch in/out of blocks if travelling too quickly :/ I guess I'll fix prediction
 now.
 I have done so by calculating depth and distance, etc with the predicted position (not real), and then adding/subtracting the depth (minus
@@ -77,7 +77,7 @@ the wall glitch is caused by the player moving down and into the top of a block 
 Another issue is the fact that the player bounces up and down (very little) on the ground, but if you add {m_velocity.y = 0;} then the
 player can't jump at all... I guess just make sure that the player is not moving down when 'on_ground' is true.
 Now to test if wider entities work. They work! Mostly... They don't have nodes in the middle of their bodies, and as far as I know, neither
-do taller ones................................................................................................................................................ TODO
+do taller ones
 Next I think I am going to add a cursor and block placement! It should be as simple as:
 1. Changing the mouse coords to world coords
 2. Checking what tile it is on
@@ -86,4 +86,17 @@ Next I think I am going to add a cursor and block placement! It should be as sim
 But who am I kidding? This is programming.
 First problem: The cursor isn't showing up and there should be NO reason for that.
 Be back tomorrow, or later tonight.
+
+	Back at 7:30 tonight, going to try and root out the invisible cursor problem once and for all!
+Some issue-makers could be:
+ - Order of init
+ - Renderers
+ - SDL being weird
+ - OpenGL being weird
+ - CEGUI being weird
+ - Draw function issues
+
+Stupid, stupid, stupid, stupid... I didn't even write m_gui.draw();
+
+Sometimes I worry about myself.
 

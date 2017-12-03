@@ -17,20 +17,21 @@ void EntityManager::init(Player* player, std::vector<Entity*> entities) {
     m_entities.push_back(m_player);
 }
 
-void EntityManager::update(std::vector<int>& activatedChunks, Chunk* chunks[WORLD_SIZE], float timeStepVariable) {
+void EntityManager::update(std::vector<int>& activatedChunks, Chunk* chunks[WORLD_SIZE], GLEngine::Camera2D* worldCamera, float timeStepVariable) {
+    for(auto e : m_entities) {
+        e->update(chunks);
+    }
+    m_player->updateMouse(chunks, worldCamera);
+    moveEntities(timeStepVariable);
     for(int i = 0; i < timeStepVariable; i++) {
         collideEntities(activatedChunks, chunks);
         spawnEntities();
     }
-    for(auto e : m_entities) {
-        e->update(chunks);
-    }
-    moveEntities(timeStepVariable);
 }
 
 void EntityManager::draw(GLEngine::SpriteBatch& sb, GLEngine::DebugRenderer& dr) {
     for(auto e : m_entities) {
-        e->draw(sb, dr);
+        e->draw(sb);
     }
 }
 

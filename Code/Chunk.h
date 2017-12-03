@@ -3,9 +3,9 @@
 #include <vector>
 #include <SpriteBatch.h>
 
-#include "Tile.h"
-
 #include "PresetValues.h"
+
+#include "Tile.h"
 
 class Chunk
 {

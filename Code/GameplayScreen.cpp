@@ -38,7 +38,9 @@ void GameplayScreen::onEntry() {
 
     m_camera.init(m_window->getScreenWidth(), m_window->getScreenHeight());
     m_camera.setPosition(m_camera.getPosition() + (glm::vec2(m_window->getScreenWidth() / 2, m_window->getScreenHeight() / 2)));
+
     m_uiCamera.init(m_window->getScreenWidth(), m_window->getScreenHeight());
+    m_uiCamera.setPosition(glm::vec2(m_window->getScreenWidth() / 2.0f, m_window->getScreenHeight() / 2.0f));
 
     m_dr.init();
 
@@ -65,7 +67,7 @@ void GameplayScreen::update() {
     m_camera.setPosition(m_worldManager.getPlayer()->getPosition() + m_worldManager.getPlayer()->getSize() / glm::vec2(2.0f));
     m_camera.setScale(m_scale);
 
-    m_worldManager.update(m_deltaTime);
+    m_worldManager.update(&m_camera, m_deltaTime);
 
     m_time++; /// Change the increment if time is slowed or quicker (potion effects?)
 }
@@ -99,6 +101,10 @@ void GameplayScreen::draw() {
 
     m_textureProgram.use();
 
+    textureUniform = m_textureProgram.getUniformLocation("mySampler");
+    glUniform1i(textureUniform, 0);
+    glActiveTexture(GL_TEXTURE0);
+
     // Camera matrix
     projectionMatrix = m_uiCamera.getCameraMatrix();
     pUniform = m_textureProgram.getUniformLocation("P");
@@ -106,8 +112,11 @@ void GameplayScreen::draw() {
 
     m_spriteBatch.begin();
 
+    m_gui.draw();
+    m_worldManager.getPlayer()->drawGUI(m_spriteBatch);
+
     char fpsStr[8];
-    std::sprintf(fpsStr, "%s%i", "FPS: ", (int)m_game->getFps());
+    std::sprintf(fpsStr, "FPS: %i", (int)m_game->getFps());
 
     m_spriteFont.draw(m_spriteBatch, fpsStr, glm::vec2(-m_window->getScreenWidth() / 2 + 50, m_window->getScreenHeight() / 2 - 50 - 96), glm::vec2(1), 0.0f, GLEngine::ColourRGBA8(255, 255, 255, 255));
 
@@ -162,10 +171,10 @@ void GameplayScreen::initUI() {
 }
 
 void GameplayScreen::scrollEvent(const SDL_Event& evnt) {
-    m_scale += (float)evnt.wheel.y * m_scale / 10;
-    if(m_scale <= MIN_ZOOM) {
+    m_scale += (float)evnt.wheel.y * m_scale / 10.0f;
+    if(m_scale < MIN_ZOOM) {
         m_scale = MIN_ZOOM;
-    } else if(m_scale >= MAX_ZOOM) {
+    } else if(m_scale > MAX_ZOOM) {
         m_scale = MAX_ZOOM;
     }
 }

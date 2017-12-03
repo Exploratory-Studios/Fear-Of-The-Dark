@@ -5,24 +5,37 @@ Block::Block(glm::vec2 pos, unsigned int id) {
     m_pos = pos;
     m_id = id;
 
+    switchID(id);
+
+}
+
+void Block::switchID(unsigned int newId) {
+
+    m_id = newId; // I was an idiot.
     m_solid = true; // Normally solid. Exceptions in id switch
+    m_transparent = false; // Normally opaque. Exceptions in switch
 
     switch(m_id) {
-        case (unsigned int)Categories::BlockIDs::AIR:
+        case (unsigned int)Categories::BlockIDs::AIR: {
             m_solid = false;
+            m_transparent = true;
             break;
-        case (unsigned int)Categories::BlockIDs::DIRT:
+        }
+        case (unsigned int)Categories::BlockIDs::DIRT: {
             m_texture = GLEngine::ResourceManager::getTexture("../Assets/Textures/Blocks/Dirt.png");
             break;
-        case (unsigned int)Categories::BlockIDs::SAND:
+        }
+        case (unsigned int)Categories::BlockIDs::SAND: {
             m_texture = GLEngine::ResourceManager::getTexture("../Assets/Textures/Blocks/Sand.png");
             break;
-        case (unsigned int)Categories::BlockIDs::STONE:
+        }
+        case (unsigned int)Categories::BlockIDs::STONE: {
             m_texture = GLEngine::ResourceManager::getTexture("../Assets/Textures/Blocks/Stone.png");
             break;
-        case (unsigned int)Categories::BlockIDs::BUSH:
+        }
+        case (unsigned int)Categories::BlockIDs::BUSH: {
             m_texture = GLEngine::ResourceManager::getTexture("../Assets/Textures/Blocks/Bush.png");
             break;
+        }
     }
-
 }

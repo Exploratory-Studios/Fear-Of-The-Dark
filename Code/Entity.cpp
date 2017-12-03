@@ -34,31 +34,30 @@ void Entity::init(glm::vec2 position, Categories::Entity_Type type, unsigned int
 
 void Entity::update(Chunk* chunks[WORLD_SIZE]) {
     setParentChunk(chunks);
-
-    m_wasOnGround = m_onGround;
 }
 
-void Entity::draw(GLEngine::SpriteBatch& sb, GLEngine::DebugRenderer& dr) {
+void Entity::draw(GLEngine::SpriteBatch& sb) {
     glm::vec4 destRect = glm::vec4(m_position.x, m_position.y, m_size.x * TILE_SIZE, m_size.y * TILE_SIZE);
     glm::vec4 uvRect = glm::vec4(0.0f, 0.0f, 1.0f, 1.0f);
 
     GLEngine::ColourRGBA8 colour(255, 255, 255, 255);
 
     sb.draw(destRect, uvRect, m_texture.id, 0.0f, colour);
-
-    dr.drawCircle(m_testPos, GLEngine::ColourRGBA8(255, 255, 255, 255), 4);
 }
 
 void Entity::move(float timeStepVariable) {
+    if(m_velocity.x > MAX_SPEED) m_velocity.x = MAX_SPEED;
+    if(m_velocity.x < -MAX_SPEED) m_velocity.x = -MAX_SPEED;
+    if(m_velocity.y > MAX_SPEED) m_velocity.y = MAX_SPEED;
+    if(m_velocity.y < -MAX_SPEED) m_velocity.y = -MAX_SPEED;
+
     if(!m_onGround) {
-        m_velocity.y -= 0.07 * timeStepVariable;
-    } else {
-        if(m_velocity.y < 0.0f) {
-            m_velocity.y = 0.0f;
-        }
+        m_velocity.y -= 0.07f * timeStepVariable;
+    } else if(m_velocity.y < 0.0f) {
+        m_velocity.y = 0.0f;
     }
-    m_onGround = false;
     m_position += m_velocity * glm::vec2(timeStepVariable);
+    m_onGround = false;
 }
 
 void Entity::collide(std::vector<Entity*> entities, int chunkI) {
@@ -145,6 +144,7 @@ void Entity::checkTilePosition(Tile tiles[WORLD_HEIGHT][CHUNK_SIZE], int chunkI,
     glm::vec2 gridPos = glm::vec2(floor(x / TILE_SIZE),
                                       floor(y / TILE_SIZE)); // grid-space coords
 
+
     // If we are outside the world, just return
     if (gridPos.x < CHUNK_SIZE * m_parentChunkIndex || gridPos.x >= CHUNK_SIZE + CHUNK_SIZE * m_parentChunkIndex ||
         gridPos.y < 0 || gridPos.y >= WORLD_HEIGHT) {
@@ -152,15 +152,15 @@ void Entity::checkTilePosition(Tile tiles[WORLD_HEIGHT][CHUNK_SIZE], int chunkI,
     }
 
     // If this is not an air tile, we should collide with it
-    if (tiles[(int)gridPos.y][(int)gridPos.x].isSolid()) {
-        collideTilePositions.push_back(glm::vec2((int)gridPos.x + 0.5, (int)gridPos.y + 0.5)); // CollideTilePositions are put in as gridspace coords
+    if (tiles[(int)gridPos.y - m_parentChunkIndex][(int)gridPos.x].isSolid()) {
+        collideTilePositions.push_back(glm::vec2((float)gridPos.x + 0.5f, (float)gridPos.y + 0.5f)); // CollideTilePositions are put in as gridspace coords
     }
 }
 
 void Entity::collideWithTile(glm::vec2 tilePos) {
     float x = m_position.x, y = m_position.y;
-    x += m_velocity.x; // To account for collision prediction,
-    y += m_velocity.y; // we check if the player is still colliding in real space, not predicted
+    x += m_velocity.x / m_size.x; // To account for collision prediction,
+    if(!m_onGround) y += m_velocity.y / m_size.y; // we check if the player is still colliding in real space, not predicted
 
     glm::vec2 centrePos = glm::vec2(x + (m_size.x * TILE_SIZE) / 2.0f, y + (m_size.y * TILE_SIZE) / 2.0f);
 
@@ -171,18 +171,22 @@ void Entity::collideWithTile(glm::vec2 tilePos) {
     // Determine if it's shorter to go in the X or Y direction
     if(abs(depthVec.x * m_size.x) < abs(depthVec.y * m_size.y)) { // X direction is shorter // Maybe change these variables from depthvec to distvec and reverse the comparison to >
         if(distVec.x < 0.0f) {
-            m_position.x -= depthVec.x - abs(m_velocity.x); // TILE ON RIGHT
+            m_position.x -= depthVec.x - abs(m_velocity.x * m_size.y); // TILE ON RIGHT
         } else if(distVec.x > 0.0f) {
-            m_position.x += depthVec.x - abs(m_velocity.x); // TILE ON LEFT
+            m_position.x += depthVec.x - abs(m_velocity.x * m_size.y); // TILE ON LEFT
         }
         m_velocity.x = 0.0f;
     } else {
-        m_onGround = false;
         if(distVec.y < 0.0f && m_velocity.y >= 0.0f) {
-            m_position.y -= depthVec.y - abs(m_velocity.y); // TILE ON TOP
-        } else if(distVec.y > 0.0f && m_velocity.y <= 0.0f) {
-            m_position.y += depthVec.y - abs(m_velocity.y); // TILE ON BOTTOM
+            m_position.y -= depthVec.y - abs(m_velocity.y * m_size.x); // TILE ON TOP
+            m_velocity.y = 0.0f;
+        } else if(distVec.y > 0.0f) {
+            m_position.y += depthVec.y - abs(m_velocity.y * m_size.x); // TILE ON BOTTOM
             m_onGround = true;
+
+            if(m_velocity.y < 0.0f) {
+                m_velocity.y = 0.0f;
+            }
         }
     }
 

@@ -79,12 +79,15 @@ void WorldIOManager::createWorld(unsigned int seed, std::string worldName) {
 
             for(int x = 0; x < CHUNK_SIZE; x++) {
                 for(int y = 0; y < blockHeights[i * CHUNK_SIZE + x]; y++) {
-                    m_world->chunks[i]->tiles[y][x] = (Block(glm::vec2((i * CHUNK_SIZE) + x, y - i), (unsigned int)Categories::BlockIDs::DIRT));
+                    m_world->chunks[i]->tiles[y][x] = (Block(glm::vec2((i * CHUNK_SIZE) + x, y), (unsigned int)Categories::BlockIDs::DIRT));
+                }
+                for(int y = blockHeights[i * CHUNK_SIZE + x]; y < WORLD_HEIGHT; y++) {
+                    m_world->chunks[i]->tiles[y][x] = (Block(glm::vec2((i * CHUNK_SIZE) + x, y), (unsigned int)Categories::BlockIDs::AIR));
                 }
             }
         }
 
-        Player player(glm::vec2(11.5 * TILE_SIZE, 48 * TILE_SIZE), m_input);
+        Player player(glm::vec2(0.0f, (blockHeights[1] + 1) * TILE_SIZE), m_input);
         m_world->player = player;
 
         //Entity ent(glm::vec2(10.5 * TILE_SIZE, 24 * TILE_SIZE), Categories::Entity_Type::MOB, 0);

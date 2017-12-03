@@ -24,7 +24,19 @@
 // What is the maximum scale of the camera?
 #define MAX_ZOOM 7.5
 
+// How many boxes are in the hotbar?
+#define HOTBAR_BOX_NUM 9
+// How big is each box? (Pixels)
+#define HOTBAR_BOX_SIZE 16
+// Location:
+#define HOTBAR_X 0
+#define HOTBAR_Y 100
 
+// How fast is TOO fast? (0.5 tiles/update)
+#define MAX_SPEED TILE_SIZE / 2.0f
+
+// How much does weight effect the player (3 is a pretty good curve)
+#define WEIGHT_EFFECT 3.0f
 
 
 /// Category Datatypes
@@ -77,9 +89,11 @@ namespace Category_Data {
                                                                 };
 
     const MobDatum mobData[Category_Data::TOTAL_MOBS] = {
-                                                         MobDatum(0, 10.0f, "../Assets/Textures/Mobs/Mob0.png", glm::vec2(1.0f, 2.0f), Categories::Faction::BAD),
+                                                         MobDatum(0, 10.0f, "../Assets/Textures/Mobs/Mob0.png", glm::vec2(2.0f, 1.0f), Categories::Faction::BAD),
                                                          MobDatum(1, 20.0f, "../Assets/Textures/Mobs/Mob0.png", glm::vec2(1.0f, 2.0f), Categories::Faction::GOOD),
-                                                         MobDatum(2, 30.0f, "../Assets/Textures/Mobs/Mob0.png", glm::vec2(2.0f, 1.0f), Categories::Faction::BAD)
+                                                         MobDatum(2, 30.0f, "../Assets/Textures/Mobs/Mob0.png", glm::vec2(1.0f, 1.0f), Categories::Faction::BAD)
                                                         };
+
+    const
 
 };

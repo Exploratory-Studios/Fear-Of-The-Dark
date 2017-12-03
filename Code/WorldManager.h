@@ -9,17 +9,21 @@
 #include "EntityManager.h"
 #include "WorldIOManager.h"
 
+#include "Scripting/ScripterMain.h"
+
 #include "PresetValues.h"
 
 class WorldManager
 {
+    friend class Scripter;
+
     public:
         WorldManager();
         virtual ~WorldManager();
 
         void init(WorldIOManager* worldIOManager);
 
-        void update(float timeStepVariable);
+        void update(GLEngine::Camera2D* worldCamera, float timeStepVariable);
         void draw(GLEngine::SpriteBatch& sb, GLEngine::DebugRenderer& dr);
 
         Player* getPlayer() { return m_player; }

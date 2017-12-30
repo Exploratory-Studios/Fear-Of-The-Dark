@@ -4,8 +4,6 @@
 
 #include "Categories.h"
 
-
-
 /// World size variables
 // How many tiles in a chunk?
 #define CHUNK_SIZE 32
@@ -25,19 +23,25 @@
 #define MAX_ZOOM 7.5
 
 // How many boxes are in the hotbar?
-#define HOTBAR_BOX_NUM 9
+#define HOTBAR_BOX_NUM 10
 // How big is each box? (Pixels)
-#define HOTBAR_BOX_SIZE 16
-// Location:
-#define HOTBAR_X 0
-#define HOTBAR_Y 100
+#define HOTBAR_BOX_SIZE 64
+// How much space is in between each box?
+#define HOTBAR_BOX_PADDING 4
 
-// How fast is TOO fast? (0.5 tiles/update)
-#define MAX_SPEED TILE_SIZE / 2.0f
+// How many boxes are in the inventory?
+#define INVENTORY_BOX_NUM_X 10
+#define INVENTORY_BOX_NUM_Y 3
+// How big is each box?
+#define INVENTORY_BOX_SIZE 64
+// How much space is in between each box?
+#define INVENTORY_BOX_PADDING 4
 
-// How much does weight effect the player (3 is a pretty good curve)
-#define WEIGHT_EFFECT 3.0f
+// How fast is TOO fast? (0.44 tiles/update)
+#define MAX_SPEED TILE_SIZE / 2.25f
 
+// How much can the player carry MAX
+#define MAX_WEIGHT 100.0f
 
 /// Category Datatypes
 // Biomes (AKA Places)
@@ -69,6 +73,16 @@ class MobDatum {
 
 };
 
+class ItemDatum {
+    public:
+        ItemDatum() { }
+        ItemDatum(unsigned int idP, std::string texturePathP, std::string nameP) : id(idP), texturePath(texturePathP), name(nameP) { }
+
+        unsigned int id;
+        std::string texturePath;
+        std::string name;
+};
+
 
 
 /// Category Data
@@ -76,6 +90,7 @@ namespace Category_Data {
 
     const unsigned int TOTAL_PLACES = 7;
     const unsigned int TOTAL_MOBS = 3;
+    const unsigned int TOTAL_ITEMS = 1;
 
     const PlaceDatum placeData[Category_Data::TOTAL_PLACES+1] = {
                                                                  PlaceDatum(20, -60, 10, 7.5),
@@ -94,6 +109,10 @@ namespace Category_Data {
                                                          MobDatum(2, 30.0f, "../Assets/Textures/Mobs/Mob0.png", glm::vec2(1.0f, 1.0f), Categories::Faction::BAD)
                                                         };
 
-    const
+    const ItemDatum itemData[Category_Data::TOTAL_ITEMS] = {
+                                                            ItemDatum(0, "../Assets/Textures/Items/Sword0.png", "Sword")
+                                                           };
+
+    // Why was there a random const here? Block weights and types, etc.?
 
 };

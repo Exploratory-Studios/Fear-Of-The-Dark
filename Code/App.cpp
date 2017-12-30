@@ -2,7 +2,7 @@
 
 App::App()
 {
-    //ctor
+    m_maxFps = 60.0f;
 }
 
 App::~App()

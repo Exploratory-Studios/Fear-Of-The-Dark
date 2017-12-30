@@ -61,4 +61,6 @@ class GameplayScreen : public GLEngine::IGameScreen
         float m_deltaTime = 1.0f;
 
         float m_scale = 1.0f;
+
+        glm::vec2 m_lastPlayerPos;
 };

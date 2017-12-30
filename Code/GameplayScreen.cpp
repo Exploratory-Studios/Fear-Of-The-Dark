@@ -31,22 +31,25 @@ void GameplayScreen::destroy() {
 }
 
 void GameplayScreen::onEntry() {
+
     initShaders();
 
     m_spriteBatch.init();
-    m_spriteFont.init("../Assets/GUI/fonts/QuietHorror.ttf", 96);
+    m_spriteFont.init("../Assets/GUI/fonts/Amatic-Bold.ttf", 96);
 
     m_camera.init(m_window->getScreenWidth(), m_window->getScreenHeight());
     m_camera.setPosition(m_camera.getPosition() + (glm::vec2(m_window->getScreenWidth() / 2, m_window->getScreenHeight() / 2)));
 
     m_uiCamera.init(m_window->getScreenWidth(), m_window->getScreenHeight());
-    m_uiCamera.setPosition(glm::vec2(m_window->getScreenWidth() / 2.0f, m_window->getScreenHeight() / 2.0f));
+    m_uiCamera.setPosition(m_uiCamera.getPosition() + (glm::vec2(m_window->getScreenWidth() / 2, m_window->getScreenHeight() / 2)));
 
     m_dr.init();
 
     m_worldManager.init(m_WorldIOManager);
 
     initUI();
+
+
 }
 
 void GameplayScreen::onExit() {
@@ -64,66 +67,65 @@ void GameplayScreen::update() {
 
     m_gui.update();
 
-    m_camera.setPosition(m_worldManager.getPlayer()->getPosition() + m_worldManager.getPlayer()->getSize() / glm::vec2(2.0f));
+    m_camera.setPosition(m_lastPlayerPos + m_worldManager.getPlayer()->getSize() / glm::vec2(2.0f));
+    m_lastPlayerPos = m_lastPlayerPos + (m_worldManager.getPlayer()->getPosition() - m_lastPlayerPos) / glm::vec2(4.0f);
+
     m_camera.setScale(m_scale);
 
     m_worldManager.update(&m_camera, m_deltaTime);
 
     m_time++; /// Change the increment if time is slowed or quicker (potion effects?)
+
+
 }
 
 void GameplayScreen::draw() {
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     glClearColor(0.1f, 0.1f, 0.8f, 1.0f);
 
-    m_textureProgram.use();
+    {
+        m_textureProgram.use();
 
-    GLint textureUniform = m_textureProgram.getUniformLocation("mySampler");
-    glUniform1i(textureUniform, 0);
-    glActiveTexture(GL_TEXTURE0);
+        GLint textureUniform = m_textureProgram.getUniformLocation("mySampler");
+        glUniform1i(textureUniform, 0);
+        glActiveTexture(GL_TEXTURE0);
 
-    // Camera matrix
-    glm::mat4 projectionMatrix = m_camera.getCameraMatrix();
-    GLint pUniform = m_textureProgram.getUniformLocation("P");
-    glUniformMatrix4fv(pUniform, 1, GL_FALSE, &projectionMatrix[0][0]);
+        // Camera matrix
+        glm::mat4 projectionMatrix = m_camera.getCameraMatrix();
+        GLint pUniform = m_textureProgram.getUniformLocation("P");
+        glUniformMatrix4fv(pUniform, 1, GL_FALSE, &projectionMatrix[0][0]);
 
-    m_spriteBatch.begin();
+        m_spriteBatch.begin();
 
-    m_worldManager.draw(m_spriteBatch, m_dr);
+        m_worldManager.draw(m_spriteBatch, m_dr);
 
-    m_spriteBatch.end();
-    m_spriteBatch.renderBatch();
+        m_spriteBatch.end();
+        m_spriteBatch.renderBatch();
 
-    m_dr.end();
-    m_dr.render(projectionMatrix, 3);
+        m_dr.end();
+        m_dr.render(projectionMatrix, 3);
 
-    m_textureProgram.unuse();
+        m_textureProgram.unuse();
+    }
 
-    m_textureProgram.use();
+    {
+        m_textureProgram.use();
 
-    textureUniform = m_textureProgram.getUniformLocation("mySampler");
-    glUniform1i(textureUniform, 0);
-    glActiveTexture(GL_TEXTURE0);
+        GLint textureUniform = m_textureProgram.getUniformLocation("mySampler");
+        glUniform1i(textureUniform, 0);
+        glActiveTexture(GL_TEXTURE0);
 
-    // Camera matrix
-    projectionMatrix = m_uiCamera.getCameraMatrix();
-    pUniform = m_textureProgram.getUniformLocation("P");
-    glUniformMatrix4fv(pUniform, 1, GL_FALSE, &projectionMatrix[0][0]);
+        // Camera matrix
+        glm::mat4 projectionMatrix = m_uiCamera.getCameraMatrix();
+        GLint pUniform = m_textureProgram.getUniformLocation("P");
+        glUniformMatrix4fv(pUniform, 1, GL_FALSE, &projectionMatrix[0][0]);
 
-    m_spriteBatch.begin();
+        m_worldManager.getPlayer()->drawGUI(m_spriteBatch, m_spriteFont);
 
-    m_gui.draw();
-    m_worldManager.getPlayer()->drawGUI(m_spriteBatch);
+        m_gui.draw();
 
-    char fpsStr[8];
-    std::sprintf(fpsStr, "FPS: %i", (int)m_game->getFps());
-
-    m_spriteFont.draw(m_spriteBatch, fpsStr, glm::vec2(-m_window->getScreenWidth() / 2 + 50, m_window->getScreenHeight() / 2 - 50 - 96), glm::vec2(1), 0.0f, GLEngine::ColourRGBA8(255, 255, 255, 255));
-
-    m_spriteBatch.end();
-    m_spriteBatch.renderBatch();
-
-    m_textureProgram.unuse();
+        m_textureProgram.unuse();
+    }
 
     /// TODO: Don't forget to have a background image for the world based on biome
 }

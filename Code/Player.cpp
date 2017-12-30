@@ -3,12 +3,13 @@
 #include "PresetValues.h"
 
 Player::Player() {
-
+    m_inventory = new Inventory();
 }
 
 Player::Player(glm::vec2 position, GLEngine::InputManager* input) : m_input(input)
 {
     init(position, Categories::Entity_Type::MOB, 1);
+    m_inventory = new Inventory();
 }
 
 Player::~Player()
@@ -32,47 +33,104 @@ void Player::draw(GLEngine::SpriteBatch& sb) {
     }
 }
 
-void Player::drawGUI(GLEngine::SpriteBatch& sb) {
+void Player::drawGUI(GLEngine::SpriteBatch& sb, GLEngine::SpriteFont& sf) {
 
     glm::vec4 fullUV = glm::vec4(0.0f, 0.0f, 1.0f, 1.0f);
     GLEngine::ColourRGBA8 fullColour(255, 255, 255, 255);
 
     {
-        int hotbarImgId = GLEngine::ResourceManager::getTexture("../Assets/GUI/Player/Hotbar.png").id;
+        int hotbarImgId = GLEngine::ResourceManager::getTexture("../Assets/GUI/Player/HotbarBox.png").id;
 
-        glm::vec4 destRect(HOTBAR_X, HOTBAR_Y, HOTBAR_BOX_SIZE * HOTBAR_BOX_NUM, HOTBAR_BOX_SIZE);
+        sb.begin();
 
-        sb.draw(destRect, fullUV, hotbarImgId, 0.0f, fullColour);
+        for(int i = 0; i < HOTBAR_BOX_NUM; i++) {
+            glm::vec4 destRect(HOTBAR_BOX_SIZE / 4 + (HOTBAR_BOX_SIZE + HOTBAR_BOX_PADDING) * i, HOTBAR_BOX_SIZE / 4, HOTBAR_BOX_SIZE, HOTBAR_BOX_SIZE);
+            sb.draw(destRect, fullUV, hotbarImgId, 0.0f, fullColour);
+        }
+
+        sb.end();
+        sb.renderBatch();
+    }
+
+    {
+        if(m_inventoryOpen) {
+
+            m_inventory->draw(HOTBAR_BOX_SIZE / 4, HOTBAR_BOX_SIZE * 1.5, sb, sf);
+
+        }
     }
 }
 
 void Player::update(Chunk* chunks[WORLD_SIZE]) {
     if(m_input->isKeyDown(SDLK_w)) {
         if(m_onGround) {
-            m_velocity.y = 2.0f; // jumpHeight(blocks) = yVel * timestep / gravity(0.07) / TILE_SIZE(8)
+            m_velocity.y = 2.352f; // jumpHeight(blocks) = yVel(2) * timestep(1 avg.) / gravity(0.098) / TILE_SIZE(8)
             m_onGround = false;
         }
     }
 
     if(m_input->isKeyDown(SDLK_d)) {
-        m_velocity.x += 0.1f * m_inventory->getSpeedMultiplier();
+        if(m_velocity.x < 0.0f) m_velocity.x /= 5.0f;
+        m_velocity.x += 0.2f * m_inventory->getSpeedMultiplier();
     } else if(m_input->isKeyDown(SDLK_a)) {
-        m_velocity.x -= 0.1f * m_inventory->getSpeedMultiplier();
+        if(m_velocity.x > 0.0f) m_velocity.x /= 5.0f;
+        m_velocity.x -= 0.2f * m_inventory->getSpeedMultiplier();
     } else {
-        m_velocity.x *= 0.8f;
+        m_velocity.x *= 0.9f;
+    }
+
+    if(m_velocity.x > MAX_SPEED * m_inventory->getSpeedMultiplier()) {
+        m_velocity.x = MAX_SPEED * m_inventory->getSpeedMultiplier();
+    } else if(m_velocity.x < -MAX_SPEED * m_inventory->getSpeedMultiplier()) {
+        m_velocity.x = -MAX_SPEED * m_inventory->getSpeedMultiplier();
     }
 
     if(m_input->isKeyDown(SDL_BUTTON_LEFT) && m_selectedBlock) {
-        m_selectedBlock->switchID((unsigned int)Categories::BlockIDs::AIR);
+        if(m_handItem) m_handItem->onLeftClick(m_selectedBlock);
     }
     if(m_input->isKeyDown(SDL_BUTTON_RIGHT) && m_selectedBlock) {
-        m_selectedBlock->switchID((unsigned int)Categories::BlockIDs::DIRT);
+        if(m_handItem) m_handItem->onRightClick(m_selectedBlock);
     }
-    if(m_input->isKeyDown(SDLK_a)) {
-        Item newItem;
-        newItem.
+    if(m_input->isKeyDown(SDLK_l)) {
+        BlockItem newItem(0, 0.5f, 1);
         m_inventory->addItem(newItem);
     }
+    if(m_input->isKeyPressed(SDLK_i)) {
+        m_inventoryOpen = !m_inventoryOpen;
+    }
+
+
+    if(m_input->isKeyPressed(SDLK_1)) {
+        m_selectedHotbox = 1;
+    } else
+    if(m_input->isKeyPressed(SDLK_2)) {
+        m_selectedHotbox = 2;
+    } else
+    if(m_input->isKeyPressed(SDLK_3)) {
+        m_selectedHotbox = 3;
+    } else
+    if(m_input->isKeyPressed(SDLK_4)) {
+        m_selectedHotbox = 4;
+    } else
+    if(m_input->isKeyPressed(SDLK_5)) {
+        m_selectedHotbox = 5;
+    } else
+    if(m_input->isKeyPressed(SDLK_6)) {
+        m_selectedHotbox = 6;
+    } else
+    if(m_input->isKeyPressed(SDLK_7)) {
+        m_selectedHotbox = 7;
+    } else
+    if(m_input->isKeyPressed(SDLK_8)) {
+        m_selectedHotbox = 8;
+    } else
+    if(m_input->isKeyPressed(SDLK_9)) {
+        m_selectedHotbox = 9;
+    } else
+    if(m_input->isKeyPressed(SDLK_0)) {
+        m_selectedHotbox = 0;
+    }
+
 
     setParentChunk(chunks);
 }

@@ -37,7 +37,7 @@
 			<Add directory="../GLEngine" />
 		</Compiler>
 		<Linker>
-			<Add option="../GLEngine/bin/Release/libGLEngine.a" />
+			<Add option="../GLEngine/bin/Debug/libGLEngine.a" />
 			<Add option="-lCEGUIBase-0" />
 			<Add option="-lCEGUIOpenGLRenderer-0" />
 			<Add option="-lSDL2" />
@@ -65,6 +65,7 @@
 		<Unit filename="Inventory.cpp" />
 		<Unit filename="Inventory.h" />
 		<Unit filename="Item.h" />
+		<Unit filename="Items/BlockItem.cpp" />
 		<Unit filename="Items/BlockItem.h" />
 		<Unit filename="LoadScreen.cpp" />
 		<Unit filename="LoadScreen.h" />

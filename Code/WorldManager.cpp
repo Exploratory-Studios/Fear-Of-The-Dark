@@ -22,6 +22,9 @@ void WorldManager::init(WorldIOManager* worldIOManager) {
         }
 
         m_player = &m_worldIOManager->getWorld()->player;
+        Entity* ent = new Entity(glm::vec2(80, 800), Categories::Entity_Type::MOB, 1);
+        entities.push_back(ent);
+
         m_entityManager.init(m_player, entities);
     }
 }

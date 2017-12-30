@@ -11,9 +11,9 @@
 class Block : public Tile
 {
     public:
-        Block();
         Block(glm::vec2 pos, unsigned int id);
-        void switchID(unsigned int newId);
+
+        void switchID(unsigned int newID);
 
     protected:
         /// Protected, taken from "Tile" class
@@ -25,5 +25,8 @@ class Block : public Tile
         GLEngine::ColourRGBA8 m_colour = GLEngine::ColourRGBA8(255.0f, 255.0f, 255.0f, 255.0f);
 
         unsigned int m_id;
+
+        m_solid
+        m_transparent
         */
 };

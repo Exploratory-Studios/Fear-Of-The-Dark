@@ -100,3 +100,29 @@ Stupid, stupid, stupid, stupid... I didn't even write m_gui.draw();
 
 Sometimes I worry about myself.
 
+
+Developer's log: Dec. 24, 2017
+
+It's been a while since I last programmed, so I have no clue what to do
+Inventory! That's what I'll do.
+
+Ok. The inventory system is a lot like Skyrim's, with weight being the only limit. Instead of having a constant movement speed and then that lowers a ton when you go
+over the limit, we have a (mostly) gradual curve. Here's the equation: Speed multiplier = -(weight/maxWeight)^3 + 1.0. This gives a curve that goes down slowly at 
+first, but then kind of falls quicker nearing the end. Just look at it in wolfram alpha.
+
+This should be as easy as:
+1. Giving the player an Inventory item,
+2. Regularly checking the player's speed multiplier, (calc in inventory class)
+3. Multiply player's speed accordingly.
+
+But I know something's going to go wrong.
+Well, would you look at that. Nothing went wrong and it works perfectly
+
+
+Developer's log: Dec. 28, 2017
+
+Today I challenge the problem of the player being able to sit on the edges of blocks in a wall. Example: Player can sit on middle of side of cliff that goes straight
+up.
+I think I might move the ground sensors inwards and make them exclusively able to sense the ground. Sounds easy, right? Right?!?
+Ummm...... That's strange. It didn't work before, but it works perfectly now.
+Yay..?

@@ -3,6 +3,7 @@
 #include <glm/glm.hpp>
 
 #include "Categories.h"
+#include "Block.h"
 
 /// Item class is basically abstract.
 /// Create new classes for different items
@@ -13,14 +14,17 @@ class Item
     friend class Inventory;
 
     public:
-        Item(bool block, bool canPlace, bool canConsume, unsigned int id, short unsigned int weight, short unsigned int quantity) :
-            m_isBlock(block), m_canPlace(canPlace), m_canConsume(canConsume), m_id(id), m_weight(weight), m_quantity(quantity)
-        { }
+        Item() {}
+        Item(unsigned int id, float weight, short unsigned int quantity);
 
-        virtual void onLeftClick() = 0;
-        virtual void onRightClick() = 0;
+        virtual void onLeftClick(Block* selectedBlock) {};
+        virtual void onRightClick(Block* selectedBlock) {}; /// TODO variadic stuff for character pos, mouse pos, etc.
 
-    private:
+        bool isBlock() { return m_isBlock; }
+        unsigned int getID() { return m_id; }
+        // Make new classes for different types of items: blocks, weapons, food, etc. with each one having different default left & right click events
+
+    protected:
 
         // There are 2 types of items: Blocks and non-blocks (food, quest items, etc.)
         bool m_isBlock; // Block or non-block?
@@ -30,6 +34,8 @@ class Item
 
         unsigned int m_id; // Block/Non-block id
 
-        short unsigned int m_weight; // How much it weighs in the inventory (kgs)
+        float m_weight; // How much it weighs in the inventory (kgs)
         short unsigned int m_quantity; // How much you have
+
+        // Metadata idea (from minecraft)
 };

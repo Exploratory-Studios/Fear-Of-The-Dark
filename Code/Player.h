@@ -31,6 +31,8 @@ class Player : public Entity
         Block* m_selectedBlock = nullptr;
         Item* m_handItem = nullptr;
 
+        int m_selectedHotbox = 1;
+
         Inventory* m_inventory = nullptr;
 
         bool m_inventoryOpen = false;

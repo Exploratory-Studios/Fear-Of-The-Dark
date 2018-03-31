@@ -58,7 +58,7 @@ void WorldManager::activateChunks() {
 
         for(int i = -each; i <= each; i++) {
             if(chunkIndex + i >= 0 && chunkIndex + i <= WORLD_SIZE-1) {
-                m_activatedChunks.push_back(chunkIndex + i);
+                m_activatedChunks.push_back((chunkIndex + i) % WORLD_SIZE);
             }
         }
 

@@ -17,13 +17,13 @@ void main() {
     gl_Position.xy = (P * vec4(vertexPosition, 0.0, 1.0)).xy;
     //the z position is zero since we are in 2D
     gl_Position.z = 0.0;
-    
+
     //Indicate that the coordinates are normalized
     gl_Position.w = 1.0;
-    
+
     fragmentPosition = vertexPosition;
-    
+
     fragmentColour = vertexColour;
-    
+
     fragmentUV = vec2(vertexUV.x, 1.0 - vertexUV.y);
 }

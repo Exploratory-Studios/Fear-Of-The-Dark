@@ -1,8 +1,11 @@
 #include "App.h"
 
+#include <iostream>
+
 App::App()
 {
-    m_maxFps = 60.0f;
+    m_window.setScreenTitle("Fear Of The Dark");
+    m_window.setScreenSize(1024, 624);
 }
 
 App::~App()
@@ -31,7 +34,6 @@ void App::addScreens() {
 
     m_screenList->setScreen(m_startupScreen->getScreenIndex());
 
-    m_window.setScreenTitle("Fear Of The Dark");
 }
 
 void App::onExit() {

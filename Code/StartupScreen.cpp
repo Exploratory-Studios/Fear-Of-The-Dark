@@ -1,8 +1,5 @@
 #include "StartupScreen.h"
 
-
-
-
 #include <iostream>
 
 
@@ -73,7 +70,8 @@ void StartupScreen::onEntry() {
     m_camera.init(m_window->getScreenWidth(), m_window->getScreenHeight());
     m_camera.setPosition(glm::vec2(m_window->getScreenWidth() / 2.0f, m_window->getScreenHeight() / 2.0f));
     m_uiCamera.init(m_window->getScreenWidth(), m_window->getScreenHeight());
-    m_gui.init("GUI");                                                          /// DONT NEED?
+
+    m_gui.init("../Assets/GUI");
 
     initAnimations();
     initUI();

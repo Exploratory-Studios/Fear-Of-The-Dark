@@ -1,5 +1,3 @@
-#include <IGameScreen.h>
-
 #include "ScreenIndices.h"
 
 #include <IGameScreen.h>

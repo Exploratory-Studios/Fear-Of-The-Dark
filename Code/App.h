@@ -17,7 +17,7 @@ class App : public GLEngine::IMainGame
 {
     public:
         App();
-        virtual ~App();
+        ~App();
         virtual void onInit() override;
         virtual void addScreens() override;
         virtual void onExit() override;

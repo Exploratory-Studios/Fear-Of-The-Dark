@@ -1,2 +1,2 @@
 # Fear-Of-The-Dark
-All the programming files and assets for FOTD
+Basically just all the files for Fear Of The Dark, an indie project

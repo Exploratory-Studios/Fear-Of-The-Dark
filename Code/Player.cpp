@@ -1,6 +1,7 @@
 #include "Player.h"
 
 #include "PresetValues.h"
+#include "Item.h"
 
 Player::Player() {
     m_inventory = new Inventory();
@@ -39,14 +40,58 @@ void Player::drawGUI(GLEngine::SpriteBatch& sb, GLEngine::SpriteFont& sf) {
     GLEngine::ColourRGBA8 fullColour(255, 255, 255, 255);
 
     {
-        int hotbarImgId = GLEngine::ResourceManager::getTexture("../Assets/GUI/Player/HotbarBox.png").id;
+        int hotbarImgId = GLEngine::ResourceManager::getTexture("../Assets/GUI/Player/Hotbar.png").id;
+        int hotbarSelectImgId = GLEngine::ResourceManager::getTexture("../Assets/GUI/Player/HotbarSelection.png").id;
 
         sb.begin();
 
         for(int i = 0; i < HOTBAR_BOX_NUM; i++) {
+
+            glm::vec4 uv(i * (1.0 / HOTBAR_BOX_NUM), 0.0f, (1.0 / HOTBAR_BOX_NUM), 1.0f);
             glm::vec4 destRect(HOTBAR_BOX_SIZE / 4 + (HOTBAR_BOX_SIZE + HOTBAR_BOX_PADDING) * i, HOTBAR_BOX_SIZE / 4, HOTBAR_BOX_SIZE, HOTBAR_BOX_SIZE);
-            sb.draw(destRect, fullUV, hotbarImgId, 0.0f, fullColour);
+            sb.draw(destRect, uv, hotbarImgId, 0.0f, fullColour);
+
+            {
+                if(m_inventory->getItem(i, 0).getID() != -1) {
+                    glm::vec4 destRect(HOTBAR_BOX_SIZE / 4 + (HOTBAR_BOX_SIZE + HOTBAR_BOX_PADDING) * i,
+                                    HOTBAR_BOX_SIZE / 4,
+                                    HOTBAR_BOX_SIZE,
+                                    HOTBAR_BOX_SIZE);
+                    glm::vec4 itemUV(0, 0, 1, 1);
+                    int itemImgId = GLEngine::ResourceManager::getTexture(Category_Data::itemData[m_inventory->getItem(i, 0).getID()].texturePath).id;
+
+                    sb.draw(destRect, itemUV, itemImgId, 0.0f, GLEngine::ColourRGBA8(255, 255, 255, 255));
+                }
+            }
         }
+
+        sb.end();
+        sb.renderBatch();
+
+        for(int i = 0; i < HOTBAR_BOX_NUM; i++) {
+            if(m_inventory->getItem(i, 0).getID() != -1) {
+                glm::vec4 destRect(HOTBAR_BOX_SIZE / 4 + (HOTBAR_BOX_SIZE + HOTBAR_BOX_PADDING) * i,
+                                    HOTBAR_BOX_SIZE / 4,
+                                    HOTBAR_BOX_SIZE,
+                                    HOTBAR_BOX_SIZE);
+                glm::vec4 itemUV(0, 0, 1, 1);
+                int itemImgId = GLEngine::ResourceManager::getTexture(Category_Data::itemData[m_inventory->getItem(i, 0).getID()].texturePath).id;
+
+                sb.begin();
+                sb.draw(destRect, itemUV, itemImgId, 0.0f, GLEngine::ColourRGBA8(255, 255, 255, 255));
+                sb.end();
+                sb.renderBatch();
+
+                sb.begin();
+                sf.draw(sb, std::to_string(m_inventory->getItem(i, 0).getQuantity()).c_str(), glm::vec2(destRect.x + INVENTORY_BOX_SIZE * 9/10, destRect.y + INVENTORY_BOX_SIZE - 96.0f * 0.35f), glm::vec2(0.35f), 0.0f, GLEngine::ColourRGBA8(255, 255, 255, 255), GLEngine::Justification::RIGHT);
+                sb.end();
+                sb.renderBatch();
+            }
+        }
+
+        sb.begin();
+        glm::vec4 destRect(HOTBAR_BOX_SIZE / 4 + (HOTBAR_BOX_SIZE + HOTBAR_BOX_PADDING) * m_selectedHotbox, HOTBAR_BOX_SIZE / 4, HOTBAR_BOX_SIZE, HOTBAR_BOX_SIZE);
+        sb.draw(destRect, fullUV, hotbarSelectImgId, 0.0f, fullColour);
 
         sb.end();
         sb.renderBatch();
@@ -91,8 +136,8 @@ void Player::update(Chunk* chunks[WORLD_SIZE]) {
     if(m_input->isKeyDown(SDL_BUTTON_RIGHT) && m_selectedBlock) {
         if(m_handItem) m_handItem->onRightClick(m_selectedBlock);
     }
-    if(m_input->isKeyDown(SDLK_l)) {
-        BlockItem newItem(0, 0.5f, 1);
+    if(m_input->isKeyPressed(SDLK_l)) {
+        Item newItem(0, 0.5, 1);
         m_inventory->addItem(newItem);
     }
     if(m_input->isKeyPressed(SDLK_i)) {
@@ -101,34 +146,34 @@ void Player::update(Chunk* chunks[WORLD_SIZE]) {
 
 
     if(m_input->isKeyPressed(SDLK_1)) {
-        m_selectedHotbox = 1;
+        m_selectedHotbox = 0;
     } else
     if(m_input->isKeyPressed(SDLK_2)) {
-        m_selectedHotbox = 2;
+        m_selectedHotbox = 1;
     } else
     if(m_input->isKeyPressed(SDLK_3)) {
-        m_selectedHotbox = 3;
+        m_selectedHotbox = 2;
     } else
     if(m_input->isKeyPressed(SDLK_4)) {
-        m_selectedHotbox = 4;
+        m_selectedHotbox = 3;
     } else
     if(m_input->isKeyPressed(SDLK_5)) {
-        m_selectedHotbox = 5;
+        m_selectedHotbox = 4;
     } else
     if(m_input->isKeyPressed(SDLK_6)) {
-        m_selectedHotbox = 6;
+        m_selectedHotbox = 5;
     } else
     if(m_input->isKeyPressed(SDLK_7)) {
-        m_selectedHotbox = 7;
+        m_selectedHotbox = 6;
     } else
     if(m_input->isKeyPressed(SDLK_8)) {
-        m_selectedHotbox = 8;
+        m_selectedHotbox = 7;
     } else
     if(m_input->isKeyPressed(SDLK_9)) {
-        m_selectedHotbox = 9;
+        m_selectedHotbox = 8;
     } else
     if(m_input->isKeyPressed(SDLK_0)) {
-        m_selectedHotbox = 0;
+        m_selectedHotbox = 9;
     }
 
 

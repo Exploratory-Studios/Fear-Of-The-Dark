@@ -15,13 +15,14 @@ class Item
 
     public:
         Item() {}
-        Item(unsigned int id, float weight, short unsigned int quantity);
+        Item(unsigned int id, float weight, short unsigned int quantity) : m_id(id), m_weight(weight), m_quantity(quantity) {}
 
-        virtual void onLeftClick(Block* selectedBlock) {};
-        virtual void onRightClick(Block* selectedBlock) {}; /// TODO variadic stuff for character pos, mouse pos, etc.
+        void onLeftClick(Block* selectedBlock) {}
+        void onRightClick(Block* selectedBlock) {} /// TODO variadic stuff for character pos, mouse pos, etc.  also: make virtua
 
         bool isBlock() { return m_isBlock; }
-        unsigned int getID() { return m_id; }
+        int getID() { return m_id; } // -1 is equivalent to null
+        short unsigned int getQuantity() { return m_quantity; }
         // Make new classes for different types of items: blocks, weapons, food, etc. with each one having different default left & right click events
 
     protected:
@@ -32,7 +33,7 @@ class Item
         bool m_canPlace; // Blocks, etc.
         bool m_canConsume; // Potions, food, etc.
 
-        unsigned int m_id; // Block/Non-block id
+        int m_id = -1; // Block/Non-block id
 
         float m_weight; // How much it weighs in the inventory (kgs)
         short unsigned int m_quantity; // How much you have

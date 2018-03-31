@@ -1,466 +1,466 @@
-31/03/2018 12:17:20 (Std) 	+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-31/03/2018 12:17:20 (Std) 	+                     Crazy Eddie's GUI System - Event log                    +
-31/03/2018 12:17:20 (Std) 	+                          (http://www.cegui.org.uk/)                         +
-31/03/2018 12:17:20 (Std) 	+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+31/03/2018 15:20:30 (Std) 	+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+31/03/2018 15:20:30 (Std) 	+                     Crazy Eddie's GUI System - Event log                    +
+31/03/2018 15:20:30 (Std) 	+                          (http://www.cegui.org.uk/)                         +
+31/03/2018 15:20:30 (Std) 	+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 
-31/03/2018 12:17:20 (Std) 	CEGUI::Logger singleton created. (0x23c8c00)
-31/03/2018 12:17:20 (Std) 	
-31/03/2018 12:17:20 (Std) 	********************************************************************************
-31/03/2018 12:17:20 (Std) 	* Important:                                                                   *
-31/03/2018 12:17:20 (Std) 	*     To get support at the CEGUI forums, you must post _at least_ the section *
-31/03/2018 12:17:20 (Std) 	*     of this log file indicated below.  Failure to do this will result in no  *
-31/03/2018 12:17:20 (Std) 	*     support being given; please do not waste our time.                       *
-31/03/2018 12:17:20 (Std) 	********************************************************************************
-31/03/2018 12:17:20 (Std) 	********************************************************************************
-31/03/2018 12:17:20 (Std) 	* -------- START OF ESSENTIAL SECTION TO BE POSTED ON THE FORUM       -------- *
-31/03/2018 12:17:20 (Std) 	********************************************************************************
-31/03/2018 12:17:20 (Std) 	---- Version: 0.8.7 (Build: Feb  1 2018 GNU/Linux g++ 5.4.0 20160609 64 bit) ----
-31/03/2018 12:17:20 (Std) 	---- Renderer module is: CEGUI::OpenGL3Renderer - Official OpenGL 3.2 core based renderer module.  TextureTarget support enabled via FBO OGL 3.2 core implementation. ----
-31/03/2018 12:17:20 (Std) 	---- XML Parser module is: CEGUI::ExpatParser - Official expat based parser module for CEGUI ----
-31/03/2018 12:17:20 (Std) 	---- Image Codec module is: SILLYImageCodec - Official SILLY based image codec ----
-31/03/2018 12:17:20 (Std) 	---- Scripting module is: None ----
-31/03/2018 12:17:20 (Std) 	********************************************************************************
-31/03/2018 12:17:20 (Std) 	* -------- END OF ESSENTIAL SECTION TO BE POSTED ON THE FORUM         -------- *
-31/03/2018 12:17:20 (Std) 	********************************************************************************
-31/03/2018 12:17:20 (Std) 	
-31/03/2018 12:17:20 (Std) 	---- Begining CEGUI System initialisation ----
-31/03/2018 12:17:20 (Std) 	[CEGUI::ImageManager] Singleton created (0x23c9cb0)
-31/03/2018 12:17:20 (Std) 	[CEGUI::ImageManager] Registered Image type: BasicImage
-31/03/2018 12:17:20 (Std) 	CEGUI::FontManager singleton created. (0x23cc8d0)
-31/03/2018 12:17:20 (Std) 	CEGUI::WindowFactoryManager singleton created
-31/03/2018 12:17:20 (Std) 	CEGUI::WindowManager singleton created (0x23cb980)
-31/03/2018 12:17:20 (Std) 	CEGUI::SchemeManager singleton created. (0x23cca00)
-31/03/2018 12:17:20 (Std) 	CEGUI::GlobalEventSet singleton created. (0x23cc7a0)
-31/03/2018 12:17:20 (Std) 	CEGUI::AnimationManager singleton created (0x23ccb30)
-31/03/2018 12:17:20 (Std) 	CEGUI::WidgetLookManager singleton created. (0x23cb140)
-31/03/2018 12:17:20 (Std) 	CEGUI::WindowRendererManager singleton created (0x23c9c10)
-31/03/2018 12:17:20 (Std) 	CEGUI::RenderEffectManager singleton created (0x23cb910)
-31/03/2018 12:17:20 (Std) 	Created WindowFactory for 'DefaultWindow' windows.
-31/03/2018 12:17:20 (Std) 	WindowFactory for 'DefaultWindow' windows added. (0x23c3710)
-31/03/2018 12:17:20 (Std) 	Created WindowFactory for 'DragContainer' windows.
-31/03/2018 12:17:20 (Std) 	WindowFactory for 'DragContainer' windows added. (0x23c3920)
-31/03/2018 12:17:20 (Std) 	Created WindowFactory for 'ScrolledContainer' windows.
-31/03/2018 12:17:20 (Std) 	WindowFactory for 'ScrolledContainer' windows added. (0x23c3b60)
-31/03/2018 12:17:20 (Std) 	Created WindowFactory for 'ClippedContainer' windows.
-31/03/2018 12:17:20 (Std) 	WindowFactory for 'ClippedContainer' windows added. (0x23c3d00)
-31/03/2018 12:17:20 (Std) 	Created WindowFactory for 'CEGUI/PushButton' windows.
-31/03/2018 12:17:20 (Std) 	WindowFactory for 'CEGUI/PushButton' windows added. (0x23c3ea0)
-31/03/2018 12:17:20 (Std) 	Created WindowFactory for 'CEGUI/RadioButton' windows.
-31/03/2018 12:17:20 (Std) 	WindowFactory for 'CEGUI/RadioButton' windows added. (0x23c4040)
-31/03/2018 12:17:20 (Std) 	Created WindowFactory for 'CEGUI/Combobox' windows.
-31/03/2018 12:17:20 (Std) 	WindowFactory for 'CEGUI/Combobox' windows added. (0x23c42d0)
-31/03/2018 12:17:20 (Std) 	Created WindowFactory for 'CEGUI/ComboDropList' windows.
-31/03/2018 12:17:20 (Std) 	WindowFactory for 'CEGUI/ComboDropList' windows added. (0x23c4470)
-31/03/2018 12:17:20 (Std) 	Created WindowFactory for 'CEGUI/Editbox' windows.
-31/03/2018 12:17:20 (Std) 	WindowFactory for 'CEGUI/Editbox' windows added. (0x23c4610)
-31/03/2018 12:17:20 (Std) 	Created WindowFactory for 'CEGUI/FrameWindow' windows.
-31/03/2018 12:17:20 (Std) 	WindowFactory for 'CEGUI/FrameWindow' windows added. (0x23c47b0)
-31/03/2018 12:17:20 (Std) 	Created WindowFactory for 'CEGUI/ItemEntry' windows.
-31/03/2018 12:17:20 (Std) 	WindowFactory for 'CEGUI/ItemEntry' windows added. (0x23c4950)
-31/03/2018 12:17:20 (Std) 	Created WindowFactory for 'CEGUI/Listbox' windows.
-31/03/2018 12:17:20 (Std) 	WindowFactory for 'CEGUI/Listbox' windows added. (0x23c4af0)
-31/03/2018 12:17:20 (Std) 	Created WindowFactory for 'CEGUI/ListHeader' windows.
-31/03/2018 12:17:20 (Std) 	WindowFactory for 'CEGUI/ListHeader' windows added. (0x23c4c90)
-31/03/2018 12:17:20 (Std) 	Created WindowFactory for 'CEGUI/ListHeaderSegment' windows.
-31/03/2018 12:17:20 (Std) 	WindowFactory for 'CEGUI/ListHeaderSegment' windows added. (0x23c4e30)
-31/03/2018 12:17:20 (Std) 	Created WindowFactory for 'CEGUI/Menubar' windows.
-31/03/2018 12:17:20 (Std) 	WindowFactory for 'CEGUI/Menubar' windows added. (0x23c4fd0)
-31/03/2018 12:17:20 (Std) 	Created WindowFactory for 'CEGUI/PopupMenu' windows.
-31/03/2018 12:17:20 (Std) 	WindowFactory for 'CEGUI/PopupMenu' windows added. (0x23c5170)
-31/03/2018 12:17:20 (Std) 	Created WindowFactory for 'CEGUI/MenuItem' windows.
-31/03/2018 12:17:20 (Std) 	WindowFactory for 'CEGUI/MenuItem' windows added. (0x23c5310)
-31/03/2018 12:17:20 (Std) 	Created WindowFactory for 'CEGUI/MultiColumnList' windows.
-31/03/2018 12:17:20 (Std) 	WindowFactory for 'CEGUI/MultiColumnList' windows added. (0x23c55c0)
-31/03/2018 12:17:20 (Std) 	Created WindowFactory for 'CEGUI/MultiLineEditbox' windows.
-31/03/2018 12:17:20 (Std) 	WindowFactory for 'CEGUI/MultiLineEditbox' windows added. (0x23c5760)
-31/03/2018 12:17:20 (Std) 	Created WindowFactory for 'CEGUI/ProgressBar' windows.
-31/03/2018 12:17:20 (Std) 	WindowFactory for 'CEGUI/ProgressBar' windows added. (0x23c5900)
-31/03/2018 12:17:20 (Std) 	Created WindowFactory for 'CEGUI/ScrollablePane' windows.
-31/03/2018 12:17:20 (Std) 	WindowFactory for 'CEGUI/ScrollablePane' windows added. (0x23c5aa0)
-31/03/2018 12:17:20 (Std) 	Created WindowFactory for 'CEGUI/Scrollbar' windows.
-31/03/2018 12:17:20 (Std) 	WindowFactory for 'CEGUI/Scrollbar' windows added. (0x23c5c40)
-31/03/2018 12:17:20 (Std) 	Created WindowFactory for 'CEGUI/Slider' windows.
-31/03/2018 12:17:20 (Std) 	WindowFactory for 'CEGUI/Slider' windows added. (0x23c5de0)
-31/03/2018 12:17:20 (Std) 	Created WindowFactory for 'CEGUI/Spinner' windows.
-31/03/2018 12:17:20 (Std) 	WindowFactory for 'CEGUI/Spinner' windows added. (0x238d9d0)
-31/03/2018 12:17:20 (Std) 	Created WindowFactory for 'CEGUI/TabButton' windows.
-31/03/2018 12:17:20 (Std) 	WindowFactory for 'CEGUI/TabButton' windows added. (0x238db70)
-31/03/2018 12:17:20 (Std) 	Created WindowFactory for 'CEGUI/TabControl' windows.
-31/03/2018 12:17:20 (Std) 	WindowFactory for 'CEGUI/TabControl' windows added. (0x238dd10)
-31/03/2018 12:17:20 (Std) 	Created WindowFactory for 'CEGUI/Thumb' windows.
-31/03/2018 12:17:20 (Std) 	WindowFactory for 'CEGUI/Thumb' windows added. (0x238deb0)
-31/03/2018 12:17:20 (Std) 	Created WindowFactory for 'CEGUI/Titlebar' windows.
-31/03/2018 12:17:20 (Std) 	WindowFactory for 'CEGUI/Titlebar' windows added. (0x238e050)
-31/03/2018 12:17:20 (Std) 	Created WindowFactory for 'CEGUI/ToggleButton' windows.
-31/03/2018 12:17:20 (Std) 	WindowFactory for 'CEGUI/ToggleButton' windows added. (0x238e1f0)
-31/03/2018 12:17:20 (Std) 	Created WindowFactory for 'CEGUI/Tooltip' windows.
-31/03/2018 12:17:20 (Std) 	WindowFactory for 'CEGUI/Tooltip' windows added. (0x238e390)
-31/03/2018 12:17:20 (Std) 	Created WindowFactory for 'CEGUI/ItemListbox' windows.
-31/03/2018 12:17:20 (Std) 	WindowFactory for 'CEGUI/ItemListbox' windows added. (0x238e530)
-31/03/2018 12:17:20 (Std) 	Created WindowFactory for 'CEGUI/GroupBox' windows.
-31/03/2018 12:17:20 (Std) 	WindowFactory for 'CEGUI/GroupBox' windows added. (0x238e6d0)
-31/03/2018 12:17:20 (Std) 	Created WindowFactory for 'CEGUI/Tree' windows.
-31/03/2018 12:17:20 (Std) 	WindowFactory for 'CEGUI/Tree' windows added. (0x238e870)
-31/03/2018 12:17:20 (Std) 	Created WindowFactory for 'LayoutCell' windows.
-31/03/2018 12:17:20 (Std) 	WindowFactory for 'LayoutCell' windows added. (0x23c54b0)
-31/03/2018 12:17:20 (Std) 	Created WindowFactory for 'HorizontalLayoutContainer' windows.
-31/03/2018 12:17:20 (Std) 	WindowFactory for 'HorizontalLayoutContainer' windows added. (0x238ed00)
-31/03/2018 12:17:20 (Std) 	Created WindowFactory for 'VerticalLayoutContainer' windows.
-31/03/2018 12:17:20 (Std) 	WindowFactory for 'VerticalLayoutContainer' windows added. (0x238eea0)
-31/03/2018 12:17:20 (Std) 	Created WindowFactory for 'GridLayoutContainer' windows.
-31/03/2018 12:17:20 (Std) 	WindowFactory for 'GridLayoutContainer' windows added. (0x238f040)
-31/03/2018 12:17:20 (Std) 	CEGUI::System singleton created. (0x234cfc0)
-31/03/2018 12:17:20 (Std) 	---- CEGUI System initialisation completed ----
-31/03/2018 12:17:20 (Std) 	
-31/03/2018 12:17:21 (Std) 	Started creation of Scheme from XML specification:
-31/03/2018 12:17:21 (Std) 	---- CEGUI GUIScheme name: VanillaSkin
-31/03/2018 12:17:21 (Std) 	[ImageManager] Started creation of Imageset from XML specification:
-31/03/2018 12:17:21 (Std) 	[ImageManager] ---- CEGUI Imageset name: Vanilla-Images
-31/03/2018 12:17:21 (Std) 	[ImageManager] ---- Source texture file: vanilla.png
-31/03/2018 12:17:21 (Std) 	[ImageManager] ---- Source texture resource group: (Default)
-31/03/2018 12:17:21 (Std) 	[OpenGLRenderer] Created texture: Vanilla-Images
-31/03/2018 12:17:21 (Std) 	[ImageManager] Created image: 'Vanilla-Images/GenericBrush' (0x23d62c0) of type: BasicImage
-31/03/2018 12:17:21 (Std) 	[ImageManager] Created image: 'Vanilla-Images/FrameTopLeft' (0x23d5960) of type: BasicImage
-31/03/2018 12:17:21 (Std) 	[ImageManager] Created image: 'Vanilla-Images/FrameTopRight' (0x23d68b0) of type: BasicImage
-31/03/2018 12:17:21 (Std) 	[ImageManager] Created image: 'Vanilla-Images/FrameBottomLeft' (0x23eb960) of type: BasicImage
-31/03/2018 12:17:21 (Std) 	[ImageManager] Created image: 'Vanilla-Images/FrameBottomRight' (0x23f1460) of type: BasicImage
-31/03/2018 12:17:21 (Std) 	[ImageManager] Created image: 'Vanilla-Images/FrameLeft' (0x23f1670) of type: BasicImage
-31/03/2018 12:17:21 (Std) 	[ImageManager] Created image: 'Vanilla-Images/FrameRight' (0x23f1880) of type: BasicImage
-31/03/2018 12:17:21 (Std) 	[ImageManager] Created image: 'Vanilla-Images/FrameTop' (0x23f1a90) of type: BasicImage
-31/03/2018 12:17:21 (Std) 	[ImageManager] Created image: 'Vanilla-Images/FrameBottom' (0x23f1ca0) of type: BasicImage
-31/03/2018 12:17:21 (Std) 	[ImageManager] Created image: 'Vanilla-Images/ScrollUpArrow' (0x23f1eb0) of type: BasicImage
-31/03/2018 12:17:21 (Std) 	[ImageManager] Created image: 'Vanilla-Images/ScrollDownArrow' (0x23f20c0) of type: BasicImage
-31/03/2018 12:17:21 (Std) 	[ImageManager] Created image: 'Vanilla-Images/VertScrollContainer' (0x23f22d0) of type: BasicImage
-31/03/2018 12:17:21 (Std) 	[ImageManager] Created image: 'Vanilla-Images/ScrollLeftArrow' (0x23f26c0) of type: BasicImage
-31/03/2018 12:17:21 (Std) 	[ImageManager] Created image: 'Vanilla-Images/ScrollRightArrow' (0x23f28d0) of type: BasicImage
-31/03/2018 12:17:21 (Std) 	[ImageManager] Created image: 'Vanilla-Images/HorzScrollContainer' (0x23f2ae0) of type: BasicImage
-31/03/2018 12:17:21 (Std) 	[ImageManager] Created image: 'Vanilla-Images/ScrollbarThumb' (0x23f2ed0) of type: BasicImage
-31/03/2018 12:17:21 (Std) 	[ImageManager] Created image: 'Vanilla-Images/ShadowBrush' (0x23f30e0) of type: BasicImage
-31/03/2018 12:17:21 (Std) 	[ImageManager] Created image: 'Vanilla-Images/MouseArrow' (0x23f32f0) of type: BasicImage
-31/03/2018 12:17:21 (Std) 	[ImageManager] Created image: 'Vanilla-Images/CheckboxNormal' (0x23f3500) of type: BasicImage
-31/03/2018 12:17:21 (Std) 	[ImageManager] Created image: 'Vanilla-Images/CheckboxHover' (0x23f3710) of type: BasicImage
-31/03/2018 12:17:21 (Std) 	[ImageManager] Created image: 'Vanilla-Images/CheckboxMark' (0x23f3920) of type: BasicImage
-31/03/2018 12:17:21 (Std) 	[ImageManager] Created image: 'Vanilla-Images/RadioButtonNormal' (0x23f3b30) of type: BasicImage
-31/03/2018 12:17:21 (Std) 	[ImageManager] Created image: 'Vanilla-Images/RadioButtonHover' (0x23f3ef0) of type: BasicImage
-31/03/2018 12:17:21 (Std) 	[ImageManager] Created image: 'Vanilla-Images/RadioButtonMark' (0x23f4100) of type: BasicImage
-31/03/2018 12:17:21 (Std) 	[ImageManager] Created image: 'Vanilla-Images/SliderScrollUpArrow' (0x23f4310) of type: BasicImage
-31/03/2018 12:17:21 (Std) 	[ImageManager] Created image: 'Vanilla-Images/SliderScrollDownArrow' (0x23d5e90) of type: BasicImage
-31/03/2018 12:17:21 (Std) 	[ImageManager] Created image: 'Vanilla-Images/SliderScrollLeftArrow' (0x23d6140) of type: BasicImage
-31/03/2018 12:17:21 (Std) 	[ImageManager] Created image: 'Vanilla-Images/SliderScrollRightArrow' (0x23dbcf0) of type: BasicImage
-31/03/2018 12:17:21 (Std) 	[ImageManager] Created image: 'Vanilla-Images/VerticalImageSliderThumb' (0x23dc0e0) of type: BasicImage
-31/03/2018 12:17:21 (Std) 	[ImageManager] Created image: 'Vanilla-Images/HorizontalImageSliderThumb' (0x23dc450) of type: BasicImage
-31/03/2018 12:17:21 (Std) 	[ImageManager] Created image: 'Vanilla-Images/VerticalImageSliderContainer' (0x23dc7c0) of type: BasicImage
-31/03/2018 12:17:21 (Std) 	[ImageManager] Created image: 'Vanilla-Images/HorizontalImageSliderContainer' (0x23dcb50) of type: BasicImage
-31/03/2018 12:17:21 (Std) 	[ImageManager] Created image: 'Vanilla-Images/DefaultScrollImage' (0x23dcee0) of type: BasicImage
-31/03/2018 12:17:21 (Std) 	[ImageManager] Created image: 'Vanilla-Images/VerticalImageSliderTopEnd' (0x23dd2a0) of type: BasicImage
-31/03/2018 12:17:21 (Std) 	[ImageManager] Created image: 'Vanilla-Images/VerticalImageSliderBottomEnd' (0x23dd610) of type: BasicImage
-31/03/2018 12:17:21 (Std) 	[ImageManager] Created image: 'Vanilla-Images/HorizontalImageSliderLeftEnd' (0x23dd9a0) of type: BasicImage
-31/03/2018 12:17:21 (Std) 	[ImageManager] Created image: 'Vanilla-Images/HorizontalImageSliderRightEnd' (0x23ddd30) of type: BasicImage
-31/03/2018 12:17:21 (Std) 	[ImageManager] Created image: 'Vanilla-Images/ColourPickerCursor' (0x23de0c0) of type: BasicImage
-31/03/2018 12:17:21 (Std) 	[ImageManager] Created image: 'Vanilla-Images/TooltipBottomEdge' (0x23de480) of type: BasicImage
-31/03/2018 12:17:21 (Std) 	[ImageManager] Created image: 'Vanilla-Images/TooltipBottomLeft' (0x23de7b0) of type: BasicImage
-31/03/2018 12:17:21 (Std) 	[ImageManager] Created image: 'Vanilla-Images/TooltipTopEdge' (0x23deae0) of type: BasicImage
-31/03/2018 12:17:21 (Std) 	[ImageManager] Created image: 'Vanilla-Images/TooltipTopRight' (0x23decf0) of type: BasicImage
-31/03/2018 12:17:21 (Std) 	[ImageManager] Created image: 'Vanilla-Images/TooltipRightEdge' (0x23def00) of type: BasicImage
-31/03/2018 12:17:21 (Std) 	[ImageManager] Created image: 'Vanilla-Images/TooltipTopLeft' (0x23df110) of type: BasicImage
-31/03/2018 12:17:21 (Std) 	[ImageManager] Created image: 'Vanilla-Images/TooltipLeftEdge' (0x23df320) of type: BasicImage
-31/03/2018 12:17:21 (Std) 	[ImageManager] Created image: 'Vanilla-Images/TooltipMiddle' (0x23df530) of type: BasicImage
-31/03/2018 12:17:21 (Std) 	[ImageManager] Created image: 'Vanilla-Images/TooltipBottomRight' (0x23df740) of type: BasicImage
-31/03/2018 12:17:21 (Std) 	[ImageManager] Created image: 'Vanilla-Images/DropDownButtonNormal' (0x23dfa70) of type: BasicImage
-31/03/2018 12:17:21 (Std) 	[ImageManager] Created image: 'Vanilla-Images/DropDownButtonHover' (0x23dfdc0) of type: BasicImage
-31/03/2018 12:17:21 (Std) 	[ImageManager] Created image: 'Vanilla-Images/DropDownButtonPushed' (0x23e0110) of type: BasicImage
-31/03/2018 12:17:21 (Std) 	===== Falagard 'root' element: look and feel parsing begins =====
-31/03/2018 12:17:21 (Std) 	===== Look and feel parsing completed =====
-31/03/2018 12:17:21 (Std) 	No window renderer factories specified for module 'CEGUICoreWindowRendererSet' - adding all available factories...
-31/03/2018 12:17:21 (Std) 	Created WindowRendererFactory for 'Core/Button' WindowRenderers.
-31/03/2018 12:17:21 (Std) 	WindowRendererFactory 'Core/Button' added. (0x23d5cf0)
-31/03/2018 12:17:21 (Std) 	Created WindowRendererFactory for 'Core/Default' WindowRenderers.
-31/03/2018 12:17:21 (Std) 	WindowRendererFactory 'Core/Default' added. (0x23d5db0)
-31/03/2018 12:17:21 (Std) 	Created WindowRendererFactory for 'Core/Editbox' WindowRenderers.
-31/03/2018 12:17:21 (Std) 	WindowRendererFactory 'Core/Editbox' added. (0x23d5800)
-31/03/2018 12:17:21 (Std) 	Created WindowRendererFactory for 'Core/FrameWindow' WindowRenderers.
-31/03/2018 12:17:21 (Std) 	WindowRendererFactory 'Core/FrameWindow' added. (0x23f47e0)
-31/03/2018 12:17:21 (Std) 	Created WindowRendererFactory for 'Core/ItemEntry' WindowRenderers.
-31/03/2018 12:17:21 (Std) 	WindowRendererFactory 'Core/ItemEntry' added. (0x23d6590)
-31/03/2018 12:17:21 (Std) 	Created WindowRendererFactory for 'Core/ListHeader' WindowRenderers.
-31/03/2018 12:17:21 (Std) 	WindowRendererFactory 'Core/ListHeader' added. (0x23d6730)
-31/03/2018 12:17:21 (Std) 	Created WindowRendererFactory for 'Core/ListHeaderSegment' WindowRenderers.
-31/03/2018 12:17:21 (Std) 	WindowRendererFactory 'Core/ListHeaderSegment' added. (0x23d67f0)
-31/03/2018 12:17:21 (Std) 	Created WindowRendererFactory for 'Core/Listbox' WindowRenderers.
-31/03/2018 12:17:21 (Std) 	WindowRendererFactory 'Core/Listbox' added. (0x247cca0)
-31/03/2018 12:17:21 (Std) 	Created WindowRendererFactory for 'Core/Menubar' WindowRenderers.
-31/03/2018 12:17:21 (Std) 	WindowRendererFactory 'Core/Menubar' added. (0x24a27d0)
-31/03/2018 12:17:21 (Std) 	Created WindowRendererFactory for 'Core/MenuItem' WindowRenderers.
-31/03/2018 12:17:21 (Std) 	WindowRendererFactory 'Core/MenuItem' added. (0x24a2970)
-31/03/2018 12:17:21 (Std) 	Created WindowRendererFactory for 'Core/MultiColumnList' WindowRenderers.
-31/03/2018 12:17:21 (Std) 	WindowRendererFactory 'Core/MultiColumnList' added. (0x23d6ac0)
-31/03/2018 12:17:21 (Std) 	Created WindowRendererFactory for 'Core/MultiLineEditbox' WindowRenderers.
-31/03/2018 12:17:21 (Std) 	WindowRendererFactory 'Core/MultiLineEditbox' added. (0x23d6c60)
-31/03/2018 12:17:21 (Std) 	Created WindowRendererFactory for 'Core/PopupMenu' WindowRenderers.
-31/03/2018 12:17:21 (Std) 	WindowRendererFactory 'Core/PopupMenu' added. (0x2466910)
-31/03/2018 12:17:21 (Std) 	Created WindowRendererFactory for 'Core/ProgressBar' WindowRenderers.
-31/03/2018 12:17:21 (Std) 	WindowRendererFactory 'Core/ProgressBar' added. (0x2466ab0)
-31/03/2018 12:17:21 (Std) 	Created WindowRendererFactory for 'Core/ScrollablePane' WindowRenderers.
-31/03/2018 12:17:21 (Std) 	WindowRendererFactory 'Core/ScrollablePane' added. (0x2466c50)
-31/03/2018 12:17:21 (Std) 	Created WindowRendererFactory for 'Core/Scrollbar' WindowRenderers.
-31/03/2018 12:17:21 (Std) 	WindowRendererFactory 'Core/Scrollbar' added. (0x24a0c30)
-31/03/2018 12:17:21 (Std) 	Created WindowRendererFactory for 'Core/Slider' WindowRenderers.
-31/03/2018 12:17:21 (Std) 	WindowRendererFactory 'Core/Slider' added. (0x24a0dd0)
-31/03/2018 12:17:21 (Std) 	Created WindowRendererFactory for 'Core/Static' WindowRenderers.
-31/03/2018 12:17:21 (Std) 	WindowRendererFactory 'Core/Static' added. (0x24a1080)
-31/03/2018 12:17:21 (Std) 	Created WindowRendererFactory for 'Core/StaticImage' WindowRenderers.
-31/03/2018 12:17:21 (Std) 	WindowRendererFactory 'Core/StaticImage' added. (0x24a1220)
-31/03/2018 12:17:21 (Std) 	Created WindowRendererFactory for 'Core/StaticText' WindowRenderers.
-31/03/2018 12:17:21 (Std) 	WindowRendererFactory 'Core/StaticText' added. (0x2491920)
-31/03/2018 12:17:21 (Std) 	Created WindowRendererFactory for 'Core/TabButton' WindowRenderers.
-31/03/2018 12:17:21 (Std) 	WindowRendererFactory 'Core/TabButton' added. (0x2491ac0)
-31/03/2018 12:17:21 (Std) 	Created WindowRendererFactory for 'Core/TabControl' WindowRenderers.
-31/03/2018 12:17:21 (Std) 	WindowRendererFactory 'Core/TabControl' added. (0x2491c60)
-31/03/2018 12:17:21 (Std) 	Created WindowRendererFactory for 'Core/Titlebar' WindowRenderers.
-31/03/2018 12:17:21 (Std) 	WindowRendererFactory 'Core/Titlebar' added. (0x2491e00)
-31/03/2018 12:17:21 (Std) 	Created WindowRendererFactory for 'Core/ToggleButton' WindowRenderers.
-31/03/2018 12:17:21 (Std) 	WindowRendererFactory 'Core/ToggleButton' added. (0x2491fa0)
-31/03/2018 12:17:21 (Std) 	Created WindowRendererFactory for 'Core/Tooltip' WindowRenderers.
-31/03/2018 12:17:21 (Std) 	WindowRendererFactory 'Core/Tooltip' added. (0x2492140)
-31/03/2018 12:17:21 (Std) 	Created WindowRendererFactory for 'Core/ItemListbox' WindowRenderers.
-31/03/2018 12:17:21 (Std) 	WindowRendererFactory 'Core/ItemListbox' added. (0x249ea10)
-31/03/2018 12:17:21 (Std) 	Created WindowRendererFactory for 'Core/Tree' WindowRenderers.
-31/03/2018 12:17:21 (Std) 	WindowRendererFactory 'Core/Tree' added. (0x249ebb0)
-31/03/2018 12:17:21 (Std) 	Creating falagard mapping for type 'Vanilla/Label' using base type 'DefaultWindow', window renderer 'Core/Default' Look'N'Feel 'Vanilla/Label' and RenderEffect ''. (0x7ffdee9e8b80)
-31/03/2018 12:17:21 (Std) 	Creating falagard mapping for type 'Vanilla/Titlebar' using base type 'CEGUI/Titlebar', window renderer 'Core/Titlebar' Look'N'Feel 'Vanilla/Titlebar' and RenderEffect ''. (0x7ffdee9e8b80)
-31/03/2018 12:17:21 (Std) 	Creating falagard mapping for type 'Vanilla/Button' using base type 'CEGUI/PushButton', window renderer 'Core/Button' Look'N'Feel 'Vanilla/Button' and RenderEffect ''. (0x7ffdee9e8b80)
-31/03/2018 12:17:21 (Std) 	Creating falagard mapping for type 'Vanilla/FrameWindow' using base type 'CEGUI/FrameWindow', window renderer 'Core/FrameWindow' Look'N'Feel 'Vanilla/FrameWindow' and RenderEffect ''. (0x7ffdee9e8b80)
-31/03/2018 12:17:21 (Std) 	Creating falagard mapping for type 'Vanilla/Editbox' using base type 'CEGUI/Editbox', window renderer 'Core/Editbox' Look'N'Feel 'Vanilla/Editbox' and RenderEffect ''. (0x7ffdee9e8b80)
-31/03/2018 12:17:21 (Std) 	Creating falagard mapping for type 'Vanilla/VerticalScrollbarThumb' using base type 'CEGUI/Thumb', window renderer 'Core/Button' Look'N'Feel 'Vanilla/VerticalScrollbarThumb' and RenderEffect ''. (0x7ffdee9e8b80)
-31/03/2018 12:17:21 (Std) 	Creating falagard mapping for type 'Vanilla/VerticalScrollbar' using base type 'CEGUI/Scrollbar', window renderer 'Core/Scrollbar' Look'N'Feel 'Vanilla/VerticalScrollbar' and RenderEffect ''. (0x7ffdee9e8b80)
-31/03/2018 12:17:21 (Std) 	Creating falagard mapping for type 'Vanilla/HorizontalScrollbarThumb' using base type 'CEGUI/Thumb', window renderer 'Core/Button' Look'N'Feel 'Vanilla/HorizontalScrollbarThumb' and RenderEffect ''. (0x7ffdee9e8b80)
-31/03/2018 12:17:21 (Std) 	Creating falagard mapping for type 'Vanilla/HorizontalScrollbar' using base type 'CEGUI/Scrollbar', window renderer 'Core/Scrollbar' Look'N'Feel 'Vanilla/HorizontalScrollbar' and RenderEffect ''. (0x7ffdee9e8b80)
-31/03/2018 12:17:21 (Std) 	Creating falagard mapping for type 'Vanilla/StaticImage' using base type 'DefaultWindow', window renderer 'Core/StaticImage' Look'N'Feel 'Vanilla/StaticImage' and RenderEffect ''. (0x7ffdee9e8b80)
-31/03/2018 12:17:21 (Std) 	Creating falagard mapping for type 'Vanilla/StaticText' using base type 'DefaultWindow', window renderer 'Core/StaticText' Look'N'Feel 'Vanilla/StaticText' and RenderEffect ''. (0x7ffdee9e8b80)
-31/03/2018 12:17:21 (Std) 	Creating falagard mapping for type 'Vanilla/Listbox' using base type 'CEGUI/Listbox', window renderer 'Core/Listbox' Look'N'Feel 'Vanilla/Listbox' and RenderEffect ''. (0x7ffdee9e8b80)
-31/03/2018 12:17:21 (Std) 	Creating falagard mapping for type 'Vanilla/MultiLineEditbox' using base type 'CEGUI/MultiLineEditbox', window renderer 'Core/MultiLineEditbox' Look'N'Feel 'Vanilla/MultiLineEditbox' and RenderEffect ''. (0x7ffdee9e8b80)
-31/03/2018 12:17:21 (Std) 	Creating falagard mapping for type 'Vanilla/ComboDropList' using base type 'CEGUI/ComboDropList', window renderer 'Core/Listbox' Look'N'Feel 'Vanilla/ComboDropList' and RenderEffect ''. (0x7ffdee9e8b80)
-31/03/2018 12:17:21 (Std) 	Creating falagard mapping for type 'Vanilla/Combobox' using base type 'CEGUI/Combobox', window renderer 'Core/Default' Look'N'Feel 'Vanilla/Combobox' and RenderEffect ''. (0x7ffdee9e8b80)
-31/03/2018 12:17:21 (Std) 	Creating falagard mapping for type 'Vanilla/ProgressBar' using base type 'CEGUI/ProgressBar', window renderer 'Core/ProgressBar' Look'N'Feel 'Vanilla/ProgressBar' and RenderEffect ''. (0x7ffdee9e8b80)
-31/03/2018 12:17:21 (Std) 	Creating falagard mapping for type 'Vanilla/Checkbox' using base type 'CEGUI/ToggleButton', window renderer 'Core/ToggleButton' Look'N'Feel 'Vanilla/Checkbox' and RenderEffect ''. (0x7ffdee9e8b80)
-31/03/2018 12:17:21 (Std) 	Creating falagard mapping for type 'Vanilla/RadioButton' using base type 'CEGUI/RadioButton', window renderer 'Core/ToggleButton' Look'N'Feel 'Vanilla/RadioButton' and RenderEffect ''. (0x7ffdee9e8b80)
-31/03/2018 12:17:21 (Std) 	Creating falagard mapping for type 'Vanilla/Tooltip' using base type 'CEGUI/Tooltip', window renderer 'Core/Tooltip' Look'N'Feel 'Vanilla/Tooltip' and RenderEffect ''. (0x7ffdee9e8b80)
-31/03/2018 12:17:21 (Std) 	Started creation of Scheme from XML specification:
-31/03/2018 12:17:21 (Std) 	---- CEGUI GUIScheme name: FOTDSkin
-31/03/2018 12:17:21 (Std) 	[ImageManager] Started creation of Imageset from XML specification:
-31/03/2018 12:17:21 (Std) 	[ImageManager] ---- CEGUI Imageset name: FOTDSkin
-31/03/2018 12:17:21 (Std) 	[ImageManager] ---- Source texture file: FOTDSkin.png
-31/03/2018 12:17:21 (Std) 	[ImageManager] ---- Source texture resource group: (Default)
-31/03/2018 12:17:21 (Std) 	[OpenGLRenderer] Created texture: FOTDSkin
-31/03/2018 12:17:21 (Std) 	[ImageManager] Created image: 'FOTDSkin/WindowB' (0x24ae920) of type: BasicImage
-31/03/2018 12:17:21 (Std) 	[ImageManager] Created image: 'FOTDSkin/WindowL' (0x24aeb70) of type: BasicImage
-31/03/2018 12:17:21 (Std) 	[ImageManager] Created image: 'FOTDSkin/WindowR' (0x24aed80) of type: BasicImage
-31/03/2018 12:17:21 (Std) 	[ImageManager] Created image: 'FOTDSkin/WindowT' (0x24aef90) of type: BasicImage
-31/03/2018 12:17:21 (Std) 	[ImageManager] Created image: 'FOTDSkin/EditboxB' (0x24af1a0) of type: BasicImage
-31/03/2018 12:17:21 (Std) 	[ImageManager] Created image: 'FOTDSkin/EditboxL' (0x24af3b0) of type: BasicImage
-31/03/2018 12:17:21 (Std) 	[ImageManager] Created image: 'FOTDSkin/EditboxR' (0x24af5c0) of type: BasicImage
-31/03/2018 12:17:21 (Std) 	[ImageManager] Created image: 'FOTDSkin/EditboxT' (0x24af7d0) of type: BasicImage
-31/03/2018 12:17:21 (Std) 	[ImageManager] Created image: 'FOTDSkin/WindowBL' (0x24af9e0) of type: BasicImage
-31/03/2018 12:17:21 (Std) 	[ImageManager] Created image: 'FOTDSkin/WindowBR' (0x24afbf0) of type: BasicImage
-31/03/2018 12:17:21 (Std) 	[ImageManager] Created image: 'FOTDSkin/WindowTL' (0x24afe00) of type: BasicImage
-31/03/2018 12:17:21 (Std) 	[ImageManager] Created image: 'FOTDSkin/WindowTR' (0x24164e0) of type: BasicImage
-31/03/2018 12:17:21 (Std) 	[ImageManager] Created image: 'FOTDSkin/EditboxBL' (0x24b0330) of type: BasicImage
-31/03/2018 12:17:21 (Std) 	[ImageManager] Created image: 'FOTDSkin/EditboxBR' (0x24173f0) of type: BasicImage
-31/03/2018 12:17:21 (Std) 	[ImageManager] Created image: 'FOTDSkin/EditboxTL' (0x2417600) of type: BasicImage
-31/03/2018 12:17:21 (Std) 	[ImageManager] Created image: 'FOTDSkin/EditboxTR' (0x241ba10) of type: BasicImage
-31/03/2018 12:17:21 (Std) 	[ImageManager] Created image: 'FOTDSkin/MouseMove' (0x241bc20) of type: BasicImage
-31/03/2018 12:17:21 (Std) 	[ImageManager] Created image: 'FOTDSkin/MouseNeSw' (0x241be30) of type: BasicImage
-31/03/2018 12:17:21 (Std) 	[ImageManager] Created image: 'FOTDSkin/NewImage1' (0x241c040) of type: BasicImage
-31/03/2018 12:17:21 (Std) 	[ImageManager] Created image: 'FOTDSkin/MouseArrow' (0x241c250) of type: BasicImage
-31/03/2018 12:17:21 (Std) 	[ImageManager] Created image: 'FOTDSkin/WindowFill' (0x241c460) of type: BasicImage
-31/03/2018 12:17:21 (Std) 	[ImageManager] Created image: 'FOTDSkin/EditboxFill' (0x241c670) of type: BasicImage
-31/03/2018 12:17:21 (Std) 	[ImageManager] Created image: 'FOTDSkin/WindowClipB' (0x241c880) of type: BasicImage
-31/03/2018 12:17:21 (Std) 	[ImageManager] Created image: 'FOTDSkin/WindowClipL' (0x241ca90) of type: BasicImage
-31/03/2018 12:17:21 (Std) 	[ImageManager] Created image: 'FOTDSkin/WindowClipR' (0x241cca0) of type: BasicImage
-31/03/2018 12:17:21 (Std) 	[ImageManager] Created image: 'FOTDSkin/WindowClipT' (0x241ceb0) of type: BasicImage
-31/03/2018 12:17:21 (Std) 	[ImageManager] Created image: 'FOTDSkin/ButtonHoverB' (0x241d0c0) of type: BasicImage
-31/03/2018 12:17:21 (Std) 	[ImageManager] Created image: 'FOTDSkin/ButtonHoverL' (0x241d2d0) of type: BasicImage
-31/03/2018 12:17:21 (Std) 	[ImageManager] Created image: 'FOTDSkin/ButtonHoverR' (0x241d4e0) of type: BasicImage
-31/03/2018 12:17:21 (Std) 	[ImageManager] Created image: 'FOTDSkin/ButtonHoverT' (0x241d6f0) of type: BasicImage
-31/03/2018 12:17:21 (Std) 	[ImageManager] Created image: 'FOTDSkin/GenericBrush' (0x241d900) of type: BasicImage
-31/03/2018 12:17:21 (Std) 	[ImageManager] Created image: 'FOTDSkin/MouseTextBar' (0x241db10) of type: BasicImage
-31/03/2018 12:17:21 (Std) 	[ImageManager] Created image: 'FOTDSkin/ButtonHoverBL' (0x241dd20) of type: BasicImage
-31/03/2018 12:17:21 (Std) 	[ImageManager] Created image: 'FOTDSkin/ButtonHoverBR' (0x241df30) of type: BasicImage
-31/03/2018 12:17:21 (Std) 	[ImageManager] Created image: 'FOTDSkin/ButtonHoverTL' (0x241e140) of type: BasicImage
-31/03/2018 12:17:21 (Std) 	[ImageManager] Created image: 'FOTDSkin/ButtonHoverTR' (0x241e350) of type: BasicImage
-31/03/2018 12:17:21 (Std) 	[ImageManager] Created image: 'FOTDSkin/ButtonNormalB' (0x241e560) of type: BasicImage
-31/03/2018 12:17:21 (Std) 	[ImageManager] Created image: 'FOTDSkin/ButtonNormalL' (0x241e770) of type: BasicImage
-31/03/2018 12:17:21 (Std) 	[ImageManager] Created image: 'FOTDSkin/ButtonNormalR' (0x241e980) of type: BasicImage
-31/03/2018 12:17:21 (Std) 	[ImageManager] Created image: 'FOTDSkin/ButtonNormalT' (0x24ae600) of type: BasicImage
-31/03/2018 12:17:21 (Std) 	[ImageManager] Created image: 'FOTDSkin/ButtonPushedB' (0x241eeb0) of type: BasicImage
-31/03/2018 12:17:21 (Std) 	[ImageManager] Created image: 'FOTDSkin/ButtonPushedL' (0x2429e40) of type: BasicImage
-31/03/2018 12:17:21 (Std) 	[ImageManager] Created image: 'FOTDSkin/ButtonPushedR' (0x242a050) of type: BasicImage
-31/03/2018 12:17:21 (Std) 	[ImageManager] Created image: 'FOTDSkin/ButtonPushedT' (0x242a260) of type: BasicImage
-31/03/2018 12:17:21 (Std) 	[ImageManager] Created image: 'FOTDSkin/CheckboxHover' (0x242a470) of type: BasicImage
-31/03/2018 12:17:21 (Std) 	[ImageManager] Created image: 'FOTDSkin/ProgressFullB' (0x242a680) of type: BasicImage
-31/03/2018 12:17:21 (Std) 	[ImageManager] Created image: 'FOTDSkin/ProgressFullL' (0x242a890) of type: BasicImage
-31/03/2018 12:17:21 (Std) 	[ImageManager] Created image: 'FOTDSkin/ProgressFullR' (0x242aaa0) of type: BasicImage
-31/03/2018 12:17:21 (Std) 	[ImageManager] Created image: 'FOTDSkin/ProgressFullT' (0x242acb0) of type: BasicImage
-31/03/2018 12:17:21 (Std) 	[ImageManager] Created image: 'FOTDSkin/ScrollUpHover' (0x242aec0) of type: BasicImage
-31/03/2018 12:17:21 (Std) 	[ImageManager] Created image: 'FOTDSkin/ButtonNormalBL' (0x242b0d0) of type: BasicImage
-31/03/2018 12:17:21 (Std) 	[ImageManager] Created image: 'FOTDSkin/ButtonNormalBR' (0x242b2e0) of type: BasicImage
-31/03/2018 12:17:21 (Std) 	[ImageManager] Created image: 'FOTDSkin/ButtonNormalTL' (0x242b4f0) of type: BasicImage
-31/03/2018 12:17:21 (Std) 	[ImageManager] Created image: 'FOTDSkin/ButtonNormalTR' (0x242b700) of type: BasicImage
-31/03/2018 12:17:21 (Std) 	[ImageManager] Created image: 'FOTDSkin/ButtonPushedBL' (0x242b910) of type: BasicImage
-31/03/2018 12:17:21 (Std) 	[ImageManager] Created image: 'FOTDSkin/ButtonPushedBR' (0x242bb20) of type: BasicImage
-31/03/2018 12:17:21 (Std) 	[ImageManager] Created image: 'FOTDSkin/ButtonPushedTL' (0x242bd30) of type: BasicImage
-31/03/2018 12:17:21 (Std) 	[ImageManager] Created image: 'FOTDSkin/ButtonPushedTR' (0x242bf40) of type: BasicImage
-31/03/2018 12:17:21 (Std) 	[ImageManager] Created image: 'FOTDSkin/CheckboxNormal' (0x242c150) of type: BasicImage
-31/03/2018 12:17:21 (Std) 	[ImageManager] Created image: 'FOTDSkin/HorzScrollbarB' (0x242c360) of type: BasicImage
-31/03/2018 12:17:21 (Std) 	[ImageManager] Created image: 'FOTDSkin/HorzScrollbarT' (0x242c570) of type: BasicImage
-31/03/2018 12:17:21 (Std) 	[ImageManager] Created image: 'FOTDSkin/ProgressEmptyB' (0x242c780) of type: BasicImage
-31/03/2018 12:17:21 (Std) 	[ImageManager] Created image: 'FOTDSkin/ProgressEmptyL' (0x242c990) of type: BasicImage
-31/03/2018 12:17:21 (Std) 	[ImageManager] Created image: 'FOTDSkin/ProgressEmptyR' (0x242cba0) of type: BasicImage
-31/03/2018 12:17:21 (Std) 	[ImageManager] Created image: 'FOTDSkin/ProgressEmptyT' (0x242cdb0) of type: BasicImage
-31/03/2018 12:17:21 (Std) 	[ImageManager] Created image: 'FOTDSkin/ProgressFullBL' (0x242cfc0) of type: BasicImage
-31/03/2018 12:17:21 (Std) 	[ImageManager] Created image: 'FOTDSkin/ProgressFullBR' (0x242d1d0) of type: BasicImage
-31/03/2018 12:17:21 (Std) 	[ImageManager] Created image: 'FOTDSkin/ProgressFullTL' (0x242d3e0) of type: BasicImage
-31/03/2018 12:17:21 (Std) 	[ImageManager] Created image: 'FOTDSkin/ProgressFullTR' (0x242d5f0) of type: BasicImage
-31/03/2018 12:17:21 (Std) 	[ImageManager] Created image: 'FOTDSkin/ProgressShadow' (0x242d800) of type: BasicImage
-31/03/2018 12:17:21 (Std) 	[ImageManager] Created image: 'FOTDSkin/ScrollUpNormal' (0x242da10) of type: BasicImage
-31/03/2018 12:17:21 (Std) 	[ImageManager] Created image: 'FOTDSkin/ScrollUpPushed' (0x242dc20) of type: BasicImage
-31/03/2018 12:17:21 (Std) 	[ImageManager] Created image: 'FOTDSkin/TitlebarDummy1' (0x242de30) of type: BasicImage
-31/03/2018 12:17:21 (Std) 	[ImageManager] Created image: 'FOTDSkin/VertScrollbarL' (0x242e040) of type: BasicImage
-31/03/2018 12:17:21 (Std) 	[ImageManager] Created image: 'FOTDSkin/VertScrollbarR' (0x242e250) of type: BasicImage
-31/03/2018 12:17:21 (Std) 	[ImageManager] Created image: 'FOTDSkin/CheckboxChecked' (0x242e460) of type: BasicImage
-31/03/2018 12:17:21 (Std) 	[ImageManager] Created image: 'FOTDSkin/HorzThumbHoverB' (0x242e670) of type: BasicImage
-31/03/2018 12:17:21 (Std) 	[ImageManager] Created image: 'FOTDSkin/HorzThumbHoverT' (0x242e880) of type: BasicImage
-31/03/2018 12:17:21 (Std) 	[ImageManager] Created image: 'FOTDSkin/ProgressEmptyBL' (0x242ea90) of type: BasicImage
-31/03/2018 12:17:21 (Std) 	[ImageManager] Created image: 'FOTDSkin/ProgressEmptyBR' (0x242eca0) of type: BasicImage
-31/03/2018 12:17:21 (Std) 	[ImageManager] Created image: 'FOTDSkin/ProgressEmptyTL' (0x242eeb0) of type: BasicImage
-31/03/2018 12:17:21 (Std) 	[ImageManager] Created image: 'FOTDSkin/ProgressEmptyTR' (0x242f0c0) of type: BasicImage
-31/03/2018 12:17:21 (Std) 	[ImageManager] Created image: 'FOTDSkin/ScrollDownHover' (0x242f2d0) of type: BasicImage
-31/03/2018 12:17:21 (Std) 	[ImageManager] Created image: 'FOTDSkin/ScrollLeftHover' (0x242f4e0) of type: BasicImage
-31/03/2018 12:17:21 (Std) 	[ImageManager] Created image: 'FOTDSkin/TitlebarActiveB' (0x242f6f0) of type: BasicImage
-31/03/2018 12:17:21 (Std) 	[ImageManager] Created image: 'FOTDSkin/TitlebarActiveL' (0x242f900) of type: BasicImage
-31/03/2018 12:17:21 (Std) 	[ImageManager] Created image: 'FOTDSkin/TitlebarActiveR' (0x242fb10) of type: BasicImage
-31/03/2018 12:17:21 (Std) 	[ImageManager] Created image: 'FOTDSkin/TitlebarActiveT' (0x242fd20) of type: BasicImage
-31/03/2018 12:17:21 (Std) 	[ImageManager] Created image: 'FOTDSkin/VertThumbHoverL' (0x242ff30) of type: BasicImage
-31/03/2018 12:17:21 (Std) 	[ImageManager] Created image: 'FOTDSkin/VertThumbHoverR' (0x2430140) of type: BasicImage
-31/03/2018 12:17:21 (Std) 	[ImageManager] Created image: 'FOTDSkin/ButtonHoverFill1' (0x2430350) of type: BasicImage
-31/03/2018 12:17:21 (Std) 	[ImageManager] Created image: 'FOTDSkin/ButtonHoverFill2' (0x2430560) of type: BasicImage
-31/03/2018 12:17:21 (Std) 	[ImageManager] Created image: 'FOTDSkin/HorzSliderTrackL' (0x2430770) of type: BasicImage
-31/03/2018 12:17:21 (Std) 	[ImageManager] Created image: 'FOTDSkin/HorzSliderTrackR' (0x2430980) of type: BasicImage
-31/03/2018 12:17:21 (Std) 	[ImageManager] Created image: 'FOTDSkin/HorzThumbHoverBL' (0x2430b90) of type: BasicImage
-31/03/2018 12:17:21 (Std) 	[ImageManager] Created image: 'FOTDSkin/HorzThumbHoverBR' (0x2430da0) of type: BasicImage
-31/03/2018 12:17:21 (Std) 	[ImageManager] Created image: 'FOTDSkin/HorzThumbHoverTL' (0x2430fb0) of type: BasicImage
-31/03/2018 12:17:21 (Std) 	[ImageManager] Created image: 'FOTDSkin/HorzThumbHoverTR' (0x24311c0) of type: BasicImage
-31/03/2018 12:17:21 (Std) 	[ImageManager] Created image: 'FOTDSkin/HorzThumbNormalB' (0x24313d0) of type: BasicImage
-31/03/2018 12:17:21 (Std) 	[ImageManager] Created image: 'FOTDSkin/HorzThumbNormalT' (0x24315e0) of type: BasicImage
-31/03/2018 12:17:21 (Std) 	[ImageManager] Created image: 'FOTDSkin/HorzThumbPushedB' (0x24317f0) of type: BasicImage
-31/03/2018 12:17:21 (Std) 	[ImageManager] Created image: 'FOTDSkin/HorzThumbPushedT' (0x2431a00) of type: BasicImage
-31/03/2018 12:17:21 (Std) 	[ImageManager] Created image: 'FOTDSkin/HorzThumbShadowL' (0x2431c10) of type: BasicImage
-31/03/2018 12:17:21 (Std) 	[ImageManager] Created image: 'FOTDSkin/HorzThumbShadowR' (0x2431e20) of type: BasicImage
-31/03/2018 12:17:21 (Std) 	[ImageManager] Created image: 'FOTDSkin/ProgressFullFill' (0x2432030) of type: BasicImage
-31/03/2018 12:17:21 (Std) 	[ImageManager] Created image: 'FOTDSkin/RadioButtonHover' (0x2432240) of type: BasicImage
-31/03/2018 12:17:21 (Std) 	[ImageManager] Created image: 'FOTDSkin/ScrollDownNormal' (0x2432450) of type: BasicImage
-31/03/2018 12:17:21 (Std) 	[ImageManager] Created image: 'FOTDSkin/ScrollDownPushed' (0x2432660) of type: BasicImage
-31/03/2018 12:17:21 (Std) 	[ImageManager] Created image: 'FOTDSkin/ScrollLeftNormal' (0x2432870) of type: BasicImage
-31/03/2018 12:17:21 (Std) 	[ImageManager] Created image: 'FOTDSkin/ScrollLeftPushed' (0x2432a80) of type: BasicImage
-31/03/2018 12:17:21 (Std) 	[ImageManager] Created image: 'FOTDSkin/ScrollRightHover' (0x2432c90) of type: BasicImage
-31/03/2018 12:17:21 (Std) 	[ImageManager] Created image: 'FOTDSkin/TitlebarActiveBL' (0x2432ea0) of type: BasicImage
-31/03/2018 12:17:21 (Std) 	[ImageManager] Created image: 'FOTDSkin/TitlebarActiveBR' (0x24330b0) of type: BasicImage
-31/03/2018 12:17:21 (Std) 	[ImageManager] Created image: 'FOTDSkin/TitlebarActiveTL' (0x24332c0) of type: BasicImage
-31/03/2018 12:17:21 (Std) 	[ImageManager] Created image: 'FOTDSkin/TitlebarActiveTR' (0x24334d0) of type: BasicImage
-31/03/2018 12:17:21 (Std) 	[ImageManager] Created image: 'FOTDSkin/VertSliderTrackB' (0x24336e0) of type: BasicImage
-31/03/2018 12:17:21 (Std) 	[ImageManager] Created image: 'FOTDSkin/VertSliderTrackT' (0x24338f0) of type: BasicImage
-31/03/2018 12:17:21 (Std) 	[ImageManager] Created image: 'FOTDSkin/VertThumbHoverBL' (0x2433b00) of type: BasicImage
-31/03/2018 12:17:21 (Std) 	[ImageManager] Created image: 'FOTDSkin/VertThumbHoverBR' (0x2433d10) of type: BasicImage
-31/03/2018 12:17:21 (Std) 	[ImageManager] Created image: 'FOTDSkin/VertThumbHoverTL' (0x2433f20) of type: BasicImage
-31/03/2018 12:17:21 (Std) 	[ImageManager] Created image: 'FOTDSkin/VertThumbHoverTR' (0x2434130) of type: BasicImage
-31/03/2018 12:17:21 (Std) 	[ImageManager] Created image: 'FOTDSkin/VertThumbNormalL' (0x2434340) of type: BasicImage
-31/03/2018 12:17:21 (Std) 	[ImageManager] Created image: 'FOTDSkin/VertThumbNormalR' (0x2434550) of type: BasicImage
-31/03/2018 12:17:21 (Std) 	[ImageManager] Created image: 'FOTDSkin/VertThumbPushedL' (0x2434760) of type: BasicImage
-31/03/2018 12:17:21 (Std) 	[ImageManager] Created image: 'FOTDSkin/VertThumbPushedR' (0x2434970) of type: BasicImage
-31/03/2018 12:17:21 (Std) 	[ImageManager] Created image: 'FOTDSkin/VertThumbShadowB' (0x2434b80) of type: BasicImage
-31/03/2018 12:17:21 (Std) 	[ImageManager] Created image: 'FOTDSkin/VertThumbShadowT' (0x2434d90) of type: BasicImage
-31/03/2018 12:17:21 (Std) 	[ImageManager] Created image: 'FOTDSkin/ButtonNormalFill1' (0x2434fa0) of type: BasicImage
-31/03/2018 12:17:21 (Std) 	[ImageManager] Created image: 'FOTDSkin/ButtonNormalFill2' (0x24351b0) of type: BasicImage
-31/03/2018 12:17:21 (Std) 	[ImageManager] Created image: 'FOTDSkin/ButtonPushedFill1' (0x24353c0) of type: BasicImage
-31/03/2018 12:17:21 (Std) 	[ImageManager] Created image: 'FOTDSkin/ButtonPushedFill2' (0x24355d0) of type: BasicImage
-31/03/2018 12:17:21 (Std) 	[ImageManager] Created image: 'FOTDSkin/CloseButtonNormal' (0x24357e0) of type: BasicImage
-31/03/2018 12:17:21 (Std) 	[ImageManager] Created image: 'FOTDSkin/CloseButtonPushed' (0x24359f0) of type: BasicImage
-31/03/2018 12:17:21 (Std) 	[ImageManager] Created image: 'FOTDSkin/HorzSliderShadowL' (0x2435c00) of type: BasicImage
-31/03/2018 12:17:21 (Std) 	[ImageManager] Created image: 'FOTDSkin/HorzSliderShadowR' (0x2435e10) of type: BasicImage
-31/03/2018 12:17:21 (Std) 	[ImageManager] Created image: 'FOTDSkin/HorzThumbNormalBL' (0x2436020) of type: BasicImage
-31/03/2018 12:17:21 (Std) 	[ImageManager] Created image: 'FOTDSkin/HorzThumbNormalBR' (0x2436230) of type: BasicImage
-31/03/2018 12:17:21 (Std) 	[ImageManager] Created image: 'FOTDSkin/HorzThumbNormalTL' (0x2436440) of type: BasicImage
-31/03/2018 12:17:21 (Std) 	[ImageManager] Created image: 'FOTDSkin/HorzThumbNormalTR' (0x2436650) of type: BasicImage
-31/03/2018 12:17:21 (Std) 	[ImageManager] Created image: 'FOTDSkin/HorzThumbPushedBL' (0x2436860) of type: BasicImage
-31/03/2018 12:17:21 (Std) 	[ImageManager] Created image: 'FOTDSkin/HorzThumbPushedBR' (0x2436a70) of type: BasicImage
-31/03/2018 12:17:21 (Std) 	[ImageManager] Created image: 'FOTDSkin/HorzThumbPushedTL' (0x2436c80) of type: BasicImage
-31/03/2018 12:17:21 (Std) 	[ImageManager] Created image: 'FOTDSkin/HorzThumbPushedTR' (0x2436e90) of type: BasicImage
-31/03/2018 12:17:21 (Std) 	[ImageManager] Created image: 'FOTDSkin/ProgressEmptyFill' (0x24370a0) of type: BasicImage
-31/03/2018 12:17:21 (Std) 	[ImageManager] Created image: 'FOTDSkin/RadioButtonNormal' (0x24372b0) of type: BasicImage
-31/03/2018 12:17:21 (Std) 	[ImageManager] Created image: 'FOTDSkin/ScrollRightNormal' (0x24374c0) of type: BasicImage
-31/03/2018 12:17:21 (Std) 	[ImageManager] Created image: 'FOTDSkin/ScrollRightPushed' (0x24376d0) of type: BasicImage
-31/03/2018 12:17:21 (Std) 	[ImageManager] Created image: 'FOTDSkin/TitlebarInactiveB' (0x24378e0) of type: BasicImage
-31/03/2018 12:17:21 (Std) 	[ImageManager] Created image: 'FOTDSkin/TitlebarInactiveL' (0x2437af0) of type: BasicImage
-31/03/2018 12:17:21 (Std) 	[ImageManager] Created image: 'FOTDSkin/TitlebarInactiveR' (0x2437d00) of type: BasicImage
-31/03/2018 12:17:21 (Std) 	[ImageManager] Created image: 'FOTDSkin/TitlebarInactiveT' (0x2437f10) of type: BasicImage
-31/03/2018 12:17:21 (Std) 	[ImageManager] Created image: 'FOTDSkin/VertSliderShadowB' (0x2438120) of type: BasicImage
-31/03/2018 12:17:21 (Std) 	[ImageManager] Created image: 'FOTDSkin/VertSliderShadowT' (0x2438330) of type: BasicImage
-31/03/2018 12:17:21 (Std) 	[ImageManager] Created image: 'FOTDSkin/VertThumbNormalBL' (0x2438540) of type: BasicImage
-31/03/2018 12:17:21 (Std) 	[ImageManager] Created image: 'FOTDSkin/VertThumbNormalBR' (0x2438750) of type: BasicImage
-31/03/2018 12:17:21 (Std) 	[ImageManager] Created image: 'FOTDSkin/VertThumbNormalTL' (0x2438960) of type: BasicImage
-31/03/2018 12:17:21 (Std) 	[ImageManager] Created image: 'FOTDSkin/VertThumbNormalTR' (0x2438b70) of type: BasicImage
-31/03/2018 12:17:21 (Std) 	[ImageManager] Created image: 'FOTDSkin/VertThumbPushedBL' (0x2438d80) of type: BasicImage
-31/03/2018 12:17:21 (Std) 	[ImageManager] Created image: 'FOTDSkin/VertThumbPushedBR' (0x2438f90) of type: BasicImage
-31/03/2018 12:17:21 (Std) 	[ImageManager] Created image: 'FOTDSkin/VertThumbPushedTL' (0x24391a0) of type: BasicImage
-31/03/2018 12:17:21 (Std) 	[ImageManager] Created image: 'FOTDSkin/VertThumbPushedTR' (0x24393b0) of type: BasicImage
-31/03/2018 12:17:21 (Std) 	[ImageManager] Created image: 'FOTDSkin/HorzScrollbarFill1' (0x24395c0) of type: BasicImage
-31/03/2018 12:17:21 (Std) 	[ImageManager] Created image: 'FOTDSkin/HorzScrollbarFill2' (0x24397d0) of type: BasicImage
-31/03/2018 12:17:21 (Std) 	[ImageManager] Created image: 'FOTDSkin/RadioButtonChecked' (0x24399e0) of type: BasicImage
-31/03/2018 12:17:21 (Std) 	[ImageManager] Created image: 'FOTDSkin/TitlebarInactiveBL' (0x2439bf0) of type: BasicImage
-31/03/2018 12:17:21 (Std) 	[ImageManager] Created image: 'FOTDSkin/TitlebarInactiveBR' (0x2439e00) of type: BasicImage
-31/03/2018 12:17:21 (Std) 	[ImageManager] Created image: 'FOTDSkin/TitlebarInactiveTL' (0x243a010) of type: BasicImage
-31/03/2018 12:17:21 (Std) 	[ImageManager] Created image: 'FOTDSkin/TitlebarInactiveTR' (0x243a220) of type: BasicImage
-31/03/2018 12:17:21 (Std) 	[ImageManager] Created image: 'FOTDSkin/VertScrollbarFill1' (0x243a430) of type: BasicImage
-31/03/2018 12:17:21 (Std) 	[ImageManager] Created image: 'FOTDSkin/VertScrollbarFill2' (0x243a640) of type: BasicImage
-31/03/2018 12:17:21 (Std) 	[ImageManager] Created image: 'FOTDSkin/HorzSliderTrackFill' (0x243a850) of type: BasicImage
-31/03/2018 12:17:21 (Std) 	[ImageManager] Created image: 'FOTDSkin/TitlebarActiveFill1' (0x243aa60) of type: BasicImage
-31/03/2018 12:17:21 (Std) 	[ImageManager] Created image: 'FOTDSkin/TitlebarActiveFill2' (0x243ac70) of type: BasicImage
-31/03/2018 12:17:21 (Std) 	[ImageManager] Created image: 'FOTDSkin/VertSliderTrackFill' (0x243ae80) of type: BasicImage
-31/03/2018 12:17:21 (Std) 	[ImageManager] Created image: 'FOTDSkin/HorzSliderThumbHover' (0x243b090) of type: BasicImage
-31/03/2018 12:17:21 (Std) 	[ImageManager] Created image: 'FOTDSkin/VertSliderThumbHover' (0x243b2a0) of type: BasicImage
-31/03/2018 12:17:21 (Std) 	[ImageManager] Created image: 'FOTDSkin/HorzSliderThumbNormal' (0x243b4b0) of type: BasicImage
-31/03/2018 12:17:21 (Std) 	[ImageManager] Created image: 'FOTDSkin/HorzSliderThumbPushed' (0x243b6c0) of type: BasicImage
-31/03/2018 12:17:21 (Std) 	[ImageManager] Created image: 'FOTDSkin/TitlebarInactiveFill1' (0x243b8d0) of type: BasicImage
-31/03/2018 12:17:21 (Std) 	[ImageManager] Created image: 'FOTDSkin/TitlebarInactiveFill2' (0x243bae0) of type: BasicImage
-31/03/2018 12:17:21 (Std) 	[ImageManager] Created image: 'FOTDSkin/VertSliderThumbNormal' (0x243bcf0) of type: BasicImage
-31/03/2018 12:17:21 (Std) 	[ImageManager] Created image: 'FOTDSkin/VertSliderThumbPushed' (0x243bf00) of type: BasicImage
-31/03/2018 12:17:21 (Std) 	===== Falagard 'root' element: look and feel parsing begins =====
-31/03/2018 12:17:21 (Std) 	===== Look and feel parsing completed =====
-31/03/2018 12:17:21 (Std) 	No window renderer factories specified for module 'CEGUICoreWindowRendererSet' - adding all available factories...
-31/03/2018 12:17:21 (Std) 	Creating falagard mapping for type 'FOTDSkin/Label' using base type 'DefaultWindow', window renderer 'Core/Default' Look'N'Feel 'FOTDSkin/Label' and RenderEffect ''. (0x7ffdee9e8b80)
-31/03/2018 12:17:21 (Std) 	Creating falagard mapping for type 'FOTDSkin/Button' using base type 'CEGUI/PushButton', window renderer 'Core/Button' Look'N'Feel 'FOTDSkin/Button' and RenderEffect ''. (0x7ffdee9e8b80)
-31/03/2018 12:17:21 (Std) 	Creating falagard mapping for type 'FOTDSkin/ImageButton' using base type 'CEGUI/PushButton', window renderer 'Core/Button' Look'N'Feel 'FOTDSkin/ImageButton' and RenderEffect ''. (0x7ffdee9e8b80)
-31/03/2018 12:17:21 (Std) 	Creating falagard mapping for type 'FOTDSkin/RadioButton' using base type 'CEGUI/RadioButton', window renderer 'Core/ToggleButton' Look'N'Feel 'FOTDSkin/RadioButton' and RenderEffect ''. (0x7ffdee9e8b80)
-31/03/2018 12:17:21 (Std) 	Creating falagard mapping for type 'FOTDSkin/Checkbox' using base type 'CEGUI/ToggleButton', window renderer 'Core/ToggleButton' Look'N'Feel 'FOTDSkin/Checkbox' and RenderEffect ''. (0x7ffdee9e8b80)
-31/03/2018 12:17:21 (Std) 	Creating falagard mapping for type 'FOTDSkin/Titlebar' using base type 'CEGUI/Titlebar', window renderer 'Core/Titlebar' Look'N'Feel 'FOTDSkin/Titlebar' and RenderEffect ''. (0x7ffdee9e8b80)
-31/03/2018 12:17:21 (Std) 	Creating falagard mapping for type 'FOTDSkin/FrameWindow' using base type 'CEGUI/FrameWindow', window renderer 'Core/FrameWindow' Look'N'Feel 'FOTDSkin/FrameWindow' and RenderEffect ''. (0x7ffdee9e8b80)
-31/03/2018 12:17:21 (Std) 	Creating falagard mapping for type 'FOTDSkin/Editbox' using base type 'CEGUI/Editbox', window renderer 'Core/Editbox' Look'N'Feel 'FOTDSkin/Editbox' and RenderEffect ''. (0x7ffdee9e8b80)
-31/03/2018 12:17:21 (Std) 	Creating falagard mapping for type 'FOTDSkin/VerticalScrollbarThumb' using base type 'CEGUI/Thumb', window renderer 'Core/Button' Look'N'Feel 'FOTDSkin/VerticalScrollbarThumb' and RenderEffect ''. (0x7ffdee9e8b80)
-31/03/2018 12:17:21 (Std) 	Creating falagard mapping for type 'FOTDSkin/VerticalScrollbar' using base type 'CEGUI/Scrollbar', window renderer 'Core/Scrollbar' Look'N'Feel 'FOTDSkin/VerticalScrollbar' and RenderEffect ''. (0x7ffdee9e8b80)
-31/03/2018 12:17:21 (Std) 	Creating falagard mapping for type 'FOTDSkin/HorizontalScrollbarThumb' using base type 'CEGUI/Thumb', window renderer 'Core/Button' Look'N'Feel 'FOTDSkin/HorizontalScrollbarThumb' and RenderEffect ''. (0x7ffdee9e8b80)
-31/03/2018 12:17:21 (Std) 	Creating falagard mapping for type 'FOTDSkin/HorizontalScrollbar' using base type 'CEGUI/Scrollbar', window renderer 'Core/Scrollbar' Look'N'Feel 'FOTDSkin/HorizontalScrollbar' and RenderEffect ''. (0x7ffdee9e8b80)
-31/03/2018 12:17:21 (Std) 	Creating falagard mapping for type 'FOTDSkin/MultiLineEditbox' using base type 'CEGUI/MultiLineEditbox', window renderer 'Core/MultiLineEditbox' Look'N'Feel 'FOTDSkin/MultiLineEditbox' and RenderEffect ''. (0x7ffdee9e8b80)
-31/03/2018 12:17:21 (Std) 	Creating falagard mapping for type 'FOTDSkin/ProgressBar' using base type 'CEGUI/ProgressBar', window renderer 'Core/ProgressBar' Look'N'Feel 'FOTDSkin/ProgressBar' and RenderEffect ''. (0x7ffdee9e8b80)
-31/03/2018 12:17:21 (Std) 	Creating falagard mapping for type 'FOTDSkin/HorizontalSliderThumb' using base type 'CEGUI/Thumb', window renderer 'Core/Button' Look'N'Feel 'FOTDSkin/HorizontalSliderThumb' and RenderEffect ''. (0x7ffdee9e8b80)
-31/03/2018 12:17:21 (Std) 	Creating falagard mapping for type 'FOTDSkin/HorizontalSlider' using base type 'CEGUI/Slider', window renderer 'Core/Slider' Look'N'Feel 'FOTDSkin/HorizontalSlider' and RenderEffect ''. (0x7ffdee9e8b80)
-31/03/2018 12:17:21 (Std) 	Creating falagard mapping for type 'FOTDSkin/VerticalSliderThumb' using base type 'CEGUI/Thumb', window renderer 'Core/Button' Look'N'Feel 'FOTDSkin/VerticalSliderThumb' and RenderEffect ''. (0x7ffdee9e8b80)
-31/03/2018 12:17:21 (Std) 	Creating falagard mapping for type 'FOTDSkin/VerticalSlider' using base type 'CEGUI/Slider', window renderer 'Core/Slider' Look'N'Feel 'FOTDSkin/VerticalSlider' and RenderEffect ''. (0x7ffdee9e8b80)
-31/03/2018 12:17:21 (Std) 	Creating falagard mapping for type 'FOTDSkin/MenuItem' using base type 'CEGUI/MenuItem', window renderer 'Core/MenuItem' Look'N'Feel 'FOTDSkin/MenuItem' and RenderEffect ''. (0x7ffdee9e8b80)
-31/03/2018 12:17:23 (Std) 	Started creation of Scheme from XML specification:
-31/03/2018 12:17:23 (Std) 	---- CEGUI GUIScheme name: FOTDSkin
-31/03/2018 12:17:23 (Std) 	---- Returning existing instance of Scheme named 'FOTDSkin'.
-31/03/2018 12:17:23 (Std) 	[OpenGLRenderer] Created texture: QuietHorror-22_auto_glyph_images_0
-31/03/2018 12:17:25 (Std) 	Started creation of Scheme from XML specification:
-31/03/2018 12:17:25 (Std) 	---- CEGUI GUIScheme name: FOTDSkin
-31/03/2018 12:17:25 (Std) 	---- Returning existing instance of Scheme named 'FOTDSkin'.
-31/03/2018 12:17:25 (Std) 	---- Returning existing instance of Font named 'QuietHorror-22'.
+31/03/2018 15:20:30 (Std) 	CEGUI::Logger singleton created. (0x1e3dc00)
+31/03/2018 15:20:30 (Std) 	
+31/03/2018 15:20:30 (Std) 	********************************************************************************
+31/03/2018 15:20:30 (Std) 	* Important:                                                                   *
+31/03/2018 15:20:30 (Std) 	*     To get support at the CEGUI forums, you must post _at least_ the section *
+31/03/2018 15:20:30 (Std) 	*     of this log file indicated below.  Failure to do this will result in no  *
+31/03/2018 15:20:30 (Std) 	*     support being given; please do not waste our time.                       *
+31/03/2018 15:20:30 (Std) 	********************************************************************************
+31/03/2018 15:20:30 (Std) 	********************************************************************************
+31/03/2018 15:20:30 (Std) 	* -------- START OF ESSENTIAL SECTION TO BE POSTED ON THE FORUM       -------- *
+31/03/2018 15:20:30 (Std) 	********************************************************************************
+31/03/2018 15:20:30 (Std) 	---- Version: 0.8.7 (Build: Feb  1 2018 GNU/Linux g++ 5.4.0 20160609 64 bit) ----
+31/03/2018 15:20:30 (Std) 	---- Renderer module is: CEGUI::OpenGL3Renderer - Official OpenGL 3.2 core based renderer module.  TextureTarget support enabled via FBO OGL 3.2 core implementation. ----
+31/03/2018 15:20:30 (Std) 	---- XML Parser module is: CEGUI::ExpatParser - Official expat based parser module for CEGUI ----
+31/03/2018 15:20:30 (Std) 	---- Image Codec module is: SILLYImageCodec - Official SILLY based image codec ----
+31/03/2018 15:20:30 (Std) 	---- Scripting module is: None ----
+31/03/2018 15:20:30 (Std) 	********************************************************************************
+31/03/2018 15:20:30 (Std) 	* -------- END OF ESSENTIAL SECTION TO BE POSTED ON THE FORUM         -------- *
+31/03/2018 15:20:30 (Std) 	********************************************************************************
+31/03/2018 15:20:30 (Std) 	
+31/03/2018 15:20:30 (Std) 	---- Begining CEGUI System initialisation ----
+31/03/2018 15:20:30 (Std) 	[CEGUI::ImageManager] Singleton created (0x1e3bab0)
+31/03/2018 15:20:30 (Std) 	[CEGUI::ImageManager] Registered Image type: BasicImage
+31/03/2018 15:20:30 (Std) 	CEGUI::FontManager singleton created. (0x1e36090)
+31/03/2018 15:20:30 (Std) 	CEGUI::WindowFactoryManager singleton created
+31/03/2018 15:20:30 (Std) 	CEGUI::WindowManager singleton created (0x1e3b0e0)
+31/03/2018 15:20:30 (Std) 	CEGUI::SchemeManager singleton created. (0x1e361c0)
+31/03/2018 15:20:30 (Std) 	CEGUI::GlobalEventSet singleton created. (0x1e3b090)
+31/03/2018 15:20:30 (Std) 	CEGUI::AnimationManager singleton created (0x1e362f0)
+31/03/2018 15:20:30 (Std) 	CEGUI::WidgetLookManager singleton created. (0x1e3edd0)
+31/03/2018 15:20:30 (Std) 	CEGUI::WindowRendererManager singleton created (0x1e3af70)
+31/03/2018 15:20:30 (Std) 	CEGUI::RenderEffectManager singleton created (0x1e3b210)
+31/03/2018 15:20:30 (Std) 	Created WindowFactory for 'DefaultWindow' windows.
+31/03/2018 15:20:30 (Std) 	WindowFactory for 'DefaultWindow' windows added. (0x1e0aca0)
+31/03/2018 15:20:30 (Std) 	Created WindowFactory for 'DragContainer' windows.
+31/03/2018 15:20:30 (Std) 	WindowFactory for 'DragContainer' windows added. (0x1e0af20)
+31/03/2018 15:20:30 (Std) 	Created WindowFactory for 'ScrolledContainer' windows.
+31/03/2018 15:20:30 (Std) 	WindowFactory for 'ScrolledContainer' windows added. (0x1e0b270)
+31/03/2018 15:20:30 (Std) 	Created WindowFactory for 'ClippedContainer' windows.
+31/03/2018 15:20:30 (Std) 	WindowFactory for 'ClippedContainer' windows added. (0x1e0b410)
+31/03/2018 15:20:30 (Std) 	Created WindowFactory for 'CEGUI/PushButton' windows.
+31/03/2018 15:20:30 (Std) 	WindowFactory for 'CEGUI/PushButton' windows added. (0x1e0b5b0)
+31/03/2018 15:20:30 (Std) 	Created WindowFactory for 'CEGUI/RadioButton' windows.
+31/03/2018 15:20:30 (Std) 	WindowFactory for 'CEGUI/RadioButton' windows added. (0x1e0b750)
+31/03/2018 15:20:30 (Std) 	Created WindowFactory for 'CEGUI/Combobox' windows.
+31/03/2018 15:20:30 (Std) 	WindowFactory for 'CEGUI/Combobox' windows added. (0x1e0b8f0)
+31/03/2018 15:20:30 (Std) 	Created WindowFactory for 'CEGUI/ComboDropList' windows.
+31/03/2018 15:20:30 (Std) 	WindowFactory for 'CEGUI/ComboDropList' windows added. (0x1e0ba90)
+31/03/2018 15:20:30 (Std) 	Created WindowFactory for 'CEGUI/Editbox' windows.
+31/03/2018 15:20:30 (Std) 	WindowFactory for 'CEGUI/Editbox' windows added. (0x1e0bc30)
+31/03/2018 15:20:30 (Std) 	Created WindowFactory for 'CEGUI/FrameWindow' windows.
+31/03/2018 15:20:30 (Std) 	WindowFactory for 'CEGUI/FrameWindow' windows added. (0x1e0bdd0)
+31/03/2018 15:20:30 (Std) 	Created WindowFactory for 'CEGUI/ItemEntry' windows.
+31/03/2018 15:20:30 (Std) 	WindowFactory for 'CEGUI/ItemEntry' windows added. (0x1e0bf70)
+31/03/2018 15:20:30 (Std) 	Created WindowFactory for 'CEGUI/Listbox' windows.
+31/03/2018 15:20:30 (Std) 	WindowFactory for 'CEGUI/Listbox' windows added. (0x1e0c110)
+31/03/2018 15:20:30 (Std) 	Created WindowFactory for 'CEGUI/ListHeader' windows.
+31/03/2018 15:20:30 (Std) 	WindowFactory for 'CEGUI/ListHeader' windows added. (0x1e0c2b0)
+31/03/2018 15:20:30 (Std) 	Created WindowFactory for 'CEGUI/ListHeaderSegment' windows.
+31/03/2018 15:20:30 (Std) 	WindowFactory for 'CEGUI/ListHeaderSegment' windows added. (0x1e0c450)
+31/03/2018 15:20:30 (Std) 	Created WindowFactory for 'CEGUI/Menubar' windows.
+31/03/2018 15:20:30 (Std) 	WindowFactory for 'CEGUI/Menubar' windows added. (0x1e0c5f0)
+31/03/2018 15:20:30 (Std) 	Created WindowFactory for 'CEGUI/PopupMenu' windows.
+31/03/2018 15:20:30 (Std) 	WindowFactory for 'CEGUI/PopupMenu' windows added. (0x1e0c790)
+31/03/2018 15:20:30 (Std) 	Created WindowFactory for 'CEGUI/MenuItem' windows.
+31/03/2018 15:20:30 (Std) 	WindowFactory for 'CEGUI/MenuItem' windows added. (0x1e0c930)
+31/03/2018 15:20:30 (Std) 	Created WindowFactory for 'CEGUI/MultiColumnList' windows.
+31/03/2018 15:20:30 (Std) 	WindowFactory for 'CEGUI/MultiColumnList' windows added. (0x1e0cbe0)
+31/03/2018 15:20:30 (Std) 	Created WindowFactory for 'CEGUI/MultiLineEditbox' windows.
+31/03/2018 15:20:30 (Std) 	WindowFactory for 'CEGUI/MultiLineEditbox' windows added. (0x1e0cd80)
+31/03/2018 15:20:30 (Std) 	Created WindowFactory for 'CEGUI/ProgressBar' windows.
+31/03/2018 15:20:30 (Std) 	WindowFactory for 'CEGUI/ProgressBar' windows added. (0x1e0cf20)
+31/03/2018 15:20:30 (Std) 	Created WindowFactory for 'CEGUI/ScrollablePane' windows.
+31/03/2018 15:20:30 (Std) 	WindowFactory for 'CEGUI/ScrollablePane' windows added. (0x1e0d0c0)
+31/03/2018 15:20:30 (Std) 	Created WindowFactory for 'CEGUI/Scrollbar' windows.
+31/03/2018 15:20:30 (Std) 	WindowFactory for 'CEGUI/Scrollbar' windows added. (0x1e0d260)
+31/03/2018 15:20:30 (Std) 	Created WindowFactory for 'CEGUI/Slider' windows.
+31/03/2018 15:20:30 (Std) 	WindowFactory for 'CEGUI/Slider' windows added. (0x1e0d400)
+31/03/2018 15:20:30 (Std) 	Created WindowFactory for 'CEGUI/Spinner' windows.
+31/03/2018 15:20:30 (Std) 	WindowFactory for 'CEGUI/Spinner' windows added. (0x1dffae0)
+31/03/2018 15:20:30 (Std) 	Created WindowFactory for 'CEGUI/TabButton' windows.
+31/03/2018 15:20:30 (Std) 	WindowFactory for 'CEGUI/TabButton' windows added. (0x1dffc80)
+31/03/2018 15:20:30 (Std) 	Created WindowFactory for 'CEGUI/TabControl' windows.
+31/03/2018 15:20:30 (Std) 	WindowFactory for 'CEGUI/TabControl' windows added. (0x1dffe20)
+31/03/2018 15:20:30 (Std) 	Created WindowFactory for 'CEGUI/Thumb' windows.
+31/03/2018 15:20:30 (Std) 	WindowFactory for 'CEGUI/Thumb' windows added. (0x1dfffc0)
+31/03/2018 15:20:30 (Std) 	Created WindowFactory for 'CEGUI/Titlebar' windows.
+31/03/2018 15:20:30 (Std) 	WindowFactory for 'CEGUI/Titlebar' windows added. (0x1e00160)
+31/03/2018 15:20:30 (Std) 	Created WindowFactory for 'CEGUI/ToggleButton' windows.
+31/03/2018 15:20:30 (Std) 	WindowFactory for 'CEGUI/ToggleButton' windows added. (0x1e00300)
+31/03/2018 15:20:30 (Std) 	Created WindowFactory for 'CEGUI/Tooltip' windows.
+31/03/2018 15:20:30 (Std) 	WindowFactory for 'CEGUI/Tooltip' windows added. (0x1e004a0)
+31/03/2018 15:20:30 (Std) 	Created WindowFactory for 'CEGUI/ItemListbox' windows.
+31/03/2018 15:20:30 (Std) 	WindowFactory for 'CEGUI/ItemListbox' windows added. (0x1e00640)
+31/03/2018 15:20:30 (Std) 	Created WindowFactory for 'CEGUI/GroupBox' windows.
+31/03/2018 15:20:30 (Std) 	WindowFactory for 'CEGUI/GroupBox' windows added. (0x1e007e0)
+31/03/2018 15:20:30 (Std) 	Created WindowFactory for 'CEGUI/Tree' windows.
+31/03/2018 15:20:30 (Std) 	WindowFactory for 'CEGUI/Tree' windows added. (0x1e00980)
+31/03/2018 15:20:30 (Std) 	Created WindowFactory for 'LayoutCell' windows.
+31/03/2018 15:20:30 (Std) 	WindowFactory for 'LayoutCell' windows added. (0x1e0cad0)
+31/03/2018 15:20:30 (Std) 	Created WindowFactory for 'HorizontalLayoutContainer' windows.
+31/03/2018 15:20:30 (Std) 	WindowFactory for 'HorizontalLayoutContainer' windows added. (0x1e00e10)
+31/03/2018 15:20:30 (Std) 	Created WindowFactory for 'VerticalLayoutContainer' windows.
+31/03/2018 15:20:30 (Std) 	WindowFactory for 'VerticalLayoutContainer' windows added. (0x1e00fb0)
+31/03/2018 15:20:30 (Std) 	Created WindowFactory for 'GridLayoutContainer' windows.
+31/03/2018 15:20:30 (Std) 	WindowFactory for 'GridLayoutContainer' windows added. (0x1e01150)
+31/03/2018 15:20:30 (Std) 	CEGUI::System singleton created. (0x1e3d690)
+31/03/2018 15:20:30 (Std) 	---- CEGUI System initialisation completed ----
+31/03/2018 15:20:30 (Std) 	
+31/03/2018 15:20:31 (Std) 	Started creation of Scheme from XML specification:
+31/03/2018 15:20:31 (Std) 	---- CEGUI GUIScheme name: VanillaSkin
+31/03/2018 15:20:31 (Std) 	[ImageManager] Started creation of Imageset from XML specification:
+31/03/2018 15:20:31 (Std) 	[ImageManager] ---- CEGUI Imageset name: Vanilla-Images
+31/03/2018 15:20:31 (Std) 	[ImageManager] ---- Source texture file: vanilla.png
+31/03/2018 15:20:31 (Std) 	[ImageManager] ---- Source texture resource group: (Default)
+31/03/2018 15:20:31 (Std) 	[OpenGLRenderer] Created texture: Vanilla-Images
+31/03/2018 15:20:31 (Std) 	[ImageManager] Created image: 'Vanilla-Images/GenericBrush' (0x1e67bd0) of type: BasicImage
+31/03/2018 15:20:31 (Std) 	[ImageManager] Created image: 'Vanilla-Images/FrameTopLeft' (0x1e67200) of type: BasicImage
+31/03/2018 15:20:31 (Std) 	[ImageManager] Created image: 'Vanilla-Images/FrameTopRight' (0x1e4b4b0) of type: BasicImage
+31/03/2018 15:20:31 (Std) 	[ImageManager] Created image: 'Vanilla-Images/FrameBottomLeft' (0x1e68330) of type: BasicImage
+31/03/2018 15:20:31 (Std) 	[ImageManager] Created image: 'Vanilla-Images/FrameBottomRight' (0x1e67730) of type: BasicImage
+31/03/2018 15:20:31 (Std) 	[ImageManager] Created image: 'Vanilla-Images/FrameLeft' (0x1e5ed10) of type: BasicImage
+31/03/2018 15:20:31 (Std) 	[ImageManager] Created image: 'Vanilla-Images/FrameRight' (0x1e5ef20) of type: BasicImage
+31/03/2018 15:20:31 (Std) 	[ImageManager] Created image: 'Vanilla-Images/FrameTop' (0x1e5f130) of type: BasicImage
+31/03/2018 15:20:31 (Std) 	[ImageManager] Created image: 'Vanilla-Images/FrameBottom' (0x1e5f340) of type: BasicImage
+31/03/2018 15:20:31 (Std) 	[ImageManager] Created image: 'Vanilla-Images/ScrollUpArrow' (0x1e5f550) of type: BasicImage
+31/03/2018 15:20:31 (Std) 	[ImageManager] Created image: 'Vanilla-Images/ScrollDownArrow' (0x1e5f760) of type: BasicImage
+31/03/2018 15:20:31 (Std) 	[ImageManager] Created image: 'Vanilla-Images/VertScrollContainer' (0x1e5fb00) of type: BasicImage
+31/03/2018 15:20:31 (Std) 	[ImageManager] Created image: 'Vanilla-Images/ScrollLeftArrow' (0x1e4b320) of type: BasicImage
+31/03/2018 15:20:31 (Std) 	[ImageManager] Created image: 'Vanilla-Images/ScrollRightArrow' (0x1e55210) of type: BasicImage
+31/03/2018 15:20:31 (Std) 	[ImageManager] Created image: 'Vanilla-Images/HorzScrollContainer' (0x1e55420) of type: BasicImage
+31/03/2018 15:20:31 (Std) 	[ImageManager] Created image: 'Vanilla-Images/ScrollbarThumb' (0x1e55810) of type: BasicImage
+31/03/2018 15:20:31 (Std) 	[ImageManager] Created image: 'Vanilla-Images/ShadowBrush' (0x1e55a20) of type: BasicImage
+31/03/2018 15:20:31 (Std) 	[ImageManager] Created image: 'Vanilla-Images/MouseArrow' (0x1e55c30) of type: BasicImage
+31/03/2018 15:20:31 (Std) 	[ImageManager] Created image: 'Vanilla-Images/CheckboxNormal' (0x1e55e40) of type: BasicImage
+31/03/2018 15:20:31 (Std) 	[ImageManager] Created image: 'Vanilla-Images/CheckboxHover' (0x1e56050) of type: BasicImage
+31/03/2018 15:20:31 (Std) 	[ImageManager] Created image: 'Vanilla-Images/CheckboxMark' (0x1e56260) of type: BasicImage
+31/03/2018 15:20:31 (Std) 	[ImageManager] Created image: 'Vanilla-Images/RadioButtonNormal' (0x1e56470) of type: BasicImage
+31/03/2018 15:20:31 (Std) 	[ImageManager] Created image: 'Vanilla-Images/RadioButtonHover' (0x1e56830) of type: BasicImage
+31/03/2018 15:20:31 (Std) 	[ImageManager] Created image: 'Vanilla-Images/RadioButtonMark' (0x1e56a40) of type: BasicImage
+31/03/2018 15:20:31 (Std) 	[ImageManager] Created image: 'Vanilla-Images/SliderScrollUpArrow' (0x1e56c50) of type: BasicImage
+31/03/2018 15:20:31 (Std) 	[ImageManager] Created image: 'Vanilla-Images/SliderScrollDownArrow' (0x1e56fa0) of type: BasicImage
+31/03/2018 15:20:31 (Std) 	[ImageManager] Created image: 'Vanilla-Images/SliderScrollLeftArrow' (0x1e572f0) of type: BasicImage
+31/03/2018 15:20:31 (Std) 	[ImageManager] Created image: 'Vanilla-Images/SliderScrollRightArrow' (0x1e57640) of type: BasicImage
+31/03/2018 15:20:31 (Std) 	[ImageManager] Created image: 'Vanilla-Images/VerticalImageSliderThumb' (0x1e57990) of type: BasicImage
+31/03/2018 15:20:31 (Std) 	[ImageManager] Created image: 'Vanilla-Images/HorizontalImageSliderThumb' (0x1e57ba0) of type: BasicImage
+31/03/2018 15:20:31 (Std) 	[ImageManager] Created image: 'Vanilla-Images/VerticalImageSliderContainer' (0x1e57e60) of type: BasicImage
+31/03/2018 15:20:32 (Std) 	[ImageManager] Created image: 'Vanilla-Images/HorizontalImageSliderContainer' (0x1e581f0) of type: BasicImage
+31/03/2018 15:20:32 (Std) 	[ImageManager] Created image: 'Vanilla-Images/DefaultScrollImage' (0x1e58580) of type: BasicImage
+31/03/2018 15:20:32 (Std) 	[ImageManager] Created image: 'Vanilla-Images/VerticalImageSliderTopEnd' (0x1e588b0) of type: BasicImage
+31/03/2018 15:20:32 (Std) 	[ImageManager] Created image: 'Vanilla-Images/VerticalImageSliderBottomEnd' (0x1e58c20) of type: BasicImage
+31/03/2018 15:20:32 (Std) 	[ImageManager] Created image: 'Vanilla-Images/HorizontalImageSliderLeftEnd' (0x1e58fb0) of type: BasicImage
+31/03/2018 15:20:32 (Std) 	[ImageManager] Created image: 'Vanilla-Images/HorizontalImageSliderRightEnd' (0x1e59340) of type: BasicImage
+31/03/2018 15:20:32 (Std) 	[ImageManager] Created image: 'Vanilla-Images/ColourPickerCursor' (0x1e596d0) of type: BasicImage
+31/03/2018 15:20:32 (Std) 	[ImageManager] Created image: 'Vanilla-Images/TooltipBottomEdge' (0x1e59a00) of type: BasicImage
+31/03/2018 15:20:32 (Std) 	[ImageManager] Created image: 'Vanilla-Images/TooltipBottomLeft' (0x1e681a0) of type: BasicImage
+31/03/2018 15:20:32 (Std) 	[ImageManager] Created image: 'Vanilla-Images/TooltipTopEdge' (0x1e69440) of type: BasicImage
+31/03/2018 15:20:32 (Std) 	[ImageManager] Created image: 'Vanilla-Images/TooltipTopRight' (0x1e69650) of type: BasicImage
+31/03/2018 15:20:32 (Std) 	[ImageManager] Created image: 'Vanilla-Images/TooltipRightEdge' (0x1e69860) of type: BasicImage
+31/03/2018 15:20:32 (Std) 	[ImageManager] Created image: 'Vanilla-Images/TooltipTopLeft' (0x1e69a70) of type: BasicImage
+31/03/2018 15:20:32 (Std) 	[ImageManager] Created image: 'Vanilla-Images/TooltipLeftEdge' (0x1e69c80) of type: BasicImage
+31/03/2018 15:20:32 (Std) 	[ImageManager] Created image: 'Vanilla-Images/TooltipMiddle' (0x1e69e90) of type: BasicImage
+31/03/2018 15:20:32 (Std) 	[ImageManager] Created image: 'Vanilla-Images/TooltipBottomRight' (0x1e6a0a0) of type: BasicImage
+31/03/2018 15:20:32 (Std) 	[ImageManager] Created image: 'Vanilla-Images/DropDownButtonNormal' (0x1e6a460) of type: BasicImage
+31/03/2018 15:20:32 (Std) 	[ImageManager] Created image: 'Vanilla-Images/DropDownButtonHover' (0x1e6a7b0) of type: BasicImage
+31/03/2018 15:20:32 (Std) 	[ImageManager] Created image: 'Vanilla-Images/DropDownButtonPushed' (0x1e6ab00) of type: BasicImage
+31/03/2018 15:20:32 (Std) 	===== Falagard 'root' element: look and feel parsing begins =====
+31/03/2018 15:20:32 (Std) 	===== Look and feel parsing completed =====
+31/03/2018 15:20:32 (Std) 	No window renderer factories specified for module 'CEGUICoreWindowRendererSet' - adding all available factories...
+31/03/2018 15:20:32 (Std) 	Created WindowRendererFactory for 'Core/Button' WindowRenderers.
+31/03/2018 15:20:32 (Std) 	WindowRendererFactory 'Core/Button' added. (0x1eeef90)
+31/03/2018 15:20:32 (Std) 	Created WindowRendererFactory for 'Core/Default' WindowRenderers.
+31/03/2018 15:20:32 (Std) 	WindowRendererFactory 'Core/Default' added. (0x1eef130)
+31/03/2018 15:20:32 (Std) 	Created WindowRendererFactory for 'Core/Editbox' WindowRenderers.
+31/03/2018 15:20:32 (Std) 	WindowRendererFactory 'Core/Editbox' added. (0x1e67f60)
+31/03/2018 15:20:32 (Std) 	Created WindowRendererFactory for 'Core/FrameWindow' WindowRenderers.
+31/03/2018 15:20:32 (Std) 	WindowRendererFactory 'Core/FrameWindow' added. (0x1e66ee0)
+31/03/2018 15:20:32 (Std) 	Created WindowRendererFactory for 'Core/ItemEntry' WindowRenderers.
+31/03/2018 15:20:32 (Std) 	WindowRendererFactory 'Core/ItemEntry' added. (0x1e67080)
+31/03/2018 15:20:32 (Std) 	Created WindowRendererFactory for 'Core/ListHeader' WindowRenderers.
+31/03/2018 15:20:32 (Std) 	WindowRendererFactory 'Core/ListHeader' added. (0x1e67140)
+31/03/2018 15:20:32 (Std) 	Created WindowRendererFactory for 'Core/ListHeaderSegment' WindowRenderers.
+31/03/2018 15:20:32 (Std) 	WindowRendererFactory 'Core/ListHeaderSegment' added. (0x1e675d0)
+31/03/2018 15:20:32 (Std) 	Created WindowRendererFactory for 'Core/Listbox' WindowRenderers.
+31/03/2018 15:20:32 (Std) 	WindowRendererFactory 'Core/Listbox' added. (0x1ee4bb0)
+31/03/2018 15:20:32 (Std) 	Created WindowRendererFactory for 'Core/Menubar' WindowRenderers.
+31/03/2018 15:20:32 (Std) 	WindowRendererFactory 'Core/Menubar' added. (0x1eef9f0)
+31/03/2018 15:20:32 (Std) 	Created WindowRendererFactory for 'Core/MenuItem' WindowRenderers.
+31/03/2018 15:20:32 (Std) 	WindowRendererFactory 'Core/MenuItem' added. (0x1eefb90)
+31/03/2018 15:20:32 (Std) 	Created WindowRendererFactory for 'Core/MultiColumnList' WindowRenderers.
+31/03/2018 15:20:32 (Std) 	WindowRendererFactory 'Core/MultiColumnList' added. (0x1eefc50)
+31/03/2018 15:20:32 (Std) 	Created WindowRendererFactory for 'Core/MultiLineEditbox' WindowRenderers.
+31/03/2018 15:20:32 (Std) 	WindowRendererFactory 'Core/MultiLineEditbox' added. (0x1ebaa60)
+31/03/2018 15:20:32 (Std) 	Created WindowRendererFactory for 'Core/PopupMenu' WindowRenderers.
+31/03/2018 15:20:32 (Std) 	WindowRendererFactory 'Core/PopupMenu' added. (0x1e5dff0)
+31/03/2018 15:20:32 (Std) 	Created WindowRendererFactory for 'Core/ProgressBar' WindowRenderers.
+31/03/2018 15:20:32 (Std) 	WindowRendererFactory 'Core/ProgressBar' added. (0x1e5e190)
+31/03/2018 15:20:32 (Std) 	Created WindowRendererFactory for 'Core/ScrollablePane' WindowRenderers.
+31/03/2018 15:20:32 (Std) 	WindowRendererFactory 'Core/ScrollablePane' added. (0x1e5e330)
+31/03/2018 15:20:32 (Std) 	Created WindowRendererFactory for 'Core/Scrollbar' WindowRenderers.
+31/03/2018 15:20:32 (Std) 	WindowRendererFactory 'Core/Scrollbar' added. (0x1e5e4d0)
+31/03/2018 15:20:32 (Std) 	Created WindowRendererFactory for 'Core/Slider' WindowRenderers.
+31/03/2018 15:20:32 (Std) 	WindowRendererFactory 'Core/Slider' added. (0x1e4abe0)
+31/03/2018 15:20:32 (Std) 	Created WindowRendererFactory for 'Core/Static' WindowRenderers.
+31/03/2018 15:20:32 (Std) 	WindowRendererFactory 'Core/Static' added. (0x1e4ae90)
+31/03/2018 15:20:32 (Std) 	Created WindowRendererFactory for 'Core/StaticImage' WindowRenderers.
+31/03/2018 15:20:32 (Std) 	WindowRendererFactory 'Core/StaticImage' added. (0x1e4b030)
+31/03/2018 15:20:32 (Std) 	Created WindowRendererFactory for 'Core/StaticText' WindowRenderers.
+31/03/2018 15:20:32 (Std) 	WindowRendererFactory 'Core/StaticText' added. (0x1ee66d0)
+31/03/2018 15:20:32 (Std) 	Created WindowRendererFactory for 'Core/TabButton' WindowRenderers.
+31/03/2018 15:20:32 (Std) 	WindowRendererFactory 'Core/TabButton' added. (0x1ee6870)
+31/03/2018 15:20:32 (Std) 	Created WindowRendererFactory for 'Core/TabControl' WindowRenderers.
+31/03/2018 15:20:32 (Std) 	WindowRendererFactory 'Core/TabControl' added. (0x1ee6a10)
+31/03/2018 15:20:32 (Std) 	Created WindowRendererFactory for 'Core/Titlebar' WindowRenderers.
+31/03/2018 15:20:32 (Std) 	WindowRendererFactory 'Core/Titlebar' added. (0x1ee6bb0)
+31/03/2018 15:20:32 (Std) 	Created WindowRendererFactory for 'Core/ToggleButton' WindowRenderers.
+31/03/2018 15:20:32 (Std) 	WindowRendererFactory 'Core/ToggleButton' added. (0x1ee6d50)
+31/03/2018 15:20:32 (Std) 	Created WindowRendererFactory for 'Core/Tooltip' WindowRenderers.
+31/03/2018 15:20:32 (Std) 	WindowRendererFactory 'Core/Tooltip' added. (0x1f139a0)
+31/03/2018 15:20:32 (Std) 	Created WindowRendererFactory for 'Core/ItemListbox' WindowRenderers.
+31/03/2018 15:20:32 (Std) 	WindowRendererFactory 'Core/ItemListbox' added. (0x1f13b40)
+31/03/2018 15:20:32 (Std) 	Created WindowRendererFactory for 'Core/Tree' WindowRenderers.
+31/03/2018 15:20:32 (Std) 	WindowRendererFactory 'Core/Tree' added. (0x1f13ce0)
+31/03/2018 15:20:32 (Std) 	Creating falagard mapping for type 'Vanilla/Label' using base type 'DefaultWindow', window renderer 'Core/Default' Look'N'Feel 'Vanilla/Label' and RenderEffect ''. (0x7ffc1779a8c0)
+31/03/2018 15:20:32 (Std) 	Creating falagard mapping for type 'Vanilla/Titlebar' using base type 'CEGUI/Titlebar', window renderer 'Core/Titlebar' Look'N'Feel 'Vanilla/Titlebar' and RenderEffect ''. (0x7ffc1779a8c0)
+31/03/2018 15:20:32 (Std) 	Creating falagard mapping for type 'Vanilla/Button' using base type 'CEGUI/PushButton', window renderer 'Core/Button' Look'N'Feel 'Vanilla/Button' and RenderEffect ''. (0x7ffc1779a8c0)
+31/03/2018 15:20:32 (Std) 	Creating falagard mapping for type 'Vanilla/FrameWindow' using base type 'CEGUI/FrameWindow', window renderer 'Core/FrameWindow' Look'N'Feel 'Vanilla/FrameWindow' and RenderEffect ''. (0x7ffc1779a8c0)
+31/03/2018 15:20:32 (Std) 	Creating falagard mapping for type 'Vanilla/Editbox' using base type 'CEGUI/Editbox', window renderer 'Core/Editbox' Look'N'Feel 'Vanilla/Editbox' and RenderEffect ''. (0x7ffc1779a8c0)
+31/03/2018 15:20:32 (Std) 	Creating falagard mapping for type 'Vanilla/VerticalScrollbarThumb' using base type 'CEGUI/Thumb', window renderer 'Core/Button' Look'N'Feel 'Vanilla/VerticalScrollbarThumb' and RenderEffect ''. (0x7ffc1779a8c0)
+31/03/2018 15:20:32 (Std) 	Creating falagard mapping for type 'Vanilla/VerticalScrollbar' using base type 'CEGUI/Scrollbar', window renderer 'Core/Scrollbar' Look'N'Feel 'Vanilla/VerticalScrollbar' and RenderEffect ''. (0x7ffc1779a8c0)
+31/03/2018 15:20:32 (Std) 	Creating falagard mapping for type 'Vanilla/HorizontalScrollbarThumb' using base type 'CEGUI/Thumb', window renderer 'Core/Button' Look'N'Feel 'Vanilla/HorizontalScrollbarThumb' and RenderEffect ''. (0x7ffc1779a8c0)
+31/03/2018 15:20:32 (Std) 	Creating falagard mapping for type 'Vanilla/HorizontalScrollbar' using base type 'CEGUI/Scrollbar', window renderer 'Core/Scrollbar' Look'N'Feel 'Vanilla/HorizontalScrollbar' and RenderEffect ''. (0x7ffc1779a8c0)
+31/03/2018 15:20:32 (Std) 	Creating falagard mapping for type 'Vanilla/StaticImage' using base type 'DefaultWindow', window renderer 'Core/StaticImage' Look'N'Feel 'Vanilla/StaticImage' and RenderEffect ''. (0x7ffc1779a8c0)
+31/03/2018 15:20:32 (Std) 	Creating falagard mapping for type 'Vanilla/StaticText' using base type 'DefaultWindow', window renderer 'Core/StaticText' Look'N'Feel 'Vanilla/StaticText' and RenderEffect ''. (0x7ffc1779a8c0)
+31/03/2018 15:20:32 (Std) 	Creating falagard mapping for type 'Vanilla/Listbox' using base type 'CEGUI/Listbox', window renderer 'Core/Listbox' Look'N'Feel 'Vanilla/Listbox' and RenderEffect ''. (0x7ffc1779a8c0)
+31/03/2018 15:20:32 (Std) 	Creating falagard mapping for type 'Vanilla/MultiLineEditbox' using base type 'CEGUI/MultiLineEditbox', window renderer 'Core/MultiLineEditbox' Look'N'Feel 'Vanilla/MultiLineEditbox' and RenderEffect ''. (0x7ffc1779a8c0)
+31/03/2018 15:20:32 (Std) 	Creating falagard mapping for type 'Vanilla/ComboDropList' using base type 'CEGUI/ComboDropList', window renderer 'Core/Listbox' Look'N'Feel 'Vanilla/ComboDropList' and RenderEffect ''. (0x7ffc1779a8c0)
+31/03/2018 15:20:32 (Std) 	Creating falagard mapping for type 'Vanilla/Combobox' using base type 'CEGUI/Combobox', window renderer 'Core/Default' Look'N'Feel 'Vanilla/Combobox' and RenderEffect ''. (0x7ffc1779a8c0)
+31/03/2018 15:20:32 (Std) 	Creating falagard mapping for type 'Vanilla/ProgressBar' using base type 'CEGUI/ProgressBar', window renderer 'Core/ProgressBar' Look'N'Feel 'Vanilla/ProgressBar' and RenderEffect ''. (0x7ffc1779a8c0)
+31/03/2018 15:20:32 (Std) 	Creating falagard mapping for type 'Vanilla/Checkbox' using base type 'CEGUI/ToggleButton', window renderer 'Core/ToggleButton' Look'N'Feel 'Vanilla/Checkbox' and RenderEffect ''. (0x7ffc1779a8c0)
+31/03/2018 15:20:32 (Std) 	Creating falagard mapping for type 'Vanilla/RadioButton' using base type 'CEGUI/RadioButton', window renderer 'Core/ToggleButton' Look'N'Feel 'Vanilla/RadioButton' and RenderEffect ''. (0x7ffc1779a8c0)
+31/03/2018 15:20:32 (Std) 	Creating falagard mapping for type 'Vanilla/Tooltip' using base type 'CEGUI/Tooltip', window renderer 'Core/Tooltip' Look'N'Feel 'Vanilla/Tooltip' and RenderEffect ''. (0x7ffc1779a8c0)
+31/03/2018 15:20:32 (Std) 	Started creation of Scheme from XML specification:
+31/03/2018 15:20:32 (Std) 	---- CEGUI GUIScheme name: FOTDSkin
+31/03/2018 15:20:32 (Std) 	[ImageManager] Started creation of Imageset from XML specification:
+31/03/2018 15:20:32 (Std) 	[ImageManager] ---- CEGUI Imageset name: FOTDSkin
+31/03/2018 15:20:32 (Std) 	[ImageManager] ---- Source texture file: FOTDSkin.png
+31/03/2018 15:20:32 (Std) 	[ImageManager] ---- Source texture resource group: (Default)
+31/03/2018 15:20:32 (Std) 	[OpenGLRenderer] Created texture: FOTDSkin
+31/03/2018 15:20:32 (Std) 	[ImageManager] Created image: 'FOTDSkin/WindowB' (0x1e6b300) of type: BasicImage
+31/03/2018 15:20:32 (Std) 	[ImageManager] Created image: 'FOTDSkin/WindowL' (0x1e7cb00) of type: BasicImage
+31/03/2018 15:20:32 (Std) 	[ImageManager] Created image: 'FOTDSkin/WindowR' (0x1e6b600) of type: BasicImage
+31/03/2018 15:20:32 (Std) 	[ImageManager] Created image: 'FOTDSkin/WindowT' (0x1e6b810) of type: BasicImage
+31/03/2018 15:20:32 (Std) 	[ImageManager] Created image: 'FOTDSkin/EditboxB' (0x1e6ba20) of type: BasicImage
+31/03/2018 15:20:32 (Std) 	[ImageManager] Created image: 'FOTDSkin/EditboxL' (0x1e6bc30) of type: BasicImage
+31/03/2018 15:20:32 (Std) 	[ImageManager] Created image: 'FOTDSkin/EditboxR' (0x1e6be40) of type: BasicImage
+31/03/2018 15:20:32 (Std) 	[ImageManager] Created image: 'FOTDSkin/EditboxT' (0x1e6c050) of type: BasicImage
+31/03/2018 15:20:32 (Std) 	[ImageManager] Created image: 'FOTDSkin/WindowBL' (0x1e6c260) of type: BasicImage
+31/03/2018 15:20:32 (Std) 	[ImageManager] Created image: 'FOTDSkin/WindowBR' (0x1e6c470) of type: BasicImage
+31/03/2018 15:20:32 (Std) 	[ImageManager] Created image: 'FOTDSkin/WindowTL' (0x1e6c680) of type: BasicImage
+31/03/2018 15:20:32 (Std) 	[ImageManager] Created image: 'FOTDSkin/WindowTR' (0x1e6c890) of type: BasicImage
+31/03/2018 15:20:32 (Std) 	[ImageManager] Created image: 'FOTDSkin/EditboxBL' (0x1e6caa0) of type: BasicImage
+31/03/2018 15:20:32 (Std) 	[ImageManager] Created image: 'FOTDSkin/EditboxBR' (0x1e6ccb0) of type: BasicImage
+31/03/2018 15:20:32 (Std) 	[ImageManager] Created image: 'FOTDSkin/EditboxTL' (0x1e6cec0) of type: BasicImage
+31/03/2018 15:20:32 (Std) 	[ImageManager] Created image: 'FOTDSkin/EditboxTR' (0x1e6d0d0) of type: BasicImage
+31/03/2018 15:20:32 (Std) 	[ImageManager] Created image: 'FOTDSkin/MouseMove' (0x1e6d2e0) of type: BasicImage
+31/03/2018 15:20:32 (Std) 	[ImageManager] Created image: 'FOTDSkin/MouseNeSw' (0x1e6d4f0) of type: BasicImage
+31/03/2018 15:20:32 (Std) 	[ImageManager] Created image: 'FOTDSkin/NewImage1' (0x1e6d700) of type: BasicImage
+31/03/2018 15:20:32 (Std) 	[ImageManager] Created image: 'FOTDSkin/MouseArrow' (0x1e6d910) of type: BasicImage
+31/03/2018 15:20:32 (Std) 	[ImageManager] Created image: 'FOTDSkin/WindowFill' (0x1e6db20) of type: BasicImage
+31/03/2018 15:20:32 (Std) 	[ImageManager] Created image: 'FOTDSkin/EditboxFill' (0x1e6dd30) of type: BasicImage
+31/03/2018 15:20:32 (Std) 	[ImageManager] Created image: 'FOTDSkin/WindowClipB' (0x1e6df40) of type: BasicImage
+31/03/2018 15:20:32 (Std) 	[ImageManager] Created image: 'FOTDSkin/WindowClipL' (0x1e6e150) of type: BasicImage
+31/03/2018 15:20:32 (Std) 	[ImageManager] Created image: 'FOTDSkin/WindowClipR' (0x1e6e360) of type: BasicImage
+31/03/2018 15:20:32 (Std) 	[ImageManager] Created image: 'FOTDSkin/WindowClipT' (0x1e6e570) of type: BasicImage
+31/03/2018 15:20:32 (Std) 	[ImageManager] Created image: 'FOTDSkin/ButtonHoverB' (0x1e6e780) of type: BasicImage
+31/03/2018 15:20:32 (Std) 	[ImageManager] Created image: 'FOTDSkin/ButtonHoverL' (0x1e6e990) of type: BasicImage
+31/03/2018 15:20:32 (Std) 	[ImageManager] Created image: 'FOTDSkin/ButtonHoverR' (0x1e6eba0) of type: BasicImage
+31/03/2018 15:20:32 (Std) 	[ImageManager] Created image: 'FOTDSkin/ButtonHoverT' (0x1e6edb0) of type: BasicImage
+31/03/2018 15:20:32 (Std) 	[ImageManager] Created image: 'FOTDSkin/GenericBrush' (0x1e6efc0) of type: BasicImage
+31/03/2018 15:20:32 (Std) 	[ImageManager] Created image: 'FOTDSkin/MouseTextBar' (0x1e6f1d0) of type: BasicImage
+31/03/2018 15:20:32 (Std) 	[ImageManager] Created image: 'FOTDSkin/ButtonHoverBL' (0x1e6f3e0) of type: BasicImage
+31/03/2018 15:20:32 (Std) 	[ImageManager] Created image: 'FOTDSkin/ButtonHoverBR' (0x1e6f5f0) of type: BasicImage
+31/03/2018 15:20:32 (Std) 	[ImageManager] Created image: 'FOTDSkin/ButtonHoverTL' (0x1e6f800) of type: BasicImage
+31/03/2018 15:20:32 (Std) 	[ImageManager] Created image: 'FOTDSkin/ButtonHoverTR' (0x1e6fa10) of type: BasicImage
+31/03/2018 15:20:32 (Std) 	[ImageManager] Created image: 'FOTDSkin/ButtonNormalB' (0x1e6fc20) of type: BasicImage
+31/03/2018 15:20:32 (Std) 	[ImageManager] Created image: 'FOTDSkin/ButtonNormalL' (0x1e6fe30) of type: BasicImage
+31/03/2018 15:20:32 (Std) 	[ImageManager] Created image: 'FOTDSkin/ButtonNormalR' (0x1e70040) of type: BasicImage
+31/03/2018 15:20:32 (Std) 	[ImageManager] Created image: 'FOTDSkin/ButtonNormalT' (0x1e70250) of type: BasicImage
+31/03/2018 15:20:32 (Std) 	[ImageManager] Created image: 'FOTDSkin/ButtonPushedB' (0x1e70460) of type: BasicImage
+31/03/2018 15:20:32 (Std) 	[ImageManager] Created image: 'FOTDSkin/ButtonPushedL' (0x1e70670) of type: BasicImage
+31/03/2018 15:20:32 (Std) 	[ImageManager] Created image: 'FOTDSkin/ButtonPushedR' (0x1e70880) of type: BasicImage
+31/03/2018 15:20:32 (Std) 	[ImageManager] Created image: 'FOTDSkin/ButtonPushedT' (0x1e70a90) of type: BasicImage
+31/03/2018 15:20:32 (Std) 	[ImageManager] Created image: 'FOTDSkin/CheckboxHover' (0x1e70ca0) of type: BasicImage
+31/03/2018 15:20:32 (Std) 	[ImageManager] Created image: 'FOTDSkin/ProgressFullB' (0x1e70eb0) of type: BasicImage
+31/03/2018 15:20:32 (Std) 	[ImageManager] Created image: 'FOTDSkin/ProgressFullL' (0x1e710c0) of type: BasicImage
+31/03/2018 15:20:32 (Std) 	[ImageManager] Created image: 'FOTDSkin/ProgressFullR' (0x1e712d0) of type: BasicImage
+31/03/2018 15:20:32 (Std) 	[ImageManager] Created image: 'FOTDSkin/ProgressFullT' (0x1e714e0) of type: BasicImage
+31/03/2018 15:20:32 (Std) 	[ImageManager] Created image: 'FOTDSkin/ScrollUpHover' (0x1e716f0) of type: BasicImage
+31/03/2018 15:20:32 (Std) 	[ImageManager] Created image: 'FOTDSkin/ButtonNormalBL' (0x1e71900) of type: BasicImage
+31/03/2018 15:20:32 (Std) 	[ImageManager] Created image: 'FOTDSkin/ButtonNormalBR' (0x1e71b10) of type: BasicImage
+31/03/2018 15:20:32 (Std) 	[ImageManager] Created image: 'FOTDSkin/ButtonNormalTL' (0x1e71d20) of type: BasicImage
+31/03/2018 15:20:32 (Std) 	[ImageManager] Created image: 'FOTDSkin/ButtonNormalTR' (0x1e71f30) of type: BasicImage
+31/03/2018 15:20:32 (Std) 	[ImageManager] Created image: 'FOTDSkin/ButtonPushedBL' (0x1e72140) of type: BasicImage
+31/03/2018 15:20:32 (Std) 	[ImageManager] Created image: 'FOTDSkin/ButtonPushedBR' (0x1e72350) of type: BasicImage
+31/03/2018 15:20:32 (Std) 	[ImageManager] Created image: 'FOTDSkin/ButtonPushedTL' (0x1e72560) of type: BasicImage
+31/03/2018 15:20:32 (Std) 	[ImageManager] Created image: 'FOTDSkin/ButtonPushedTR' (0x1e72770) of type: BasicImage
+31/03/2018 15:20:32 (Std) 	[ImageManager] Created image: 'FOTDSkin/CheckboxNormal' (0x1e72980) of type: BasicImage
+31/03/2018 15:20:32 (Std) 	[ImageManager] Created image: 'FOTDSkin/HorzScrollbarB' (0x1e72b90) of type: BasicImage
+31/03/2018 15:20:32 (Std) 	[ImageManager] Created image: 'FOTDSkin/HorzScrollbarT' (0x1e72da0) of type: BasicImage
+31/03/2018 15:20:32 (Std) 	[ImageManager] Created image: 'FOTDSkin/ProgressEmptyB' (0x1e72fb0) of type: BasicImage
+31/03/2018 15:20:32 (Std) 	[ImageManager] Created image: 'FOTDSkin/ProgressEmptyL' (0x1e731c0) of type: BasicImage
+31/03/2018 15:20:32 (Std) 	[ImageManager] Created image: 'FOTDSkin/ProgressEmptyR' (0x1e733d0) of type: BasicImage
+31/03/2018 15:20:32 (Std) 	[ImageManager] Created image: 'FOTDSkin/ProgressEmptyT' (0x1e735e0) of type: BasicImage
+31/03/2018 15:20:32 (Std) 	[ImageManager] Created image: 'FOTDSkin/ProgressFullBL' (0x1e737f0) of type: BasicImage
+31/03/2018 15:20:32 (Std) 	[ImageManager] Created image: 'FOTDSkin/ProgressFullBR' (0x1e73a00) of type: BasicImage
+31/03/2018 15:20:32 (Std) 	[ImageManager] Created image: 'FOTDSkin/ProgressFullTL' (0x1e73c10) of type: BasicImage
+31/03/2018 15:20:32 (Std) 	[ImageManager] Created image: 'FOTDSkin/ProgressFullTR' (0x1e73e20) of type: BasicImage
+31/03/2018 15:20:32 (Std) 	[ImageManager] Created image: 'FOTDSkin/ProgressShadow' (0x1e74030) of type: BasicImage
+31/03/2018 15:20:32 (Std) 	[ImageManager] Created image: 'FOTDSkin/ScrollUpNormal' (0x1e74240) of type: BasicImage
+31/03/2018 15:20:32 (Std) 	[ImageManager] Created image: 'FOTDSkin/ScrollUpPushed' (0x1e74450) of type: BasicImage
+31/03/2018 15:20:32 (Std) 	[ImageManager] Created image: 'FOTDSkin/TitlebarDummy1' (0x1f23680) of type: BasicImage
+31/03/2018 15:20:32 (Std) 	[ImageManager] Created image: 'FOTDSkin/VertScrollbarL' (0x1e74980) of type: BasicImage
+31/03/2018 15:20:32 (Std) 	[ImageManager] Created image: 'FOTDSkin/VertScrollbarR' (0x1e7c500) of type: BasicImage
+31/03/2018 15:20:32 (Std) 	[ImageManager] Created image: 'FOTDSkin/CheckboxChecked' (0x1f23bb0) of type: BasicImage
+31/03/2018 15:20:32 (Std) 	[ImageManager] Created image: 'FOTDSkin/HorzThumbHoverB' (0x1e87ef0) of type: BasicImage
+31/03/2018 15:20:32 (Std) 	[ImageManager] Created image: 'FOTDSkin/HorzThumbHoverT' (0x1e88100) of type: BasicImage
+31/03/2018 15:20:32 (Std) 	[ImageManager] Created image: 'FOTDSkin/ProgressEmptyBL' (0x1e88310) of type: BasicImage
+31/03/2018 15:20:32 (Std) 	[ImageManager] Created image: 'FOTDSkin/ProgressEmptyBR' (0x1e88520) of type: BasicImage
+31/03/2018 15:20:32 (Std) 	[ImageManager] Created image: 'FOTDSkin/ProgressEmptyTL' (0x1e88730) of type: BasicImage
+31/03/2018 15:20:32 (Std) 	[ImageManager] Created image: 'FOTDSkin/ProgressEmptyTR' (0x1e88940) of type: BasicImage
+31/03/2018 15:20:32 (Std) 	[ImageManager] Created image: 'FOTDSkin/ScrollDownHover' (0x1e88b50) of type: BasicImage
+31/03/2018 15:20:32 (Std) 	[ImageManager] Created image: 'FOTDSkin/ScrollLeftHover' (0x1e88d60) of type: BasicImage
+31/03/2018 15:20:32 (Std) 	[ImageManager] Created image: 'FOTDSkin/TitlebarActiveB' (0x1e88f70) of type: BasicImage
+31/03/2018 15:20:32 (Std) 	[ImageManager] Created image: 'FOTDSkin/TitlebarActiveL' (0x1e89180) of type: BasicImage
+31/03/2018 15:20:32 (Std) 	[ImageManager] Created image: 'FOTDSkin/TitlebarActiveR' (0x1e89390) of type: BasicImage
+31/03/2018 15:20:32 (Std) 	[ImageManager] Created image: 'FOTDSkin/TitlebarActiveT' (0x1e895a0) of type: BasicImage
+31/03/2018 15:20:32 (Std) 	[ImageManager] Created image: 'FOTDSkin/VertThumbHoverL' (0x1e897b0) of type: BasicImage
+31/03/2018 15:20:32 (Std) 	[ImageManager] Created image: 'FOTDSkin/VertThumbHoverR' (0x1e899c0) of type: BasicImage
+31/03/2018 15:20:32 (Std) 	[ImageManager] Created image: 'FOTDSkin/ButtonHoverFill1' (0x1e89bd0) of type: BasicImage
+31/03/2018 15:20:32 (Std) 	[ImageManager] Created image: 'FOTDSkin/ButtonHoverFill2' (0x1e89de0) of type: BasicImage
+31/03/2018 15:20:32 (Std) 	[ImageManager] Created image: 'FOTDSkin/HorzSliderTrackL' (0x1e89ff0) of type: BasicImage
+31/03/2018 15:20:32 (Std) 	[ImageManager] Created image: 'FOTDSkin/HorzSliderTrackR' (0x1e8a200) of type: BasicImage
+31/03/2018 15:20:32 (Std) 	[ImageManager] Created image: 'FOTDSkin/HorzThumbHoverBL' (0x1e8a410) of type: BasicImage
+31/03/2018 15:20:32 (Std) 	[ImageManager] Created image: 'FOTDSkin/HorzThumbHoverBR' (0x1e8a620) of type: BasicImage
+31/03/2018 15:20:32 (Std) 	[ImageManager] Created image: 'FOTDSkin/HorzThumbHoverTL' (0x1e8a830) of type: BasicImage
+31/03/2018 15:20:32 (Std) 	[ImageManager] Created image: 'FOTDSkin/HorzThumbHoverTR' (0x1e8aa40) of type: BasicImage
+31/03/2018 15:20:32 (Std) 	[ImageManager] Created image: 'FOTDSkin/HorzThumbNormalB' (0x1e8ac50) of type: BasicImage
+31/03/2018 15:20:32 (Std) 	[ImageManager] Created image: 'FOTDSkin/HorzThumbNormalT' (0x1e8ae60) of type: BasicImage
+31/03/2018 15:20:32 (Std) 	[ImageManager] Created image: 'FOTDSkin/HorzThumbPushedB' (0x1e8b070) of type: BasicImage
+31/03/2018 15:20:32 (Std) 	[ImageManager] Created image: 'FOTDSkin/HorzThumbPushedT' (0x1e8b280) of type: BasicImage
+31/03/2018 15:20:32 (Std) 	[ImageManager] Created image: 'FOTDSkin/HorzThumbShadowL' (0x1e8b490) of type: BasicImage
+31/03/2018 15:20:32 (Std) 	[ImageManager] Created image: 'FOTDSkin/HorzThumbShadowR' (0x1e8b6a0) of type: BasicImage
+31/03/2018 15:20:32 (Std) 	[ImageManager] Created image: 'FOTDSkin/ProgressFullFill' (0x1e8b8b0) of type: BasicImage
+31/03/2018 15:20:32 (Std) 	[ImageManager] Created image: 'FOTDSkin/RadioButtonHover' (0x1e8bac0) of type: BasicImage
+31/03/2018 15:20:32 (Std) 	[ImageManager] Created image: 'FOTDSkin/ScrollDownNormal' (0x1e8bcd0) of type: BasicImage
+31/03/2018 15:20:32 (Std) 	[ImageManager] Created image: 'FOTDSkin/ScrollDownPushed' (0x1e8bee0) of type: BasicImage
+31/03/2018 15:20:32 (Std) 	[ImageManager] Created image: 'FOTDSkin/ScrollLeftNormal' (0x1e8c0f0) of type: BasicImage
+31/03/2018 15:20:32 (Std) 	[ImageManager] Created image: 'FOTDSkin/ScrollLeftPushed' (0x1e8c300) of type: BasicImage
+31/03/2018 15:20:32 (Std) 	[ImageManager] Created image: 'FOTDSkin/ScrollRightHover' (0x1e8c510) of type: BasicImage
+31/03/2018 15:20:32 (Std) 	[ImageManager] Created image: 'FOTDSkin/TitlebarActiveBL' (0x1e8c720) of type: BasicImage
+31/03/2018 15:20:32 (Std) 	[ImageManager] Created image: 'FOTDSkin/TitlebarActiveBR' (0x1e8c930) of type: BasicImage
+31/03/2018 15:20:32 (Std) 	[ImageManager] Created image: 'FOTDSkin/TitlebarActiveTL' (0x1e8cb40) of type: BasicImage
+31/03/2018 15:20:32 (Std) 	[ImageManager] Created image: 'FOTDSkin/TitlebarActiveTR' (0x1e8cd50) of type: BasicImage
+31/03/2018 15:20:32 (Std) 	[ImageManager] Created image: 'FOTDSkin/VertSliderTrackB' (0x1e8cf60) of type: BasicImage
+31/03/2018 15:20:32 (Std) 	[ImageManager] Created image: 'FOTDSkin/VertSliderTrackT' (0x1e8d170) of type: BasicImage
+31/03/2018 15:20:32 (Std) 	[ImageManager] Created image: 'FOTDSkin/VertThumbHoverBL' (0x1e8d380) of type: BasicImage
+31/03/2018 15:20:32 (Std) 	[ImageManager] Created image: 'FOTDSkin/VertThumbHoverBR' (0x1e8d590) of type: BasicImage
+31/03/2018 15:20:32 (Std) 	[ImageManager] Created image: 'FOTDSkin/VertThumbHoverTL' (0x1e8d7a0) of type: BasicImage
+31/03/2018 15:20:32 (Std) 	[ImageManager] Created image: 'FOTDSkin/VertThumbHoverTR' (0x1e8d9b0) of type: BasicImage
+31/03/2018 15:20:32 (Std) 	[ImageManager] Created image: 'FOTDSkin/VertThumbNormalL' (0x1e8dbc0) of type: BasicImage
+31/03/2018 15:20:32 (Std) 	[ImageManager] Created image: 'FOTDSkin/VertThumbNormalR' (0x1e8ddd0) of type: BasicImage
+31/03/2018 15:20:32 (Std) 	[ImageManager] Created image: 'FOTDSkin/VertThumbPushedL' (0x1e8dfe0) of type: BasicImage
+31/03/2018 15:20:32 (Std) 	[ImageManager] Created image: 'FOTDSkin/VertThumbPushedR' (0x1e8e1f0) of type: BasicImage
+31/03/2018 15:20:32 (Std) 	[ImageManager] Created image: 'FOTDSkin/VertThumbShadowB' (0x1e8e400) of type: BasicImage
+31/03/2018 15:20:32 (Std) 	[ImageManager] Created image: 'FOTDSkin/VertThumbShadowT' (0x1e8e610) of type: BasicImage
+31/03/2018 15:20:32 (Std) 	[ImageManager] Created image: 'FOTDSkin/ButtonNormalFill1' (0x1e8e820) of type: BasicImage
+31/03/2018 15:20:32 (Std) 	[ImageManager] Created image: 'FOTDSkin/ButtonNormalFill2' (0x1e8ea30) of type: BasicImage
+31/03/2018 15:20:32 (Std) 	[ImageManager] Created image: 'FOTDSkin/ButtonPushedFill1' (0x1e8ec40) of type: BasicImage
+31/03/2018 15:20:32 (Std) 	[ImageManager] Created image: 'FOTDSkin/ButtonPushedFill2' (0x1e8ee50) of type: BasicImage
+31/03/2018 15:20:32 (Std) 	[ImageManager] Created image: 'FOTDSkin/CloseButtonNormal' (0x1e8f060) of type: BasicImage
+31/03/2018 15:20:32 (Std) 	[ImageManager] Created image: 'FOTDSkin/CloseButtonPushed' (0x1e8f270) of type: BasicImage
+31/03/2018 15:20:32 (Std) 	[ImageManager] Created image: 'FOTDSkin/HorzSliderShadowL' (0x1e8f480) of type: BasicImage
+31/03/2018 15:20:32 (Std) 	[ImageManager] Created image: 'FOTDSkin/HorzSliderShadowR' (0x1e8f690) of type: BasicImage
+31/03/2018 15:20:32 (Std) 	[ImageManager] Created image: 'FOTDSkin/HorzThumbNormalBL' (0x1e8f8a0) of type: BasicImage
+31/03/2018 15:20:32 (Std) 	[ImageManager] Created image: 'FOTDSkin/HorzThumbNormalBR' (0x1e8fab0) of type: BasicImage
+31/03/2018 15:20:32 (Std) 	[ImageManager] Created image: 'FOTDSkin/HorzThumbNormalTL' (0x1e8fcc0) of type: BasicImage
+31/03/2018 15:20:32 (Std) 	[ImageManager] Created image: 'FOTDSkin/HorzThumbNormalTR' (0x1e8fed0) of type: BasicImage
+31/03/2018 15:20:32 (Std) 	[ImageManager] Created image: 'FOTDSkin/HorzThumbPushedBL' (0x1e900e0) of type: BasicImage
+31/03/2018 15:20:32 (Std) 	[ImageManager] Created image: 'FOTDSkin/HorzThumbPushedBR' (0x1e902f0) of type: BasicImage
+31/03/2018 15:20:32 (Std) 	[ImageManager] Created image: 'FOTDSkin/HorzThumbPushedTL' (0x1e90500) of type: BasicImage
+31/03/2018 15:20:32 (Std) 	[ImageManager] Created image: 'FOTDSkin/HorzThumbPushedTR' (0x1e90710) of type: BasicImage
+31/03/2018 15:20:32 (Std) 	[ImageManager] Created image: 'FOTDSkin/ProgressEmptyFill' (0x1e90920) of type: BasicImage
+31/03/2018 15:20:32 (Std) 	[ImageManager] Created image: 'FOTDSkin/RadioButtonNormal' (0x1e90b30) of type: BasicImage
+31/03/2018 15:20:32 (Std) 	[ImageManager] Created image: 'FOTDSkin/ScrollRightNormal' (0x1e90d40) of type: BasicImage
+31/03/2018 15:20:32 (Std) 	[ImageManager] Created image: 'FOTDSkin/ScrollRightPushed' (0x1e90f50) of type: BasicImage
+31/03/2018 15:20:32 (Std) 	[ImageManager] Created image: 'FOTDSkin/TitlebarInactiveB' (0x1e91160) of type: BasicImage
+31/03/2018 15:20:32 (Std) 	[ImageManager] Created image: 'FOTDSkin/TitlebarInactiveL' (0x1e91370) of type: BasicImage
+31/03/2018 15:20:32 (Std) 	[ImageManager] Created image: 'FOTDSkin/TitlebarInactiveR' (0x1e91580) of type: BasicImage
+31/03/2018 15:20:32 (Std) 	[ImageManager] Created image: 'FOTDSkin/TitlebarInactiveT' (0x1e91790) of type: BasicImage
+31/03/2018 15:20:32 (Std) 	[ImageManager] Created image: 'FOTDSkin/VertSliderShadowB' (0x1e919a0) of type: BasicImage
+31/03/2018 15:20:32 (Std) 	[ImageManager] Created image: 'FOTDSkin/VertSliderShadowT' (0x1e91bb0) of type: BasicImage
+31/03/2018 15:20:32 (Std) 	[ImageManager] Created image: 'FOTDSkin/VertThumbNormalBL' (0x1e91dc0) of type: BasicImage
+31/03/2018 15:20:32 (Std) 	[ImageManager] Created image: 'FOTDSkin/VertThumbNormalBR' (0x1e91fd0) of type: BasicImage
+31/03/2018 15:20:32 (Std) 	[ImageManager] Created image: 'FOTDSkin/VertThumbNormalTL' (0x1e921e0) of type: BasicImage
+31/03/2018 15:20:32 (Std) 	[ImageManager] Created image: 'FOTDSkin/VertThumbNormalTR' (0x1e923f0) of type: BasicImage
+31/03/2018 15:20:32 (Std) 	[ImageManager] Created image: 'FOTDSkin/VertThumbPushedBL' (0x1e92600) of type: BasicImage
+31/03/2018 15:20:32 (Std) 	[ImageManager] Created image: 'FOTDSkin/VertThumbPushedBR' (0x1e92810) of type: BasicImage
+31/03/2018 15:20:32 (Std) 	[ImageManager] Created image: 'FOTDSkin/VertThumbPushedTL' (0x1e92a20) of type: BasicImage
+31/03/2018 15:20:32 (Std) 	[ImageManager] Created image: 'FOTDSkin/VertThumbPushedTR' (0x1e92c30) of type: BasicImage
+31/03/2018 15:20:32 (Std) 	[ImageManager] Created image: 'FOTDSkin/HorzScrollbarFill1' (0x1e92e40) of type: BasicImage
+31/03/2018 15:20:32 (Std) 	[ImageManager] Created image: 'FOTDSkin/HorzScrollbarFill2' (0x1e93050) of type: BasicImage
+31/03/2018 15:20:32 (Std) 	[ImageManager] Created image: 'FOTDSkin/RadioButtonChecked' (0x1e93260) of type: BasicImage
+31/03/2018 15:20:32 (Std) 	[ImageManager] Created image: 'FOTDSkin/TitlebarInactiveBL' (0x1e93470) of type: BasicImage
+31/03/2018 15:20:32 (Std) 	[ImageManager] Created image: 'FOTDSkin/TitlebarInactiveBR' (0x1e93680) of type: BasicImage
+31/03/2018 15:20:32 (Std) 	[ImageManager] Created image: 'FOTDSkin/TitlebarInactiveTL' (0x1e93890) of type: BasicImage
+31/03/2018 15:20:32 (Std) 	[ImageManager] Created image: 'FOTDSkin/TitlebarInactiveTR' (0x1e93aa0) of type: BasicImage
+31/03/2018 15:20:32 (Std) 	[ImageManager] Created image: 'FOTDSkin/VertScrollbarFill1' (0x1e93cb0) of type: BasicImage
+31/03/2018 15:20:32 (Std) 	[ImageManager] Created image: 'FOTDSkin/VertScrollbarFill2' (0x1e93ec0) of type: BasicImage
+31/03/2018 15:20:32 (Std) 	[ImageManager] Created image: 'FOTDSkin/HorzSliderTrackFill' (0x1e940d0) of type: BasicImage
+31/03/2018 15:20:32 (Std) 	[ImageManager] Created image: 'FOTDSkin/TitlebarActiveFill1' (0x1e942e0) of type: BasicImage
+31/03/2018 15:20:32 (Std) 	[ImageManager] Created image: 'FOTDSkin/TitlebarActiveFill2' (0x1e944f0) of type: BasicImage
+31/03/2018 15:20:32 (Std) 	[ImageManager] Created image: 'FOTDSkin/VertSliderTrackFill' (0x1e94700) of type: BasicImage
+31/03/2018 15:20:32 (Std) 	[ImageManager] Created image: 'FOTDSkin/HorzSliderThumbHover' (0x1e94910) of type: BasicImage
+31/03/2018 15:20:32 (Std) 	[ImageManager] Created image: 'FOTDSkin/VertSliderThumbHover' (0x1e94b20) of type: BasicImage
+31/03/2018 15:20:32 (Std) 	[ImageManager] Created image: 'FOTDSkin/HorzSliderThumbNormal' (0x1e94d30) of type: BasicImage
+31/03/2018 15:20:32 (Std) 	[ImageManager] Created image: 'FOTDSkin/HorzSliderThumbPushed' (0x1e94f40) of type: BasicImage
+31/03/2018 15:20:32 (Std) 	[ImageManager] Created image: 'FOTDSkin/TitlebarInactiveFill1' (0x1e95150) of type: BasicImage
+31/03/2018 15:20:32 (Std) 	[ImageManager] Created image: 'FOTDSkin/TitlebarInactiveFill2' (0x1e95360) of type: BasicImage
+31/03/2018 15:20:32 (Std) 	[ImageManager] Created image: 'FOTDSkin/VertSliderThumbNormal' (0x1e95570) of type: BasicImage
+31/03/2018 15:20:32 (Std) 	[ImageManager] Created image: 'FOTDSkin/VertSliderThumbPushed' (0x1e95780) of type: BasicImage
+31/03/2018 15:20:32 (Std) 	===== Falagard 'root' element: look and feel parsing begins =====
+31/03/2018 15:20:32 (Std) 	===== Look and feel parsing completed =====
+31/03/2018 15:20:32 (Std) 	No window renderer factories specified for module 'CEGUICoreWindowRendererSet' - adding all available factories...
+31/03/2018 15:20:32 (Std) 	Creating falagard mapping for type 'FOTDSkin/Label' using base type 'DefaultWindow', window renderer 'Core/Default' Look'N'Feel 'FOTDSkin/Label' and RenderEffect ''. (0x7ffc1779a8c0)
+31/03/2018 15:20:32 (Std) 	Creating falagard mapping for type 'FOTDSkin/Button' using base type 'CEGUI/PushButton', window renderer 'Core/Button' Look'N'Feel 'FOTDSkin/Button' and RenderEffect ''. (0x7ffc1779a8c0)
+31/03/2018 15:20:32 (Std) 	Creating falagard mapping for type 'FOTDSkin/ImageButton' using base type 'CEGUI/PushButton', window renderer 'Core/Button' Look'N'Feel 'FOTDSkin/ImageButton' and RenderEffect ''. (0x7ffc1779a8c0)
+31/03/2018 15:20:32 (Std) 	Creating falagard mapping for type 'FOTDSkin/RadioButton' using base type 'CEGUI/RadioButton', window renderer 'Core/ToggleButton' Look'N'Feel 'FOTDSkin/RadioButton' and RenderEffect ''. (0x7ffc1779a8c0)
+31/03/2018 15:20:32 (Std) 	Creating falagard mapping for type 'FOTDSkin/Checkbox' using base type 'CEGUI/ToggleButton', window renderer 'Core/ToggleButton' Look'N'Feel 'FOTDSkin/Checkbox' and RenderEffect ''. (0x7ffc1779a8c0)
+31/03/2018 15:20:32 (Std) 	Creating falagard mapping for type 'FOTDSkin/Titlebar' using base type 'CEGUI/Titlebar', window renderer 'Core/Titlebar' Look'N'Feel 'FOTDSkin/Titlebar' and RenderEffect ''. (0x7ffc1779a8c0)
+31/03/2018 15:20:32 (Std) 	Creating falagard mapping for type 'FOTDSkin/FrameWindow' using base type 'CEGUI/FrameWindow', window renderer 'Core/FrameWindow' Look'N'Feel 'FOTDSkin/FrameWindow' and RenderEffect ''. (0x7ffc1779a8c0)
+31/03/2018 15:20:32 (Std) 	Creating falagard mapping for type 'FOTDSkin/Editbox' using base type 'CEGUI/Editbox', window renderer 'Core/Editbox' Look'N'Feel 'FOTDSkin/Editbox' and RenderEffect ''. (0x7ffc1779a8c0)
+31/03/2018 15:20:32 (Std) 	Creating falagard mapping for type 'FOTDSkin/VerticalScrollbarThumb' using base type 'CEGUI/Thumb', window renderer 'Core/Button' Look'N'Feel 'FOTDSkin/VerticalScrollbarThumb' and RenderEffect ''. (0x7ffc1779a8c0)
+31/03/2018 15:20:32 (Std) 	Creating falagard mapping for type 'FOTDSkin/VerticalScrollbar' using base type 'CEGUI/Scrollbar', window renderer 'Core/Scrollbar' Look'N'Feel 'FOTDSkin/VerticalScrollbar' and RenderEffect ''. (0x7ffc1779a8c0)
+31/03/2018 15:20:32 (Std) 	Creating falagard mapping for type 'FOTDSkin/HorizontalScrollbarThumb' using base type 'CEGUI/Thumb', window renderer 'Core/Button' Look'N'Feel 'FOTDSkin/HorizontalScrollbarThumb' and RenderEffect ''. (0x7ffc1779a8c0)
+31/03/2018 15:20:32 (Std) 	Creating falagard mapping for type 'FOTDSkin/HorizontalScrollbar' using base type 'CEGUI/Scrollbar', window renderer 'Core/Scrollbar' Look'N'Feel 'FOTDSkin/HorizontalScrollbar' and RenderEffect ''. (0x7ffc1779a8c0)
+31/03/2018 15:20:32 (Std) 	Creating falagard mapping for type 'FOTDSkin/MultiLineEditbox' using base type 'CEGUI/MultiLineEditbox', window renderer 'Core/MultiLineEditbox' Look'N'Feel 'FOTDSkin/MultiLineEditbox' and RenderEffect ''. (0x7ffc1779a8c0)
+31/03/2018 15:20:32 (Std) 	Creating falagard mapping for type 'FOTDSkin/ProgressBar' using base type 'CEGUI/ProgressBar', window renderer 'Core/ProgressBar' Look'N'Feel 'FOTDSkin/ProgressBar' and RenderEffect ''. (0x7ffc1779a8c0)
+31/03/2018 15:20:32 (Std) 	Creating falagard mapping for type 'FOTDSkin/HorizontalSliderThumb' using base type 'CEGUI/Thumb', window renderer 'Core/Button' Look'N'Feel 'FOTDSkin/HorizontalSliderThumb' and RenderEffect ''. (0x7ffc1779a8c0)
+31/03/2018 15:20:32 (Std) 	Creating falagard mapping for type 'FOTDSkin/HorizontalSlider' using base type 'CEGUI/Slider', window renderer 'Core/Slider' Look'N'Feel 'FOTDSkin/HorizontalSlider' and RenderEffect ''. (0x7ffc1779a8c0)
+31/03/2018 15:20:32 (Std) 	Creating falagard mapping for type 'FOTDSkin/VerticalSliderThumb' using base type 'CEGUI/Thumb', window renderer 'Core/Button' Look'N'Feel 'FOTDSkin/VerticalSliderThumb' and RenderEffect ''. (0x7ffc1779a8c0)
+31/03/2018 15:20:32 (Std) 	Creating falagard mapping for type 'FOTDSkin/VerticalSlider' using base type 'CEGUI/Slider', window renderer 'Core/Slider' Look'N'Feel 'FOTDSkin/VerticalSlider' and RenderEffect ''. (0x7ffc1779a8c0)
+31/03/2018 15:20:32 (Std) 	Creating falagard mapping for type 'FOTDSkin/MenuItem' using base type 'CEGUI/MenuItem', window renderer 'Core/MenuItem' Look'N'Feel 'FOTDSkin/MenuItem' and RenderEffect ''. (0x7ffc1779a8c0)
+31/03/2018 15:20:33 (Std) 	Started creation of Scheme from XML specification:
+31/03/2018 15:20:33 (Std) 	---- CEGUI GUIScheme name: FOTDSkin
+31/03/2018 15:20:33 (Std) 	---- Returning existing instance of Scheme named 'FOTDSkin'.
+31/03/2018 15:20:33 (Std) 	[OpenGLRenderer] Created texture: QuietHorror-22_auto_glyph_images_0
+31/03/2018 15:20:34 (Std) 	Started creation of Scheme from XML specification:
+31/03/2018 15:20:34 (Std) 	---- CEGUI GUIScheme name: FOTDSkin
+31/03/2018 15:20:34 (Std) 	---- Returning existing instance of Scheme named 'FOTDSkin'.
+31/03/2018 15:20:34 (Std) 	---- Returning existing instance of Font named 'QuietHorror-22'.

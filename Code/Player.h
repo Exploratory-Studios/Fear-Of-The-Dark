@@ -9,7 +9,7 @@
 #include "Chunk.h"
 #include "Block.h"
 #include "Inventory.h"
-#include "BlockItem.h"
+#include "Item.h"
 
 #include "PresetValues.h"
 
@@ -29,9 +29,9 @@ class Player : public Entity
         GLEngine::InputManager* m_input = nullptr;
 
         Block* m_selectedBlock = nullptr;
-        Item* m_handItem = nullptr;
+        Item* m_handItem;
 
-        int m_selectedHotbox = 1;
+        int m_selectedHotbox = 0;
 
         Inventory* m_inventory = nullptr;
 

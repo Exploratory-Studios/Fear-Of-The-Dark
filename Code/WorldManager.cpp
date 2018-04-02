@@ -47,6 +47,7 @@ void WorldManager::draw(GLEngine::SpriteBatch& sb, GLEngine::DebugRenderer& dr) 
 }
 
 /// Private Functions
+#include <iostream>
 void WorldManager::activateChunks() {
 
     int chunkIndex = std::floor(m_player->getPosition().x / TILE_SIZE / CHUNK_SIZE);
@@ -57,9 +58,12 @@ void WorldManager::activateChunks() {
         const int each = (VIEW_DIST - 1) / 2; // How many chunks on each side of the centre of the selection
 
         for(int i = -each; i <= each; i++) {
-            if(chunkIndex + i >= 0 && chunkIndex + i <= WORLD_SIZE-1) {
+            if(chunkIndex + i >= 0) {
                 m_activatedChunks.push_back((chunkIndex + i) % WORLD_SIZE);
+            } else if(chunkIndex + i < 0) {
+                m_activatedChunks.push_back(((chunkIndex + i) % WORLD_SIZE) + WORLD_SIZE);
             }
+            std::cout << ((chunkIndex + i) % WORLD_SIZE) - WORLD_SIZE << "\n";
         }
 
         m_lastActivated = chunkIndex;

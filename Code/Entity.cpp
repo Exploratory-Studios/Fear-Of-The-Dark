@@ -33,7 +33,7 @@ void Entity::init(glm::vec2 position, Categories::Entity_Type type, unsigned int
     }
 }
 
-void Entity::update(Chunk* chunks[WORLD_SIZE]) {
+void Entity::update(Chunk* chunks[WORLD_SIZE], float timeStep) {
     setParentChunk(chunks);
 }
 
@@ -53,11 +53,11 @@ void Entity::move(float timeStepVariable) {
     if(m_velocity.y < -MAX_SPEED) m_velocity.y = -MAX_SPEED;
 
     if(!m_onGround) {
-        m_velocity.y -= 0.098f * timeStepVariable;
+        m_velocity.y -= 0.098f;
     } else if(m_velocity.y < 0.0f) {
         m_velocity.y = 0.0f;
     }
-    m_position += m_velocity * glm::vec2(timeStepVariable);
+    m_position += m_velocity;
     m_onGround = false;
 }
 

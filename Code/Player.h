@@ -22,7 +22,7 @@ class Player : public Entity
 
         void draw(GLEngine::SpriteBatch& sb) override;
         void drawGUI(GLEngine::SpriteBatch& sb, GLEngine::SpriteFont& sf);
-        void update(Chunk* chunks[WORLD_SIZE]) override;
+        void update(Chunk* chunks[WORLD_SIZE], float timeStep) override;
         void updateMouse(Chunk* chunks[WORLD_SIZE], GLEngine::Camera2D* worldCamera);
 
     protected:

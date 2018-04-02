@@ -106,10 +106,10 @@ void Player::drawGUI(GLEngine::SpriteBatch& sb, GLEngine::SpriteFont& sf) {
     }
 }
 
-void Player::update(Chunk* chunks[WORLD_SIZE]) {
+void Player::update(Chunk* chunks[WORLD_SIZE], float timeStep) {
     if(m_input->isKeyDown(SDLK_w)) {
         if(m_onGround) {
-            m_velocity.y = 2.352f; // jumpHeight(blocks) = yVel(2) * timestep(1 avg.) / gravity(0.098) / TILE_SIZE(8)
+            m_velocity.y = 2.736f; // y=(jumpHeight+-0.098*60*s^2)  initial jump power is the absolute of the x at 0. jumpheight is in eights of tiles and you must add 4
             m_onGround = false;
         }
     }

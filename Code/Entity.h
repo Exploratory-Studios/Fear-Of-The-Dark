@@ -19,7 +19,7 @@ class Entity
 
         void init(glm::vec2 position, Categories::Entity_Type type, unsigned int id);
 
-        virtual void update(Chunk* chunks[WORLD_SIZE]);
+        virtual void update(Chunk* chunks[WORLD_SIZE], float timeStep);
         virtual void draw(GLEngine::SpriteBatch& sb);
         void move(float timeStepVariable);
 

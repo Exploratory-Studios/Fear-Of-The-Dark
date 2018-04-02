@@ -19,7 +19,7 @@ void EntityManager::init(Player* player, std::vector<Entity*> entities) {
 
 void EntityManager::update(std::vector<int>& activatedChunks, Chunk* chunks[WORLD_SIZE], GLEngine::Camera2D* worldCamera, float timeStepVariable) {
     for(auto e : m_entities) {
-        e->update(chunks);
+        e->update(chunks, timeStepVariable);
     }
     m_player->updateMouse(chunks, worldCamera);
     moveEntities(timeStepVariable);

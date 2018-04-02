@@ -16,6 +16,7 @@ namespace Categories {
     enum class BlockIDs {
         AIR,
         DIRT,
+        GRASS,
         SAND,
         STONE,
         BUSH

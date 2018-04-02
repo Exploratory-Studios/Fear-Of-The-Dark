@@ -2,124 +2,9 @@
 <CodeBlocks_layout_file>
 	<FileVersion major="1" minor="0" />
 	<ActiveTarget name="Debug" />
-	<File name="Tile.cpp" open="0" top="0" tabpos="10" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="119" topLine="0" />
-		</Cursor>
-	</File>
-	<File name="Items/BlockItem.h" open="0" top="0" tabpos="10" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="251" topLine="0" />
-		</Cursor>
-	</File>
-	<File name="Block.h" open="0" top="0" tabpos="12" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="645" topLine="10" />
-		</Cursor>
-	</File>
-	<File name="MainMenuScreen.cpp" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="4273" topLine="137" />
-		</Cursor>
-	</File>
-	<File name="Player.cpp" open="1" top="0" tabpos="2" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="4424" topLine="106" />
-		</Cursor>
-	</File>
-	<File name="Chunk.h" open="0" top="0" tabpos="12" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="607" topLine="11" />
-		</Cursor>
-	</File>
-	<File name="Block.cpp" open="0" top="0" tabpos="13" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="216" topLine="16" />
-		</Cursor>
-	</File>
-	<File name="Inventory.h" open="0" top="0" tabpos="4" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="120" topLine="0" />
-		</Cursor>
-	</File>
-	<File name="Inventory.cpp" open="0" top="0" tabpos="2" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="42" topLine="0" />
-		</Cursor>
-	</File>
-	<File name="Item.h" open="0" top="0" tabpos="6" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="490" topLine="12" />
-		</Cursor>
-	</File>
-	<File name="EntityManager.h" open="0" top="0" tabpos="12" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="251" topLine="14" />
-		</Cursor>
-	</File>
-	<File name="StartupScreen.h" open="0" top="0" tabpos="2" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="28" topLine="0" />
-		</Cursor>
-	</File>
-	<File name="EntityManager.cpp" open="1" top="0" tabpos="4" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="508" topLine="18" />
-		</Cursor>
-	</File>
-	<File name="Categories.h" open="0" top="0" tabpos="5" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="206" topLine="0" />
-		</Cursor>
-	</File>
-	<File name="Tile.h" open="1" top="0" tabpos="3" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="710" topLine="28" />
-		</Cursor>
-	</File>
-	<File name="WorldIOManager.cpp" open="0" top="0" tabpos="3" split="0" active="1" splitpos="0" zoom_1="-2" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="3350" topLine="56" />
-		</Cursor>
-	</File>
-	<File name="Scripting/ScripterMain.cpp" open="0" top="0" tabpos="6" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="2426" topLine="60" />
-		</Cursor>
-	</File>
-	<File name="App.cpp" open="0" top="0" tabpos="1" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="192" topLine="22" />
-		</Cursor>
-	</File>
-	<File name="WorldManager.cpp" open="1" top="1" tabpos="1" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="1847" topLine="52" />
-		</Cursor>
-	</File>
-	<File name="Scripting/ScripterMain.h" open="0" top="0" tabpos="7" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="1961" topLine="28" />
-		</Cursor>
-	</File>
-	<File name="App.h" open="0" top="0" tabpos="13" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="334" topLine="2" />
-		</Cursor>
-	</File>
-	<File name="Entity.h" open="1" top="0" tabpos="8" split="0" active="1" splitpos="0" zoom_1="-1" zoom_2="0">
+	<File name="Entity.h" open="0" top="0" tabpos="8" split="0" active="1" splitpos="0" zoom_1="-1" zoom_2="0">
 		<Cursor>
 			<Cursor1 position="466" topLine="18" />
-		</Cursor>
-	</File>
-	<File name="LoadScreen.cpp" open="0" top="0" tabpos="8" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="870" topLine="27" />
-		</Cursor>
-	</File>
-	<File name="StartupScreen.cpp" open="0" top="0" tabpos="7" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="2509" topLine="66" />
 		</Cursor>
 	</File>
 	<File name="WorldManager.h" open="0" top="0" tabpos="15" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
@@ -127,24 +12,29 @@
 			<Cursor1 position="14" topLine="0" />
 		</Cursor>
 	</File>
-	<File name="WorldIOManager.h" open="0" top="0" tabpos="14" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+	<File name="EntityManager.cpp" open="0" top="0" tabpos="4" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
 		<Cursor>
-			<Cursor1 position="1054" topLine="6" />
+			<Cursor1 position="508" topLine="18" />
 		</Cursor>
 	</File>
-	<File name="Entity.cpp" open="1" top="0" tabpos="7" split="0" active="1" splitpos="0" zoom_1="-1" zoom_2="0">
+	<File name="GameplayScreen.cpp" open="0" top="0" tabpos="5" split="0" active="1" splitpos="0" zoom_1="-1" zoom_2="0">
 		<Cursor>
-			<Cursor1 position="1678" topLine="49" />
+			<Cursor1 position="350" topLine="161" />
 		</Cursor>
 	</File>
-	<File name="Items/BlockItem.cpp" open="0" top="0" tabpos="9" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+	<File name="WorldIOManager.cpp" open="1" top="1" tabpos="3" split="0" active="1" splitpos="0" zoom_1="-2" zoom_2="0">
 		<Cursor>
-			<Cursor1 position="577" topLine="2" />
+			<Cursor1 position="2939" topLine="74" />
 		</Cursor>
 	</File>
-	<File name="LoadScreen.h" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+	<File name="Tile.h" open="0" top="0" tabpos="3" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
 		<Cursor>
-			<Cursor1 position="2866" topLine="38" />
+			<Cursor1 position="710" topLine="28" />
+		</Cursor>
+	</File>
+	<File name="Player.h" open="0" top="0" tabpos="6" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="522" topLine="9" />
 		</Cursor>
 	</File>
 	<File name="Chunk.cpp" open="0" top="0" tabpos="14" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
@@ -152,24 +42,134 @@
 			<Cursor1 position="41" topLine="6" />
 		</Cursor>
 	</File>
+	<File name="WorldIOManager.h" open="0" top="0" tabpos="14" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="1054" topLine="6" />
+		</Cursor>
+	</File>
+	<File name="PresetValues.h" open="0" top="0" tabpos="9" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="315" topLine="6" />
+		</Cursor>
+	</File>
+	<File name="Scripting/ScripterMain.cpp" open="0" top="0" tabpos="6" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="2426" topLine="60" />
+		</Cursor>
+	</File>
+	<File name="Entity.cpp" open="0" top="0" tabpos="7" split="0" active="1" splitpos="0" zoom_1="-1" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="1678" topLine="49" />
+		</Cursor>
+	</File>
+	<File name="Player.cpp" open="0" top="0" tabpos="2" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="4424" topLine="106" />
+		</Cursor>
+	</File>
+	<File name="LoadScreen.cpp" open="0" top="0" tabpos="8" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="870" topLine="27" />
+		</Cursor>
+	</File>
+	<File name="LoadScreen.h" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="2866" topLine="38" />
+		</Cursor>
+	</File>
+	<File name="Categories.h" open="0" top="0" tabpos="5" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="274" topLine="10" />
+		</Cursor>
+	</File>
+	<File name="Block.h" open="0" top="0" tabpos="12" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="645" topLine="10" />
+		</Cursor>
+	</File>
+	<File name="App.h" open="0" top="0" tabpos="13" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="334" topLine="2" />
+		</Cursor>
+	</File>
+	<File name="Block.cpp" open="1" top="0" tabpos="2" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="588" topLine="14" />
+		</Cursor>
+	</File>
+	<File name="EntityManager.h" open="0" top="0" tabpos="12" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="251" topLine="14" />
+		</Cursor>
+	</File>
+	<File name="App.cpp" open="0" top="0" tabpos="1" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="192" topLine="22" />
+		</Cursor>
+	</File>
+	<File name="StartupScreen.cpp" open="0" top="0" tabpos="7" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="2509" topLine="66" />
+		</Cursor>
+	</File>
+	<File name="StartupScreen.h" open="0" top="0" tabpos="2" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="28" topLine="0" />
+		</Cursor>
+	</File>
+	<File name="WorldManager.cpp" open="1" top="0" tabpos="1" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="1847" topLine="53" />
+		</Cursor>
+	</File>
+	<File name="Scripting/ScripterMain.h" open="0" top="0" tabpos="7" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="1961" topLine="28" />
+		</Cursor>
+	</File>
+	<File name="MainMenuScreen.cpp" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="4273" topLine="137" />
+		</Cursor>
+	</File>
+	<File name="Tile.cpp" open="0" top="0" tabpos="10" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="119" topLine="0" />
+		</Cursor>
+	</File>
+	<File name="Item.h" open="0" top="0" tabpos="6" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="490" topLine="12" />
+		</Cursor>
+	</File>
 	<File name="GameplayScreen.h" open="0" top="0" tabpos="4" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
 		<Cursor>
 			<Cursor1 position="1614" topLine="15" />
 		</Cursor>
 	</File>
-	<File name="Player.h" open="1" top="0" tabpos="6" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+	<File name="Inventory.cpp" open="0" top="0" tabpos="2" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
 		<Cursor>
-			<Cursor1 position="522" topLine="9" />
+			<Cursor1 position="42" topLine="0" />
 		</Cursor>
 	</File>
-	<File name="PresetValues.h" open="1" top="0" tabpos="9" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+	<File name="Chunk.h" open="0" top="0" tabpos="12" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
 		<Cursor>
-			<Cursor1 position="315" topLine="6" />
+			<Cursor1 position="607" topLine="11" />
 		</Cursor>
 	</File>
-	<File name="GameplayScreen.cpp" open="1" top="0" tabpos="5" split="0" active="1" splitpos="0" zoom_1="-1" zoom_2="0">
+	<File name="Inventory.h" open="0" top="0" tabpos="4" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
 		<Cursor>
-			<Cursor1 position="350" topLine="161" />
+			<Cursor1 position="120" topLine="0" />
+		</Cursor>
+	</File>
+	<File name="Items/BlockItem.h" open="0" top="0" tabpos="10" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="251" topLine="0" />
+		</Cursor>
+	</File>
+	<File name="Items/BlockItem.cpp" open="0" top="0" tabpos="9" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="577" topLine="2" />
 		</Cursor>
 	</File>
 </CodeBlocks_layout_file>

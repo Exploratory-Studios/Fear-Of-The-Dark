@@ -18,6 +18,9 @@ void Block::switchID(unsigned int newID) {
         case (unsigned int)Categories::BlockIDs::DIRT:
             m_texture = GLEngine::ResourceManager::getTexture("../Assets/Textures/Blocks/Dirt.png");
             break;
+        case (unsigned int)Categories::BlockIDs::GRASS:
+            m_texture = GLEngine::ResourceManager::getTexture("../Assets/Textures/Blocks/Grass.png");
+            break;
         case (unsigned int)Categories::BlockIDs::SAND:
             m_texture = GLEngine::ResourceManager::getTexture("../Assets/Textures/Blocks/Sand.png");
             break;

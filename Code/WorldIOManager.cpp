@@ -79,7 +79,11 @@ void WorldIOManager::createWorld(unsigned int seed, std::string worldName) {
 
             for(int x = 0; x < CHUNK_SIZE; x++) {
                 for(int y = 0; y < blockHeights[i * CHUNK_SIZE + x]; y++) {
-                    m_world->chunks[i]->tiles[y][x] = (Block(glm::vec2((i * CHUNK_SIZE) + x, y), (unsigned int)Categories::BlockIDs::DIRT));
+                    if(y != blockHeights[i * CHUNK_SIZE + x]-1) {
+                        m_world->chunks[i]->tiles[y][x] = (Block(glm::vec2((i * CHUNK_SIZE) + x, y), (unsigned int)Categories::BlockIDs::DIRT));
+                    } else {
+                        m_world->chunks[i]->tiles[y][x] = (Block(glm::vec2((i * CHUNK_SIZE) + x, y), (unsigned int)Categories::BlockIDs::GRASS));
+                    }
                 }
                 for(int y = blockHeights[i * CHUNK_SIZE + x]; y < WORLD_HEIGHT; y++) {
                     m_world->chunks[i]->tiles[y][x] = (Block(glm::vec2((i * CHUNK_SIZE) + x, y), (unsigned int)Categories::BlockIDs::AIR));

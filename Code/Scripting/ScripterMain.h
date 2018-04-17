@@ -23,7 +23,7 @@ class Scripter { // Script class will have a virtual function that you fill in. 
                          // also disable actual world-CHANGING options (etc.), such as
                          // modify-world and modify-entities effects :)
 
-        void addBlock(Block newBlock);
+        void addBlock(Block* newBlock);
         void removeBlock(int x, int y);
         void showBlock(int x, int y);
         void hideBlock(int x, int y);

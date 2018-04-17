@@ -36,10 +36,12 @@ class Entity
 
     protected:
         void setParentChunk(Chunk* worldChunks[WORLD_SIZE]);
-        void checkTilePosition(Tile tiles[WORLD_HEIGHT][CHUNK_SIZE], int chunkI, std::vector<glm::vec2>& collideTilePositions, float xPos, float yPos);
+        bool checkTilePosition(Tile* tiles[WORLD_HEIGHT][CHUNK_SIZE], int chunkI, std::vector<glm::vec2>& collideTilePositions, float xPos, float yPos);
         void collideWithTile(glm::vec2 tilePos, bool ground = false);
+        void updateLightLevel(Chunk* currentChunk);
 
         GLEngine::GLTexture m_texture;
+        float m_light = 0.6f;
 
         Categories::Faction m_faction;
 

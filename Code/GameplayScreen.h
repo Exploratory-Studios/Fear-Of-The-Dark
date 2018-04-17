@@ -38,6 +38,8 @@ class GameplayScreen : public GLEngine::IGameScreen
         void initShaders();
         void initUI();
 
+        void tick();
+
         void drawHUD();
         void drawWorld();
 
@@ -49,6 +51,7 @@ class GameplayScreen : public GLEngine::IGameScreen
         GLEngine::GUI m_gui;
         GLEngine::SpriteBatch m_spriteBatch;
         GLEngine::GLSLProgram m_textureProgram;
+        GLEngine::GLSLProgram m_uiTextureProgram;
         GLEngine::SpriteFont m_spriteFont;
         GLEngine::DebugRenderer m_dr;
 
@@ -59,6 +62,7 @@ class GameplayScreen : public GLEngine::IGameScreen
 
         float m_time = 0.0f;
         float m_deltaTime = 1.0f;
+        int m_tickRate = 4;
 
         float m_scale = 1.0f;
 

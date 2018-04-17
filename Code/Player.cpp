@@ -22,7 +22,7 @@ void Player::draw(GLEngine::SpriteBatch& sb) {
     glm::vec4 destRect = glm::vec4(m_position.x, m_position.y, m_size.x * TILE_SIZE, m_size.y * TILE_SIZE);
     glm::vec4 uvRect = glm::vec4(0.0f, 0.0f, 1.0f, 1.0f);
 
-    GLEngine::ColourRGBA8 colour(255, 255, 255, 255);
+    GLEngine::ColourRGBA8 colour(255 * m_light, 255 * m_light, 255 * m_light, 255);
 
     sb.draw(destRect, uvRect, m_texture.id, 0.0f, colour);
 
@@ -30,7 +30,7 @@ void Player::draw(GLEngine::SpriteBatch& sb) {
         int cursorImgId = GLEngine::ResourceManager::getTexture("../Assets/GUI/Player/Cursor.png").id;
 
         glm::vec4 cursorDestRect(m_selectedBlock->getPosition().x * TILE_SIZE, m_selectedBlock->getPosition().y * TILE_SIZE, m_selectedBlock->getSize().x * TILE_SIZE, m_selectedBlock->getSize().y * TILE_SIZE);
-        sb.draw(cursorDestRect, uvRect, cursorImgId, 0.0f, colour);
+        sb.draw(cursorDestRect, uvRect, cursorImgId, 0.0f, GLEngine::ColourRGBA8(255, 255, 255, 255));
     }
 }
 
@@ -107,6 +107,8 @@ void Player::drawGUI(GLEngine::SpriteBatch& sb, GLEngine::SpriteFont& sf) {
 }
 
 void Player::update(Chunk* chunks[WORLD_SIZE], float timeStep) {
+    updateLightLevel(m_parentChunk);
+
     if(m_input->isKeyDown(SDLK_w)) {
         if(m_onGround) {
             m_velocity.y = 2.736f; // y=(jumpHeight+-0.098*60*s^2)  initial jump power is the absolute of the x at 0. jumpheight is in eights of tiles and you must add 4
@@ -132,6 +134,7 @@ void Player::update(Chunk* chunks[WORLD_SIZE], float timeStep) {
 
     if(m_input->isKeyDown(SDL_BUTTON_LEFT) && m_selectedBlock) {
         if(m_handItem) m_handItem->onLeftClick(m_selectedBlock);
+        m_selectedBlock->setAmbientLight(1.0f);
     }
     if(m_input->isKeyDown(SDL_BUTTON_RIGHT) && m_selectedBlock) {
         if(m_handItem) m_handItem->onRightClick(m_selectedBlock);
@@ -193,5 +196,5 @@ void Player::updateMouse(Chunk* chunks[WORLD_SIZE], GLEngine::Camera2D* worldCam
        mousePos.x + (chunkIndex * CHUNK_SIZE) < WORLD_SIZE * CHUNK_SIZE &&
        mousePos.y >= 0 &&
        mousePos.y < WORLD_HEIGHT)
-           m_selectedBlock = static_cast<Block*>(&chunks[chunkIndex]->tiles[(unsigned int)mousePos.y][(unsigned int)mousePos.x]);
+           m_selectedBlock = static_cast<Block*>(chunks[chunkIndex]->tiles[(unsigned int)mousePos.y][(unsigned int)mousePos.x]);
 }

@@ -72,15 +72,15 @@ void MainMenuScreen::draw() {
     if(a > 255.0f) a = 255.0f;
 
     {
-        m_textureProgram.use();
+        m_uiTextureProgram.use();
 
-        GLint textureUniform = m_textureProgram.getUniformLocation("mySampler");
+        GLint textureUniform = m_uiTextureProgram.getUniformLocation("mySampler");
         glUniform1i(textureUniform, 0);
         glActiveTexture(GL_TEXTURE0);
 
         // Camera matrix
         glm::mat4 projectionMatrix = m_camera.getCameraMatrix();
-        GLint pUniform = m_textureProgram.getUniformLocation("P");
+        GLint pUniform = m_uiTextureProgram.getUniformLocation("P");
         glUniformMatrix4fv(pUniform, 1, GL_FALSE, &projectionMatrix[0][0]);
 
         m_spriteBatch.begin();
@@ -110,7 +110,7 @@ void MainMenuScreen::draw() {
         m_spriteBatch.end();
         m_spriteBatch.renderBatch();
 
-        m_textureProgram.unuse();
+        m_uiTextureProgram.unuse();
     }
 
     m_playButton->setAlpha(a);
@@ -119,15 +119,15 @@ void MainMenuScreen::draw() {
     m_gui.draw();
 
     {
-        m_textureProgram.use();
+        m_uiTextureProgram.use();
 
-        GLint textureUniform = m_textureProgram.getUniformLocation("mySampler");
+        GLint textureUniform = m_uiTextureProgram.getUniformLocation("mySampler");
         glUniform1i(textureUniform, 0);
         glActiveTexture(GL_TEXTURE0);
 
         // Camera matrix
         glm::mat4 projectionMatrix = m_uiCamera.getCameraMatrix();
-        GLint pUniform = m_textureProgram.getUniformLocation("P");
+        GLint pUniform = m_uiTextureProgram.getUniformLocation("P");
         glUniformMatrix4fv(pUniform, 1, GL_FALSE, &projectionMatrix[0][0]);
 
         m_spriteBatch.begin();
@@ -137,7 +137,7 @@ void MainMenuScreen::draw() {
         m_spriteBatch.end();
         m_spriteBatch.renderBatch();
 
-        m_textureProgram.unuse();
+        m_uiTextureProgram.unuse();
     }
 }
 
@@ -184,11 +184,11 @@ void MainMenuScreen::initUI() {
 }
 
 void MainMenuScreen::initShaders() {
-    m_textureProgram.compileShaders("../Assets/Shaders/textureShading.vert", "../Assets/Shaders/textureShading.frag");
-    m_textureProgram.addAttribute("vertexPosition");
-    m_textureProgram.addAttribute("vertexColour");
-    m_textureProgram.addAttribute("vertexUV");
-    m_textureProgram.linkShaders();
+    m_uiTextureProgram.compileShaders("../Assets/Shaders/uiShader.vert", "../Assets/Shaders/uiShader.frag");
+    m_uiTextureProgram.addAttribute("vertexPosition");
+    m_uiTextureProgram.addAttribute("vertexColour");
+    m_uiTextureProgram.addAttribute("vertexUV");
+    m_uiTextureProgram.linkShaders();
 }
 
 void MainMenuScreen::checkInput() {

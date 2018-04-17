@@ -7,41 +7,41 @@ void Scripter::init(EntityManager& entityManager, WorldIOManager& worldIOManager
 
     m_scriptInitFlags = scriptInitFlags;
 
-    if(m_scriptInitFlags & SCRIPT_INIT_FLAG_INHERITENTITIES == SCRIPT_INIT_FLAG_INHERITENTITIES)
+    if((m_scriptInitFlags & SCRIPT_INIT_FLAG_INHERITENTITIES) == SCRIPT_INIT_FLAG_INHERITENTITIES)
         m_entities = entityManager.getEntities();
-    if(m_scriptInitFlags & SCRIPT_INIT_FLAG_INHERITBLOCKS == SCRIPT_INIT_FLAG_INHERITBLOCKS)
+    if((m_scriptInitFlags & SCRIPT_INIT_FLAG_INHERITBLOCKS) == SCRIPT_INIT_FLAG_INHERITBLOCKS)
         m_chunks = worldIOManager.getWorld()->chunks;
     m_camera = &camera;
 
 }
 
-void Scripter::addBlock(Block newBlock) {
-    int chunk = std::floor(newBlock.getPosition().x / CHUNK_SIZE); // What chunk index it belongs to
-    int chunkX = (int)newBlock.getPosition().x % CHUNK_SIZE;            // What x in the chunk is
+void Scripter::addBlock(Block* newBlock) {
+    int chunk = std::floor(newBlock->getPosition().x / CHUNK_SIZE); // What chunk index it belongs to
+    int chunkX = (int)newBlock->getPosition().x % CHUNK_SIZE;            // What x in the chunk is
 
-    m_chunks[chunk]->setTile(newBlock, chunkX, newBlock.getPosition().y); // Set the block, of course
+    m_chunks[chunk]->setTile(newBlock, chunkX, newBlock->getPosition().y); // Set the block, of course
 }
 
 void Scripter::removeBlock(int x, int y) {
     int chunk = std::floor(x / CHUNK_SIZE); // What chunk index it belongs to
     int chunkX = (int)x % CHUNK_SIZE;            // What x in the chunk is
 
-    m_chunks[chunk]->tiles[y][chunkX].m_solid = false;      // Set the block as non-solid
-    m_chunks[chunk]->tiles[y][chunkX].m_transparent = true; // Set the block as transparent
+    m_chunks[chunk]->tiles[y][chunkX]->m_solid = false;      // Set the block as non-solid
+    m_chunks[chunk]->tiles[y][chunkX]->m_transparent = true; // Set the block as transparent
 }
 
 void Scripter::showBlock(int x, int y) {
     int chunk = std::floor(x / CHUNK_SIZE); // What chunk index it belongs to
     int chunkX = (int)x % CHUNK_SIZE;            // What x in the chunk is
 
-    m_chunks[chunk]->tiles[y][chunkX].m_transparent = false; // Make it not-transparent
+    m_chunks[chunk]->tiles[y][chunkX]->m_transparent = false; // Make it not-transparent
 }
 
 void Scripter::hideBlock(int x, int y) {
     int chunk = std::floor(x / CHUNK_SIZE); // What chunk index it belongs to
     int chunkX = (int)x % CHUNK_SIZE;            // What x in the chunk is
 
-    m_chunks[chunk]->tiles[y][chunkX].m_transparent = true; // Make it transparent
+    m_chunks[chunk]->tiles[y][chunkX]->m_transparent = true; // Make it transparent
 }
 
 unsigned int Scripter::addEntity(Entity newEntity) {

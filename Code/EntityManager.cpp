@@ -29,6 +29,10 @@ void EntityManager::update(std::vector<int>& activatedChunks, Chunk* chunks[WORL
     }
 }
 
+void EntityManager::tick(float dayCycleTime) { // Spawn if nighttime, each tick update ai
+
+}
+
 void EntityManager::draw(GLEngine::SpriteBatch& sb, GLEngine::DebugRenderer& dr) {
     for(auto e : m_entities) {
         e->draw(sb);

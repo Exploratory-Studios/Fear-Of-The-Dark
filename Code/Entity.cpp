@@ -20,7 +20,7 @@ Entity::~Entity()
 void Entity::init(glm::vec2 position, Categories::Entity_Type type, unsigned int id) {
     m_position = position;
     switch(type) {
-        case Categories::Entity_Type::MOB: /// Temporary
+        case Categories::Entity_Type::MOB: /// Temporary, change to abstract class
         {
             if(Category_Data::mobData[id].id == id) {
                 m_texture = GLEngine::ResourceManager::getTexture(Category_Data::mobData[id].texturePath);
@@ -35,13 +35,14 @@ void Entity::init(glm::vec2 position, Categories::Entity_Type type, unsigned int
 
 void Entity::update(Chunk* chunks[WORLD_SIZE], float timeStep) {
     setParentChunk(chunks);
+    updateLightLevel(m_parentChunk);
 }
 
 void Entity::draw(GLEngine::SpriteBatch& sb) {
     glm::vec4 destRect = glm::vec4(m_position.x, m_position.y, m_size.x * TILE_SIZE, m_size.y * TILE_SIZE);
     glm::vec4 uvRect = glm::vec4(0.0f, 0.0f, 1.0f, 1.0f);
 
-    GLEngine::ColourRGBA8 colour(255, 255, 255, 255);
+    GLEngine::ColourRGBA8 colour(255 * m_light, 255 * m_light, 255 * m_light, 255);
 
     sb.draw(destRect, uvRect, m_texture.id, 0.0f, colour);
 }
@@ -96,7 +97,6 @@ void Entity::collide(std::vector<Entity*> entities, int chunkI) {
             glm::vec2 posBR(x + width, y);
             glm::vec2 posTL(x, y + height);
             glm::vec2 posTR(x + width, y + height);
-
 
             // Check for ground/ceiling
             checkTilePosition(m_parentChunk->tiles,
@@ -178,7 +178,7 @@ void Entity::collide(std::vector<Entity*> entities, int chunkI) {
                               posTR.y - 1.0f);
 
             for (int i = 0; i < collideTilePositions.size(); i++) {
-                collideWithTile(collideTilePositions[i]);
+                collideWithTile(collideTilePositions[i], false);
             }
 
             for (int i = 0; i < groundTilePositions.size(); i++) {
@@ -204,7 +204,7 @@ void Entity::setParentChunk(Chunk* worldChunks[WORLD_SIZE]) {
 
 }
 
-void Entity::checkTilePosition(Tile tiles[WORLD_HEIGHT][CHUNK_SIZE], int chunkI, std::vector<glm::vec2>& collideTilePositions, float x, float y) {
+bool Entity::checkTilePosition(Tile* tiles[WORLD_HEIGHT][CHUNK_SIZE], int chunkI, std::vector<glm::vec2>& collideTilePositions, float x, float y) {
     // Get the position of this corner in grid-space
     glm::vec2 gridPos = glm::vec2(floor(x / TILE_SIZE),
                                       floor(y / TILE_SIZE)); // grid-space coords
@@ -213,20 +213,22 @@ void Entity::checkTilePosition(Tile tiles[WORLD_HEIGHT][CHUNK_SIZE], int chunkI,
     // If we are outside the world, just return
     if (gridPos.x < CHUNK_SIZE * m_parentChunkIndex || gridPos.x >= CHUNK_SIZE + CHUNK_SIZE * m_parentChunkIndex ||
         gridPos.y < 0 || gridPos.y >= WORLD_HEIGHT) {
-        return;
+        return false;
     }
 
     // If this is not an air tile, we should collide with it
-    if (tiles[(int)gridPos.y - m_parentChunkIndex][(int)gridPos.x].isSolid()) {
+    if (tiles[(int)gridPos.y - m_parentChunkIndex][(int)gridPos.x]->getID() == 1) { //  - m_parentChunkIndex
         collideTilePositions.push_back(glm::vec2((float)gridPos.x + 0.500f, (float)gridPos.y + 0.500f)); // CollideTilePositions are put in as gridspace coords
+        return true;
     }
+    return false;
 }
 
 void Entity::collideWithTile(glm::vec2 tilePos, bool ground) {
     float x = m_position.x, y = m_position.y;
 
     //x += m_velocity.x / m_size.x; // To account for collision prediction,
-    //if(!m_onGround) y += m_velocity.y / m_size.y;
+    if(!m_onGround) y += m_velocity.y / m_size.y;
 
     glm::vec2 centrePos = glm::vec2(x + (m_size.x * TILE_SIZE) / 2.0f, y + (m_size.y * TILE_SIZE) / 2.0f);
 
@@ -236,29 +238,41 @@ void Entity::collideWithTile(glm::vec2 tilePos, bool ground) {
 
     // Determine if it's shorter to go in the X or Y direction
     //if(depthVec.x > 0 && depthVec.y > 0) {
-        if(abs(depthVec.x * m_size.x) < abs(depthVec.y * m_size.y)) { // X direction is shorter // Maybe change these variables from depthvec to distvec and reverse the comparison to >
+        if(abs(depthVec.x / m_size.x) < abs(depthVec.y / m_size.y)) { // X direction is shorter // Maybe change these variables from depthvec to distvec and reverse the comparison to >
             if(!ground) {
                 if(distVec.x < 0.000f) {
-                    m_position.x -= depthVec.x - abs(m_velocity.x * m_size.y); // TILE ON RIGHT
+                    m_position.x -= depthVec.x - abs(m_velocity.x * m_size.x); // TILE ON RIGHT
                 } else if(distVec.x >= 0.000f) {
-                    m_position.x += depthVec.x - abs(m_velocity.x * m_size.y); // TILE ON LEFT
+                    m_position.x += depthVec.x - abs(m_velocity.x * m_size.x); // TILE ON LEFT
                 }
                 m_velocity.x = 0.0f;
             }
         } else {
             if(ground) {
                 if(distVec.y < 0.000f && m_velocity.y >= 0.0f) {
-                    m_position.y -= depthVec.y - abs(m_velocity.y * m_size.x); // TILE ON TOP
+                    m_position.y -= depthVec.y - abs(m_velocity.y / m_size.y); // TILE ON TOP
                     m_velocity.y = 0.0f;
-                } else if(distVec.y >= 0.000f) {
-                    m_position.y += depthVec.y - abs(m_velocity.y * m_size.x); // TILE ON BOTTOM
+                } else if(distVec.y >= 0.000f && m_velocity.y < 0.000000f) {
+                    m_position.y += depthVec.y / m_size.y - abs(m_velocity.y / m_size.y); // TILE ON BOTTOM
                     m_onGround = true;
-
-                    if(m_velocity.y < 0.000f) {
-                        m_velocity.y = 0.0f;
-                    }
+                    m_velocity.y = 0.0000000f;
                 }
             }
         }
     //}
+}
+
+void Entity::updateLightLevel(Chunk* currentChunk) {
+    if(currentChunk) {
+        int entityChunkX, entityChunkY; // The entity's coords in the chunk
+
+        entityChunkX = (int)((m_position.x + 0.5f) / TILE_SIZE) % CHUNK_SIZE;
+        entityChunkY = (m_position.y + 0.5f) / TILE_SIZE;
+
+        if(entityChunkX >= 0 && entityChunkX < CHUNK_SIZE) {
+            if(entityChunkY >= 0 && entityChunkY < WORLD_HEIGHT) {
+                m_light = currentChunk->tiles[entityChunkY][entityChunkX]->getLight();
+            }
+        }
+    }
 }

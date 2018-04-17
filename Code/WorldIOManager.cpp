@@ -27,6 +27,7 @@ void WorldIOManager::createWorld(unsigned int seed, std::string worldName) {
         if(place < 0.0f) place = 0.0f;
 
         m_world->chunks[i]->setPlace((Categories::Places)std::ceil(place * Category_Data::TOTAL_PLACES));
+        m_world->chunks[i]->setIndex(i);
 
     }
 
@@ -78,20 +79,23 @@ void WorldIOManager::createWorld(unsigned int seed, std::string worldName) {
             }
 
             for(int x = 0; x < CHUNK_SIZE; x++) {
-                for(int y = 0; y < blockHeights[i * CHUNK_SIZE + x]; y++) {
-                    if(y != blockHeights[i * CHUNK_SIZE + x]-1) {
-                        m_world->chunks[i]->tiles[y][x] = (Block(glm::vec2((i * CHUNK_SIZE) + x, y), (unsigned int)Categories::BlockIDs::DIRT));
-                    } else {
-                        m_world->chunks[i]->tiles[y][x] = (Block(glm::vec2((i * CHUNK_SIZE) + x, y), (unsigned int)Categories::BlockIDs::GRASS));
-                    }
-                }
                 for(int y = blockHeights[i * CHUNK_SIZE + x]; y < WORLD_HEIGHT; y++) {
-                    m_world->chunks[i]->tiles[y][x] = (Block(glm::vec2((i * CHUNK_SIZE) + x, y), (unsigned int)Categories::BlockIDs::AIR));
+                    Block* block = new Block(glm::vec2((i * CHUNK_SIZE) + x, y), (unsigned int)Categories::BlockIDs::AIR, m_world->chunks[i]);
+                    m_world->chunks[i]->tiles[y][x] = block;
+                }
+                for(int y = 0; y < blockHeights[i * CHUNK_SIZE + x]; y++) {
+                    if(y != blockHeights[i * CHUNK_SIZE + x]) {
+                        Block* block = new Block(glm::vec2((i * CHUNK_SIZE) + x, y), (unsigned int)Categories::BlockIDs::DIRT, m_world->chunks[i]);
+                        m_world->chunks[i]->tiles[y][x] = block;
+                    } else {
+                        Block* block = new Block(glm::vec2((i * CHUNK_SIZE) + x, y), (unsigned int)Categories::BlockIDs::GRASS, m_world->chunks[i]);
+                        m_world->chunks[i]->tiles[y][x] = block;
+                    }
                 }
             }
         }
 
-        Player player(glm::vec2(0.0f, (blockHeights[1] + 1) * TILE_SIZE), m_input);
+        Player player(glm::vec2(5.0f * TILE_SIZE, (blockHeights[5] + 5) * TILE_SIZE), m_input);
         m_world->player = player;
 
         //Entity ent(glm::vec2(10.5 * TILE_SIZE, 24 * TILE_SIZE), Categories::Entity_Type::MOB, 0);

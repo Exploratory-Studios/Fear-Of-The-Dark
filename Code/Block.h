@@ -11,7 +11,7 @@
 class Block : public Tile
 {
     public:
-        Block(glm::vec2 pos, unsigned int id);
+        Block(glm::vec2 pos, unsigned int id, Chunk* parent);
 
         void switchID(unsigned int newID);
 
@@ -28,5 +28,6 @@ class Block : public Tile
 
         m_solid
         m_transparent
+        m_parentChunk (*)
         */
 };

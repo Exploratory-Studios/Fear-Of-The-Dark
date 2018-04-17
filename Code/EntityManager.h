@@ -19,6 +19,7 @@ class EntityManager
         void init(Player* entity, std::vector<Entity*> entities);
 
         void update(std::vector<int>& activatedChunks, Chunk* chunks[WORLD_SIZE], GLEngine::Camera2D* worldCamera, float timeStepVariable);
+        void tick(float dayCycleTime);
         void draw(GLEngine::SpriteBatch& sb, GLEngine::DebugRenderer& dr);
 
         Player*                  getPlayer()     { return m_player; }

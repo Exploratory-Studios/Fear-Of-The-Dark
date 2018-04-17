@@ -72,10 +72,13 @@ void GameplayScreen::update() {
 
     m_camera.setScale(m_scale);
 
-    m_worldManager.update(&m_camera, m_deltaTime);
+    m_worldManager.update(&m_camera, m_deltaTime, m_time);
 
     m_time++; /// Change the increment if time is slowed or quicker (potion effects?)
 
+    if((int)m_time % (int)(60 / m_tickRate) == 0) { // m_time is equal to current frame
+        tick();
+    }
 
 }
 
@@ -102,29 +105,31 @@ void GameplayScreen::draw() {
         m_spriteBatch.end();
         m_spriteBatch.renderBatch();
 
-        m_dr.end();
-        m_dr.render(projectionMatrix, 3);
+
 
         m_textureProgram.unuse();
     }
 
     {
-        m_textureProgram.use();
+        m_uiTextureProgram.use();
 
-        GLint textureUniform = m_textureProgram.getUniformLocation("mySampler");
+        GLint textureUniform = m_uiTextureProgram.getUniformLocation("mySampler");
         glUniform1i(textureUniform, 0);
         glActiveTexture(GL_TEXTURE0);
 
         // Camera matrix
         glm::mat4 projectionMatrix = m_uiCamera.getCameraMatrix();
-        GLint pUniform = m_textureProgram.getUniformLocation("P");
+        GLint pUniform = m_uiTextureProgram.getUniformLocation("P");
         glUniformMatrix4fv(pUniform, 1, GL_FALSE, &projectionMatrix[0][0]);
 
         m_worldManager.getPlayer()->drawGUI(m_spriteBatch, m_spriteFont);
 
         m_gui.draw();
 
-        m_textureProgram.unuse();
+        m_dr.end();
+        m_dr.render(projectionMatrix, 3);
+
+        m_uiTextureProgram.unuse();
     }
 
     /// TODO: Don't forget to have a background image for the world based on biome
@@ -157,6 +162,12 @@ void GameplayScreen::initShaders() {
     m_textureProgram.addAttribute("vertexColour");
     m_textureProgram.addAttribute("vertexUV");
     m_textureProgram.linkShaders();
+
+    m_uiTextureProgram.compileShaders("../Assets/Shaders/uiShader.vert", "../Assets/Shaders/uiShader.frag");
+    m_uiTextureProgram.addAttribute("vertexPosition");
+    m_uiTextureProgram.addAttribute("vertexColour");
+    m_uiTextureProgram.addAttribute("vertexUV");
+    m_uiTextureProgram.linkShaders();
 }
 
 void GameplayScreen::initUI() {
@@ -170,6 +181,10 @@ void GameplayScreen::initUI() {
         m_gui.showMouseCursor();
         SDL_ShowCursor(0);
     }
+}
+
+void GameplayScreen::tick() {
+    m_worldManager.tick();
 }
 
 void GameplayScreen::scrollEvent(const SDL_Event& evnt) {

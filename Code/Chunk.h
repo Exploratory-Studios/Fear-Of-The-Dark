@@ -4,27 +4,30 @@
 #include <SpriteBatch.h>
 
 #include "PresetValues.h"
-
 #include "Tile.h"
 
 class Chunk
 {
     public:
         Chunk();
-        Chunk(Tile tileArray[WORLD_HEIGHT][CHUNK_SIZE]);
+        Chunk(Tile* tileArray[WORLD_HEIGHT][CHUNK_SIZE], int index);
 
-        void init(Tile tileArray[WORLD_HEIGHT][CHUNK_SIZE]);
+        void init(Tile* tileArray[WORLD_HEIGHT][CHUNK_SIZE]);
 
-        void update();
+        void update(float time);
+        void tick(int tickTime);
         void draw(GLEngine::SpriteBatch& sb);
 
         void setPlace(Categories::Places place);
-        void setTile(const Tile& newTile, const unsigned int& x, const unsigned int& y);
+        void setTile(Tile* newTile, const unsigned int& x, const unsigned int& y);
+        void setIndex(int index) { m_index = index; }
 
         Categories::Places      getPlace()                                                  { return m_place;       }
+        int                     getIndex()                                                  { return m_index;       }
 
-        Tile tiles[WORLD_HEIGHT][CHUNK_SIZE];
+        Tile* tiles[WORLD_HEIGHT][CHUNK_SIZE] = { { nullptr } };
 
     private:
         Categories::Places m_place;
+        int m_index;
 };

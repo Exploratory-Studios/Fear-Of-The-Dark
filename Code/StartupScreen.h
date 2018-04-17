@@ -122,6 +122,6 @@ class StartupScreen : public GLEngine::IGameScreen
         GLEngine::Window* m_window;
         GLEngine::GUI m_gui;
         GLEngine::SpriteBatch m_spriteBatch;
-        GLEngine::GLSLProgram m_textureProgram;
+        GLEngine::GLSLProgram m_uiTextureProgram;
         GLEngine::SpriteFont m_spriteFont;
 };

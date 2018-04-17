@@ -3,12 +3,12 @@ SEARCH 'TODO' FOR THINGS YOU MUST DOOOOO!
 
 Developer's log: Oct. 9, 2017
 
-	Today I realized that instead of calculating the distance from the centres of the block AND the player, 
+	Today I realized that instead of calculating the distance from the centres of the block AND the player,
 I should be calculating the distance from the corner of the block and the centre of the player. Implementing now.
 
 Also, this was the first day of the devlog.
 
-OK! So the issue with collision was the fact that the depthVec was not being calculated correctly, getting the 
+OK! So the issue with collision was the fact that the depthVec was not being calculated correctly, getting the
 absolute value of the entire calc instead of just the distVec.
 Next issue is the player floating. I think it will be an easy fix, just moving the ground sensors downwards (also
 moving them outwards so that the player won't slip off of edges)
@@ -107,7 +107,7 @@ It's been a while since I last programmed, so I have no clue what to do
 Inventory! That's what I'll do.
 
 Ok. The inventory system is a lot like Skyrim's, with weight being the only limit. Instead of having a constant movement speed and then that lowers a ton when you go
-over the limit, we have a (mostly) gradual curve. Here's the equation: Speed multiplier = -(weight/maxWeight)^3 + 1.0. This gives a curve that goes down slowly at 
+over the limit, we have a (mostly) gradual curve. Here's the equation: Speed multiplier = -(weight/maxWeight)^3 + 1.0. This gives a curve that goes down slowly at
 first, but then kind of falls quicker nearing the end. Just look at it in wolfram alpha.
 
 This should be as easy as:
@@ -126,3 +126,64 @@ up.
 I think I might move the ground sensors inwards and make them exclusively able to sense the ground. Sounds easy, right? Right?!?
 Ummm...... That's strange. It didn't work before, but it works perfectly now.
 Yay..?
+
+
+
+Developer's Log: Apr. 16, 2018
+Guess who's back, Davie's back, back again, get a friend
+So, I'm back to that mother-hecking problem of chunks updating and acting as though their y position is offset by it's index.
+This time, it's because the blocks are trying to update surrounding ones, but it only works in the first chunk. The rest of the
+chunks are not working, unless I change how far the spreading block spreads (1 block up and 1 block down -> 2 blocks up and OWN coords).
+
+Questions:
+1. Where do the current coordinates point?
+2. Where do the spreading block's coords point?
+3. WHY are they offset in the first place?
+4. How did I fix it the last time, when it was collision that was being affected?
+
+Answers:
+1. the position, with the index added (up) to the y position
+2. again, the index is added to the y positions
+3. NO CLUE
+4. I dodged it completely and added the index bit in: if (tiles[(int)gridPos.y - m_parentChunkIndex][(int)gridPos.x].isSolid())
+when we were checking to make sure that we only collided with solid objects
+
+Now, the only way I can think of fixing this is to check the worldIOManager world creation or to just offset the blocks when creating a world.
+My original idea was that manybe the blocks were offset in the y axis in block initialization by the chunk index when created,
+but that doesn't seem to be the case. Also, offsetting the blocks on creation doesn't seem to solve our problem :(
+
+WOT DO I DO?
+Figure out why it's happening
+Ideas:
+- blocks are being offset somewhere in the line of re-initalizations and moving of tile arrays
+    - Creation is okay
+    - Creation to chunk is okay
+    - Everything seems fine
+I tried changing all instances of blocks and tiles to pointers so that if there were any unassigned ones they'd show up, and also
+so that there wouldn't be any auto initializing if something went wrong in copying their arrays
+
+NO CLUE WOT TO FUCKING DO, MAIT, NO FOCKING CLUE
+What if I add the index to the heights in the world creation? Will that counterract the ghost blocks?
+Nope
+Ok, the problem is definitely in some file that I haven't opened for a while, but can still change the world
+What could those be? Block.cpp/h?
+OMG I THINK I FIXED IT! THE AIR WAS BEING CREATED AFTER THE BLOCKS, the blocks would be set to defaults, and then air would come along, make it not solid, and not change the texture!
+That doesn't seem to be the issue, but I solved future confusing issues...
+Maybe it's just in the draw function? Nope
+Air creation has nothing to do with it
+Ok, I'm just going to shortcut it
+Shortcutted, I still like myself
+Something weird happened when I changed the x pos to basically the equivalent of modulo on the last two, though
+I no longer needed to compensate
+Holy shit
+is this the answer? I'm going to do it to the others
+Holy
+Fucking
+Shit
+
+That was it?
+
+Pushed to github on April 16th, 2018, Tile.cpp tick() function
+
+FUCK ME
+

@@ -29,14 +29,22 @@ void WorldManager::init(WorldIOManager* worldIOManager) {
     }
 }
 
-void WorldManager::update(GLEngine::Camera2D* worldCamera, float timeStepVariable) {
+void WorldManager::update(GLEngine::Camera2D* worldCamera, float timeStepVariable, float time) {
     activateChunks();
 
     for(int i = 0; i < m_activatedChunks.size(); i++) {
-        m_worldIOManager->getWorld()->chunks[m_activatedChunks[i]]->update();
+        m_worldIOManager->getWorld()->chunks[m_activatedChunks[i]]->update(time);
     }
 
     m_entityManager.update(m_activatedChunks, m_worldIOManager->getWorld()->chunks, worldCamera, timeStepVariable);
+}
+
+void WorldManager::tick() {
+    for(int i = 0; i < m_activatedChunks.size(); i++) {
+        m_worldIOManager->getWorld()->chunks[m_activatedChunks[i]]->tick(m_tickTime);
+    }
+    m_entityManager.tick(m_tickTime);
+    m_tickTime++;
 }
 
 void WorldManager::draw(GLEngine::SpriteBatch& sb, GLEngine::DebugRenderer& dr) {
@@ -47,7 +55,6 @@ void WorldManager::draw(GLEngine::SpriteBatch& sb, GLEngine::DebugRenderer& dr) 
 }
 
 /// Private Functions
-#include <iostream>
 void WorldManager::activateChunks() {
 
     int chunkIndex = std::floor(m_player->getPosition().x / TILE_SIZE / CHUNK_SIZE);
@@ -63,7 +70,6 @@ void WorldManager::activateChunks() {
             } else if(chunkIndex + i < 0) {
                 m_activatedChunks.push_back(((chunkIndex + i) % WORLD_SIZE) + WORLD_SIZE);
             }
-            std::cout << ((chunkIndex + i) % WORLD_SIZE) - WORLD_SIZE << "\n";
         }
 
         m_lastActivated = chunkIndex;

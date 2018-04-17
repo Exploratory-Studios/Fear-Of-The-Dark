@@ -10,7 +10,7 @@
 // How many pixels to a tile?
 #define TILE_SIZE 8
 // How many tiles high is the world?
-#define WORLD_HEIGHT 512
+#define WORLD_HEIGHT 150
 // How many chunks does the world have?
 #define WORLD_SIZE 5
 
@@ -42,6 +42,9 @@
 
 // How much can the player carry MAX
 #define MAX_WEIGHT 100.0f
+
+// How long a day is (frames at the moment)
+#define DAY_LENGTH 40  /// TODO: add tick loop (slower update): Update will happen 60 times a second, collision, etc., and Tick will happen 10, 5, 3 times a second, that'll be the day, stuff growing, etc.
 
 /// Category Datatypes
 // Biomes (AKA Places)

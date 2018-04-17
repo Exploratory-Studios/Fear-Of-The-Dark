@@ -217,7 +217,7 @@ bool Entity::checkTilePosition(Tile* tiles[WORLD_HEIGHT][CHUNK_SIZE], int chunkI
     }
 
     // If this is not an air tile, we should collide with it
-    if (tiles[(int)gridPos.y - m_parentChunkIndex][(int)gridPos.x]->getID() == 1) { //  - m_parentChunkIndex
+    if (tiles[(int)gridPos.y][(int)gridPos.x - m_parentChunkIndex * CHUNK_SIZE]->getID() == 1) { //  - m_parentChunkIndex
         collideTilePositions.push_back(glm::vec2((float)gridPos.x + 0.500f, (float)gridPos.y + 0.500f)); // CollideTilePositions are put in as gridspace coords
         return true;
     }

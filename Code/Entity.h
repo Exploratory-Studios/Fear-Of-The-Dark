@@ -48,7 +48,7 @@ class Entity
         glm::vec2 m_position;
         glm::vec2 m_size;
 
-        glm::vec2 m_velocity;
+        glm::vec2 m_velocity = glm::vec2((float)NULL, (float)NULL);
 
         Chunk* m_parentChunk = nullptr;
 

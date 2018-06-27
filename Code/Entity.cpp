@@ -217,9 +217,12 @@ bool Entity::checkTilePosition(Tile* tiles[WORLD_HEIGHT][CHUNK_SIZE], int chunkI
     }
 
     // If this is not an air tile, we should collide with it
-    if (tiles[(int)gridPos.y][(int)gridPos.x - m_parentChunkIndex * CHUNK_SIZE]->getID() == 1) { //  - m_parentChunkIndex
-        collideTilePositions.push_back(glm::vec2((float)gridPos.x + 0.500f, (float)gridPos.y + 0.500f)); // CollideTilePositions are put in as gridspace coords
-        return true;
+    if ((int)gridPos.x - (m_parentChunkIndex * CHUNK_SIZE) >= 0 && (int)gridPos.x - (m_parentChunkIndex * CHUNK_SIZE) < CHUNK_SIZE * WORLD_SIZE) {
+        // returning gridpos.x as NAN
+        if (tiles[(int)gridPos.y][(int)gridPos.x - (m_parentChunkIndex * CHUNK_SIZE)]->getID() == 1) { //  - m_parentChunkIndex
+            collideTilePositions.push_back(glm::vec2((float)gridPos.x + 0.500f, (float)gridPos.y + 0.500f)); // CollideTilePositions are put in as gridspace coords
+            return true;
+        }
     }
     return false;
 }
@@ -237,29 +240,27 @@ void Entity::collideWithTile(glm::vec2 tilePos, bool ground) {
     glm::vec2 depthVec = abs(abs(distVec) - (glm::vec2(TILE_SIZE / 2.0f) + m_size * glm::vec2(TILE_SIZE) / glm::vec2(2.0f)));
 
     // Determine if it's shorter to go in the X or Y direction
-    //if(depthVec.x > 0 && depthVec.y > 0) {
-        if(abs(depthVec.x / m_size.x) < abs(depthVec.y / m_size.y)) { // X direction is shorter // Maybe change these variables from depthvec to distvec and reverse the comparison to >
-            if(!ground) {
-                if(distVec.x < 0.000f) {
-                    m_position.x -= depthVec.x - abs(m_velocity.x * m_size.x); // TILE ON RIGHT
-                } else if(distVec.x >= 0.000f) {
-                    m_position.x += depthVec.x - abs(m_velocity.x * m_size.x); // TILE ON LEFT
-                }
-                m_velocity.x = 0.0f;
+    if(abs(depthVec.x / m_size.x) < abs(depthVec.y / m_size.y)) { // X direction is shorter // Maybe change these variables from depthvec to distvec and reverse the comparison to >
+        if(!ground) {
+            if(distVec.x < 0.000f) {
+                m_position.x -= depthVec.x - abs(m_velocity.x * m_size.x); // TILE ON RIGHT
+            } else if(distVec.x >= 0.000f) {
+                m_position.x += depthVec.x - abs(m_velocity.x * m_size.x); // TILE ON LEFT
             }
-        } else {
-            if(ground) {
-                if(distVec.y < 0.000f && m_velocity.y >= 0.0f) {
-                    m_position.y -= depthVec.y - abs(m_velocity.y / m_size.y); // TILE ON TOP
-                    m_velocity.y = 0.0f;
-                } else if(distVec.y >= 0.000f && m_velocity.y < 0.000000f) {
-                    m_position.y += depthVec.y / m_size.y - abs(m_velocity.y / m_size.y); // TILE ON BOTTOM
-                    m_onGround = true;
-                    m_velocity.y = 0.0000000f;
-                }
+            m_velocity.x = 0.0f;
+        }
+    } else {
+        if(ground) {
+            if(distVec.y < 0.000f && m_velocity.y > NULL) {
+                m_position.y -= depthVec.y - abs(m_velocity.y / m_size.y); // TILE ON TOP
+                m_velocity.y = 0.0f;
+            } else if(distVec.y >= 0.000f && m_velocity.y < 0.000000f) {
+                m_position.y += depthVec.y / m_size.y - abs(m_velocity.y / m_size.y); // TILE ON BOTTOM
+                m_onGround = true;
+                m_velocity.y = 0.0000000f;
             }
         }
-    //}
+    }
 }
 
 void Entity::updateLightLevel(Chunk* currentChunk) {

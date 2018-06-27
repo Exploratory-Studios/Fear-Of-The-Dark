@@ -107,6 +107,7 @@ void Player::drawGUI(GLEngine::SpriteBatch& sb, GLEngine::SpriteFont& sf) {
 }
 
 void Player::update(Chunk* chunks[WORLD_SIZE], float timeStep) {
+
     updateLightLevel(m_parentChunk);
 
     if(m_input->isKeyDown(SDLK_w)) {

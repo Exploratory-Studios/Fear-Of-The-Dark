@@ -2,7 +2,7 @@
 
 #include <InputManager.h>
 #include <Camera2D.h>
-#include <SDL/SDL.h>
+#include <SDL2/SDL.h>
 #include <SpriteBatch.h>
 
 #include "Entity.h"

@@ -2,7 +2,7 @@
 
 #include "Entity.h"
 
-#include <SDL/SDL_timer.h>
+#include <SDL2/SDL_timer.h>
 
 GameplayScreen::GameplayScreen(GLEngine::Window* window, WorldIOManager* WorldIOManager) : m_window(window), m_WorldIOManager(WorldIOManager)
 {

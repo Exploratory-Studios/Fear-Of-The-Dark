@@ -22,21 +22,25 @@ void Tile::tick(int tickTime) {
     if(exposedToSun()) { // check if this block is exposed to sunlight
         m_sunLight = (std::cos((float)tickTime / (float)DAY_LENGTH) + 1.0f) / 2.0f;
     }
-    if(!m_transparent) {
-        if((int)m_pos.y-m_parentChunk->getIndex() >= 0) {
-            if((int)m_pos.y-1-m_parentChunk->getIndex() >= 0)
-                if(m_parentChunk->tiles[(int)m_pos.y-1][(int)m_pos.x - CHUNK_SIZE*m_parentChunk->getIndex()]->getAmbientLight() < getLight())
-                    m_parentChunk->tiles[(int)m_pos.y-1][(int)m_pos.x - CHUNK_SIZE*m_parentChunk->getIndex()]->setAmbientLight(getLight() * 7.0f/10.0f);
-            if((int)m_pos.y+1-m_parentChunk->getIndex() < WORLD_HEIGHT)
-                if(m_parentChunk->tiles[(int)m_pos.y+1][(int)m_pos.x - CHUNK_SIZE*m_parentChunk->getIndex()]->getAmbientLight() < getLight())
-                    m_parentChunk->tiles[(int)m_pos.y+1][(int)m_pos.x - CHUNK_SIZE*m_parentChunk->getIndex()]->setAmbientLight(getLight() * 7.0f/10.0f);
-            if((int)m_pos.x-1 - CHUNK_SIZE*m_parentChunk->getIndex() >= 0)
-                if(m_parentChunk->tiles[(int)m_pos.y][(int)m_pos.x-1 - CHUNK_SIZE*m_parentChunk->getIndex()]->getAmbientLight() < getLight())
-                    m_parentChunk->tiles[(int)m_pos.y][(int)m_pos.x-1 - CHUNK_SIZE*m_parentChunk->getIndex()]->setAmbientLight(getLight() * 7.0f/10.0f);
-            if((int)m_pos.x+1 - CHUNK_SIZE*m_parentChunk->getIndex() < CHUNK_SIZE)
-                if(m_parentChunk->tiles[(int)m_pos.y][(int)m_pos.x+1 - CHUNK_SIZE*m_parentChunk->getIndex()]->getAmbientLight() < getLight())
-                    m_parentChunk->tiles[(int)m_pos.y][(int)m_pos.x+1 - CHUNK_SIZE*m_parentChunk->getIndex()]->setAmbientLight(getLight() * 7.0f/10.0f);
-        }
+    if((int)m_pos.y-m_parentChunk->getIndex() >= 0) {
+        int x = (int)m_pos.x - CHUNK_SIZE*m_parentChunk->getIndex();
+        int y = (int)m_pos.y;
+        if(y-1 >= 0)
+            if(m_transparent || m_parentChunk->tiles[y-1][x]->isTransparent())
+                if(m_parentChunk->tiles[y-1][x]->getAmbientLight() < getLight())
+                    m_parentChunk->tiles[y-1][x]->setAmbientLight(getLight() * 9.0f/10.0f);
+        if(y+1 < WORLD_HEIGHT)
+            if(m_transparent || m_parentChunk->tiles[y+1][x]->isTransparent())
+                if(m_parentChunk->tiles[y+1][x]->getAmbientLight() < getLight())
+                    m_parentChunk->tiles[y+1][x]->setAmbientLight(getLight() * 9.0f/10.0f);
+        if(x-1 >= 0)
+            if(m_transparent || m_parentChunk->tiles[y][x-1]->isTransparent())
+                if(m_parentChunk->tiles[y][x-1]->getAmbientLight() < getLight())
+                    m_parentChunk->tiles[y][x-1]->setAmbientLight(getLight() * 9.0f/10.0f);
+        if(x+1 < CHUNK_SIZE)
+            if(m_transparent || m_parentChunk->tiles[y][x+1]->isTransparent())
+                if(m_parentChunk->tiles[y][x+1]->getAmbientLight() < getLight())
+                    m_parentChunk->tiles[y][x+1]->setAmbientLight(getLight() * 9.0f/10.0f);
     }
 }
 

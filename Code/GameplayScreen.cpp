@@ -147,7 +147,6 @@ void GameplayScreen::checkInput() {
                 m_currentState = GLEngine::ScreenState::EXIT_APPLICATION;
                 break;
             case SDL_MOUSEBUTTONDOWN:
-
                 break;
             case SDL_MOUSEWHEEL:
                 scrollEvent(evnt);

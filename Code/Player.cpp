@@ -3,6 +3,12 @@
 #include "PresetValues.h"
 #include "Item.h"
 
+#define DEV_CONTROLS
+
+#ifdef DEV_CONTROLS
+#include <iostream>
+#endif // DEV_CONTROLS
+
 Player::Player() {
     m_inventory = new Inventory();
 }
@@ -110,6 +116,34 @@ void Player::update(Chunk* chunks[WORLD_SIZE], float timeStep) {
 
     updateLightLevel(m_parentChunk);
 
+    updateInput();
+
+    if(m_velocity.x > MAX_SPEED * m_inventory->getSpeedMultiplier()) {
+        m_velocity.x = MAX_SPEED * m_inventory->getSpeedMultiplier();
+    } else if(m_velocity.x < -MAX_SPEED * m_inventory->getSpeedMultiplier()) {
+        m_velocity.x = -MAX_SPEED * m_inventory->getSpeedMultiplier();
+    }
+
+    setParentChunk(chunks);
+}
+
+void Player::updateMouse(Chunk* chunks[WORLD_SIZE], GLEngine::Camera2D* worldCamera) {
+    glm::vec2 mousePos = worldCamera->convertScreenToWorld(m_input->getMouseCoords());
+
+    mousePos = glm::vec2(floor(mousePos.x / TILE_SIZE), floor(mousePos.y / TILE_SIZE)); // Changes it to grid-space
+
+    unsigned int chunkIndex = floor(mousePos.x / CHUNK_SIZE);
+
+    mousePos.x -= chunkIndex * CHUNK_SIZE; // Make sure that coords are staying inside of the selected chunk.
+
+    if(mousePos.x >= 0 &&
+       mousePos.x + (chunkIndex * CHUNK_SIZE) < WORLD_SIZE * CHUNK_SIZE &&
+       mousePos.y >= 0 &&
+       mousePos.y < WORLD_HEIGHT)
+           m_selectedBlock = static_cast<Block*>(chunks[chunkIndex]->tiles[(unsigned int)mousePos.y][(unsigned int)mousePos.x]);
+}
+
+void Player::updateInput() {
     if(m_input->isKeyDown(SDLK_w)) {
         if(m_onGround) {
             m_velocity.y = 2.736f; // y=(jumpHeight+-0.098*60*s^2)  initial jump power is the absolute of the x at 0. jumpheight is in eights of tiles and you must add 4
@@ -125,12 +159,6 @@ void Player::update(Chunk* chunks[WORLD_SIZE], float timeStep) {
         m_velocity.x -= 0.2f * m_inventory->getSpeedMultiplier();
     } else {
         m_velocity.x *= 0.9f;
-    }
-
-    if(m_velocity.x > MAX_SPEED * m_inventory->getSpeedMultiplier()) {
-        m_velocity.x = MAX_SPEED * m_inventory->getSpeedMultiplier();
-    } else if(m_velocity.x < -MAX_SPEED * m_inventory->getSpeedMultiplier()) {
-        m_velocity.x = -MAX_SPEED * m_inventory->getSpeedMultiplier();
     }
 
     if(m_input->isKeyDown(SDL_BUTTON_LEFT) && m_selectedBlock) {
@@ -180,22 +208,14 @@ void Player::update(Chunk* chunks[WORLD_SIZE], float timeStep) {
         m_selectedHotbox = 9;
     }
 
+    #ifdef DEV_CONTROLS
 
-    setParentChunk(chunks);
-}
+    if(m_input->isKeyPressed(SDLK_BACKSLASH)) {
+        std::string in;
+        std::getline(std::cin, in);
 
-void Player::updateMouse(Chunk* chunks[WORLD_SIZE], GLEngine::Camera2D* worldCamera) {
-    glm::vec2 mousePos = worldCamera->convertScreenToWorld(m_input->getMouseCoords());
+        std::cout << in;
+    }
 
-    mousePos = glm::vec2(floor(mousePos.x / TILE_SIZE), floor(mousePos.y / TILE_SIZE)); // Changes it to grid-space
-
-    unsigned int chunkIndex = floor(mousePos.x / CHUNK_SIZE);
-
-    mousePos.x -= chunkIndex * CHUNK_SIZE; // Make sure that coords are staying inside of the selected chunk.
-
-    if(mousePos.x >= 0 &&
-       mousePos.x + (chunkIndex * CHUNK_SIZE) < WORLD_SIZE * CHUNK_SIZE &&
-       mousePos.y >= 0 &&
-       mousePos.y < WORLD_HEIGHT)
-           m_selectedBlock = static_cast<Block*>(chunks[chunkIndex]->tiles[(unsigned int)mousePos.y][(unsigned int)mousePos.x]);
+    #endif // DEV_CONTROLS
 }

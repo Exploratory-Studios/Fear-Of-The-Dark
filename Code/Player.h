@@ -37,4 +37,6 @@ class Player : public Entity
 
         bool m_inventoryOpen = false;
 
+        void updateInput();
+
 };

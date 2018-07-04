@@ -34,6 +34,7 @@ class Tile
         bool            isSolid()     { return m_solid; }
         float           getLight();
         float           getAmbientLight() { return m_ambientLight; }
+        bool            isTransparent()   { return m_transparent;  }
 
         void            setAmbientLight(float light) { m_ambientLight = light; }
 
@@ -56,7 +57,8 @@ class Tile
         unsigned int m_id;
 
         bool m_solid = true; // Don't collide if true: Air, water, etc.
-        bool m_transparent = false; // Don't draw if true: Air, etc.
+        bool m_draw = true; // Don't draw if true: Air, etc.
+        bool m_transparent = false;
 
         Chunk* m_parentChunk = nullptr;
 

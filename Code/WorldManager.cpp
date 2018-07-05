@@ -39,12 +39,11 @@ void WorldManager::update(GLEngine::Camera2D* worldCamera, float timeStepVariabl
     m_entityManager.update(m_activatedChunks, m_worldIOManager->getWorld()->chunks, worldCamera, timeStepVariable);
 }
 
-void WorldManager::tick() {
+void WorldManager::tick(float tickTime) {
     for(int i = 0; i < m_activatedChunks.size(); i++) {
-        m_worldIOManager->getWorld()->chunks[m_activatedChunks[i]]->tick(m_tickTime);
+        m_worldIOManager->getWorld()->chunks[m_activatedChunks[i]]->tick(tickTime);
     }
-    m_entityManager.tick(m_tickTime);
-    m_tickTime++;
+    m_entityManager.tick(tickTime);
 }
 
 void WorldManager::draw(GLEngine::SpriteBatch& sb, GLEngine::DebugRenderer& dr) {

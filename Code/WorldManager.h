@@ -24,7 +24,7 @@ class WorldManager
         void init(WorldIOManager* worldIOManager);
 
         void update(GLEngine::Camera2D* worldCamera, float timeStepVariable, float time);
-        void tick();
+        void tick(float tickTime);
         void draw(GLEngine::SpriteBatch& sb, GLEngine::DebugRenderer& dr);
 
         Player* getPlayer() { return m_player; }
@@ -39,6 +39,4 @@ class WorldManager
 
         std::vector<int> m_activatedChunks;
         int m_lastActivated = -1;
-
-        float m_tickTime = 0;
 };

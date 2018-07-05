@@ -3,12 +3,6 @@
 #include "PresetValues.h"
 #include "Item.h"
 
-#define DEV_CONTROLS
-
-#ifdef DEV_CONTROLS
-#include <iostream>
-#endif // DEV_CONTROLS
-
 Player::Player() {
     m_inventory = new Inventory();
 }
@@ -207,15 +201,4 @@ void Player::updateInput() {
     if(m_input->isKeyPressed(SDLK_0)) {
         m_selectedHotbox = 9;
     }
-
-    #ifdef DEV_CONTROLS
-
-    if(m_input->isKeyPressed(SDLK_BACKSLASH)) {
-        std::string in;
-        std::getline(std::cin, in);
-
-        std::cout << in;
-    }
-
-    #endif // DEV_CONTROLS
 }

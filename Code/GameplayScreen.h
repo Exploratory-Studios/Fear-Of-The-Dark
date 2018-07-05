@@ -61,6 +61,8 @@ class GameplayScreen : public GLEngine::IGameScreen
         GameState m_gameState = GameState::PLAY;
 
         float m_time = 0.0f;
+        float m_tickTime = 0.0f;
+        float m_frame = 0.0f;
         float m_deltaTime = 1.0f;
         int m_tickRate = 4;
 

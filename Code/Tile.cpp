@@ -20,7 +20,7 @@ void Tile::update(float time) {
 
 void Tile::tick(int tickTime) {
     if(exposedToSun()) { // check if this block is exposed to sunlight
-        m_sunLight = (std::cos((float)tickTime / (float)DAY_LENGTH) + 1.0f) / 2.0f;
+        m_sunLight = tickTime / 100.0f;
     }
     if((int)m_pos.y-m_parentChunk->getIndex() >= 0) {
         int x = (int)m_pos.x - CHUNK_SIZE*m_parentChunk->getIndex();

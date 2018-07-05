@@ -4,6 +4,13 @@
 
 #include <SDL2/SDL_timer.h>
 
+#define DEV_CONTROLS
+
+#ifdef DEV_CONTROLS
+#include <iostream>
+#include <regex>
+#endif // DEV_CONTROLS
+
 GameplayScreen::GameplayScreen(GLEngine::Window* window, WorldIOManager* WorldIOManager) : m_window(window), m_WorldIOManager(WorldIOManager)
 {
 
@@ -75,8 +82,9 @@ void GameplayScreen::update() {
     m_worldManager.update(&m_camera, m_deltaTime, m_time);
 
     m_time++; /// Change the increment if time is slowed or quicker (potion effects?)
+    m_frame++;
 
-    if((int)m_time % (int)(60 / m_tickRate) == 0) { // m_time is equal to current frame
+    if((int)m_frame++ % (int)(60 / m_tickRate) == 0) { // m_frame is equal to current frame
         tick();
     }
 
@@ -153,6 +161,61 @@ void GameplayScreen::checkInput() {
                 break;
         }
     }
+
+    #ifdef DEV_CONTROLS
+    if(m_game->inputManager.isKeyPressed(SDLK_BACKSLASH)) {
+        std::string in;
+        std::getline(std::cin, in);
+
+        std::regex fullCmd(".+(\\s(\\d+))*");
+        std::smatch matches;
+        if(std::regex_match(in, matches, fullCmd)) {
+            int i = 0;
+            std::string cmd;
+            while(i < in.length()) {
+                if(in[i] == ' ' || in[i] == '\0') {
+                    break;
+                }
+                cmd += in[i];
+                i++;
+            }
+            int argNum;
+            if(cmd == "time") {
+                argNum = 1;
+            } else if(cmd == "give") {
+                argNum = 2;
+            } else if(cmd == "getTime") {
+                argNum = 0;
+            } else if(cmd == "tickRate") {
+                argNum = 1;
+            }
+
+            int args[argNum];
+            for(int k = 0; k < argNum; k++) {
+                int j = i+1;
+                std::string arg;
+                while(true) {
+                    arg += in[j];
+                    if(in[j] == ' ' || j == in.length()-1) {
+                        i = j;
+                        args[k] = std::stoi(arg);
+                        break;
+                    }
+                    j++;
+                }
+            }
+            if(cmd == "time") {
+                m_tickTime = (float)args[0];
+            } else if (cmd == "give") {
+            } else if(cmd == "getTime") {
+                std::cout << std::endl << "Time: " << m_tickTime;
+            } else if(cmd == "tickRate") {
+                m_tickRate = (float)args[0];
+            }
+        }
+    }
+    #endif // DEV_CONTROLS
+
 }
 
 void GameplayScreen::initShaders() {
@@ -183,7 +246,8 @@ void GameplayScreen::initUI() {
 }
 
 void GameplayScreen::tick() {
-    m_worldManager.tick();
+    m_worldManager.tick(m_tickTime);
+    m_tickTime++;
 }
 
 void GameplayScreen::scrollEvent(const SDL_Event& evnt) {

@@ -44,7 +44,7 @@
 #define MAX_WEIGHT 100.0f
 
 // How long a day is (frames at the moment)
-#define DAY_LENGTH 40  /// TODO: add tick loop (slower update): Update will happen 60 times a second, collision, etc., and Tick will happen 10, 5, 3 times a second, that'll be the day, stuff growing, etc.
+#define DAY_LENGTH 2400  // Should be a minute per CYCLE (4 * 60)
 
 /// Category Datatypes
 // Biomes (AKA Places)
@@ -107,7 +107,7 @@ namespace Category_Data {
                                                                 };
 
     const MobDatum mobData[Category_Data::TOTAL_MOBS] = {
-                                                         MobDatum(0, 10.0f, "../Assets/Textures/Mobs/Mob0.png", glm::vec2(2.0f, 1.0f), Categories::Faction::BAD),
+                                                         MobDatum(0, 10.0f, "../Assets/Textures/Mobs/Mob0.png", glm::vec2(1.0f, 2.0f), Categories::Faction::BAD),
                                                          MobDatum(1, 20.0f, "../Assets/Textures/Mobs/Mob0.png", glm::vec2(1.0f, 2.0f), Categories::Faction::GOOD),
                                                          MobDatum(2, 30.0f, "../Assets/Textures/Mobs/Mob0.png", glm::vec2(1.0f, 1.0f), Categories::Faction::BAD)
                                                         };

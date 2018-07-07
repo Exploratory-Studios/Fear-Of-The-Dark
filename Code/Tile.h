@@ -54,6 +54,8 @@ class Tile
         float m_emittedLight = 0.0f;
         float m_sunLight = 0.0f;
 
+        float m_lastLight = 0.0f; // This is used to make sure that we aren't giving other blocks light for no reason
+
         unsigned int m_id;
 
         bool m_solid = true; // Don't collide if true: Air, water, etc.

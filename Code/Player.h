@@ -13,6 +13,13 @@
 
 #include "PresetValues.h"
 
+
+
+
+
+/// GET RID OF
+#include "Categories.h"
+
 class Player : public Entity
 {
     public:
@@ -26,6 +33,9 @@ class Player : public Entity
         void updateMouse(Chunk* chunks[WORLD_SIZE], GLEngine::Camera2D* worldCamera);
 
     protected:
+        virtual void updateAI(Chunk* activeChunks[WORLD_SIZE]) {}
+        virtual void updateMovement() {}
+
         GLEngine::InputManager* m_input = nullptr;
 
         Block* m_selectedBlock = nullptr;

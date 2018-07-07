@@ -13,7 +13,7 @@ class WidgetLabel {
         WidgetLabel(const std::string& text, glm::vec2 scale, CEGUI::Window* widget, GLEngine::ColourRGBA8 colour, GLEngine::Window* window) : m_text(text), m_scale(scale), m_colour(colour), m_window(window) {
             m_position.x = (widget->getXPosition().d_scale + widget->getWidth().d_scale / 2) * m_window->getScreenWidth();
             m_position.y = m_window->getScreenHeight() + -(widget->getYPosition().d_scale + widget->getHeight().d_scale * 1.5 /* ((m_scale.y * 96) / (widget->getHeight().d_scale * m_window->getScreenHeight()))*/) * m_window->getScreenHeight();// / 10.0f); // This end part just centres it on the y axis                                                                                                                                                                    /// Note: This means all fonts must be of resolution 96
-        } /// TODO: Work these goddamn maths out on a whiteboard!!!1!11
+        } /// TODO: Work this goddamn math out on a whiteboard!!!1!11
         WidgetLabel(const std::string& text, glm::vec2 scale, glm::vec2 pos, GLEngine::ColourRGBA8 colour, GLEngine::Window* window) : m_text(text), m_scale(scale), m_colour(colour), m_window(window) {
             m_position.x = pos.x * m_window->getScreenWidth();
             m_position.y = m_window->getScreenHeight() + -(pos.y * m_window->getScreenHeight());

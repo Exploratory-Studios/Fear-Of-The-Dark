@@ -9,8 +9,10 @@ Player::Player() {
 
 Player::Player(glm::vec2 position, GLEngine::InputManager* input) : m_input(input)
 {
-    init(position, Categories::Entity_Type::MOB, 1);
+    init(position, Categories::Entity_Type::MOB, 0);
     m_inventory = new Inventory();
+    m_speed = 0.2f;
+    m_jumpHeight = 2.736f;
 }
 
 Player::~Player()
@@ -157,7 +159,8 @@ void Player::updateInput() {
 
     if(m_input->isKeyDown(SDL_BUTTON_LEFT) && m_selectedBlock) {
         if(m_handItem) m_handItem->onLeftClick(m_selectedBlock);
-        m_selectedBlock->setAmbientLight(1.0f);
+        //m_selectedBlock->setAmbientLight(1.0f);
+        m_selectedBlock->switchID((unsigned int)Categories::BlockIDs::AIR);
     }
     if(m_input->isKeyDown(SDL_BUTTON_RIGHT) && m_selectedBlock) {
         if(m_handItem) m_handItem->onRightClick(m_selectedBlock);

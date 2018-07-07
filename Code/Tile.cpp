@@ -15,32 +15,32 @@ float Tile::getLight() {
 }
 
 void Tile::update(float time) {
-
-}
-
-void Tile::tick(int tickTime) {
-    if(exposedToSun()) { // check if this block is exposed to sunlight
-        m_sunLight = tickTime / 100.0f;
-    }
-    if((int)m_pos.y-m_parentChunk->getIndex() >= 0) {
+    if(getLight() != m_lastLight && (int)m_pos.y-m_parentChunk->getIndex() >= 0) {
+        m_lastLight = getLight();
         int x = (int)m_pos.x - CHUNK_SIZE*m_parentChunk->getIndex();
         int y = (int)m_pos.y;
         if(y-1 >= 0)
             if(m_transparent || m_parentChunk->tiles[y-1][x]->isTransparent())
                 if(m_parentChunk->tiles[y-1][x]->getAmbientLight() < getLight())
-                    m_parentChunk->tiles[y-1][x]->setAmbientLight(getLight() * 9.0f/10.0f);
+                    m_parentChunk->tiles[y-1][x]->setAmbientLight(getLight() * 4.0f/5.0f);
         if(y+1 < WORLD_HEIGHT)
             if(m_transparent || m_parentChunk->tiles[y+1][x]->isTransparent())
                 if(m_parentChunk->tiles[y+1][x]->getAmbientLight() < getLight())
-                    m_parentChunk->tiles[y+1][x]->setAmbientLight(getLight() * 9.0f/10.0f);
+                    m_parentChunk->tiles[y+1][x]->setAmbientLight(getLight() * 4.0f/5.0f);
         if(x-1 >= 0)
             if(m_transparent || m_parentChunk->tiles[y][x-1]->isTransparent())
                 if(m_parentChunk->tiles[y][x-1]->getAmbientLight() < getLight())
-                    m_parentChunk->tiles[y][x-1]->setAmbientLight(getLight() * 9.0f/10.0f);
+                    m_parentChunk->tiles[y][x-1]->setAmbientLight(getLight() * 4.0f/5.0f);
         if(x+1 < CHUNK_SIZE)
             if(m_transparent || m_parentChunk->tiles[y][x+1]->isTransparent())
                 if(m_parentChunk->tiles[y][x+1]->getAmbientLight() < getLight())
-                    m_parentChunk->tiles[y][x+1]->setAmbientLight(getLight() * 9.0f/10.0f);
+                    m_parentChunk->tiles[y][x+1]->setAmbientLight(getLight() * 4.0f/5.0f);
+    }
+}
+
+void Tile::tick(int tickTime) {
+    if(exposedToSun()) { // check if this block is exposed to sunlight
+        m_sunLight = cos((float)tickTime / (DAY_LENGTH / 6.28318f)) / 2.0f + 0.5f;
     }
 }
 

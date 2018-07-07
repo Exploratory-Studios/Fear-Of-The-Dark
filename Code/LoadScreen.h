@@ -73,6 +73,7 @@ class LoadScreen : public GLEngine::IGameScreen
         CEGUI::FrameWindow* m_newWorldFramewindow = nullptr; /// World creation buttons
         CEGUI::Editbox* m_newWorldNameEditbox = nullptr;
         CEGUI::Editbox* m_newWorldSeedEditbox = nullptr;
+        CEGUI::ToggleButton* m_newWorldFlatCheckbox = nullptr; // To create a flat world
 
         GLEngine::Camera2D m_camera;
         GLEngine::Camera2D m_uiCamera;

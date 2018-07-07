@@ -143,6 +143,9 @@ void LoadScreen::initUI() {
         m_labels.emplace_back("Create", glm::vec2(0.8f, 0.5f), m_newWorldCreateNewButton, GLEngine::ColourRGBA8(255, 255, 255, 255), m_window);
         m_miniScreenEntries.emplace_back(m_newWorldCreateNewButton, MiniScreen::CREATE);
 
+        m_newWorldFlatCheckbox = static_cast<CEGUI::ToggleButton*> (m_gui.createWidget("FOTDSkin/RadioButton", glm::vec4(0.1f, 0.4f, 0.1f, 0.1f), glm::vec4(0.0f), "WorldFlatToggleButton"));
+        m_labels.emplace_back("Flat World?", glm::vec2(0.8f, 0.5f), m_newWorldFlatCheckbox, GLEngine::ColourRGBA8(255.0f, 255.0f, 255.0f, 255.0f), m_window);
+        m_miniScreenEntries.emplace_back(m_newWorldFlatCheckbox, MiniScreen::CREATE);
     }
 }
 
@@ -163,7 +166,7 @@ bool LoadScreen::onNewWorldCreateNewButtonClicked(const CEGUI::EventArgs& e) { /
         seed += (char)text[i];
     }
 
-    m_worldIOManager->createWorld(seed, m_newWorldNameEditbox->getText().c_str());
+    m_worldIOManager->createWorld(seed, m_newWorldNameEditbox->getText().c_str(), m_newWorldFlatCheckbox->isSelected());
 
     m_currentState = GLEngine::ScreenState::CHANGE_NEXT;
     m_nextScreenIndex = SCREEN_INDEX_GAMEPLAY;

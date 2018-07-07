@@ -29,7 +29,7 @@ class WorldIOManager
         void loadWorld(std::string worldName);
         void saveWorld(const World& world, std::string worldName, const std::vector<Entity>& entities);
 
-        void createWorld(unsigned int seed, std::string worldName);
+        void createWorld(unsigned int seed, std::string worldName, bool isFlat = false);
         /*
             Seed will govern where the biomes are (random engine #1) and it will also seed the random engine for
             all of the world (random engine #2)

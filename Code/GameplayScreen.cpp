@@ -210,7 +210,7 @@ void GameplayScreen::checkInput() {
             } else if(cmd == "getTime") {
                 std::cout << std::endl << "Time: " << m_tickTime;
             } else if(cmd == "tickRate") {
-                m_tickRate = (float)args[0];
+                if((float)args[0] > 0) m_tickRate = (float)args[0];
             }
         }
     }

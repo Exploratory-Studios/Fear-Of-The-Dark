@@ -4,6 +4,7 @@
 #include <vector>
 
 #include "Entity.h"
+#include "Entities/WalkingNPC.h"
 #include "Chunk.h"
 
 #include "EntityManager.h"

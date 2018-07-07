@@ -36,6 +36,8 @@ void Entity::init(glm::vec2 position, Categories::Entity_Type type, unsigned int
 void Entity::update(Chunk* chunks[WORLD_SIZE], float timeStep) {
     setParentChunk(chunks);
     updateLightLevel(m_parentChunk);
+    updateAI(chunks);
+    updateMovement();
 }
 
 void Entity::draw(GLEngine::SpriteBatch& sb) {
@@ -62,19 +64,25 @@ void Entity::move(float timeStepVariable) {
     m_onGround = false;
 }
 
+
+#include <iostream>
 void Entity::collide(std::vector<Entity*> entities, int chunkI) {
 
     if(chunkI == m_parentChunkIndex) {
         /// ENTITY COLLISION STARTS HERE
         for(auto e : entities) {
             if(e != this) {
-                if(m_position.x < e->getPosition().x + e->getSize().x * TILE_SIZE && m_position.x + m_size.x * TILE_SIZE > e->getPosition().x) {
-                    if(m_position.y < e->getPosition().y + e->getSize().y * TILE_SIZE && m_position.y + m_size.y * TILE_SIZE > e->getPosition().y) {
-                        int dist = (m_position.x - e->getPosition().x);
+                float xDist = (m_position.x + m_size.x / 4.0f) - (e->getPosition().x + e->getSize().x / 4.0f);
+                float yDist = (m_position.y + m_size.y / 4.0f) - (e->getPosition().y + e->getSize().y / 4.0f);
+                if(abs(xDist) <= abs(m_size.x / 2.0f + e->getSize().x / 2.0f)) {
+                    if(abs(yDist) <= abs(m_size.y / 2.0f + e->getSize().y / 2.0f)) {
 
-                        if(dist != 0) {
-                            m_position.x += (dist ^ 2) / 128.0f;
-                        }
+//                        float depth = xDist;// - (m_size.x / 4.0f + e->getSize().x / 4.0f);
+//                        float force = (depth * (float)TILE_SIZE) / 4.0f;
+//
+//                        m_position.x += force;
+//                        e->setPosition(glm::vec2(e->getPosition().x - force, e->getPosition().y));
+                        std::cout << "CONTACT " << xDist << "\n\n\n";
                     }
                 }
             }
@@ -219,7 +227,7 @@ bool Entity::checkTilePosition(Tile* tiles[WORLD_HEIGHT][CHUNK_SIZE], int chunkI
     // If this is not an air tile, we should collide with it
     if ((int)gridPos.x - (m_parentChunkIndex * CHUNK_SIZE) >= 0 && (int)gridPos.x - (m_parentChunkIndex * CHUNK_SIZE) < CHUNK_SIZE * WORLD_SIZE) {
         // returning gridpos.x as NAN
-        if (tiles[(int)gridPos.y][(int)gridPos.x - (m_parentChunkIndex * CHUNK_SIZE)]->getID() == 1) { //  - m_parentChunkIndex
+        if (tiles[(int)gridPos.y][(int)gridPos.x - (m_parentChunkIndex * CHUNK_SIZE)]->isSolid()) { //  - m_parentChunkIndex
             collideTilePositions.push_back(glm::vec2((float)gridPos.x + 0.500f, (float)gridPos.y + 0.500f)); // CollideTilePositions are put in as gridspace coords
             return true;
         }

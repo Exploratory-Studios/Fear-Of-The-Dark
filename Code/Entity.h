@@ -8,6 +8,25 @@
 
 #include "PresetValues.h"
 
+enum class AI_TYPE {
+    FLY,
+    WALK,
+    SWIM
+};
+
+enum class DISABILITIES {
+    NONE,
+    BLIND,
+    LAME,
+    DEAF
+};
+
+enum class ATTACK_TYPE {
+    RANGED,
+    MELEE_ONLY,
+    MAGIC
+};
+
 class Entity
 {
     friend class Scripter;
@@ -31,6 +50,7 @@ class Entity
         const int&                     getChunkIndex()         { return m_parentChunkIndex; }
 
         void                           setPosition(glm::vec2 pos)   { m_position = pos; }
+        void                           setTarget(glm::vec2 target)  { m_targetPos = target; m_target = true; }
 
         int m_parentChunkIndex = -1;
 
@@ -39,6 +59,14 @@ class Entity
         bool checkTilePosition(Tile* tiles[WORLD_HEIGHT][CHUNK_SIZE], int chunkI, std::vector<glm::vec2>& collideTilePositions, float xPos, float yPos);
         void collideWithTile(glm::vec2 tilePos, bool ground = false);
         void updateLightLevel(Chunk* currentChunk);
+        virtual void updateAI(Chunk* activeChunks[WORLD_SIZE]) {}
+        virtual void updateMovement() {}
+
+        bool m_controls[4]; // Up, down (crouching while on ground), left, right
+        float m_speed = 0.02;
+        float m_jumpHeight = 1.5;
+        glm::vec2 m_targetPos;
+        bool m_target = false;
 
         GLEngine::GLTexture m_texture;
         float m_light = 0.6f;
@@ -55,6 +83,10 @@ class Entity
         bool m_transparent = false; // Unimplemented
 
         bool m_onGround = false;
+
+        AI_TYPE m_ai = AI_TYPE::WALK;
+        DISABILITIES m_disabilities = DISABILITIES::NONE;
+        ATTACK_TYPE m_attackType = ATTACK_TYPE::MELEE_ONLY;
 
 };
 

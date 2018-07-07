@@ -25,12 +25,12 @@ void EntityManager::update(std::vector<int>& activatedChunks, Chunk* chunks[WORL
     moveEntities(timeStepVariable);
     for(int i = 0; i < timeStepVariable; i++) {
         collideEntities(activatedChunks, chunks);
-        spawnEntities();
     }
 }
 
 void EntityManager::tick(float dayCycleTime) { // Spawn if nighttime, each tick update ai
-
+    spawnEntities();
+    targetEntities();
 }
 
 void EntityManager::draw(GLEngine::SpriteBatch& sb, GLEngine::DebugRenderer& dr) {
@@ -56,4 +56,18 @@ void EntityManager::moveEntities(float timeStepVariable) {
 
 void EntityManager::spawnEntities() {
 
+}
+
+void EntityManager::targetEntities() {
+    for(int i = 0; i < m_entities.size(); i++) {
+        for(int j = 0; j < m_entities.size(); j++) {
+            if((int)m_entities[i]->getFaction() > (int)Categories::Faction::NEUTRAL &&
+               (int)m_entities[j]->getFaction() <= (int)Categories::Faction::NEUTRAL) {
+                m_entities[i]->setTarget(m_entities[j]->getPosition());
+            } else if((int)m_entities[i]->getFaction() < (int)Categories::Faction::NEUTRAL &&
+               (int)m_entities[j]->getFaction() > (int)Categories::Faction::NEUTRAL) {
+                m_entities[i]->setTarget(m_entities[j]->getPosition());
+            }
+        }
+    }
 }

@@ -29,6 +29,7 @@ class EntityManager
         void collideEntities(std::vector<int>& activatedChunks, Chunk* chunks[WORLD_SIZE]);
         void moveEntities(float timeStepVariable);
         void spawnEntities();
+        void targetEntities();
 
         Player* m_player;
         std::vector<Entity*> m_entities;

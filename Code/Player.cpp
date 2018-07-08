@@ -20,19 +20,54 @@ Player::~Player()
     //dtor
 }
 
-void Player::draw(GLEngine::SpriteBatch& sb) {
+void Player::draw(GLEngine::SpriteBatch& sb, float time) {
     glm::vec4 destRect = glm::vec4(m_position.x, m_position.y, m_size.x * TILE_SIZE, m_size.y * TILE_SIZE);
-    glm::vec4 uvRect = glm::vec4(0.0f, 0.0f, 1.0f, 1.0f);
+
+        float x, y;
+    if(m_velocity.x > m_speed) {
+        x = (int)time*abs((int)m_velocity.x+1) % 3;
+        y = 1;
+        m_flippedTexture = false;
+    } else if(m_velocity.x < -m_speed) {
+        x = (int)time*abs((int)m_velocity.x+1) % 3;
+        y = 1;
+        m_flippedTexture = true;
+    } else {
+        x = 0;
+        y = 1;
+    }
+    if(m_velocity.y > 0.0f) {
+        x = (int)time % 3;
+        y = 0;
+    }
+
+    float finalX = (x / ((float)m_texture.width / (m_size.x * 32)));
+    float finalY = (y / ((float)m_texture.height / (m_size.y * 32)));
+
+    glm::vec4 uvRect;
+
+    if(!m_flippedTexture) {
+        uvRect = glm::vec4(finalX,
+                           finalY,
+                           1.0f / ((float)m_texture.width / (m_size.x * 32)),
+                           1.0f / ((float)m_texture.height / (m_size.y * 32)));
+    } else if(m_flippedTexture) {
+        uvRect = glm::vec4(finalX + 1.0f / ((float)m_texture.width / (m_size.x * 32)),
+                           finalY,
+                           1.0f / -((float)m_texture.width / (m_size.x * 32)),
+                           1.0f / ((float)m_texture.height / (m_size.y * 32)));
+    }
 
     GLEngine::ColourRGBA8 colour(255 * m_light, 255 * m_light, 255 * m_light, 255);
 
     sb.draw(destRect, uvRect, m_texture.id, 0.0f, colour);
 
     if(m_selectedBlock) { // Cursor box selection
+        glm::vec4 fullUV(0.0f, 0.0f, 1.0f, 1.0f);
         int cursorImgId = GLEngine::ResourceManager::getTexture("../Assets/GUI/Player/Cursor.png").id;
 
         glm::vec4 cursorDestRect(m_selectedBlock->getPosition().x * TILE_SIZE, m_selectedBlock->getPosition().y * TILE_SIZE, m_selectedBlock->getSize().x * TILE_SIZE, m_selectedBlock->getSize().y * TILE_SIZE);
-        sb.draw(cursorDestRect, uvRect, cursorImgId, 0.0f, GLEngine::ColourRGBA8(255, 255, 255, 255));
+        sb.draw(cursorDestRect, fullUV, cursorImgId, 0.0f, GLEngine::ColourRGBA8(255, 255, 255, 255));
     }
 }
 
@@ -142,17 +177,17 @@ void Player::updateMouse(Chunk* chunks[WORLD_SIZE], GLEngine::Camera2D* worldCam
 void Player::updateInput() {
     if(m_input->isKeyDown(SDLK_w)) {
         if(m_onGround) {
-            m_velocity.y = 2.736f; // y=(jumpHeight+-0.098*60*s^2)  initial jump power is the absolute of the x at 0. jumpheight is in eights of tiles and you must add 4
+            m_velocity.y = m_jumpHeight; // y=(jumpHeight*TILE_SIZE+3/4*TILE_SIZE+-5.88*x^2)  initial jump power is the absolute of the x when y=0. jumpheight is in eights of tiles and you must add 4
             m_onGround = false;
         }
     }
 
     if(m_input->isKeyDown(SDLK_d)) {
         if(m_velocity.x < 0.0f) m_velocity.x /= 5.0f;
-        m_velocity.x += 0.2f * m_inventory->getSpeedMultiplier();
+        m_velocity.x += m_speed * m_inventory->getSpeedMultiplier();
     } else if(m_input->isKeyDown(SDLK_a)) {
         if(m_velocity.x > 0.0f) m_velocity.x /= 5.0f;
-        m_velocity.x -= 0.2f * m_inventory->getSpeedMultiplier();
+        m_velocity.x -= m_speed * m_inventory->getSpeedMultiplier();
     } else {
         m_velocity.x *= 0.9f;
     }

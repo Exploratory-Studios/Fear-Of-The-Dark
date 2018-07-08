@@ -39,7 +39,7 @@ class Entity
         void init(glm::vec2 position, Categories::Entity_Type type, unsigned int id);
 
         virtual void update(Chunk* chunks[WORLD_SIZE], float timeStep);
-        virtual void draw(GLEngine::SpriteBatch& sb);
+        virtual void draw(GLEngine::SpriteBatch& sb, float time);
         void move(float timeStepVariable);
 
         void collide(std::vector<Entity*> entities, int chunkI);
@@ -50,6 +50,7 @@ class Entity
         const int&                     getChunkIndex()         { return m_parentChunkIndex; }
               glm::vec2                getVelocity()     const { return m_velocity; }
               std::vector<glm::vec2>   getTargets()      const { return m_targets; }
+              float                    getJumpHeight()   const { return m_jumpHeight; }
 
         void                           setPosition(glm::vec2 pos)   { m_position = pos; }
         void                           setTargets(std::vector<glm::vec2> targets)  { m_targets = targets; m_curTarget = 0; }
@@ -85,6 +86,8 @@ class Entity
         bool m_transparent = false; // Unimplemented
 
         bool m_onGround = false;
+
+        bool m_flippedTexture = false;
 
         AI_TYPE m_ai = AI_TYPE::WALK;
         DISABILITIES m_disabilities = DISABILITIES::NONE;

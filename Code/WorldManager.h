@@ -26,7 +26,7 @@ class WorldManager
 
         void update(GLEngine::Camera2D* worldCamera, float timeStepVariable, float time);
         void tick(float tickTime);
-        void draw(GLEngine::SpriteBatch& sb, GLEngine::DebugRenderer& dr);
+        void draw(GLEngine::SpriteBatch& sb, GLEngine::DebugRenderer& dr, int tickTime);
 
         Player* getPlayer() { return m_player; }
 

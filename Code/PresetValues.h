@@ -63,7 +63,7 @@ class PlaceDatum {
 class MobDatum {
     public:
         MobDatum() { }
-        MobDatum(unsigned int idP, float hpP, std::string texturePathP, glm::vec2 sizeP, Categories::Faction fac) : id(idP), hp(hpP), texturePath(texturePathP), size(sizeP), faction(fac) { }
+        MobDatum(unsigned int idP, float hpP, std::string texturePathP, glm::vec2 sizeP, Categories::Faction fac, float jumpHeightP, float speedP) : id(idP), hp(hpP), texturePath(texturePathP), size(sizeP), faction(fac), jumpHeight(std::sqrt((jumpHeightP*TILE_SIZE+3.0f/4.0f*TILE_SIZE)/5.88f)), speed(speedP) { }
 
         unsigned int id; /// This is used only for verification when copying from an array.
                          /// Ex.
@@ -73,6 +73,8 @@ class MobDatum {
         std::string texturePath;
         glm::vec2 size;
         Categories::Faction faction;
+        float jumpHeight;
+        float speed;
 
 };
 
@@ -107,9 +109,9 @@ namespace Category_Data {
                                                                 };
 
     const MobDatum mobData[Category_Data::TOTAL_MOBS] = {
-                                                         MobDatum(0, 10.0f, "../Assets/Textures/Mobs/Mob0.png", glm::vec2(1.0f, 2.0f), Categories::Faction::BAD),
-                                                         MobDatum(1, 20.0f, "../Assets/Textures/Mobs/Mob0.png", glm::vec2(1.0f, 2.0f), Categories::Faction::GOOD),
-                                                         MobDatum(2, 30.0f, "../Assets/Textures/Mobs/Mob0.png", glm::vec2(1.0f, 1.0f), Categories::Faction::BAD)
+                                                         MobDatum(0, 10.0f, "../Assets/Textures/Mobs/Mob0.png", glm::vec2(1.0f, 2.0f), Categories::Faction::BAD, 4.0f, 0.02f),
+                                                         MobDatum(1, 20.0f, "../Assets/Textures/Mobs/Mob0.png", glm::vec2(1.0f, 2.0f), Categories::Faction::GOOD, 4.0f, 0.02f),
+                                                         MobDatum(2, 30.0f, "../Assets/Textures/Mobs/Mob0.png", glm::vec2(1.0f, 1.0f), Categories::Faction::BAD, 4.0f, 0.02f)
                                                         };
 
     const ItemDatum itemData[Category_Data::TOTAL_ITEMS] = {

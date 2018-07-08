@@ -26,6 +26,8 @@ void Entity::init(glm::vec2 position, Categories::Entity_Type type, unsigned int
                 m_texture = GLEngine::ResourceManager::getTexture(Category_Data::mobData[id].texturePath);
                 m_size = Category_Data::mobData[id].size;
                 m_faction = Category_Data::mobData[id].faction;
+                m_jumpHeight = Category_Data::mobData[id].jumpHeight;
+                m_speed = Category_Data::mobData[id].speed;
             } else {
                 return;
             }
@@ -39,10 +41,44 @@ void Entity::update(Chunk* chunks[WORLD_SIZE], float timeStep) {
     updateAI(chunks);
     updateMovement();
 }
-
-void Entity::draw(GLEngine::SpriteBatch& sb) {
+#include <iostream>
+void Entity::draw(GLEngine::SpriteBatch& sb, float time) {
     glm::vec4 destRect = glm::vec4(m_position.x, m_position.y, m_size.x * TILE_SIZE, m_size.y * TILE_SIZE);
-    glm::vec4 uvRect = glm::vec4(0.0f, 0.0f, 1.0f, 1.0f);
+
+    float x, y;
+    if(m_velocity.x > m_speed) {
+        x = (int)time*abs((int)m_velocity.x)+1 % 3;
+        y = 1;
+        m_flippedTexture = false;
+    } else if(m_velocity.x < -m_speed) {
+        x = (int)time*abs((int)m_velocity.x)+1 % 3;
+        y = 1;
+        m_flippedTexture = true;
+    } else {
+        x = 0;
+        y = 1;
+    }
+    if(m_velocity.y > 0.0f) {
+        x = (int)time % 3;
+        y = 0;
+    }
+
+    float finalX = (x / ((float)m_texture.width / (m_size.x * 32)));
+    float finalY = (y / ((float)m_texture.height / (m_size.y * 32)));
+
+    glm::vec4 uvRect;
+
+    if(!m_flippedTexture) {
+        uvRect = glm::vec4(finalX,
+                           finalY,
+                           1.0f / ((float)m_texture.width / (m_size.x * 32)),
+                           1.0f / ((float)m_texture.height / (m_size.y * 32)));
+    } else if(m_flippedTexture) {
+        uvRect = glm::vec4(finalX + 1.0f / ((float)m_texture.width / (m_size.x * 32)),
+                           finalY,
+                           1.0f / -((float)m_texture.width / (m_size.x * 32)),
+                           1.0f / ((float)m_texture.height / (m_size.y * 32)));
+    }
 
     GLEngine::ColourRGBA8 colour(255 * m_light, 255 * m_light, 255 * m_light, 255);
 

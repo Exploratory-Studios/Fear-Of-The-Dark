@@ -108,7 +108,7 @@ void GameplayScreen::draw() {
 
         m_spriteBatch.begin();
 
-        m_worldManager.draw(m_spriteBatch, m_dr);
+        m_worldManager.draw(m_spriteBatch, m_dr, m_tickTime);
 
         m_spriteBatch.end();
         m_spriteBatch.renderBatch();

@@ -23,7 +23,7 @@ void WorldManager::init(WorldIOManager* worldIOManager) {
 
         m_player = &m_worldIOManager->getWorld()->player;
         //Entity* ent = new Entity(glm::vec2(80, 800), Categories::Entity_Type::MOB, 1);
-        WalkingNPC* ent = new WalkingNPC(glm::vec2(80, 85), 1);
+        WalkingNPC* ent = new WalkingNPC(glm::vec2(80, 800), 1);
         entities.push_back(ent);
 
         m_entityManager.init(m_player, entities);
@@ -47,11 +47,11 @@ void WorldManager::tick(float tickTime) {
     m_entityManager.tick(tickTime, m_worldIOManager->getWorld()->chunks);
 }
 
-void WorldManager::draw(GLEngine::SpriteBatch& sb, GLEngine::DebugRenderer& dr) {
+void WorldManager::draw(GLEngine::SpriteBatch& sb, GLEngine::DebugRenderer& dr, int tickTime) {
     for(int i = 0; i < m_activatedChunks.size(); i++) {
         m_worldIOManager->getWorld()->chunks[m_activatedChunks[i]]->draw(sb);
     }
-    m_entityManager.draw(sb, dr);
+    m_entityManager.draw(sb, dr, tickTime);
 }
 
 /// Private Functions

@@ -20,19 +20,19 @@ void Tile::update(float time) {
         int x = (int)m_pos.x - CHUNK_SIZE*m_parentChunk->getIndex();
         int y = (int)m_pos.y;
         if(y-1 >= 0)
-            if(m_transparent || m_parentChunk->tiles[y-1][x]->isTransparent())
+            if(m_transparent)// || m_parentChunk->tiles[y-1][x]->isTransparent())
                 if(m_parentChunk->tiles[y-1][x]->getAmbientLight() < getLight())
                     m_parentChunk->tiles[y-1][x]->setAmbientLight(getLight() * 4.0f/5.0f);
         if(y+1 < WORLD_HEIGHT)
-            if(m_transparent || m_parentChunk->tiles[y+1][x]->isTransparent())
+            if(m_transparent)// || m_parentChunk->tiles[y+1][x]->isTransparent())
                 if(m_parentChunk->tiles[y+1][x]->getAmbientLight() < getLight())
                     m_parentChunk->tiles[y+1][x]->setAmbientLight(getLight() * 4.0f/5.0f);
         if(x-1 >= 0)
-            if(m_transparent || m_parentChunk->tiles[y][x-1]->isTransparent())
+            if(m_transparent)// || m_parentChunk->tiles[y][x-1]->isTransparent())
                 if(m_parentChunk->tiles[y][x-1]->getAmbientLight() < getLight())
                     m_parentChunk->tiles[y][x-1]->setAmbientLight(getLight() * 4.0f/5.0f);
         if(x+1 < CHUNK_SIZE)
-            if(m_transparent || m_parentChunk->tiles[y][x+1]->isTransparent())
+            if(m_transparent)// || m_parentChunk->tiles[y][x+1]->isTransparent())
                 if(m_parentChunk->tiles[y][x+1]->getAmbientLight() < getLight())
                     m_parentChunk->tiles[y][x+1]->setAmbientLight(getLight() * 4.0f/5.0f);
     }

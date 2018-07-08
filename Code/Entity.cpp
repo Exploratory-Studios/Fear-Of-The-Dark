@@ -72,17 +72,18 @@ void Entity::collide(std::vector<Entity*> entities, int chunkI) {
         /// ENTITY COLLISION STARTS HERE
         for(auto e : entities) {
             if(e != this) {
-                float xDist = (m_position.x + m_size.x / 4.0f) - (e->getPosition().x + e->getSize().x / 4.0f);
-                float yDist = (m_position.y + m_size.y / 4.0f) - (e->getPosition().y + e->getSize().y / 4.0f);
-                if(abs(xDist) <= abs(m_size.x / 2.0f + e->getSize().x / 2.0f)) {
-                    if(abs(yDist) <= abs(m_size.y / 2.0f + e->getSize().y / 2.0f)) {
+                float xDist = (m_position.x / (float)TILE_SIZE + m_size.x / 2.0f) - (e->getPosition().x / (float)TILE_SIZE + e->getSize().x / 2.0f);
+                float yDist = (m_position.y / (float)TILE_SIZE + m_size.y / 2.0f) - (e->getPosition().y / (float)TILE_SIZE + e->getSize().y / 2.0f);
+                if(abs(xDist) < abs(m_size.x / 2.0f + e->getSize().x / 2.0f)) {
+                    if(abs(yDist) < abs(m_size.y / 2.0f + e->getSize().y / 2.0f)) {
 
-//                        float depth = xDist;// - (m_size.x / 4.0f + e->getSize().x / 4.0f);
-//                        float force = (depth * (float)TILE_SIZE) / 4.0f;
-//
-//                        m_position.x += force;
-//                        e->setPosition(glm::vec2(e->getPosition().x - force, e->getPosition().y));
-                        std::cout << "CONTACT " << xDist << "\n\n\n";
+                        float depth = xDist - (m_size.x / 2.0f + e->getSize().x / 2.0f);
+                        float force = (depth / 2.0f * TILE_SIZE) * (depth / 2.0f * TILE_SIZE) / ((m_size.x / 2.0f + e->getSize().x / 2.0f) * 512.0f);
+
+
+                        m_position.x -= force;
+                        e->setPosition(glm::vec2(e->getPosition().x + force, e->getPosition().y));
+                        //std::cout << "CONTACT " << depth << "\n\n\n";
                     }
                 }
             }

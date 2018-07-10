@@ -71,7 +71,7 @@ void EntityManager::targetEntities(Chunk* chunks[WORLD_SIZE]) {
         }
     }
 }
-#include <iostream>
+
 std::vector<glm::vec2> EntityManager::pathfindToTarget(float jumpHeight, glm::vec2 originalPosition, glm::vec2 targetPosition, Chunk* chunks[WORLD_SIZE]) {
     std::vector<glm::vec2> targets;
 

@@ -3,6 +3,10 @@
 #include "PresetValues.h"
 #include "Item.h"
 
+
+
+#include <iostream>
+
 Player::Player() {
     m_inventory = new Inventory();
 }
@@ -66,7 +70,10 @@ void Player::draw(GLEngine::SpriteBatch& sb, float time) {
         glm::vec4 fullUV(0.0f, 0.0f, 1.0f, 1.0f);
         int cursorImgId = GLEngine::ResourceManager::getTexture("../Assets/GUI/Player/Cursor.png").id;
 
-        glm::vec4 cursorDestRect(m_selectedBlock->getPosition().x * TILE_SIZE, m_selectedBlock->getPosition().y * TILE_SIZE, m_selectedBlock->getSize().x * TILE_SIZE, m_selectedBlock->getSize().y * TILE_SIZE);
+        int chunkIndex = (int)floor(m_mousePos.x / CHUNK_SIZE) % WORLD_SIZE;
+        int x = (int)(m_mousePos.x + CHUNK_SIZE) % CHUNK_SIZE;
+
+        glm::vec4 cursorDestRect(x * TILE_SIZE + chunkIndex * CHUNK_SIZE * TILE_SIZE, m_selectedBlock->getPosition().y * TILE_SIZE, m_selectedBlock->getSize().x * TILE_SIZE, m_selectedBlock->getSize().y * TILE_SIZE);
         sb.draw(cursorDestRect, fullUV, cursorImgId, 0.0f, GLEngine::ColourRGBA8(255, 255, 255, 255));
     }
 }
@@ -163,15 +170,17 @@ void Player::updateMouse(Chunk* chunks[WORLD_SIZE], GLEngine::Camera2D* worldCam
 
     mousePos = glm::vec2(floor(mousePos.x / TILE_SIZE), floor(mousePos.y / TILE_SIZE)); // Changes it to grid-space
 
-    unsigned int chunkIndex = floor(mousePos.x / CHUNK_SIZE);
+    m_mousePos = mousePos;
 
-    mousePos.x -= chunkIndex * CHUNK_SIZE; // Make sure that coords are staying inside of the selected chunk.
+    unsigned int chunkIndex = (int)abs(floor(mousePos.x / CHUNK_SIZE) + WORLD_SIZE) % WORLD_SIZE;
 
-    if(mousePos.x >= 0 &&
-       mousePos.x + (chunkIndex * CHUNK_SIZE) < WORLD_SIZE * CHUNK_SIZE &&
+    mousePos.x = (int)(mousePos.x + CHUNK_SIZE) % CHUNK_SIZE;
+
+    if(/*mousePos.x >= 0 &&
+       mousePos.x + (chunkIndex * CHUNK_SIZE) < WORLD_SIZE * CHUNK_SIZE &&*/
        mousePos.y >= 0 &&
        mousePos.y < WORLD_HEIGHT)
-           m_selectedBlock = static_cast<Block*>(chunks[chunkIndex]->tiles[(unsigned int)mousePos.y][(unsigned int)mousePos.x]);
+           m_selectedBlock = static_cast<Block*>(chunks[chunkIndex]->tiles[(unsigned int)mousePos.y][(unsigned int)mousePos.x % CHUNK_SIZE]);
 }
 
 void Player::updateInput() {

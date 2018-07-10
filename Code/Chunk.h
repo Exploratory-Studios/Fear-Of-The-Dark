@@ -16,7 +16,7 @@ class Chunk
 
         void update(float time);
         void tick(int tickTime);
-        void draw(GLEngine::SpriteBatch& sb);
+        void draw(GLEngine::SpriteBatch& sb, int xOffset); // xOffset is in chunks
 
         void setPlace(Categories::Places place);
         void setTile(Tile* newTile, const unsigned int& x, const unsigned int& y);

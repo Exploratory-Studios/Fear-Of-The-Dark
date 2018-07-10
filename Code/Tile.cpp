@@ -44,8 +44,8 @@ void Tile::tick(int tickTime) {
     }
 }
 
-void Tile::draw(GLEngine::SpriteBatch& sb) {
-    if(!m_transparent) sb.draw(glm::vec4(m_pos.x * TILE_SIZE, m_pos.y * TILE_SIZE, m_size.x * TILE_SIZE, m_size.y * TILE_SIZE), glm::vec4(0.0f, 0.0f, 1.0f, 1.0f), m_texture.id, 0.0f, GLEngine::ColourRGBA8(m_colour.r * getLight(), m_colour.g * getLight(), m_colour.b * getLight(), m_colour.a));
+void Tile::draw(GLEngine::SpriteBatch& sb, int xOffset) {
+    if(!m_transparent) sb.draw(glm::vec4(m_pos.x * TILE_SIZE + xOffset * CHUNK_SIZE * TILE_SIZE, m_pos.y * TILE_SIZE, m_size.x * TILE_SIZE, m_size.y * TILE_SIZE), glm::vec4(0.0f, 0.0f, 1.0f, 1.0f), m_texture.id, 0.0f, GLEngine::ColourRGBA8(m_colour.r * getLight(), m_colour.g * getLight(), m_colour.b * getLight(), m_colour.a));
 }
 
 bool Tile::exposedToSun() {

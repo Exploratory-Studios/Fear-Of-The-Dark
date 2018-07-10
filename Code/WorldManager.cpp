@@ -34,7 +34,8 @@ void WorldManager::update(GLEngine::Camera2D* worldCamera, float timeStepVariabl
     activateChunks();
 
     for(int i = 0; i < m_activatedChunks.size(); i++) {
-        m_worldIOManager->getWorld()->chunks[m_activatedChunks[i]]->update(time);
+        int xOffset = std::abs(m_activatedChunks[i] + WORLD_SIZE) % WORLD_SIZE;
+        m_worldIOManager->getWorld()->chunks[xOffset]->update(time);
     }
 
     m_entityManager.update(m_activatedChunks, m_worldIOManager->getWorld()->chunks, worldCamera, timeStepVariable);
@@ -42,14 +43,18 @@ void WorldManager::update(GLEngine::Camera2D* worldCamera, float timeStepVariabl
 
 void WorldManager::tick(float tickTime) {
     for(int i = 0; i < m_activatedChunks.size(); i++) {
-        m_worldIOManager->getWorld()->chunks[m_activatedChunks[i]]->tick(tickTime);
+        int xOffset = std::abs(m_activatedChunks[i] + WORLD_SIZE) % WORLD_SIZE;
+        m_worldIOManager->getWorld()->chunks[xOffset]->tick(tickTime);
     }
     m_entityManager.tick(tickTime, m_worldIOManager->getWorld()->chunks);
 }
 
 void WorldManager::draw(GLEngine::SpriteBatch& sb, GLEngine::DebugRenderer& dr, int tickTime) {
     for(int i = 0; i < m_activatedChunks.size(); i++) {
-        m_worldIOManager->getWorld()->chunks[m_activatedChunks[i]]->draw(sb);
+        int xOffset = std::abs(m_activatedChunks[i] + WORLD_SIZE) % WORLD_SIZE;
+
+        m_worldIOManager->getWorld()->chunks[xOffset]->draw(sb, (m_activatedChunks[i] - xOffset));
+
     }
     m_entityManager.draw(sb, dr, tickTime);
 }
@@ -57,7 +62,7 @@ void WorldManager::draw(GLEngine::SpriteBatch& sb, GLEngine::DebugRenderer& dr, 
 /// Private Functions
 void WorldManager::activateChunks() {
 
-    int chunkIndex = std::floor(m_player->getPosition().x / TILE_SIZE / CHUNK_SIZE);
+    int chunkIndex = (int)std::floor(m_player->getPosition().x / TILE_SIZE / CHUNK_SIZE) % WORLD_SIZE;
 
     if(chunkIndex != m_lastActivated && chunkIndex >= 0) { // Make sure that we changed chunks
         m_activatedChunks.clear(); // I forgot I had this at my disposal :)
@@ -65,11 +70,11 @@ void WorldManager::activateChunks() {
         const int each = (VIEW_DIST - 1) / 2; // How many chunks on each side of the centre of the selection
 
         for(int i = -each; i <= each; i++) {
-            if(chunkIndex + i >= 0) {
-                m_activatedChunks.push_back((chunkIndex + i) % WORLD_SIZE);
-            } else if(chunkIndex + i < 0) {
-                m_activatedChunks.push_back(((chunkIndex + i) % WORLD_SIZE) + WORLD_SIZE);
-            }
+            //if(chunkIndex + i >= 0) {
+                m_activatedChunks.push_back(chunkIndex + i);
+            //} else if(chunkIndex + i < 0) {
+            //    m_activatedChunks.push_back(((chunkIndex + i) % WORLD_SIZE) + WORLD_SIZE);
+            //}
         }
 
         m_lastActivated = chunkIndex;

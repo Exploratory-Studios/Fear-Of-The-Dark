@@ -35,12 +35,13 @@ class Tile
         float           getLight();
         float           getAmbientLight() { return m_ambientLight; }
         bool            isTransparent()   { return m_transparent;  }
+        Chunk*          getParentChunk()  const { return m_parentChunk;  }
 
         void            setAmbientLight(float light) { m_ambientLight = light; }
 
         virtual void update(float time);
         virtual void tick(int tickTime);
-        virtual void draw(GLEngine::SpriteBatch& sb);
+        virtual void draw(GLEngine::SpriteBatch& sb, int xOffset);
 
     protected:
         bool exposedToSun();

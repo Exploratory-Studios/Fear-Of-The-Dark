@@ -38,6 +38,7 @@ class Player : public Entity
 
         GLEngine::InputManager* m_input = nullptr;
 
+        glm::vec2 m_mousePos;
         Block* m_selectedBlock = nullptr;
         Item* m_handItem;
 

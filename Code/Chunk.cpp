@@ -37,10 +37,10 @@ void Chunk::tick(int tickTime) {
     }
 }
 
-void Chunk::draw(GLEngine::SpriteBatch& sb) {
+void Chunk::draw(GLEngine::SpriteBatch& sb, int xOffset) {
     for(int i = 0; i < WORLD_HEIGHT; i++) {
         for(int j = 0; j < CHUNK_SIZE; j++) {
-            tiles[i][j]->draw(sb);
+            tiles[i][j]->draw(sb, xOffset);
         }
     }
 }

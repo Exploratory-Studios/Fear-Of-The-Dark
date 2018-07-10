@@ -187,3 +187,25 @@ Pushed to github on April 16th, 2018, Tile.cpp tick() function
 
 FUCK ME
 
+
+Developer's Log: Jul 9, 2018
+Today I'll try to re-make the world (and how it used to wrap around, appearing as a circle, instead of just a finite line you could jump off of. Now, I remember doing this before, but I don't remember how, or when, and I didn't upload to Github. First thoughts on how I'll do this:
+	1. Draw all chunks three times (once in the correct place, once a world behind, and once a world ahead) This will be the easiest, but it will be VERY intensive for any computer running it
+	2. Somehow figure out where to draw each chunk and add a position offset parameter to the chunk draw function.
+	3. Leave it alone... (This one's seeming pretty attractive rn)
+
+I'm going to try #2 because that's seeming like the only viable option in the long run.
+I've implemented it, about to test. It was easier than I thought...
+Ok that's fully implemented, but now the mouse cursor isn't showing up.
+I think I've fixed it, using my tRuStY nOtEbOoK
+Yup, fixed.
+Tomorrow, I'll add the bit where the player gets teleported to the other side of the world, so he can keep walking normally and not fall into the illusion of a chunk.
+
+
+
+
+
+
+
+
+

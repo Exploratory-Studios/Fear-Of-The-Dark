@@ -62,7 +62,7 @@ void GameplayScreen::onEntry() {
 void GameplayScreen::onExit() {
 
 }
-
+#include <iostream>
 void GameplayScreen::update() {
     m_deltaTime = std::abs((60 / m_game->getFps()) + -1);
     m_deltaTime++;
@@ -74,8 +74,11 @@ void GameplayScreen::update() {
 
     m_gui.update();
 
-    m_camera.setPosition(m_lastPlayerPos + m_worldManager.getPlayer()->getSize() / glm::vec2(2.0f));
-    m_lastPlayerPos = m_lastPlayerPos + (m_worldManager.getPlayer()->getPosition() - m_lastPlayerPos) / glm::vec2(4.0f);
+    if(m_lastPlayerPos.x - (m_worldManager.getPlayer()->getPosition().x + m_worldManager.getPlayer()->getSize().x / 2.0f) > CHUNK_SIZE * TILE_SIZE) m_lastPlayerPos.x -= WORLD_SIZE * CHUNK_SIZE * TILE_SIZE;
+    if(m_worldManager.getPlayer()->getPosition().x + m_worldManager.getPlayer()->getSize().x / 2.0f - m_lastPlayerPos.x > CHUNK_SIZE * TILE_SIZE) m_lastPlayerPos.x += WORLD_SIZE * CHUNK_SIZE * TILE_SIZE;
+
+    m_camera.setPosition(m_lastPlayerPos);
+    m_lastPlayerPos = (m_lastPlayerPos + (m_worldManager.getPlayer()->getPosition() - m_lastPlayerPos) / glm::vec2(4.0f)) + m_worldManager.getPlayer()->getSize() / glm::vec2(2.0f);
 
     m_camera.setScale(m_scale);
 

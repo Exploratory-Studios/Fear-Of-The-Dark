@@ -241,12 +241,18 @@ void Entity::setParentChunk(Chunk* worldChunks[WORLD_SIZE]) {
     int index = std::floor(m_position.x / TILE_SIZE / CHUNK_SIZE);
 
     if(index != m_parentChunkIndex) {
+        if(index < 0 || index >= WORLD_SIZE) {
+            m_position.x = (int)(m_position.x + WORLD_SIZE * CHUNK_SIZE * TILE_SIZE) % (WORLD_SIZE * CHUNK_SIZE * TILE_SIZE);
+            index = std::floor(m_position.x / TILE_SIZE / CHUNK_SIZE);
+        }
+
         if(index >= 0) {
             m_parentChunk = worldChunks[index];
             m_parentChunkIndex = index;
         }
     }
 
+    //std::cout << m_parentChunkIndex << ", " << index << ", " << m_position.x << std::endl;
 }
 
 bool Entity::checkTilePosition(Tile* tiles[WORLD_HEIGHT][CHUNK_SIZE], int chunkI, std::vector<glm::vec2>& collideTilePositions, float x, float y) {

@@ -23,8 +23,8 @@ void WorldManager::init(WorldIOManager* worldIOManager) {
 
         m_player = &m_worldIOManager->getWorld()->player;
         //Entity* ent = new Entity(glm::vec2(80, 800), Categories::Entity_Type::MOB, 1);
-        WalkingNPC* ent = new WalkingNPC(glm::vec2(80, 800), 1);
-        entities.push_back(ent);
+        //WalkingNPC* ent = new WalkingNPC(glm::vec2(80, 800), 1);
+        //entities.push_back(ent);
 
         m_entityManager.init(m_player, entities);
     }
@@ -60,6 +60,8 @@ void WorldManager::draw(GLEngine::SpriteBatch& sb, GLEngine::DebugRenderer& dr, 
 }
 
 /// Private Functions
+
+#include <iostream>
 void WorldManager::activateChunks() {
 
     int chunkIndex = (int)std::floor(m_player->getPosition().x / TILE_SIZE / CHUNK_SIZE) % WORLD_SIZE;
@@ -78,5 +80,6 @@ void WorldManager::activateChunks() {
         }
 
         m_lastActivated = chunkIndex;
+        //std::cout << chunkIndex << std::endl;
     }
 }

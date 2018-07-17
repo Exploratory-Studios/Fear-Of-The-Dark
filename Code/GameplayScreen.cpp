@@ -69,20 +69,23 @@ void GameplayScreen::update() {
 
     checkInput();
 
-    m_camera.update();
-    m_uiCamera.update();
-
     m_gui.update();
 
-    if(m_lastPlayerPos.x - (m_worldManager.getPlayer()->getPosition().x + m_worldManager.getPlayer()->getSize().x / 2.0f) > CHUNK_SIZE * TILE_SIZE) m_lastPlayerPos.x -= WORLD_SIZE * CHUNK_SIZE * TILE_SIZE;
-    if(m_worldManager.getPlayer()->getPosition().x + m_worldManager.getPlayer()->getSize().x / 2.0f - m_lastPlayerPos.x > CHUNK_SIZE * TILE_SIZE) m_lastPlayerPos.x += WORLD_SIZE * CHUNK_SIZE * TILE_SIZE;
+    m_worldManager.update(&m_camera, m_deltaTime, m_time);
+
+    if((m_worldManager.getPlayer()->getPosition().x + m_worldManager.getPlayer()->getSize().x / 2.0f) - m_lastPlayerPos.x < -CHUNK_SIZE * TILE_SIZE) {
+        m_lastPlayerPos.x -= WORLD_SIZE * CHUNK_SIZE * TILE_SIZE;
+    } else if(m_worldManager.getPlayer()->getPosition().x + m_worldManager.getPlayer()->getSize().x / 2.0f - m_lastPlayerPos.x > CHUNK_SIZE * TILE_SIZE) {
+        m_lastPlayerPos.x += WORLD_SIZE * CHUNK_SIZE * TILE_SIZE; /// WORKING
+    }
+    m_lastPlayerPos = (m_lastPlayerPos + (m_worldManager.getPlayer()->getPosition() - m_lastPlayerPos) / glm::vec2(4.0f)) + m_worldManager.getPlayer()->getSize() / glm::vec2(2.0f);
 
     m_camera.setPosition(m_lastPlayerPos);
-    m_lastPlayerPos = (m_lastPlayerPos + (m_worldManager.getPlayer()->getPosition() - m_lastPlayerPos) / glm::vec2(4.0f)) + m_worldManager.getPlayer()->getSize() / glm::vec2(2.0f);
 
     m_camera.setScale(m_scale);
 
-    m_worldManager.update(&m_camera, m_deltaTime, m_time);
+    m_camera.update();
+    m_uiCamera.update();
 
     m_time++; /// Change the increment if time is slowed or quicker (potion effects?)
     m_frame++;

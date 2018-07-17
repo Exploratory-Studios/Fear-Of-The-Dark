@@ -36,10 +36,10 @@ void Entity::init(glm::vec2 position, Categories::Entity_Type type, unsigned int
 }
 
 void Entity::update(Chunk* chunks[WORLD_SIZE], float timeStep) {
-    setParentChunk(chunks);
-    updateLightLevel(m_parentChunk);
     updateAI(chunks);
     updateMovement();
+    setParentChunk(chunks);
+    updateLightLevel(m_parentChunk);
 }
 #include <iostream>
 void Entity::draw(GLEngine::SpriteBatch& sb, float time) {
@@ -234,25 +234,54 @@ void Entity::collide(std::vector<Entity*> entities, int chunkI) {
     }
 }
 
-
+#include <iostream>
 
 /// PRIVATE FUNCTIONS
 void Entity::setParentChunk(Chunk* worldChunks[WORLD_SIZE]) {
-    int index = std::floor(m_position.x / TILE_SIZE / CHUNK_SIZE);
 
-    if(index != m_parentChunkIndex) {
-        if(index < 0 || index >= WORLD_SIZE) {
-            m_position.x = (int)(m_position.x + WORLD_SIZE * CHUNK_SIZE * TILE_SIZE) % (WORLD_SIZE * CHUNK_SIZE * TILE_SIZE);
-            index = std::floor(m_position.x / TILE_SIZE / CHUNK_SIZE);
+    short int indexBegin = std::floor(m_position.x / TILE_SIZE / CHUNK_SIZE);
+    short int indexEnd = std::floor((m_position.x + m_size.x * TILE_SIZE) / TILE_SIZE / CHUNK_SIZE);
+    short int index = m_parentChunkIndex; // End product
+
+    if(indexBegin != indexEnd) {
+        float x = (int)m_position.x / TILE_SIZE % (CHUNK_SIZE);
+        if(abs(x - CHUNK_SIZE) > m_size.x / 2.0f * TILE_SIZE) {
+            index = indexBegin;
+        } else if(abs(x - TILE_SIZE * CHUNK_SIZE) < m_size.x / 2.0f * TILE_SIZE) {
+            index = indexEnd;
         }
+    } else {
+        if(indexBegin != m_parentChunkIndex) index = indexBegin;
+    }
 
-        if(index >= 0) {
+    if(index < 0) {
+        m_position.x += WORLD_SIZE * CHUNK_SIZE * TILE_SIZE;
+        index = WORLD_SIZE-1;
+    }
+    if(index >= WORLD_SIZE) {
+        m_position.x -= WORLD_SIZE * CHUNK_SIZE * TILE_SIZE;
+        index = 0;
+    }
+
+    if(index >= 0 && index < WORLD_SIZE) {
+        m_parentChunk = worldChunks[index];
+        m_parentChunkIndex = index;
+    }
+
+    /*if(index != m_parentChunkIndex) {
+        if(index < 0) {
+            m_position.x = (int)(m_position.x + WORLD_SIZE * CHUNK_SIZE * TILE_SIZE) % (WORLD_SIZE * CHUNK_SIZE * TILE_SIZE);
+            index = std::floor((m_position.x + m_size.x * TILE_SIZE) / TILE_SIZE / CHUNK_SIZE);
+            if((int)(m_position.x + m_size.x * TILE_SIZE) == 0) index = 0; // Just to avoid 0 / whatever. It just creates issues :(
+        } else if(index >= WORLD_SIZE) {
+            m_position.x = (int)(m_position.x + WORLD_SIZE * CHUNK_SIZE * TILE_SIZE) % (WORLD_SIZE * CHUNK_SIZE * TILE_SIZE);
+            index = std::floor((m_position.x) / TILE_SIZE / CHUNK_SIZE);
+        }
+        if(index >= 0 && index < WORLD_SIZE) {
             m_parentChunk = worldChunks[index];
             m_parentChunkIndex = index;
         }
-    }
-
-    //std::cout << m_parentChunkIndex << ", " << index << ", " << m_position.x << std::endl;
+    }*/
 }
 
 bool Entity::checkTilePosition(Tile* tiles[WORLD_HEIGHT][CHUNK_SIZE], int chunkI, std::vector<glm::vec2>& collideTilePositions, float x, float y) {

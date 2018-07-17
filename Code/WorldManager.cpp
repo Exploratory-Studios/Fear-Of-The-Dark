@@ -29,16 +29,16 @@ void WorldManager::init(WorldIOManager* worldIOManager) {
         m_entityManager.init(m_player, entities);
     }
 }
-
+#include <iostream>
 void WorldManager::update(GLEngine::Camera2D* worldCamera, float timeStepVariable, float time) {
-    activateChunks();
-
-    for(int i = 0; i < m_activatedChunks.size(); i++) {
+    for(unsigned int i = 0; i < m_activatedChunks.size(); i++) {
         int xOffset = std::abs(m_activatedChunks[i] + WORLD_SIZE) % WORLD_SIZE;
         m_worldIOManager->getWorld()->chunks[xOffset]->update(time);
     }
 
     m_entityManager.update(m_activatedChunks, m_worldIOManager->getWorld()->chunks, worldCamera, timeStepVariable);
+
+    activateChunks();
 }
 
 void WorldManager::tick(float tickTime) {
@@ -48,15 +48,16 @@ void WorldManager::tick(float tickTime) {
     }
     m_entityManager.tick(tickTime, m_worldIOManager->getWorld()->chunks);
 }
-
+#include <iostream>
 void WorldManager::draw(GLEngine::SpriteBatch& sb, GLEngine::DebugRenderer& dr, int tickTime) {
     for(int i = 0; i < m_activatedChunks.size(); i++) {
         int xOffset = std::abs(m_activatedChunks[i] + WORLD_SIZE) % WORLD_SIZE;
 
         m_worldIOManager->getWorld()->chunks[xOffset]->draw(sb, (m_activatedChunks[i] - xOffset));
-
     }
+
     m_entityManager.draw(sb, dr, tickTime);
+    //std::cout << m_player->getPosition().x << std::endl; // if the player's position is less than 0 or more than the world size it flickers...
 }
 
 /// Private Functions
@@ -64,7 +65,8 @@ void WorldManager::draw(GLEngine::SpriteBatch& sb, GLEngine::DebugRenderer& dr, 
 #include <iostream>
 void WorldManager::activateChunks() {
 
-    int chunkIndex = (int)std::floor(m_player->getPosition().x / TILE_SIZE / CHUNK_SIZE) % WORLD_SIZE;
+    int chunkIndex = m_player->getChunkIndex();
+    //if((int)m_player->getPosition().x == 0) chunkIndex = 0; // Just to avoid 0 / whatever. It just creates issues :(
 
     if(chunkIndex != m_lastActivated && chunkIndex >= 0) { // Make sure that we changed chunks
         m_activatedChunks.clear(); // I forgot I had this at my disposal :)

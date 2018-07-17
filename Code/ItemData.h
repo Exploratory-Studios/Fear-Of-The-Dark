@@ -1,4 +1,4 @@
-#pramga once
+#pragma once
 
 class ItemData
 {

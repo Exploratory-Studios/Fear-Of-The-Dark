@@ -24,12 +24,17 @@
 				<Option type="1" />
 				<Option compiler="gcc" />
 				<Compiler>
-					<Add option="-O2" />
+					<Add option="-fexpensive-optimizations" />
+					<Add option="-flto" />
+					<Add option="-O3" />
+					<Add option="-fPIC" />
+					<Add option="-flto" />
 					<Add directory="Items" />
 					<Add directory="Code" />
 					<Add directory="Code/Entities" />
 				</Compiler>
 				<Linker>
+					<Add option="-flto" />
 					<Add option="-s" />
 				</Linker>
 			</Target>
@@ -225,12 +230,16 @@
 		<Unit filename="GameplayScreen.h" />
 		<Unit filename="Inventory.cpp" />
 		<Unit filename="Inventory.h" />
+		<Unit filename="Item.cpp" />
 		<Unit filename="Item.h" />
+		<Unit filename="ItemData.cpp" />
+		<Unit filename="ItemData.h" />
 		<Unit filename="Items/BlockItem.cpp" />
 		<Unit filename="Items/BlockItem.h" />
 		<Unit filename="LoadScreen.cpp" />
 		<Unit filename="LoadScreen.h" />
 		<Unit filename="Main.cpp" />
+		<Unit filename="Main.h" />
 		<Unit filename="MainMenuScreen.cpp" />
 		<Unit filename="MainMenuScreen.h" />
 		<Unit filename="OptionsMenuScreen.cpp" />
@@ -239,6 +248,7 @@
 		<Unit filename="PerlinNoise/PerlinNoise.h" />
 		<Unit filename="PerlinNoise/ppm.cpp" />
 		<Unit filename="PerlinNoise/ppm.h" />
+		<Unit filename="Physics.h" />
 		<Unit filename="Player.cpp" />
 		<Unit filename="Player.h" />
 		<Unit filename="PresetValues.h" />

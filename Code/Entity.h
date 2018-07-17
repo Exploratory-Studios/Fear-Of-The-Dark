@@ -59,7 +59,7 @@ class Entity
 
     protected:
         void setParentChunk(Chunk* worldChunks[WORLD_SIZE]);
-        bool checkTilePosition(Tile* tiles[WORLD_HEIGHT][CHUNK_SIZE], int chunkI, std::vector<glm::vec2>& collideTilePositions, float xPos, float yPos);
+        bool checkTilePosition(Tile* tiles[WORLD_HEIGHT][CHUNK_SIZE], Tile* extraTileArray[WORLD_HEIGHT][2], int chunkI, std::vector<glm::vec2>& collideTilePositions, float xPos, float yPos);
         void collideWithTile(glm::vec2 tilePos, bool ground = false);
         void updateLightLevel(Chunk* currentChunk);
         virtual void updateAI(Chunk* activeChunks[WORLD_SIZE]) {}

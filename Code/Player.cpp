@@ -174,13 +174,13 @@ void Player::updateMouse(Chunk* chunks[WORLD_SIZE], GLEngine::Camera2D* worldCam
 
     unsigned int chunkIndex = (int)abs(floor(mousePos.x / CHUNK_SIZE) + WORLD_SIZE) % WORLD_SIZE;
 
-    mousePos.x = (int)(mousePos.x + CHUNK_SIZE) % CHUNK_SIZE;
+    mousePos.x = (int)(mousePos.x + CHUNK_SIZE * WORLD_SIZE) % CHUNK_SIZE;
 
     if(/*mousePos.x >= 0 &&
        mousePos.x + (chunkIndex * CHUNK_SIZE) < WORLD_SIZE * CHUNK_SIZE &&*/
        mousePos.y >= 0 &&
        mousePos.y < WORLD_HEIGHT)
-           m_selectedBlock = static_cast<Block*>(chunks[chunkIndex]->tiles[(unsigned int)mousePos.y][(unsigned int)mousePos.x % CHUNK_SIZE]);
+           m_selectedBlock = static_cast<Block*>(chunks[chunkIndex]->tiles[(unsigned int)mousePos.y][(unsigned int)mousePos.x]);
 }
 
 void Player::updateInput() {

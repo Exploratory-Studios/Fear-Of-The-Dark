@@ -10,9 +10,9 @@ class Chunk
 {
     public:
         Chunk();
-        Chunk(Tile* tileArray[WORLD_HEIGHT][CHUNK_SIZE], int index);
+        Chunk(Tile* tileArray[WORLD_HEIGHT][CHUNK_SIZE], Tile* extraTileArray[WORLD_HEIGHT][2], int index);
 
-        void init(Tile* tileArray[WORLD_HEIGHT][CHUNK_SIZE]);
+        void init(Tile* tileArray[WORLD_HEIGHT][CHUNK_SIZE], Tile* extraTileArray[WORLD_HEIGHT][2]);
 
         void update(float time);
         void tick(int tickTime);
@@ -26,6 +26,7 @@ class Chunk
         int                     getIndex()                                                  { return m_index;       }
 
         Tile* tiles[WORLD_HEIGHT][CHUNK_SIZE] = { { nullptr } };
+        Tile* extraTiles[WORLD_HEIGHT][2] = { { nullptr } }; // On each side, so that we don't have to activate 3 chunks at a time instead of one
 
     private:
         Categories::Places m_place;

@@ -116,6 +116,15 @@ void WorldIOManager::createWorld(unsigned int seed, std::string worldName, bool 
             }
         }
     }
+    for(int i = 0; i < WORLD_SIZE; i++) {
+        for(int y = 0; y < WORLD_HEIGHT; y++) { // For the extra over-lapping side bits on each chunk.
+            int index = i;
+            int indexP = (i + 1 + WORLD_SIZE) % WORLD_SIZE;
+            int indexM = (i - 1 + WORLD_SIZE) % WORLD_SIZE;
+            m_world->chunks[index]->extraTiles[y][0] = m_world->chunks[indexM]->tiles[y][CHUNK_SIZE-1];
+            m_world->chunks[index]->extraTiles[y][1] = m_world->chunks[indexP]->tiles[y][0];
+        }
+    }
 
     Player player(glm::vec2(5.0f * TILE_SIZE, (blockHeights[5] + 5) * TILE_SIZE), m_input);
     m_world->player = player;

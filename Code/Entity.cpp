@@ -32,6 +32,8 @@ void Entity::init(glm::vec2 position, Categories::Entity_Type type, unsigned int
                 return;
             }
         }
+        case Categories::Entity_Type::ITEM:
+            break;
     }
 }
 
@@ -234,11 +236,11 @@ void Entity::collide(std::vector<Entity*> entities, int chunkI) {
                               posTR.x,
                               posTR.y - 1.0f);
 
-            for (int i = 0; i < collideTilePositions.size(); i++) {
+            for (unsigned int i = 0; i < collideTilePositions.size(); i++) {
                 collideWithTile(collideTilePositions[i], false);
             }
 
-            for (int i = 0; i < groundTilePositions.size(); i++) {
+            for (unsigned int i = 0; i < groundTilePositions.size(); i++) {
                 collideWithTile(groundTilePositions[i], true);
             }
         }
@@ -355,7 +357,7 @@ void Entity::collideWithTile(glm::vec2 tilePos, bool ground) {
         }
     } else {
         if(ground) {
-            if(distVec.y < 0.000f && m_velocity.y > NULL) {
+            if(distVec.y < 0.000f && m_velocity.y > 0.000000f) {
                 m_position.y -= depthVec.y - abs(m_velocity.y / m_size.y); // TILE ON TOP
                 m_velocity.y = 0.0f;
             } else if(distVec.y >= 0.000f && m_velocity.y < 0.000000f) {

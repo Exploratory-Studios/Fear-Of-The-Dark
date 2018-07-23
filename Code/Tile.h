@@ -57,11 +57,11 @@ class Tile
 
         float m_lastLight = 0.0f; // This is used to make sure that we aren't giving other blocks light for no reason
 
-        unsigned int m_id;
-
         bool m_solid = true; // Don't collide if true: Air, water, etc.
         bool m_draw = true; // Don't draw if true: Air, etc.
         bool m_transparent = false;
+
+        unsigned int m_id;
 
         Chunk* m_parentChunk = nullptr;
 

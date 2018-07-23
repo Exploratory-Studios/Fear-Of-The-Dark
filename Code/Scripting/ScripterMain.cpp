@@ -46,6 +46,7 @@ void Scripter::hideBlock(int x, int y) {
 
 unsigned int Scripter::addEntity(Entity newEntity) {
     m_entities.push_back(&newEntity);
+    return m_entities.size();
 }
 
 void Scripter::removeEntity(unsigned int index) {
@@ -67,7 +68,7 @@ void Scripter::updateWorld() {
 /// PRIVATE FUNCTIONS
 
 void Scripter::draw() {
-    for(int i = 0; i < m_entities.size(); i++) {
+    for(unsigned int i = 0; i < m_entities.size(); i++) {
         //m_entities[i]->draw(sb);
     }
 

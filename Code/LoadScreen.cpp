@@ -162,7 +162,7 @@ bool LoadScreen::onNewWorldCreateNewButtonClicked(const CEGUI::EventArgs& e) { /
     std::string text = m_newWorldSeedEditbox->getText().c_str();
     unsigned int seed = 0;
 
-    for(int i = 0; i < text.length(); i++) {
+    for(unsigned int i = 0; i < text.length(); i++) {
         seed += (char)text[i];
     }
 

@@ -22,11 +22,11 @@ GameplayScreen::~GameplayScreen()
 }
 
 int GameplayScreen::getNextScreenIndex() const {
-
+    return m_screenIndex;
 }
 
 int GameplayScreen::getPreviousScreenIndex() const {
-
+    return m_screenIndex;
 }
 
 void GameplayScreen::build() {
@@ -176,7 +176,7 @@ void GameplayScreen::checkInput() {
         std::regex fullCmd(".+(\\s(\\d+))*");
         std::smatch matches;
         if(std::regex_match(in, matches, fullCmd)) {
-            int i = 0;
+            unsigned int i = 0;
             std::string cmd;
             while(i < in.length()) {
                 if(in[i] == ' ' || in[i] == '\0') {
@@ -198,7 +198,7 @@ void GameplayScreen::checkInput() {
 
             int args[argNum];
             for(int k = 0; k < argNum; k++) {
-                int j = i+1;
+                unsigned int j = i+1;
                 std::string arg;
                 while(true) {
                     arg += in[j];

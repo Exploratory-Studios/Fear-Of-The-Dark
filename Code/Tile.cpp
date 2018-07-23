@@ -11,6 +11,8 @@ float Tile::getLight() {
         return m_sunLight;
     } else if(m_emittedLight > m_sunLight && m_emittedLight > m_ambientLight) {
         return m_emittedLight;
+    } else {
+        return m_ambientLight; // They're all the same, so ambientLight is correct, but so is any other variable.
     }
 }
 

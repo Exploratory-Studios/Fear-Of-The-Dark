@@ -16,6 +16,7 @@
 					<Add directory="Items" />
 					<Add directory="Code" />
 					<Add directory="Code/Entities" />
+					<Add directory="Code/QuestSystem" />
 				</Compiler>
 			</Target>
 			<Target title="Release">
@@ -28,10 +29,10 @@
 					<Add option="-flto" />
 					<Add option="-O3" />
 					<Add option="-fPIC" />
-					<Add option="-flto" />
 					<Add directory="Items" />
 					<Add directory="Code" />
 					<Add directory="Code/Entities" />
+					<Add directory="Code/QuestSystem" />
 				</Compiler>
 				<Linker>
 					<Add option="-flto" />
@@ -252,6 +253,12 @@
 		<Unit filename="Player.cpp" />
 		<Unit filename="Player.h" />
 		<Unit filename="PresetValues.h" />
+		<Unit filename="QuestSystem/Objective.cpp" />
+		<Unit filename="QuestSystem/Objective.h" />
+		<Unit filename="QuestSystem/Quest.cpp" />
+		<Unit filename="QuestSystem/Quest.h" />
+		<Unit filename="QuestSystem/QuestManager.cpp" />
+		<Unit filename="QuestSystem/QuestManager.h" />
 		<Unit filename="ScreenIndices.h" />
 		<Unit filename="Scripting/ScripterMain.cpp" />
 		<Unit filename="Scripting/ScripterMain.h" />

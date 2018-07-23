@@ -99,6 +99,8 @@ void StartupScreen::update() {
                 m_splashScreen++;
                 m_time = 0.0f;
                 break;
+            default:
+                break;
         }
     }
 }

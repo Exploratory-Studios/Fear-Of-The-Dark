@@ -42,7 +42,7 @@ void EntityManager::draw(GLEngine::SpriteBatch& sb, GLEngine::DebugRenderer& dr,
 /// PRIVATE FUNCTIONS
 void EntityManager::collideEntities(std::vector<int>& activatedChunks, Chunk* chunks[WORLD_SIZE]) {
     for(auto e : m_entities) {
-        for(int i = 0; i < activatedChunks.size(); i++) {
+        for(unsigned int i = 0; i < activatedChunks.size(); i++) {
             e->collide(m_entities, activatedChunks[i]);
         }
     }
@@ -59,8 +59,8 @@ void EntityManager::spawnEntities() {
 }
 
 void EntityManager::targetEntities(Chunk* chunks[WORLD_SIZE]) {
-    for(int i = 0; i < m_entities.size(); i++) {
-        for(int j = 0; j < m_entities.size(); j++) {
+    for(unsigned int i = 0; i < m_entities.size(); i++) {
+        for(unsigned int j = 0; j < m_entities.size(); j++) {
             if((int)m_entities[i]->getFaction() > (int)Categories::Faction::NEUTRAL &&
                (int)m_entities[j]->getFaction() <= (int)Categories::Faction::NEUTRAL) {
                 m_entities[i]->setTargets(pathfindToTarget(m_entities[i]->getJumpHeight(), m_entities[i]->getPosition(), m_entities[j]->getPosition(), chunks));
@@ -84,7 +84,7 @@ std::vector<glm::vec2> EntityManager::pathfindToTarget(float jumpHeight, glm::ve
     int xGridspace = std::floor(originalPosition.x / TILE_SIZE + 0.5f);
     int yGridspace = std::floor(originalPosition.y / TILE_SIZE + offsetY + 0.5f);
     int targetXGridspace = std::floor(targetPosition.x / TILE_SIZE + 0.5f);
-    int targetYGridspace = std::floor(targetPosition.y / TILE_SIZE + offsetY + 0.5f);
+    //int targetYGridspace = std::floor(targetPosition.y / TILE_SIZE + offsetY + 0.5f); **UNUSED**
 
     // Find chunk index
     int chunkIndex = std::floor(xGridspace / CHUNK_SIZE);

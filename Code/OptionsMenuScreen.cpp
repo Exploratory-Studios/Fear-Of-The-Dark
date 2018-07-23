@@ -11,11 +11,11 @@ OptionsMenuScreen::~OptionsMenuScreen()
 }
 
 int OptionsMenuScreen::getNextScreenIndex() const {
-
+    return m_screenIndex;
 }
 
 int OptionsMenuScreen::getPreviousScreenIndex() const {
-
+    return m_screenIndex;
 }
 
 void OptionsMenuScreen::build() {

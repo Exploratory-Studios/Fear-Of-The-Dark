@@ -17,7 +17,7 @@ void WorldManager::init(WorldIOManager* worldIOManager) {
     if(m_worldIOManager->getWorld()) {
         std::vector<Entity*> entities;
 
-        for(int i = 0; i < m_worldIOManager->getWorld()->entities.size(); i++) {
+        for(unsigned int i = 0; i < m_worldIOManager->getWorld()->entities.size(); i++) {
             entities.push_back(&m_worldIOManager->getWorld()->entities[i]);
         }
 
@@ -42,7 +42,7 @@ void WorldManager::update(GLEngine::Camera2D* worldCamera, float timeStepVariabl
 }
 
 void WorldManager::tick(float tickTime) {
-    for(int i = 0; i < m_activatedChunks.size(); i++) {
+    for(unsigned int i = 0; i < m_activatedChunks.size(); i++) {
         int xOffset = std::abs(m_activatedChunks[i] + WORLD_SIZE) % WORLD_SIZE;
         m_worldIOManager->getWorld()->chunks[xOffset]->tick(tickTime);
     }
@@ -50,7 +50,7 @@ void WorldManager::tick(float tickTime) {
 }
 #include <iostream>
 void WorldManager::draw(GLEngine::SpriteBatch& sb, GLEngine::DebugRenderer& dr, int tickTime) {
-    for(int i = 0; i < m_activatedChunks.size(); i++) {
+    for(unsigned int i = 0; i < m_activatedChunks.size(); i++) {
         int xOffset = std::abs(m_activatedChunks[i] + WORLD_SIZE) % WORLD_SIZE;
 
         m_worldIOManager->getWorld()->chunks[xOffset]->draw(sb, (m_activatedChunks[i] - xOffset));

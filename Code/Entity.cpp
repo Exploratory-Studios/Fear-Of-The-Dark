@@ -86,9 +86,9 @@ void Entity::draw(GLEngine::SpriteBatch& sb, float time, GLEngine::GLSLProgram* 
                            1.0f / ((float)m_texture.height / (m_size.y * 32)));
     }
 
-    GLEngine::ColourRGBA8 colour(255 * m_light, 255 * m_light, 255 * m_light, 255);
+    GLEngine::ColourRGBA8 colour(255, 255, 255, 255);
 
-    sb.draw(destRect, uvRect, m_texture.id, 0.0f, colour);
+    sb.draw(destRect, uvRect, m_texture.id, 0.0f, colour, glm::vec3(m_light));
 }
 
 void Entity::move(float timeStepVariable) {
@@ -141,8 +141,8 @@ void Entity::collide(std::vector<Entity*> entities, int chunkI) {
 
             float x = m_position.x, y = m_position.y, width = m_size.x * TILE_SIZE, height = m_size.y * TILE_SIZE;
 
-            x += m_velocity.x;
-            y += m_velocity.y;
+            //x += m_velocity.x / m_size.x;
+            //y += m_velocity.y / m_size.y;
 
             glm::vec2 posBL(x, y);
             glm::vec2 posBR(x + width, y);
@@ -154,28 +154,28 @@ void Entity::collide(std::vector<Entity*> entities, int chunkI) {
                               m_parentChunk->extraTiles,
                               chunkI,
                               groundTilePositions,
-                              posBR.x - 1.0f,
+                              posBR.x - TILE_SIZE / 4.0f,
                               posBR.y);
 
             checkTilePosition(m_parentChunk->tiles,
                               m_parentChunk->extraTiles,
                               chunkI,
                               groundTilePositions,
-                              posBL.x + 1.0f,
+                              posBL.x + TILE_SIZE / 4.0f,
                               posBL.y);
 
             checkTilePosition(m_parentChunk->tiles,
                               m_parentChunk->extraTiles,
                               chunkI,
                               groundTilePositions,
-                              posTR.x - 1.0f,
+                              posTR.x - TILE_SIZE / 4.0f,
                               posTR.y);
 
             checkTilePosition(m_parentChunk->tiles,
                               m_parentChunk->extraTiles,
                               chunkI,
                               groundTilePositions,
-                              posTL.x + 1.0f,
+                              posTL.x + TILE_SIZE / 4.0f,
                               posTL.y);
 
 
@@ -185,60 +185,28 @@ void Entity::collide(std::vector<Entity*> entities, int chunkI) {
                               chunkI,
                               collideTilePositions,
                               posBR.x,
-                              posBR.y + 1.0f);
+                              posBR.y + TILE_SIZE / 4.0f);
 
             checkTilePosition(m_parentChunk->tiles,
                               m_parentChunk->extraTiles,
                               chunkI,
                               collideTilePositions,
                               posBL.x,
-                              posBL.y + 1.0f);
-
-            for(int i = 1; i <= m_size.y - 1; i++) {
-                checkTilePosition(m_parentChunk->tiles,
-                                  m_parentChunk->extraTiles,
-                                  chunkI,
-                                  collideTilePositions,
-                                  posBL.x,
-                                  posBL.y + TILE_SIZE * i);
-
-                checkTilePosition(m_parentChunk->tiles,
-                                  m_parentChunk->extraTiles,
-                                  chunkI,
-                                  collideTilePositions,
-                                  posBR.x,
-                                  posBR.y + TILE_SIZE * i);
-            }
-
-            for(int i = 1; i <= m_size.x - 1; i++) {
-                checkTilePosition(m_parentChunk->tiles,
-                                  m_parentChunk->extraTiles,
-                                  chunkI,
-                                  collideTilePositions,
-                                  posBL.x + TILE_SIZE * i,
-                                  posBL.y);
-
-                checkTilePosition(m_parentChunk->tiles,
-                                  m_parentChunk->extraTiles,
-                                  chunkI,
-                                  collideTilePositions,
-                                  posBR.x + TILE_SIZE * i,
-                                  posBR.y);
-            }
+                              posBL.y + TILE_SIZE / 4.0f);
 
             checkTilePosition(m_parentChunk->tiles,
                               m_parentChunk->extraTiles,
                               chunkI,
                               collideTilePositions,
                               posTL.x,
-                              posTL.y - 1.0f);
+                              posTL.y - TILE_SIZE / 4.0f);
 
             checkTilePosition(m_parentChunk->tiles,
                               m_parentChunk->extraTiles,
                               chunkI,
                               collideTilePositions,
                               posTR.x,
-                              posTR.y - 1.0f);
+                              posTR.y - TILE_SIZE / 4.0f);
 
             for (unsigned int i = 0; i < collideTilePositions.size(); i++) {
                 collideWithTile(collideTilePositions[i], false);
@@ -340,50 +308,82 @@ bool Entity::checkTilePosition(Tile* tiles[WORLD_HEIGHT][CHUNK_SIZE], Tile* extr
 void Entity::collideWithTile(glm::vec2 tilePos, bool ground) {
     float x = m_position.x, y = m_position.y;
 
-    x += m_velocity.x / TILE_SIZE * m_size.x; // To account for collision prediction,
-    y += m_velocity.y / TILE_SIZE * m_size.y;
+    glm::vec2 entRelativeCentrePosition; //Relative position of the centre of entity (to bottom left corner)
+    entRelativeCentrePosition = glm::vec2(m_size.x / 2.0f * (float)TILE_SIZE, m_size.y / 2.0f * (float)TILE_SIZE);
 
-    glm::vec2 centrePos = glm::vec2(x + (m_size.x * TILE_SIZE) / 2.0f, y + (m_size.y * TILE_SIZE) / 2.0f);
+    glm::vec2 entCentrePosition; //Position of the centre of entity in pixel coords
+    // m_size is in grid coords so multiply it by TILE_SIZE
+    entCentrePosition = glm::vec2(x + entRelativeCentrePosition.x, y + entRelativeCentrePosition.y);
 
-    glm::vec2 distVec = centrePos - (tilePos * glm::vec2(TILE_SIZE));
+    glm::vec2 tileRelativeCentrePosition; //Relative position of the centre of tile (to bottom left corner)
+    tileRelativeCentrePosition = glm::vec2((float)TILE_SIZE * 0.5f);
 
-    glm::vec2 depthVec = abs(abs(distVec) - (glm::vec2(TILE_SIZE / 2.0f) + m_size * glm::vec2(TILE_SIZE) / glm::vec2(2.0f)));
+    glm::vec2 tileCentrePosition; // Position of the centre of tile in pixel coords
+    // tilePos is in grid coords, so mutiply it by TILE_SIZE
+    // Don't add relativeCentrePosition because "tilePos" is already centered
+    tileCentrePosition = glm::vec2(tilePos * glm::vec2((float)TILE_SIZE));
 
-    // Determine if it's shorter to go in the X or Y direction
-    if(!ground) { // X direction is shorter // Maybe change these variables from depthvec to distvec and reverse the comparison to >
-        if(abs(depthVec.x / m_size.x) < abs(depthVec.y / m_size.y)) {
-            if(distVec.x < 0.000f) {
-                m_position.x -= depthVec.x - abs(m_velocity.x * m_size.x); // TILE ON RIGHT
-            } else if(distVec.x >= 0.000f) {
-                m_position.x += depthVec.x - abs(m_velocity.x * m_size.x); // TILE ON LEFT
+    glm::vec2 distanceVec; //Distance from centre of tile to centre of entity
+    // subtract the points to get total distance, fairly simple
+    // Can be used to determine which side the entity or tile is on, positive means entity is on right/top side of tile
+    distanceVec = glm::vec2(entCentrePosition - tileCentrePosition);
+
+    glm::vec2 depthVec; //How deep the entity is in the tile
+    // difference between how far they should be and how far they currently are
+    // Depthvec should always be positive
+    depthVec = glm::vec2((entRelativeCentrePosition + tileRelativeCentrePosition) - abs(distanceVec));
+
+    if(ground) { // Only y-direction
+        if(abs(depthVec.x / m_size.x) > abs(depthVec.y / m_size.y)) { // Figure out if the entity is coming from the Y direction using proportions of depth:size
+            if(distanceVec.y > 0.0f) { // Entity on top side
+                m_velocity.y = 0.0f; // Stop it so that it doesn't keep moving inwards
+                m_position.y += depthVec.y; // Put the entity back in the logical place
+                m_onGround = true; // The entity is on the ground (deactivates gravity)
+            } else { // Entity on bottom side
+                m_velocity.y = 0.0f; // Stop it so that it doesn't keep moving inwards
+                m_position.y -= depthVec.y; // Put the entity back in the logical place
             }
-            m_velocity.x = 0.0f;
         }
     } else {
-        if(ground) {
-            if(distVec.y < 0.000f && m_velocity.y > 0.000000f) {
-                m_position.y -= depthVec.y - abs(m_velocity.y / m_size.y); // TILE ON TOP
-                m_velocity.y = 0.0f;
-            } else if(distVec.y >= 0.000f && m_velocity.y < 0.000000f) {
-                m_position.y += depthVec.y / m_size.y - abs(m_velocity.y / m_size.y); // TILE ON BOTTOM
-                m_onGround = true;
-                m_velocity.y = 0.0000000f;
+        if(abs(depthVec.x / m_size.x) < abs(depthVec.y / m_size.y)) { // Figure out if the entity is coming from the X direction
+            if(distanceVec.x > 0.0f) { // Entity on right side
+                m_velocity.x = 0.0f; // Stop it so that it doesn't keep moving inwards
+                m_position.x += depthVec.x; // Put the entity back in the logical place
+            } else { // Entity is on left side
+                m_velocity.x = 0.0f; // Stop it so that it doesn't keep moving inwards
+                m_position.x -= depthVec.x; // Put the entity back in the logical place
             }
         }
     }
+
+    std::cout << distanceVec.x << " " << depthVec.x << "\n";
+
+
+
 }
+
+#include <iostream>
 
 void Entity::updateLightLevel(Chunk* currentChunk) {
     if(currentChunk) {
         int entityChunkX, entityChunkY; // The entity's coords in the chunk
 
-        entityChunkX = (int)((m_position.x + 0.5f) / TILE_SIZE) % CHUNK_SIZE;
-        entityChunkY = (m_position.y + 0.5f) / TILE_SIZE;
+        entityChunkX = (int)((m_position.x) / TILE_SIZE) % CHUNK_SIZE;
+        entityChunkY = (int)((m_position.y) / TILE_SIZE) + m_size.y / 2.0f;
 
         if(entityChunkX >= 0 && entityChunkX < CHUNK_SIZE) {
             if(entityChunkY >= 0 && entityChunkY < WORLD_HEIGHT) {
                 m_light = currentChunk->tiles[entityChunkY][entityChunkX]->getLight();
             }
         }
+
+        if(entityChunkX+m_size.x >= 0 && entityChunkX+m_size.x < CHUNK_SIZE) {
+            if(entityChunkY >= 0 && entityChunkY < WORLD_HEIGHT) {
+                m_light += currentChunk->tiles[entityChunkY][(int)(entityChunkX+m_size.x)]->getLight();
+                m_light /= 2.0f;
+            }
+        }
+    } else {
+        m_light = 0.0f;
     }
 }

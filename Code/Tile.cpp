@@ -16,36 +16,103 @@ float Tile::getLight() {
     }
 }
 
+float Tile::getSurroundingLight() {
+    int x = (int)m_pos.x - CHUNK_SIZE*m_parentChunk->getIndex();
+    int y = (int)m_pos.y;
+
+    float light = 0.0f;
+
+    if(y-1 >= 0)
+        if(m_parentChunk->tiles[y-1][x]->getLight() > light) {
+            light = m_parentChunk->tiles[y-1][x]->getLight();
+        }
+    if(y+1 < WORLD_HEIGHT)
+        if(m_parentChunk->tiles[y+1][x]->getLight() > light) {
+            light = m_parentChunk->tiles[y+1][x]->getLight();
+        }
+    if(x-1 >= 0) {
+        if(m_parentChunk->tiles[y][x-1]->getLight() > light) {
+            light = m_parentChunk->tiles[y][x-1]->getLight();
+        }
+    } else if(x-1 == -1) {
+        if(m_parentChunk->extraTiles[y][0]->getLight() > light) {
+            light = m_parentChunk->extraTiles[y][0]->getLight();
+        }
+    }
+    if(x+1 < CHUNK_SIZE) {
+        if(m_parentChunk->tiles[y][x+1]->getLight() > light) {
+            light = m_parentChunk->tiles[y][x+1]->getLight();
+        }
+    } else if(x+1 == CHUNK_SIZE) {
+        if(m_parentChunk->extraTiles[y][1]->getLight() > light) {
+            light = m_parentChunk->extraTiles[y][1]->getLight();
+        }
+    }
+
+    return light;
+}
+
 void Tile::update(float time) {
-    if(getLight() != m_lastLight && (int)m_pos.y-m_parentChunk->getIndex() >= 0) {
+    if((getLight() != m_lastLight || getSurroundingLight() != getAmbientLight()) && (int)m_pos.y-m_parentChunk->getIndex() >= 0) {
         m_lastLight = getLight();
         int x = (int)m_pos.x - CHUNK_SIZE*m_parentChunk->getIndex();
         int y = (int)m_pos.y;
         if(y-1 >= 0)
-            if(m_transparent)// || m_parentChunk->tiles[y-1][x]->isTransparent())
-                if(m_parentChunk->tiles[y-1][x]->getAmbientLight() < getLight())
-                    m_parentChunk->tiles[y-1][x]->setAmbientLight(getLight() * 4.0f/5.0f);
-        if(y+1 < WORLD_HEIGHT)
-            if(m_transparent)// || m_parentChunk->tiles[y+1][x]->isTransparent())
-                if(m_parentChunk->tiles[y+1][x]->getAmbientLight() < getLight())
-                    m_parentChunk->tiles[y+1][x]->setAmbientLight(getLight() * 4.0f/5.0f);
+            if(m_transparent) {
+                if(m_parentChunk->tiles[y-1][x]->getAmbientLight() < getLight()) {
+                    m_parentChunk->tiles[y-1][x]->setAmbientLight(getLight() * LIGHT_MULTIPLIER);
+                } else {
+                    if(m_parentChunk->tiles[y-1][x]->isTransparent())
+                        setAmbientLight(m_parentChunk->tiles[y-1][x]->getAmbientLight() * LIGHT_MULTIPLIER);
+                }
+            }
+        if(y+1 < WORLD_HEIGHT) {
+            if(m_transparent) {
+                if(m_parentChunk->tiles[y+1][x]->getAmbientLight() < getLight()) {
+                    m_parentChunk->tiles[y+1][x]->setAmbientLight(getLight() * LIGHT_MULTIPLIER);
+                } else {
+                    if(m_parentChunk->tiles[y+1][x]->isTransparent())
+                        setAmbientLight(m_parentChunk->tiles[y+1][x]->getAmbientLight() * LIGHT_MULTIPLIER);
+                }
+            }
+        }
         if(x-1 >= 0) {
-            if(m_transparent)// || m_parentChunk->tiles[y][x-1]->isTransparent())
-                if(m_parentChunk->tiles[y][x-1]->getAmbientLight() < getLight())
-                    m_parentChunk->tiles[y][x-1]->setAmbientLight(getLight() * 4.0f/5.0f);
+            if(m_transparent) {
+                if(m_parentChunk->tiles[y][x-1]->getAmbientLight() < getLight()) {
+                    m_parentChunk->tiles[y][x-1]->setAmbientLight(getLight() * LIGHT_MULTIPLIER);
+                } else {
+                    if(m_parentChunk->tiles[y][x-1]->isTransparent())
+                        setAmbientLight(m_parentChunk->tiles[y][x-1]->getAmbientLight() * LIGHT_MULTIPLIER);
+                }
+            }
         } else if(x-1 == -1) {
-            if(m_transparent)// || m_parentChunk->tiles[y][x-1]->isTransparent())
-                if(m_parentChunk->extraTiles[y][0]->getAmbientLight() < getLight())
-                    m_parentChunk->extraTiles[y][0]->setAmbientLight(getLight() * 4.0f/5.0f);
+            if(m_transparent) {
+                if(m_parentChunk->extraTiles[y][0]->getAmbientLight() < getLight()) {
+                    m_parentChunk->extraTiles[y][0]->setAmbientLight(getLight() * LIGHT_MULTIPLIER);
+                } else {
+                    if(m_parentChunk->tiles[y][0]->isTransparent())
+                        setAmbientLight(m_parentChunk->extraTiles[y][0]->getAmbientLight() * LIGHT_MULTIPLIER);
+                }
+            }
         }
         if(x+1 < CHUNK_SIZE) {
-            if(m_transparent)// || m_parentChunk->tiles[y][x+1]->isTransparent())
-                if(m_parentChunk->tiles[y][x+1]->getAmbientLight() < getLight())
-                    m_parentChunk->tiles[y][x+1]->setAmbientLight(getLight() * 4.0f/5.0f);
+            if(m_transparent) {
+                if(m_parentChunk->tiles[y][x+1]->getAmbientLight() < getLight()) {
+                    m_parentChunk->tiles[y][x+1]->setAmbientLight(getLight() * LIGHT_MULTIPLIER);
+                } else {
+                    if(m_parentChunk->tiles[y][x+1]->isTransparent())
+                        setAmbientLight(m_parentChunk->tiles[y][x+1]->getAmbientLight() * LIGHT_MULTIPLIER);
+                }
+            }
         } else if(x+1 == CHUNK_SIZE) {
-            if(m_transparent)// || m_parentChunk->tiles[y][x-1]->isTransparent())
-                if(m_parentChunk->extraTiles[y][1]->getAmbientLight() < getLight())
-                    m_parentChunk->extraTiles[y][1]->setAmbientLight(getLight() * 4.0f/5.0f);
+            if(m_transparent) {
+                if(m_parentChunk->extraTiles[y][1]->getAmbientLight() < getLight()) {
+                    m_parentChunk->extraTiles[y][1]->setAmbientLight(getLight() * LIGHT_MULTIPLIER);
+                } else {
+                    if(m_parentChunk->tiles[y][1]->isTransparent())
+                        setAmbientLight(m_parentChunk->extraTiles[y][1]->getAmbientLight() * LIGHT_MULTIPLIER);
+                }
+            }
         }
     }
 }

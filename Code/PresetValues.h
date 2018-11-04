@@ -46,6 +46,9 @@
 // How long a day is (frames at the moment)
 #define DAY_LENGTH 2400  // Should be a minute per CYCLE (4 * 60)
 
+// How much the light level is multiplied by when going to each block
+#define LIGHT_MULTIPLIER 6.0f/7.0f
+
 /// Category Datatypes
 // Biomes (AKA Places)
 class PlaceDatum {

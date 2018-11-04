@@ -63,9 +63,9 @@ void Player::draw(GLEngine::SpriteBatch& sb, float time, GLEngine::GLSLProgram* 
                            1.0f / ((float)m_texture.height / (m_size.y * 32)));
     }
 
-    GLEngine::ColourRGBA8 colour(255 * m_light, 255 * m_light, 255 * m_light, 255);
+    GLEngine::ColourRGBA8 colour(255, 255, 255, 255);
 
-    sb.draw(destRect, uvRect, m_texture.id, 0.0f, colour);
+    sb.draw(destRect, uvRect, m_texture.id, 0.0f, colour, glm::vec3(m_light));
 
     if(m_selectedBlock) { // Cursor box selection
         glm::vec4 fullUV(0.0f, 0.0f, 1.0f, 1.0f);
@@ -75,7 +75,7 @@ void Player::draw(GLEngine::SpriteBatch& sb, float time, GLEngine::GLSLProgram* 
         int x = (int)(m_mousePos.x + CHUNK_SIZE * TILE_SIZE) % CHUNK_SIZE * TILE_SIZE;
 
         glm::vec4 cursorDestRect(x + chunkIndex * CHUNK_SIZE * TILE_SIZE, m_selectedBlock->getPosition().y * TILE_SIZE, m_selectedBlock->getSize().x * TILE_SIZE, m_selectedBlock->getSize().y * TILE_SIZE);
-        sb.draw(cursorDestRect, fullUV, cursorImgId, 0.0f, GLEngine::ColourRGBA8(255, 255, 255, 255), glm::vec3(m_light));
+        sb.draw(cursorDestRect, fullUV, cursorImgId, 0.0f, GLEngine::ColourRGBA8(255, 255, 255, 255));
     }
 }
 
@@ -153,6 +153,7 @@ void Player::drawGUI(GLEngine::SpriteBatch& sb, GLEngine::SpriteFont& sf) {
 
 void Player::update(Chunk* chunks[WORLD_SIZE], float timeStep) {
 
+    setParentChunk(chunks);
     updateLightLevel(m_parentChunk);
 
     updateInput();
@@ -162,8 +163,6 @@ void Player::update(Chunk* chunks[WORLD_SIZE], float timeStep) {
     } else if(m_velocity.x < -MAX_SPEED * m_inventory->getSpeedMultiplier()) {
         m_velocity.x = -MAX_SPEED * m_inventory->getSpeedMultiplier();
     }
-
-    setParentChunk(chunks);
 }
 
 void Player::updateMouse(Chunk* chunks[WORLD_SIZE], GLEngine::Camera2D* worldCamera) {

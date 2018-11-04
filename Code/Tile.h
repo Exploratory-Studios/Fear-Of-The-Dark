@@ -34,6 +34,7 @@ class Tile
         bool            isSolid()     { return m_solid; }
         float           getLight();
         float           getAmbientLight() { return m_ambientLight; }
+        float           getSurroundingLight();
         bool            isTransparent()   { return m_transparent;  }
         Chunk*          getParentChunk()  const { return m_parentChunk;  }
 
@@ -51,7 +52,7 @@ class Tile
 
         GLEngine::GLTexture m_texture;
         GLEngine::ColourRGBA8 m_colour = GLEngine::ColourRGBA8(255.0f, 255.0f, 255.0f, 255.0f);
-        float m_ambientLight = 0.0f;
+        float m_ambientLight = 0.0f; // Really should be inherited light or something, as this light is inherited from surrounding blocks
         float m_emittedLight = 0.0f;
         float m_sunLight = 0.0f;
 

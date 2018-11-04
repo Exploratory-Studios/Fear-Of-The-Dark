@@ -9,7 +9,7 @@
 #ifdef DEV_CONTROLS
 #include <iostream>
 #include <regex>
-#endif // DEV_CONTROLS
+#endif //DEV_CONTROLS
 
 GameplayScreen::GameplayScreen(GLEngine::Window* window, WorldIOManager* WorldIOManager) : m_window(window), m_WorldIOManager(WorldIOManager)
 {
@@ -89,8 +89,6 @@ void GameplayScreen::update() {
 
     m_time++; /// Change the increment if time is slowed or quicker (potion effects?)
     m_frame++;
-
-    std::cout << m_game->getFps() << "\n";
 
     if((int)m_frame++ % (int)(60 / m_tickRate) == 0) { // m_frame is equal to current frame
         tick();
@@ -191,6 +189,8 @@ void GameplayScreen::checkInput() {
                 argNum = 0;
             } else if(cmd == "tickRate") {
                 argNum = 1;
+            } else {
+                std::cout << "NOT A COMMAND";
             }
 
             int args[argNum];

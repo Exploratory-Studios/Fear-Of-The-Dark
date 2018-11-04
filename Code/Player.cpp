@@ -24,10 +24,11 @@ Player::~Player()
     //dtor
 }
 
-void Player::draw(GLEngine::SpriteBatch& sb, float time) {
+void Player::draw(GLEngine::SpriteBatch& sb, float time, GLEngine::GLSLProgram* program) {
+
     glm::vec4 destRect = glm::vec4(m_position.x, m_position.y, m_size.x * TILE_SIZE, m_size.y * TILE_SIZE);
 
-        float x, y;
+    float x, y;
     if(m_velocity.x > m_speed) {
         x = (int)time*abs((int)m_velocity.x+1) % 3;
         y = 1;
@@ -70,11 +71,11 @@ void Player::draw(GLEngine::SpriteBatch& sb, float time) {
         glm::vec4 fullUV(0.0f, 0.0f, 1.0f, 1.0f);
         int cursorImgId = GLEngine::ResourceManager::getTexture("../Assets/GUI/Player/Cursor.png").id;
 
-        int chunkIndex = (int)floor(m_mousePos.x / CHUNK_SIZE) % WORLD_SIZE;
-        int x = (int)(m_mousePos.x + CHUNK_SIZE) % CHUNK_SIZE;
+        int chunkIndex = (int)floor(m_mousePos.x / CHUNK_SIZE);
+        int x = (int)(m_mousePos.x + CHUNK_SIZE * TILE_SIZE) % CHUNK_SIZE * TILE_SIZE;
 
-        glm::vec4 cursorDestRect(x * TILE_SIZE + chunkIndex * CHUNK_SIZE * TILE_SIZE, m_selectedBlock->getPosition().y * TILE_SIZE, m_selectedBlock->getSize().x * TILE_SIZE, m_selectedBlock->getSize().y * TILE_SIZE);
-        sb.draw(cursorDestRect, fullUV, cursorImgId, 0.0f, GLEngine::ColourRGBA8(255, 255, 255, 255));
+        glm::vec4 cursorDestRect(x + chunkIndex * CHUNK_SIZE * TILE_SIZE, m_selectedBlock->getPosition().y * TILE_SIZE, m_selectedBlock->getSize().x * TILE_SIZE, m_selectedBlock->getSize().y * TILE_SIZE);
+        sb.draw(cursorDestRect, fullUV, cursorImgId, 0.0f, GLEngine::ColourRGBA8(255, 255, 255, 255), glm::vec3(m_light));
     }
 }
 
@@ -207,7 +208,8 @@ void Player::updateInput() {
         m_selectedBlock->switchID((unsigned int)Categories::BlockIDs::AIR);
     }
     if(m_input->isKeyDown(SDL_BUTTON_RIGHT) && m_selectedBlock) {
-        if(m_handItem) m_handItem->onRightClick(m_selectedBlock);
+        //if(m_handItem) m_handItem->onRightClick(m_selectedBlock);
+        m_selectedBlock->switchID((unsigned int)Categories::BlockIDs::SAND);
     }
     if(m_input->isKeyPressed(SDLK_l)) {
         Item newItem(0, 0.5, 1);

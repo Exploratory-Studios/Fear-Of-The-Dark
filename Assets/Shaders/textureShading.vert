@@ -5,6 +5,7 @@
 in vec2 vertexPosition;
 in vec4 vertexColour;
 in vec2 vertexUV;
+in vec3 vertexLighting; // 0-1 is normal just colour-changing light, after 1 everything starts to turn the colour of the light
 
 out vec2 fragmentPosition;
 out vec4 fragmentColour;
@@ -24,6 +25,9 @@ void main() {
     fragmentPosition = vertexPosition;
 
     fragmentColour = vertexColour;
+    fragmentColour.xyz *= vertexLighting.xyz;
+
+    fragmentColour = clamp(fragmentColour, 0, 255);
 
     fragmentUV = vec2(vertexUV.x, 1.0 - vertexUV.y);
 }

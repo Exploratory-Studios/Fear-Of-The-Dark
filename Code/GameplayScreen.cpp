@@ -90,6 +90,8 @@ void GameplayScreen::update() {
     m_time++; /// Change the increment if time is slowed or quicker (potion effects?)
     m_frame++;
 
+    std::cout << m_game->getFps() << "\n";
+
     if((int)m_frame++ % (int)(60 / m_tickRate) == 0) { // m_frame is equal to current frame
         tick();
     }
@@ -98,14 +100,10 @@ void GameplayScreen::update() {
 
 void GameplayScreen::draw() {
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-    glClearColor(0.1f, 0.1f, 0.8f, 1.0f);
+    glClearColor(0.3f, 0.4f, 1.0f, 1.0f);
 
     {
         m_textureProgram.use();
-
-        GLint textureUniform = m_textureProgram.getUniformLocation("mySampler");
-        glUniform1i(textureUniform, 0);
-        glActiveTexture(GL_TEXTURE0);
 
         // Camera matrix
         glm::mat4 projectionMatrix = m_camera.getCameraMatrix();
@@ -114,12 +112,11 @@ void GameplayScreen::draw() {
 
         m_spriteBatch.begin();
 
-        m_worldManager.draw(m_spriteBatch, m_dr, m_tickTime);
+        m_worldManager.draw(m_spriteBatch, m_dr, m_tickTime, &m_textureProgram);
 
         m_spriteBatch.end();
+
         m_spriteBatch.renderBatch();
-
-
 
         m_textureProgram.unuse();
     }
@@ -229,6 +226,7 @@ void GameplayScreen::initShaders() {
     m_textureProgram.addAttribute("vertexPosition");
     m_textureProgram.addAttribute("vertexColour");
     m_textureProgram.addAttribute("vertexUV");
+    m_textureProgram.addAttribute("vertexLighting");
     m_textureProgram.linkShaders();
 
     m_uiTextureProgram.compileShaders("../Assets/Shaders/uiShader.vert", "../Assets/Shaders/uiShader.frag");

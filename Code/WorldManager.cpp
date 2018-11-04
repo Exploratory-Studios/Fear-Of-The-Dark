@@ -49,14 +49,14 @@ void WorldManager::tick(float tickTime) {
     m_entityManager.tick(tickTime, m_worldIOManager->getWorld()->chunks);
 }
 #include <iostream>
-void WorldManager::draw(GLEngine::SpriteBatch& sb, GLEngine::DebugRenderer& dr, int tickTime) {
+void WorldManager::draw(GLEngine::SpriteBatch& sb, GLEngine::DebugRenderer& dr, int tickTime, GLEngine::GLSLProgram* program) {
     for(unsigned int i = 0; i < m_activatedChunks.size(); i++) {
         int xOffset = std::abs(m_activatedChunks[i] + WORLD_SIZE) % WORLD_SIZE;
 
         m_worldIOManager->getWorld()->chunks[xOffset]->draw(sb, (m_activatedChunks[i] - xOffset));
     }
 
-    m_entityManager.draw(sb, dr, tickTime);
+    m_entityManager.draw(sb, dr, tickTime, program);
     //std::cout << m_player->getPosition().x << std::endl; // if the player's position is less than 0 or more than the world size it flickers...
 }
 

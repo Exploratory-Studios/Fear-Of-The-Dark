@@ -33,9 +33,9 @@ void EntityManager::tick(float dayCycleTime, Chunk* chunks[WORLD_SIZE]) { // Spa
     targetEntities(chunks);
 }
 
-void EntityManager::draw(GLEngine::SpriteBatch& sb, GLEngine::DebugRenderer& dr, int tickTime) {
+void EntityManager::draw(GLEngine::SpriteBatch& sb, GLEngine::DebugRenderer& dr, int tickTime, GLEngine::GLSLProgram* program) {
     for(auto e : m_entities) {
-        e->draw(sb, tickTime);
+        e->draw(sb, tickTime, program);
     }
 }
 
@@ -188,4 +188,48 @@ std::vector<glm::vec2> EntityManager::pathfindToTarget(float jumpHeight, glm::ve
     std::cout << "Original X: " << xGridspace << " Original Y: " << yGridspace << std::endl;
     */
     return targets;
+}
+
+void EntityManager::initResponses() {
+    //std::ifstream responseFile("NPCResponses.txt");
+
+    /*std::vector<std::vector<Dialogue>> responsesFull;
+    std::vector<Dialogue> responsesTemp;
+
+    int lineNum = 0;
+    int dialogueAnswers = 0;
+    int dialogues = 0;
+    int lastDialogueEnd = 0;
+
+    std::string line = "";
+
+    while(std::getline(responseFile, line)) {
+
+        Answers a;
+
+        if(line == "END") {
+            responseFull.push_back(responsesTemp);
+
+            for(int i = 0; i < responsesTemp.size(); i++) {
+                responsesTemp.pop_back();
+            }
+
+            lastDialogueEnd = lineNum;
+
+            lineNum = 0;
+            dialogueAnswers = 0;
+            dialogues = 0;
+
+        } else if(line[0] != '#') {
+            if(lineNum == 0) {
+                dialogues = std::stoi(line);
+            } else if(lineNum == 1) {
+                dialogueAnswers = std::stoi(line);
+            } else {
+
+            }
+
+            lineNum++;
+        }
+    }*/
 }

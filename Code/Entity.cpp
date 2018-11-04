@@ -44,7 +44,11 @@ void Entity::update(Chunk* chunks[WORLD_SIZE], float timeStep) {
     updateLightLevel(m_parentChunk);
 }
 #include <iostream>
-void Entity::draw(GLEngine::SpriteBatch& sb, float time) {
+void Entity::draw(GLEngine::SpriteBatch& sb, float time, GLEngine::GLSLProgram* program) {
+
+    //GLint lightUniform = program->getUniformLocation("lightColour");
+    //glUniform3fv(lightUniform, 3, &glm::vec3(1.0f, 1.0f, 1.0f)[0]);
+
     glm::vec4 destRect = glm::vec4(m_position.x, m_position.y, m_size.x * TILE_SIZE, m_size.y * TILE_SIZE);
 
     float x, y;
@@ -336,8 +340,8 @@ bool Entity::checkTilePosition(Tile* tiles[WORLD_HEIGHT][CHUNK_SIZE], Tile* extr
 void Entity::collideWithTile(glm::vec2 tilePos, bool ground) {
     float x = m_position.x, y = m_position.y;
 
-    //x += m_velocity.x / m_size.x; // To account for collision prediction,
-    if(!m_onGround) y += m_velocity.y / m_size.y;
+    x += m_velocity.x / TILE_SIZE * m_size.x; // To account for collision prediction,
+    y += m_velocity.y / TILE_SIZE * m_size.y;
 
     glm::vec2 centrePos = glm::vec2(x + (m_size.x * TILE_SIZE) / 2.0f, y + (m_size.y * TILE_SIZE) / 2.0f);
 
@@ -346,8 +350,8 @@ void Entity::collideWithTile(glm::vec2 tilePos, bool ground) {
     glm::vec2 depthVec = abs(abs(distVec) - (glm::vec2(TILE_SIZE / 2.0f) + m_size * glm::vec2(TILE_SIZE) / glm::vec2(2.0f)));
 
     // Determine if it's shorter to go in the X or Y direction
-    if(abs(depthVec.x / m_size.x) < abs(depthVec.y / m_size.y)) { // X direction is shorter // Maybe change these variables from depthvec to distvec and reverse the comparison to >
-        if(!ground) {
+    if(!ground) { // X direction is shorter // Maybe change these variables from depthvec to distvec and reverse the comparison to >
+        if(abs(depthVec.x / m_size.x) < abs(depthVec.y / m_size.y)) {
             if(distVec.x < 0.000f) {
                 m_position.x -= depthVec.x - abs(m_velocity.x * m_size.x); // TILE ON RIGHT
             } else if(distVec.x >= 0.000f) {

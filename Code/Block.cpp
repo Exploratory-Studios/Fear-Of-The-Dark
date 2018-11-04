@@ -25,7 +25,11 @@ void Block::switchID(unsigned int newID) {
             m_texture = GLEngine::ResourceManager::getTexture("../Assets/Textures/Blocks/Grass.png");
             break;
         case (unsigned int)Categories::BlockIDs::SAND:
-            m_texture = GLEngine::ResourceManager::getTexture("../Assets/Textures/Blocks/Sand.png");
+            m_texture = GLEngine::ResourceManager::getTexture("../Assets/Textures/Blocks/Dirt.png");
+            m_transparent = true;
+            m_draw = false;
+            m_solid = false;
+            m_emittedLight = 100.0f;
             break;
         case (unsigned int)Categories::BlockIDs::STONE:
             m_texture = GLEngine::ResourceManager::getTexture("../Assets/Textures/Blocks/Stone.png");

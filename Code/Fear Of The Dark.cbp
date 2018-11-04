@@ -17,6 +17,7 @@
 					<Add directory="Code" />
 					<Add directory="Code/Entities" />
 					<Add directory="Code/QuestSystem" />
+					<Add directory="include" />
 				</Compiler>
 			</Target>
 			<Target title="Release">
@@ -33,6 +34,7 @@
 					<Add directory="Code" />
 					<Add directory="Code/Entities" />
 					<Add directory="Code/QuestSystem" />
+					<Add directory="include" />
 				</Compiler>
 				<Linker>
 					<Add option="-flto" />
@@ -63,6 +65,7 @@
 		<Unit filename="../Assets/Art/Concept/Readme.txt" />
 		<Unit filename="../Assets/Art/Entities/Readme.txt" />
 		<Unit filename="../Assets/Art/Spritesheets/Readme.txt" />
+		<Unit filename="../Assets/Dialogue/Quests.txt" />
 		<Unit filename="../Assets/GUI/Player/Cursor.png" />
 		<Unit filename="../Assets/GUI/Player/Hotbar.png" />
 		<Unit filename="../Assets/GUI/Player/HotbarBox.png~" />
@@ -206,7 +209,6 @@
 		<Unit filename="../Assets/Sounds/Readme.txt" />
 		<Unit filename="../Assets/Textures/Blocks/Dirt.png" />
 		<Unit filename="../Assets/Textures/Blocks/Grass.png" />
-		<Unit filename="../Assets/Textures/Blocks/drive-download-20180402T152451Z-001.zip" />
 		<Unit filename="../Assets/Textures/Items/Sword0.png" />
 		<Unit filename="../Assets/Textures/MainMenuBackgrounds/Texture1.png" />
 		<Unit filename="../Assets/Textures/MainMenuBackgrounds/Texture2.png" />
@@ -253,12 +255,8 @@
 		<Unit filename="Player.cpp" />
 		<Unit filename="Player.h" />
 		<Unit filename="PresetValues.h" />
-		<Unit filename="QuestSystem/Objective.cpp" />
-		<Unit filename="QuestSystem/Objective.h" />
-		<Unit filename="QuestSystem/Quest.cpp" />
-		<Unit filename="QuestSystem/Quest.h" />
-		<Unit filename="QuestSystem/QuestManager.cpp" />
-		<Unit filename="QuestSystem/QuestManager.h" />
+		<Unit filename="QuestManager.cpp" />
+		<Unit filename="QuestManager.h" />
 		<Unit filename="ScreenIndices.h" />
 		<Unit filename="Scripting/ScripterMain.cpp" />
 		<Unit filename="Scripting/ScripterMain.h" />

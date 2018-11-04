@@ -39,7 +39,7 @@ class Entity
         void init(glm::vec2 position, Categories::Entity_Type type, unsigned int id);
 
         virtual void update(Chunk* chunks[WORLD_SIZE], float timeStep);
-        virtual void draw(GLEngine::SpriteBatch& sb, float time);
+        virtual void draw(GLEngine::SpriteBatch& sb, float time, GLEngine::GLSLProgram* program);
         void move(float timeStepVariable);
 
         void collide(std::vector<Entity*> entities, int chunkI);

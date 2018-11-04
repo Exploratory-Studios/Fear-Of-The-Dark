@@ -29,14 +29,24 @@ void Tile::update(float time) {
             if(m_transparent)// || m_parentChunk->tiles[y+1][x]->isTransparent())
                 if(m_parentChunk->tiles[y+1][x]->getAmbientLight() < getLight())
                     m_parentChunk->tiles[y+1][x]->setAmbientLight(getLight() * 4.0f/5.0f);
-        if(x-1 >= 0)
+        if(x-1 >= 0) {
             if(m_transparent)// || m_parentChunk->tiles[y][x-1]->isTransparent())
                 if(m_parentChunk->tiles[y][x-1]->getAmbientLight() < getLight())
                     m_parentChunk->tiles[y][x-1]->setAmbientLight(getLight() * 4.0f/5.0f);
-        if(x+1 < CHUNK_SIZE)
+        } else if(x-1 == -1) {
+            if(m_transparent)// || m_parentChunk->tiles[y][x-1]->isTransparent())
+                if(m_parentChunk->extraTiles[y][0]->getAmbientLight() < getLight())
+                    m_parentChunk->extraTiles[y][0]->setAmbientLight(getLight() * 4.0f/5.0f);
+        }
+        if(x+1 < CHUNK_SIZE) {
             if(m_transparent)// || m_parentChunk->tiles[y][x+1]->isTransparent())
                 if(m_parentChunk->tiles[y][x+1]->getAmbientLight() < getLight())
                     m_parentChunk->tiles[y][x+1]->setAmbientLight(getLight() * 4.0f/5.0f);
+        } else if(x+1 == CHUNK_SIZE) {
+            if(m_transparent)// || m_parentChunk->tiles[y][x-1]->isTransparent())
+                if(m_parentChunk->extraTiles[y][1]->getAmbientLight() < getLight())
+                    m_parentChunk->extraTiles[y][1]->setAmbientLight(getLight() * 4.0f/5.0f);
+        }
     }
 }
 
@@ -47,7 +57,17 @@ void Tile::tick(int tickTime) {
 }
 
 void Tile::draw(GLEngine::SpriteBatch& sb, int xOffset) {
-    if(!m_transparent) sb.draw(glm::vec4(m_pos.x * TILE_SIZE + xOffset * CHUNK_SIZE * TILE_SIZE, m_pos.y * TILE_SIZE, m_size.x * TILE_SIZE, m_size.y * TILE_SIZE), glm::vec4(0.0f, 0.0f, 1.0f, 1.0f), m_texture.id, 0.0f, GLEngine::ColourRGBA8(m_colour.r * getLight(), m_colour.g * getLight(), m_colour.b * getLight(), m_colour.a));
+
+    if(!m_transparent) {
+        //GLint lightColourUniform = program.getUniformLocation("lightColour");
+        //glUniform4fv(lightColourUniform, 3, &glm::vec3(0.0f, 1.0f, 0.0f)[0]);
+
+        if(getLight() < 1.0f) sb.draw(glm::vec4(m_pos.x * TILE_SIZE + xOffset * CHUNK_SIZE * TILE_SIZE, m_pos.y * TILE_SIZE, m_size.x * TILE_SIZE, m_size.y * TILE_SIZE), glm::vec4(0.0f, 0.0f, 1.0f, 1.0f), m_texture.id, 0.0f, GLEngine::ColourRGBA8(m_colour.r * getLight(), m_colour.g * getLight(), m_colour.b * getLight(), m_colour.a));
+        if(getLight() >= 1.0f) {
+            int r = m_colour.r, g = m_colour.g, b = m_colour.b;
+            sb.draw(glm::vec4(m_pos.x * TILE_SIZE + xOffset * CHUNK_SIZE * TILE_SIZE, m_pos.y * TILE_SIZE, m_size.x * TILE_SIZE, m_size.y * TILE_SIZE), glm::vec4(0.0f, 0.0f, 1.0f, 1.0f), m_texture.id, 0.0f, GLEngine::ColourRGBA8(r, g, b, m_colour.a), glm::vec3(getLight()));
+        }
+    }
 }
 
 bool Tile::exposedToSun() {

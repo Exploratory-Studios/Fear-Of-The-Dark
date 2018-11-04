@@ -58,7 +58,7 @@ void WorldIOManager::createWorld(unsigned int seed, std::string worldName, bool 
             const float SMOOTHED_PORTION_D = 3; // 2/3
             const float SMOOTHED_PORTION = (SMOOTHED_PORTION_D - 1.0f) / SMOOTHED_PORTION_D;
 
-            for(int i = 0; i < WORLD_SIZE; i++) {
+            for(int i = 0; i < WORLD_SIZE+1; i++) {
 
                 PerlinNoise smootherExtraNoise(seed * (i + 1) * 539);
 
@@ -76,21 +76,35 @@ void WorldIOManager::createWorld(unsigned int seed, std::string worldName, bool 
                         smoother *= -multiplier;
                         blockHeights[i * CHUNK_SIZE + j] = smoother + blockHeights[i * CHUNK_SIZE + CHUNK_SIZE * SMOOTHED_PORTION] + smootherExtraNoise.noise(i / 10, 10, 84) * 7 - 3.5;
 
+                    } else if(i+1 == WORLD_SIZE && j > CHUNK_SIZE * SMOOTHED_PORTION) {
+                        float smoother = 0.0f;
+                        float a = blockHeights[i * CHUNK_SIZE + CHUNK_SIZE * SMOOTHED_PORTION];
+                        float b = blockHeights[0];
+
+                        smoother = a - b;
+
+                        float multiplier = ((float)j - (float)CHUNK_SIZE * SMOOTHED_PORTION) / ((float)CHUNK_SIZE / SMOOTHED_PORTION_D);
+
+                        smoother *= -multiplier;
+                        blockHeights[i * CHUNK_SIZE + j] = smoother + blockHeights[i * CHUNK_SIZE + CHUNK_SIZE * SMOOTHED_PORTION] + smootherExtraNoise.noise(i / 10, 10, 84) * 7 - 3.5;
+
                     }
                 }
 
-                for(int x = 0; x < CHUNK_SIZE; x++) {
-                    for(int y = blockHeights[i * CHUNK_SIZE + x]; y < WORLD_HEIGHT; y++) {
-                        Block* block = new Block(glm::vec2((i * CHUNK_SIZE) + x, y), (unsigned int)Categories::BlockIDs::AIR, m_world->chunks[i]);
-                        m_world->chunks[i]->tiles[y][x] = block;
-                    }
-                    for(int y = 0; y < blockHeights[i * CHUNK_SIZE + x]; y++) {
-                        if(y != blockHeights[i * CHUNK_SIZE + x] - 1) {
-                            Block* block = new Block(glm::vec2((i * CHUNK_SIZE) + x, y), (unsigned int)Categories::BlockIDs::DIRT, m_world->chunks[i]);
+                if(i < WORLD_SIZE) {
+                    for(int x = 0; x < CHUNK_SIZE; x++) {
+                        for(int y = blockHeights[i * CHUNK_SIZE + x]; y < WORLD_HEIGHT; y++) {
+                            Block* block = new Block(glm::vec2((i * CHUNK_SIZE) + x, y), (unsigned int)Categories::BlockIDs::AIR, m_world->chunks[i]);
                             m_world->chunks[i]->tiles[y][x] = block;
-                        } else {
-                            Block* block = new Block(glm::vec2((i * CHUNK_SIZE) + x, y), (unsigned int)Categories::BlockIDs::GRASS, m_world->chunks[i]);
-                            m_world->chunks[i]->tiles[y][x] = block;
+                        }
+                        for(int y = 0; y < blockHeights[i * CHUNK_SIZE + x]; y++) {
+                            if(y != blockHeights[i * CHUNK_SIZE + x] - 1) {
+                                Block* block = new Block(glm::vec2((i * CHUNK_SIZE) + x, y), (unsigned int)Categories::BlockIDs::DIRT, m_world->chunks[i]);
+                                m_world->chunks[i]->tiles[y][x] = block;
+                            } else {
+                                Block* block = new Block(glm::vec2((i * CHUNK_SIZE) + x, y), (unsigned int)Categories::BlockIDs::GRASS, m_world->chunks[i]);
+                                m_world->chunks[i]->tiles[y][x] = block;
+                            }
                         }
                     }
                 }

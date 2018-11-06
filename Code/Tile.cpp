@@ -11,9 +11,10 @@ float Tile::getLight() {
         return m_sunLight;
     } else if(m_emittedLight > m_sunLight && m_emittedLight > m_ambientLight) {
         return m_emittedLight;
-    } else {
-        return m_ambientLight; // They're all the same, so ambientLight is correct, but so is any other variable.
+    } else if(m_emittedLight == m_sunLight && m_emittedLight == m_ambientLight) {
+        return m_emittedLight;
     }
+    return m_ambientLight;
 }
 
 float Tile::getSurroundingLight() {
@@ -23,97 +24,58 @@ float Tile::getSurroundingLight() {
     float light = 0.0f;
 
     if(y-1 >= 0)
-        if(m_parentChunk->tiles[y-1][x]->getLight() > light) {
+        if(m_parentChunk->tiles[y-1][x]->getLight() > light && (m_parentChunk->tiles[y-1][x]->isTransparent() || isTransparent())) {
             light = m_parentChunk->tiles[y-1][x]->getLight();
         }
     if(y+1 < WORLD_HEIGHT)
-        if(m_parentChunk->tiles[y+1][x]->getLight() > light) {
+        if(m_parentChunk->tiles[y+1][x]->getLight() > light && (m_parentChunk->tiles[y+1][x]->isTransparent() || isTransparent())) {
             light = m_parentChunk->tiles[y+1][x]->getLight();
         }
     if(x-1 >= 0) {
-        if(m_parentChunk->tiles[y][x-1]->getLight() > light) {
+        if(m_parentChunk->tiles[y][x-1]->getLight() > light && (m_parentChunk->tiles[y][x-1]->isTransparent() || isTransparent())) {
             light = m_parentChunk->tiles[y][x-1]->getLight();
         }
     } else if(x-1 == -1) {
-        if(m_parentChunk->extraTiles[y][0]->getLight() > light) {
+        if(m_parentChunk->extraTiles[y][0]->getLight() > light && (m_parentChunk->extraTiles[y][0]->isTransparent() || isTransparent())) {
             light = m_parentChunk->extraTiles[y][0]->getLight();
         }
     }
     if(x+1 < CHUNK_SIZE) {
-        if(m_parentChunk->tiles[y][x+1]->getLight() > light) {
+        if(m_parentChunk->tiles[y][x+1]->getLight() > light && (m_parentChunk->tiles[y][x+1]->isTransparent() || isTransparent())) {
             light = m_parentChunk->tiles[y][x+1]->getLight();
         }
     } else if(x+1 == CHUNK_SIZE) {
-        if(m_parentChunk->extraTiles[y][1]->getLight() > light) {
+        if(m_parentChunk->extraTiles[y][1]->getLight() > light && (m_parentChunk->extraTiles[y][1]->isTransparent() || isTransparent())) {
             light = m_parentChunk->extraTiles[y][1]->getLight();
         }
     }
 
     return light;
 }
-
+#include <iostream>
 void Tile::update(float time) {
-    if((getLight() != m_lastLight || getSurroundingLight() != getAmbientLight()) && (int)m_pos.y-m_parentChunk->getIndex() >= 0) {
-        m_lastLight = getLight();
-        int x = (int)m_pos.x - CHUNK_SIZE*m_parentChunk->getIndex();
+    if(getSurroundingLight() != m_lastLight) {
+        setAmbientLight(getSurroundingLight() * LIGHT_MULTIPLIER);
+
+        /*int x = (int)m_pos.x - CHUNK_SIZE*m_parentChunk->getIndex();
         int y = (int)m_pos.y;
-        if(y-1 >= 0)
-            if(m_transparent) {
-                if(m_parentChunk->tiles[y-1][x]->getAmbientLight() < getLight()) {
-                    m_parentChunk->tiles[y-1][x]->setAmbientLight(getLight() * LIGHT_MULTIPLIER);
-                } else {
-                    if(m_parentChunk->tiles[y-1][x]->isTransparent())
-                        setAmbientLight(m_parentChunk->tiles[y-1][x]->getAmbientLight() * LIGHT_MULTIPLIER);
-                }
-            }
-        if(y+1 < WORLD_HEIGHT) {
-            if(m_transparent) {
-                if(m_parentChunk->tiles[y+1][x]->getAmbientLight() < getLight()) {
-                    m_parentChunk->tiles[y+1][x]->setAmbientLight(getLight() * LIGHT_MULTIPLIER);
-                } else {
-                    if(m_parentChunk->tiles[y+1][x]->isTransparent())
-                        setAmbientLight(m_parentChunk->tiles[y+1][x]->getAmbientLight() * LIGHT_MULTIPLIER);
-                }
-            }
+
+        if(x+1 < CHUNK_SIZE) {
+            m_parentChunk->tiles[y][x+1]->update(time);
+        } else if(x+1 == CHUNK_SIZE) {
+            m_parentChunk->extraTiles[y][1]->update(time);
         }
         if(x-1 >= 0) {
-            if(m_transparent) {
-                if(m_parentChunk->tiles[y][x-1]->getAmbientLight() < getLight()) {
-                    m_parentChunk->tiles[y][x-1]->setAmbientLight(getLight() * LIGHT_MULTIPLIER);
-                } else {
-                    if(m_parentChunk->tiles[y][x-1]->isTransparent())
-                        setAmbientLight(m_parentChunk->tiles[y][x-1]->getAmbientLight() * LIGHT_MULTIPLIER);
-                }
-            }
+            m_parentChunk->tiles[y][x-1]->update(time);
         } else if(x-1 == -1) {
-            if(m_transparent) {
-                if(m_parentChunk->extraTiles[y][0]->getAmbientLight() < getLight()) {
-                    m_parentChunk->extraTiles[y][0]->setAmbientLight(getLight() * LIGHT_MULTIPLIER);
-                } else {
-                    if(m_parentChunk->tiles[y][0]->isTransparent())
-                        setAmbientLight(m_parentChunk->extraTiles[y][0]->getAmbientLight() * LIGHT_MULTIPLIER);
-                }
-            }
+            m_parentChunk->extraTiles[y][0]->update(time);
         }
-        if(x+1 < CHUNK_SIZE) {
-            if(m_transparent) {
-                if(m_parentChunk->tiles[y][x+1]->getAmbientLight() < getLight()) {
-                    m_parentChunk->tiles[y][x+1]->setAmbientLight(getLight() * LIGHT_MULTIPLIER);
-                } else {
-                    if(m_parentChunk->tiles[y][x+1]->isTransparent())
-                        setAmbientLight(m_parentChunk->tiles[y][x+1]->getAmbientLight() * LIGHT_MULTIPLIER);
-                }
-            }
-        } else if(x+1 == CHUNK_SIZE) {
-            if(m_transparent) {
-                if(m_parentChunk->extraTiles[y][1]->getAmbientLight() < getLight()) {
-                    m_parentChunk->extraTiles[y][1]->setAmbientLight(getLight() * LIGHT_MULTIPLIER);
-                } else {
-                    if(m_parentChunk->tiles[y][1]->isTransparent())
-                        setAmbientLight(m_parentChunk->extraTiles[y][1]->getAmbientLight() * LIGHT_MULTIPLIER);
-                }
-            }
+        if(y+1 < WORLD_HEIGHT) {
+            m_parentChunk->tiles[y+1][x]->update(time);
         }
+        if(y-1 >= 0) {
+            m_parentChunk->tiles[y-1][x]->update(time);
+        }*/ // IMPLEMENT
     }
 }
 
@@ -125,15 +87,17 @@ void Tile::tick(int tickTime) {
 
 void Tile::draw(GLEngine::SpriteBatch& sb, int xOffset) {
 
-    if(!m_transparent) {
+    if(m_draw) {
         //GLint lightColourUniform = program.getUniformLocation("lightColour");
         //glUniform4fv(lightColourUniform, 3, &glm::vec3(0.0f, 1.0f, 0.0f)[0]);
 
-        if(getLight() < 1.0f) sb.draw(glm::vec4(m_pos.x * TILE_SIZE + xOffset * CHUNK_SIZE * TILE_SIZE, m_pos.y * TILE_SIZE, m_size.x * TILE_SIZE, m_size.y * TILE_SIZE), glm::vec4(0.0f, 0.0f, 1.0f, 1.0f), m_texture.id, 0.0f, GLEngine::ColourRGBA8(m_colour.r * getLight(), m_colour.g * getLight(), m_colour.b * getLight(), m_colour.a));
-        if(getLight() >= 1.0f) {
-            int r = m_colour.r, g = m_colour.g, b = m_colour.b;
-            sb.draw(glm::vec4(m_pos.x * TILE_SIZE + xOffset * CHUNK_SIZE * TILE_SIZE, m_pos.y * TILE_SIZE, m_size.x * TILE_SIZE, m_size.y * TILE_SIZE), glm::vec4(0.0f, 0.0f, 1.0f, 1.0f), m_texture.id, 0.0f, GLEngine::ColourRGBA8(r, g, b, m_colour.a), glm::vec3(getLight()));
-        }
+        int r = m_colour.r, g = m_colour.g, b = m_colour.b;
+        sb.draw(glm::vec4(m_pos.x * TILE_SIZE + xOffset * CHUNK_SIZE * TILE_SIZE, m_pos.y * TILE_SIZE, m_size.x * TILE_SIZE, m_size.y * TILE_SIZE),
+                glm::vec4(0.0f, 0.0f, 1.0f, 1.0f),
+                m_texture.id,
+                0.0f,
+                GLEngine::ColourRGBA8(r, g, b, m_colour.a),
+                glm::vec3(getLight()));
     }
 }
 

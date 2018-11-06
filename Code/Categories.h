@@ -19,7 +19,8 @@ namespace Categories {
         GRASS,
         SAND,
         STONE,
-        BUSH
+        BUSH,
+        TORCH
     };
 
     enum class Faction {

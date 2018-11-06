@@ -65,6 +65,10 @@ void Player::draw(GLEngine::SpriteBatch& sb, float time, GLEngine::GLSLProgram* 
 
     GLEngine::ColourRGBA8 colour(255, 255, 255, 255);
 
+    if(m_selectedBlock) {
+        m_light = m_selectedBlock->getLight();
+    }
+
     sb.draw(destRect, uvRect, m_texture.id, 0.0f, colour, glm::vec3(m_light));
 
     if(m_selectedBlock) { // Cursor box selection
@@ -181,6 +185,7 @@ void Player::updateMouse(Chunk* chunks[WORLD_SIZE], GLEngine::Camera2D* worldCam
        mousePos.y >= 0 &&
        mousePos.y < WORLD_HEIGHT)
            m_selectedBlock = static_cast<Block*>(chunks[chunkIndex]->tiles[(unsigned int)mousePos.y][(unsigned int)mousePos.x]);
+
 }
 
 void Player::updateInput() {
@@ -203,12 +208,11 @@ void Player::updateInput() {
 
     if(m_input->isKeyDown(SDL_BUTTON_LEFT) && m_selectedBlock) {
         if(m_handItem) m_handItem->onLeftClick(m_selectedBlock);
-        //m_selectedBlock->setAmbientLight(1.0f);
         m_selectedBlock->switchID((unsigned int)Categories::BlockIDs::AIR);
     }
     if(m_input->isKeyDown(SDL_BUTTON_RIGHT) && m_selectedBlock) {
         //if(m_handItem) m_handItem->onRightClick(m_selectedBlock);
-        m_selectedBlock->switchID((unsigned int)Categories::BlockIDs::SAND);
+        m_selectedBlock->switchID((unsigned int)Categories::BlockIDs::TORCH);
     }
     if(m_input->isKeyPressed(SDLK_l)) {
         Item newItem(0, 0.5, 1);

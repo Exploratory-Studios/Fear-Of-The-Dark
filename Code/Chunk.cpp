@@ -33,6 +33,8 @@ void Chunk::update(float time) {
         for(int j = 0; j < CHUNK_SIZE; j++) {
             tiles[i][j]->update(time);
         }
+        extraTiles[i][0]->update(time);
+        extraTiles[i][1]->update(time);
     }
 }
 
@@ -41,6 +43,8 @@ void Chunk::tick(int tickTime) {
         for(int j = 0; j < CHUNK_SIZE; j++) {
             tiles[i][j]->tick(tickTime);
         }
+        extraTiles[i][0]->tick(tickTime);
+        extraTiles[i][1]->tick(tickTime);
     }
 }
 
@@ -49,6 +53,7 @@ void Chunk::draw(GLEngine::SpriteBatch& sb, int xOffset) {
         for(int j = 0; j < CHUNK_SIZE; j++) {
             tiles[i][j]->draw(sb, xOffset);
         }
+        extraTiles[i][0]->draw(sb, xOffset);
     }
 }
 

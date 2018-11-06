@@ -57,7 +57,6 @@ void WorldManager::draw(GLEngine::SpriteBatch& sb, GLEngine::DebugRenderer& dr, 
     }
 
     m_entityManager.draw(sb, dr, tickTime, program);
-    //std::cout << m_player->getPosition().x << std::endl; // if the player's position is less than 0 or more than the world size it flickers...
 }
 
 /// Private Functions

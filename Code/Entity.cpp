@@ -355,11 +355,6 @@ void Entity::collideWithTile(glm::vec2 tilePos, bool ground) {
             }
         }
     }
-
-    std::cout << distanceVec.x << " " << depthVec.x << "\n";
-
-
-
 }
 
 #include <iostream>

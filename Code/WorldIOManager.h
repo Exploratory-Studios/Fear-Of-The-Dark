@@ -7,7 +7,6 @@
 #include "PerlinNoise/PerlinNoise.h"
 
 #include "Chunk.h"
-#include "Entity.h"
 #include "Player.h"
 #include "Block.h"
 

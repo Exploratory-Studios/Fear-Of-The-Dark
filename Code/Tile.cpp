@@ -56,32 +56,14 @@ float Tile::getSurroundingLight() {
 void Tile::update(float time) {
     if(getSurroundingLight() != m_lastLight) {
         setAmbientLight(getSurroundingLight() * LIGHT_MULTIPLIER);
-
-        /*int x = (int)m_pos.x - CHUNK_SIZE*m_parentChunk->getIndex();
-        int y = (int)m_pos.y;
-
-        if(x+1 < CHUNK_SIZE) {
-            m_parentChunk->tiles[y][x+1]->update(time);
-        } else if(x+1 == CHUNK_SIZE) {
-            m_parentChunk->extraTiles[y][1]->update(time);
-        }
-        if(x-1 >= 0) {
-            m_parentChunk->tiles[y][x-1]->update(time);
-        } else if(x-1 == -1) {
-            m_parentChunk->extraTiles[y][0]->update(time);
-        }
-        if(y+1 < WORLD_HEIGHT) {
-            m_parentChunk->tiles[y+1][x]->update(time);
-        }
-        if(y-1 >= 0) {
-            m_parentChunk->tiles[y-1][x]->update(time);
-        }*/ // IMPLEMENT
     }
 }
 
 void Tile::tick(int tickTime) {
     if(exposedToSun()) { // check if this block is exposed to sunlight
         m_sunLight = cos((float)tickTime / (DAY_LENGTH / 6.28318f)) / 2.0f + 0.5f;
+    } else {
+        m_sunLight = 0.0f;
     }
 }
 

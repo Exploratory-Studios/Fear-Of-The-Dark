@@ -66,7 +66,27 @@ class PlaceDatum {
 class MobDatum {
     public:
         MobDatum() { }
-        MobDatum(unsigned int idP, float hpP, std::string texturePathP, glm::vec2 sizeP, Categories::Faction fac, float jumpHeightP, float speedP) : id(idP), hp(hpP), texturePath(texturePathP), size(sizeP), faction(fac), jumpHeight(std::sqrt((jumpHeightP*TILE_SIZE+3.0f/4.0f*TILE_SIZE)/5.88f)), speed(speedP) { }
+        MobDatum(unsigned int idP,
+                 float hpP,
+                 std::string texturePathP,
+                 glm::vec2 sizeP,
+                 Categories::Faction fac,
+                 float jumpHeightP,
+                 float speedP,
+                 Categories::AI_Type aiType,
+                 Categories::Disability_Type disType,
+                 Categories::Attack_Type attType) :
+            id(idP),
+            hp(hpP),
+            texturePath(texturePathP),
+            size(sizeP),
+            faction(fac),
+            jumpHeight(std::sqrt((jumpHeightP*TILE_SIZE+3.0f/4.0f*TILE_SIZE)/5.88f)),
+            speed(speedP),
+            aitype(aiType),
+            disabilityType(disType),
+            attackType(attType)
+            { }
 
         unsigned int id; /// This is used only for verification when copying from an array.
                          /// Ex.
@@ -78,7 +98,17 @@ class MobDatum {
         Categories::Faction faction;
         float jumpHeight;
         float speed;
+        Categories::AI_Type aitype;
+        Categories::Disability_Type disabilityType;
+        Categories::Attack_Type attackType;
+};
 
+class DialogueMobDatum {
+    public:
+        DialogueMobDatum(unsigned int idP, unsigned int mobIdP) : id(idP), mobId(mobIdP) {}
+
+        unsigned int id;
+        unsigned int mobId;
 };
 
 class ItemDatum {
@@ -98,7 +128,8 @@ namespace Category_Data {
 
     const unsigned int TOTAL_PLACES = 7;
     const unsigned int TOTAL_MOBS = 3;
-    const unsigned int TOTAL_ITEMS = 1;
+    const unsigned int TOTAL_DIALOGUE_MOBS = 1;
+    const unsigned int TOTAL_ITEMS = 3;
 
     const PlaceDatum placeData[Category_Data::TOTAL_PLACES+1] = {
                                                                  PlaceDatum(20, -60, 10, 7.5),
@@ -112,15 +143,21 @@ namespace Category_Data {
                                                                 };
 
     const MobDatum mobData[Category_Data::TOTAL_MOBS] = {
-                                                         MobDatum(0, 10.0f, "../Assets/Textures/Mobs/Mob0.png", glm::vec2(1.0f, 2.0f), Categories::Faction::BAD, 4.0f, 0.02f),
-                                                         MobDatum(1, 20.0f, "../Assets/Textures/Mobs/Mob0.png", glm::vec2(1.0f, 2.0f), Categories::Faction::GOOD, 4.0f, 0.02f),
-                                                         MobDatum(2, 30.0f, "../Assets/Textures/Mobs/Mob0.png", glm::vec2(1.0f, 1.0f), Categories::Faction::BAD, 4.0f, 0.02f)
+                                                         MobDatum(0, 10.0f, "../Assets/Textures/Mobs/Mob0.png", glm::vec2(1.0f, 2.0f), Categories::Faction::BAD, 4.0f, 0.02f, Categories::AI_Type::WALKING, Categories::Disability_Type::NONE, Categories::Attack_Type::MELEE_ONLY),
+                                                         MobDatum(1, 20.0f, "../Assets/Textures/Mobs/Mob0.png", glm::vec2(1.0f, 2.0f), Categories::Faction::GOOD, 4.0f, 0.02f, Categories::AI_Type::WALKING, Categories::Disability_Type::NONE, Categories::Attack_Type::MELEE_ONLY),
+                                                         MobDatum(2, 30.0f, "../Assets/Textures/Mobs/Mob0.png", glm::vec2(1.0f, 1.0f), Categories::Faction::BAD, 4.0f, 0.02f, Categories::AI_Type::SWIMMING, Categories::Disability_Type::NONE, Categories::Attack_Type::MELEE_ONLY)
                                                         };
 
+    const DialogueMobDatum dialogueMobData[Category_Data::TOTAL_DIALOGUE_MOBS] = {
+                                                                                  DialogueMobDatum(0, 1)
+                                                                                 };
+
     const ItemDatum itemData[Category_Data::TOTAL_ITEMS] = {
-                                                            ItemDatum(0, "../Assets/Textures/Items/Sword0.png", "Sword")
+                                                            ItemDatum(0, "../Assets/Textures/Items/Sword0.png", "Sword"),
+                                                            ItemDatum(1, "../Assets/Textures/Blocks/Dirt.png", "Dirt"),
+                                                            ItemDatum(2, "../Assets/Textures/Blocks/Torch.png", "Torch")
+
                                                            };
 
-    // Why was there a random const here? Block weights and types, etc.?
 
 };

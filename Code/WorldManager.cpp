@@ -28,6 +28,8 @@ void WorldManager::init(WorldIOManager* worldIOManager) {
 
         m_entityManager.init(m_player, entities);
     }
+
+    m_questManager = new QuestManager("../Assets/Dialogue/Quests.txt");
 }
 #include <iostream>
 void WorldManager::update(GLEngine::Camera2D* worldCamera, float timeStepVariable, float time) {
@@ -50,13 +52,23 @@ void WorldManager::tick(float tickTime) {
 }
 #include <iostream>
 void WorldManager::draw(GLEngine::SpriteBatch& sb, GLEngine::DebugRenderer& dr, int tickTime, GLEngine::GLSLProgram* program) {
+    sb.begin();
+
     for(unsigned int i = 0; i < m_activatedChunks.size(); i++) {
         int xOffset = std::abs(m_activatedChunks[i] + WORLD_SIZE) % WORLD_SIZE;
 
         m_worldIOManager->getWorld()->chunks[xOffset]->draw(sb, (m_activatedChunks[i] - xOffset));
     }
 
+    sb.end();
+    sb.renderBatch();
+
+    sb.begin();
+
     m_entityManager.draw(sb, dr, tickTime, program);
+
+    sb.end();
+    sb.renderBatch();
 }
 
 /// Private Functions

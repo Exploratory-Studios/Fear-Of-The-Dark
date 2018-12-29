@@ -1,5 +1,7 @@
 #include "Entity.h"
 
+#include "Categories.h"
+
 #include <DebugRenderer.h>
 #include <math.h>
 
@@ -8,8 +10,8 @@ Entity::Entity()
     //ctor
 }
 
-Entity::Entity(glm::vec2 position, Categories::Entity_Type type, unsigned int id) {
-    init(position, type, id);
+Entity::Entity(glm::vec2 position, unsigned int id) {
+    init(position, Categories::Entity_Type::MOB, id);
 }
 
 Entity::~Entity()
@@ -28,12 +30,31 @@ void Entity::init(glm::vec2 position, Categories::Entity_Type type, unsigned int
                 m_faction = Category_Data::mobData[id].faction;
                 m_jumpHeight = Category_Data::mobData[id].jumpHeight;
                 m_speed = Category_Data::mobData[id].speed;
+                m_ai = Category_Data::mobData[id].aitype;
+                m_disabilities = Category_Data::mobData[id].disabilityType;
+                m_attackType = Category_Data::mobData[id].attackType;
             } else {
                 return;
             }
         }
-        case Categories::Entity_Type::ITEM:
-            break;
+        case Categories::Entity_Type::DIALOGUE:
+            if(Category_Data::dialogueMobData[id].id == id) {
+
+            } else {
+                return;
+            }
+            if(Category_Data::mobData[id].id == id) {
+                m_texture = GLEngine::ResourceManager::getTexture(Category_Data::mobData[id].texturePath);
+                m_size = Category_Data::mobData[id].size;
+                m_faction = Category_Data::mobData[id].faction;
+                m_jumpHeight = Category_Data::mobData[id].jumpHeight;
+                m_speed = Category_Data::mobData[id].speed;
+                m_ai = Category_Data::mobData[id].aitype;
+                m_disabilities = Category_Data::mobData[id].disabilityType;
+                m_attackType = Category_Data::mobData[id].attackType;
+            } else {
+                return;
+            }
     }
 }
 
@@ -43,7 +64,7 @@ void Entity::update(Chunk* chunks[WORLD_SIZE], float timeStep) {
     setParentChunk(chunks);
     updateLightLevel(m_parentChunk);
 }
-#include <iostream>
+
 void Entity::draw(GLEngine::SpriteBatch& sb, float time, GLEngine::GLSLProgram* program) {
 
     //GLint lightUniform = program->getUniformLocation("lightColour");
@@ -380,5 +401,36 @@ void Entity::updateLightLevel(Chunk* currentChunk) {
         }
     } else {
         m_light = 0.0f;
+    }
+}
+
+void Entity::updateAI(Chunk* activeChunks[WORLD_SIZE]) {
+    if(m_ai == Categories::AI_Type::WALKING) {
+        EntityFunctions::WalkingAI(m_controls, m_targets, m_curTarget, m_velocity, m_size, m_position);
+    }
+}
+
+void Entity::updateMovement() {
+    if(m_controls[0]) { // UP
+            if(m_onGround) {
+                m_velocity.y = m_jumpHeight; // y=(jumpHeight+-0.098*60*s^2)  initial jump power is the absolute of the x at 0. jumpheight is in eights of tiles and you must add 4
+                m_onGround = false;
+            }
+        }
+        if(m_controls[1]) { // DOWN
+            /// TODO: implement crouching
+        }
+        if(m_controls[2]) { // LEFT
+            m_velocity.x -= m_speed;
+        } else if(m_controls[3]) { // RIGHT
+            m_velocity.x += m_speed;
+        } else {
+            m_velocity.x /= 5.0f;//= 5.0f;
+        }
+
+        if(m_velocity.x > MAX_SPEED) {
+            m_velocity.x = MAX_SPEED;
+        } else if(m_velocity.x < -MAX_SPEED) {
+            m_velocity.x = -MAX_SPEED;
     }
 }

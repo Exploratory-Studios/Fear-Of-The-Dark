@@ -13,6 +13,7 @@
 				<Option compiler="gcc" />
 				<Compiler>
 					<Add option="-g" />
+					<Add option="-DDEV_CONTROLS" />
 					<Add directory="Items" />
 					<Add directory="Code" />
 					<Add directory="Code/Entities" />
@@ -223,6 +224,7 @@
 		<Unit filename="Chunk.cpp" />
 		<Unit filename="Chunk.h" />
 		<Unit filename="Devlog FOTD Start Oct 9 2017" />
+		<Unit filename="Entities/EntityFunctions.h" />
 		<Unit filename="Entities/WalkingNPC.cpp" />
 		<Unit filename="Entities/WalkingNPC.h" />
 		<Unit filename="Entity.cpp" />
@@ -235,8 +237,8 @@
 		<Unit filename="Inventory.h" />
 		<Unit filename="Item.cpp" />
 		<Unit filename="Item.h" />
-		<Unit filename="ItemData.cpp" />
-		<Unit filename="ItemData.h" />
+		<Unit filename="ItemBlock.cpp" />
+		<Unit filename="ItemBlock.h" />
 		<Unit filename="Items/BlockItem.cpp" />
 		<Unit filename="Items/BlockItem.h" />
 		<Unit filename="LoadScreen.cpp" />

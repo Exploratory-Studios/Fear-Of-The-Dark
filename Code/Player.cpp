@@ -1,7 +1,7 @@
 #include "Player.h"
 
 #include "PresetValues.h"
-#include "Item.h"
+#include "ItemBlock.h"
 
 
 
@@ -65,11 +65,7 @@ void Player::draw(GLEngine::SpriteBatch& sb, float time, GLEngine::GLSLProgram* 
 
     GLEngine::ColourRGBA8 colour(255, 255, 255, 255);
 
-    if(m_selectedBlock) {
-        m_light = m_selectedBlock->getLight();
-    }
-
-    sb.draw(destRect, uvRect, m_texture.id, 0.0f, colour, glm::vec3(m_light));
+    sb.draw(destRect, uvRect, m_texture.id, 1.0f, colour, glm::vec3(m_light));
 
     if(m_selectedBlock) { // Cursor box selection
         glm::vec4 fullUV(0.0f, 0.0f, 1.0f, 1.0f);
@@ -101,13 +97,13 @@ void Player::drawGUI(GLEngine::SpriteBatch& sb, GLEngine::SpriteFont& sf) {
             sb.draw(destRect, uv, hotbarImgId, 0.0f, fullColour);
 
             {
-                if(m_inventory->getItem(i, 0).getID() != -1) {
+                if(m_inventory->getItem(i, 0)) {
                     glm::vec4 destRect(HOTBAR_BOX_SIZE / 4 + (HOTBAR_BOX_SIZE + HOTBAR_BOX_PADDING) * i,
                                     HOTBAR_BOX_SIZE / 4,
                                     HOTBAR_BOX_SIZE,
                                     HOTBAR_BOX_SIZE);
                     glm::vec4 itemUV(0, 0, 1, 1);
-                    int itemImgId = GLEngine::ResourceManager::getTexture(Category_Data::itemData[m_inventory->getItem(i, 0).getID()].texturePath).id;
+                    int itemImgId = GLEngine::ResourceManager::getTexture(Category_Data::itemData[m_inventory->getItem(i, 0)->getID()].texturePath).id;
 
                     sb.draw(destRect, itemUV, itemImgId, 0.0f, GLEngine::ColourRGBA8(255, 255, 255, 255));
                 }
@@ -118,13 +114,13 @@ void Player::drawGUI(GLEngine::SpriteBatch& sb, GLEngine::SpriteFont& sf) {
         sb.renderBatch();
 
         for(int i = 0; i < HOTBAR_BOX_NUM; i++) {
-            if(m_inventory->getItem(i, 0).getID() != -1) {
+            if(m_inventory->getItem(i, 0)) {
                 glm::vec4 destRect(HOTBAR_BOX_SIZE / 4 + (HOTBAR_BOX_SIZE + HOTBAR_BOX_PADDING) * i,
                                     HOTBAR_BOX_SIZE / 4,
                                     HOTBAR_BOX_SIZE,
                                     HOTBAR_BOX_SIZE);
                 glm::vec4 itemUV(0, 0, 1, 1);
-                int itemImgId = GLEngine::ResourceManager::getTexture(Category_Data::itemData[m_inventory->getItem(i, 0).getID()].texturePath).id;
+                int itemImgId = GLEngine::ResourceManager::getTexture(Category_Data::itemData[m_inventory->getItem(i, 0)->getID()].texturePath).id;
 
                 sb.begin();
                 sb.draw(destRect, itemUV, itemImgId, 0.0f, GLEngine::ColourRGBA8(255, 255, 255, 255));
@@ -132,7 +128,7 @@ void Player::drawGUI(GLEngine::SpriteBatch& sb, GLEngine::SpriteFont& sf) {
                 sb.renderBatch();
 
                 sb.begin();
-                sf.draw(sb, std::to_string(m_inventory->getItem(i, 0).getQuantity()).c_str(), glm::vec2(destRect.x + INVENTORY_BOX_SIZE * 9/10, destRect.y + INVENTORY_BOX_SIZE - 96.0f * 0.35f), glm::vec2(0.35f), 0.0f, GLEngine::ColourRGBA8(255, 255, 255, 255), GLEngine::Justification::RIGHT);
+                sf.draw(sb, std::to_string(m_inventory->getItem(i, 0)->getQuantity()).c_str(), glm::vec2(destRect.x + INVENTORY_BOX_SIZE * 9/10, destRect.y + INVENTORY_BOX_SIZE - 96.0f * 0.35f), glm::vec2(0.35f), 0.0f, GLEngine::ColourRGBA8(255, 255, 255, 255), GLEngine::Justification::RIGHT);
                 sb.end();
                 sb.renderBatch();
             }
@@ -161,6 +157,7 @@ void Player::update(Chunk* chunks[WORLD_SIZE], float timeStep) {
     updateLightLevel(m_parentChunk);
 
     updateInput();
+    m_inventory->update();
 
     if(m_velocity.x > MAX_SPEED * m_inventory->getSpeedMultiplier()) {
         m_velocity.x = MAX_SPEED * m_inventory->getSpeedMultiplier();
@@ -207,21 +204,25 @@ void Player::updateInput() {
     }
 
     if(m_input->isKeyDown(SDL_BUTTON_LEFT) && m_selectedBlock) {
-        if(m_handItem) m_handItem->onLeftClick(m_selectedBlock);
-        m_selectedBlock->switchID((unsigned int)Categories::BlockIDs::AIR);
+        if(m_inventory->getItem(m_selectedHotbox, 0)) m_inventory->getItem(m_selectedHotbox, 0)->onLeftClick(m_selectedBlock);
+        m_selectedBlock->switchID((int)Categories::BlockIDs::AIR);
+        m_inventory->updateWeight();
     }
     if(m_input->isKeyDown(SDL_BUTTON_RIGHT) && m_selectedBlock) {
-        //if(m_handItem) m_handItem->onRightClick(m_selectedBlock);
-        m_selectedBlock->switchID((unsigned int)Categories::BlockIDs::TORCH);
+        if(m_inventory->getItem(m_selectedHotbox, 0)) m_inventory->getItem(m_selectedHotbox, 0)->onRightClick(m_selectedBlock);
+        m_inventory->updateWeight();
     }
-    if(m_input->isKeyPressed(SDLK_l)) {
-        Item newItem(0, 0.5, 1);
+    if(m_input->isKeyPressed(SDLK_r)) {
+        ItemBlock* newItem = new ItemBlock(1, 0.0f, 1, (int)Categories::BlockIDs::DIRT);
+        m_inventory->addItem(newItem);
+    }
+    if(m_input->isKeyPressed(SDLK_t)) {
+        ItemBlock* newItem = new ItemBlock(2, 0.0f, 1, (int)Categories::BlockIDs::TORCH);
         m_inventory->addItem(newItem);
     }
     if(m_input->isKeyPressed(SDLK_i)) {
         m_inventoryOpen = !m_inventoryOpen;
     }
-
 
     if(m_input->isKeyPressed(SDLK_1)) {
         m_selectedHotbox = 0;

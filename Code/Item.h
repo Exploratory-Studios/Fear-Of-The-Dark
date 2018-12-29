@@ -2,7 +2,6 @@
 
 #include <glm/glm.hpp>
 
-#include "Categories.h"
 #include "Block.h"
 
 /// Item class is basically abstract.
@@ -17,8 +16,8 @@ class Item
         Item() {}
         Item(unsigned int id, float weight, short unsigned int quantity) : m_id(id), m_weight(weight), m_quantity(quantity) {}
 
-        void onLeftClick(Block* selectedBlock) {}
-        void onRightClick(Block* selectedBlock) {} /// TODO variadic stuff for character pos, mouse pos, etc.  also: make virtua
+        virtual void onLeftClick(Block* selectedBlock) = 0;
+        virtual void onRightClick(Block* selectedBlock) = 0; /// TODO variadic stuff for character pos, mouse pos, etc.  also: make virtua
 
         bool isBlock() { return m_isBlock; }
         int getID() { return m_id; } // -1 is equivalent to null

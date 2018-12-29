@@ -7,33 +7,16 @@
 #include "Chunk.h"
 
 #include "PresetValues.h"
-
-enum class AI_TYPE {
-    FLY,
-    WALK,
-    SWIM
-};
-
-enum class DISABILITIES {
-    NONE,
-    BLIND,
-    LAME,
-    DEAF
-};
-
-enum class ATTACK_TYPE {
-    RANGED,
-    MELEE_ONLY,
-    MAGIC
-};
+#include "Entities/EntityFunctions.h"
 
 class Entity
 {
     friend class Scripter;
+    friend class EntityManager;
 
     public:
         Entity();
-        Entity(glm::vec2 position, Categories::Entity_Type type, unsigned int id);
+        Entity(glm::vec2 position, unsigned int id);
         virtual ~Entity();
 
         void init(glm::vec2 position, Categories::Entity_Type type, unsigned int id);
@@ -62,8 +45,8 @@ class Entity
         bool checkTilePosition(Tile* tiles[WORLD_HEIGHT][CHUNK_SIZE], Tile* extraTileArray[WORLD_HEIGHT][2], int chunkI, std::vector<glm::vec2>& collideTilePositions, float xPos, float yPos);
         void collideWithTile(glm::vec2 tilePos, bool ground = false);
         void updateLightLevel(Chunk* currentChunk);
-        virtual void updateAI(Chunk* activeChunks[WORLD_SIZE]) {}
-        virtual void updateMovement() {}
+        void updateAI(Chunk* activeChunks[WORLD_SIZE]);
+        void updateMovement();
 
         bool m_controls[4]; // Up, down (crouching while on ground), left, right
         float m_speed = 0.02;
@@ -89,9 +72,9 @@ class Entity
 
         bool m_flippedTexture = false;
 
-        AI_TYPE m_ai = AI_TYPE::WALK;
-        DISABILITIES m_disabilities = DISABILITIES::NONE;
-        ATTACK_TYPE m_attackType = ATTACK_TYPE::MELEE_ONLY;
+        Categories::AI_Type m_ai = Categories::AI_Type::WALKING;
+        Categories::Disability_Type m_disabilities = Categories::Disability_Type::NONE;
+        Categories::Attack_Type m_attackType = Categories::Attack_Type::MELEE_ONLY;
 
 };
 

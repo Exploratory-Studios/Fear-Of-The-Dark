@@ -4,7 +4,7 @@
 
 #include <SDL2/SDL_timer.h>
 
-#define DEV_CONTROLS
+//#define DEV_CONTROLS
 
 #ifdef DEV_CONTROLS
 #include <iostream>
@@ -55,7 +55,6 @@ void GameplayScreen::onEntry() {
     m_worldManager.init(m_WorldIOManager);
 
     initUI();
-
 
 }
 
@@ -108,13 +107,7 @@ void GameplayScreen::draw() {
         GLint pUniform = m_textureProgram.getUniformLocation("P");
         glUniformMatrix4fv(pUniform, 1, GL_FALSE, &projectionMatrix[0][0]);
 
-        m_spriteBatch.begin();
-
         m_worldManager.draw(m_spriteBatch, m_dr, m_tickTime, &m_textureProgram);
-
-        m_spriteBatch.end();
-
-        m_spriteBatch.renderBatch();
 
         m_textureProgram.unuse();
     }
@@ -137,6 +130,12 @@ void GameplayScreen::draw() {
 
         m_dr.end();
         m_dr.render(projectionMatrix, 3);
+
+        #ifdef DEV_CONTROLS
+        if(m_debuggingInfo) {
+            drawDebug();
+        }
+        #endif // DEV_CONTROLS
 
         m_uiTextureProgram.unuse();
     }
@@ -217,6 +216,9 @@ void GameplayScreen::checkInput() {
             }
         }
     }
+    if(m_game->inputManager.isKeyPressed(SDLK_F1)) {
+        m_debuggingInfo = !m_debuggingInfo;
+    }
     #endif // DEV_CONTROLS
 
 }
@@ -261,4 +263,15 @@ void GameplayScreen::scrollEvent(const SDL_Event& evnt) {
     } else if(m_scale > MAX_ZOOM) {
         m_scale = MAX_ZOOM;
     }
+}
+
+void GameplayScreen::drawDebug() {
+    std::string fpsStr = "HELLO!";
+
+    m_spriteBatch.begin();
+
+    m_spriteFont.draw(m_spriteBatch, fpsStr.c_str(), glm::vec2(0.5f, 0.5f), glm::vec2(1.0f, 1.0f), 0.0f, GLEngine::ColourRGBA8(255, 255, 255, 255));
+
+    m_spriteBatch.end();
+    m_spriteBatch.renderBatch();
 }

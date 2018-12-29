@@ -42,6 +42,7 @@ class GameplayScreen : public GLEngine::IGameScreen
 
         void drawHUD();
         void drawWorld();
+        void drawDebug();
 
         void scrollEvent(const SDL_Event& evnt);
 
@@ -67,6 +68,8 @@ class GameplayScreen : public GLEngine::IGameScreen
         int m_tickRate = 4;
 
         float m_scale = 1.0f;
+
+        bool m_debuggingInfo = false;
 
         glm::vec2 m_lastPlayerPos;
 };

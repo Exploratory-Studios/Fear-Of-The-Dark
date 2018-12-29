@@ -41,7 +41,7 @@ void Block::switchID(unsigned int newID) {
             m_texture = GLEngine::ResourceManager::getTexture("../Assets/Textures/Blocks/Torch.png");
             m_transparent = true;
             m_solid = false;
-            m_emittedLight = 2.5f;
+            m_emittedLight = 1.5f;
             break;
         case (unsigned int)Categories::BlockIDs::AIR:
             m_transparent = true;

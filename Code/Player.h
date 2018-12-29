@@ -40,13 +40,13 @@ class Player : public Entity
 
         glm::vec2 m_mousePos;
         Block* m_selectedBlock = nullptr;
-        Item* m_handItem;
 
         int m_selectedHotbox = 0;
 
         Inventory* m_inventory = nullptr;
 
         bool m_inventoryOpen = false;
+        bool m_debuggingInfo = false; // FPS, selectedBlock, etc.
 
         void updateInput();
 

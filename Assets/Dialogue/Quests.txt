@@ -1,0 +1,22 @@
+How are you doing? This is the question for the 2nd answer
+#BEGIN
+Pretty swell. This is the answer to the 2nd answer's question.
+#FLAGS_END
+3 1
+#FLAGS_END
+#END
+#END
+Do you know da wae?
+#BEGIN
+Not really, no
+42 0
+#FLAGS_END
+#FLAGS_END
+#END
+#BEGIN
+Yes, my queen
+42 1
+39 0
+#FLAGS_END
+#FLAGS_END
+#END

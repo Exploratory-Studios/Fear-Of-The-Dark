@@ -1,0 +1,24 @@
+#BEGIN
+Hello there this is the question's text
+#BEGIN
+Hey, this is the 1st answer's text
+0 1
+1 0
+#FLAGS_END
+0 1
+1 0
+#FLAGS_END
+#END
+#BEGIN
+Hey, this is the 2nd answer's text
+#FLAGS_END
+#FLAGS_END
+How are you doing? This is the question for the 2nd answer
+#BEGIN
+Pretty swell. This is the answer to the 2nd answer's question.
+#FLAGS_END
+3
+#FLAGS_END
+#END
+#END
+#END

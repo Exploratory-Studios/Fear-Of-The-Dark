@@ -29,7 +29,7 @@ void WorldManager::init(WorldIOManager* worldIOManager) {
         m_entityManager.init(m_player, entities);
     }
 
-    m_questManager = new QuestManager("../Assets/Dialogue/Quests.txt");
+    m_questManager = new QuestManager("../Assets/Questing/DialogueList.txt", "../Assets/Questing/FlagList.txt");
 }
 #include <iostream>
 void WorldManager::update(GLEngine::Camera2D* worldCamera, float timeStepVariable, float time) {

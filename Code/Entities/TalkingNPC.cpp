@@ -1,7 +1,7 @@
 #include "TalkingNPC.h"
 
 TalkingNPC::TalkingNPC(glm::vec2 position, unsigned int id) {
-    init(position, Categories::Entity_Type::Dialogue, id)
+    init(position, Categories::Entity_Type::DIALOGUE, id);
 }
 
 TalkingNPC::~TalkingNPC()

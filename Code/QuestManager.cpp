@@ -2,9 +2,10 @@
 
 #include <iostream>
 
-QuestManager::QuestManager(std::string listPath)
+QuestManager::QuestManager(std::string questListPath, std::string flagListPath)
 {
-    readDialogueFromList(listPath);
+    readDialogueFromList(questListPath);
+    readFlagsFromList(flagListPath);
 }
 
 QuestManager::~QuestManager()
@@ -19,6 +20,16 @@ void QuestManager::readDialogueFromList(std::string listPath) {
         std::cout << "\n!!! Failed to load quest list at " << listPath << " !!!\n";
     } else {
         m_questList = getDialogue(file);
+    }
+}
+
+void QuestManager::readFlagsFromList(std::string listPath) {
+    std::ifstream file(listPath);
+
+    if(file.fail()) {
+        std::cout << "\n!!! Failed to load flag list at " << listPath << " !!!\n";
+    } else {
+        m_flagList = getFlags(file);
     }
 }
 
@@ -99,7 +110,6 @@ std::vector<Question> QuestManager::getDialogue(std::ifstream& file) {
             if(depth <= 0) {
                 // Got one question's lines completely
                 questions.push_back(readQuestion(lines));
-                std::cout << "Loaded dialogue (" << 100.0f - ((int)(((float)file.tellg() / (float)filesize) * 1000) / 10.0f) << " percent of file left)\n";
                 lines.clear();
             }
         }
@@ -108,4 +118,25 @@ std::vector<Question> QuestManager::getDialogue(std::ifstream& file) {
     std::cout << "Dialogue loaded! (" << filesize << " bytes)\n";
 
     return questions;
+}
+
+std::vector<Flag> QuestManager::getFlags(std::ifstream& file) {
+    int pos = file.tellg();
+    file.seekg(0, std::ios::end);
+    int filesize = file.tellg();
+    file.seekg(pos);
+
+    std::cout << "Loading flags. " << filesize << " bytes to read.\n";
+
+    std::vector<Flag> flags;
+
+    std::string line;
+    while(std::getline(file, line)) {
+        flags.push_back(Flag(line));
+        std::cout << "Loaded flag with id of " << Flag(line).id << " and value of " << Flag(line).value << "\n";
+    }
+
+    std::cout << "Flags loaded! (" << filesize << " bytes)\n";
+
+    return flags;
 }

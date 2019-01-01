@@ -70,7 +70,9 @@ void GameplayScreen::update() {
 
     m_gui.update();
 
-    m_worldManager.update(&m_camera, m_deltaTime, m_time);
+    if(!m_worldManager.m_questManager->m_dialogueManager->isInConversation()) {
+        m_worldManager.update(&m_camera, m_deltaTime, m_time);
+    }
 
     if((m_worldManager.getPlayer()->getPosition().x + m_worldManager.getPlayer()->getSize().x / 2.0f) - m_lastPlayerPos.x < -CHUNK_SIZE * TILE_SIZE) {
         m_lastPlayerPos.x -= WORLD_SIZE * CHUNK_SIZE * TILE_SIZE;
@@ -92,6 +94,8 @@ void GameplayScreen::update() {
     if((int)m_frame++ % (int)(60 / m_tickRate) == 0) { // m_frame is equal to current frame
         tick();
     }
+
+    m_worldManager.m_questManager->m_dialogueManager->update(m_game->inputManager);
 
 }
 
@@ -125,6 +129,7 @@ void GameplayScreen::draw() {
         glUniformMatrix4fv(pUniform, 1, GL_FALSE, &projectionMatrix[0][0]);
 
         m_worldManager.getPlayer()->drawGUI(m_spriteBatch, m_spriteFont);
+        m_worldManager.m_questManager->m_dialogueManager->draw(m_gui);
 
         m_gui.draw();
 
@@ -164,7 +169,9 @@ void GameplayScreen::checkInput() {
 
     #ifdef DEV_CONTROLS
     if(m_game->inputManager.isKeyPressed(SDLK_BACKSLASH)) {
-        std::string in;
+        m_worldManager.m_questManager->m_dialogueManager->startConversation(1, m_spriteBatch, m_spriteFont, m_game->inputManager, m_gui);
+
+        /*std::string in;
         std::getline(std::cin, in);
 
         std::regex fullCmd(".+(\\s(\\d+))*");
@@ -214,7 +221,7 @@ void GameplayScreen::checkInput() {
             } else if(cmd == "tickRate") {
                 if((float)args[0] > 0) m_tickRate = (float)args[0];
             }
-        }
+        }*/
     }
     if(m_game->inputManager.isKeyPressed(SDLK_F1)) {
         m_debuggingInfo = !m_debuggingInfo;

@@ -9,7 +9,6 @@
 #include <SpriteFont.h>
 
 #include "ScreenIndices.h"
-#include "WidgetLabel.h"
 #include "WorldIOManager.h"
 
 enum class MiniScreen {
@@ -60,8 +59,6 @@ class LoadScreen : public GLEngine::IGameScreen
         bool onCreateButtonClicked(const CEGUI::EventArgs& e);
 
         int m_nextScreenIndex = SCREEN_INDEX_NO_SCREEN;
-
-        std::vector<WidgetLabel> m_labels;
 
         std::vector<MiniScreenEntry> m_miniScreenEntries;
         MiniScreen m_miniScreen = MiniScreen::MAIN;

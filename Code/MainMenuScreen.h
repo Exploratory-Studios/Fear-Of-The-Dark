@@ -1,7 +1,6 @@
 #pragma once
 
 #include "ScreenIndices.h"
-#include "WidgetLabel.h"
 
 #include <IGameScreen.h>
 #include <Window.h>
@@ -49,6 +48,8 @@ class MainMenuScreen : public GLEngine::IGameScreen
         CEGUI::PushButton* m_playButton = nullptr;
         CEGUI::PushButton* m_optionsButton = nullptr;
         CEGUI::PushButton* m_exitButton = nullptr;
+        CEGUI::DefaultWindow* m_titleLine1 = nullptr;
+        CEGUI::DefaultWindow* m_titleLine2 = nullptr;
 
         GLEngine::Camera2D m_camera;
         GLEngine::Camera2D m_uiCamera;
@@ -58,8 +59,6 @@ class MainMenuScreen : public GLEngine::IGameScreen
         GLEngine::GLSLProgram m_uiTextureProgram;
         GLEngine::SpriteFont m_spriteFont;
 
-        std::vector<WidgetLabel> m_labels;
-
         std::vector<GLEngine::GLTexture> m_backgroundImages;
         GLEngine::ColourRGBA8 m_backgroundImageColour = GLEngine::ColourRGBA8(255, 255, 255, 50);
         int m_currentBackgroundImage;
@@ -68,4 +67,6 @@ class MainMenuScreen : public GLEngine::IGameScreen
         float m_backgroundChangeTime = 15.0f;
 
         int m_nextScreenIndex = SCREEN_INDEX_NO_SCREEN;
+
+        bool m_inited = false;
 };

@@ -29,22 +29,27 @@ void MainMenuScreen::destroy() {
 }
 
 void MainMenuScreen::onEntry() {
-    initShaders();
 
-    m_spriteBatch.init();
-    m_spriteFont.init("../Assets/GUI/fonts/QuietHorror.ttf", 96);
+    if(!m_inited) {
+        initShaders();
 
-    m_uiCamera.init(m_window->getScreenWidth(), m_window->getScreenHeight());
-    m_uiCamera.setPosition(glm::vec2(m_window->getScreenWidth() / 2.0f, m_window->getScreenHeight() / 2.0f));
+        m_spriteBatch.init();
+        m_spriteFont.init("../Assets/GUI/fonts/QuietHorror.ttf", 96);
 
-    m_camera.init(m_window->getScreenWidth(), m_window->getScreenHeight());
-    m_camera.setPosition(glm::vec2(m_window->getScreenWidth() / 2.0f, m_window->getScreenHeight() / 2.0f));
+        m_uiCamera.init(m_window->getScreenWidth(), m_window->getScreenHeight());
+        m_uiCamera.setPosition(glm::vec2(m_window->getScreenWidth() / 2.0f, m_window->getScreenHeight() / 2.0f));
 
-    initUI();
+        m_camera.init(m_window->getScreenWidth(), m_window->getScreenHeight());
+        m_camera.setPosition(glm::vec2(m_window->getScreenWidth() / 2.0f, m_window->getScreenHeight() / 2.0f));
 
-    addBackgroundImage(m_backgroundImages, "Texture1.png");
-    addBackgroundImage(m_backgroundImages, "Texture2.png");
-    addBackgroundImage(m_backgroundImages, "Texture3.png");
+        initUI();
+
+        addBackgroundImage(m_backgroundImages, "Texture1.png");
+        addBackgroundImage(m_backgroundImages, "Texture2.png");
+        addBackgroundImage(m_backgroundImages, "Texture3.png");
+    }
+
+    m_time = 0.0f;
 }
 
 void addBackgroundImage(std::vector<GLEngine::GLTexture>& backgroundImages, std::string filename) {
@@ -132,8 +137,6 @@ void MainMenuScreen::draw() {
 
         m_spriteBatch.begin();
 
-        for(auto l : m_labels) l.draw(m_spriteFont, m_spriteBatch, GLEngine::ColourRGBA8(l.getColour().r, l.getColour().g, l.getColour().b, a));
-
         m_spriteBatch.end();
         m_spriteBatch.renderBatch();
 
@@ -149,36 +152,46 @@ void MainMenuScreen::initUI() {
         m_gui.loadScheme("VanillaSkin.scheme");
         m_gui.loadScheme("FOTDSkin.scheme");
 
-        m_gui.setFont("Amatic-22");
+        m_gui.setFont("QuietHorror-42");
 
         m_gui.setMouseCursor("FOTDSkin/MouseArrow");
         m_gui.showMouseCursor();
         SDL_ShowCursor(0);
     }
 
-        m_labels.emplace_back("Fear Of", glm::vec2(1.6f, 1.6f), glm::vec2(0.2f, 0.3f), GLEngine::ColourRGBA8(255.0f, 255.0f, 255.0f, 255.0f), m_window);
-        m_labels.emplace_back("The Dark", glm::vec2(1.6f, 1.6f), glm::vec2(0.3f, 0.45f), GLEngine::ColourRGBA8(255.0f, 255.0f, 255.0f, 255.0f), m_window);
+    {
+        m_titleLine1 = static_cast<CEGUI::DefaultWindow*>(m_gui.createWidget("FOTDSkin/Label", glm::vec4(0.075f, 0.05f, 0.5f, 0.25f), glm::vec4(0.0f), "TitleBox1MainMenu"));
+        m_titleLine1->setText("Fear Of");
+        m_titleLine1->setProperty("HorzFormatting", "LeftAligned");
+        m_titleLine1->setFont("QuietHorror-118");
+
+        m_titleLine2 = static_cast<CEGUI::DefaultWindow*>(m_gui.createWidget("FOTDSkin/Label", glm::vec4(0.075f, 0.25f, 0.5f, 0.25f), glm::vec4(0.0f), "TitleBox2MainMenu"));
+        m_titleLine2->setText("     The Dark");
+        m_titleLine2->setProperty("HorzFormatting", "LeftAligned");
+        m_titleLine2->setFont("QuietHorror-118");
+    }
 
     {
+
 
         const float PADDING = 0.15f;
 
         m_playButton = static_cast<CEGUI::PushButton*>(m_gui.createWidget("FOTDSkin/Button", glm::vec4(0.1f, 0.5f, 0.30f, 0.1f), glm::vec4(0.0f), "PlayButtonMainMenu"));
         m_playButton->subscribeEvent(CEGUI::PushButton::EventClicked,
                                                 CEGUI::Event::Subscriber(&MainMenuScreen::EventPlayButtonClicked, this));
-        m_labels.emplace_back("Play", glm::vec2(1.2f, 0.8f), m_playButton, GLEngine::ColourRGBA8(255.0f, 255.0f, 255.0f, 255.0f), m_window);
+        m_playButton->setText("[padding='l:0 t:15 r:0 b:0']Play");
 
 
         m_optionsButton = static_cast<CEGUI::PushButton*>(m_gui.createWidget("FOTDSkin/Button", glm::vec4(0.1f, 0.5f + PADDING, 0.30f, 0.1f), glm::vec4(0.0f), "OptionsButtonMainMenu"));
         m_optionsButton->subscribeEvent(CEGUI::PushButton::EventClicked,
                                                 CEGUI::Event::Subscriber(&MainMenuScreen::EventOptionsButtonClicked, this));
-        m_labels.emplace_back("Options", glm::vec2(1.2f, 0.8f), m_optionsButton, GLEngine::ColourRGBA8(255.0f, 255.0f, 255.0f, 255.0f), m_window);
+        m_optionsButton->setText("[padding='l:0 t:15 r:0 b:0']Options");
 
 
         m_exitButton = static_cast<CEGUI::PushButton*>(m_gui.createWidget("FOTDSkin/Button", glm::vec4(0.1f, 0.5f + PADDING * 2.0f, 0.30f, 0.1f), glm::vec4(0.0f), "ExitButtonMainMenu"));
         m_exitButton->subscribeEvent(CEGUI::PushButton::EventClicked,
                                                 CEGUI::Event::Subscriber(&MainMenuScreen::EventExitButtonClicked, this));
-        m_labels.emplace_back("Exit", glm::vec2(1.2f, 0.8f), m_exitButton, GLEngine::ColourRGBA8(255.0f, 255.0f, 255.0f, 255.0f), m_window);
+        m_exitButton->setText("[padding='l:0 t:15 r:0 b:0']Exit");
     }
 
 }

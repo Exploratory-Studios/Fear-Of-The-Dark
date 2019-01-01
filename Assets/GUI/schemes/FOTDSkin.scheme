@@ -1,6 +1,13 @@
 <?xml version="1.0" ?>
 <GUIScheme version="5" name="FOTDSkin">
     <Font filename="DejaVuSans-12.font" />
+    <Font filename="QuietHorror-22.font" />
+    <Font filename="QuietHorror-26.font" />
+    <Font filename="QuietHorror-30.font" />
+    <Font filename="QuietHorror-34.font" />
+    <Font filename="QuietHorror-38.font" />
+    <Font filename="QuietHorror-42.font" />
+    <Font filename="QuietHorror-118.font" />
     <Imageset filename="FOTDSkin.imageset" />
     <LookNFeel filename="FOTDSkin.looknfeel" />
     <WindowRendererSet filename="CEGUICoreWindowRendererSet" />

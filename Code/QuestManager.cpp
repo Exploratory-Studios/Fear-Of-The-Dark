@@ -2,15 +2,61 @@
 
 #include <iostream>
 
-QuestManager::QuestManager(std::string questListPath, std::string flagListPath)
+#include <GUI.h>
+
+DialogueManager::~DialogueManager() {
+    delete m_questionList;
+    delete m_flagList;
+}
+
+void DialogueManager::startConversation(unsigned int id, GLEngine::SpriteBatch& sb, GLEngine::SpriteFont& sf, GLEngine::InputManager& input, GLEngine::GUI& gui) {
+    Question* initialQuestion = &((*m_questionList)[id]);
+
+    m_inConversation = true;
+
+    initConversation(id, gui);
+}
+
+void DialogueManager::initConversation(unsigned int id, GLEngine::GUI& gui) { // Sets gui for conversation
+    CEGUI::FrameWindow* window = static_cast<CEGUI::FrameWindow*>(gui.createWidget("FOTDSkin/FrameWindow", glm::vec4(0.05f, 0.7f, 0.9f, 0.25f), glm::vec4(0.0f), "FrameWindowConversation"));
+
+    window->setTitleBarEnabled(false);
+    window->setCloseButtonEnabled(false);
+    window->setRollupEnabled(false);
+    window->setDragMovingEnabled(false);
+
+    for(int i = 0; i < (*m_questionList)[id].answers.size(); i++) {
+        CEGUI::PushButton* answerButton = static_cast<CEGUI::PushButton*>(gui.createWidget(window, "FOTDSkin/Button", glm::vec4(0.02f, 0.05f + ((0.02f + 0.29f) * (float)i), 0.96f, 0.29f), glm::vec4(0.0f), std::string("Option" + std::to_string(i) + "Conversation")));
+        answerButton->setText((*m_questionList)[id].answers[i].str);
+        m_buttons.push_back(answerButton);
+    }
+}
+
+void DialogueManager::draw(GLEngine::GUI& gui) {
+
+}
+
+void DialogueManager::update(GLEngine::InputManager& input) {
+    if(m_inConversation) {
+        if(input.isKeyPressed(SDL_BUTTON_LEFT)) {
+            for(int i = 0; i < m_buttons.size(); i++) {
+                m_buttons[i]->destroy();
+            }
+        }
+    }
+}
+
+QuestManager::QuestManager(std::string questionListPath, std::string flagListPath)
 {
-    readDialogueFromList(questListPath);
+    readDialogueFromList(questionListPath);
     readFlagsFromList(flagListPath);
+
+    m_dialogueManager = new DialogueManager(&m_questionList, &m_flagList);
 }
 
 QuestManager::~QuestManager()
 {
-    //dtor
+    delete m_dialogueManager;
 }
 
 void QuestManager::readDialogueFromList(std::string listPath) {
@@ -19,7 +65,7 @@ void QuestManager::readDialogueFromList(std::string listPath) {
     if(file.fail()) {
         std::cout << "\n!!! Failed to load quest list at " << listPath << " !!!\n";
     } else {
-        m_questList = getDialogue(file);
+        m_questionList = getDialogue(file);
     }
 }
 
@@ -37,11 +83,10 @@ Question QuestManager::readQuestion(std::vector<std::string> lines) {
     Question q;
     {
         int depth;
+        q.str = lines[0];
 
-        for(unsigned int i = 0; i < lines.size(); i++) {
-            if(q.str.empty() && lines[i] != "#BEGIN" && !lines[i].empty()) {
-                q.str = lines[i];
-            } else if (lines[i] == "#BEGIN") {
+        for(unsigned int i = 1; i < lines.size(); i++) {
+            if (lines[i] == "#BEGIN") {
                 Answer a;
                 int answerDepth = 0;
                 std::vector<std::string> newLines;
@@ -66,6 +111,8 @@ Question QuestManager::readQuestion(std::vector<std::string> lines) {
                         if(k == 0) a.requiredFlags.arrangement.push_back(f);
                         if(k == 1) a.followingFlags.arrangement.push_back(f);
                         if(j < newLines.size()-1) j++;
+
+                        if(newLines[j] == "#END");
                     }
                     if(j < newLines.size()-1) j++;
                 }
@@ -76,14 +123,14 @@ Question QuestManager::readQuestion(std::vector<std::string> lines) {
                         extraLines.push_back(newLines[k]);
                     }
                     extraLines.pop_back(); // Gets rid of extra "#END"
-                    a.followingQuestion = readQuestion(extraLines);
+                    if(extraLines.size() != 0) a.followingQuestion = readQuestion(extraLines);
                 }
+
                 q.answers.push_back(a);
             }
-            return q;
         }
+        return q;
     }
-
 }
 
 
@@ -105,8 +152,10 @@ std::vector<Question> QuestManager::getDialogue(std::ifstream& file) {
         lines.push_back(line); // Simply read all lines into vector
         if(line == "#BEGIN") {
             depth++;
+            if(depth == 1) lines.pop_back();
         } else if (line == "#END") {
             depth--;
+            if(depth == 0) lines.pop_back();
             if(depth <= 0) {
                 // Got one question's lines completely
                 questions.push_back(readQuestion(lines));

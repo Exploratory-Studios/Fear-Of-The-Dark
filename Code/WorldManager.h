@@ -29,13 +29,14 @@ class WorldManager
         void draw(GLEngine::SpriteBatch& sb, GLEngine::DebugRenderer& dr, int tickTime, GLEngine::GLSLProgram* program);
 
         Player* getPlayer() { return m_player; }
+        QuestManager* m_questManager = nullptr;
 
     private:
         void activateChunks();
 
         EntityManager m_entityManager;
         WorldIOManager* m_worldIOManager = nullptr;
-        QuestManager* m_questManager = nullptr;
+
 
         Player* m_player;                // NO... Why not? I think I may possibly, with just a slight chance, be a pyschopath
 

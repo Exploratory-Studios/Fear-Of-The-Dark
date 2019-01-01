@@ -86,10 +86,6 @@ void LoadScreen::draw() {
     }
 
     m_gui.draw();
-    for(auto l : m_labels) l.draw(m_spriteFont, m_spriteBatch, GLEngine::ColourRGBA8(l.getColour().r,
-                                                                                     l.getColour().g,
-                                                                                     l.getColour().b,
-                                                                                     alpha));
 
     m_spriteBatch.end();
     m_spriteBatch.renderBatch();
@@ -115,7 +111,7 @@ void LoadScreen::initUI() {
         m_gui.init("../Assets/GUI");
         m_gui.loadScheme("FOTDSkin.scheme");
 
-        m_gui.setFont("QuietHorror-22");
+        m_gui.setFont("QuietHorror-30");
 
         m_gui.setMouseCursor("FOTDSkin/MouseArrow");
         m_gui.showMouseCursor();
@@ -125,7 +121,8 @@ void LoadScreen::initUI() {
     {
         m_createButton = static_cast<CEGUI::PushButton*> (m_gui.createWidget("FOTDSkin/Button", glm::vec4(0.1f, 0.1f, 0.25f, 0.15f), glm::vec4(0.0f), "CreatePushbutton"));
         m_createButton->subscribeEvent(CEGUI::PushButton::EventClicked, CEGUI::Event::Subscriber(&LoadScreen::onCreateButtonClicked, this));
-        m_labels.emplace_back("Create New", glm::vec2(0.8f, 0.7f), m_createButton, GLEngine::ColourRGBA8(255.0f, 255.0f, 255.0f, 255.0f), m_window);
+        m_createButton->setText("[padding='l:0 t:15 r:0 b:0']New World");
+        m_createButton->setFont("QuietHorror-42");
         m_miniScreenEntries.emplace_back(m_createButton, MiniScreen::MAIN);
     }
 
@@ -140,11 +137,12 @@ void LoadScreen::initUI() {
 
         m_newWorldCreateNewButton = static_cast<CEGUI::PushButton*> (m_gui.createWidget("FOTDSkin/Button", glm::vec4(0.35f, 0.7f, 0.3f, 0.15f), glm::vec4(0.0f), "CreateNewWorldPushbutton"));
         m_newWorldCreateNewButton->subscribeEvent(CEGUI::PushButton::EventClicked, CEGUI::Event::Subscriber(&LoadScreen::onNewWorldCreateNewButtonClicked, this));
-        m_labels.emplace_back("Create", glm::vec2(0.8f, 0.5f), m_newWorldCreateNewButton, GLEngine::ColourRGBA8(255, 255, 255, 255), m_window);
+        m_newWorldCreateNewButton->setText("[padding='l:0 t:15 r:0 b:0']Create World");
+        m_newWorldCreateNewButton->setFont("QuietHorror-42");
         m_miniScreenEntries.emplace_back(m_newWorldCreateNewButton, MiniScreen::CREATE);
 
-        m_newWorldFlatCheckbox = static_cast<CEGUI::ToggleButton*> (m_gui.createWidget("FOTDSkin/RadioButton", glm::vec4(0.1f, 0.4f, 0.1f, 0.1f), glm::vec4(0.0f), "WorldFlatToggleButton"));
-        m_labels.emplace_back("Flat World?", glm::vec2(0.8f, 0.5f), m_newWorldFlatCheckbox, GLEngine::ColourRGBA8(255.0f, 255.0f, 255.0f, 255.0f), m_window);
+        m_newWorldFlatCheckbox = static_cast<CEGUI::ToggleButton*> (m_gui.createWidget("FOTDSkin/RadioButton", glm::vec4(0.1f, 0.4f, 0.12f, 0.1f), glm::vec4(0.0f), "WorldFlatToggleButton"));
+        m_newWorldFlatCheckbox->setText("[padding='l:0 t:10 r:0 b:0']Flat World");
         m_miniScreenEntries.emplace_back(m_newWorldFlatCheckbox, MiniScreen::CREATE);
     }
 }

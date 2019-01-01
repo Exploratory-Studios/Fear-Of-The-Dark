@@ -3,9 +3,20 @@
 #include <fstream>
 #include <string>
 #include <vector>
+#include <iostream>
+
+#include <SpriteBatch.h>
+#include <SpriteFont.h>
+#include <GUI.h>
 
 #include "EntityManager.h"
-#include <iostream>
+
+class Flag;
+struct FlagArrangement;
+class Answer;
+class Question;
+class DialogueManager;
+class QuestManager;
 
 class Flag {
 public:
@@ -20,8 +31,6 @@ public:
 struct FlagArrangement {
     std::vector<Flag> arrangement;
 };
-
-class Answer;
 
 class Question {
 public:
@@ -39,13 +48,41 @@ public:
     Question followingQuestion;
 };
 
+class DialogueManager {
+    public:
+        DialogueManager(std::vector<Question>* questionList, std::vector<Flag>* flagList) : m_questionList(questionList), m_flagList(flagList) { }
+        ~DialogueManager();
+
+        void draw(GLEngine::GUI& gui);
+        void update(GLEngine::InputManager& input);
+
+        void startConversation(unsigned int id, GLEngine::SpriteBatch& sb, GLEngine::SpriteFont& sf, GLEngine::InputManager& input, GLEngine::GUI& gui); // The id is the index of the initial question. This function sets focus and starts a loop to draw and accept input.
+
+        bool isInConversation() { return m_inConversation; }
+
+    private:
+        void initConversation(unsigned int id, GLEngine::GUI& gui);
+
+        std::vector<Question>* m_questionList = nullptr;
+        std::vector<Flag>* m_flagList = nullptr;
+
+        std::vector<CEGUI::PushButton*> m_buttons;
+
+        // Following variables are for actually talking
+        bool m_inConversation = false;
+};
+
 class QuestManager
 {
     public:
-        QuestManager(std::string questListPath, std::string flagListPath);
+        QuestManager(std::string questionListPath, std::string flagListPath);
         ~QuestManager();
 
+        DialogueManager* m_dialogueManager = nullptr; /// TODO make this private again please :)
+
     private:
+
+
         void readDialogueFromList(std::string listPath);
         void readFlagsFromList(std::string listPath);
 
@@ -54,20 +91,6 @@ class QuestManager
 
         std::vector<Flag> getFlags(std::ifstream& file);
 
-        std::vector<Question> m_questList; // Full list of quests in game
+        std::vector<Question> m_questionList; // Full list of questions (dialogue "heads") in game
         std::vector<Flag> m_flagList; // Full list of all flags that exist
-};
-
-class DialogueManager {
-    public:
-        DialogueManager(std::vector<Question>* questList, std::vector<Flag>* flagList) : m_questList(questList), m_flagList(flagList) { }
-
-    private:
-        std::vector<Question>* m_questList = nullptr;
-        std::vector<Flag>* m_flagList = nullptr;
-
-        // Following variables are for actually talking
-        bool m_inConversation = false;
-        unsigned int m_curQuestionIndex = 0;
-
 };

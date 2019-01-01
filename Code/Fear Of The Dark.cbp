@@ -66,7 +66,6 @@
 		<Unit filename="../Assets/Art/Concept/Readme.txt" />
 		<Unit filename="../Assets/Art/Entities/Readme.txt" />
 		<Unit filename="../Assets/Art/Spritesheets/Readme.txt" />
-		<Unit filename="../Assets/Dialogue/Quests.txt" />
 		<Unit filename="../Assets/GUI/Player/Cursor.png" />
 		<Unit filename="../Assets/GUI/Player/Hotbar.png" />
 		<Unit filename="../Assets/GUI/Player/HotbarBox.png~" />
@@ -75,6 +74,11 @@
 		<Unit filename="../Assets/GUI/animations/GameMenu.anims" />
 		<Unit filename="../Assets/GUI/animations/example.anims" />
 		<Unit filename="../Assets/GUI/fonts/Amatic-22.font" />
+		<Unit filename="../Assets/GUI/fonts/Amatic-26.font" />
+		<Unit filename="../Assets/GUI/fonts/Amatic-30.font" />
+		<Unit filename="../Assets/GUI/fonts/Amatic-34.font" />
+		<Unit filename="../Assets/GUI/fonts/Amatic-38.font" />
+		<Unit filename="../Assets/GUI/fonts/Amatic-42.font" />
 		<Unit filename="../Assets/GUI/fonts/Amatic-Bold.ttf" />
 		<Unit filename="../Assets/GUI/fonts/Amatic.ttf" />
 		<Unit filename="../Assets/GUI/fonts/AmaticBold-22.font" />
@@ -202,6 +206,8 @@
 		<Unit filename="../Assets/GUI/xml_schemas/Imageset.xsd" />
 		<Unit filename="../Assets/GUI/xml_schemas/Samples.xsd" />
 		<Unit filename="../Assets/Music/Readme.txt" />
+		<Unit filename="../Assets/Questing/DialogueList.txt" />
+		<Unit filename="../Assets/Questing/FlagList.txt" />
 		<Unit filename="../Assets/Readme.txt" />
 		<Unit filename="../Assets/Shaders/textureShading.frag" />
 		<Unit filename="../Assets/Shaders/textureShading.vert" />
@@ -224,9 +230,10 @@
 		<Unit filename="Chunk.cpp" />
 		<Unit filename="Chunk.h" />
 		<Unit filename="Devlog FOTD Start Oct 9 2017" />
+		<Unit filename="Entities/EntityFunctions.cpp" />
 		<Unit filename="Entities/EntityFunctions.h" />
-		<Unit filename="Entities/WalkingNPC.cpp" />
-		<Unit filename="Entities/WalkingNPC.h" />
+		<Unit filename="Entities/TalkingNPC.cpp" />
+		<Unit filename="Entities/TalkingNPC.h" />
 		<Unit filename="Entity.cpp" />
 		<Unit filename="Entity.h" />
 		<Unit filename="EntityManager.cpp" />

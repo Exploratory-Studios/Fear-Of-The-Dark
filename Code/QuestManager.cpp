@@ -11,11 +11,12 @@ DialogueManager::~DialogueManager() {
 
 void DialogueManager::startConversation(unsigned int id, GLEngine::SpriteBatch& sb, GLEngine::SpriteFont& sf, GLEngine::InputManager& input, GLEngine::GUI& gui) {
     Question* initialQuestion = (*m_questionList)[id];
-    initConversation(id, gui);
+    m_currentQuestion = initialQuestion;
+    initConversation(initialQuestion, gui);
     m_inConversation = true;
 }
 
-void DialogueManager::initConversation(unsigned int id, GLEngine::GUI& gui) { // Sets gui for conversation
+void DialogueManager::initConversation(Question* initialQuestion, GLEngine::GUI& gui) { // Sets gui for conversation
     if(!m_inConversation) {
 
         CEGUI::FrameWindow* window = static_cast<CEGUI::FrameWindow*>(gui.createWidget("FOTDSkin/FrameWindow", glm::vec4(0.05f, 0.7f, 0.9f, 0.25f), glm::vec4(0.0f), "FrameWindowConversation"));
@@ -25,12 +26,42 @@ void DialogueManager::initConversation(unsigned int id, GLEngine::GUI& gui) { //
         window->setRollupEnabled(false);
         window->setDragMovingEnabled(false);
 
-        for(int i = 0; i < (*m_questionList)[id]->answers.size(); i++) {
-            CEGUI::PushButton* answerButton = static_cast<CEGUI::PushButton*>(gui.createWidget(window, "FOTDSkin/Button", glm::vec4(0.02f, 0.05f + ((0.02f + 0.29f) * (float)i), 0.96f, 0.29f), glm::vec4(0.0f), std::string("Option" + std::to_string(i) + "Conversation")));
-            answerButton->setText((*m_questionList)[id]->answers[i].str);
-            m_buttons.push_back(answerButton);
-        }
+        CEGUI::FrameWindow* textFrame = static_cast<CEGUI::FrameWindow*>(gui.createWidget(window, "FOTDSkin/FrameWindow", glm::vec4(0.02f, 0.05f, 0.96f, 0.25f), glm::vec4(0.0f), "TextFrameConversation"));
 
+        textFrame->setTitleBarEnabled(false);
+        textFrame->setCloseButtonEnabled(false);
+        textFrame->setRollupEnabled(false);
+        textFrame->setDragMovingEnabled(false);
+
+        CEGUI::DefaultWindow* textWindow = static_cast<CEGUI::DefaultWindow*>(gui.createWidget(textFrame, "FOTDSkin/Label", glm::vec4(0.0f, 0.0f, 1.0f, 1.0f), glm::vec4(0.0f), "TextBoxConversation"));\
+        textWindow->setText("[colour='FF000000']" + m_currentQuestion->str);
+
+        CEGUI::DefaultWindow* answersWindow = static_cast<CEGUI::DefaultWindow*>(gui.createWidget(window, "FOTDSkin/Label", glm::vec4(0.02f, 0.325f, 0.96f, 0.7f), glm::vec4(0.0f), "OptionsBoxConversation"));
+
+        CEGUI::ScrollablePane* answersScroller = static_cast<CEGUI::ScrollablePane*>(gui.createWidget(answersWindow, "FOTDSkin/ScrollablePane", glm::vec4(0.0f, 0.0f, 1.0f, 1.0f), glm::vec4(0.0f), "OptionsScrollPaneConversation"));
+        m_otherWidgets.push_back(answersScroller);
+        m_otherWidgets.push_back(answersWindow);
+        m_otherWidgets.push_back(textWindow);
+        m_otherWidgets.push_back(textFrame);
+        m_otherWidgets.push_back(window);
+        // We must push them in the order that they are in (children first, then parents)
+
+        float paddingIncrementer = 0;
+        for(int i = 0; i < initialQuestion->answers.size(); i++) {
+            CEGUI::PushButton* answerButton = static_cast<CEGUI::PushButton*>(gui.createWidget(answersScroller, "FOTDSkin/Button", glm::vec4(0.0f, 0.025f + ((0.03f + 0.425f) * paddingIncrementer), 1.0f, 0.425f), glm::vec4(0.0f), std::string("Option" + std::to_string(i) + "Conversation")));
+            answerButton->setText(initialQuestion->answers[i].str);
+            m_buttons.push_back(answerButton);
+
+            paddingIncrementer++;
+            for(int j = 0; j < m_currentQuestion->answers[i].requiredFlags.arrangement.size(); j++) {
+                unsigned int flagId = m_currentQuestion->answers[i].requiredFlags.arrangement[j].id;
+                if((*m_flagList)[flagId]->value != m_currentQuestion->answers[i].requiredFlags.arrangement[j].value) {
+                    paddingIncrementer--;
+                    m_buttons[i]->setVisible(false);
+                    break;
+                }
+            }
+        }
     }
 }
 
@@ -38,11 +69,45 @@ void DialogueManager::draw(GLEngine::GUI& gui) {
 
 }
 
-void DialogueManager::update(GLEngine::InputManager& input) {
+void DialogueManager::update(GLEngine::InputManager& input, GLEngine::GUI& gui) {
     if(m_inConversation) {
         if(input.isKeyPressed(SDL_BUTTON_LEFT)) {
+
+            int optionChosen = -1;
+
+            // Set value of flags
             for(int i = 0; i < m_buttons.size(); i++) {
-                m_buttons[i]->destroy();
+                if(m_buttons[i]->isPushed() && m_buttons[i]->isVisible()) {
+                    optionChosen = i;
+                    for(int j = 0; j < m_currentQuestion->answers[i].followingFlags.arrangement.size(); j++) {
+                        unsigned int flagId = m_currentQuestion->answers[i].followingFlags.arrangement[j].id;
+
+                        if(flagId >= m_flagList->size()) {
+                            std::cout << "ERROR: Flags list is not long enough. please add more entries or fix the dialogue's flags (following)\n";
+                            break;
+                        }
+
+                        (*m_flagList)[flagId]->value = m_currentQuestion->answers[i].followingFlags.arrangement[j].value;
+                    }
+                }
+            }
+
+            if(optionChosen != -1) {
+                for(int i = 0; i < m_buttons.size(); i++) {
+                    m_buttons[i]->destroy();
+                    delete m_buttons[i];
+                    m_buttons.pop_back();
+                }
+                m_buttons.clear();
+                for(int i = 0; i < m_otherWidgets.size(); i++) {
+                    m_otherWidgets[i]->destroy();
+                    delete m_otherWidgets[i];
+                }
+                m_otherWidgets.clear();
+                m_inConversation = false;
+                if(m_currentQuestion->answers[optionChosen].followingQuestion) {
+                    initConversation(m_currentQuestion->answers[optionChosen].followingQuestion, gui);
+                }
             }
         }
     }
@@ -125,7 +190,9 @@ Question* QuestManager::readQuestion(std::vector<std::string> lines) {
                         extraLines.push_back(newLines[k]);
                     }
                     extraLines.pop_back(); // Gets rid of extra "#END"
-                    if(extraLines.size() != 0) a.followingQuestion = readQuestion(extraLines);
+                    if(extraLines.size() != 0) {
+                        a.followingQuestion = readQuestion(extraLines);
+                    }
                 }
 
                 q->answers.push_back(a);

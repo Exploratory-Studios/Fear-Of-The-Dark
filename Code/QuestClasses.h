@@ -35,5 +35,5 @@ public:
     std::string str;
     FlagArrangement requiredFlags;
     FlagArrangement followingFlags;
-    Question* followingQuestion;
+    Question* followingQuestion = nullptr;
 };

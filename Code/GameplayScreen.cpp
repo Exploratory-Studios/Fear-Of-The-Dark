@@ -99,7 +99,7 @@ void GameplayScreen::update() {
         tick();
     }
 
-    m_worldManager.m_questManager->m_dialogueManager->update(m_game->inputManager);
+    m_worldManager.m_questManager->m_dialogueManager->update(m_game->inputManager, m_gui);
 
 }
 
@@ -254,7 +254,7 @@ void GameplayScreen::initUI() {
         m_gui.init("../Assets/GUI");
         m_gui.loadScheme("FOTDSkin.scheme");
 
-        m_gui.setFont("QuietHorror-22");
+        m_gui.setFont("Amatic-26");
 
         m_gui.setMouseCursor("FOTDSkin/MouseArrow");
         m_gui.showMouseCursor();
@@ -268,12 +268,12 @@ void GameplayScreen::tick() {
 }
 
 void GameplayScreen::scrollEvent(const SDL_Event& evnt) {
-    m_scale += (float)evnt.wheel.y * m_scale / 10.0f;
+    /*m_scale += (float)evnt.wheel.y * m_scale / 10.0f;
     if(m_scale < MIN_ZOOM) {
         m_scale = MIN_ZOOM;
     } else if(m_scale > MAX_ZOOM) {
         m_scale = MAX_ZOOM;
-    }
+    }*/
 }
 
 void GameplayScreen::drawDebug() {

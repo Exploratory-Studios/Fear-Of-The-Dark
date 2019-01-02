@@ -52,9 +52,9 @@
 	<FalagardMapping windowType="FOTDSkin/ListHeaderSegment" targetType="CEGUI/ListHeaderSegment" renderer="Core/ListHeaderSegment" lookNFeel="FOTDSkin/ListHeaderSegment" />
 	<FalagardMapping windowType="FOTDSkin/ListHeader" targetType="CEGUI/ListHeader" renderer="Core/ListHeader" lookNFeel="FOTDSkin/ListHeader" />
 	<FalagardMapping windowType="FOTDSkin/MultiColumnList" targetType="CEGUI/MultiColumnList" renderer="Core/MultiColumnList" lookNFeel="FOTDSkin/MultiColumnList" />
-
+    -->
 	<FalagardMapping windowType="FOTDSkin/ScrollablePane" targetType="CEGUI/ScrollablePane" renderer="Core/ScrollablePane" lookNFeel="FOTDSkin/ScrollablePane" />
-
+    <!--
 	<FalagardMapping windowType="FOTDSkin/Spinner" targetType="CEGUI/Spinner" renderer="Core/Default" lookNFeel="FOTDSkin/Spinner" />
 	<FalagardMapping windowType="FOTDSkin/Tooltip" targetType="CEGUI/Tooltip" renderer="Core/Tooltip" lookNFeel="FOTDSkin/Tooltip" />
 	<FalagardMapping windowType="FOTDSkin/StaticImage" targetType="DefaultWindow" renderer="Core/StaticImage" lookNFeel="FOTDSkin/StaticImage" />

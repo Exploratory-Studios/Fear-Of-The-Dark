@@ -10,25 +10,27 @@ DialogueManager::~DialogueManager() {
 }
 
 void DialogueManager::startConversation(unsigned int id, GLEngine::SpriteBatch& sb, GLEngine::SpriteFont& sf, GLEngine::InputManager& input, GLEngine::GUI& gui) {
-    Question* initialQuestion = &((*m_questionList)[id]);
-
-    m_inConversation = true;
-
+    Question* initialQuestion = (*m_questionList)[id];
     initConversation(id, gui);
+    m_inConversation = true;
 }
 
 void DialogueManager::initConversation(unsigned int id, GLEngine::GUI& gui) { // Sets gui for conversation
-    CEGUI::FrameWindow* window = static_cast<CEGUI::FrameWindow*>(gui.createWidget("FOTDSkin/FrameWindow", glm::vec4(0.05f, 0.7f, 0.9f, 0.25f), glm::vec4(0.0f), "FrameWindowConversation"));
+    if(!m_inConversation) {
 
-    window->setTitleBarEnabled(false);
-    window->setCloseButtonEnabled(false);
-    window->setRollupEnabled(false);
-    window->setDragMovingEnabled(false);
+        CEGUI::FrameWindow* window = static_cast<CEGUI::FrameWindow*>(gui.createWidget("FOTDSkin/FrameWindow", glm::vec4(0.05f, 0.7f, 0.9f, 0.25f), glm::vec4(0.0f), "FrameWindowConversation"));
 
-    for(int i = 0; i < (*m_questionList)[id].answers.size(); i++) {
-        CEGUI::PushButton* answerButton = static_cast<CEGUI::PushButton*>(gui.createWidget(window, "FOTDSkin/Button", glm::vec4(0.02f, 0.05f + ((0.02f + 0.29f) * (float)i), 0.96f, 0.29f), glm::vec4(0.0f), std::string("Option" + std::to_string(i) + "Conversation")));
-        answerButton->setText((*m_questionList)[id].answers[i].str);
-        m_buttons.push_back(answerButton);
+        window->setTitleBarEnabled(false);
+        window->setCloseButtonEnabled(false);
+        window->setRollupEnabled(false);
+        window->setDragMovingEnabled(false);
+
+        for(int i = 0; i < (*m_questionList)[id]->answers.size(); i++) {
+            CEGUI::PushButton* answerButton = static_cast<CEGUI::PushButton*>(gui.createWidget(window, "FOTDSkin/Button", glm::vec4(0.02f, 0.05f + ((0.02f + 0.29f) * (float)i), 0.96f, 0.29f), glm::vec4(0.0f), std::string("Option" + std::to_string(i) + "Conversation")));
+            answerButton->setText((*m_questionList)[id]->answers[i].str);
+            m_buttons.push_back(answerButton);
+        }
+
     }
 }
 
@@ -79,11 +81,11 @@ void QuestManager::readFlagsFromList(std::string listPath) {
     }
 }
 
-Question QuestManager::readQuestion(std::vector<std::string> lines) {
-    Question q;
+Question* QuestManager::readQuestion(std::vector<std::string> lines) {
+    Question* q = new Question();
     {
         int depth;
-        q.str = lines[0];
+        q->str = lines[0];
 
         for(unsigned int i = 1; i < lines.size(); i++) {
             if (lines[i] == "#BEGIN") {
@@ -126,7 +128,7 @@ Question QuestManager::readQuestion(std::vector<std::string> lines) {
                     if(extraLines.size() != 0) a.followingQuestion = readQuestion(extraLines);
                 }
 
-                q.answers.push_back(a);
+                q->answers.push_back(a);
             }
         }
         return q;
@@ -134,7 +136,7 @@ Question QuestManager::readQuestion(std::vector<std::string> lines) {
 }
 
 
-std::vector<Question> QuestManager::getDialogue(std::ifstream& file) {
+std::vector<Question*> QuestManager::getDialogue(std::ifstream& file) {
     int pos = file.tellg();
     file.seekg(0, std::ios::end);
     int filesize = file.tellg();
@@ -144,7 +146,7 @@ std::vector<Question> QuestManager::getDialogue(std::ifstream& file) {
 
     std::vector<std::string> lines;
 
-    std::vector<Question> questions;
+    std::vector<Question*> questions;
 
     std::string line;
     int depth = 0;
@@ -169,7 +171,7 @@ std::vector<Question> QuestManager::getDialogue(std::ifstream& file) {
     return questions;
 }
 
-std::vector<Flag> QuestManager::getFlags(std::ifstream& file) {
+std::vector<Flag*> QuestManager::getFlags(std::ifstream& file) {
     int pos = file.tellg();
     file.seekg(0, std::ios::end);
     int filesize = file.tellg();
@@ -177,11 +179,12 @@ std::vector<Flag> QuestManager::getFlags(std::ifstream& file) {
 
     std::cout << "Loading flags. " << filesize << " bytes to read.\n";
 
-    std::vector<Flag> flags;
+    std::vector<Flag*> flags;
 
     std::string line;
     while(std::getline(file, line)) {
-        flags.push_back(Flag(line));
+        Flag* f = new Flag(line);
+        flags.push_back(f);
         std::cout << "Loaded flag with id of " << Flag(line).id << " and value of " << Flag(line).value << "\n";
     }
 

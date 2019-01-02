@@ -1,7 +1,10 @@
 #include "TalkingNPC.h"
 
 TalkingNPC::TalkingNPC(glm::vec2 position, unsigned int id) {
-    init(position, Categories::Entity_Type::DIALOGUE, id);
+    unsigned int mobId = Category_Data::dialogueMobData[id].mobId;
+    m_questionId = Category_Data::dialogueMobData[id].dialogueId;
+
+    init(position, Categories::Entity_Type::MOB, mobId);
 }
 
 TalkingNPC::~TalkingNPC()
@@ -9,9 +12,6 @@ TalkingNPC::~TalkingNPC()
     //dtor
 }
 
-void TalkingNPC::update(Chunk* chunks[WORLD_SIZE], float timeStep) {
-    updateAI(chunks);
-    updateMovement();
-    setParentChunk(chunks);
-    updateLightLevel(m_parentChunk);
+void TalkingNPC::startDialogue() {
+    m_dialogueStarted = true;
 }

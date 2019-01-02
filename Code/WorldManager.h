@@ -31,6 +31,10 @@ class WorldManager
         Player* getPlayer() { return m_player; }
         QuestManager* m_questManager = nullptr;
 
+        bool isDialogueStarted() { return m_dialogueStarted; }
+
+        void startDialogue(GLEngine::SpriteBatch& sb, GLEngine::SpriteFont& sf, GLEngine::InputManager& input, GLEngine::GUI& gui);
+
     private:
         void activateChunks();
 
@@ -42,4 +46,6 @@ class WorldManager
 
         std::vector<int> m_activatedChunks;
         int m_lastActivated = -1;
+
+        bool m_dialogueStarted = false;
 };

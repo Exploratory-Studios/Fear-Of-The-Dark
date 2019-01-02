@@ -31,12 +31,42 @@ void EntityManager::update(std::vector<int>& activatedChunks, Chunk* chunks[WORL
 void EntityManager::tick(float dayCycleTime, Chunk* chunks[WORLD_SIZE]) { // Spawn if nighttime, each tick update ai
     spawnEntities();
     targetEntities(chunks);
+
+    long int closestId = -1;
+    float minDist = TILE_SIZE * 4.0f;
+
+    m_dialogueStarted = false;
+
+    for(int i = 0; i < m_talkingNpcs.size(); i++) {
+        if(m_talkingNpcs[i]->isDialogueStarted()) {
+            m_speakingNpc = m_talkingNpcs[i];
+            m_dialogueStarted = true;
+            m_speakingNpc->m_dialogueStarted = false;
+            break;
+        }
+        float dist = glm::distance(m_talkingNpcs[i]->getPosition(), m_player->getPosition());
+        if(dist < minDist) {
+            closestId = i;
+            minDist = dist;
+        }
+    }
+
+    if(closestId != -1) {
+        m_player->setSpeakingEntity(m_talkingNpcs[closestId]);
+    }
 }
 
 void EntityManager::draw(GLEngine::SpriteBatch& sb, GLEngine::DebugRenderer& dr, int tickTime, GLEngine::GLSLProgram* program) {
     for(auto e : m_entities) {
         e->draw(sb, tickTime, program);
     }
+}
+
+void EntityManager::addTalkingNpc(glm::vec2 position, unsigned int id) {
+    TalkingNPC* npc = new TalkingNPC(position, id);
+
+    m_talkingNpcs.push_back(npc);
+    m_entities.push_back(npc);
 }
 
 /// PRIVATE FUNCTIONS

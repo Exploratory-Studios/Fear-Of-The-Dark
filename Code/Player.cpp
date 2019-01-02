@@ -203,6 +203,12 @@ void Player::updateInput() {
         m_velocity.x *= 0.9f;
     }
 
+    if(m_input->isKeyPressed(SDLK_e)) {
+        if(m_speakingEntity) {
+            m_speakingEntity->startDialogue();
+        }
+    }
+
     if(m_input->isKeyDown(SDL_BUTTON_LEFT) && m_selectedBlock) {
         if(m_inventory->getItem(m_selectedHotbox, 0)) m_inventory->getItem(m_selectedHotbox, 0)->onLeftClick(m_selectedBlock);
         m_selectedBlock->switchID((int)Categories::BlockIDs::AIR);

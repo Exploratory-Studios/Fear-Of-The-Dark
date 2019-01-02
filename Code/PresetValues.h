@@ -105,10 +105,11 @@ class MobDatum {
 
 class DialogueMobDatum {
     public:
-        DialogueMobDatum(unsigned int idP, unsigned int mobIdP) : id(idP), mobId(mobIdP) {}
+        DialogueMobDatum(unsigned int idP, unsigned int mobIdP, unsigned int dialogueIdP) : id(idP), mobId(mobIdP), dialogueId(dialogueIdP) {}
 
         unsigned int id;
         unsigned int mobId;
+        unsigned int dialogueId;
 };
 
 class ItemDatum {
@@ -149,7 +150,7 @@ namespace Category_Data {
                                                         };
 
     const DialogueMobDatum dialogueMobData[Category_Data::TOTAL_DIALOGUE_MOBS] = {
-                                                                                  DialogueMobDatum(0, 1)
+                                                                                  DialogueMobDatum(0, 1, 0)
                                                                                  };
 
     const ItemDatum itemData[Category_Data::TOTAL_ITEMS] = {

@@ -5,7 +5,8 @@
 #include <SDL2/SDL.h>
 #include <SpriteBatch.h>
 
-#include "Entity.h"
+#include "Entities/TalkingNPC.h"
+
 #include "Chunk.h"
 #include "Block.h"
 #include "Inventory.h"
@@ -13,11 +14,7 @@
 
 #include "PresetValues.h"
 
-
-
-
-
-/// GET RID OF
+/// TODO: GET RID OF
 #include "Categories.h"
 
 class Player : public Entity
@@ -32,6 +29,8 @@ class Player : public Entity
         void update(Chunk* chunks[WORLD_SIZE], float timeStep) override;
         void updateMouse(Chunk* chunks[WORLD_SIZE], GLEngine::Camera2D* worldCamera);
 
+        void setSpeakingEntity(TalkingNPC* entity) { m_speakingEntity = entity; }
+
     protected:
         virtual void updateAI(Chunk* activeChunks[WORLD_SIZE]) {}
         virtual void updateMovement() {}
@@ -44,6 +43,7 @@ class Player : public Entity
         int m_selectedHotbox = 0;
 
         Inventory* m_inventory = nullptr;
+        TalkingNPC* m_speakingEntity = nullptr;
 
         bool m_inventoryOpen = false;
         bool m_debuggingInfo = false; // FPS, selectedBlock, etc.

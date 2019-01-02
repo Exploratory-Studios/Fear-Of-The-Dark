@@ -30,6 +30,8 @@ void WorldManager::init(WorldIOManager* worldIOManager) {
     }
 
     m_questManager = new QuestManager("../Assets/Questing/DialogueList.txt", "../Assets/Questing/FlagList.txt");
+
+    m_entityManager.addTalkingNpc(glm::vec2(5.0f, 90.0f) * glm::vec2(TILE_SIZE), 0);
 }
 #include <iostream>
 void WorldManager::update(GLEngine::Camera2D* worldCamera, float timeStepVariable, float time) {
@@ -49,6 +51,10 @@ void WorldManager::tick(float tickTime) {
         m_worldIOManager->getWorld()->chunks[xOffset]->tick(tickTime);
     }
     m_entityManager.tick(tickTime, m_worldIOManager->getWorld()->chunks);
+    m_dialogueStarted = false;
+    if(m_entityManager.isDialogueStarted()) {
+        m_dialogueStarted = true;
+    }
 }
 #include <iostream>
 void WorldManager::draw(GLEngine::SpriteBatch& sb, GLEngine::DebugRenderer& dr, int tickTime, GLEngine::GLSLProgram* program) {
@@ -69,6 +75,10 @@ void WorldManager::draw(GLEngine::SpriteBatch& sb, GLEngine::DebugRenderer& dr, 
 
     sb.end();
     sb.renderBatch();
+}
+
+void WorldManager::startDialogue(GLEngine::SpriteBatch& sb, GLEngine::SpriteFont& sf, GLEngine::InputManager& input, GLEngine::GUI& gui) {
+    m_questManager->m_dialogueManager->startConversation(m_entityManager.getSpeakingNpc()->getQuestionId(), sb, sf, input, gui);
 }
 
 /// Private Functions

@@ -7,6 +7,7 @@
 #include "Player.h"
 
 #include "WorldIOManager.h"
+#include "QuestClasses.h"
 
 #include "PresetValues.h"
 
@@ -22,9 +23,13 @@ class EntityManager
         void tick(float dayCycleTime, Chunk* chunks[WORLD_SIZE]);
         void draw(GLEngine::SpriteBatch& sb, GLEngine::DebugRenderer& dr, int tickTime, GLEngine::GLSLProgram* program);
 
+        void addTalkingNpc(glm::vec2 position, unsigned int id);
+
         Player*                  getPlayer()                    { return m_player; }
         std::vector<Entity*>     getEntities()                  { return m_entities; }
-        //std::vector<Dialogue>*   getResponses(unsigned int id)  { return &m_npcResponses[id]; }
+
+        bool                     isDialogueStarted()            { return m_dialogueStarted; }
+        TalkingNPC*              getSpeakingNpc()               { return m_speakingNpc; }
 
     private:
         void collideEntities(std::vector<int>& activatedChunks, Chunk* chunks[WORLD_SIZE]);
@@ -36,6 +41,8 @@ class EntityManager
 
         Player* m_player;
         std::vector<Entity*> m_entities;
+        std::vector<TalkingNPC*> m_talkingNpcs;
 
-        //std::vector<std::vector<Dialogue>> m_npcResponses;
+        bool m_dialogueStarted = false;
+        TalkingNPC* m_speakingNpc;
 };

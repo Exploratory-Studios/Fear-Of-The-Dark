@@ -74,6 +74,10 @@ void GameplayScreen::update() {
         m_worldManager.update(&m_camera, m_deltaTime, m_time);
     }
 
+    if(m_worldManager.isDialogueStarted()) {
+        m_worldManager.startDialogue(m_spriteBatch, m_spriteFont, m_game->inputManager, m_gui);
+    }
+
     if((m_worldManager.getPlayer()->getPosition().x + m_worldManager.getPlayer()->getSize().x / 2.0f) - m_lastPlayerPos.x < -CHUNK_SIZE * TILE_SIZE) {
         m_lastPlayerPos.x -= WORLD_SIZE * CHUNK_SIZE * TILE_SIZE;
     } else if(m_worldManager.getPlayer()->getPosition().x + m_worldManager.getPlayer()->getSize().x / 2.0f - m_lastPlayerPos.x > CHUNK_SIZE * TILE_SIZE) {
@@ -169,9 +173,9 @@ void GameplayScreen::checkInput() {
 
     #ifdef DEV_CONTROLS
     if(m_game->inputManager.isKeyPressed(SDLK_BACKSLASH)) {
-        m_worldManager.m_questManager->m_dialogueManager->startConversation(1, m_spriteBatch, m_spriteFont, m_game->inputManager, m_gui);
+        //m_worldManager.m_questManager->m_dialogueManager->startConversation(1, m_spriteBatch, m_spriteFont, m_game->inputManager, m_gui);
 
-        /*std::string in;
+        std::string in;
         std::getline(std::cin, in);
 
         std::regex fullCmd(".+(\\s(\\d+))*");
@@ -221,7 +225,7 @@ void GameplayScreen::checkInput() {
             } else if(cmd == "tickRate") {
                 if((float)args[0] > 0) m_tickRate = (float)args[0];
             }
-        }*/
+        }
     }
     if(m_game->inputManager.isKeyPressed(SDLK_F1)) {
         m_debuggingInfo = !m_debuggingInfo;
@@ -277,7 +281,7 @@ void GameplayScreen::drawDebug() {
 
     m_spriteBatch.begin();
 
-    m_spriteFont.draw(m_spriteBatch, fpsStr.c_str(), glm::vec2(0.5f, 0.5f), glm::vec2(1.0f, 1.0f), 0.0f, GLEngine::ColourRGBA8(255, 255, 255, 255));
+    m_spriteFont.draw(m_spriteBatch, "Hello", glm::vec2(0.5f, 0.5f), glm::vec2(1.0f, 1.0f), 0.0f, GLEngine::ColourRGBA8(255, 255, 255, 255));
 
     m_spriteBatch.end();
     m_spriteBatch.renderBatch();

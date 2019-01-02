@@ -142,7 +142,4 @@ void WorldIOManager::createWorld(unsigned int seed, std::string worldName, bool 
 
     Player player(glm::vec2(5.0f * TILE_SIZE, (blockHeights[5] + 5) * TILE_SIZE), m_input);
     m_world->player = player;
-
-    Entity ent(glm::vec2(10.5f * TILE_SIZE, (blockHeights[10] + 5) * TILE_SIZE), 1);
-    m_world->entities.push_back(ent);
 }

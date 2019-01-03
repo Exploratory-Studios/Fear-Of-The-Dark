@@ -35,6 +35,10 @@ void EntityManager::tick(float dayCycleTime, Chunk* chunks[WORLD_SIZE]) { // Spa
     long int closestId = -1;
     float minDist = TILE_SIZE * 4.0f;
 
+    if(m_speakingNpc) {
+        m_speakingNpc->setDialogueActive(m_dialogueActive);
+    }
+
     m_dialogueStarted = false;
 
     for(int i = 0; i < m_talkingNpcs.size(); i++) {

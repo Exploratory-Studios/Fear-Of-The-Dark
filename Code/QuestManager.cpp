@@ -13,11 +13,14 @@ void DialogueManager::startConversation(unsigned int id, GLEngine::SpriteBatch& 
     Question* initialQuestion = (*m_questionList)[id];
     m_currentQuestion = initialQuestion;
     initConversation(initialQuestion, gui);
-    m_inConversation = true;
+    m_dialogueActive = true;
+    m_startedConversation = true;
 }
 
 void DialogueManager::initConversation(Question* initialQuestion, GLEngine::GUI& gui) { // Sets gui for conversation
-    if(!m_inConversation) {
+    if(!m_dialogueActive) {
+
+        m_dialogueActive = true;
 
         CEGUI::FrameWindow* window = static_cast<CEGUI::FrameWindow*>(gui.createWidget("FOTDSkin/FrameWindow", glm::vec4(0.05f, 0.7f, 0.9f, 0.25f), glm::vec4(0.0f), "FrameWindowConversation"));
 
@@ -25,6 +28,7 @@ void DialogueManager::initConversation(Question* initialQuestion, GLEngine::GUI&
         window->setCloseButtonEnabled(false);
         window->setRollupEnabled(false);
         window->setDragMovingEnabled(false);
+        window->setSizingEnabled(false);
 
         CEGUI::FrameWindow* textFrame = static_cast<CEGUI::FrameWindow*>(gui.createWidget(window, "FOTDSkin/FrameWindow", glm::vec4(0.02f, 0.05f, 0.96f, 0.25f), glm::vec4(0.0f), "TextFrameConversation"));
 
@@ -32,6 +36,7 @@ void DialogueManager::initConversation(Question* initialQuestion, GLEngine::GUI&
         textFrame->setCloseButtonEnabled(false);
         textFrame->setRollupEnabled(false);
         textFrame->setDragMovingEnabled(false);
+        textFrame->setSizingEnabled(false);
 
         CEGUI::DefaultWindow* textWindow = static_cast<CEGUI::DefaultWindow*>(gui.createWidget(textFrame, "FOTDSkin/Label", glm::vec4(0.0f, 0.0f, 1.0f, 1.0f), glm::vec4(0.0f), "TextBoxConversation"));\
         textWindow->setText("[colour='FF000000']" + m_currentQuestion->str);
@@ -39,6 +44,9 @@ void DialogueManager::initConversation(Question* initialQuestion, GLEngine::GUI&
         CEGUI::DefaultWindow* answersWindow = static_cast<CEGUI::DefaultWindow*>(gui.createWidget(window, "FOTDSkin/Label", glm::vec4(0.02f, 0.325f, 0.96f, 0.7f), glm::vec4(0.0f), "OptionsBoxConversation"));
 
         CEGUI::ScrollablePane* answersScroller = static_cast<CEGUI::ScrollablePane*>(gui.createWidget(answersWindow, "FOTDSkin/ScrollablePane", glm::vec4(0.0f, 0.0f, 1.0f, 1.0f), glm::vec4(0.0f), "OptionsScrollPaneConversation"));
+        answersScroller->setVerticalStepSize(0.01f);
+        m_scrollbar = answersScroller->getVertScrollbar();
+
         m_otherWidgets.push_back(answersScroller);
         m_otherWidgets.push_back(answersWindow);
         m_otherWidgets.push_back(textWindow);
@@ -57,7 +65,10 @@ void DialogueManager::initConversation(Question* initialQuestion, GLEngine::GUI&
                 unsigned int flagId = m_currentQuestion->answers[i].requiredFlags.arrangement[j].id;
                 if((*m_flagList)[flagId]->value != m_currentQuestion->answers[i].requiredFlags.arrangement[j].value) {
                     paddingIncrementer--;
-                    m_buttons[i]->setVisible(false);
+                    answerButton->destroy();
+                    delete answerButton;
+                    m_buttons.pop_back();
+                    m_buttons.resize(m_buttons.size());
                     break;
                 }
             }
@@ -70,7 +81,8 @@ void DialogueManager::draw(GLEngine::GUI& gui) {
 }
 
 void DialogueManager::update(GLEngine::InputManager& input, GLEngine::GUI& gui) {
-    if(m_inConversation) {
+    if(m_dialogueActive) {
+        m_scrollbar->setScrollPosition(m_scrollbar->getScrollPosition() + (-input.getMouseScrollPosition() * ((m_scrollbar->getDocumentSize() - m_scrollbar->getPageSize())/(m_buttons.size() * 2))));
         if(input.isKeyPressed(SDL_BUTTON_LEFT)) {
 
             int optionChosen = -1;
@@ -83,7 +95,7 @@ void DialogueManager::update(GLEngine::InputManager& input, GLEngine::GUI& gui) 
                         unsigned int flagId = m_currentQuestion->answers[i].followingFlags.arrangement[j].id;
 
                         if(flagId >= m_flagList->size()) {
-                            std::cout << "ERROR: Flags list is not long enough. please add more entries or fix the dialogue's flags (following)\n";
+                            std::cout << "ERROR: Flags list is not long enough. please add more entries or fix the dialogue's flags (following)\nIllegal ID: " << flagId << "\n";
                             break;
                         }
 
@@ -99,14 +111,17 @@ void DialogueManager::update(GLEngine::InputManager& input, GLEngine::GUI& gui) 
                     m_buttons.pop_back();
                 }
                 m_buttons.clear();
+                m_buttons.resize(0);
                 for(int i = 0; i < m_otherWidgets.size(); i++) {
                     m_otherWidgets[i]->destroy();
                     delete m_otherWidgets[i];
                 }
                 m_otherWidgets.clear();
-                m_inConversation = false;
+                m_otherWidgets.resize(0);
+                m_dialogueActive = false;
                 if(m_currentQuestion->answers[optionChosen].followingQuestion) {
-                    initConversation(m_currentQuestion->answers[optionChosen].followingQuestion, gui);
+                    m_currentQuestion = m_currentQuestion->answers[optionChosen].followingQuestion;
+                    initConversation(m_currentQuestion, gui);
                 }
             }
         }
@@ -152,46 +167,46 @@ Question* QuestManager::readQuestion(std::vector<std::string> lines) {
         int depth;
         q->str = lines[0];
 
-        for(unsigned int i = 1; i < lines.size(); i++) {
+        for(unsigned int i = 0; i < lines.size(); i++) {
             if (lines[i] == "#BEGIN") {
                 Answer a;
-                int answerDepth = 0;
+                int answerDepth = 1;
                 std::vector<std::string> newLines;
-                for(unsigned int j = i; j < lines.size(); j++) {
+                for(unsigned int j = i+1; j < lines.size(); j++) {
                     newLines.push_back(lines[j]); // Gets all the lines for the answer
                     if(lines[j] == "#BEGIN") {
                         answerDepth++;
                     } else if(lines[j] == "#END") {
                         answerDepth--;
-                        if(answerDepth <= 0) {
+                        if(answerDepth == 0) {
+                            i = j; // Make sure we don't read twice
                             break;
                         }
                     }
                 }
 
-                a.str = newLines[1]; // Get string. First is #BEGIN
+                a.str = newLines[0]; // Get string. First is #BEGIN
 
-                unsigned int j = 2;
+                unsigned int j = 1;
                 for(int k = 0; k < 2; k++) {
                     while(newLines[j] != "#FLAGS_END" && newLines[j] != "#END") {
                         Flag f = Flag(newLines[j]);
                         if(k == 0) a.requiredFlags.arrangement.push_back(f);
                         if(k == 1) a.followingFlags.arrangement.push_back(f);
                         if(j < newLines.size()-1) j++;
-
-                        if(newLines[j] == "#END");
                     }
                     if(j < newLines.size()-1) j++;
                 }
 
                 if(j < newLines.size()-1) { // Lines left over
                     std::vector<std::string> extraLines;
-                    for(unsigned int k = j; k < newLines.size(); k++) {
+                    for(unsigned int k = j; k < newLines.size()-1; k++) {
                         extraLines.push_back(newLines[k]);
                     }
-                    extraLines.pop_back(); // Gets rid of extra "#END"
                     if(extraLines.size() != 0) {
-                        a.followingQuestion = readQuestion(extraLines);
+                        Question* q = new Question();
+                        *q = *readQuestion(extraLines);
+                        a.followingQuestion = q;
                     }
                 }
 
@@ -227,7 +242,9 @@ std::vector<Question*> QuestManager::getDialogue(std::ifstream& file) {
             if(depth == 0) lines.pop_back();
             if(depth <= 0) {
                 // Got one question's lines completely
-                questions.push_back(readQuestion(lines));
+                Question* q = new Question();
+                *q = *readQuestion(lines);
+                questions.push_back(q);
                 lines.clear();
             }
         }

@@ -25,9 +25,11 @@ class EntityManager
 
         void addTalkingNpc(glm::vec2 position, unsigned int id);
 
+        void setDialogueActive(bool setting) { m_dialogueActive = setting; }
+
+        bool                     getDialogueActive()            { return m_dialogueActive; }
         Player*                  getPlayer()                    { return m_player; }
         std::vector<Entity*>     getEntities()                  { return m_entities; }
-
         bool                     isDialogueStarted()            { return m_dialogueStarted; }
         TalkingNPC*              getSpeakingNpc()               { return m_speakingNpc; }
 
@@ -39,10 +41,11 @@ class EntityManager
         std::vector<glm::vec2> pathfindToTarget(float jumpHeight, glm::vec2 originalPosition, glm::vec2 targetPosition, Chunk* chunks[WORLD_SIZE]);
         void initResponses();
 
-        Player* m_player;
+        Player* m_player = nullptr;
         std::vector<Entity*> m_entities;
         std::vector<TalkingNPC*> m_talkingNpcs;
 
         bool m_dialogueStarted = false;
-        TalkingNPC* m_speakingNpc;
+        bool m_dialogueActive = false;
+        TalkingNPC* m_speakingNpc = nullptr;
 };

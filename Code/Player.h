@@ -30,6 +30,7 @@ class Player : public Entity
         void updateMouse(Chunk* chunks[WORLD_SIZE], GLEngine::Camera2D* worldCamera);
 
         void setSpeakingEntity(TalkingNPC* entity) { m_speakingEntity = entity; }
+        void setCanInteract(bool setting) { m_canInteract = setting; }
 
     protected:
         virtual void updateAI(Chunk* activeChunks[WORLD_SIZE]) {}
@@ -47,6 +48,7 @@ class Player : public Entity
 
         bool m_inventoryOpen = false;
         bool m_debuggingInfo = false; // FPS, selectedBlock, etc.
+        bool m_canInteract = true; // Sets if the player can't interact with objects, people, etc. Used when player is in cutscenes, talking, etc.
 
         void updateInput();
 

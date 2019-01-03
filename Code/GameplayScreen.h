@@ -44,7 +44,7 @@ class GameplayScreen : public GLEngine::IGameScreen
         void drawWorld();
         void drawDebug();
 
-        void scrollEvent(const SDL_Event& evnt);
+        void updateScale();
 
         GLEngine::Camera2D m_camera;
         GLEngine::Camera2D m_uiCamera;

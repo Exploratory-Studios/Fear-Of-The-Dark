@@ -70,11 +70,9 @@ void GameplayScreen::update() {
 
     m_gui.update();
 
-    if(!m_worldManager.m_questManager->m_dialogueManager->isInConversation()) {
-        m_worldManager.update(&m_camera, m_deltaTime, m_time);
-    }
+    m_worldManager.update(&m_camera, m_deltaTime, m_time);
 
-    if(m_worldManager.isDialogueStarted()) {
+    if(m_worldManager.isDialogueStarted() && !m_worldManager.isDialogueActive()) {
         m_worldManager.startDialogue(m_spriteBatch, m_spriteFont, m_game->inputManager, m_gui);
     }
 
@@ -99,8 +97,9 @@ void GameplayScreen::update() {
         tick();
     }
 
-    m_worldManager.m_questManager->m_dialogueManager->update(m_game->inputManager, m_gui);
-
+    if(m_worldManager.isDialogueActive()) {
+        m_worldManager.m_questManager->m_dialogueManager->update(m_game->inputManager, m_gui); // Fix this. make it so that everything chains down through the update functions
+    }
 }
 
 void GameplayScreen::draw() {
@@ -166,14 +165,13 @@ void GameplayScreen::checkInput() {
             case SDL_MOUSEBUTTONDOWN:
                 break;
             case SDL_MOUSEWHEEL:
-                scrollEvent(evnt);
+                updateScale();
                 break;
         }
     }
 
     #ifdef DEV_CONTROLS
     if(m_game->inputManager.isKeyPressed(SDLK_BACKSLASH)) {
-        //m_worldManager.m_questManager->m_dialogueManager->startConversation(1, m_spriteBatch, m_spriteFont, m_game->inputManager, m_gui);
 
         std::string in;
         std::getline(std::cin, in);
@@ -267,13 +265,15 @@ void GameplayScreen::tick() {
     m_tickTime++;
 }
 
-void GameplayScreen::scrollEvent(const SDL_Event& evnt) {
-    /*m_scale += (float)evnt.wheel.y * m_scale / 10.0f;
-    if(m_scale < MIN_ZOOM) {
-        m_scale = MIN_ZOOM;
-    } else if(m_scale > MAX_ZOOM) {
-        m_scale = MAX_ZOOM;
-    }*/
+void GameplayScreen::updateScale() {
+    if(!m_worldManager.isDialogueActive()) {
+        m_scale += (float)m_game->inputManager.getMouseScrollPosition() * m_scale / 10.0f;
+        if(m_scale < MIN_ZOOM) {
+            m_scale = MIN_ZOOM;
+        } else if(m_scale > MAX_ZOOM) {
+            m_scale = MAX_ZOOM;
+        }
+    }
 }
 
 void GameplayScreen::drawDebug() {

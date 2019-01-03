@@ -203,31 +203,33 @@ void Player::updateInput() {
         m_velocity.x *= 0.9f;
     }
 
-    if(m_input->isKeyPressed(SDLK_e)) {
-        if(m_speakingEntity) {
-            m_speakingEntity->startDialogue();
+    if(m_canInteract) {
+        if(m_input->isKeyPressed(SDLK_e)) {
+            if(m_speakingEntity) {
+                m_speakingEntity->startDialogue();
+            }
         }
-    }
 
-    if(m_input->isKeyDown(SDL_BUTTON_LEFT) && m_selectedBlock) {
-        if(m_inventory->getItem(m_selectedHotbox, 0)) m_inventory->getItem(m_selectedHotbox, 0)->onLeftClick(m_selectedBlock);
-        m_selectedBlock->switchID((int)Categories::BlockIDs::AIR);
-        m_inventory->updateWeight();
-    }
-    if(m_input->isKeyDown(SDL_BUTTON_RIGHT) && m_selectedBlock) {
-        if(m_inventory->getItem(m_selectedHotbox, 0)) m_inventory->getItem(m_selectedHotbox, 0)->onRightClick(m_selectedBlock);
-        m_inventory->updateWeight();
-    }
-    if(m_input->isKeyPressed(SDLK_r)) {
-        ItemBlock* newItem = new ItemBlock(1, 0.0f, 1, (int)Categories::BlockIDs::DIRT);
-        m_inventory->addItem(newItem);
-    }
-    if(m_input->isKeyPressed(SDLK_t)) {
-        ItemBlock* newItem = new ItemBlock(2, 0.0f, 1, (int)Categories::BlockIDs::TORCH);
-        m_inventory->addItem(newItem);
-    }
-    if(m_input->isKeyPressed(SDLK_i)) {
-        m_inventoryOpen = !m_inventoryOpen;
+        if(m_input->isKeyDown(SDL_BUTTON_LEFT) && m_selectedBlock) {
+            if(m_inventory->getItem(m_selectedHotbox, 0)) m_inventory->getItem(m_selectedHotbox, 0)->onLeftClick(m_selectedBlock);
+            m_selectedBlock->switchID((int)Categories::BlockIDs::AIR);
+            m_inventory->updateWeight();
+        }
+        if(m_input->isKeyDown(SDL_BUTTON_RIGHT) && m_selectedBlock) {
+            if(m_inventory->getItem(m_selectedHotbox, 0)) m_inventory->getItem(m_selectedHotbox, 0)->onRightClick(m_selectedBlock);
+            m_inventory->updateWeight();
+        }
+        if(m_input->isKeyPressed(SDLK_r)) {
+            ItemBlock* newItem = new ItemBlock(1, 0.0f, 1, (int)Categories::BlockIDs::DIRT);
+            m_inventory->addItem(newItem);
+        }
+        if(m_input->isKeyPressed(SDLK_t)) {
+            ItemBlock* newItem = new ItemBlock(2, 0.0f, 1, (int)Categories::BlockIDs::TORCH);
+            m_inventory->addItem(newItem);
+        }
+        if(m_input->isKeyPressed(SDLK_i)) {
+            m_inventoryOpen = !m_inventoryOpen;
+        }
     }
 
     if(m_input->isKeyPressed(SDLK_1)) {

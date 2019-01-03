@@ -22,9 +22,6 @@ void WorldManager::init(WorldIOManager* worldIOManager) {
         }
 
         m_player = &m_worldIOManager->getWorld()->player;
-        //Entity* ent = new Entity(glm::vec2(80, 800), Categories::Entity_Type::MOB, 1);
-        //WalkingNPC* ent = new WalkingNPC(glm::vec2(80, 800), 1);
-        //entities.push_back(ent);
 
         m_entityManager.init(m_player, entities);
     }
@@ -40,7 +37,16 @@ void WorldManager::update(GLEngine::Camera2D* worldCamera, float timeStepVariabl
         m_worldIOManager->getWorld()->chunks[xOffset]->update(time);
     }
 
+    bool active = m_entityManager.getDialogueActive();
+
+    m_entityManager.setDialogueActive(m_questManager->isDialogueActive());
     m_entityManager.update(m_activatedChunks, m_worldIOManager->getWorld()->chunks, worldCamera, timeStepVariable);
+
+    if(active != m_entityManager.getDialogueActive()) {
+        m_player->setCanInteract(active);
+    }
+
+    m_dialogueStarted = m_entityManager.isDialogueStarted();
 
     activateChunks();
 }
@@ -51,10 +57,6 @@ void WorldManager::tick(float tickTime) {
         m_worldIOManager->getWorld()->chunks[xOffset]->tick(tickTime);
     }
     m_entityManager.tick(tickTime, m_worldIOManager->getWorld()->chunks);
-    m_dialogueStarted = false;
-    if(m_entityManager.isDialogueStarted()) {
-        m_dialogueStarted = true;
-    }
 }
 #include <iostream>
 void WorldManager::draw(GLEngine::SpriteBatch& sb, GLEngine::DebugRenderer& dr, int tickTime, GLEngine::GLSLProgram* program) {
@@ -79,6 +81,8 @@ void WorldManager::draw(GLEngine::SpriteBatch& sb, GLEngine::DebugRenderer& dr, 
 
 void WorldManager::startDialogue(GLEngine::SpriteBatch& sb, GLEngine::SpriteFont& sf, GLEngine::InputManager& input, GLEngine::GUI& gui) {
     m_questManager->m_dialogueManager->startConversation(m_entityManager.getSpeakingNpc()->getQuestionId(), sb, sf, input, gui);
+    m_entityManager.setDialogueActive(true);
+    m_entityManager.getPlayer()->setCanInteract(false);
 }
 
 /// Private Functions

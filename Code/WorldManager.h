@@ -32,6 +32,7 @@ class WorldManager
         QuestManager* m_questManager = nullptr;
 
         bool isDialogueStarted() { return m_dialogueStarted; }
+        bool isDialogueActive() { return m_questManager->isDialogueActive(); }
 
         void startDialogue(GLEngine::SpriteBatch& sb, GLEngine::SpriteFont& sf, GLEngine::InputManager& input, GLEngine::GUI& gui);
 

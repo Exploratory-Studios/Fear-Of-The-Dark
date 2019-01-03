@@ -25,7 +25,8 @@ class DialogueManager {
 
         void startConversation(unsigned int id, GLEngine::SpriteBatch& sb, GLEngine::SpriteFont& sf, GLEngine::InputManager& input, GLEngine::GUI& gui); // The id is the index of the initial question. This function sets focus and starts a loop to draw and accept input.
 
-        bool isInConversation() { return m_inConversation; }
+        bool isDialogueActive() { return m_dialogueActive; }
+        bool isConversationStarted() { return m_startedConversation; }
 
     private:
         void initConversation(Question* initialQuestion, GLEngine::GUI& gui);
@@ -35,10 +36,12 @@ class DialogueManager {
 
         std::vector<CEGUI::PushButton*> m_buttons;
         std::vector<CEGUI::Window*> m_otherWidgets;
+        CEGUI::Scrollbar* m_scrollbar = nullptr;
 
         // Following variables are for actually talking
         Question* m_currentQuestion = nullptr;
-        bool m_inConversation = false;
+        bool m_dialogueActive = false;
+        bool m_startedConversation = false;
 };
 
 class QuestManager
@@ -48,6 +51,7 @@ class QuestManager
         ~QuestManager();
 
         std::vector<Question*>* getQuestionList() { return &m_questionList; }
+        bool                    isDialogueActive() {return m_dialogueManager->isDialogueActive(); }
 
         DialogueManager* m_dialogueManager = nullptr; /// TODO make this private again please :)
 

@@ -11,7 +11,7 @@ class Inventory
 {
     public:
         Inventory();
-        ~Inventory() { delete[] m_items; }
+        ~Inventory() { for(auto i : m_items) delete[] i; }
 
         bool addItem(Item* newItem, int x = -1, int y = -1);
 

@@ -6,29 +6,47 @@
 #include "PresetValues.h"
 #include "Tile.h"
 
+class EntityManager;
+
 class Chunk
 {
     public:
         Chunk();
-        Chunk(Tile* tileArray[WORLD_HEIGHT][CHUNK_SIZE], Tile* extraTileArray[WORLD_HEIGHT][2], int index);
+        Chunk(Tile* tileArray[WORLD_HEIGHT][CHUNK_SIZE], Tile* extraTileArray[WORLD_HEIGHT][2], int index, Chunk* surroundingChunks[2]);
 
-        void init(Tile* tileArray[WORLD_HEIGHT][CHUNK_SIZE], Tile* extraTileArray[WORLD_HEIGHT][2]);
+        void init(Tile* tileArray[WORLD_HEIGHT][CHUNK_SIZE], Tile* extraTileArray[WORLD_HEIGHT][2], Chunk* surroundingChunks[2]);
 
-        void update(float time);
-        void tick(int tickTime);
-        void draw(GLEngine::SpriteBatch& sb, int xOffset); // xOffset is in chunks
+        void update(float time, float timeStepVariable);
+        void tick(float* tickTime);
+        void draw(GLEngine::SpriteBatch& sb, int xOffset, float time); // xOffset is in chunks
 
         void setPlace(Categories::Places place);
         void setTile(Tile* newTile, const unsigned int& x, const unsigned int& y);
         void setIndex(int index) { m_index = index; }
+        void setSurroundingChunk(Chunk* chunk, int i) { m_surroundingChunks[i] = chunk; }
+
+        void activateChunk() { m_activated = true; }
+        void deactivateChunk() { m_activated = false; }
 
         Categories::Places      getPlace()                                                  { return m_place;       }
         int                     getIndex()                                                  { return m_index;       }
+        Chunk**					getSurroundingChunks()										{ return m_surroundingChunks; }
+        bool                    isDialogueActive()                                          { return m_dialogueActive; }
+        bool                    isDialogueStarted()                                         { return m_dialogueStarted; }
 
         Tile* tiles[WORLD_HEIGHT][CHUNK_SIZE] = { { nullptr } };
         Tile* extraTiles[WORLD_HEIGHT][2] = { { nullptr } }; // On each side, so that we don't have to activate 3 chunks at a time instead of one
 
     private:
+        EntityManager* m_entityManager;
+
+		Chunk* m_surroundingChunks[2] = { nullptr };
+
         Categories::Places m_place;
         int m_index;
+
+        bool m_activated = false;
+
+        bool m_dialogueStarted = false;
+        bool m_dialogueActive = false;
 };

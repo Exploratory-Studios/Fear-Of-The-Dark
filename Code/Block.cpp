@@ -23,22 +23,22 @@ void Block::switchID(unsigned int newID) {
 
     switch(m_id) {
         case (unsigned int)Categories::BlockIDs::DIRT:
-            m_texture = GLEngine::ResourceManager::getTexture("../Assets/Textures/Blocks/Dirt.png");
+            m_texture = GLEngine::ResourceManager::getTexture(ASSETS_FOLDER_PATH + "Textures/Blocks/Dirt.png");
             break;
         case (unsigned int)Categories::BlockIDs::GRASS:
-            m_texture = GLEngine::ResourceManager::getTexture("../Assets/Textures/Blocks/Grass.png");
+            m_texture = GLEngine::ResourceManager::getTexture(ASSETS_FOLDER_PATH + "Textures/Blocks/Grass.png");
             break;
         case (unsigned int)Categories::BlockIDs::SAND:
-            m_texture = GLEngine::ResourceManager::getTexture("../Assets/Textures/Blocks/Sand.png");
+            m_texture = GLEngine::ResourceManager::getTexture(ASSETS_FOLDER_PATH + "Textures/Blocks/Sand.png");
             break;
         case (unsigned int)Categories::BlockIDs::STONE:
-            m_texture = GLEngine::ResourceManager::getTexture("../Assets/Textures/Blocks/Stone.png");
+            m_texture = GLEngine::ResourceManager::getTexture(ASSETS_FOLDER_PATH + "Textures/Blocks/Stone.png");
             break;
         case (unsigned int)Categories::BlockIDs::BUSH:
-            m_texture = GLEngine::ResourceManager::getTexture("../Assets/Textures/Blocks/Bush.png");
+            m_texture = GLEngine::ResourceManager::getTexture(ASSETS_FOLDER_PATH + "Textures/Blocks/Bush.png");
             break;
         case (unsigned int)Categories::BlockIDs::TORCH:
-            m_texture = GLEngine::ResourceManager::getTexture("../Assets/Textures/Blocks/Torch.png");
+            m_texture = GLEngine::ResourceManager::getTexture(ASSETS_FOLDER_PATH + "Textures/Blocks/Torch.png");
             m_transparent = true;
             m_solid = false;
             m_emittedLight = 1.5f;

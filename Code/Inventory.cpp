@@ -91,7 +91,7 @@ void Inventory::draw(float x, float y, GLEngine::SpriteBatch& sb, GLEngine::Spri
 
             glm::vec4 uv(uvX, uvY, uvXSize, uvYSize); // xy beginDest, xy endDest
 
-            int inventoryImgId = GLEngine::ResourceManager::getTexture("../Assets/GUI/Player/Inventory.png").id;
+            int inventoryImgId = GLEngine::ResourceManager::getTexture(ASSETS_FOLDER_PATH + "GUI/Player/Inventory.png").id;
 
             sb.begin();
 

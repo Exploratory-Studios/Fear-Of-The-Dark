@@ -9,12 +9,12 @@ DialogueManager::~DialogueManager() {
     delete m_flagList;
 }
 
-void DialogueManager::startConversation(unsigned int id, GLEngine::SpriteBatch& sb, GLEngine::SpriteFont& sf, GLEngine::InputManager& input, GLEngine::GUI& gui) {
+void DialogueManager::startConversation(unsigned int id, GLEngine::InputManager& input, GLEngine::GUI& gui) {
     Question* initialQuestion = (*m_questionList)[id];
     m_currentQuestion = initialQuestion;
     initConversation(initialQuestion, gui);
     m_dialogueActive = true;
-    m_startedConversation = true;
+    m_dialogueStarted = true;
 }
 
 void DialogueManager::initConversation(Question* initialQuestion, GLEngine::GUI& gui) { // Sets gui for conversation
@@ -81,6 +81,11 @@ void DialogueManager::draw(GLEngine::GUI& gui) {
 }
 
 void DialogueManager::update(GLEngine::InputManager& input, GLEngine::GUI& gui) {
+    if(m_dialogueStarted) {
+        startConversation(m_questionId, input, gui);
+        return;
+    }
+
     if(m_dialogueActive) {
         m_scrollbar->setScrollPosition(m_scrollbar->getScrollPosition() + (-input.getMouseScrollPosition() * ((m_scrollbar->getDocumentSize() - m_scrollbar->getPageSize())/(m_buttons.size() * 2))));
         if(input.isKeyPressed(SDL_BUTTON_LEFT)) {
@@ -139,6 +144,14 @@ QuestManager::QuestManager(std::string questionListPath, std::string flagListPat
 QuestManager::~QuestManager()
 {
     delete m_dialogueManager;
+}
+
+void QuestManager::update(GLEngine::InputManager& input, GLEngine::GUI& gui) {
+    m_dialogueManager->update(input, gui);
+}
+
+void QuestManager::draw(GLEngine::GUI& gui) {
+    m_dialogueManager->draw(gui);
 }
 
 void QuestManager::readDialogueFromList(std::string listPath) {

@@ -24,29 +24,53 @@ float Tile::getSurroundingLight() {
     float light = 0.0f;
 
     if(y-1 >= 0)
-        if(m_parentChunk->tiles[y-1][x]->getLight() > light && (m_parentChunk->tiles[y-1][x]->isTransparent() || isTransparent())) {
-            light = m_parentChunk->tiles[y-1][x]->getLight();
+        if(m_parentChunk->tiles[y-1][x]->getLight() > light) {
+            if(m_parentChunk->tiles[y-1][x]->isTransparent() || isTransparent()) {
+                light = m_parentChunk->tiles[y-1][x]->getLight();
+            } else {
+                light = m_parentChunk->tiles[y-1][x]->getLight() * OPAQUE_LIGHT_MULTIPLIER;
+            }
         }
     if(y+1 < WORLD_HEIGHT)
-        if(m_parentChunk->tiles[y+1][x]->getLight() > light && (m_parentChunk->tiles[y+1][x]->isTransparent() || isTransparent())) {
-            light = m_parentChunk->tiles[y+1][x]->getLight();
+        if(m_parentChunk->tiles[y+1][x]->getLight() > light) {
+            if(m_parentChunk->tiles[y+1][x]->isTransparent() || isTransparent()) {
+                light = m_parentChunk->tiles[y+1][x]->getLight();
+            } else {
+                light = m_parentChunk->tiles[y+1][x]->getLight() * OPAQUE_LIGHT_MULTIPLIER;
+            }
         }
     if(x-1 >= 0) {
-        if(m_parentChunk->tiles[y][x-1]->getLight() > light && (m_parentChunk->tiles[y][x-1]->isTransparent() || isTransparent())) {
-            light = m_parentChunk->tiles[y][x-1]->getLight();
+        if(m_parentChunk->tiles[y][x-1]->getLight() > light) {
+            if(m_parentChunk->tiles[y][x-1]->isTransparent() || isTransparent()) {
+                light = m_parentChunk->tiles[y][x-1]->getLight();
+            } else {
+                light = m_parentChunk->tiles[y][x-1]->getLight() * OPAQUE_LIGHT_MULTIPLIER;
+            }
         }
     } else if(x-1 == -1) {
-        if(m_parentChunk->extraTiles[y][0]->getLight() > light && (m_parentChunk->extraTiles[y][0]->isTransparent() || isTransparent())) {
-            light = m_parentChunk->extraTiles[y][0]->getLight();
+        if(m_parentChunk->extraTiles[y][0]->getLight() > light) {
+            if(m_parentChunk->extraTiles[y][0]->isTransparent() || isTransparent()) {
+                light = m_parentChunk->extraTiles[y][0]->getLight();
+            } else {
+                light = m_parentChunk->extraTiles[y][0]->getLight() * OPAQUE_LIGHT_MULTIPLIER;
+            }
         }
     }
     if(x+1 < CHUNK_SIZE) {
-        if(m_parentChunk->tiles[y][x+1]->getLight() > light && (m_parentChunk->tiles[y][x+1]->isTransparent() || isTransparent())) {
-            light = m_parentChunk->tiles[y][x+1]->getLight();
+        if(m_parentChunk->tiles[y][x+1]->getLight() > light) {
+            if(m_parentChunk->tiles[y][x+1]->isTransparent() || isTransparent()) {
+                light = m_parentChunk->tiles[y][x+1]->getLight();
+            } else {
+                light = m_parentChunk->tiles[y][x+1]->getLight() * OPAQUE_LIGHT_MULTIPLIER;
+            }
         }
     } else if(x+1 == CHUNK_SIZE) {
-        if(m_parentChunk->extraTiles[y][1]->getLight() > light && (m_parentChunk->extraTiles[y][1]->isTransparent() || isTransparent())) {
-            light = m_parentChunk->extraTiles[y][1]->getLight();
+        if(m_parentChunk->extraTiles[y][1]->getLight() > light) {
+            if(m_parentChunk->extraTiles[y][1]->isTransparent() || isTransparent()) {
+                light = m_parentChunk->extraTiles[y][1]->getLight();
+            } else {
+                light = m_parentChunk->extraTiles[y][1]->getLight() * OPAQUE_LIGHT_MULTIPLIER;
+            }
         }
     }
 
@@ -54,14 +78,15 @@ float Tile::getSurroundingLight() {
 }
 #include <iostream>
 void Tile::update(float time) {
-    if(getSurroundingLight() != m_lastLight) {
-        setAmbientLight(getSurroundingLight() * LIGHT_MULTIPLIER);
+    if(getSurroundingLight() != getLight()) {
+        setAmbientLight(getSurroundingLight() * TRANSPARENT_LIGHT_MULTIPLIER);
+        m_lastLight = getSurroundingLight();
     }
 }
 
-void Tile::tick(int tickTime) {
+void Tile::tick(float* tickTime) {
     if(exposedToSun()) { // check if this block is exposed to sunlight
-        m_sunLight = cos((float)tickTime / (DAY_LENGTH / 6.28318f)) / 2.0f + 0.5f;
+        m_sunLight = cos((float)*tickTime / (DAY_LENGTH / 6.28318f)) / 2.0f + 0.5f;
     } else {
         m_sunLight = 0.0f;
     }

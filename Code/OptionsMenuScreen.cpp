@@ -30,7 +30,7 @@ void OptionsMenuScreen::onEntry() {
     initShaders();
 
     m_spriteBatch.init();
-    m_spriteFont.init("../Assets/GUI/fonts/QuietHorror.ttf", 96);
+    m_spriteFont.init((ASSETS_FOLDER_PATH + "GUI/fonts/QuietHorror.ttf").c_str(), 96);
 
     m_uiCamera.init(m_window->getScreenWidth(), m_window->getScreenHeight());
     m_uiCamera.setPosition(glm::vec2(m_window->getScreenWidth() / 2.0f, m_window->getScreenHeight() / 2.0f));
@@ -63,7 +63,7 @@ void OptionsMenuScreen::draw() {
 
 void OptionsMenuScreen::initUI() {
     {
-        m_gui.init("../Assets/GUI");
+        m_gui.init(ASSETS_FOLDER_PATH + "GUI");
         m_gui.loadScheme("VanillaSkin.scheme");
         m_gui.loadScheme("FOTDSkin.scheme");
 
@@ -81,7 +81,7 @@ void OptionsMenuScreen::initUI() {
 }
 
 void OptionsMenuScreen::initShaders() {
-    m_uiTextureProgram.compileShaders("../Assets/Shaders/uiShader.vert", "../Assets/Shaders/uiShader.frag");
+    m_uiTextureProgram.compileShaders(ASSETS_FOLDER_PATH + "Shaders/uiShader.vert", ASSETS_FOLDER_PATH + "Shaders/uiShader.frag");
     m_uiTextureProgram.addAttribute("vertexPosition");
     m_uiTextureProgram.addAttribute("vertexColour");
     m_uiTextureProgram.addAttribute("vertexUV");

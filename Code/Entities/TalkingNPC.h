@@ -6,24 +6,21 @@
 
 class TalkingNPC : public Entity
 {
-    friend class EntityManager;
 
     public:
-        TalkingNPC(glm::vec2 position, unsigned int id);
+        TalkingNPC(glm::vec2 position, unsigned int id, AudioManager* audioManager);
         ~TalkingNPC();
 
         void startDialogue();
 
         bool isDialogueStarted() { return m_dialogueStarted; }
-        bool isDialogueActive() { return m_dialogueActive; }
-        unsigned int getQuestionId() { return m_questionId; }
+        bool setDialogueStarted(bool setting) { m_dialogueStarted = setting; }
 
-        void setDialogueActive(bool setting) { m_dialogueActive = setting; }
+        unsigned int getQuestionId() { return m_questionId; }
 
     private:
         unsigned int m_questionId = 0;
 
         bool m_dialogueStarted = false;
-        bool m_dialogueActive = false;
 
 };

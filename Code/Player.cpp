@@ -24,7 +24,7 @@ Player::~Player()
     //dtor
 }
 
-void Player::draw(GLEngine::SpriteBatch& sb, float time, GLEngine::GLSLProgram* program) {
+void Player::draw(GLEngine::SpriteBatch& sb, float time) {
 
     glm::vec4 destRect = glm::vec4(m_position.x, m_position.y, m_size.x * TILE_SIZE, m_size.y * TILE_SIZE);
 
@@ -69,7 +69,7 @@ void Player::draw(GLEngine::SpriteBatch& sb, float time, GLEngine::GLSLProgram* 
 
     if(m_selectedBlock) { // Cursor box selection
         glm::vec4 fullUV(0.0f, 0.0f, 1.0f, 1.0f);
-        int cursorImgId = GLEngine::ResourceManager::getTexture("../Assets/GUI/Player/Cursor.png").id;
+        int cursorImgId = GLEngine::ResourceManager::getTexture(ASSETS_FOLDER_PATH + "GUI/Player/Cursor.png").id;
 
         int chunkIndex = (int)floor(m_mousePos.x / CHUNK_SIZE);
         int x = (int)(m_mousePos.x + CHUNK_SIZE * TILE_SIZE) % CHUNK_SIZE * TILE_SIZE;
@@ -85,8 +85,8 @@ void Player::drawGUI(GLEngine::SpriteBatch& sb, GLEngine::SpriteFont& sf) {
     GLEngine::ColourRGBA8 fullColour(255, 255, 255, 255);
 
     {
-        int hotbarImgId = GLEngine::ResourceManager::getTexture("../Assets/GUI/Player/Hotbar.png").id;
-        int hotbarSelectImgId = GLEngine::ResourceManager::getTexture("../Assets/GUI/Player/HotbarSelection.png").id;
+        int hotbarImgId = GLEngine::ResourceManager::getTexture(ASSETS_FOLDER_PATH + "GUI/Player/Hotbar.png").id;
+        int hotbarSelectImgId = GLEngine::ResourceManager::getTexture(ASSETS_FOLDER_PATH + "GUI/Player/HotbarSelection.png").id;
 
         sb.begin();
 
@@ -151,10 +151,10 @@ void Player::drawGUI(GLEngine::SpriteBatch& sb, GLEngine::SpriteFont& sf) {
     }
 }
 
-void Player::update(Chunk* chunks[WORLD_SIZE], float timeStep) {
+void Player::update(float timeStep) {
 
-    setParentChunk(chunks);
-    updateLightLevel(m_parentChunk);
+    setParentChunk(m_parentChunk->getSurroundingChunks());
+    updateLightLevel();
 
     updateInput();
     m_inventory->update();
@@ -166,22 +166,30 @@ void Player::update(Chunk* chunks[WORLD_SIZE], float timeStep) {
     }
 }
 
-void Player::updateMouse(Chunk* chunks[WORLD_SIZE], GLEngine::Camera2D* worldCamera) {
+void Player::updateMouse(GLEngine::Camera2D* worldCamera) {
     glm::vec2 mousePos = worldCamera->convertScreenToWorld(m_input->getMouseCoords());
 
     mousePos = glm::vec2(floor(mousePos.x / TILE_SIZE), floor(mousePos.y / TILE_SIZE)); // Changes it to grid-space
 
     m_mousePos = mousePos;
 
-    unsigned int chunkIndex = (int)abs(floor(mousePos.x / CHUNK_SIZE) + WORLD_SIZE) % WORLD_SIZE;
+    unsigned int chunkIndex = ((int)abs(floor(mousePos.x / CHUNK_SIZE) + WORLD_SIZE) % WORLD_SIZE) - m_parentChunkIndex;
 
     mousePos.x = (int)(mousePos.x + CHUNK_SIZE * WORLD_SIZE) % CHUNK_SIZE;
 
     if(/*mousePos.x >= 0 &&
        mousePos.x + (chunkIndex * CHUNK_SIZE) < WORLD_SIZE * CHUNK_SIZE &&*/
        mousePos.y >= 0 &&
-       mousePos.y < WORLD_HEIGHT)
-           m_selectedBlock = static_cast<Block*>(chunks[chunkIndex]->tiles[(unsigned int)mousePos.y][(unsigned int)mousePos.x]);
+       mousePos.y < WORLD_HEIGHT) {
+			Chunk* chunk = nullptr;
+
+			if(chunkIndex < 0) chunk = m_parentChunk->getSurroundingChunks()[0];
+			if(chunkIndex > 0) chunk = m_parentChunk->getSurroundingChunks()[1];
+			if(chunkIndex == 0) chunk = m_parentChunk;
+
+			m_selectedBlock = static_cast<Block*>(chunk->tiles[(unsigned int)mousePos.y][(unsigned int)mousePos.x]);
+
+	}
 
 }
 

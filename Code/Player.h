@@ -7,27 +7,29 @@
 
 #include "Entities/TalkingNPC.h"
 
-#include "Chunk.h"
+#include "Item.h"
 #include "Block.h"
 #include "Inventory.h"
-#include "Item.h"
 
 #include "PresetValues.h"
 
 /// TODO: GET RID OF
 #include "Categories.h"
 
-class Player : public Entity
-{
+class Chunk;
+
+class Player : public Entity {
     public:
         Player();
         Player(glm::vec2 position, GLEngine::InputManager* input);
         virtual ~Player();
 
-        void draw(GLEngine::SpriteBatch& sb, float time, GLEngine::GLSLProgram* program) override;
+        void draw(GLEngine::SpriteBatch& sb, float time) override;
         void drawGUI(GLEngine::SpriteBatch& sb, GLEngine::SpriteFont& sf);
-        void update(Chunk* chunks[WORLD_SIZE], float timeStep) override;
-        void updateMouse(Chunk* chunks[WORLD_SIZE], GLEngine::Camera2D* worldCamera);
+        void update(float timeStep) override;
+        void updateMouse(GLEngine::Camera2D* worldCamera);
+
+        TalkingEntity* getTalkingEntity() { return m_speakingEntity; }
 
         void setSpeakingEntity(TalkingNPC* entity) { m_speakingEntity = entity; }
         void setCanInteract(bool setting) { m_canInteract = setting; }

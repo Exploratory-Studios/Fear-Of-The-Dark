@@ -1,10 +1,11 @@
 #include "TalkingNPC.h"
 
-TalkingNPC::TalkingNPC(glm::vec2 position, unsigned int id) {
+TalkingNPC::TalkingNPC(glm::vec2 position, unsigned int id, AudioManager* audioManager) {
+    m_audioManager = audioManager;
+
     unsigned int mobId = Category_Data::dialogueMobData[id].mobId;
     m_questionId = Category_Data::dialogueMobData[id].dialogueId;
 
-    m_dialogueActive = false;
     m_dialogueStarted = false;
 
     init(position, Categories::Entity_Type::MOB, mobId);
@@ -16,8 +17,7 @@ TalkingNPC::~TalkingNPC()
 }
 
 void TalkingNPC::startDialogue() {
-    if(!m_dialogueActive) {
+    if(!m_dialogueStarted) {
         m_dialogueStarted = true;
-        m_dialogueActive = false;
     }
 }

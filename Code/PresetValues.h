@@ -2,6 +2,8 @@
 
 #include <ResourceManager.h>
 
+#include <glm/glm.hpp>
+
 #include "Categories.h"
 
 /// World size variables
@@ -44,10 +46,18 @@
 #define MAX_WEIGHT 100.0f
 
 // How long a day is (frames at the moment)
-#define DAY_LENGTH 2400  // Should be a minute per CYCLE (4 * 60)
+//#define DAY_LENGTH 2400  // Should be 10 minutes per CYCLE 600*4
+#define DAY_LENGTH 240
+// How much the light level is multiplied by when going through transparent tiles
+#define TRANSPARENT_LIGHT_MULTIPLIER 6.0f/7.0f
+// How much the light level is multiplied by when going through blocks
+#define OPAQUE_LIGHT_MULTIPLIER 1.0f/3.0f
 
-// How much the light level is multiplied by when going to each block
-#define LIGHT_MULTIPLIER 6.0f/7.0f
+// The path to the assets folder
+#define ASSETS_FOLDER_PATH std::string("../Assets/")
+
+// How long it takes (in ms) to fade in and out music
+#define FADE_TIME 30 * 1000
 
 /// Category Datatypes
 // Biomes (AKA Places)
@@ -144,9 +154,9 @@ namespace Category_Data {
                                                                 };
 
     const MobDatum mobData[Category_Data::TOTAL_MOBS] = {
-                                                         MobDatum(0, 10.0f, "../Assets/Textures/Mobs/Mob0.png", glm::vec2(1.0f, 2.0f), Categories::Faction::BAD, 4.0f, 0.02f, Categories::AI_Type::WALKING, Categories::Disability_Type::NONE, Categories::Attack_Type::MELEE_ONLY),
-                                                         MobDatum(1, 20.0f, "../Assets/Textures/Mobs/Mob0.png", glm::vec2(1.0f, 2.0f), Categories::Faction::GOOD, 4.0f, 0.02f, Categories::AI_Type::WALKING, Categories::Disability_Type::NONE, Categories::Attack_Type::MELEE_ONLY),
-                                                         MobDatum(2, 30.0f, "../Assets/Textures/Mobs/Mob0.png", glm::vec2(1.0f, 1.0f), Categories::Faction::BAD, 4.0f, 0.02f, Categories::AI_Type::SWIMMING, Categories::Disability_Type::NONE, Categories::Attack_Type::MELEE_ONLY)
+                                                         MobDatum(0, 10.0f, ASSETS_FOLDER_PATH + "Textures/Mobs/Mob0.png", glm::vec2(1.0f, 2.0f), Categories::Faction::BAD, 4.0f, 0.02f, Categories::AI_Type::WALKING, Categories::Disability_Type::NONE, Categories::Attack_Type::MELEE_ONLY),
+                                                         MobDatum(1, 20.0f, ASSETS_FOLDER_PATH + "Textures/Mobs/Mob0.png", glm::vec2(1.0f, 2.0f), Categories::Faction::GOOD, 4.0f, 0.02f, Categories::AI_Type::WALKING, Categories::Disability_Type::NONE, Categories::Attack_Type::MELEE_ONLY),
+                                                         MobDatum(2, 30.0f, ASSETS_FOLDER_PATH + "Textures/Mobs/Mob0.png", glm::vec2(1.0f, 1.0f), Categories::Faction::BAD, 4.0f, 0.02f, Categories::AI_Type::SWIMMING, Categories::Disability_Type::NONE, Categories::Attack_Type::MELEE_ONLY)
                                                         };
 
     const DialogueMobDatum dialogueMobData[Category_Data::TOTAL_DIALOGUE_MOBS] = {
@@ -154,9 +164,9 @@ namespace Category_Data {
                                                                                  };
 
     const ItemDatum itemData[Category_Data::TOTAL_ITEMS] = {
-                                                            ItemDatum(0, "../Assets/Textures/Items/Sword0.png", "Sword"),
-                                                            ItemDatum(1, "../Assets/Textures/Blocks/Dirt.png", "Dirt"),
-                                                            ItemDatum(2, "../Assets/Textures/Blocks/Torch.png", "Torch")
+                                                            ItemDatum(0, ASSETS_FOLDER_PATH + "Textures/Items/Sword0.png", "Sword"),
+                                                            ItemDatum(1, ASSETS_FOLDER_PATH + "Textures/Blocks/Dirt.png", "Dirt"),
+                                                            ItemDatum(2, ASSETS_FOLDER_PATH + "Textures/Blocks/Torch.png", "Torch")
 
                                                            };
 

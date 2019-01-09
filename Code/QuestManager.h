@@ -8,8 +8,8 @@
 #include <SpriteBatch.h>
 #include <SpriteFont.h>
 #include <GUI.h>
+#include <InputManager.h>
 
-#include "EntityManager.h"
 #include "QuestClasses.h"
 
 class DialogueManager;
@@ -23,10 +23,14 @@ class DialogueManager {
         void draw(GLEngine::GUI& gui);
         void update(GLEngine::InputManager& input, GLEngine::GUI& gui);
 
-        void startConversation(unsigned int id, GLEngine::SpriteBatch& sb, GLEngine::SpriteFont& sf, GLEngine::InputManager& input, GLEngine::GUI& gui); // The id is the index of the initial question. This function sets focus and starts a loop to draw and accept input.
+        void startConversation(unsigned int id, GLEngine::InputManager& input, GLEngine::GUI& gui); // The id is the index of the initial question. This function sets focus and starts a loop to draw and accept input.
 
         bool isDialogueActive() { return m_dialogueActive; }
-        bool isConversationStarted() { return m_startedConversation; }
+        bool isDialogueStarted() { return m_dialogueStarted; }
+
+        void setQuestionId(unsigned int id) { m_questionId = id; }
+        void setDialogueStarted(bool setting) { m_dialogueStarted = setting; }
+        void setDialogueActive(bool setting) { m_dialogueActive = setting; }
 
     private:
         void initConversation(Question* initialQuestion, GLEngine::GUI& gui);
@@ -41,7 +45,9 @@ class DialogueManager {
         // Following variables are for actually talking
         Question* m_currentQuestion = nullptr;
         bool m_dialogueActive = false;
-        bool m_startedConversation = false;
+        bool m_dialogueStarted = false;
+
+        unsigned int m_questionId;
 };
 
 class QuestManager
@@ -50,14 +56,23 @@ class QuestManager
         QuestManager(std::string questionListPath, std::string flagListPath);
         ~QuestManager();
 
+        void update(GLEngine::InputManager& input, GLEngine::GUI& gui);
+        void draw(GLEngine::GUI& gui);
+
         std::vector<Question*>* getQuestionList() { return &m_questionList; }
         bool                    isDialogueActive() {return m_dialogueManager->isDialogueActive(); }
+        bool                    isDialogueStarted(){return m_dialogueManager->isDialogueStarted(); }
 
-        DialogueManager* m_dialogueManager = nullptr; /// TODO make this private again please :)
+        void setDialogueActive(bool setting) { m_dialogueManager->setDialogueActive(setting); }
+        void setDialogueStarted(bool setting) { m_dialogueManager->setDialogueStarted(setting); }
+
+        void setQuestionId(unsigned int id) { m_dialogueManager->setQuestionId(id); }
 
     private:
         void readDialogueFromList(std::string listPath);
         void readFlagsFromList(std::string listPath);
+
+        DialogueManager* m_dialogueManager = nullptr; /// TODO make this private again please :)
 
         std::vector<Question*> getDialogue(std::ifstream& file);
         Question* readQuestion(std::vector<std::string> lines); // Forms question struct from given lines

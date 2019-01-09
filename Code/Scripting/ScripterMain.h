@@ -1,6 +1,5 @@
 #pragma once
 
-#include "../EntityManager.h"
 #include "../WorldManager.h"
 
 const bool
@@ -15,7 +14,7 @@ const bool
 
 class Scripter { // Script class will have a virtual function that you fill in. Possibly another class that reads from a text file and executes accordingly for modding purposes? (?)Variables(?)
     public:
-        void init(EntityManager& entityManager, WorldIOManager& worldIOManager, GLEngine::Camera2D& camera,
+        void init(WorldIOManager& worldIOManager, GLEngine::Camera2D& camera,
                   bool scriptInitFlags = SCRIPT_INIT_FLAG_MODIFYWORLD |
                     SCRIPT_INIT_FLAG_MODIFYENTITIES |
                     SCRIPT_INIT_FLAG_INHERITBLOCKS);

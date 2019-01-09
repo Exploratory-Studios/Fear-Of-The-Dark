@@ -42,7 +42,7 @@ void GameplayScreen::onEntry() {
     initShaders();
 
     m_spriteBatch.init();
-    m_spriteFont.init("../Assets/GUI/fonts/Amatic-Bold.ttf", 96);
+    m_spriteFont.init((ASSETS_FOLDER_PATH + "GUI/fonts/Amatic-Bold.ttf").c_str(), 96);
 
     m_camera.init(m_window->getScreenWidth(), m_window->getScreenHeight());
     m_camera.setPosition(m_camera.getPosition() + (glm::vec2(m_window->getScreenWidth() / 2, m_window->getScreenHeight() / 2)));
@@ -70,7 +70,7 @@ void GameplayScreen::update() {
 
     m_gui.update();
 
-    m_worldManager.update(&m_camera, m_deltaTime, m_time);
+    m_worldManager.update(&m_camera, m_deltaTime, m_time, m_game->inputManager, m_gui);
 
     if(m_worldManager.isDialogueStarted() && !m_worldManager.isDialogueActive()) {
         m_worldManager.startDialogue(m_spriteBatch, m_spriteFont, m_game->inputManager, m_gui);
@@ -96,15 +96,14 @@ void GameplayScreen::update() {
     if((int)m_frame++ % (int)(60 / m_tickRate) == 0) { // m_frame is equal to current frame
         tick();
     }
-
-    if(m_worldManager.isDialogueActive()) {
-        m_worldManager.m_questManager->m_dialogueManager->update(m_game->inputManager, m_gui); // Fix this. make it so that everything chains down through the update functions
-    }
 }
 
 void GameplayScreen::draw() {
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-    glClearColor(0.3f, 0.4f, 1.0f, 1.0f);
+
+    float dayLight = cos((float)m_tickTime / (DAY_LENGTH / 6.28318f)) / 2.0f + 0.5f;
+
+    glClearColor(0.3f * dayLight, 0.4f * dayLight, 1.0f * dayLight, 1.0f);
 
     {
         m_textureProgram.use();
@@ -132,7 +131,7 @@ void GameplayScreen::draw() {
         glUniformMatrix4fv(pUniform, 1, GL_FALSE, &projectionMatrix[0][0]);
 
         m_worldManager.getPlayer()->drawGUI(m_spriteBatch, m_spriteFont);
-        m_worldManager.m_questManager->m_dialogueManager->draw(m_gui);
+        m_worldManager.drawGUI(m_gui);
 
         m_gui.draw();
 
@@ -198,7 +197,13 @@ void GameplayScreen::checkInput() {
             } else if(cmd == "tickRate") {
                 argNum = 1;
             } else {
-                std::cout << "NOT A COMMAND";
+                std::cout << "NOT A COMMAND" << std::endl << std::endl;
+                std::cout << "Valid commands are:" << std::endl;
+                std::cout << "time <time>: Sets the tick-time to <time>" << std::endl;
+                std::cout << "give <id> <amnt>: Gives the player <amnt> items with <id> id" << std::endl;
+                std::cout << "getTime: Prints the current tick-time" << std::endl;
+                std::cout << "tickRate <rate>: Sets the tick-rate to <rate>" << std::endl;
+                argNum = 0;
             }
 
             int args[argNum];
@@ -233,14 +238,14 @@ void GameplayScreen::checkInput() {
 }
 
 void GameplayScreen::initShaders() {
-    m_textureProgram.compileShaders("../Assets/Shaders/textureShading.vert", "../Assets/Shaders/textureShading.frag");
+    m_textureProgram.compileShaders(ASSETS_FOLDER_PATH + "Shaders/textureShading.vert", ASSETS_FOLDER_PATH + "Shaders/textureShading.frag");
     m_textureProgram.addAttribute("vertexPosition");
     m_textureProgram.addAttribute("vertexColour");
     m_textureProgram.addAttribute("vertexUV");
     m_textureProgram.addAttribute("vertexLighting");
     m_textureProgram.linkShaders();
 
-    m_uiTextureProgram.compileShaders("../Assets/Shaders/uiShader.vert", "../Assets/Shaders/uiShader.frag");
+    m_uiTextureProgram.compileShaders(ASSETS_FOLDER_PATH + "Shaders/uiShader.vert", ASSETS_FOLDER_PATH + "Shaders/uiShader.frag");
     m_uiTextureProgram.addAttribute("vertexPosition");
     m_uiTextureProgram.addAttribute("vertexColour");
     m_uiTextureProgram.addAttribute("vertexUV");
@@ -249,7 +254,7 @@ void GameplayScreen::initShaders() {
 
 void GameplayScreen::initUI() {
     {
-        m_gui.init("../Assets/GUI");
+        m_gui.init(ASSETS_FOLDER_PATH + "GUI");
         m_gui.loadScheme("FOTDSkin.scheme");
 
         m_gui.setFont("Amatic-26");
@@ -261,7 +266,7 @@ void GameplayScreen::initUI() {
 }
 
 void GameplayScreen::tick() {
-    m_worldManager.tick(m_tickTime);
+    m_worldManager.tick(&m_tickTime);
     m_tickTime++;
 }
 

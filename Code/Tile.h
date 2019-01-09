@@ -42,7 +42,7 @@ class Tile
         void            setAmbientLight(float light) { m_ambientLight = light; }
 
         virtual void update(float time);
-        virtual void tick(int tickTime);
+        virtual void tick(float* tickTime);
         virtual void draw(GLEngine::SpriteBatch& sb, int xOffset);
 
     protected:

@@ -32,7 +32,7 @@ void LoadScreen::onEntry() {
     initShaders();
 
     m_spriteBatch.init();
-    m_spriteFont.init("../Assets/GUI/fonts/QuietHorror.ttf", 96);
+    m_spriteFont.init((ASSETS_FOLDER_PATH + "GUI/fonts/QuietHorror.ttf").c_str(), 96);
 
     m_camera.init(m_window->getScreenWidth(), m_window->getScreenHeight());
     m_camera.setPosition(glm::vec2(m_window->getScreenWidth() / 2.0f, m_window->getScreenHeight() / 2.0f));
@@ -108,7 +108,7 @@ void LoadScreen::checkInput() {
 
 void LoadScreen::initUI() {
     {
-        m_gui.init("../Assets/GUI");
+        m_gui.init(ASSETS_FOLDER_PATH + "GUI");
         m_gui.loadScheme("FOTDSkin.scheme");
 
         m_gui.setFont("QuietHorror-30");
@@ -148,7 +148,7 @@ void LoadScreen::initUI() {
 }
 
 void LoadScreen::initShaders() {
-    m_textureProgram.compileShaders("../Assets/Shaders/textureShading.vert", "../Assets/Shaders/textureShading.frag");
+    m_textureProgram.compileShaders(ASSETS_FOLDER_PATH + "Shaders/textureShading.vert", ASSETS_FOLDER_PATH + "Shaders/textureShading.frag");
     m_textureProgram.addAttribute("vertexPosition");
     m_textureProgram.addAttribute("vertexColour");
     m_textureProgram.addAttribute("vertexUV");

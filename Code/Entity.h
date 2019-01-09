@@ -4,28 +4,30 @@
 #include <DebugRenderer.h>
 
 #include "Block.h"
-#include "Chunk.h"
 
 #include "PresetValues.h"
 #include "Entities/EntityFunctions.h"
 
+#include "AudioManager.h"
+
+class Chunk;
+
 class Entity
 {
     friend class Scripter;
-    friend class EntityManager;
 
     public:
         Entity();
-        Entity(glm::vec2 position, unsigned int id);
+        Entity(glm::vec2 position, unsigned int id, AudioManager* audioManager);
         virtual ~Entity();
 
         void init(glm::vec2 position, Categories::Entity_Type type, unsigned int id);
 
-        virtual void update(Chunk* chunks[WORLD_SIZE], float timeStep);
-        virtual void draw(GLEngine::SpriteBatch& sb, float time, GLEngine::GLSLProgram* program);
+        virtual void update(float timeStep);
+        virtual void draw(GLEngine::SpriteBatch& sb, float time);
         void move(float timeStepVariable);
 
-        void collide(std::vector<Entity*> entities, int chunkI);
+        void collide(std::vector<Entity*> entities);
 
         const Categories::Faction&     getFaction()      const { return m_faction; }
         const glm::vec2&               getPosition()     const { return m_position; }
@@ -41,11 +43,11 @@ class Entity
         int m_parentChunkIndex = -1;
 
     protected:
-        void setParentChunk(Chunk* worldChunks[WORLD_SIZE]);
-        bool checkTilePosition(Tile* tiles[WORLD_HEIGHT][CHUNK_SIZE], Tile* extraTileArray[WORLD_HEIGHT][2], int chunkI, std::vector<glm::vec2>& collideTilePositions, float xPos, float yPos);
+        void setParentChunk(Chunk* surroundingChunks[2]);
+        bool checkTilePosition(Tile* tiles[WORLD_HEIGHT][CHUNK_SIZE], Tile* extraTileArray[WORLD_HEIGHT][2], std::vector<glm::vec2>& collideTilePositions, float xPos, float yPos);
         void collideWithTile(glm::vec2 tilePos, bool ground = false);
-        void updateLightLevel(Chunk* currentChunk);
-        void updateAI(Chunk* activeChunks[WORLD_SIZE]);
+        void updateLightLevel();
+        void updateAI();
         void updateMovement();
 
         bool m_controls[4]; // Up, down (crouching while on ground), left, right
@@ -75,6 +77,8 @@ class Entity
         Categories::AI_Type m_ai = Categories::AI_Type::WALKING;
         Categories::Disability_Type m_disabilities = Categories::Disability_Type::NONE;
         Categories::Attack_Type m_attackType = Categories::Attack_Type::MELEE_ONLY;
+
+        AudioManager* m_audioManager = nullptr;
 
 };
 

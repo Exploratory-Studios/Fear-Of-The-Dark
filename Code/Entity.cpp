@@ -5,12 +5,15 @@
 #include <DebugRenderer.h>
 #include <math.h>
 
+#include "Chunk.h"
+
 Entity::Entity()
 {
     //ctor
 }
 
-Entity::Entity(glm::vec2 position, unsigned int id) {
+Entity::Entity(glm::vec2 position, unsigned int id, AudioManager* audioManager) {
+    m_audioManager = audioManager;
     init(position, Categories::Entity_Type::MOB, id);
 }
 
@@ -58,14 +61,15 @@ void Entity::init(glm::vec2 position, Categories::Entity_Type type, unsigned int
     }
 }
 
-void Entity::update(Chunk* chunks[WORLD_SIZE], float timeStep) {
-    updateAI(chunks);
+void Entity::update(float timeStep) {
+    updateAI();
     updateMovement();
-    setParentChunk(chunks);
-    updateLightLevel(m_parentChunk);
+    setParentChunk(m_parentChunk->getSurroundingChunks());
+    updateLightLevel();
+    move(timeStep);
 }
 
-void Entity::draw(GLEngine::SpriteBatch& sb, float time, GLEngine::GLSLProgram* program) {
+void Entity::draw(GLEngine::SpriteBatch& sb, float time) {
 
     //GLint lightUniform = program->getUniformLocation("lightColour");
     //glUniform3fv(lightUniform, 3, &glm::vec3(1.0f, 1.0f, 1.0f)[0]);
@@ -129,9 +133,9 @@ void Entity::move(float timeStepVariable) {
 
 
 #include <iostream>
-void Entity::collide(std::vector<Entity*> entities, int chunkI) {
+void Entity::collide(std::vector<Entity*> entities) {
 
-    if(chunkI == m_parentChunkIndex) {
+    if(m_parentChunkIndex >= 0) {
         /// ENTITY COLLISION STARTS HERE
         for(auto e : entities) {
             if(e != this) {
@@ -173,28 +177,24 @@ void Entity::collide(std::vector<Entity*> entities, int chunkI) {
             // Check for ground/ceiling
             checkTilePosition(m_parentChunk->tiles,
                               m_parentChunk->extraTiles,
-                              chunkI,
                               groundTilePositions,
                               posBR.x - TILE_SIZE / 4.0f,
                               posBR.y);
 
             checkTilePosition(m_parentChunk->tiles,
                               m_parentChunk->extraTiles,
-                              chunkI,
                               groundTilePositions,
                               posBL.x + TILE_SIZE / 4.0f,
                               posBL.y);
 
             checkTilePosition(m_parentChunk->tiles,
                               m_parentChunk->extraTiles,
-                              chunkI,
                               groundTilePositions,
                               posTR.x - TILE_SIZE / 4.0f,
                               posTR.y);
 
             checkTilePosition(m_parentChunk->tiles,
                               m_parentChunk->extraTiles,
-                              chunkI,
                               groundTilePositions,
                               posTL.x + TILE_SIZE / 4.0f,
                               posTL.y);
@@ -203,28 +203,24 @@ void Entity::collide(std::vector<Entity*> entities, int chunkI) {
             // Check the corners
             checkTilePosition(m_parentChunk->tiles,
                               m_parentChunk->extraTiles,
-                              chunkI,
                               collideTilePositions,
                               posBR.x,
                               posBR.y + TILE_SIZE / 4.0f);
 
             checkTilePosition(m_parentChunk->tiles,
                               m_parentChunk->extraTiles,
-                              chunkI,
                               collideTilePositions,
                               posBL.x,
                               posBL.y + TILE_SIZE / 4.0f);
 
             checkTilePosition(m_parentChunk->tiles,
                               m_parentChunk->extraTiles,
-                              chunkI,
                               collideTilePositions,
                               posTL.x,
                               posTL.y - TILE_SIZE / 4.0f);
 
             checkTilePosition(m_parentChunk->tiles,
                               m_parentChunk->extraTiles,
-                              chunkI,
                               collideTilePositions,
                               posTR.x,
                               posTR.y - TILE_SIZE / 4.0f);
@@ -244,18 +240,18 @@ void Entity::collide(std::vector<Entity*> entities, int chunkI) {
 #include <iostream>
 
 /// PRIVATE FUNCTIONS
-void Entity::setParentChunk(Chunk* worldChunks[WORLD_SIZE]) {
+void Entity::setParentChunk(Chunk* surroundingChunks[2]) {
 
     short int indexBegin = std::floor(m_position.x / TILE_SIZE / CHUNK_SIZE);
     short int indexEnd = std::floor((m_position.x + m_size.x * TILE_SIZE) / TILE_SIZE / CHUNK_SIZE);
     short int index = m_parentChunkIndex; // End product
 
     if(indexBegin != indexEnd) {
-        float x = (int)m_position.x / TILE_SIZE % (CHUNK_SIZE);
-        if(abs(x - CHUNK_SIZE) > m_size.x / 2.0f * TILE_SIZE) {
-            index = indexBegin;
-        } else if(abs(x - TILE_SIZE * CHUNK_SIZE) < m_size.x / 2.0f * TILE_SIZE) {
+        float x = (m_position.x / TILE_SIZE) - (CHUNK_SIZE * index);
+        if(abs(x) > m_size.x / 2.0f * TILE_SIZE) {
             index = indexEnd;
+        } else if(x + CHUNK_SIZE < m_size.x / 2.0f * TILE_SIZE) {
+            index = indexBegin;
         }
     } else {
         if(indexBegin != m_parentChunkIndex) index = indexBegin;
@@ -268,11 +264,6 @@ void Entity::setParentChunk(Chunk* worldChunks[WORLD_SIZE]) {
     if(index >= WORLD_SIZE) {
         m_position.x -= WORLD_SIZE * CHUNK_SIZE * TILE_SIZE;
         index = 0;
-    }
-
-    if(index >= 0 && index < WORLD_SIZE) {
-        m_parentChunk = worldChunks[index];
-        m_parentChunkIndex = index;
     }
 
     /*if(index != m_parentChunkIndex) {
@@ -291,7 +282,7 @@ void Entity::setParentChunk(Chunk* worldChunks[WORLD_SIZE]) {
     }*/
 }
 
-bool Entity::checkTilePosition(Tile* tiles[WORLD_HEIGHT][CHUNK_SIZE], Tile* extraTileArray[WORLD_HEIGHT][2], int chunkI, std::vector<glm::vec2>& collideTilePositions, float x, float y) {
+bool Entity::checkTilePosition(Tile* tiles[WORLD_HEIGHT][CHUNK_SIZE], Tile* extraTileArray[WORLD_HEIGHT][2], std::vector<glm::vec2>& collideTilePositions, float x, float y) {
     // Get the position of this corner in grid-space
     glm::vec2 gridPos = glm::vec2(floor(x / TILE_SIZE),
                                       floor(y / TILE_SIZE)); // grid-space coords
@@ -380,8 +371,8 @@ void Entity::collideWithTile(glm::vec2 tilePos, bool ground) {
 
 #include <iostream>
 
-void Entity::updateLightLevel(Chunk* currentChunk) {
-    if(currentChunk) {
+void Entity::updateLightLevel() {
+    if(m_parentChunk) {
         int entityChunkX, entityChunkY; // The entity's coords in the chunk
 
         entityChunkX = (int)((m_position.x) / TILE_SIZE) % CHUNK_SIZE;
@@ -389,13 +380,13 @@ void Entity::updateLightLevel(Chunk* currentChunk) {
 
         if(entityChunkX >= 0 && entityChunkX < CHUNK_SIZE) {
             if(entityChunkY >= 0 && entityChunkY < WORLD_HEIGHT) {
-                m_light = currentChunk->tiles[entityChunkY][entityChunkX]->getLight();
+                m_light = m_parentChunk->tiles[entityChunkY][entityChunkX]->getLight();
             }
         }
 
         if(entityChunkX+m_size.x >= 0 && entityChunkX+m_size.x < CHUNK_SIZE) {
             if(entityChunkY >= 0 && entityChunkY < WORLD_HEIGHT) {
-                m_light += currentChunk->tiles[entityChunkY][(int)(entityChunkX+m_size.x)]->getLight();
+                m_light += m_parentChunk->tiles[entityChunkY][(int)(entityChunkX+m_size.x)]->getLight();
                 m_light /= 2.0f;
             }
         }
@@ -404,7 +395,7 @@ void Entity::updateLightLevel(Chunk* currentChunk) {
     }
 }
 
-void Entity::updateAI(Chunk* activeChunks[WORLD_SIZE]) {
+void Entity::updateAI() {
     if(m_ai == Categories::AI_Type::WALKING) {
         EntityFunctions::WalkingAI(m_controls, m_targets, m_curTarget, m_velocity, m_size, m_position);
     }

@@ -42,6 +42,22 @@
 					<Add option="-s" />
 				</Linker>
 			</Target>
+			<Target title="DebugVB">
+				<Option output="bin/Debug/Fear Of The Dark" prefix_auto="1" extension_auto="1" />
+				<Option object_output="obj/Debug/" />
+				<Option type="1" />
+				<Option compiler="gcc" />
+				<Compiler>
+					<Add option="-g" />
+					<Add option="-v" />
+					<Add option="-DDEV_CONTROLS" />
+					<Add directory="Items" />
+					<Add directory="Code" />
+					<Add directory="Code/Entities" />
+					<Add directory="Code/QuestSystem" />
+					<Add directory="include" />
+				</Compiler>
+			</Target>
 		</Build>
 		<Compiler>
 			<Add option="-Wall" />
@@ -231,6 +247,8 @@
 		<Unit filename="../Assets/Textures/StartupScreens/Studio/Logo.png" />
 		<Unit filename="App.cpp" />
 		<Unit filename="App.h" />
+		<Unit filename="AudioManager.cpp" />
+		<Unit filename="AudioManager.h" />
 		<Unit filename="Block.cpp" />
 		<Unit filename="Block.h" />
 		<Unit filename="Categories.h" />

@@ -6,9 +6,9 @@
 #include "Entity.h"
 #include "Chunk.h"
 
-#include "EntityManager.h"
 #include "WorldIOManager.h"
 #include "QuestManager.h"
+#include "AudioManager.h"
 
 #include "Scripting/ScripterMain.h"
 
@@ -24,14 +24,14 @@ class WorldManager
 
         void init(WorldIOManager* worldIOManager);
 
-        void update(GLEngine::Camera2D* worldCamera, float timeStepVariable, float time);
-        void tick(float tickTime);
+        void update(GLEngine::Camera2D* worldCamera, float timeStepVariable, float time, GLEngine::InputManager& input, GLEngine::GUI& gui);
+        void tick(float* tickTime);
         void draw(GLEngine::SpriteBatch& sb, GLEngine::DebugRenderer& dr, int tickTime, GLEngine::GLSLProgram* program);
+        void drawGUI(GLEngine::GUI& gui);
 
         Player* getPlayer() { return m_player; }
-        QuestManager* m_questManager = nullptr;
 
-        bool isDialogueStarted() { return m_dialogueStarted; }
+        bool isDialogueStarted() { return m_questManager->isDialogueStarted(); }
         bool isDialogueActive() { return m_questManager->isDialogueActive(); }
 
         void startDialogue(GLEngine::SpriteBatch& sb, GLEngine::SpriteFont& sf, GLEngine::InputManager& input, GLEngine::GUI& gui);
@@ -39,14 +39,12 @@ class WorldManager
     private:
         void activateChunks();
 
-        EntityManager m_entityManager;
+        QuestManager* m_questManager = nullptr;
         WorldIOManager* m_worldIOManager = nullptr;
-
+        AudioManager m_audioManager;
 
         Player* m_player;                // NO... Why not? I think I may possibly, with just a slight chance, be a pyschopath
 
         std::vector<int> m_activatedChunks;
         int m_lastActivated = -1;
-
-        bool m_dialogueStarted = false;
 };

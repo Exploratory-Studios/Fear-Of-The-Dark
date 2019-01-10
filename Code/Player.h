@@ -26,10 +26,10 @@ class Player : public Entity {
 
         void draw(GLEngine::SpriteBatch& sb, float time) override;
         void drawGUI(GLEngine::SpriteBatch& sb, GLEngine::SpriteFont& sf);
-        void update(float timeStep) override;
+        void update(float timeStep, Chunk* worldChunks[WORLD_SIZE]) override;
         void updateMouse(GLEngine::Camera2D* worldCamera);
 
-        TalkingEntity* getTalkingEntity() { return m_speakingEntity; }
+        TalkingNPC* getTalkingEntity() { return m_speakingEntity; }
 
         void setSpeakingEntity(TalkingNPC* entity) { m_speakingEntity = entity; }
         void setCanInteract(bool setting) { m_canInteract = setting; }

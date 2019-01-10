@@ -151,12 +151,13 @@ void Player::drawGUI(GLEngine::SpriteBatch& sb, GLEngine::SpriteFont& sf) {
     }
 }
 
-void Player::update(float timeStep) {
+void Player::update(float timeStep, Chunk* worldChunks[WORLD_SIZE]) {
 
-    setParentChunk(m_parentChunk->getSurroundingChunks());
+    setParentChunk(worldChunks);
     updateLightLevel();
 
     updateInput();
+    move(timeStep);
     m_inventory->update();
 
     if(m_velocity.x > MAX_SPEED * m_inventory->getSpeedMultiplier()) {
@@ -173,7 +174,7 @@ void Player::updateMouse(GLEngine::Camera2D* worldCamera) {
 
     m_mousePos = mousePos;
 
-    unsigned int chunkIndex = ((int)abs(floor(mousePos.x / CHUNK_SIZE) + WORLD_SIZE) % WORLD_SIZE) - m_parentChunkIndex;
+    int chunkIndex = std::floor(mousePos.x / CHUNK_SIZE) - getChunkIndex();
 
     mousePos.x = (int)(mousePos.x + CHUNK_SIZE * WORLD_SIZE) % CHUNK_SIZE;
 
@@ -183,9 +184,15 @@ void Player::updateMouse(GLEngine::Camera2D* worldCamera) {
        mousePos.y < WORLD_HEIGHT) {
 			Chunk* chunk = nullptr;
 
-			if(chunkIndex < 0) chunk = m_parentChunk->getSurroundingChunks()[0];
-			if(chunkIndex > 0) chunk = m_parentChunk->getSurroundingChunks()[1];
-			if(chunkIndex == 0) chunk = m_parentChunk;
+			if(chunkIndex < 0) {
+                chunk = m_parentChunk->getSurroundingChunks()[0];
+            } else
+			if(chunkIndex > 0) {
+                chunk = m_parentChunk->getSurroundingChunks()[1];
+            } else
+			if(chunkIndex == 0) {
+                chunk = m_parentChunk;
+            }
 
 			m_selectedBlock = static_cast<Block*>(chunk->tiles[(unsigned int)mousePos.y][(unsigned int)mousePos.x]);
 

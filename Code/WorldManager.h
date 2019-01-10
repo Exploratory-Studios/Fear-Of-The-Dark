@@ -27,14 +27,14 @@ class WorldManager
         void update(GLEngine::Camera2D* worldCamera, float timeStepVariable, float time, GLEngine::InputManager& input, GLEngine::GUI& gui);
         void tick(float* tickTime);
         void draw(GLEngine::SpriteBatch& sb, GLEngine::DebugRenderer& dr, int tickTime, GLEngine::GLSLProgram* program);
-        void drawGUI(GLEngine::GUI& gui);
+        void drawGUI(GLEngine::SpriteBatch& sb, GLEngine::SpriteFont& sf, GLEngine::GUI& gui);
 
         Player* getPlayer() { return m_player; }
 
         bool isDialogueStarted() { return m_questManager->isDialogueStarted(); }
         bool isDialogueActive() { return m_questManager->isDialogueActive(); }
 
-        void startDialogue(GLEngine::SpriteBatch& sb, GLEngine::SpriteFont& sf, GLEngine::InputManager& input, GLEngine::GUI& gui);
+        void startDialogue();
 
     private:
         void activateChunks();

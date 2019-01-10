@@ -15,6 +15,7 @@
 struct World {
     Chunk* chunks[WORLD_SIZE] = { nullptr }; // Chunk will hold a vector of tiles and positions.
     std::vector<Entity> entities;
+    std::vector<TalkingNPC> talkingEntities;
     Player player;
 };
 

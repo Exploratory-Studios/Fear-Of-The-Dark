@@ -7,6 +7,14 @@
 
 #include "Chunk.h"
 
+unsigned int Entity::getChunkIndex() {
+    return m_parentChunk->getIndex();
+}
+
+void Entity::setParentChunk(Chunk* chunk) {
+    m_parentChunk = chunk;
+}
+
 Entity::Entity()
 {
     //ctor
@@ -61,10 +69,10 @@ void Entity::init(glm::vec2 position, Categories::Entity_Type type, unsigned int
     }
 }
 
-void Entity::update(float timeStep) {
+void Entity::update(float timeStep, Chunk* worldChunks[WORLD_SIZE]) {
     updateAI();
     updateMovement();
-    setParentChunk(m_parentChunk->getSurroundingChunks());
+    setParentChunk(worldChunks);
     updateLightLevel();
     move(timeStep);
 }
@@ -133,12 +141,14 @@ void Entity::move(float timeStepVariable) {
 
 
 #include <iostream>
-void Entity::collide(std::vector<Entity*> entities) {
+void Entity::collide() {
 
-    if(m_parentChunkIndex >= 0) {
+    std::vector<Entity*> entities = m_parentChunk->getEntities();
+
+    if(getChunkIndex() >= 0) {
         /// ENTITY COLLISION STARTS HERE
         for(auto e : entities) {
-            if(e != this) {
+            if(e && e != this) {
                 float xDist = (m_position.x / (float)TILE_SIZE + m_size.x / 2.0f) - (e->getPosition().x / (float)TILE_SIZE + e->getSize().x / 2.0f);
                 float yDist = (m_position.y / (float)TILE_SIZE + m_size.y / 2.0f) - (e->getPosition().y / (float)TILE_SIZE + e->getSize().y / 2.0f);
                 if(abs(xDist) < abs(m_size.x / 2.0f + e->getSize().x / 2.0f)) {
@@ -240,21 +250,21 @@ void Entity::collide(std::vector<Entity*> entities) {
 #include <iostream>
 
 /// PRIVATE FUNCTIONS
-void Entity::setParentChunk(Chunk* surroundingChunks[2]) {
+void Entity::setParentChunk(Chunk* worldChunks[WORLD_SIZE]) {
 
     short int indexBegin = std::floor(m_position.x / TILE_SIZE / CHUNK_SIZE);
     short int indexEnd = std::floor((m_position.x + m_size.x * TILE_SIZE) / TILE_SIZE / CHUNK_SIZE);
-    short int index = m_parentChunkIndex; // End product
+    short int index = getChunkIndex(); // End product
 
     if(indexBegin != indexEnd) {
-        float x = (m_position.x / TILE_SIZE) - (CHUNK_SIZE * index);
-        if(abs(x) > m_size.x / 2.0f * TILE_SIZE) {
-            index = indexEnd;
-        } else if(x + CHUNK_SIZE < m_size.x / 2.0f * TILE_SIZE) {
+        float x = (int)m_position.x / TILE_SIZE % (CHUNK_SIZE);
+        if(abs(x - CHUNK_SIZE) > m_size.x / 2.0f * TILE_SIZE) {
             index = indexBegin;
+        } else if(abs(x - TILE_SIZE * CHUNK_SIZE) < m_size.x / 2.0f * TILE_SIZE) {
+            index = indexEnd;
         }
     } else {
-        if(indexBegin != m_parentChunkIndex) index = indexBegin;
+        index = indexBegin;
     }
 
     if(index < 0) {
@@ -264,6 +274,10 @@ void Entity::setParentChunk(Chunk* surroundingChunks[2]) {
     if(index >= WORLD_SIZE) {
         m_position.x -= WORLD_SIZE * CHUNK_SIZE * TILE_SIZE;
         index = 0;
+    }
+
+    if(index >= 0 && index < WORLD_SIZE) {
+        m_parentChunk = worldChunks[index];
     }
 
     /*if(index != m_parentChunkIndex) {
@@ -295,20 +309,20 @@ bool Entity::checkTilePosition(Tile* tiles[WORLD_HEIGHT][CHUNK_SIZE], Tile* extr
     }*/
 
     // If this is not an air tile, we should collide with it
-    if ((int)gridPos.x - (m_parentChunkIndex * CHUNK_SIZE) >= 0 &&
-        (int)gridPos.x - (m_parentChunkIndex * CHUNK_SIZE) < CHUNK_SIZE) {
+    if ((int)gridPos.x - (getChunkIndex() * CHUNK_SIZE) >= 0 &&
+        (int)gridPos.x - (getChunkIndex() * CHUNK_SIZE) < CHUNK_SIZE) {
         // returning gridpos.x as NAN
-        if (tiles[(int)gridPos.y][(int)gridPos.x - (m_parentChunkIndex * CHUNK_SIZE)]->isSolid()) { //  - m_parentChunkIndex
+        if (tiles[(int)gridPos.y][(int)gridPos.x - (getChunkIndex() * CHUNK_SIZE)]->isSolid()) { //  - getChunkIndex()
             collideTilePositions.push_back(glm::vec2((float)gridPos.x + 0.500f, (float)gridPos.y + 0.500f)); // CollideTilePositions are put in as gridspace coords
             return true;
         }
-    } else if((int)gridPos.x - (m_parentChunkIndex * CHUNK_SIZE) == -1) {
-        if (extraTileArray[(int)gridPos.y][0]->isSolid()) { //  - m_parentChunkIndex
+    } else if((int)gridPos.x - (getChunkIndex() * CHUNK_SIZE) == -1) {
+        if (extraTileArray[(int)gridPos.y][0]->isSolid()) { //  - getChunkIndex()
             collideTilePositions.push_back(glm::vec2((float)gridPos.x + 0.500f, (float)gridPos.y + 0.500f)); // CollideTilePositions are put in as gridspace coords
             return true;
         }
-    } else if((int)gridPos.x - (m_parentChunkIndex * CHUNK_SIZE) == CHUNK_SIZE) {
-        if (extraTileArray[(int)gridPos.y][1]->isSolid()) { //  - m_parentChunkIndex
+    } else if((int)gridPos.x - (getChunkIndex() * CHUNK_SIZE) == CHUNK_SIZE) {
+        if (extraTileArray[(int)gridPos.y][1]->isSolid()) { //  - getChunkIndex()
             collideTilePositions.push_back(glm::vec2((float)gridPos.x + 0.500f, (float)gridPos.y + 0.500f)); // CollideTilePositions are put in as gridspace coords
             return true;
         }

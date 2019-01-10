@@ -23,16 +23,15 @@ class Entity
 
         void init(glm::vec2 position, Categories::Entity_Type type, unsigned int id);
 
-        virtual void update(float timeStep);
+        virtual void update(float timeStep, Chunk* worldChunks[WORLD_SIZE]);
         virtual void draw(GLEngine::SpriteBatch& sb, float time);
         void move(float timeStepVariable);
 
-        void collide(std::vector<Entity*> entities);
+        void collide();
 
         const Categories::Faction&     getFaction()      const { return m_faction; }
         const glm::vec2&               getPosition()     const { return m_position; }
         const glm::vec2&               getSize()         const { return m_size; }
-        const int&                     getChunkIndex()         { return m_parentChunkIndex; }
               glm::vec2                getVelocity()     const { return m_velocity; }
               std::vector<glm::vec2>   getTargets()      const { return m_targets; }
               float                    getJumpHeight()   const { return m_jumpHeight; }
@@ -40,10 +39,11 @@ class Entity
         void                           setPosition(glm::vec2 pos)   { m_position = pos; }
         void                           setTargets(std::vector<glm::vec2> targets)  { m_targets = targets; m_curTarget = 0; }
 
-        int m_parentChunkIndex = -1;
+        void setParentChunk(Chunk* chunk);
+        unsigned int getChunkIndex();
 
     protected:
-        void setParentChunk(Chunk* surroundingChunks[2]);
+        void setParentChunk(Chunk* worldChunks[WORLD_SIZE]);
         bool checkTilePosition(Tile* tiles[WORLD_HEIGHT][CHUNK_SIZE], Tile* extraTileArray[WORLD_HEIGHT][2], std::vector<glm::vec2>& collideTilePositions, float xPos, float yPos);
         void collideWithTile(glm::vec2 tilePos, bool ground = false);
         void updateLightLevel();

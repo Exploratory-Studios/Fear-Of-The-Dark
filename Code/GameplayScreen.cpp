@@ -72,10 +72,6 @@ void GameplayScreen::update() {
 
     m_worldManager.update(&m_camera, m_deltaTime, m_time, m_game->inputManager, m_gui);
 
-    if(m_worldManager.isDialogueStarted() && !m_worldManager.isDialogueActive()) {
-        m_worldManager.startDialogue(m_spriteBatch, m_spriteFont, m_game->inputManager, m_gui);
-    }
-
     if((m_worldManager.getPlayer()->getPosition().x + m_worldManager.getPlayer()->getSize().x / 2.0f) - m_lastPlayerPos.x < -CHUNK_SIZE * TILE_SIZE) {
         m_lastPlayerPos.x -= WORLD_SIZE * CHUNK_SIZE * TILE_SIZE;
     } else if(m_worldManager.getPlayer()->getPosition().x + m_worldManager.getPlayer()->getSize().x / 2.0f - m_lastPlayerPos.x > CHUNK_SIZE * TILE_SIZE) {
@@ -131,7 +127,7 @@ void GameplayScreen::draw() {
         glUniformMatrix4fv(pUniform, 1, GL_FALSE, &projectionMatrix[0][0]);
 
         m_worldManager.getPlayer()->drawGUI(m_spriteBatch, m_spriteFont);
-        m_worldManager.drawGUI(m_gui);
+        m_worldManager.drawGUI(m_spriteBatch, m_spriteFont, m_gui);
 
         m_gui.draw();
 

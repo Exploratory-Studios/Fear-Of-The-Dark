@@ -17,7 +17,5 @@ TalkingNPC::~TalkingNPC()
 }
 
 void TalkingNPC::startDialogue() {
-    if(!m_dialogueStarted) {
-        m_dialogueStarted = true;
-    }
+    m_dialogueStarted = true;
 }

@@ -7,6 +7,7 @@
 #include "Tile.h"
 
 class EntityManager;
+class Entity;
 
 class Chunk
 {
@@ -14,9 +15,11 @@ class Chunk
         Chunk();
         Chunk(Tile* tileArray[WORLD_HEIGHT][CHUNK_SIZE], Tile* extraTileArray[WORLD_HEIGHT][2], int index, Chunk* surroundingChunks[2]);
 
+        ~Chunk();
+
         void init(Tile* tileArray[WORLD_HEIGHT][CHUNK_SIZE], Tile* extraTileArray[WORLD_HEIGHT][2], Chunk* surroundingChunks[2]);
 
-        void update(float time, float timeStepVariable);
+        void update(float time, float timeStepVariable, Chunk* chunks[WORLD_SIZE]);
         void tick(float* tickTime);
         void draw(GLEngine::SpriteBatch& sb, int xOffset, float time); // xOffset is in chunks
 
@@ -33,19 +36,20 @@ class Chunk
         Chunk**					getSurroundingChunks()										{ return m_surroundingChunks; }
         bool                    isDialogueActive()                                          { return m_dialogueActive; }
         bool                    isDialogueStarted()                                         { return m_dialogueStarted; }
+        std::vector<Entity*>    getEntities();
 
         Tile* tiles[WORLD_HEIGHT][CHUNK_SIZE] = { { nullptr } };
         Tile* extraTiles[WORLD_HEIGHT][2] = { { nullptr } }; // On each side, so that we don't have to activate 3 chunks at a time instead of one
 
     private:
-        EntityManager* m_entityManager;
+        EntityManager* m_entityManager = nullptr;
 
 		Chunk* m_surroundingChunks[2] = { nullptr };
 
         Categories::Places m_place;
         int m_index;
 
-        bool m_activated = false;
+        bool m_activated = true;
 
         bool m_dialogueStarted = false;
         bool m_dialogueActive = false;

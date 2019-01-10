@@ -2,14 +2,24 @@
 #include <iostream>
 
 #include "EntityManager.h"
+#include "Entity.h"
+
+std::vector<Entity*> Chunk::getEntities() {
+    return m_entityManager->getEntities();
+}
 
 Chunk::Chunk() {
-
+    m_entityManager = new EntityManager();
 }
 
 Chunk::Chunk(Tile* tileArray[WORLD_HEIGHT][CHUNK_SIZE], Tile* extraTileArray[WORLD_HEIGHT][2], int index, Chunk* surroundingChunks[2]) {
     init(tileArray, extraTileArray, surroundingChunks);
     m_index = index;
+    m_entityManager = new EntityManager();
+}
+
+Chunk::~Chunk() {
+    delete m_entityManager;
 }
 
 void Chunk::init(Tile* tileArray[WORLD_HEIGHT][CHUNK_SIZE], Tile* extraTileArray[WORLD_HEIGHT][2], Chunk* surroundingChunks[2]) {
@@ -34,7 +44,7 @@ void Chunk::init(Tile* tileArray[WORLD_HEIGHT][CHUNK_SIZE], Tile* extraTileArray
     }
 }
 
-void Chunk::update(float time, float timeStepVariable) {
+void Chunk::update(float time, float timeStepVariable, Chunk* chunks[WORLD_SIZE]) {
     for(int i = 0; i < WORLD_HEIGHT; i++) {
         for(int j = 0; j < CHUNK_SIZE; j++) {
             tiles[i][j]->update(time);
@@ -42,7 +52,7 @@ void Chunk::update(float time, float timeStepVariable) {
         extraTiles[i][0]->update(time);
         extraTiles[i][1]->update(time);
     }
-    m_entityManager->update(timeStepVariable);
+    m_entityManager->update(timeStepVariable, chunks);
 }
 
 void Chunk::tick(float* tickTime) {

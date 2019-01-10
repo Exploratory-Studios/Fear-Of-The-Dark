@@ -14,7 +14,7 @@ void DialogueManager::startConversation(unsigned int id, GLEngine::InputManager&
     m_currentQuestion = initialQuestion;
     initConversation(initialQuestion, gui);
     m_dialogueActive = true;
-    m_dialogueStarted = true;
+    m_dialogueStarted = false;
 }
 
 void DialogueManager::initConversation(Question* initialQuestion, GLEngine::GUI& gui) { // Sets gui for conversation

@@ -139,8 +139,8 @@ void WorldIOManager::createWorld(unsigned int seed, std::string worldName, bool 
             m_world->chunks[index]->extraTiles[y][1] = m_world->chunks[indexP]->tiles[y][0];
         }
 
-        m_world->chunks[i]->setSurroundingChunk(m_world->chunks[std::abs((i+1) % WORLD_SIZE-1)], 0);
-        m_world->chunks[i]->setSurroundingChunk(m_world->chunks[std::abs((i-1) % WORLD_SIZE-1)], 1);
+        m_world->chunks[i]->setSurroundingChunk(m_world->chunks[((i+1+WORLD_SIZE) % WORLD_SIZE-1)], 0);
+        m_world->chunks[i]->setSurroundingChunk(m_world->chunks[((i-1+WORLD_SIZE) % WORLD_SIZE-1)], 1);
     }
 
     Player player(glm::vec2(5.0f * TILE_SIZE, (blockHeights[5] + 5) * TILE_SIZE), m_input);

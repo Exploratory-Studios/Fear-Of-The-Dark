@@ -3,19 +3,28 @@
 
 #include "EntityManager.h"
 #include "Entity.h"
+#include "Entities/TalkingNPC.h"
+#include "Player.h"
+
+void Chunk::addEntity(Entity* ent) {
+    if(m_entityManager) m_entityManager->addEntity(ent);
+}
+void Chunk::addTalkingEntity(TalkingNPC* ent) {
+    if(m_entityManager) m_entityManager->addTalkingEntity(ent);
+}
 
 std::vector<Entity*> Chunk::getEntities() {
     return m_entityManager->getEntities();
 }
 
 Chunk::Chunk() {
-    m_entityManager = new EntityManager();
+    m_entityManager = new EntityManager(this);
 }
 
 Chunk::Chunk(Tile* tileArray[WORLD_HEIGHT][CHUNK_SIZE], Tile* extraTileArray[WORLD_HEIGHT][2], int index, Chunk* surroundingChunks[2]) {
     init(tileArray, extraTileArray, surroundingChunks);
     m_index = index;
-    m_entityManager = new EntityManager();
+    m_entityManager = new EntityManager(this);
 }
 
 Chunk::~Chunk() {
@@ -55,7 +64,7 @@ void Chunk::update(float time, float timeStepVariable, Chunk* chunks[WORLD_SIZE]
     m_entityManager->update(timeStepVariable, chunks);
 }
 
-void Chunk::tick(float* tickTime) {
+void Chunk::tick(float* tickTime, Player* p) {
     for(int i = 0; i < WORLD_HEIGHT; i++) {
         for(int j = 0; j < CHUNK_SIZE; j++) {
             tiles[i][j]->tick(tickTime);
@@ -63,7 +72,7 @@ void Chunk::tick(float* tickTime) {
         extraTiles[i][0]->tick(tickTime);
         extraTiles[i][1]->tick(tickTime);
     }
-    m_entityManager->tick();
+    m_entityManager->tick(p);
 }
 
 void Chunk::draw(GLEngine::SpriteBatch& sb, int xOffset, float time) {
@@ -73,7 +82,7 @@ void Chunk::draw(GLEngine::SpriteBatch& sb, int xOffset, float time) {
         }
         extraTiles[i][0]->draw(sb, xOffset);
     }
-    m_entityManager->draw(sb, time);
+    m_entityManager->draw(sb, time, xOffset);
 }
 
 void Chunk::setPlace(Categories::Places place) {

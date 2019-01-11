@@ -24,7 +24,7 @@ class Player : public Entity {
         Player(glm::vec2 position, GLEngine::InputManager* input);
         virtual ~Player();
 
-        void draw(GLEngine::SpriteBatch& sb, float time) override;
+        void draw(GLEngine::SpriteBatch& sb, float time, float xOffset) override;
         void drawGUI(GLEngine::SpriteBatch& sb, GLEngine::SpriteFont& sf);
         void update(float timeStep, Chunk* worldChunks[WORLD_SIZE]) override;
         void updateMouse(GLEngine::Camera2D* worldCamera);

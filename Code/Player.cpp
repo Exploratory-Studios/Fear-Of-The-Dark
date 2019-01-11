@@ -24,7 +24,7 @@ Player::~Player()
     //dtor
 }
 
-void Player::draw(GLEngine::SpriteBatch& sb, float time) {
+void Player::draw(GLEngine::SpriteBatch& sb, float time, float xOffset) {
 
     glm::vec4 destRect = glm::vec4(m_position.x, m_position.y, m_size.x * TILE_SIZE, m_size.y * TILE_SIZE);
 

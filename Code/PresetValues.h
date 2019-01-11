@@ -16,7 +16,7 @@
 // How many chunks does the world have?
 #define WORLD_SIZE 16
 
-// How many chunks can you see? (Odd)
+// How many chunks can you see? (Odd) (TOTAL CHUNKS DRAWN AT ONCE)
 #define VIEW_DIST 3
 
 // What is the minimum scale of the camera?

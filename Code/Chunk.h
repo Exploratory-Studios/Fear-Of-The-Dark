@@ -8,6 +8,8 @@
 
 class EntityManager;
 class Entity;
+class TalkingNPC;
+class Player;
 
 class Chunk
 {
@@ -20,7 +22,7 @@ class Chunk
         void init(Tile* tileArray[WORLD_HEIGHT][CHUNK_SIZE], Tile* extraTileArray[WORLD_HEIGHT][2], Chunk* surroundingChunks[2]);
 
         void update(float time, float timeStepVariable, Chunk* chunks[WORLD_SIZE]);
-        void tick(float* tickTime);
+        void tick(float* tickTime, Player* p);
         void draw(GLEngine::SpriteBatch& sb, int xOffset, float time); // xOffset is in chunks
 
         void setPlace(Categories::Places place);
@@ -30,6 +32,9 @@ class Chunk
 
         void activateChunk() { m_activated = true; }
         void deactivateChunk() { m_activated = false; }
+
+        void addEntity(Entity* ent);
+        void addTalkingEntity(TalkingNPC* ent);
 
         Categories::Places      getPlace()                                                  { return m_place;       }
         int                     getIndex()                                                  { return m_index;       }

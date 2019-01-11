@@ -77,12 +77,12 @@ void Entity::update(float timeStep, Chunk* worldChunks[WORLD_SIZE]) {
     move(timeStep);
 }
 
-void Entity::draw(GLEngine::SpriteBatch& sb, float time) {
+void Entity::draw(GLEngine::SpriteBatch& sb, float time, float xOffset) {
 
     //GLint lightUniform = program->getUniformLocation("lightColour");
     //glUniform3fv(lightUniform, 3, &glm::vec3(1.0f, 1.0f, 1.0f)[0]);
 
-    glm::vec4 destRect = glm::vec4(m_position.x, m_position.y, m_size.x * TILE_SIZE, m_size.y * TILE_SIZE);
+    glm::vec4 destRect = glm::vec4(m_position.x + xOffset * CHUNK_SIZE * TILE_SIZE, m_position.y, m_size.x * TILE_SIZE, m_size.y * TILE_SIZE);
 
     float x, y;
     if(m_velocity.x > m_speed) {
@@ -108,12 +108,12 @@ void Entity::draw(GLEngine::SpriteBatch& sb, float time) {
     glm::vec4 uvRect;
 
     if(!m_flippedTexture) {
-        uvRect = glm::vec4(finalX,
+        uvRect = glm::vec4(finalX + xOffset * CHUNK_SIZE * TILE_SIZE,
                            finalY,
                            1.0f / ((float)m_texture.width / (m_size.x * 32)),
                            1.0f / ((float)m_texture.height / (m_size.y * 32)));
     } else if(m_flippedTexture) {
-        uvRect = glm::vec4(finalX + 1.0f / ((float)m_texture.width / (m_size.x * 32)),
+        uvRect = glm::vec4(finalX + 1.0f / ((float)m_texture.width / (m_size.x * 32)) + xOffset * CHUNK_SIZE * TILE_SIZE,
                            finalY,
                            1.0f / -((float)m_texture.width / (m_size.x * 32)),
                            1.0f / ((float)m_texture.height / (m_size.y * 32)));
@@ -309,22 +309,23 @@ bool Entity::checkTilePosition(Tile* tiles[WORLD_HEIGHT][CHUNK_SIZE], Tile* extr
     }*/
 
     // If this is not an air tile, we should collide with it
-    if ((int)gridPos.x - (getChunkIndex() * CHUNK_SIZE) >= 0 &&
-        (int)gridPos.x - (getChunkIndex() * CHUNK_SIZE) < CHUNK_SIZE) {
-        // returning gridpos.x as NAN
-        if (tiles[(int)gridPos.y][(int)gridPos.x - (getChunkIndex() * CHUNK_SIZE)]->isSolid()) { //  - getChunkIndex()
-            collideTilePositions.push_back(glm::vec2((float)gridPos.x + 0.500f, (float)gridPos.y + 0.500f)); // CollideTilePositions are put in as gridspace coords
-            return true;
-        }
-    } else if((int)gridPos.x - (getChunkIndex() * CHUNK_SIZE) == -1) {
-        if (extraTileArray[(int)gridPos.y][0]->isSolid()) { //  - getChunkIndex()
-            collideTilePositions.push_back(glm::vec2((float)gridPos.x + 0.500f, (float)gridPos.y + 0.500f)); // CollideTilePositions are put in as gridspace coords
-            return true;
-        }
-    } else if((int)gridPos.x - (getChunkIndex() * CHUNK_SIZE) == CHUNK_SIZE) {
-        if (extraTileArray[(int)gridPos.y][1]->isSolid()) { //  - getChunkIndex()
-            collideTilePositions.push_back(glm::vec2((float)gridPos.x + 0.500f, (float)gridPos.y + 0.500f)); // CollideTilePositions are put in as gridspace coords
-            return true;
+    if((int)gridPos.y >= 0 && (int)gridPos.y < WORLD_HEIGHT) {
+        if ((int)gridPos.x - (getChunkIndex() * CHUNK_SIZE) >= 0 && (int)gridPos.x - (getChunkIndex() * CHUNK_SIZE) < CHUNK_SIZE) {
+            // returning gridpos.x as NAN
+            if (tiles[(int)gridPos.y][(int)gridPos.x - (getChunkIndex() * CHUNK_SIZE)]->isSolid()) { //  - getChunkIndex()
+                collideTilePositions.push_back(glm::vec2((float)gridPos.x + 0.500f, (float)gridPos.y + 0.500f)); // CollideTilePositions are put in as gridspace coords
+                return true;
+            }
+        } else if((int)gridPos.x - (getChunkIndex() * CHUNK_SIZE) == -1) {
+            if (extraTileArray[(int)gridPos.y][0]->isSolid()) { //  - getChunkIndex()
+                collideTilePositions.push_back(glm::vec2((float)gridPos.x + 0.500f, (float)gridPos.y + 0.500f)); // CollideTilePositions are put in as gridspace coords
+                return true;
+            }
+        } else if((int)gridPos.x - (getChunkIndex() * CHUNK_SIZE) == CHUNK_SIZE) {
+            if (extraTileArray[(int)gridPos.y][1]->isSolid()) { //  - getChunkIndex()
+                collideTilePositions.push_back(glm::vec2((float)gridPos.x + 0.500f, (float)gridPos.y + 0.500f)); // CollideTilePositions are put in as gridspace coords
+                return true;
+            }
         }
     }
 
@@ -417,25 +418,25 @@ void Entity::updateAI() {
 
 void Entity::updateMovement() {
     if(m_controls[0]) { // UP
-            if(m_onGround) {
-                m_velocity.y = m_jumpHeight; // y=(jumpHeight+-0.098*60*s^2)  initial jump power is the absolute of the x at 0. jumpheight is in eights of tiles and you must add 4
-                m_onGround = false;
-            }
+        if(m_onGround) {
+            m_velocity.y = m_jumpHeight; // y=(jumpHeight+-0.098*60*s^2)  initial jump power is the absolute of the x at 0. jumpheight is in eights of tiles and you must add 4
+            m_onGround = false;
         }
-        if(m_controls[1]) { // DOWN
-            /// TODO: implement crouching
-        }
-        if(m_controls[2]) { // LEFT
-            m_velocity.x -= m_speed;
-        } else if(m_controls[3]) { // RIGHT
-            m_velocity.x += m_speed;
-        } else {
-            m_velocity.x /= 5.0f;//= 5.0f;
-        }
+    }
+    if(m_controls[1]) { // DOWN
+        /// TODO: implement crouching
+    }
+    if(m_controls[2]) { // LEFT
+        m_velocity.x -= m_speed;
+    } else if(m_controls[3]) { // RIGHT
+        m_velocity.x += m_speed;
+    } else {
+        m_velocity.x /= 5.0f;//= 5.0f;
+    }
 
-        if(m_velocity.x > MAX_SPEED) {
-            m_velocity.x = MAX_SPEED;
-        } else if(m_velocity.x < -MAX_SPEED) {
-            m_velocity.x = -MAX_SPEED;
+    if(m_velocity.x > MAX_SPEED) {
+        m_velocity.x = MAX_SPEED;
+    } else if(m_velocity.x < -MAX_SPEED) {
+        m_velocity.x = -MAX_SPEED;
     }
 }

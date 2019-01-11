@@ -72,6 +72,22 @@ float Tile::getSurroundingLight() {
                 light = m_parentChunk->extraTiles[y][1]->getLight() * OPAQUE_LIGHT_MULTIPLIER;
             }
         }
+    } else if(x+1 == CHUNK_SIZE+1) {
+        if(m_parentChunk->getSurroundingChunks()[1]->tiles[y][0]->getLight() > light) {
+            if(m_parentChunk->getSurroundingChunks()[1]->tiles[y][0]->isTransparent() || isTransparent()) {
+                light = m_parentChunk->getSurroundingChunks()[1]->tiles[y][0]->getLight();
+            } else {
+                light = m_parentChunk->getSurroundingChunks()[1]->tiles[y][0]->getLight() * OPAQUE_LIGHT_MULTIPLIER;
+            }
+        }
+    } else if(x-1 == -2) {
+        if(m_parentChunk->getSurroundingChunks()[0]->tiles[y][CHUNK_SIZE-1]->getLight() > light) {
+            if(m_parentChunk->getSurroundingChunks()[0]->tiles[y][CHUNK_SIZE-1]->isTransparent() || isTransparent()) {
+                light = m_parentChunk->getSurroundingChunks()[0]->tiles[y][CHUNK_SIZE-1]->getLight();
+            } else {
+                light = m_parentChunk->getSurroundingChunks()[0]->tiles[y][CHUNK_SIZE-1]->getLight() * OPAQUE_LIGHT_MULTIPLIER;
+            }
+        }
     }
 
     return light;

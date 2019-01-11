@@ -1,5 +1,8 @@
 #include "Block.h"
 
+#include <random>
+#include <time.h>
+
 Block::Block(glm::vec2 pos, unsigned int id, Chunk* parent) {
 
     m_parentChunk = parent;
@@ -34,9 +37,17 @@ void Block::switchID(unsigned int newID) {
         case (unsigned int)Categories::BlockIDs::STONE:
             m_texture = GLEngine::ResourceManager::getTexture(ASSETS_FOLDER_PATH + "Textures/Blocks/Stone.png");
             break;
-        case (unsigned int)Categories::BlockIDs::BUSH:
-            m_texture = GLEngine::ResourceManager::getTexture(ASSETS_FOLDER_PATH + "Textures/Blocks/Bush.png");
-            break;
+        case (unsigned int)Categories::BlockIDs::BUSH: {
+                m_solid = false;
+                m_transparent = true;
+                int r = rand();
+                if(r % 2 == 0) {
+                    m_texture = GLEngine::ResourceManager::getTexture(ASSETS_FOLDER_PATH + "Textures/Blocks/WhiteFlower.png");
+                } else {
+                    m_texture = GLEngine::ResourceManager::getTexture(ASSETS_FOLDER_PATH + "Textures/Blocks/RedFlower.png");
+                }
+                break;
+            }
         case (unsigned int)Categories::BlockIDs::TORCH:
             m_texture = GLEngine::ResourceManager::getTexture(ASSETS_FOLDER_PATH + "Textures/Blocks/Torch.png");
             m_transparent = true;

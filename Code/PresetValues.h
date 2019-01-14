@@ -8,13 +8,13 @@
 
 /// World size variables
 // How many tiles in a chunk?
-#define CHUNK_SIZE 64
+#define CHUNK_SIZE 48
 // How many pixels to a tile?
 #define TILE_SIZE 8
 // How many tiles high is the world?
 #define WORLD_HEIGHT 150
 // How many chunks does the world have?
-#define WORLD_SIZE 16
+#define WORLD_SIZE 5
 
 // How many chunks can you see? (Odd) (TOTAL CHUNKS DRAWN AT ONCE)
 #define VIEW_DIST 3
@@ -58,6 +58,9 @@
 
 // How long it takes (in ms) to fade in and out music
 #define FADE_TIME 30 * 1000
+
+//How far we can fall (in tiles) until we take damage (base)
+#define SAFE_FALL_DIST 10
 
 /// Category Datatypes
 // Biomes (AKA Places)

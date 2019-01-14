@@ -110,7 +110,7 @@ void WorldIOManager::createWorld(unsigned int seed, std::string worldName, bool 
                                 int r = std::rand();
                                 if(r % 2 == 0) {
                                     Block* flower = new Block(glm::vec2((i * CHUNK_SIZE) + x, y + 1), (unsigned int)Categories::BlockIDs::BUSH, m_world->chunks[i]);
-                                    m_world->chunks[i]->tiles[y+1][x] = flower;
+                                    //m_world->chunks[i]->tiles[y+1][x] = flower;
                                 }
                             }
                         }
@@ -136,7 +136,7 @@ void WorldIOManager::createWorld(unsigned int seed, std::string worldName, bool 
                         int r = std::rand() % 2;
                         if(r == 0) {
                             Block* flower = new Block(glm::vec2((k * CHUNK_SIZE) + i, j + 1), (unsigned int)Categories::BlockIDs::BUSH, m_world->chunks[k]);
-                            m_world->chunks[k]->tiles[j+1][i] = flower;
+                            //m_world->chunks[k]->tiles[j+1][i] = flower;
                         }
                     }
                 }

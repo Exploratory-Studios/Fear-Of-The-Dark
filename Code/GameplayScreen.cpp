@@ -4,8 +4,6 @@
 
 #include <SDL2/SDL_timer.h>
 
-//#define DEV_CONTROLS
-
 #ifdef DEV_CONTROLS
 #include <iostream>
 #include <regex>
@@ -70,23 +68,27 @@ void GameplayScreen::update() {
 
     m_gui.update();
 
-    m_worldManager.update(&m_camera, m_deltaTime, m_time, m_game->inputManager, m_gui);
+    if(m_gameState != GameState::PAUSE) {
 
-    if((m_worldManager.getPlayer()->getPosition().x + m_worldManager.getPlayer()->getSize().x / 2.0f) - m_lastPlayerPos.x < -CHUNK_SIZE * TILE_SIZE) {
-        m_lastPlayerPos.x -= WORLD_SIZE * CHUNK_SIZE * TILE_SIZE;
-    } else if(m_worldManager.getPlayer()->getPosition().x + m_worldManager.getPlayer()->getSize().x / 2.0f - m_lastPlayerPos.x > CHUNK_SIZE * TILE_SIZE) {
-        m_lastPlayerPos.x += WORLD_SIZE * CHUNK_SIZE * TILE_SIZE; /// WORKING
+        m_worldManager.update(&m_camera, m_deltaTime, m_time, m_game->inputManager, m_gui);
+
+        if((m_worldManager.getPlayer()->getPosition().x + m_worldManager.getPlayer()->getSize().x / 2.0f) - m_lastPlayerPos.x < -CHUNK_SIZE * TILE_SIZE) {
+            m_lastPlayerPos.x -= WORLD_SIZE * CHUNK_SIZE * TILE_SIZE;
+        } else if(m_worldManager.getPlayer()->getPosition().x + m_worldManager.getPlayer()->getSize().x / 2.0f - m_lastPlayerPos.x > CHUNK_SIZE * TILE_SIZE) {
+            m_lastPlayerPos.x += WORLD_SIZE * CHUNK_SIZE * TILE_SIZE;
+        }
+        m_lastPlayerPos = (m_lastPlayerPos + (m_worldManager.getPlayer()->getPosition() - m_lastPlayerPos) / glm::vec2(4.0f)) + m_worldManager.getPlayer()->getSize() / glm::vec2(2.0f);
+
+        m_camera.setPosition(m_lastPlayerPos);
+
+        m_camera.setScale(m_scale);
+
+        m_camera.update();
+        m_uiCamera.update();
+
+        m_time++; /// Change the increment if time is slowed or quicker (potion effects?)
+
     }
-    m_lastPlayerPos = (m_lastPlayerPos + (m_worldManager.getPlayer()->getPosition() - m_lastPlayerPos) / glm::vec2(4.0f)) + m_worldManager.getPlayer()->getSize() / glm::vec2(2.0f);
-
-    m_camera.setPosition(m_lastPlayerPos);
-
-    m_camera.setScale(m_scale);
-
-    m_camera.update();
-    m_uiCamera.update();
-
-    m_time++; /// Change the increment if time is slowed or quicker (potion effects?)
     m_frame++;
 
     if((int)m_frame++ % (int)(60 / m_tickRate) == 0) { // m_frame is equal to current frame
@@ -228,8 +230,13 @@ void GameplayScreen::checkInput() {
     }
     if(m_game->inputManager.isKeyPressed(SDLK_F1)) {
         m_debuggingInfo = !m_debuggingInfo;
+        m_fpsWidget->setVisible(m_debuggingInfo);
     }
     #endif // DEV_CONTROLS
+
+    if(m_game->inputManager.isKeyPressed(SDLK_ESCAPE)) {
+        m_gameState = GameState::PAUSE;
+    }
 
 }
 
@@ -259,6 +266,10 @@ void GameplayScreen::initUI() {
         m_gui.showMouseCursor();
         SDL_ShowCursor(0);
     }
+
+    {
+        m_fpsWidget = static_cast<CEGUI::DefaultWindow*>(m_gui.createWidget("FOTDSkin/Label", glm::vec4(0.05f, 0.05f, 0.1f, 0.1f), glm::vec4(0.0f), "FPS_STRING_WIDGET"));
+    }
 }
 
 void GameplayScreen::tick() {
@@ -278,12 +289,6 @@ void GameplayScreen::updateScale() {
 }
 
 void GameplayScreen::drawDebug() {
-    std::string fpsStr = "HELLO!";
-
-    m_spriteBatch.begin();
-
-    m_spriteFont.draw(m_spriteBatch, "Hello", glm::vec2(0.5f, 0.5f), glm::vec2(1.0f, 1.0f), 0.0f, GLEngine::ColourRGBA8(255, 255, 255, 255));
-
-    m_spriteBatch.end();
-    m_spriteBatch.renderBatch();
+    std::string fps = "FPS: " + std::to_string((int)m_game->getFps());
+    m_fpsWidget->setText(fps);
 }

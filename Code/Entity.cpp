@@ -176,37 +176,39 @@ void Entity::collide() {
 
             float x = m_position.x, y = m_position.y, width = m_size.x * TILE_SIZE, height = m_size.y * TILE_SIZE;
 
-            //x += m_velocity.x / m_size.x;
-            //y += m_velocity.y / m_size.y;
+            x += m_velocity.x / m_size.x;
+            y += m_velocity.y / m_size.y;
 
             glm::vec2 posBL(x, y);
             glm::vec2 posBR(x + width, y);
             glm::vec2 posTL(x, y + height);
             glm::vec2 posTR(x + width, y + height);
 
+            const float testVar = 16.0f;
+
             // Check for ground/ceiling
             checkTilePosition(m_parentChunk->tiles,
                               m_parentChunk->extraTiles,
                               groundTilePositions,
-                              posBR.x - TILE_SIZE / 4.0f,
+                              posBR.x - TILE_SIZE / testVar,
                               posBR.y);
 
             checkTilePosition(m_parentChunk->tiles,
                               m_parentChunk->extraTiles,
                               groundTilePositions,
-                              posBL.x + TILE_SIZE / 4.0f,
+                              posBL.x + TILE_SIZE / testVar,
                               posBL.y);
 
             checkTilePosition(m_parentChunk->tiles,
                               m_parentChunk->extraTiles,
                               groundTilePositions,
-                              posTR.x - TILE_SIZE / 4.0f,
+                              posTR.x - TILE_SIZE / testVar,
                               posTR.y);
 
             checkTilePosition(m_parentChunk->tiles,
                               m_parentChunk->extraTiles,
                               groundTilePositions,
-                              posTL.x + TILE_SIZE / 4.0f,
+                              posTL.x + TILE_SIZE / testVar,
                               posTL.y);
 
 
@@ -215,25 +217,25 @@ void Entity::collide() {
                               m_parentChunk->extraTiles,
                               collideTilePositions,
                               posBR.x,
-                              posBR.y + TILE_SIZE / 4.0f);
+                              posBR.y + TILE_SIZE / testVar);
 
             checkTilePosition(m_parentChunk->tiles,
                               m_parentChunk->extraTiles,
                               collideTilePositions,
                               posBL.x,
-                              posBL.y + TILE_SIZE / 4.0f);
+                              posBL.y + TILE_SIZE / testVar);
 
             checkTilePosition(m_parentChunk->tiles,
                               m_parentChunk->extraTiles,
                               collideTilePositions,
                               posTL.x,
-                              posTL.y - TILE_SIZE / 4.0f);
+                              posTL.y - TILE_SIZE / testVar);
 
             checkTilePosition(m_parentChunk->tiles,
                               m_parentChunk->extraTiles,
                               collideTilePositions,
                               posTR.x,
-                              posTR.y - TILE_SIZE / 4.0f);
+                              posTR.y - TILE_SIZE / testVar);
 
             for (unsigned int i = 0; i < collideTilePositions.size(); i++) {
                 collideWithTile(collideTilePositions[i], false);

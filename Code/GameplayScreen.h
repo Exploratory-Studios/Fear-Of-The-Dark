@@ -12,6 +12,7 @@
 
 #include "WorldIOManager.h"
 #include "WorldManager.h"
+#include "ScreenIndices.h"
 
 enum class GameState {
     PAUSE,
@@ -72,4 +73,8 @@ class GameplayScreen : public GLEngine::IGameScreen
         bool m_debuggingInfo = false;
 
         glm::vec2 m_lastPlayerPos;
+
+        #ifdef DEV_CONTROLS
+        CEGUI::DefaultWindow* m_fpsWidget = nullptr;
+        #endif // DEV_CONTROLS
 };

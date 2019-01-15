@@ -22,7 +22,7 @@ void WorldManager::init(WorldIOManager* worldIOManager) {
         std::vector<Entity*> entities;
         std::vector<TalkingNPC*> talkingEntities;
 
-        talkingEntities.emplace_back(new TalkingNPC(glm::vec2(10 * TILE_SIZE, 120 * TILE_SIZE), 0, &m_audioManager));
+        talkingEntities.emplace_back(new TalkingNPC(glm::vec2(10 * TILE_SIZE, 15 * TILE_SIZE), 0, &m_audioManager));
 
         for(unsigned int i = 0; i < m_worldIOManager->getWorld()->entities.size(); i++) {
             entities.push_back(&m_worldIOManager->getWorld()->entities[i]);

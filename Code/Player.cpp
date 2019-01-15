@@ -153,8 +153,9 @@ void Player::drawGUI(GLEngine::SpriteBatch& sb, GLEngine::SpriteFont& sf) {
 
 void Player::update(float timeStep, Chunk* worldChunks[WORLD_SIZE]) {
 
-    setParentChunk(worldChunks);
     updateLightLevel();
+
+    setParentChunk(worldChunks);
 
     updateInput();
     move(timeStep);

@@ -72,7 +72,7 @@ void Entity::init(glm::vec2 position, Categories::Entity_Type type, unsigned int
 void Entity::update(float timeStep, Chunk* worldChunks[WORLD_SIZE]) {
     updateAI();
     updateMovement();
-    setParentChunk(worldChunks);
+    //setParentChunk(worldChunks);
     updateLightLevel();
     move(timeStep);
 }
@@ -250,18 +250,22 @@ void Entity::collide() {
 #include <iostream>
 
 /// PRIVATE FUNCTIONS
-void Entity::setParentChunk(Chunk* worldChunks[WORLD_SIZE]) {
+int Entity::setParentChunk(Chunk* worldChunks[WORLD_SIZE]) {
 
     short int indexBegin = std::floor(m_position.x / TILE_SIZE / CHUNK_SIZE);
     short int indexEnd = std::floor((m_position.x + m_size.x * TILE_SIZE) / TILE_SIZE / CHUNK_SIZE);
     short int index = getChunkIndex(); // End product
 
+    short int r = 1;
+
     if(indexBegin != indexEnd) {
         float x = (int)m_position.x / TILE_SIZE % (CHUNK_SIZE);
         if(abs(x - CHUNK_SIZE) > m_size.x / 2.0f * TILE_SIZE) {
             index = indexBegin;
+            r = 0;
         } else if(abs(x - TILE_SIZE * CHUNK_SIZE) < m_size.x / 2.0f * TILE_SIZE) {
             index = indexEnd;
+            r = 1;
         }
     } else {
         index = indexBegin;
@@ -270,15 +274,19 @@ void Entity::setParentChunk(Chunk* worldChunks[WORLD_SIZE]) {
     if(index < 0) {
         m_position.x += WORLD_SIZE * CHUNK_SIZE * TILE_SIZE;
         index = WORLD_SIZE-1;
+        r = 0;
     }
     if(index >= WORLD_SIZE) {
         m_position.x -= WORLD_SIZE * CHUNK_SIZE * TILE_SIZE;
         index = 0;
+        r = 1;
     }
 
     if(index >= 0 && index < WORLD_SIZE) {
         m_parentChunk = worldChunks[index];
     }
+
+    return r;
 
     /*if(index != m_parentChunkIndex) {
         if(index < 0) {

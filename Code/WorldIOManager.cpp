@@ -3,6 +3,9 @@
 #include <time.h>
 #include <random>
 
+
+#include <iostream>
+
 void WorldIOManager::loadWorld(std::string worldName) {
 
 }
@@ -110,7 +113,7 @@ void WorldIOManager::createWorld(unsigned int seed, std::string worldName, bool 
                                 int r = std::rand();
                                 if(r % 2 == 0) {
                                     Block* flower = new Block(glm::vec2((i * CHUNK_SIZE) + x, y + 1), (unsigned int)Categories::BlockIDs::BUSH, m_world->chunks[i]);
-                                    //m_world->chunks[i]->tiles[y+1][x] = flower;
+                                    m_world->chunks[i]->tiles[y+1][x] = flower;
                                 }
                             }
                         }
@@ -136,7 +139,7 @@ void WorldIOManager::createWorld(unsigned int seed, std::string worldName, bool 
                         int r = std::rand() % 2;
                         if(r == 0) {
                             Block* flower = new Block(glm::vec2((k * CHUNK_SIZE) + i, j + 1), (unsigned int)Categories::BlockIDs::BUSH, m_world->chunks[k]);
-                            //m_world->chunks[k]->tiles[j+1][i] = flower;
+                            m_world->chunks[k]->tiles[j+1][i] = flower;
                         }
                     }
                 }
@@ -154,6 +157,8 @@ void WorldIOManager::createWorld(unsigned int seed, std::string worldName, bool 
 
         m_world->chunks[i]->setSurroundingChunk(m_world->chunks[((i-1+WORLD_SIZE) % WORLD_SIZE)], 0);
         m_world->chunks[i]->setSurroundingChunk(m_world->chunks[((i+1+WORLD_SIZE) % WORLD_SIZE)], 1);
+
+        std::cout << i << ", " << ((i+1+WORLD_SIZE) % WORLD_SIZE) << std::endl;
     }
 
     Player player(glm::vec2(5.0f * TILE_SIZE, (blockHeights[5] + 5) * TILE_SIZE), m_input);

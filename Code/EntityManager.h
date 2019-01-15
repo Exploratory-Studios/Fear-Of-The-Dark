@@ -17,7 +17,10 @@ class EntityManager
         void tick(Player* p); // Spawns entities
 
         void addEntity(Entity* ent) { m_entities.push_back(ent); }
-        void addTalkingEntity(TalkingNPC* ent) { m_entities.push_back(ent); m_talkingEntities.push_back(ent); }
+        void addTalkingEntity(TalkingNPC* ent) { m_talkingEntities.push_back(ent); }
+
+        void removeEntity(int index);
+        void removeTalkingEntity(int index);
 
         std::vector<Entity*> getEntities() { return m_entities; }
 
@@ -25,7 +28,7 @@ class EntityManager
         std::vector<glm::vec2> pathfindToTarget(float jumpHeight, glm::vec2 originalPosition, glm::vec2 targetPosition);
 
     private:
-        std::vector<Entity*> m_entities; // All entities, including TalkingNPCs
+        std::vector<Entity*> m_entities; // All entities, excluding TalkingNPCs
         std::vector<TalkingNPC*> m_talkingEntities;  // Pointers to talkingNpcs to preserve special data.
 
         Chunk* m_parentChunk = nullptr;

@@ -16,19 +16,30 @@ void EntityManager::update(float timeStep, Chunk* chunks[WORLD_SIZE]) {
     for(int i = 0; i < m_entities.size(); i++) {
         m_entities[i]->update(timeStep, chunks);
         m_entities[i]->collide();
+        int newChunk = m_entities[i]->setParentChunk(chunks);
+        if(newChunk != -1) {
+            m_parentChunk->getSurroundingChunks()[newChunk]->addEntity(m_entities[i]);
+            removeEntity(i);
+        }
     }
-//    for(int i = 0; i < m_talkingEntities.size(); i++) {
-//        m_talkingEntities[i]->update(timeStep, chunks);
-//    }
+    for(int i = 0; i < m_talkingEntities.size(); i++) {
+        m_talkingEntities[i]->update(timeStep, chunks);
+        m_talkingEntities[i]->collide();
+        int newChunk = m_talkingEntities[i]->setParentChunk(chunks);
+        if(newChunk != -1) {
+            m_parentChunk->getSurroundingChunks()[newChunk]->addTalkingEntity(m_talkingEntities[i]);
+            removeTalkingEntity(i);
+        }
+    }
 }
 
 void EntityManager::draw(GLEngine::SpriteBatch& sb, float time, float xOffset) {
     for(int i = 0; i < m_entities.size(); i++) {
         m_entities[i]->draw(sb, time, xOffset);
     }
-//    for(int i = 0; i < m_talkingEntities.size(); i++) {
-//        m_talkingEntities[i]->draw(sb, time);
-//    }
+    for(int i = 0; i < m_talkingEntities.size(); i++) {
+        m_talkingEntities[i]->draw(sb, time, xOffset);
+    }
 }
 
 void EntityManager::tick(Player* p) {
@@ -47,6 +58,21 @@ void EntityManager::tick(Player* p) {
         }
     }
 }
+
+void EntityManager::removeEntity(int index) {
+    for(int i = index; i < m_entities.size()-1; i++) {
+        m_entities[i] = m_entities[i+1];
+    }
+    m_entities.pop_back();
+}
+
+void EntityManager::removeTalkingEntity(int index) {
+    for(int i = index; i < m_talkingEntities.size()-1; i++) {
+        m_talkingEntities[i] = m_talkingEntities[i+1];
+    }
+    m_talkingEntities.pop_back();
+}
+
 #include <iostream>
 void EntityManager::targetEntities(Player* p) {
     m_entities.push_back(p);

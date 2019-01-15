@@ -40,10 +40,10 @@ class Entity
         void                           setTargets(std::vector<glm::vec2> targets)  { m_targets = targets; m_curTarget = 0; }
 
         void setParentChunk(Chunk* chunk);
+        int setParentChunk(Chunk* worldChunks[WORLD_SIZE]);
         unsigned int getChunkIndex();
 
     protected:
-        void setParentChunk(Chunk* worldChunks[WORLD_SIZE]);
         bool checkTilePosition(Tile* tiles[WORLD_HEIGHT][CHUNK_SIZE], Tile* extraTileArray[WORLD_HEIGHT][2], std::vector<glm::vec2>& collideTilePositions, float xPos, float yPos);
         void collideWithTile(glm::vec2 tilePos, bool ground = false);
         void updateLightLevel();

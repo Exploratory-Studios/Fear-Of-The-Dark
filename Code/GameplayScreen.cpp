@@ -268,7 +268,8 @@ void GameplayScreen::initUI() {
     }
 
     {
-        m_fpsWidget = static_cast<CEGUI::DefaultWindow*>(m_gui.createWidget("FOTDSkin/Label", glm::vec4(0.05f, 0.05f, 0.1f, 0.1f), glm::vec4(0.0f), "FPS_STRING_WIDGET"));
+        m_fpsWidget = static_cast<CEGUI::DefaultWindow*>(m_gui.createWidget("FOTDSkin/Label", glm::vec4(0.05f, 0.05f, 0.9f, 0.9f), glm::vec4(0.0f), "FPS_STRING_WIDGET"));
+        m_fpsWidget->setHorizontalAlignment(CEGUI::HorizontalAlignment::HA_LEFT);
     }
 }
 
@@ -289,6 +290,6 @@ void GameplayScreen::updateScale() {
 }
 
 void GameplayScreen::drawDebug() {
-    std::string fps = "FPS: " + std::to_string((int)m_game->getFps());
+    std::string fps = "FPS: " + std::to_string((int)m_game->getFps()) + "\nMouse x,y: " + std::to_string(m_worldManager.getPlayer()->m_selectedBlock->getPosition().x) + "," + std::to_string(m_worldManager.getPlayer()->m_selectedBlock->getPosition().y);
     m_fpsWidget->setText(fps);
 }

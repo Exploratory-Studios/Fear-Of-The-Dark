@@ -13,18 +13,18 @@ namespace EntityFunctions {
         if(targets.size() > currentTarget) {
             float modifier = 0.0f;
             if(currentTarget == targets.size()-1) modifier = abs(velocity.x) * 1.25f;
-            if(targets[currentTarget].x - position.x > 0.5f * TILE_SIZE) {
+            if(std::abs(targets[currentTarget].x - 0.5f - position.x) > 0.0f) {
                 controls[3] = true; // RIGHT
                 controls[2] = false;
             }
-            if(targets[currentTarget].x - position.x < 0.5f * TILE_SIZE) {
+            if(std::abs(targets[currentTarget].x - 0.5f - position.x) < 0.0f) {
                 controls[2] = true; // LEFT
                 controls[3] = false;
             }
-            if((int)targets[currentTarget].y < (int)position.y - 0.5f * TILE_SIZE) {
+            if(targets[currentTarget].y > position.y) {
                 controls[0] = true;
             }
-            if(abs(position.x - targets[currentTarget].x) <= 1.0f) {
+            if(abs(position.x - targets[currentTarget].x) == 0.0f) {
                 currentTarget++;
                 if(currentTarget >= targets.size()) {
                     targets.clear();

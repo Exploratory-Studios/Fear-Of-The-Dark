@@ -73,6 +73,7 @@ void Entity::update(float timeStep, Chunk* worldChunks[WORLD_SIZE]) {
     updateAI();
     updateMovement();
     //setParentChunk(worldChunks);
+    m_parentChunk = worldChunks[0];
     updateLightLevel();
     move(timeStep);
 }
@@ -82,7 +83,7 @@ void Entity::draw(GLEngine::SpriteBatch& sb, float time, float xOffset) {
     //GLint lightUniform = program->getUniformLocation("lightColour");
     //glUniform3fv(lightUniform, 3, &glm::vec3(1.0f, 1.0f, 1.0f)[0]);
 
-    glm::vec4 destRect = glm::vec4(m_position.x + xOffset * CHUNK_SIZE * TILE_SIZE, m_position.y, m_size.x * TILE_SIZE, m_size.y * TILE_SIZE);
+    glm::vec4 destRect = glm::vec4(m_position.x + (xOffset * CHUNK_SIZE * TILE_SIZE), m_position.y, m_size.x * TILE_SIZE, m_size.y * TILE_SIZE);
 
     float x, y;
     if(m_velocity.x > m_speed) {
@@ -108,12 +109,12 @@ void Entity::draw(GLEngine::SpriteBatch& sb, float time, float xOffset) {
     glm::vec4 uvRect;
 
     if(!m_flippedTexture) {
-        uvRect = glm::vec4(finalX + xOffset * CHUNK_SIZE * TILE_SIZE,
+        uvRect = glm::vec4(finalX,
                            finalY,
                            1.0f / ((float)m_texture.width / (m_size.x * 32)),
                            1.0f / ((float)m_texture.height / (m_size.y * 32)));
     } else if(m_flippedTexture) {
-        uvRect = glm::vec4(finalX + 1.0f / ((float)m_texture.width / (m_size.x * 32)) + xOffset * CHUNK_SIZE * TILE_SIZE,
+        uvRect = glm::vec4(finalX + 1.0f / ((float)m_texture.width / (m_size.x * 32)),
                            finalY,
                            1.0f / -((float)m_texture.width / (m_size.x * 32)),
                            1.0f / ((float)m_texture.height / (m_size.y * 32)));
@@ -139,8 +140,6 @@ void Entity::move(float timeStepVariable) {
     m_onGround = false;
 }
 
-
-#include <iostream>
 void Entity::collide() {
 
     std::vector<Entity*> entities = m_parentChunk->getEntities();
@@ -249,8 +248,6 @@ void Entity::collide() {
     }
 }
 
-#include <iostream>
-
 /// PRIVATE FUNCTIONS
 int Entity::setParentChunk(Chunk* worldChunks[WORLD_SIZE]) {
 
@@ -258,7 +255,7 @@ int Entity::setParentChunk(Chunk* worldChunks[WORLD_SIZE]) {
     short int indexEnd = std::floor((m_position.x + m_size.x * TILE_SIZE) / TILE_SIZE / CHUNK_SIZE);
     short int index = getChunkIndex(); // End product
 
-    short int r = 1;
+    short int r = -1;
 
     if(indexBegin != indexEnd) {
         float x = (int)m_position.x / TILE_SIZE % (CHUNK_SIZE);

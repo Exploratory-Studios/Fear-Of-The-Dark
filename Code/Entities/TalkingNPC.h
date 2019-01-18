@@ -13,6 +13,8 @@ class TalkingNPC : public Entity
 
         void startDialogue();
 
+        void draw(GLEngine::SpriteBatch& sb, float time, float xOffset) override;
+
         bool isDialogueStarted() { return m_dialogueStarted; }
         bool setDialogueStarted(bool setting) { m_dialogueStarted = setting; }
 

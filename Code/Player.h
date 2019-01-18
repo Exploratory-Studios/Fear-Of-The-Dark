@@ -19,6 +19,8 @@
 class Chunk;
 
 class Player : public Entity {
+    friend class GameplayScreen;
+
     public:
         Player();
         Player(glm::vec2 position, GLEngine::InputManager* input);

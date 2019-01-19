@@ -134,7 +134,7 @@ std::vector<glm::vec2> EntityManager::pathfindToTarget(float jumpHeight, glm::ve
     chunks[1] = m_parentChunk;
     chunks[2] = m_parentChunk->getSurroundingChunks()[1];
 
-    int maxJumpHeight = (jumpHeight * jumpHeight * 5.88f - 6.0f) / 8.0f + 1.0f;
+    int maxJumpHeight = -0.098;
 
     // Find grid-space coords:
     int xGridspace = std::floor(originalPosition.x / TILE_SIZE);
@@ -167,12 +167,11 @@ std::vector<glm::vec2> EntityManager::pathfindToTarget(float jumpHeight, glm::ve
             if(!targetNavigated) {
                 if(currentChunk->tiles[yGridspace+yOff-1][xGridspace % CHUNK_SIZE]->isSolid()) { // If the block is solid
                     if(!currentChunk->tiles[yGridspace+yOff][xGridspace % CHUNK_SIZE]->isSolid() && !currentChunk->tiles[yGridspace+yOff+1][xGridspace]->isSolid()) { // And the block on top isn't
-                        if(yOff != 0 || targets.size() == 0) { // And we're not just going in a straight line
+                        //if(yOff != 0 || targets.size() == 0) { // And we're not just going in a straight line
                             targetNavigated = true;
                             targets.push_back(glm::vec2(xGridspace * TILE_SIZE, (yGridspace+yOff) * TILE_SIZE));
                             yGridspace += yOff;
-                            std::cout << xGridspace << ", " << yGridspace << std::endl;
-                        }
+                        //}
                     }
                 }
             }
@@ -181,12 +180,11 @@ std::vector<glm::vec2> EntityManager::pathfindToTarget(float jumpHeight, glm::ve
             if(!targetNavigated) {
                 if(currentChunk->tiles[yGridspace+yOff][xGridspace % CHUNK_SIZE]->isSolid()) { // If the block is solid
                     if(!currentChunk->tiles[yGridspace+yOff+1][xGridspace % CHUNK_SIZE]->isSolid() && !currentChunk->tiles[yGridspace+yOff+2][xGridspace]->isSolid()) { // And the block on top isn't
-                        if(yOff != 0 || targets.size() == 0) { // And we're not just going in a straight line
+                        //if(yOff != 0 || targets.size() == 0) { // And we're not just going in a straight line
                             targetNavigated = true;
                             targets.push_back(glm::vec2(xGridspace * TILE_SIZE, (yGridspace+yOff) * TILE_SIZE));
                             yGridspace += yOff;
-                            std::cout << xGridspace << ", " << yGridspace << std::endl;
-                        }
+                        //}
                     }
                 }
             }

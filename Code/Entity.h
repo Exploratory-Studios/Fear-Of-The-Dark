@@ -52,7 +52,11 @@ class Entity
 
         bool m_controls[4]; // Up, down (crouching while on ground), left, right
         float m_speed = 0.02;
-        float m_jumpHeight = 2.736f;
+        float m_jumpHeight = 2.736f; // Jumpheight == y = (2.736t+(-0.098t^2))/8
+                                            /*
+                                                Calculate:
+                                                y = (2.736t+(-0.098t^2))/8
+                                            */
         std::vector<glm::vec2> m_targets;
         unsigned int m_curTarget = 0;
 

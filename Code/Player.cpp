@@ -16,7 +16,7 @@ Player::Player(glm::vec2 position, GLEngine::InputManager* input) : m_input(inpu
     init(position, Categories::Entity_Type::MOB, 0);
     m_inventory = new Inventory();
     m_speed = 0.2f;
-    m_jumpHeight = 2.736f;
+    m_jumpHeight = 2.608f;
 }
 
 Player::~Player()

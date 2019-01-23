@@ -37,7 +37,7 @@ class Entity
               float                    getJumpHeight()   const { return m_jumpHeight; }
 
         void                           setPosition(glm::vec2 pos)   { m_position = pos; }
-        void                           setTargets(std::vector<glm::vec2> targets)  { m_targets = targets; m_curTarget = 0; }
+        void                           setTargets(std::vector<glm::vec2> targets)  { m_targets = targets; }
 
         void setParentChunk(Chunk* chunk);
         int setParentChunk(Chunk* worldChunks[WORLD_SIZE]);
@@ -52,10 +52,22 @@ class Entity
 
         bool m_controls[4]; // Up, down (crouching while on ground), left, right
         float m_speed = 0.02;
-        float m_jumpHeight = 2.736f; // Jumpheight == y = (2.736t+(-0.098t^2))/8
+        float m_jumpHeight = 0.767f; // Jumpheight == y = (2.736t+(-0.098t^2))/8
                                             /*
                                                 Calculate:
-                                                y = (2.736t+(-0.098t^2))/8
+                                                y = (-.1(x-5j)^2 + 2.5j^2) / 4
+                                                Where y is the jumpheight (in blocks), x is the time (in frames), and j is the jumpheight
+
+                                                or
+
+                                                2.5j^2 = y
+                                                Where y is the highest height in the jump.
+
+                                                and
+
+                                                y = (h * 4) / x + .1x
+                                                Where h is the desired height (in blocks), y is the jumpheight, and x is time (in frames)
+
                                             */
         std::vector<glm::vec2> m_targets;
         unsigned int m_curTarget = 0;

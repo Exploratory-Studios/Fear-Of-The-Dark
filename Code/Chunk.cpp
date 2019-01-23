@@ -21,19 +21,24 @@ Chunk::Chunk() {
     m_entityManager = new EntityManager(this);
 }
 
-Chunk::Chunk(Tile* tileArray[WORLD_HEIGHT][CHUNK_SIZE], Tile* extraTileArray[WORLD_HEIGHT][2], int index, Chunk* surroundingChunks[2]) {
-    init(tileArray, extraTileArray, surroundingChunks);
+Chunk::Chunk(Tile* tileArray[WORLD_HEIGHT][CHUNK_SIZE], Tile* extraTileArray[WORLD_HEIGHT][2], int index, Chunk* surroundingChunks[2], EntityManager* entityManager) {
+    init(tileArray, extraTileArray, surroundingChunks, entityManager);
     m_index = index;
-    m_entityManager = new EntityManager(this);
 }
 
 Chunk::~Chunk() {
     delete m_entityManager;
 }
 
-void Chunk::init(Tile* tileArray[WORLD_HEIGHT][CHUNK_SIZE], Tile* extraTileArray[WORLD_HEIGHT][2], Chunk* surroundingChunks[2]) {
+void Chunk::init(Tile* tileArray[WORLD_HEIGHT][CHUNK_SIZE], Tile* extraTileArray[WORLD_HEIGHT][2], Chunk* surroundingChunks[2], EntityManager* entityManager) {
 	m_surroundingChunks[0] = surroundingChunks[0];
 	m_surroundingChunks[1] = surroundingChunks[1];
+
+	if(entityManager) {
+        m_entityManager = entityManager;
+    } else {
+        m_entityManager = new EntityManager(this);
+    }
 
     for(int i = 0; i < WORLD_HEIGHT; i++) {
         for(int j = 0; j < CHUNK_SIZE; j++) {

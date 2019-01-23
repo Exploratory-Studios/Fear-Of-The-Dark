@@ -72,8 +72,6 @@ void Entity::init(glm::vec2 position, Categories::Entity_Type type, unsigned int
 void Entity::update(float timeStep, Chunk* worldChunks[WORLD_SIZE]) {
     updateAI();
     updateMovement();
-    //setParentChunk(worldChunks);
-    m_parentChunk = worldChunks[0];
     updateLightLevel();
     move(timeStep);
 }
@@ -83,7 +81,7 @@ void Entity::draw(GLEngine::SpriteBatch& sb, float time, float xOffset) {
     //GLint lightUniform = program->getUniformLocation("lightColour");
     //glUniform3fv(lightUniform, 3, &glm::vec3(1.0f, 1.0f, 1.0f)[0]);
 
-    glm::vec4 destRect = glm::vec4(m_position.x + (xOffset * CHUNK_SIZE * TILE_SIZE), m_position.y, m_size.x * TILE_SIZE, m_size.y * TILE_SIZE);
+    glm::vec4 destRect = glm::vec4(m_position.x, m_position.y, m_size.x * TILE_SIZE, m_size.y * TILE_SIZE);
 
     float x, y;
     if(m_velocity.x > m_speed) {
@@ -109,12 +107,12 @@ void Entity::draw(GLEngine::SpriteBatch& sb, float time, float xOffset) {
     glm::vec4 uvRect;
 
     if(!m_flippedTexture) {
-        uvRect = glm::vec4(finalX,
+        uvRect = glm::vec4(finalX + (xOffset * CHUNK_SIZE * TILE_SIZE),
                            finalY,
                            1.0f / ((float)m_texture.width / (m_size.x * 32)),
                            1.0f / ((float)m_texture.height / (m_size.y * 32)));
     } else if(m_flippedTexture) {
-        uvRect = glm::vec4(finalX + 1.0f / ((float)m_texture.width / (m_size.x * 32)),
+        uvRect = glm::vec4(finalX + 1.0f / ((float)m_texture.width / (m_size.x * 32)) + (xOffset * CHUNK_SIZE * TILE_SIZE),
                            finalY,
                            1.0f / -((float)m_texture.width / (m_size.x * 32)),
                            1.0f / ((float)m_texture.height / (m_size.y * 32)));
@@ -132,14 +130,14 @@ void Entity::move(float timeStepVariable) {
     if(m_velocity.y < -MAX_SPEED) m_velocity.y = -MAX_SPEED;
 
     if(!m_onGround) {
-        m_velocity.y -= 0.098f;
+        m_velocity.y -= 0.1f;
     } else if(m_velocity.y < 0.0f) {
         m_velocity.y = 0.0f;
     }
     m_position += m_velocity;
     m_onGround = false;
 }
-
+#include <iostream>
 void Entity::collide() {
 
     std::vector<Entity*> entities = m_parentChunk->getEntities();
@@ -159,7 +157,6 @@ void Entity::collide() {
 
                         m_position.x -= force;
                         e->setPosition(glm::vec2(e->getPosition().x + force, e->getPosition().y));
-                        //std::cout << "CONTACT " << depth << "\n\n\n";
                     }
                 }
             }
@@ -174,9 +171,6 @@ void Entity::collide() {
             std::vector<glm::vec2> groundTilePositions;
 
             float x = m_position.x, y = m_position.y, width = m_size.x * TILE_SIZE, height = m_size.y * TILE_SIZE;
-
-            x += m_velocity.x / m_size.x;
-            y += m_velocity.y / m_size.y;
 
             glm::vec2 posBL(x, y);
             glm::vec2 posBR(x + width, y);
@@ -281,7 +275,7 @@ int Entity::setParentChunk(Chunk* worldChunks[WORLD_SIZE]) {
         r = 1;
     }
 
-    if(index >= 0 && index < WORLD_SIZE) {
+    if(index != m_parentChunk->getIndex()) {
         m_parentChunk = worldChunks[index];
     }
 
@@ -426,7 +420,7 @@ void Entity::updateAI() {
 void Entity::updateMovement() {
     if(m_controls[0]) { // UP
         if(m_onGround) {
-            m_velocity.y = m_jumpHeight; // y=(jumpHeight+-0.098*60*s^2)  initial jump power is the absolute of the x at 0. jumpheight is in eights of tiles and you must add 4
+            m_velocity.y = m_jumpHeight;
             m_onGround = false;
         }
     }

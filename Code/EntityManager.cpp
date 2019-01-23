@@ -134,18 +134,12 @@ std::vector<glm::vec2> EntityManager::pathfindToTarget(float jumpHeight, glm::ve
     chunks[1] = m_parentChunk;
     chunks[2] = m_parentChunk->getSurroundingChunks()[1];
 
-    int maxJumpHeight = -0.098;
+    int maxJumpHeight = 2.5*(jumpHeight*jumpHeight) / TILE_SIZE * 2;
 
     // Find grid-space coords:
     int xGridspace = std::floor(originalPosition.x / TILE_SIZE);
     int yGridspace = std::floor(originalPosition.y / TILE_SIZE);
     int targetXGridspace = std::floor(targetPosition.x / TILE_SIZE);
-
-    if(targetXGridspace < std::floor(xGridspace / CHUNK_SIZE) * TILE_SIZE) {
-        targetXGridspace = std::floor(xGridspace / CHUNK_SIZE) * CHUNK_SIZE - 1;
-    } else if(targetXGridspace > std::floor(xGridspace / CHUNK_SIZE) * TILE_SIZE) {
-        targetXGridspace = std::floor(xGridspace / CHUNK_SIZE) * CHUNK_SIZE + 1;
-    }
 
     // Find chunk index
     int chunkIndex = std::floor(xGridspace / CHUNK_SIZE);
@@ -153,20 +147,30 @@ std::vector<glm::vec2> EntityManager::pathfindToTarget(float jumpHeight, glm::ve
 
     int currentYOffset = 0;
 
-    while(abs(xGridspace - targetXGridspace) != 0.0f) {
-        if(std::floor(xGridspace / CHUNK_SIZE) != chunkIndex) currentChunk = chunks[chunkIndexN - chunkIndex + 1];
+    while(!abs(xGridspace - targetXGridspace) <= 0.0f) {
+        if(chunkIndexN < chunkIndex) {
+            //targetXGridspace = chunkIndex * CHUNK_SIZE - 1;
+        } else if(chunkIndexN > chunkIndex) {
+            //targetXGridspace = (chunkIndex + 1) * CHUNK_SIZE + 2;
+        }
 
         if(xGridspace < targetXGridspace) {
             xGridspace++;
-        } else if(xGridspace > targetXGridspace) {
+        } else {
             xGridspace--;
         }
 
+        if(std::floor(xGridspace / CHUNK_SIZE) > chunkIndex) {
+            currentChunk = chunks[2];
+        } else if(std::floor(xGridspace / CHUNK_SIZE) < chunkIndex) {
+            currentChunk = chunks[0];
+        }
+
         bool targetNavigated = false; // True if the path is found.
-        for(int yOff = 0; yOff < jumpHeight; yOff++) {
+        for(int yOff = 0; yOff <= maxJumpHeight+1 && yGridspace+yOff+1 < WORLD_HEIGHT; yOff++) {
             if(!targetNavigated) {
                 if(currentChunk->tiles[yGridspace+yOff-1][xGridspace % CHUNK_SIZE]->isSolid()) { // If the block is solid
-                    if(!currentChunk->tiles[yGridspace+yOff][xGridspace % CHUNK_SIZE]->isSolid() && !currentChunk->tiles[yGridspace+yOff+1][xGridspace]->isSolid()) { // And the block on top isn't
+                    if(!currentChunk->tiles[yGridspace+yOff][xGridspace % CHUNK_SIZE]->isSolid() && !currentChunk->tiles[yGridspace+yOff+1][xGridspace % CHUNK_SIZE]->isSolid()) { // And the block on top isn't
                         //if(yOff != 0 || targets.size() == 0) { // And we're not just going in a straight line
                             targetNavigated = true;
                             targets.push_back(glm::vec2(xGridspace * TILE_SIZE, (yGridspace+yOff) * TILE_SIZE));
@@ -176,10 +180,10 @@ std::vector<glm::vec2> EntityManager::pathfindToTarget(float jumpHeight, glm::ve
                 }
             }
         }
-        for(int yOff = 0; yOff > SAFE_FALL_DIST; yOff--) {
+        for(int yOff = 0; yOff >= -SAFE_FALL_DIST && yGridspace+yOff+2 < WORLD_HEIGHT; yOff--) {
             if(!targetNavigated) {
                 if(currentChunk->tiles[yGridspace+yOff][xGridspace % CHUNK_SIZE]->isSolid()) { // If the block is solid
-                    if(!currentChunk->tiles[yGridspace+yOff+1][xGridspace % CHUNK_SIZE]->isSolid() && !currentChunk->tiles[yGridspace+yOff+2][xGridspace]->isSolid()) { // And the block on top isn't
+                    if(!currentChunk->tiles[yGridspace+yOff+1][xGridspace % CHUNK_SIZE]->isSolid() && !currentChunk->tiles[yGridspace+yOff+2][xGridspace % CHUNK_SIZE]->isSolid()) { // And the block on top isn't
                         //if(yOff != 0 || targets.size() == 0) { // And we're not just going in a straight line
                             targetNavigated = true;
                             targets.push_back(glm::vec2(xGridspace * TILE_SIZE, (yGridspace+yOff) * TILE_SIZE));

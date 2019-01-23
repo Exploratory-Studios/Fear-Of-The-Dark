@@ -21,7 +21,7 @@ void TalkingNPC::startDialogue() {
 }
 
 void TalkingNPC::draw(GLEngine::SpriteBatch& sb, float time, float xOffset) {
-    glm::vec4 destRect = glm::vec4(m_position.x, m_position.y, m_size.x * TILE_SIZE, m_size.y * TILE_SIZE);
+    glm::vec4 destRect = glm::vec4(m_position.x + xOffset * CHUNK_SIZE * TILE_SIZE, m_position.y, m_size.x * TILE_SIZE, m_size.y * TILE_SIZE);
 
     float x, y;
     if(m_velocity.x > m_speed) {

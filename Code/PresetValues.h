@@ -94,7 +94,7 @@ class MobDatum {
             texturePath(texturePathP),
             size(sizeP),
             faction(fac),
-            jumpHeight(std::sqrt((jumpHeightP*TILE_SIZE+3.0f/4.0f*TILE_SIZE)/5.88f)),
+            jumpHeight(jumpHeightP),
             speed(speedP),
             aitype(aiType),
             disabilityType(disType),
@@ -157,9 +157,9 @@ namespace Category_Data {
                                                                 };
 
     const MobDatum mobData[Category_Data::TOTAL_MOBS] = {
-                                                         MobDatum(0, 10.0f, ASSETS_FOLDER_PATH + "Textures/Mobs/Mob0.png", glm::vec2(1.0f, 2.0f), Categories::Faction::BAD, 4.0f, 0.02f, Categories::AI_Type::WALKING, Categories::Disability_Type::NONE, Categories::Attack_Type::MELEE_ONLY),
-                                                         MobDatum(1, 20.0f, ASSETS_FOLDER_PATH + "Textures/Mobs/Mob0.png", glm::vec2(1.0f, 2.0f), Categories::Faction::GOOD, 4.0f, 0.02f, Categories::AI_Type::WALKING, Categories::Disability_Type::NONE, Categories::Attack_Type::MELEE_ONLY),
-                                                         MobDatum(2, 30.0f, ASSETS_FOLDER_PATH + "Textures/Mobs/Mob0.png", glm::vec2(1.0f, 1.0f), Categories::Faction::BAD, 4.0f, 0.02f, Categories::AI_Type::SWIMMING, Categories::Disability_Type::NONE, Categories::Attack_Type::MELEE_ONLY)
+                                                         MobDatum(0, 10.0f, ASSETS_FOLDER_PATH + "Textures/Mobs/Mob0.png", glm::vec2(1.0f, 2.0f), Categories::Faction::BAD, 2.608f, 0.02f, Categories::AI_Type::WALKING, Categories::Disability_Type::NONE, Categories::Attack_Type::MELEE_ONLY),
+                                                         MobDatum(1, 20.0f, ASSETS_FOLDER_PATH + "Textures/Mobs/Mob0.png", glm::vec2(1.0f, 2.0f), Categories::Faction::GOOD, 2.608f, 0.02f, Categories::AI_Type::WALKING, Categories::Disability_Type::NONE, Categories::Attack_Type::MELEE_ONLY),
+                                                         MobDatum(2, 30.0f, ASSETS_FOLDER_PATH + "Textures/Mobs/Mob0.png", glm::vec2(1.0f, 1.0f), Categories::Faction::BAD, 2.608f, 0.02f, Categories::AI_Type::SWIMMING, Categories::Disability_Type::NONE, Categories::Attack_Type::MELEE_ONLY)
                                                         };
 
     const DialogueMobDatum dialogueMobData[Category_Data::TOTAL_DIALOGUE_MOBS] = {

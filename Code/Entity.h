@@ -12,6 +12,33 @@
 
 class Chunk;
 
+class Entity;
+
+class Limb { // Display purposes only (displaying proper weapon coords, armour, etc.)
+public:
+    Limb(Entity* parentEnt, GLint textureId, glm::vec2 relPos, glm::vec2 size, float angle) :
+         m_parentEntity(parentEnt),
+         m_textureId(textureId),
+         m_pos(relPos),
+         m_size(size),
+         m_angle(angle) { }
+
+    void setPosition(glm::vec2 newPos) { m_pos = newPos; }
+    void setAngle(float newAngle) { m_angle = newAngle; }
+
+    glm::vec2 getPosition() { return m_pos; }
+    float getAngle() { return m_angle; }
+
+    void draw(GLEngine::SpriteBatch& sb);
+
+private:
+    Entity* m_parentEntity = nullptr;
+    GLint m_textureId;
+    glm::vec2 m_pos;
+    glm::vec2 m_size;
+    float m_angle = 0.0f;
+};
+
 class Entity
 {
     friend class Scripter;
@@ -35,6 +62,7 @@ class Entity
               glm::vec2                getVelocity()     const { return m_velocity; }
               std::vector<glm::vec2>   getTargets()      const { return m_targets; }
               float                    getJumpHeight()   const { return m_jumpHeight; }
+              float                    getLightLevel()   const { return m_light; }
 
         void                           setPosition(glm::vec2 pos)   { m_position = pos; }
         void                           setTargets(std::vector<glm::vec2> targets)  { m_targets = targets; }
@@ -95,6 +123,8 @@ class Entity
         Categories::Attack_Type m_attackType = Categories::Attack_Type::MELEE_ONLY;
 
         AudioManager* m_audioManager = nullptr;
+
+        std::vector<Limb> m_limbs;
 
 };
 

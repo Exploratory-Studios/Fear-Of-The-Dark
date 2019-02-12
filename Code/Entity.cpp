@@ -7,6 +7,17 @@
 
 #include "Chunk.h"
 
+void Limb::draw(GLEngine::SpriteBatch& sb) {
+    glm::vec2 position = m_parentEntity->getPosition() + (m_pos * (m_parentEntity->getSize()) * glm::vec2(TILE_SIZE));
+
+    glm::vec4 destRect(position.x, position.y, m_size.x * TILE_SIZE, m_size.y * TILE_SIZE);
+    glm::vec4 uvRect(0.0f, 0.0f, 1.0f, 1.0f);
+
+    GLEngine::ColourRGBA8 fullColour(255, 255, 255, 255);
+
+    sb.draw(destRect, uvRect, m_textureId, 0.0f, fullColour, m_angle, glm::vec3(m_parentEntity->getLightLevel()));
+}
+
 unsigned int Entity::getChunkIndex() {
     return m_parentChunk->getIndex();
 }
@@ -121,6 +132,10 @@ void Entity::draw(GLEngine::SpriteBatch& sb, float time, float xOffset) {
     GLEngine::ColourRGBA8 colour(255, 255, 255, 255);
 
     sb.draw(destRect, uvRect, m_texture.id, 0.0f, colour, glm::vec3(m_light));
+
+    for(int i = 0; i < m_limbs.size(); i++) {
+        m_limbs[i].draw(sb);
+    }
 }
 
 void Entity::move(float timeStepVariable) {

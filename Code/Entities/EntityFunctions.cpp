@@ -20,7 +20,7 @@ namespace EntityFunctions {
                 controls[2] = true; // LEFT
                 controls[3] = false;
             }
-            if((int)targets[currentTarget].y - (int)position.y + size.y * TILE_SIZE > 0.0f) {
+            if((int)targets[currentTarget].y - (int)position.y > TILE_SIZE / 2.0f) {
                 controls[0] = true;
             }
 

@@ -146,12 +146,25 @@ std::vector<glm::vec2> EntityManager::pathfindToTarget(float jumpHeight, glm::ve
     int chunkIndexN = std::floor(targetXGridspace / CHUNK_SIZE);
 
     int currentYOffset = 0;
-
     while(!abs(xGridspace - targetXGridspace) <= 0.0f) {
-        if(chunkIndexN < chunkIndex) {
-            //targetXGridspace = chunkIndex * CHUNK_SIZE - 1;
-        } else if(chunkIndexN > chunkIndex) {
-            //targetXGridspace = (chunkIndex + 1) * CHUNK_SIZE + 2;
+
+        {
+            int a = chunkIndex, b = chunkIndexN;
+
+            if(abs(a-b) > 1) {
+                if(a < b) {
+                    a += WORLD_SIZE;
+                } else {
+                    b += WORLD_SIZE;
+                }
+            }
+
+            if(a > b) {
+                targetXGridspace = chunkIndex * CHUNK_SIZE - 2;
+            } else if(b > a) {
+                targetXGridspace = (chunkIndex + 1) * CHUNK_SIZE + 2;
+            }
+
         }
 
         if(xGridspace < targetXGridspace) {

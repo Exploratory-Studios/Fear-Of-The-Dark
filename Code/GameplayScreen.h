@@ -13,6 +13,7 @@
 #include "WorldIOManager.h"
 #include "WorldManager.h"
 #include "ScreenIndices.h"
+#include "Scripting/ScripterMain.h"
 
 enum class GameState {
     PAUSE,
@@ -57,6 +58,7 @@ class GameplayScreen : public GLEngine::IGameScreen
         GLEngine::SpriteFont m_spriteFont;
         GLEngine::DebugRenderer m_dr;
 
+        Scripter* m_scripter = nullptr;
         WorldIOManager* m_WorldIOManager = nullptr;
         WorldManager m_worldManager;
 

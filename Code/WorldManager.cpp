@@ -2,6 +2,8 @@
 
 #include <random>
 
+#include <GLEngineErrors.h>
+
 WorldManager::WorldManager()
 {
 
@@ -12,7 +14,9 @@ WorldManager::~WorldManager()
     //dtor
 }
 
-void WorldManager::init(WorldIOManager* worldIOManager) {
+void WorldManager::init(WorldIOManager* worldIOManager, float* tickTime) {
+
+    m_tickTime = tickTime;
 
     m_worldIOManager = worldIOManager;
 
@@ -22,7 +26,7 @@ void WorldManager::init(WorldIOManager* worldIOManager) {
         std::vector<Entity*> entities;
         std::vector<TalkingNPC*> talkingEntities;
 
-        talkingEntities.emplace_back(new TalkingNPC(glm::vec2(10 * TILE_SIZE, 150 * TILE_SIZE), 0, &m_audioManager));
+        talkingEntities.emplace_back(new TalkingNPC(glm::vec2(10 * TILE_SIZE, 150 * TILE_SIZE), 0, &m_audioManager, m_worldIOManager->getScriptQueue()));
 
         for(unsigned int i = 0; i < m_worldIOManager->getWorld()->entities.size(); i++) {
             entities.push_back(&m_worldIOManager->getWorld()->entities[i]);
@@ -40,7 +44,7 @@ void WorldManager::init(WorldIOManager* worldIOManager) {
         }
 
         {
-            for(int i = 0; i < entities.size(); i++) {
+            for(unsigned int i = 0; i < entities.size(); i++) {
                 int index = (entities[i]->getPosition().x / TILE_SIZE) / CHUNK_SIZE;
                 entities[i]->setParentChunk(m_worldIOManager->getWorld()->chunks[index]);
                 m_worldIOManager->getWorld()->chunks[index]->addEntity(entities[i]);
@@ -48,7 +52,7 @@ void WorldManager::init(WorldIOManager* worldIOManager) {
         }
 
         {
-            for(int i = 0; i < talkingEntities.size(); i++) {
+            for(unsigned int i = 0; i < talkingEntities.size(); i++) {
                 int index = (talkingEntities[i]->getPosition().x / TILE_SIZE) / CHUNK_SIZE;
                 talkingEntities[i]->setParentChunk(m_worldIOManager->getWorld()->chunks[index]);
                 m_worldIOManager->getWorld()->chunks[index]->addTalkingEntity(talkingEntities[i]);
@@ -86,15 +90,15 @@ void WorldManager::update(GLEngine::Camera2D* worldCamera, float timeStepVariabl
 
 }
 
-void WorldManager::tick(float* tickTime) {
+void WorldManager::tick() {
     for(unsigned int i = 0; i < m_activatedChunks.size(); i++) {
         int xOffset = std::abs(m_activatedChunks[i] + WORLD_SIZE) % WORLD_SIZE;
-        m_worldIOManager->getWorld()->chunks[xOffset]->tick(tickTime, m_player);
+        m_worldIOManager->getWorld()->chunks[xOffset]->tick(m_tickTime, m_player);
     }
     //m_entityManager.tick(tickTime, m_worldIOManager->getWorld()->chunks);
 
     if(!m_audioManager.isMusicPlaying()) {
-        //m_audioManager.playMorningSong(0);
+        ///m_audioManager.playMorningSong(0);
     }
 }
 #include <iostream>

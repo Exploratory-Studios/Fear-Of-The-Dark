@@ -10,8 +10,6 @@
 #include "QuestManager.h"
 #include "AudioManager.h"
 
-#include "Scripting/ScripterMain.h"
-
 #include "PresetValues.h"
 
 class WorldManager
@@ -22,10 +20,10 @@ class WorldManager
         WorldManager();
         virtual ~WorldManager();
 
-        void init(WorldIOManager* worldIOManager);
+        void init(WorldIOManager* worldIOManager, float* tickTime);
 
         void update(GLEngine::Camera2D* worldCamera, float timeStepVariable, float time, GLEngine::InputManager& input, GLEngine::GUI& gui);
-        void tick(float* tickTime);
+        void tick();
         void draw(GLEngine::SpriteBatch& sb, GLEngine::DebugRenderer& dr, int tickTime, GLEngine::GLSLProgram* program);
         void drawGUI(GLEngine::SpriteBatch& sb, GLEngine::SpriteFont& sf, GLEngine::GUI& gui);
 
@@ -39,11 +37,13 @@ class WorldManager
     private:
         void activateChunks();
 
+        float* m_tickTime = nullptr;
+
         QuestManager* m_questManager = nullptr;
         WorldIOManager* m_worldIOManager = nullptr;
         AudioManager m_audioManager;
 
-        Player* m_player;                // NO... Why not? I think I may possibly, with just a slight chance, be a pyschopath
+        Player* m_player;
 
         std::vector<int> m_activatedChunks;
         int m_lastActivated = -1;

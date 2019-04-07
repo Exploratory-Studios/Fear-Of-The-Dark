@@ -15,6 +15,7 @@ class Item
     public:
         Item() {}
         Item(unsigned int id, float weight, short unsigned int quantity) : m_id(id), m_weight(weight), m_quantity(quantity) {}
+        virtual ~Item() {}
 
         virtual void onLeftClick(Block* selectedBlock) = 0;
         virtual void onRightClick(Block* selectedBlock) = 0; /// TODO variadic stuff for character pos, mouse pos, etc.  also: make virtua

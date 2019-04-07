@@ -1,29 +1,27 @@
 #pragma once
 
 #include "../WorldManager.h"
+#include "../EntityManager.h"
+#include "ScriptQueue.h"
 
 const bool
-    SCRIPT_INIT_FLAG_MODIFYWORLD = 0x01,     // 0000 0001
-    SCRIPT_INIT_FLAG_MODIFYENTITIES = 0x02,  // 0000 0010
-    SCRIPT_INIT_FLAG_INHERITBLOCKS = 0x04,   // 0000 0100
-    SCRIPT_INIT_FLAG_INHERITENTITIES = 0x08, // 0000 1000
-    SCRIPT_INIT_FLAG_5 = 0x0F,               // 0001 0000
-    SCRIPT_INIT_FLAG_6 = 0x2F,               // 0010 0000
-    SCRIPT_INIT_FLAG_7 = 0x4F,               // 0100 0000
-    SCRIPT_INIT_FLAG_8 = 0x8F;               // 1000 0000
+    SCRIPT_INIT_FLAG_MODIFYWORLD = 0x1,     // 0000 0001
+    SCRIPT_INIT_FLAG_MODIFYENTITIES = 0x2,  // 0000 0010
+    SCRIPT_INIT_FLAG_INHERITBLOCKS = 0x4,   // 0000 0100
+    SCRIPT_INIT_FLAG_INHERITENTITIES = 0x8, // 0000 1000
+    SCRIPT_INIT_FLAG_5 = 0x10,               // 0001 0000
+    SCRIPT_INIT_FLAG_6 = 0x20,               // 0010 0000
+    SCRIPT_INIT_FLAG_7 = 0x40,               // 0100 0000
+    SCRIPT_INIT_FLAG_8 = 0x80,               // 1000 0000
+    SCRIPT_INIT_FLAG_ALL = 0xFF;             // 1111 1111
 
 class Scripter { // Script class will have a virtual function that you fill in. Possibly another class that reads from a text file and executes accordingly for modding purposes? (?)Variables(?)
     public:
-        void init(WorldIOManager& worldIOManager, GLEngine::Camera2D& camera,
-                  bool scriptInitFlags = SCRIPT_INIT_FLAG_MODIFYWORLD |
-                    SCRIPT_INIT_FLAG_MODIFYENTITIES |
-                    SCRIPT_INIT_FLAG_INHERITBLOCKS);
-                         // This sets the vectors and stuff, and can
-                         // also disable actual world-CHANGING options (etc.), such as
-                         // modify-world and modify-entities effects :)
+        Scripter(WorldManager* worldManager);
+        void init(WorldManager* worldManager);
 
-        void addBlock(Block* newBlock);
-        void removeBlock(int x, int y);
+        void changeBlock(Block* newBlock);
+        void removeBlock(int x, int y); // doesn't actually 'remove' per say, but changes it to air.
         void showBlock(int x, int y);
         void hideBlock(int x, int y);
 
@@ -32,15 +30,19 @@ class Scripter { // Script class will have a virtual function that you fill in. 
         void showEntity(unsigned int index); // Index is reference to place in vector
         void hideEntity(unsigned int index);
 
-        void updateWorld();
+        void update();
 
     private:
-        void draw();
-        void update();
+
+        void executeScript(Script& script);
+        void executeCommand(std::string& command);
 
         bool m_scriptInitFlags = 0x00;
 
+        WorldManager* m_worldManager = nullptr;
+
         std::vector<Entity*> m_entities;
-        Chunk** m_chunks;
-        GLEngine::Camera2D* m_camera = nullptr;
+        Chunk* m_chunks[WORLD_SIZE];
+
+        /*GLEngine::Camera2D* m_camera = nullptr;*/
 };

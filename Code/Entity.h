@@ -10,6 +10,8 @@
 
 #include "AudioManager.h"
 
+#include "Scripting/ScriptQueue.h"
+
 class Chunk;
 
 class Entity;
@@ -45,10 +47,10 @@ class Entity
 
     public:
         Entity();
-        Entity(glm::vec2 position, unsigned int id, AudioManager* audioManager);
+        Entity(glm::vec2 position, unsigned int id, AudioManager* audioManager, ScriptQueue* sq);
         virtual ~Entity();
 
-        void init(glm::vec2 position, Categories::Entity_Type type, unsigned int id);
+        void init(glm::vec2 position, Categories::Entity_Type type, unsigned int id, ScriptQueue* sq);
 
         virtual void update(float timeStep, Chunk* worldChunks[WORLD_SIZE]);
         virtual void draw(GLEngine::SpriteBatch& sb, float time, float xOffset);
@@ -123,6 +125,7 @@ class Entity
         Categories::Attack_Type m_attackType = Categories::Attack_Type::MELEE_ONLY;
 
         AudioManager* m_audioManager = nullptr;
+        ScriptQueue* m_sq = nullptr;
 
         std::vector<Limb> m_limbs;
 

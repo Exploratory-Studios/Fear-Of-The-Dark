@@ -79,11 +79,13 @@ void LoadScreen::draw() {
 
     float alpha = 0.0f;
 
-    if(m_time <= 255.0f) {
-        alpha = m_time;
+    if(m_time <= 255.0f/2.0f) {
+        alpha = m_time*2.0f;
     } else {
         alpha = 255.0f;
     }
+
+    m_createButton->setAlpha(alpha / 255);
 
     m_gui.draw();
 

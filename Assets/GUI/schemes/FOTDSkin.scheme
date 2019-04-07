@@ -32,6 +32,14 @@
 	<FalagardMapping windowType="FOTDSkin/VerticalSlider" targetType="CEGUI/Slider" renderer="Core/Slider" lookNFeel="FOTDSkin/VerticalSlider" />
 
 	<FalagardMapping windowType="FOTDSkin/MenuItem" targetType="CEGUI/MenuItem" renderer="Core/MenuItem" lookNFeel="FOTDSkin/MenuItem" />
+	<FalagardMapping windowType="FOTDSkin/StatusBox" targetType="CEGUI/PopupMenu" renderer="Core/PopupMenu" lookNFeel="FOTDSkin/StatusBox" />
+
+	<FalagardMapping windowType="FOTDSkin/SanityBar" targetType="CEGUI/ProgressBar" renderer="Core/ProgressBar" lookNFeel="FOTDSkin/SanityBar" />
+	<FalagardMapping windowType="FOTDSkin/HealthBar" targetType="CEGUI/ProgressBar" renderer="Core/ProgressBar" lookNFeel="FOTDSkin/HealthBar" />
+	<FalagardMapping windowType="FOTDSkin/ThirstBar" targetType="CEGUI/ProgressBar" renderer="Core/ProgressBar" lookNFeel="FOTDSkin/ThirstBar" />
+	<FalagardMapping windowType="FOTDSkin/HungerBar" targetType="CEGUI/ProgressBar" renderer="Core/ProgressBar" lookNFeel="FOTDSkin/HungerBar" />
+	<FalagardMapping windowType="FOTDSkin/ExhaustionBar" targetType="CEGUI/ProgressBar" renderer="Core/ProgressBar" lookNFeel="FOTDSkin/ExhaustionBar" />
+	<FalagardMapping windowType="FOTDSkin/StaminaBar" targetType="CEGUI/ProgressBar" renderer="Core/ProgressBar" lookNFeel="FOTDSkin/StaminaBar" />
 <!--
 	<FalagardMapping windowType="FOTDSkin/Menubar" targetType="CEGUI/Menubar" renderer="Core/Menubar" lookNFeel="FOTDSkin/Menubar" />
 	<FalagardMapping windowType="FOTDSkin/PopupMenu" targetType="CEGUI/PopupMenu" renderer="Core/PopupMenu" lookNFeel="FOTDSkin/PopupMenu" />
@@ -57,8 +65,10 @@
     <!--
 	<FalagardMapping windowType="FOTDSkin/Spinner" targetType="CEGUI/Spinner" renderer="Core/Default" lookNFeel="FOTDSkin/Spinner" />
 	<FalagardMapping windowType="FOTDSkin/Tooltip" targetType="CEGUI/Tooltip" renderer="Core/Tooltip" lookNFeel="FOTDSkin/Tooltip" />
+-->
 	<FalagardMapping windowType="FOTDSkin/StaticImage" targetType="DefaultWindow" renderer="Core/StaticImage" lookNFeel="FOTDSkin/StaticImage" />
 	<FalagardMapping windowType="FOTDSkin/StaticText" targetType="DefaultWindow" renderer="Core/StaticText" lookNFeel="FOTDSkin/StaticText" />
+<!--
 	<FalagardMapping windowType="FOTDSkin/GroupBox" targetType="DefaultWindow" renderer="Core/Default" lookNFeel="FOTDSkin/GroupBox" />
     <FalagardMapping windowType="FOTDSkin/Tree" targetType="CEGUI/Tree" renderer="Core/Tree" lookNFeel="FOTDSkin/Tree" />
 -->

@@ -3,7 +3,7 @@
 #include "PresetValues.h"
 #include "ItemBlock.h"
 
-
+#include <Errors.h>
 
 #include <iostream>
 
@@ -11,12 +11,20 @@ Player::Player() {
     m_inventory = new Inventory();
 }
 
-Player::Player(glm::vec2 position, GLEngine::InputManager* input) : m_input(input)
+Player::Player(glm::vec2 position, GLEngine::InputManager* input, ScriptQueue* sq) : m_input(input)
 {
-    init(position, Categories::Entity_Type::MOB, 0);
+    init(position, Categories::Entity_Type::MOB, 0, sq);
     m_inventory = new Inventory();
     m_speed = 0.2f;
     m_jumpHeight = 2.608f;
+
+    Script s;
+    s.commands.push_back("changeBlock relative 0 0 2");
+    s.commands.push_back("changeBlock relative 0 1 6");
+    s.commands.push_back("teleport player relative 0 2");
+    s.commands.push_back("time set 120");
+
+    m_scriptID_dayTime = m_sq->addScript(s);
 }
 
 Player::~Player()
@@ -24,8 +32,49 @@ Player::~Player()
     //dtor
 }
 
-void Player::draw(GLEngine::SpriteBatch& sb, float time, float xOffset) {
+void Player::initGUI(GLEngine::GUI* gui) {
+    m_gui = gui;
+    m_statusBoxFrame = static_cast<CEGUI::PopupMenu*>(m_gui->createWidget("FOTDSkin/StatusBox", glm::vec4(0.785f, 0.025f, 0.2f, 0.4f), glm::vec4(0.0f), "PlayerGUI_StatusBox"));
+    m_statusBoxFrame->openPopupMenu();
 
+    m_statusBoxLabel = static_cast<CEGUI::DefaultWindow*>(m_gui->createWidget(m_statusBoxFrame, "FOTDSkin/Label", glm::vec4(0.075f, 0.025f, 0.925f, 1.0f), glm::vec4(0.0f), "PlayerGUI_StatusBox_Label"));
+    m_statusBoxLabel->setProperty("HorzFormatting", "LeftAligned");
+    m_statusBoxLabel->setProperty("VertFormatting", "TopAligned");
+
+    std::string labelText = "[padding='l:0 t:0 r:0 b:-1']Time of day and date\n";
+    labelText +=            "[padding='l:4 t:-7 r:0 b:2'][vert-alignment='centre'][image-size='w:25 h:25'][image='FOTDSkin/SanityIcon']\n";
+    labelText +=            "[padding='l:4 t:-8 r:0 b:2'][vert-alignment='centre'][image-size='w:25 h:25'][image='FOTDSkin/HealthIcon']\n";
+    labelText +=            "[padding='l:4 t:-7 r:0 b:2'][vert-alignment='centre'][image-size='w:25 h:25'][image='FOTDSkin/ThirstIcon']\n";
+    labelText +=            "[padding='l:4 t:-5 r:0 b:2'][image-size='w:25 h:25'][vert-alignment='centre'][image='FOTDSkin/HungerIcon']\n";
+    labelText +=            "[padding='l:4 t:-8 r:0 b:2'][vert-alignment='centre'][image-size='w:25 h:25'][image='FOTDSkin/ExhaustionIcon']\n";
+    labelText +=            "[padding='l:4 t:-6 r:0 b:2'][vert-alignment='centre'][image-size='w:25 h:25'][image='FOTDSkin/StaminaIcon']\n";
+
+    m_statusBoxLabel->setText(labelText);
+
+    m_sanityBar     = static_cast<CEGUI::ProgressBar*>(m_gui->createWidget(m_statusBoxFrame, "FOTDSkin/SanityBar",     glm::vec4(0.25f, 0.10f + 0.066f, 0.65f, 0.1f), glm::vec4(), "PlayerGUI_StatusBox_Sanity"));
+    m_healthBar     = static_cast<CEGUI::ProgressBar*>(m_gui->createWidget(m_statusBoxFrame, "FOTDSkin/HealthBar",     glm::vec4(0.25f, 0.23f + 0.066f, 0.65f, 0.1f), glm::vec4(), "PlayerGUI_StatusBox_Health"));
+    m_thirstBar     = static_cast<CEGUI::ProgressBar*>(m_gui->createWidget(m_statusBoxFrame, "FOTDSkin/ThirstBar",     glm::vec4(0.25f, 0.36f + 0.066f, 0.65f, 0.1f), glm::vec4(), "PlayerGUI_StatusBox_Thirst"));
+    m_hungerBar     = static_cast<CEGUI::ProgressBar*>(m_gui->createWidget(m_statusBoxFrame, "FOTDSkin/HungerBar",     glm::vec4(0.25f, 0.50f + 0.066f, 0.65f, 0.1f), glm::vec4(), "PlayerGUI_StatusBox_Hunger"));
+    m_exhaustionBar = static_cast<CEGUI::ProgressBar*>(m_gui->createWidget(m_statusBoxFrame, "FOTDSkin/ExhaustionBar", glm::vec4(0.25f, 0.63f + 0.066f, 0.65f, 0.1f), glm::vec4(), "PlayerGUI_StatusBox_Exhaustion"));
+    m_staminaBar    = static_cast<CEGUI::ProgressBar*>(m_gui->createWidget(m_statusBoxFrame, "FOTDSkin/StaminaBar",    glm::vec4(0.25f, 0.76f + 0.066f, 0.65f, 0.1f), glm::vec4(), "PlayerGUI_StatusBox_Stamina"));
+
+    m_sanityBar->setProgress(1.0f);
+    m_healthBar->setProgress(1.0f);
+    m_thirstBar->setProgress(1.0f);
+    m_hungerBar->setProgress(1.0f);
+    m_exhaustionBar->setProgress(1.0f);
+    m_staminaBar->setProgress(1.0f);
+
+    m_sanityBar->setStepSize(0.0000005d);
+    m_healthBar->setStepSize(0.0000005d);
+    m_thirstBar->setStepSize(0.0000005d);
+    m_hungerBar->setStepSize(0.0000005d);
+    m_exhaustionBar->setStepSize(0.0000005d);
+    m_staminaBar->setStepSize(0.0000005d);
+
+}
+
+void Player::draw(GLEngine::SpriteBatch& sb, float time, float xOffset) {
     glm::vec4 destRect = glm::vec4(m_position.x, m_position.y, m_size.x * TILE_SIZE, m_size.y * TILE_SIZE);
 
     float x, y;
@@ -80,78 +129,98 @@ void Player::draw(GLEngine::SpriteBatch& sb, float time, float xOffset) {
 }
 
 void Player::drawGUI(GLEngine::SpriteBatch& sb, GLEngine::SpriteFont& sf) {
+    if(m_gui) {
+        glm::vec4 fullUV = glm::vec4(0.0f, 0.0f, 1.0f, 1.0f);
+        GLEngine::ColourRGBA8 fullColour(255, 255, 255, 255);
 
-    glm::vec4 fullUV = glm::vec4(0.0f, 0.0f, 1.0f, 1.0f);
-    GLEngine::ColourRGBA8 fullColour(255, 255, 255, 255);
+        { // Hotbar
+            int hotbarImgId = GLEngine::ResourceManager::getTexture(ASSETS_FOLDER_PATH + "GUI/Player/Hotbar.png").id;
+            int hotbarSelectImgId = GLEngine::ResourceManager::getTexture(ASSETS_FOLDER_PATH + "GUI/Player/HotbarSelection.png").id;
 
-    {
-        int hotbarImgId = GLEngine::ResourceManager::getTexture(ASSETS_FOLDER_PATH + "GUI/Player/Hotbar.png").id;
-        int hotbarSelectImgId = GLEngine::ResourceManager::getTexture(ASSETS_FOLDER_PATH + "GUI/Player/HotbarSelection.png").id;
+            sb.begin();
 
-        sb.begin();
+            for(int i = 0; i < HOTBAR_BOX_NUM; i++) {
 
-        for(int i = 0; i < HOTBAR_BOX_NUM; i++) {
+                glm::vec4 uv(i * (1.0 / HOTBAR_BOX_NUM), 0.0f, (1.0 / HOTBAR_BOX_NUM), 1.0f);
+                glm::vec4 destRect(HOTBAR_BOX_SIZE / 4 + (HOTBAR_BOX_SIZE + HOTBAR_BOX_PADDING) * i, HOTBAR_BOX_SIZE / 4, HOTBAR_BOX_SIZE, HOTBAR_BOX_SIZE);
+                sb.draw(destRect, uv, hotbarImgId, 0.0f, fullColour);
 
-            glm::vec4 uv(i * (1.0 / HOTBAR_BOX_NUM), 0.0f, (1.0 / HOTBAR_BOX_NUM), 1.0f);
-            glm::vec4 destRect(HOTBAR_BOX_SIZE / 4 + (HOTBAR_BOX_SIZE + HOTBAR_BOX_PADDING) * i, HOTBAR_BOX_SIZE / 4, HOTBAR_BOX_SIZE, HOTBAR_BOX_SIZE);
-            sb.draw(destRect, uv, hotbarImgId, 0.0f, fullColour);
+                {
+                    if(m_inventory->getItem(i, 0)) {
+                        glm::vec4 destRect(HOTBAR_BOX_SIZE / 4 + (HOTBAR_BOX_SIZE + HOTBAR_BOX_PADDING) * i,
+                                        HOTBAR_BOX_SIZE / 4,
+                                        HOTBAR_BOX_SIZE,
+                                        HOTBAR_BOX_SIZE);
+                        glm::vec4 itemUV(0, 0, 1, 1);
+                        int itemImgId = GLEngine::ResourceManager::getTexture(Category_Data::itemData[m_inventory->getItem(i, 0)->getID()].texturePath).id;
 
-            {
+                        sb.draw(destRect, itemUV, itemImgId, 0.0f, GLEngine::ColourRGBA8(255, 255, 255, 255));
+                    }
+                }
+            }
+
+            sb.end();
+            sb.renderBatch();
+
+            for(int i = 0; i < HOTBAR_BOX_NUM; i++) {
                 if(m_inventory->getItem(i, 0)) {
                     glm::vec4 destRect(HOTBAR_BOX_SIZE / 4 + (HOTBAR_BOX_SIZE + HOTBAR_BOX_PADDING) * i,
-                                    HOTBAR_BOX_SIZE / 4,
-                                    HOTBAR_BOX_SIZE,
-                                    HOTBAR_BOX_SIZE);
+                                        HOTBAR_BOX_SIZE / 4,
+                                        HOTBAR_BOX_SIZE,
+                                        HOTBAR_BOX_SIZE);
                     glm::vec4 itemUV(0, 0, 1, 1);
                     int itemImgId = GLEngine::ResourceManager::getTexture(Category_Data::itemData[m_inventory->getItem(i, 0)->getID()].texturePath).id;
 
+                    sb.begin();
                     sb.draw(destRect, itemUV, itemImgId, 0.0f, GLEngine::ColourRGBA8(255, 255, 255, 255));
+                    sb.end();
+                    sb.renderBatch();
+
+                    sb.begin();
+                    sf.draw(sb, std::to_string(m_inventory->getItem(i, 0)->getQuantity()).c_str(), glm::vec2(destRect.x + INVENTORY_BOX_SIZE * 9/10, destRect.y + INVENTORY_BOX_SIZE - 96.0f * 0.35f), glm::vec2(0.35f), 0.0f, GLEngine::ColourRGBA8(255, 255, 255, 255), GLEngine::Justification::RIGHT);
+                    sb.end();
+                    sb.renderBatch();
                 }
             }
-        }
 
-        sb.end();
-        sb.renderBatch();
+            sb.begin();
+            glm::vec4 destRect(HOTBAR_BOX_SIZE / 4 + (HOTBAR_BOX_SIZE + HOTBAR_BOX_PADDING) * m_selectedHotbox, HOTBAR_BOX_SIZE / 4, HOTBAR_BOX_SIZE, HOTBAR_BOX_SIZE);
+            sb.draw(destRect, fullUV, hotbarSelectImgId, 0.0f, fullColour);
 
-        for(int i = 0; i < HOTBAR_BOX_NUM; i++) {
-            if(m_inventory->getItem(i, 0)) {
-                glm::vec4 destRect(HOTBAR_BOX_SIZE / 4 + (HOTBAR_BOX_SIZE + HOTBAR_BOX_PADDING) * i,
-                                    HOTBAR_BOX_SIZE / 4,
-                                    HOTBAR_BOX_SIZE,
-                                    HOTBAR_BOX_SIZE);
-                glm::vec4 itemUV(0, 0, 1, 1);
-                int itemImgId = GLEngine::ResourceManager::getTexture(Category_Data::itemData[m_inventory->getItem(i, 0)->getID()].texturePath).id;
+            sb.end();
+            sb.renderBatch();
+        } // Hotbar END
 
-                sb.begin();
-                sb.draw(destRect, itemUV, itemImgId, 0.0f, GLEngine::ColourRGBA8(255, 255, 255, 255));
-                sb.end();
-                sb.renderBatch();
 
-                sb.begin();
-                sf.draw(sb, std::to_string(m_inventory->getItem(i, 0)->getQuantity()).c_str(), glm::vec2(destRect.x + INVENTORY_BOX_SIZE * 9/10, destRect.y + INVENTORY_BOX_SIZE - 96.0f * 0.35f), glm::vec2(0.35f), 0.0f, GLEngine::ColourRGBA8(255, 255, 255, 255), GLEngine::Justification::RIGHT);
-                sb.end();
-                sb.renderBatch();
+        {
+            if(m_inventoryOpen) {
+
+                m_inventory->draw(HOTBAR_BOX_SIZE / 4, HOTBAR_BOX_SIZE * 1.5, sb, sf);
+
             }
         }
-
-        sb.begin();
-        glm::vec4 destRect(HOTBAR_BOX_SIZE / 4 + (HOTBAR_BOX_SIZE + HOTBAR_BOX_PADDING) * m_selectedHotbox, HOTBAR_BOX_SIZE / 4, HOTBAR_BOX_SIZE, HOTBAR_BOX_SIZE);
-        sb.draw(destRect, fullUV, hotbarSelectImgId, 0.0f, fullColour);
-
-        sb.end();
-        sb.renderBatch();
-    }
-
-    {
-        if(m_inventoryOpen) {
-
-            m_inventory->draw(HOTBAR_BOX_SIZE / 4, HOTBAR_BOX_SIZE * 1.5, sb, sf);
-
-        }
+    } else {
+        GLEngine::FatalError("Dumb Programmer Didn't Initialize PlayerGUI... ");
     }
 }
 
 void Player::update(float timeStep, Chunk* worldChunks[WORLD_SIZE]) {
+
+    m_sanityBar->setProgress(m_sanity);
+    m_healthBar->setProgress(m_health);
+    m_thirstBar->setProgress(m_thirst);
+    m_hungerBar->setProgress(m_hunger);
+    m_exhaustionBar->setProgress(m_exhaustion);
+    m_staminaBar->setProgress(m_stamina);
+
+    m_sanity -= 0.0001f;
+    m_thirst -= 0.00006f;
+    m_hunger -= 0.00003f;
+    m_exhaustion -= 0.0001f;
+
+    if(m_stamina < 0.8f) {
+        m_exhaustion -= 0.0002f;
+    }
 
     updateLightLevel();
 
@@ -161,10 +230,10 @@ void Player::update(float timeStep, Chunk* worldChunks[WORLD_SIZE]) {
     move(timeStep);
     m_inventory->update();
 
-    if(m_velocity.x > MAX_SPEED * m_inventory->getSpeedMultiplier()) {
-        m_velocity.x = MAX_SPEED * m_inventory->getSpeedMultiplier();
-    } else if(m_velocity.x < -MAX_SPEED * m_inventory->getSpeedMultiplier()) {
-        m_velocity.x = -MAX_SPEED * m_inventory->getSpeedMultiplier();
+    if(m_velocity.x > MAX_SPEED * m_inventory->getSpeedMultiplier() * std::pow(m_stamina, 0.4f)) {
+        m_velocity.x = MAX_SPEED * m_inventory->getSpeedMultiplier() * std::pow(m_stamina, 0.4f);
+    } else if(m_velocity.x < -MAX_SPEED * m_inventory->getSpeedMultiplier() * std::pow(m_stamina, 0.4f)) {
+        m_velocity.x = -MAX_SPEED * m_inventory->getSpeedMultiplier() * std::pow(m_stamina, 0.4f);
     }
 }
 
@@ -202,33 +271,39 @@ void Player::updateMouse(GLEngine::Camera2D* worldCamera) {
 }
 
 void Player::updateInput() {
-    if(m_input->isKeyDown(SDLK_w)) {
+    if(m_input->isKeyDown(SDLK_w) && m_stamina > 0.0f) {
         if(m_onGround) {
             m_velocity.y = m_jumpHeight; // y=(jumpHeight*TILE_SIZE+3/4*TILE_SIZE+-5.88*x^2)  initial jump power is the absolute of the x when y=0. jumpheight is in eights of tiles and you must add 4
             m_onGround = false;
+            m_stamina -= 0.005f;
         }
     }
 
-    if(m_input->isKeyDown(SDLK_d)) {
+    if(m_input->isKeyDown(SDLK_d) && m_stamina > 0.0f) {
         if(m_velocity.x < 0.0f) m_velocity.x /= 5.0f;
-        m_velocity.x += m_speed * m_inventory->getSpeedMultiplier();
-    } else if(m_input->isKeyDown(SDLK_a)) {
+        m_velocity.x += m_speed * m_inventory->getSpeedMultiplier() * std::pow(m_stamina, 0.4f);
+        m_stamina *= 0.999f;
+    } else if(m_input->isKeyDown(SDLK_a) && m_stamina > 0.0f) {
         if(m_velocity.x > 0.0f) m_velocity.x /= 5.0f;
-        m_velocity.x -= m_speed * m_inventory->getSpeedMultiplier();
+        m_velocity.x -= m_speed * m_inventory->getSpeedMultiplier() * std::pow(m_stamina, 0.4f);
+        m_stamina *= 0.999f;
     } else {
         m_velocity.x *= 0.9f;
     }
 
+    if(m_velocity.x < 0.001f && m_velocity.x > -0.001f && m_onGround && m_stamina * 1.003f <= 1.0f) m_stamina *= 1.003f;
+
     if(m_canInteract) {
         if(m_input->isKeyPressed(SDLK_e)) {
-            if(m_speakingEntity) {
-                m_speakingEntity->startDialogue();
-            }
+            //if(m_speakingEntity) {
+                //m_speakingEntity->startDialogue();
+                m_sq->activateScript(m_scriptID_dayTime);
+            //}
         }
 
         if(m_input->isKeyDown(SDL_BUTTON_LEFT) && m_selectedBlock) {
             if(m_inventory->getItem(m_selectedHotbox, 0)) m_inventory->getItem(m_selectedHotbox, 0)->onLeftClick(m_selectedBlock);
-            m_selectedBlock->switchID((int)Categories::BlockIDs::AIR);
+            *(m_selectedBlock) = *(new BlockAir(m_selectedBlock->getPosition(), m_selectedBlock->getParentChunk()));
             m_inventory->updateWeight();
         }
         if(m_input->isKeyDown(SDL_BUTTON_RIGHT) && m_selectedBlock) {

@@ -11,9 +11,10 @@
 class Block : public Tile
 {
     public:
-        Block(glm::vec2 pos, unsigned int id, Chunk* parent);
+        Block(glm::vec2 pos, Chunk* parent);
+        virtual ~Block() {}
 
-        void switchID(unsigned int newID);
+        virtual void onInteract(Player& player) = 0; // Class already has parent chunk
 
     protected:
         /// Protected, taken from "Tile" class

@@ -8,7 +8,7 @@ class TalkingNPC : public Entity
 {
 
     public:
-        TalkingNPC(glm::vec2 position, unsigned int id, AudioManager* audioManager);
+        TalkingNPC(glm::vec2 position, unsigned int id, AudioManager* audioManager, ScriptQueue* sq);
         ~TalkingNPC();
 
         void startDialogue();
@@ -16,7 +16,7 @@ class TalkingNPC : public Entity
         void draw(GLEngine::SpriteBatch& sb, float time, float xOffset) override;
 
         bool isDialogueStarted() { return m_dialogueStarted; }
-        bool setDialogueStarted(bool setting) { m_dialogueStarted = setting; }
+        void setDialogueStarted(bool setting) { m_dialogueStarted = setting; }
 
         unsigned int getQuestionId() { return m_questionId; }
 

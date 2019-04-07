@@ -49,7 +49,7 @@
 //#define DAY_LENGTH 2400  // Should be 10 minutes per CYCLE 600*4
 #define DAY_LENGTH 240
 // How much the light level is multiplied by when going through transparent tiles
-#define TRANSPARENT_LIGHT_MULTIPLIER 6.0f/7.0f
+#define TRANSPARENT_LIGHT_MULTIPLIER 5.0f/7.0f
 // How much the light level is multiplied by when going through blocks
 #define OPAQUE_LIGHT_MULTIPLIER 1.0f/3.0f
 

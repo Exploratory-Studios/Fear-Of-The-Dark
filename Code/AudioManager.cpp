@@ -32,7 +32,7 @@ void AudioManager::init() {
 }
 
 bool AudioManager::isMusicPlaying() {
-    for(int i = 0; i < m_music.size(); i++) {
+    for(unsigned int i = 0; i < m_music.size(); i++) {
         if(m_music[i].isPlaying()) return true;
     }
     return false;

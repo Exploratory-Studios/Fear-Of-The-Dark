@@ -9,6 +9,7 @@
 #include "Chunk.h"
 #include "Player.h"
 #include "Block.h"
+#include "Blocks.h"
 
 #include "PresetValues.h"
 
@@ -39,8 +40,10 @@ class WorldIOManager
                                               /// access the location of the same World, and the same
                                               /// WorldIOManager. That way, I will never(!) get
                                               /// duplicates of worlds that don't change at the same time.
+        ScriptQueue* getScriptQueue() { return m_sq; }
 
     private:
         World* m_world = new World();
-        GLEngine::InputManager* m_input;
+        GLEngine::InputManager* m_input = nullptr;
+        ScriptQueue* m_sq = new ScriptQueue();
 };

@@ -13,12 +13,12 @@ ItemBlock::ItemBlock(unsigned int id, float weight, short unsigned int quantity,
 }
 
 void ItemBlock::onLeftClick(Block* selectedBlock) {
-    // selectedBlock.destroy
+    //*selectedBlock = createBlock((unsigned int)Categories::BlockIDs::AIR, selectedBlock->getPosition(), selectedBlock->getParentChunk());
 }
 
 void ItemBlock::onRightClick(Block* selectedBlock) {
     if((int)selectedBlock->getID() == (int)Categories::BlockIDs::AIR) {
-        selectedBlock->switchID(m_blockId);
+        *selectedBlock = *createBlock(m_blockId, selectedBlock->getPosition(), selectedBlock->getParentChunk());
         m_quantity--;
     }
 }

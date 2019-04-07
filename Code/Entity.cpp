@@ -31,9 +31,9 @@ Entity::Entity()
     //ctor
 }
 
-Entity::Entity(glm::vec2 position, unsigned int id, AudioManager* audioManager) {
+Entity::Entity(glm::vec2 position, unsigned int id, AudioManager* audioManager, ScriptQueue* sq) {
     m_audioManager = audioManager;
-    init(position, Categories::Entity_Type::MOB, id);
+    init(position, Categories::Entity_Type::MOB, id, sq);
 }
 
 Entity::~Entity()
@@ -41,8 +41,10 @@ Entity::~Entity()
     //dtor
 }
 
-void Entity::init(glm::vec2 position, Categories::Entity_Type type, unsigned int id) {
+void Entity::init(glm::vec2 position, Categories::Entity_Type type, unsigned int id, ScriptQueue* sq) {
     m_position = position;
+    m_sq = sq;
+
     switch(type) {
         case Categories::Entity_Type::MOB: /// Temporary, change to abstract class
         {
@@ -133,8 +135,8 @@ void Entity::draw(GLEngine::SpriteBatch& sb, float time, float xOffset) {
 
     sb.draw(destRect, uvRect, m_texture.id, 0.0f, colour, glm::vec3(m_light));
 
-    for(int i = 0; i < m_limbs.size(); i++) {
-        m_limbs[i].draw(sb);
+    for(unsigned int i = 0; i < m_limbs.size(); i++) {
+        m_limbs[i].draw(sb); // no sb.begin() or end()
     }
 }
 
@@ -332,7 +334,7 @@ bool Entity::checkTilePosition(Tile* tiles[WORLD_HEIGHT][CHUNK_SIZE], Tile* extr
                 collideTilePositions.push_back(glm::vec2((float)gridPos.x + 0.500f, (float)gridPos.y + 0.500f)); // CollideTilePositions are put in as gridspace coords
                 return true;
             }
-        } else if((int)gridPos.x - (getChunkIndex() * CHUNK_SIZE) == -1) {
+        } else if((int)gridPos.x - ((signed int)getChunkIndex() * CHUNK_SIZE) == -1) {
             if (extraTileArray[(int)gridPos.y][0]->isSolid()) { //  - getChunkIndex()
                 collideTilePositions.push_back(glm::vec2((float)gridPos.x + 0.500f, (float)gridPos.y + 0.500f)); // CollideTilePositions are put in as gridspace coords
                 return true;

@@ -2588,4 +2588,523 @@
         <StateImagery name="Enabled"/>
         <StateImagery name="Disabled"/>
     </WidgetLook>
+	<WidgetLook name="FOTDSkin/StatusBox">
+		<b><ImagerySection name="Background">
+			<b><ImageryComponent>
+				<Area>
+					<Dim type="LeftEdge">
+						<AbsoluteDim value="0" />
+					</Dim>
+					<Dim type="TopEdge">
+						<AbsoluteDim value="0" />
+					</Dim>
+					<Dim type="RightEdge">
+						<UnifiedDim scale="1" offset="0" type="RightEdge" />
+					</Dim>
+					<Dim type="BottomEdge">
+						<UnifiedDim scale="1" offset="0" type="BottomEdge" />
+					</Dim>
+				</Area>
+				<b><Image name="FOTDSkin/StatusBox" />
+				<VertFormat type="Stretched" />
+				<HorzFormat type="Stretched" /></b>
+			</ImageryComponent></b>
+		</ImagerySection></b>
+		<b><StateImagery name="Enabled">
+			<b><Layer>
+				<Section section="Background" />
+			</Layer></b>
+		</StateImagery></b>
+		<NamedArea name="ItemRenderArea">
+			<Area>
+				<Dim type="LeftEdge">
+					<AbsoluteDim value="0" />
+				</Dim>
+				<Dim type="TopEdge">
+					<AbsoluteDim value="0" />
+				</Dim>
+				<Dim type="RightEdge">
+					<UnifiedDim scale="1" offset="0" type="RightEdge" />
+				</Dim>
+				<Dim type="BottomEdge">
+					<UnifiedDim scale="1" offset="0" type="BottomEdge" />
+				</Dim>
+			</Area>
+		</NamedArea>
+	</WidgetLook>
+
+	<WidgetLook name="FOTDSkin/SanityBar">
+	    <Property name="CurrentProgress" value=".01"/>
+        <Property name="Size" value="{{0, 256}, {0, 32}}" />
+        <NamedArea name="ProgressArea"/>
+        <ImagerySection name="progress_empty">
+            <FrameComponent>
+                <Image component="TopLeftCorner" name="FOTDSkin/ProgressEmptyTL"/>
+                <Image component="TopRightCorner" name="FOTDSkin/ProgressEmptyTR"/>
+                <Image component="BottomLeftCorner" name="FOTDSkin/ProgressEmptyBL"/>
+                <Image component="BottomRightCorner" name="FOTDSkin/ProgressEmptyBR"/>
+                <Image component="LeftEdge" name="FOTDSkin/ProgressEmptyL"/>
+                <Image component="RightEdge" name="FOTDSkin/ProgressEmptyR"/>
+                <Image component="TopEdge" name="FOTDSkin/ProgressEmptyT"/>
+                <Image component="BottomEdge" name="FOTDSkin/ProgressEmptyB"/>
+                <Image component="Background" name="FOTDSkin/ProgressEmptyFill"/>
+            </FrameComponent>
+        </ImagerySection>
+        <ImagerySection name="progress_full">
+            <FrameComponent>
+				<Colours topLeft="FF440044" bottomLeft="FF440044" topRight="FF440044" bottomRight="FF440044"/>
+                <Image component="TopLeftCorner" name="FOTDSkin/ProgressFullTL"/>
+                <Image component="TopRightCorner" name="FOTDSkin/ProgressFullTR"/>
+                <Image component="BottomLeftCorner" name="FOTDSkin/ProgressFullBL"/>
+                <Image component="BottomRightCorner" name="FOTDSkin/ProgressFullBR"/>
+                <Image component="LeftEdge" name="FOTDSkin/ProgressFullL"/>
+                <Image component="RightEdge" name="FOTDSkin/ProgressFullR"/>
+                <Image component="TopEdge" name="FOTDSkin/ProgressFullT"/>
+                <Image component="BottomEdge" name="FOTDSkin/ProgressFullB"/>
+                <Image component="Background" name="FOTDSkin/ProgressFullFill"/>
+            </FrameComponent>
+        </ImagerySection>
+        <ImagerySection name="progress_shadow">
+			<Colours topLeft="FF111111" bottomLeft="FF111111" topRight="FF111111" bottomRight="FF111111"/>
+            <ImageryComponent>
+                <Area>
+                    <Dim type="LeftEdge">
+                        <OperatorDim op="Multiply">
+                            <UnifiedDim scale="1" type="Width"/>
+                            <PropertyDim name="CurrentProgress"/>
+                        </OperatorDim>
+                    </Dim>
+                    <Dim type="RightEdge">
+                        <OperatorDim op="Subtract">
+                            <UnifiedDim scale="1" type="Width"/>
+                            <AbsoluteDim value="0"/>
+                        </OperatorDim>
+                    </Dim>
+                </Area>
+                <Image name="FOTDSkin/ProgressShadow"/>
+                <VertFormat type="Stretched"/>
+            </ImageryComponent>
+        </ImagerySection>
+        <StateImagery name="Enabled">
+            <Layer>
+                <Section section="progress_empty"/>
+                <Section section="progress_shadow"/>
+            </Layer>
+        </StateImagery>
+        <StateImagery name="Disabled">
+            <Layer>
+                <Section section="progress_empty">
+                    <Colours topLeft="FF7F7F7F" bottomLeft="FF7F7F7F" topRight="FF7F7F7F" bottomRight="FF7F7F7F"/>
+                </Section>
+            </Layer>
+        </StateImagery>
+        <StateImagery name="EnabledProgress">
+            <Layer>
+                <Section section="progress_full"/>
+            </Layer>
+        </StateImagery>
+        <StateImagery name="DisabledProgress">
+            <Layer>
+                <Section section="progress_full">
+                    <Colours topLeft="FF7F7F7F" bottomLeft="FF7F7F7F" topRight="FF7F7F7F" bottomRight="FF7F7F7F"/>
+                </Section>
+            </Layer>
+        </StateImagery>
+    </WidgetLook>
+
+	<WidgetLook name="FOTDSkin/HealthBar">
+	    <Property name="CurrentProgress" value=".01"/>
+        <Property name="Size" value="{{0, 256}, {0, 32}}" />
+        <NamedArea name="ProgressArea"/>
+        <ImagerySection name="progress_empty">
+            <FrameComponent>
+                <Image component="TopLeftCorner" name="FOTDSkin/ProgressEmptyTL"/>
+                <Image component="TopRightCorner" name="FOTDSkin/ProgressEmptyTR"/>
+                <Image component="BottomLeftCorner" name="FOTDSkin/ProgressEmptyBL"/>
+                <Image component="BottomRightCorner" name="FOTDSkin/ProgressEmptyBR"/>
+                <Image component="LeftEdge" name="FOTDSkin/ProgressEmptyL"/>
+                <Image component="RightEdge" name="FOTDSkin/ProgressEmptyR"/>
+                <Image component="TopEdge" name="FOTDSkin/ProgressEmptyT"/>
+                <Image component="BottomEdge" name="FOTDSkin/ProgressEmptyB"/>
+                <Image component="Background" name="FOTDSkin/ProgressEmptyFill"/>
+            </FrameComponent>
+        </ImagerySection>
+        <ImagerySection name="progress_full">
+            <FrameComponent>
+				<Colours topLeft="FFFFFFFF" bottomLeft="FFFFFFFF" topRight="FFFFFFFF" bottomRight="FFFFFFFF"/>
+                <Image component="TopLeftCorner" name="FOTDSkin/ProgressFullTL"/>
+                <Image component="TopRightCorner" name="FOTDSkin/ProgressFullTR"/>
+                <Image component="BottomLeftCorner" name="FOTDSkin/ProgressFullBL"/>
+                <Image component="BottomRightCorner" name="FOTDSkin/ProgressFullBR"/>
+                <Image component="LeftEdge" name="FOTDSkin/ProgressFullL"/>
+                <Image component="RightEdge" name="FOTDSkin/ProgressFullR"/>
+                <Image component="TopEdge" name="FOTDSkin/ProgressFullT"/>
+                <Image component="BottomEdge" name="FOTDSkin/ProgressFullB"/>
+                <Image component="Background" name="FOTDSkin/ProgressFullFill"/>
+            </FrameComponent>
+        </ImagerySection>
+        <ImagerySection name="progress_shadow">
+			<Colours topLeft="FF111111" bottomLeft="FF111111" topRight="FF111111" bottomRight="FF111111"/>
+            <ImageryComponent>
+                <Area>
+                    <Dim type="LeftEdge">
+                        <OperatorDim op="Multiply">
+                            <UnifiedDim scale="1" type="Width"/>
+                            <PropertyDim name="CurrentProgress"/>
+                        </OperatorDim>
+                    </Dim>
+                    <Dim type="RightEdge">
+                        <OperatorDim op="Subtract">
+                            <UnifiedDim scale="1" type="Width"/>
+                            <AbsoluteDim value="0"/>
+                        </OperatorDim>
+                    </Dim>
+                </Area>
+                <Image name="FOTDSkin/ProgressShadow"/>
+                <VertFormat type="Stretched"/>
+            </ImageryComponent>
+        </ImagerySection>
+        <StateImagery name="Enabled">
+            <Layer>
+                <Section section="progress_empty"/>
+                <Section section="progress_shadow"/>
+            </Layer>
+        </StateImagery>
+        <StateImagery name="Disabled">
+            <Layer>
+                <Section section="progress_empty">
+                    <Colours topLeft="FF7F7F7F" bottomLeft="FF7F7F7F" topRight="FF7F7F7F" bottomRight="FF7F7F7F"/>
+                </Section>
+            </Layer>
+        </StateImagery>
+        <StateImagery name="EnabledProgress">
+            <Layer>
+                <Section section="progress_full"/>
+            </Layer>
+        </StateImagery>
+        <StateImagery name="DisabledProgress">
+            <Layer>
+                <Section section="progress_full">
+                    <Colours topLeft="FF7F7F7F" bottomLeft="FF7F7F7F" topRight="FF7F7F7F" bottomRight="FF7F7F7F"/>
+                </Section>
+            </Layer>
+        </StateImagery>
+    </WidgetLook>
+
+	<WidgetLook name="FOTDSkin/ThirstBar">
+        <Property name="CurrentProgress" value=".01"/>
+        <Property name="Size" value="{{0, 256}, {0, 32}}" />
+        <NamedArea name="ProgressArea"/>
+        <ImagerySection name="progress_empty">
+            <FrameComponent>
+                <Image component="TopLeftCorner" name="FOTDSkin/ProgressEmptyTL"/>
+                <Image component="TopRightCorner" name="FOTDSkin/ProgressEmptyTR"/>
+                <Image component="BottomLeftCorner" name="FOTDSkin/ProgressEmptyBL"/>
+                <Image component="BottomRightCorner" name="FOTDSkin/ProgressEmptyBR"/>
+                <Image component="LeftEdge" name="FOTDSkin/ProgressEmptyL"/>
+                <Image component="RightEdge" name="FOTDSkin/ProgressEmptyR"/>
+                <Image component="TopEdge" name="FOTDSkin/ProgressEmptyT"/>
+                <Image component="BottomEdge" name="FOTDSkin/ProgressEmptyB"/>
+                <Image component="Background" name="FOTDSkin/ProgressEmptyFill"/>
+            </FrameComponent>
+        </ImagerySection>
+        <ImagerySection name="progress_full">
+            <FrameComponent>
+				<Colours topLeft="FF0000EE" bottomLeft="FF0000EE" topRight="FF0000EE" bottomRight="FF0000EE"/>
+                <Image component="TopLeftCorner" name="FOTDSkin/ProgressFullTL"/>
+                <Image component="TopRightCorner" name="FOTDSkin/ProgressFullTR"/>
+                <Image component="BottomLeftCorner" name="FOTDSkin/ProgressFullBL"/>
+                <Image component="BottomRightCorner" name="FOTDSkin/ProgressFullBR"/>
+                <Image component="LeftEdge" name="FOTDSkin/ProgressFullL"/>
+                <Image component="RightEdge" name="FOTDSkin/ProgressFullR"/>
+                <Image component="TopEdge" name="FOTDSkin/ProgressFullT"/>
+                <Image component="BottomEdge" name="FOTDSkin/ProgressFullB"/>
+                <Image component="Background" name="FOTDSkin/ProgressFullFill"/>
+            </FrameComponent>
+        </ImagerySection>
+        <ImagerySection name="progress_shadow">
+			<Colours topLeft="FF111111" bottomLeft="FF111111" topRight="FF111111" bottomRight="FF111111"/>
+            <ImageryComponent>
+                <Area>
+                    <Dim type="LeftEdge">
+                        <OperatorDim op="Multiply">
+                            <UnifiedDim scale="1" type="Width"/>
+                            <PropertyDim name="CurrentProgress"/>
+                        </OperatorDim>
+                    </Dim>
+                    <Dim type="RightEdge">
+                        <OperatorDim op="Subtract">
+                            <UnifiedDim scale="1" type="Width"/>
+                            <AbsoluteDim value="0"/>
+                        </OperatorDim>
+                    </Dim>
+                </Area>
+                <Image name="FOTDSkin/ProgressShadow"/>
+                <VertFormat type="Stretched"/>
+            </ImageryComponent>
+        </ImagerySection>
+        <StateImagery name="Enabled">
+            <Layer>
+                <Section section="progress_empty"/>
+                <Section section="progress_shadow"/>
+            </Layer>
+        </StateImagery>
+        <StateImagery name="Disabled">
+            <Layer>
+                <Section section="progress_empty">
+                    <Colours topLeft="FF7F7F7F" bottomLeft="FF7F7F7F" topRight="FF7F7F7F" bottomRight="FF7F7F7F"/>
+                </Section>
+            </Layer>
+        </StateImagery>
+        <StateImagery name="EnabledProgress">
+            <Layer>
+                <Section section="progress_full"/>
+            </Layer>
+        </StateImagery>
+        <StateImagery name="DisabledProgress">
+            <Layer>
+                <Section section="progress_full">
+                    <Colours topLeft="FF7F7F7F" bottomLeft="FF7F7F7F" topRight="FF7F7F7F" bottomRight="FF7F7F7F"/>
+                </Section>
+            </Layer>
+        </StateImagery>
+    </WidgetLook>
+
+	<WidgetLook name="FOTDSkin/HungerBar">
+        <Property name="CurrentProgress" value=".01"/>
+        <Property name="Size" value="{{0, 256}, {0, 32}}" />
+        <NamedArea name="ProgressArea"/>
+        <ImagerySection name="progress_empty">
+            <FrameComponent>
+                <Image component="TopLeftCorner" name="FOTDSkin/ProgressEmptyTL"/>
+                <Image component="TopRightCorner" name="FOTDSkin/ProgressEmptyTR"/>
+                <Image component="BottomLeftCorner" name="FOTDSkin/ProgressEmptyBL"/>
+                <Image component="BottomRightCorner" name="FOTDSkin/ProgressEmptyBR"/>
+                <Image component="LeftEdge" name="FOTDSkin/ProgressEmptyL"/>
+                <Image component="RightEdge" name="FOTDSkin/ProgressEmptyR"/>
+                <Image component="TopEdge" name="FOTDSkin/ProgressEmptyT"/>
+                <Image component="BottomEdge" name="FOTDSkin/ProgressEmptyB"/>
+                <Image component="Background" name="FOTDSkin/ProgressEmptyFill"/>
+            </FrameComponent>
+        </ImagerySection>
+        <ImagerySection name="progress_full">
+            <FrameComponent>
+				<Colours topLeft="FF554400" bottomLeft="FF554400" topRight="FF554400" bottomRight="FF554400"/>
+                <Image component="TopLeftCorner" name="FOTDSkin/ProgressFullTL"/>
+                <Image component="TopRightCorner" name="FOTDSkin/ProgressFullTR"/>
+                <Image component="BottomLeftCorner" name="FOTDSkin/ProgressFullBL"/>
+                <Image component="BottomRightCorner" name="FOTDSkin/ProgressFullBR"/>
+                <Image component="LeftEdge" name="FOTDSkin/ProgressFullL"/>
+                <Image component="RightEdge" name="FOTDSkin/ProgressFullR"/>
+                <Image component="TopEdge" name="FOTDSkin/ProgressFullT"/>
+                <Image component="BottomEdge" name="FOTDSkin/ProgressFullB"/>
+                <Image component="Background" name="FOTDSkin/ProgressFullFill"/>
+            </FrameComponent>
+        </ImagerySection>
+        <ImagerySection name="progress_shadow">
+			<Colours topLeft="FF111111" bottomLeft="FF111111" topRight="FF111111" bottomRight="FF111111"/>
+            <ImageryComponent>
+                <Area>
+                    <Dim type="LeftEdge">
+                        <OperatorDim op="Multiply">
+                            <UnifiedDim scale="1" type="Width"/>
+                            <PropertyDim name="CurrentProgress"/>
+                        </OperatorDim>
+                    </Dim>
+                    <Dim type="RightEdge">
+                        <OperatorDim op="Subtract">
+                            <UnifiedDim scale="1" type="Width"/>
+                            <AbsoluteDim value="0"/>
+                        </OperatorDim>
+                    </Dim>
+                </Area>
+                <Image name="FOTDSkin/ProgressShadow"/>
+                <VertFormat type="Stretched"/>
+            </ImageryComponent>
+        </ImagerySection>
+        <StateImagery name="Enabled">
+            <Layer>
+                <Section section="progress_empty"/>
+                <Section section="progress_shadow"/>
+            </Layer>
+        </StateImagery>
+        <StateImagery name="Disabled">
+            <Layer>
+                <Section section="progress_empty">
+                    <Colours topLeft="FF7F7F7F" bottomLeft="FF7F7F7F" topRight="FF7F7F7F" bottomRight="FF7F7F7F"/>
+                </Section>
+            </Layer>
+        </StateImagery>
+        <StateImagery name="EnabledProgress">
+            <Layer>
+                <Section section="progress_full"/>
+            </Layer>
+        </StateImagery>
+        <StateImagery name="DisabledProgress">
+            <Layer>
+                <Section section="progress_full">
+                    <Colours topLeft="FF7F7F7F" bottomLeft="FF7F7F7F" topRight="FF7F7F7F" bottomRight="FF7F7F7F"/>
+                </Section>
+            </Layer>
+        </StateImagery>
+    </WidgetLook>
+
+	<WidgetLook name="FOTDSkin/ExhaustionBar">
+        <Property name="CurrentProgress" value=".01"/>
+        <Property name="Size" value="{{0, 256}, {0, 32}}" />
+        <NamedArea name="ProgressArea"/>
+        <ImagerySection name="progress_empty">
+            <FrameComponent>
+                <Image component="TopLeftCorner" name="FOTDSkin/ProgressEmptyTL"/>
+                <Image component="TopRightCorner" name="FOTDSkin/ProgressEmptyTR"/>
+                <Image component="BottomLeftCorner" name="FOTDSkin/ProgressEmptyBL"/>
+                <Image component="BottomRightCorner" name="FOTDSkin/ProgressEmptyBR"/>
+                <Image component="LeftEdge" name="FOTDSkin/ProgressEmptyL"/>
+                <Image component="RightEdge" name="FOTDSkin/ProgressEmptyR"/>
+                <Image component="TopEdge" name="FOTDSkin/ProgressEmptyT"/>
+                <Image component="BottomEdge" name="FOTDSkin/ProgressEmptyB"/>
+                <Image component="Background" name="FOTDSkin/ProgressEmptyFill"/>
+            </FrameComponent>
+        </ImagerySection>
+        <ImagerySection name="progress_full">
+            <FrameComponent>
+				<Colours topLeft="FF111111" bottomLeft="FF111111" topRight="FF111111" bottomRight="FF111111"/>
+                <Image component="TopLeftCorner" name="FOTDSkin/ProgressFullTL"/>
+                <Image component="TopRightCorner" name="FOTDSkin/ProgressFullTR"/>
+                <Image component="BottomLeftCorner" name="FOTDSkin/ProgressFullBL"/>
+                <Image component="BottomRightCorner" name="FOTDSkin/ProgressFullBR"/>
+                <Image component="LeftEdge" name="FOTDSkin/ProgressFullL"/>
+                <Image component="RightEdge" name="FOTDSkin/ProgressFullR"/>
+                <Image component="TopEdge" name="FOTDSkin/ProgressFullT"/>
+                <Image component="BottomEdge" name="FOTDSkin/ProgressFullB"/>
+                <Image component="Background" name="FOTDSkin/ProgressFullFill"/>
+            </FrameComponent>
+        </ImagerySection>
+        <ImagerySection name="progress_shadow">
+			<Colours topLeft="FF111111" bottomLeft="FF111111" topRight="FF111111" bottomRight="FF111111"/>
+            <ImageryComponent>
+                <Area>
+                    <Dim type="LeftEdge">
+                        <OperatorDim op="Multiply">
+                            <UnifiedDim scale="1" type="Width"/>
+                            <PropertyDim name="CurrentProgress"/>
+                        </OperatorDim>
+                    </Dim>
+                    <Dim type="RightEdge">
+                        <OperatorDim op="Subtract">
+                            <UnifiedDim scale="1" type="Width"/>
+                            <AbsoluteDim value="0"/>
+                        </OperatorDim>
+                    </Dim>
+                </Area>
+                <Image name="FOTDSkin/ProgressShadow"/>
+                <VertFormat type="Stretched"/>
+            </ImageryComponent>
+        </ImagerySection>
+        <StateImagery name="Enabled">
+            <Layer>
+                <Section section="progress_empty"/>
+                <Section section="progress_shadow"/>
+            </Layer>
+        </StateImagery>
+        <StateImagery name="Disabled">
+            <Layer>
+                <Section section="progress_empty">
+                    <Colours topLeft="FF7F7F7F" bottomLeft="FF7F7F7F" topRight="FF7F7F7F" bottomRight="FF7F7F7F"/>
+                </Section>
+            </Layer>
+        </StateImagery>
+        <StateImagery name="EnabledProgress">
+            <Layer>
+                <Section section="progress_full"/>
+            </Layer>
+        </StateImagery>
+        <StateImagery name="DisabledProgress">
+            <Layer>
+                <Section section="progress_full">
+                    <Colours topLeft="FF7F7F7F" bottomLeft="FF7F7F7F" topRight="FF7F7F7F" bottomRight="FF7F7F7F"/>
+                </Section>
+            </Layer>
+        </StateImagery>
+    </WidgetLook>
+
+	<WidgetLook name="FOTDSkin/StaminaBar">
+	    <Property name="CurrentProgress" value=".01"/>
+        <Property name="Size" value="{{0, 256}, {0, 32}}" />
+        <NamedArea name="ProgressArea"/>
+        <ImagerySection name="progress_empty">
+            <FrameComponent>
+                <Image component="TopLeftCorner" name="FOTDSkin/ProgressEmptyTL"/>
+                <Image component="TopRightCorner" name="FOTDSkin/ProgressEmptyTR"/>
+                <Image component="BottomLeftCorner" name="FOTDSkin/ProgressEmptyBL"/>
+                <Image component="BottomRightCorner" name="FOTDSkin/ProgressEmptyBR"/>
+                <Image component="LeftEdge" name="FOTDSkin/ProgressEmptyL"/>
+                <Image component="RightEdge" name="FOTDSkin/ProgressEmptyR"/>
+                <Image component="TopEdge" name="FOTDSkin/ProgressEmptyT"/>
+                <Image component="BottomEdge" name="FOTDSkin/ProgressEmptyB"/>
+                <Image component="Background" name="FOTDSkin/ProgressEmptyFill"/>
+            </FrameComponent>
+        </ImagerySection>
+        <ImagerySection name="progress_full">
+            <FrameComponent>
+				<Colours topLeft="FFFFDD00" bottomLeft="FFFFDD00" topRight="FFFFDD00" bottomRight="FFFFDD00"/>
+                <Image component="TopLeftCorner" name="FOTDSkin/ProgressFullTL"/>
+                <Image component="TopRightCorner" name="FOTDSkin/ProgressFullTR"/>
+                <Image component="BottomLeftCorner" name="FOTDSkin/ProgressFullBL"/>
+                <Image component="BottomRightCorner" name="FOTDSkin/ProgressFullBR"/>
+                <Image component="LeftEdge" name="FOTDSkin/ProgressFullL"/>
+                <Image component="RightEdge" name="FOTDSkin/ProgressFullR"/>
+                <Image component="TopEdge" name="FOTDSkin/ProgressFullT"/>
+                <Image component="BottomEdge" name="FOTDSkin/ProgressFullB"/>
+                <Image component="Background" name="FOTDSkin/ProgressFullFill"/>
+            </FrameComponent>
+        </ImagerySection>
+        <ImagerySection name="progress_shadow">
+			<Colours topLeft="FF111111" bottomLeft="FF111111" topRight="FF111111" bottomRight="FF111111"/>
+            <ImageryComponent>
+                <Area>
+                    <Dim type="LeftEdge">
+                        <OperatorDim op="Multiply">
+                            <UnifiedDim scale="1" type="Width"/>
+                            <PropertyDim name="CurrentProgress"/>
+                        </OperatorDim>
+                    </Dim>
+                    <Dim type="RightEdge">
+                        <OperatorDim op="Subtract">
+                            <UnifiedDim scale="1" type="Width"/>
+                            <AbsoluteDim value="0"/>
+                        </OperatorDim>
+                    </Dim>
+                </Area>
+                <Image name="FOTDSkin/ProgressShadow"/>
+                <VertFormat type="Stretched"/>
+            </ImageryComponent>
+        </ImagerySection>
+        <StateImagery name="Enabled">
+            <Layer>
+                <Section section="progress_empty"/>
+                <Section section="progress_shadow"/>
+            </Layer>
+        </StateImagery>
+        <StateImagery name="Disabled">
+            <Layer>
+                <Section section="progress_empty">
+                    <Colours topLeft="FF7F7F7F" bottomLeft="FF7F7F7F" topRight="FF7F7F7F" bottomRight="FF7F7F7F"/>
+                </Section>
+            </Layer>
+        </StateImagery>
+        <StateImagery name="EnabledProgress">
+            <Layer>
+                <Section section="progress_full"/>
+            </Layer>
+        </StateImagery>
+        <StateImagery name="DisabledProgress">
+            <Layer>
+                <Section section="progress_full">
+                    <Colours topLeft="FF7F7F7F" bottomLeft="FF7F7F7F" topRight="FF7F7F7F" bottomRight="FF7F7F7F"/>
+                </Section>
+            </Layer>
+        </StateImagery>
+    </WidgetLook>
+
 </Falagard>

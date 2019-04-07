@@ -8,6 +8,7 @@ class Chunk;
 
 class EntityManager
 {
+    friend class Scripter;
     public:
         EntityManager(Chunk* parent);
         virtual ~EntityManager();

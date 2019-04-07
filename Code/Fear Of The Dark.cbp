@@ -251,6 +251,8 @@
 		<Unit filename="AudioManager.h" />
 		<Unit filename="Block.cpp" />
 		<Unit filename="Block.h" />
+		<Unit filename="Blocks.cpp" />
+		<Unit filename="Blocks.h" />
 		<Unit filename="Categories.h" />
 		<Unit filename="Chunk.cpp" />
 		<Unit filename="Chunk.h" />
@@ -293,6 +295,8 @@
 		<Unit filename="QuestManager.cpp" />
 		<Unit filename="QuestManager.h" />
 		<Unit filename="ScreenIndices.h" />
+		<Unit filename="Scripting/Commands.h" />
+		<Unit filename="Scripting/ScriptQueue.h" />
 		<Unit filename="Scripting/ScripterMain.cpp" />
 		<Unit filename="Scripting/ScripterMain.h" />
 		<Unit filename="StartupScreen.cpp" />

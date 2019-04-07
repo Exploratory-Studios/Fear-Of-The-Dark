@@ -13,7 +13,7 @@ EntityManager::~EntityManager()
 }
 
 void EntityManager::update(float timeStep, Chunk* chunks[WORLD_SIZE]) {
-    for(int i = 0; i < m_entities.size(); i++) {
+    for(unsigned int i = 0; i < m_entities.size(); i++) {
         m_entities[i]->update(timeStep, chunks);
         m_entities[i]->collide();
         int newChunk = m_entities[i]->setParentChunk(chunks);
@@ -22,7 +22,7 @@ void EntityManager::update(float timeStep, Chunk* chunks[WORLD_SIZE]) {
             removeEntity(i);
         }
     }
-    for(int i = 0; i < m_talkingEntities.size(); i++) {
+    for(unsigned int i = 0; i < m_talkingEntities.size(); i++) {
         m_talkingEntities[i]->update(timeStep, chunks);
         m_talkingEntities[i]->collide();
         int newChunk = m_talkingEntities[i]->setParentChunk(chunks);
@@ -34,10 +34,10 @@ void EntityManager::update(float timeStep, Chunk* chunks[WORLD_SIZE]) {
 }
 
 void EntityManager::draw(GLEngine::SpriteBatch& sb, float time, float xOffset) {
-    for(int i = 0; i < m_entities.size(); i++) {
+    for(unsigned int i = 0; i < m_entities.size(); i++) {
         m_entities[i]->draw(sb, time, xOffset);
     }
-    for(int i = 0; i < m_talkingEntities.size(); i++) {
+    for(unsigned int i = 0; i < m_talkingEntities.size(); i++) {
         m_talkingEntities[i]->draw(sb, time, xOffset);
     }
 }
@@ -45,12 +45,12 @@ void EntityManager::draw(GLEngine::SpriteBatch& sb, float time, float xOffset) {
 void EntityManager::tick(Player* p) {
     targetEntities(p);
 
-    unsigned int closestId = 0;
+    //unsigned int closestId = 0;
     float minDist = 6 * TILE_SIZE; // About 4 tiles diagonally
-    for(int i = 0; i < m_talkingEntities.size(); i++) {
+    for(unsigned int i = 0; i < m_talkingEntities.size(); i++) {
         float dist = glm::distance(m_talkingEntities[i]->getPosition(), p->getPosition());
         if(dist < minDist) {
-            closestId = i;
+            //closestId = i;
             minDist = dist;
             if(m_talkingEntities[i]->isDialogueStarted()) {
                 p->setSpeakingEntity(m_talkingEntities[i]);
@@ -60,14 +60,14 @@ void EntityManager::tick(Player* p) {
 }
 
 void EntityManager::removeEntity(int index) {
-    for(int i = index; i < m_entities.size()-1; i++) {
+    for(unsigned int i = index; i < m_entities.size()-1; i++) {
         m_entities[i] = m_entities[i+1];
     }
     m_entities.pop_back();
 }
 
 void EntityManager::removeTalkingEntity(int index) {
-    for(int i = index; i < m_talkingEntities.size()-1; i++) {
+    for(unsigned int i = index; i < m_talkingEntities.size()-1; i++) {
         m_talkingEntities[i] = m_talkingEntities[i+1];
     }
     m_talkingEntities.pop_back();
@@ -77,7 +77,7 @@ void EntityManager::removeTalkingEntity(int index) {
 void EntityManager::targetEntities(Player* p) {
     m_entities.push_back(p);
 
-    for(int i = 0; i < m_talkingEntities.size(); i++) {
+    for(unsigned int i = 0; i < m_talkingEntities.size(); i++) {
         m_entities.push_back(m_talkingEntities[i]);
     }
 
@@ -117,7 +117,7 @@ void EntityManager::targetEntities(Player* p) {
         }
     }
 
-    for(int i = 0; i < m_talkingEntities.size(); i++) {
+    for(unsigned int i = 0; i < m_talkingEntities.size(); i++) {
         m_entities.pop_back();
     }
 
@@ -145,8 +145,8 @@ std::vector<glm::vec2> EntityManager::pathfindToTarget(float jumpHeight, glm::ve
     int chunkIndex = std::floor(xGridspace / CHUNK_SIZE);
     int chunkIndexN = std::floor(targetXGridspace / CHUNK_SIZE);
 
-    int currentYOffset = 0;
-    while(!abs(xGridspace - targetXGridspace) <= 0.0f) {
+    //int currentYOffset = 0;
+    while(!(abs(xGridspace - targetXGridspace) <= 0.0f)) {
 
         {
             int a = chunkIndex, b = chunkIndexN;

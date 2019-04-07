@@ -11,7 +11,7 @@ namespace EntityFunctions {
         controls[3] = false;
 
         if(targets.size() > currentTarget) {
-            float modifier = 0.0f;
+            //float modifier = 0.0f;
             if(targets[currentTarget].x + TILE_SIZE / 2.0f > position.x + size.x * TILE_SIZE / 2.0f) {
                 controls[3] = true; // RIGHT
                 controls[2] = false;

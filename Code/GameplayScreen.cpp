@@ -50,7 +50,8 @@ void GameplayScreen::onEntry() {
 
     m_dr.init();
 
-    m_worldManager.init(m_WorldIOManager);
+    m_worldManager.init(m_WorldIOManager, &m_tickTime);
+    m_scripter = new Scripter(&m_worldManager);
 
     initUI();
 
@@ -69,6 +70,7 @@ void GameplayScreen::update() {
     m_gui.update();
 
     if(m_gameState != GameState::PAUSE) {
+        m_scripter->update();
 
         m_worldManager.update(&m_camera, m_deltaTime, m_time, m_game->inputManager, m_gui);
 
@@ -267,14 +269,18 @@ void GameplayScreen::initUI() {
         SDL_ShowCursor(0);
     }
 
+    m_worldManager.getPlayer()->initGUI(&m_gui);
+
+    #ifdef DEV_CONTROLS
     {
-        m_fpsWidget = static_cast<CEGUI::DefaultWindow*>(m_gui.createWidget("FOTDSkin/Label", glm::vec4(0.05f, 0.05f, 0.9f, 0.9f), glm::vec4(0.0f), "FPS_STRING_WIDGET"));
+        m_fpsWidget = static_cast<CEGUI::DefaultWindow*>(m_gui.createWidget("FOTDSkin/Label", glm::vec4(0.05f, 0.05f, 0.9f, 0.25f), glm::vec4(0.0f), "FPS_STRING_WIDGET"));
         m_fpsWidget->setHorizontalAlignment(CEGUI::HorizontalAlignment::HA_LEFT);
     }
+    #endif //DEV_CONTROLS
 }
 
 void GameplayScreen::tick() {
-    m_worldManager.tick(&m_tickTime);
+    m_worldManager.tick();
     m_tickTime++;
 }
 
@@ -289,7 +295,9 @@ void GameplayScreen::updateScale() {
     }
 }
 
+#ifdef DEV_CONTROLS
 void GameplayScreen::drawDebug() {
     std::string fps = "FPS: " + std::to_string((int)m_game->getFps()) + "\nMouse x,y: " + std::to_string(m_worldManager.getPlayer()->m_selectedBlock->getPosition().x) + "," + std::to_string(m_worldManager.getPlayer()->m_selectedBlock->getPosition().y);
     m_fpsWidget->setText(fps);
 }
+#endif //DEV_CONTROLS

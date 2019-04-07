@@ -1,6 +1,6 @@
 #include "TalkingNPC.h"
 
-TalkingNPC::TalkingNPC(glm::vec2 position, unsigned int id, AudioManager* audioManager) {
+TalkingNPC::TalkingNPC(glm::vec2 position, unsigned int id, AudioManager* audioManager, ScriptQueue* sq) {
     m_audioManager = audioManager;
 
     unsigned int mobId = Category_Data::dialogueMobData[id].mobId;
@@ -8,7 +8,7 @@ TalkingNPC::TalkingNPC(glm::vec2 position, unsigned int id, AudioManager* audioM
 
     m_dialogueStarted = false;
 
-    init(position, Categories::Entity_Type::MOB, mobId);
+    init(position, Categories::Entity_Type::MOB, mobId, sq);
 }
 
 TalkingNPC::~TalkingNPC()

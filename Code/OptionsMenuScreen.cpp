@@ -117,5 +117,6 @@ void OptionsMenuScreen::updateMousebuttonDown(SDL_Event& evnt) {
 }
 bool OptionsMenuScreen::EventBackButtonClicked(const CEGUI::EventArgs& e) {
     m_currentState = GLEngine::ScreenState::CHANGE_PREVIOUS;
+    return true;
 }
 

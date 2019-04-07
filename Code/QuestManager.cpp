@@ -55,13 +55,13 @@ void DialogueManager::initConversation(Question* initialQuestion, GLEngine::GUI&
         // We must push them in the order that they are in (children first, then parents)
 
         float paddingIncrementer = 0;
-        for(int i = 0; i < initialQuestion->answers.size(); i++) {
+        for(unsigned int i = 0; i < initialQuestion->answers.size(); i++) {
             CEGUI::PushButton* answerButton = static_cast<CEGUI::PushButton*>(gui.createWidget(answersScroller, "FOTDSkin/Button", glm::vec4(0.0f, 0.025f + ((0.03f + 0.425f) * paddingIncrementer), 1.0f, 0.425f), glm::vec4(0.0f), std::string("Option" + std::to_string(i) + "Conversation")));
             answerButton->setText(initialQuestion->answers[i].str);
             m_buttons.push_back(answerButton);
 
             paddingIncrementer++;
-            for(int j = 0; j < m_currentQuestion->answers[i].requiredFlags.arrangement.size(); j++) {
+            for(unsigned int j = 0; j < m_currentQuestion->answers[i].requiredFlags.arrangement.size(); j++) {
                 unsigned int flagId = m_currentQuestion->answers[i].requiredFlags.arrangement[j].id;
                 if((*m_flagList)[flagId]->value != m_currentQuestion->answers[i].requiredFlags.arrangement[j].value) {
                     paddingIncrementer--;
@@ -93,10 +93,10 @@ void DialogueManager::update(GLEngine::InputManager& input, GLEngine::GUI& gui) 
             int optionChosen = -1;
 
             // Set value of flags
-            for(int i = 0; i < m_buttons.size(); i++) {
+            for(unsigned int i = 0; i < m_buttons.size(); i++) {
                 if(m_buttons[i]->isPushed() && m_buttons[i]->isVisible()) {
                     optionChosen = i;
-                    for(int j = 0; j < m_currentQuestion->answers[i].followingFlags.arrangement.size(); j++) {
+                    for(unsigned int j = 0; j < m_currentQuestion->answers[i].followingFlags.arrangement.size(); j++) {
                         unsigned int flagId = m_currentQuestion->answers[i].followingFlags.arrangement[j].id;
 
                         if(flagId >= m_flagList->size()) {
@@ -110,14 +110,14 @@ void DialogueManager::update(GLEngine::InputManager& input, GLEngine::GUI& gui) 
             }
 
             if(optionChosen != -1) {
-                for(int i = 0; i < m_buttons.size(); i++) {
+                for(unsigned int i = 0; i < m_buttons.size(); i++) {
                     m_buttons[i]->destroy();
                     delete m_buttons[i];
                     m_buttons.pop_back();
                 }
                 m_buttons.clear();
                 m_buttons.resize(0);
-                for(int i = 0; i < m_otherWidgets.size(); i++) {
+                for(unsigned int i = 0; i < m_otherWidgets.size(); i++) {
                     m_otherWidgets[i]->destroy();
                     delete m_otherWidgets[i];
                 }
@@ -177,7 +177,7 @@ void QuestManager::readFlagsFromList(std::string listPath) {
 Question* QuestManager::readQuestion(std::vector<std::string> lines) {
     Question* q = new Question();
     {
-        int depth;
+        //int depth;
         q->str = lines[0];
 
         for(unsigned int i = 0; i < lines.size(); i++) {

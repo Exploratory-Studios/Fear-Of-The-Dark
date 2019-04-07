@@ -4,6 +4,7 @@
 #include <Camera2D.h>
 #include <SDL2/SDL.h>
 #include <SpriteBatch.h>
+#include <GUI.h>
 
 #include "Entities/TalkingNPC.h"
 
@@ -23,7 +24,10 @@ class Player : public Entity {
 
     public:
         Player();
-        Player(glm::vec2 position, GLEngine::InputManager* input);
+        Player(glm::vec2 position, GLEngine::InputManager* input, ScriptQueue* sq);
+
+        void initGUI(GLEngine::GUI* gui);
+
         virtual ~Player();
 
         void draw(GLEngine::SpriteBatch& sb, float time, float xOffset) override;
@@ -41,6 +45,18 @@ class Player : public Entity {
         virtual void updateMovement() {}
 
         GLEngine::InputManager* m_input = nullptr;
+        GLEngine::GUI* m_gui = nullptr;
+
+        CEGUI::PopupMenu* m_statusBoxFrame = nullptr;
+
+        CEGUI::ProgressBar* m_sanityBar = nullptr;
+        CEGUI::ProgressBar* m_healthBar = nullptr;
+        CEGUI::ProgressBar* m_thirstBar = nullptr;
+        CEGUI::ProgressBar* m_hungerBar = nullptr;
+        CEGUI::ProgressBar* m_exhaustionBar = nullptr;
+        CEGUI::ProgressBar* m_staminaBar = nullptr;
+
+        CEGUI::DefaultWindow* m_statusBoxLabel = nullptr;
 
         glm::vec2 m_mousePos;
         Block* m_selectedBlock = nullptr;
@@ -55,5 +71,14 @@ class Player : public Entity {
         bool m_canInteract = true; // Sets if the player can't interact with objects, people, etc. Used when player is in cutscenes, talking, etc.
 
         void updateInput();
+
+        float m_sanity = 1.0f; // Fear level will be displayed as a heartbeat sound
+        float m_health = 1.0f;
+        float m_thirst = 1.0f;
+        float m_hunger = 1.0f;
+        float m_exhaustion = 1.0f;
+        float m_stamina = 1.0f;
+
+        unsigned int m_scriptID_dayTime = 0;
 
 };

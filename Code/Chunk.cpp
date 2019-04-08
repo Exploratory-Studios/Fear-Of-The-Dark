@@ -17,6 +17,10 @@ std::vector<Entity*> Chunk::getEntities() {
     return m_entityManager->getEntities();
 }
 
+std::vector<Entity*> Chunk::getAllEntities() {
+    return m_entityManager->getAllEntities();
+}
+
 Chunk::Chunk() {
     m_entityManager = new EntityManager(this);
 }

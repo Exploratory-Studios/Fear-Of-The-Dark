@@ -24,6 +24,16 @@ class EntityManager
         void removeTalkingEntity(int index);
 
         std::vector<Entity*> getEntities() { return m_entities; }
+        std::vector<Entity*> getAllEntities() {
+            std::vector<Entity*> allEnts;
+            for(int i = 0; i < m_entities.size(); i++) {
+                allEnts.push_back(m_entities[i]);
+            }
+            for(int i = 0; i < m_talkingEntities.size(); i++) {
+                allEnts.push_back(m_talkingEntities[i]);
+            }
+            return allEnts;
+        }
 
         void targetEntities(Player* p);
         std::vector<glm::vec2> pathfindToTarget(float jumpHeight, glm::vec2 originalPosition, glm::vec2 targetPosition);

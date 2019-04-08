@@ -37,6 +37,9 @@ class Scripter { // Script class will have a virtual function that you fill in. 
         void executeScript(Script& script);
         void executeCommand(std::string& command);
 
+        std::vector<Entity*> entityTarget(std::vector<std::string> parameters, unsigned int& keywordIndex);
+        std::vector<glm::vec2> positionTarget(std::vector<std::string> parameters, unsigned int& keywordIndex);
+
         bool m_scriptInitFlags = 0x00;
 
         WorldManager* m_worldManager = nullptr;

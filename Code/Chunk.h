@@ -42,6 +42,7 @@ class Chunk
         bool                    isDialogueActive()                                          { return m_dialogueActive; }
         bool                    isDialogueStarted()                                         { return m_dialogueStarted; }
         std::vector<Entity*>    getEntities();
+        std::vector<Entity*>    getAllEntities();
 
         Tile* tiles[WORLD_HEIGHT][CHUNK_SIZE] = { { nullptr } };
         Tile* extraTiles[WORLD_HEIGHT][2] = { { nullptr } }; // On each side, so that we don't have to activate 3 chunks at a time instead of one

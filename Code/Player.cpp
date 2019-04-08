@@ -19,9 +19,9 @@ Player::Player(glm::vec2 position, GLEngine::InputManager* input, ScriptQueue* s
     m_jumpHeight = 2.608f;
 
     Script s;
-    s.commands.push_back("changeBlock relative 0 0 2");
-    s.commands.push_back("changeBlock relative 0 1 6");
-    s.commands.push_back("teleport player relative 0 2");
+    s.commands.push_back("changeBlock relative near relative player 0 0 0 0 2");
+    s.commands.push_back("changeBlock relative near relative player 0 0 0 1 6"); // changeblock [position] [id]
+    s.commands.push_back("teleport near relative player 0 0 relative near relative player 0 0 0 3"); // teleport [entity] [position] -> [entity] is near [relative player 0 0], [position] is relative [near [relative player 0 0]] 0 3
     s.commands.push_back("time set 120");
 
     m_scriptID_dayTime = m_sq->addScript(s);

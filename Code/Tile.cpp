@@ -1,7 +1,8 @@
 #include "Tile.h"
 
 Tile::Tile() {
-
+    m_texture.filePath = "";
+    m_parentChunk = nullptr;
 }
 
 float Tile::getLight() {

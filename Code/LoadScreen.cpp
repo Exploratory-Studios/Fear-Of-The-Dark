@@ -86,6 +86,7 @@ void LoadScreen::draw() {
     }
 
     m_createButton->setAlpha(alpha / 255);
+    m_loadButton->setAlpha(alpha / 255);
 
     m_gui.draw();
 
@@ -147,6 +148,26 @@ void LoadScreen::initUI() {
         m_newWorldFlatCheckbox->setText("[padding='l:0 t:10 r:0 b:0']Flat World");
         m_miniScreenEntries.emplace_back(m_newWorldFlatCheckbox, MiniScreen::CREATE);
     }
+
+    {
+        m_loadButton = static_cast<CEGUI::PushButton*> (m_gui.createWidget("FOTDSkin/Button", glm::vec4(0.1f, 0.3f, 0.25f, 0.15f), glm::vec4(0.0f), "LoadPushButton"));
+        m_loadButton->subscribeEvent(CEGUI::PushButton::EventClicked, CEGUI::Event::Subscriber(&LoadScreen::onLoadButtonClicked, this));
+        m_loadButton->setText("[padding='l:0 t:15 r:0 b:0']Load World");
+        m_loadButton->setFont("QuietHorror-42");
+        m_miniScreenEntries.emplace_back(m_loadButton, MiniScreen::MAIN);
+    }
+
+    {
+        m_loadWorldNameEditbox = static_cast<CEGUI::Editbox*>(m_gui.createWidget("FOTDSkin/Editbox", glm::vec4(0.1f, 0.1, 0.25f, 0.15f), glm::vec4(0.0f), "LoadWorldNameEditbox"));
+        m_loadWorldNameEditbox->setText("Name");
+        m_miniScreenEntries.emplace_back(m_loadWorldNameEditbox, MiniScreen::LOAD);
+
+        m_loadWorldLoadButton = static_cast<CEGUI::PushButton*>(m_gui.createWidget("FOTDSkin/Button", glm::vec4(0.1f, 0.3f, 0.25f, 0.15f), glm::vec4(0.0f), "LoadWorldLoadPushButton"));
+        m_loadWorldLoadButton->subscribeEvent(CEGUI::PushButton::EventClicked, CEGUI::Event::Subscriber(&LoadScreen::onLoadWorldLoadButtonClicked, this));
+        m_loadWorldLoadButton->setText("[padding='l:0 t:15 r:0 b:0']Load World");
+        m_loadWorldLoadButton->setFont("QuietHorror-42");
+        m_miniScreenEntries.emplace_back(m_loadWorldLoadButton, MiniScreen::LOAD);
+    }
 }
 
 void LoadScreen::initShaders() {
@@ -174,7 +195,24 @@ bool LoadScreen::onNewWorldCreateNewButtonClicked(const CEGUI::EventArgs& e) { /
     return true;
 }
 
+bool LoadScreen::onLoadWorldLoadButtonClicked(const CEGUI::EventArgs& e) { /// TODO: clean post-this lines up
+
+    std::string text = m_loadWorldNameEditbox->getText().c_str();
+
+    m_worldIOManager->loadWorld(text);
+
+    m_currentState = GLEngine::ScreenState::CHANGE_NEXT;
+    m_nextScreenIndex = SCREEN_INDEX_GAMEPLAY;
+
+    return true;
+}
+
 bool LoadScreen::onCreateButtonClicked(const CEGUI::EventArgs& e) {
     m_miniScreen = MiniScreen::CREATE;
+    return true;
+}
+
+bool LoadScreen::onLoadButtonClicked(const CEGUI::EventArgs& e) {
+    m_miniScreen = MiniScreen::LOAD;
     return true;
 }

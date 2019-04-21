@@ -21,6 +21,7 @@ class Chunk;
 
 class Player : public Entity {
     friend class GameplayScreen;
+    friend class WorldIOManager;
 
     public:
         Player();
@@ -80,5 +81,6 @@ class Player : public Entity {
         float m_stamina = 1.0f;
 
         unsigned int m_scriptID_dayTime = 0;
+        unsigned int m_scriptID_makeHouse = 0;
 
 };

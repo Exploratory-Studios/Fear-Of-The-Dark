@@ -28,13 +28,13 @@ void WorldManager::init(WorldIOManager* worldIOManager, float* tickTime) {
 
         talkingEntities.emplace_back(new TalkingNPC(glm::vec2(10 * TILE_SIZE, 150 * TILE_SIZE), 0, &m_audioManager, m_worldIOManager->getScriptQueue()));
 
-        for(unsigned int i = 0; i < m_worldIOManager->getWorld()->entities.size(); i++) {
+        /*for(unsigned int i = 0; i < m_worldIOManager->getWorld()->entities.size(); i++) {
             entities.push_back(&m_worldIOManager->getWorld()->entities[i]);
         }
 
         for(unsigned int i = 0; i < m_worldIOManager->getWorld()->talkingEntities.size(); i++) {
             talkingEntities.push_back(&m_worldIOManager->getWorld()->talkingEntities[i]);
-        }
+        }*/
 
         m_player = &m_worldIOManager->getWorld()->player;
 
@@ -44,19 +44,19 @@ void WorldManager::init(WorldIOManager* worldIOManager, float* tickTime) {
         }
 
         {
-            for(unsigned int i = 0; i < entities.size(); i++) {
+           /* for(unsigned int i = 0; i < entities.size(); i++) {
                 int index = (entities[i]->getPosition().x / TILE_SIZE) / CHUNK_SIZE;
                 entities[i]->setParentChunk(m_worldIOManager->getWorld()->chunks[index]);
                 m_worldIOManager->getWorld()->chunks[index]->addEntity(entities[i]);
-            }
+            }*/
         }
 
         {
-            for(unsigned int i = 0; i < talkingEntities.size(); i++) {
+            /*for(unsigned int i = 0; i < talkingEntities.size(); i++) {
                 int index = (talkingEntities[i]->getPosition().x / TILE_SIZE) / CHUNK_SIZE;
                 talkingEntities[i]->setParentChunk(m_worldIOManager->getWorld()->chunks[index]);
                 m_worldIOManager->getWorld()->chunks[index]->addTalkingEntity(talkingEntities[i]);
-            }
+            }*/
         }
     }
 

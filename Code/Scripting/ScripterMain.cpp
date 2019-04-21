@@ -117,8 +117,8 @@ void Scripter::executeCommand(std::string& command) {
     // time [set] (integer)                                                 Sets time of day to 2nd parameter
     // removeBlock [relative][] (integer) (integer)                         Removes block at x=1st parameter, y=2nd parameter. "relative" makes coordinates relative to player
     // changeBlock [relative][] (integer) (integer) (integer)               Changes block at x=1st parameter, y=2nd parameter to one with id of 3rd parameter. "relative" makes coordinates relative to player
-    // teleport [player] [relative][] (float) (float)                   Teleports the player to x=1st parameter, y=2nd parameter. "relative" makes coordinates relative to player
-    /// teleport [entity] [relative][] (integer) (integer) (integer)         Teleports an entity with UUID of 3rd parameter to x=1st parameter, y=2nd parameter. "relative" makes coordinates relative to entity
+    // teleport [player] [relative][] (integer) (integer)                       Teleports the player to x=1st parameter, y=2nd parameter. "relative" makes coordinates relative to player
+    // teleport [entity] [relative][] (integer) (integer)                   Teleports an entity to x=1st parameter, y=2nd parameter. "relative" makes coordinates relative to entity
 
     if(parameters[0] == "time") {
         if(parameters[1] == "set") {
@@ -264,16 +264,13 @@ std::vector<glm::vec2> Scripter::positionTarget(std::vector<std::string> paramet
         return ret;
     } else if(parameters[keywordIndex] == "area") {
         keywordIndex += 1;
-        int x1 = std::stoi(parameters[keywordIndex]);
-        int y1 = std::stoi(parameters[keywordIndex+1]);
-        int x2 = std::stoi(parameters[keywordIndex+2]);
-        int y2 = std::stoi(parameters[keywordIndex+3]);
-        keywordIndex += 4;
+        glm::vec2 pos1 = positionTarget(parameters, keywordIndex)[0]; /// Actually implement?
+        glm::vec2 pos2 = positionTarget(parameters, keywordIndex)[0];
 
         std::vector<glm::vec2> ret;
 
-        for(int y = y1; y < y2; y++) {
-            for(int x = x1; x < x2; x++) {
+        for(int y = pos1.y; y <= pos2.y; y++) {
+            for(int x = pos1.x; x <= pos2.x; x++) {
                 ret.push_back(glm::vec2(x, y));
             }
         }

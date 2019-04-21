@@ -14,7 +14,8 @@
 enum class MiniScreen {
     MAIN,
     SETTINGS,
-    CREATE
+    CREATE,
+    LOAD
 };
 
 class MiniScreenEntry {
@@ -57,6 +58,8 @@ class LoadScreen : public GLEngine::IGameScreen
 
         bool onNewWorldCreateNewButtonClicked(const CEGUI::EventArgs& e);
         bool onCreateButtonClicked(const CEGUI::EventArgs& e);
+        bool onLoadButtonClicked(const CEGUI::EventArgs& e);
+        bool onLoadWorldLoadButtonClicked(const CEGUI::EventArgs& e);
 
         int m_nextScreenIndex = SCREEN_INDEX_NO_SCREEN;
 
@@ -71,6 +74,10 @@ class LoadScreen : public GLEngine::IGameScreen
         CEGUI::Editbox* m_newWorldNameEditbox = nullptr;
         CEGUI::Editbox* m_newWorldSeedEditbox = nullptr;
         CEGUI::ToggleButton* m_newWorldFlatCheckbox = nullptr; // To create a flat world
+
+        CEGUI::PushButton* m_loadButton = nullptr;
+        CEGUI::PushButton* m_loadWorldLoadButton = nullptr;
+        CEGUI::Editbox* m_loadWorldNameEditbox = nullptr;
 
         GLEngine::Camera2D m_camera;
         GLEngine::Camera2D m_uiCamera;

@@ -14,9 +14,7 @@
 #include "PresetValues.h"
 
 struct World {
-    Chunk* chunks[WORLD_SIZE] = { nullptr }; // Chunk will hold a vector of tiles and positions.
-    std::vector<Entity> entities;
-    std::vector<TalkingNPC> talkingEntities;
+    Chunk* chunks[WORLD_SIZE] = { nullptr };
     Player player;
 };
 
@@ -28,7 +26,7 @@ class WorldIOManager
         WorldIOManager(GLEngine::InputManager* input) : m_input(input) { }
 
         void loadWorld(std::string worldName);
-        void saveWorld(const World& world, std::string worldName, const std::vector<Entity>& entities);
+        void saveWorld(World& world, std::string worldName);
 
         void createWorld(unsigned int seed, std::string worldName, bool isFlat = false);
         /*

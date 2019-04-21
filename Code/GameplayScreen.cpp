@@ -99,6 +99,7 @@ void GameplayScreen::update() {
 }
 
 void GameplayScreen::draw() {
+    if(m_gameState != GameState::PAUSE) {
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
     float dayLight = cos((float)m_tickTime / (DAY_LENGTH / 6.28318f)) / 2.0f + 0.5f;
@@ -145,6 +146,7 @@ void GameplayScreen::draw() {
         #endif // DEV_CONTROLS
 
         m_uiTextureProgram.unuse();
+    }
     }
 
     /// TODO: Don't forget to have a background image for the world based on biome
@@ -238,6 +240,10 @@ void GameplayScreen::checkInput() {
 
     if(m_game->inputManager.isKeyPressed(SDLK_ESCAPE)) {
         m_gameState = GameState::PAUSE;
+        m_WorldIOManager->saveWorld(*m_WorldIOManager->getWorld(), "TestSave");
+    } else if(m_game->inputManager.isKeyPressed(SDLK_F3)) {
+        m_WorldIOManager->loadWorld("TestSave");
+
     }
 
 }
@@ -298,6 +304,7 @@ void GameplayScreen::updateScale() {
 #ifdef DEV_CONTROLS
 void GameplayScreen::drawDebug() {
     std::string fps = "FPS: " + std::to_string((int)m_game->getFps()) + "\nMouse x,y: " + std::to_string(m_worldManager.getPlayer()->m_selectedBlock->getPosition().x) + "," + std::to_string(m_worldManager.getPlayer()->m_selectedBlock->getPosition().y);
+    fps += "\nSelected Block ID: " + std::to_string(m_worldManager.getPlayer()->m_selectedBlock->getID());
     m_fpsWidget->setText(fps);
 }
 #endif //DEV_CONTROLS

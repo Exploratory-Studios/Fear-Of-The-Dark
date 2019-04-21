@@ -112,8 +112,6 @@ class Entity
 
         glm::vec2 m_velocity;
 
-        Chunk* m_parentChunk = nullptr;
-
         bool m_transparent = false; // Unimplemented
 
         bool m_onGround = false;
@@ -124,6 +122,7 @@ class Entity
         Categories::Disability_Type m_disabilities = Categories::Disability_Type::NONE;
         Categories::Attack_Type m_attackType = Categories::Attack_Type::MELEE_ONLY;
 
+        Chunk* m_parentChunk = nullptr;
         AudioManager* m_audioManager = nullptr;
         ScriptQueue* m_sq = nullptr;
 

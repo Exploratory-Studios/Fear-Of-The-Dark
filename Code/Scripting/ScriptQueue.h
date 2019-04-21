@@ -3,7 +3,7 @@
 #include <vector>
 #include <string>
 #include <fstream>
-#include <iostream>
+#include <stdio.h>
 #include <GLEngineErrors.h>
 
 struct Script {
@@ -27,6 +27,7 @@ class ScriptQueue {
         }
         unsigned int addScript(std::string& filePath) // same here
         {
+            filePath = ASSETS_FOLDER_PATH + "Scripts/" + filePath;
             std::ifstream file(filePath);
 
             if(file.fail()) {
@@ -40,6 +41,10 @@ class ScriptQueue {
             while(std::getline(file, line)) {
                 s.commands.push_back(line);
             }
+
+            m_scriptCache.push_back(s);
+
+            std::printf("Successfully Loaded Script File: %s", filePath.c_str());
 
             return m_scriptCache.size() - 1;
         }

@@ -3,15 +3,125 @@
 #include <time.h>
 #include <random>
 
-
 #include <iostream>
 
 void WorldIOManager::loadWorld(std::string worldName) {
+    std::ifstream file("test.bin", std::ios::binary);
+    if(file.fail()) {
+        GLEngine::fatalError("Error loading from file: " + worldName + ".bin");
+    }
 
+    file.read(reinterpret_cast<char*>(&m_world->player), sizeof(Player));
+    ///m_world->player.m_inventory = nullptr;
+    ///std::cout << "\nLoaded Player POD";
+
+    Inventory newInventory;
+    file.read(reinterpret_cast<char*>(&newInventory), sizeof(float) * 2);
+    ///m_world->player.m_inventory = &newInventory;
+    ///std::cout << "\nLoaded Player Inventory";
+
+    unsigned int items = -1;
+    file.read(reinterpret_cast<char*>(&items), sizeof(unsigned int));
+
+    for(int i = 0; i < items; i++) {
+        Item loadedItem;
+        file.read(reinterpret_cast<char*>(&loadedItem), sizeof(Item));
+        m_world->player.m_inventory->getItems()->push_back(loadedItem);
+        std::cout << "\nLoaded Player Item " << std::to_string(i+1) << " of " << std::to_string(items);
+    }
+
+    for(int i = 0; i < WORLD_SIZE; i++) {
+        for(int j = 0; j < WORLD_HEIGHT; j++) {
+            for(int k = 0; k < CHUNK_SIZE; k++) { /// Fuck it. Store the tiles as ids, positions, and metadata and recover the other data like textures.
+                Tile newTile = Tile();
+
+                unsigned int texturePathSize;
+                std::string texturePath;
+                file.read(reinterpret_cast<char*>(&texturePathSize), sizeof(texturePathSize));
+
+                texturePath.resize(texturePathSize);
+                file.read(&texturePath[0], texturePathSize);
+                file.read(reinterpret_cast<char*>(&newTile), sizeof(Tile));
+
+                GLEngine::GLTexture blank;
+                blank.height = newTile.m_texture.height;
+                blank.width = newTile.m_texture.width;
+                blank.id = newTile.m_texture.id;
+                newTile.m_texture = blank;
+
+                newTile.m_texture.filePath = texturePath;
+            }
+        }
+        for(int j = 0; j < m_world->chunks[i]->getEntities().size(); j++) {
+            //file.read(reinterpret_cast<char*>(m_world->chunks[i]->getEntities()[j]), sizeof(Entity));
+        }
+        for(int j = 0; j < m_world->chunks[i]->getTalkingEntities().size(); j++) {
+            //file.read(reinterpret_cast<char*>(m_world->chunks[i]->getTalkingEntities()[j]), sizeof(TalkingNPC));
+        }
+    }
+    std::cout << "\nLoaded World";
+
+    file.close();
 }
 
-void WorldIOManager::saveWorld(const World& world, std::string worldName, const std::vector<Entity>& entities) {
+/*
+SAVING ORDER:
+Player POD (x, y, stats, etc.)
+Player Inventory
+    Inventory POD
+    Inventory Items -> need to init properly on load
+Chunks
+    Tiles -> need to init properly on load
+    Entities -> need to init properly on load
+        Talking -> need to init properly on load
+        Otherwise -> need to init properly on load
+*/
 
+void WorldIOManager::saveWorld(World& world, std::string worldName) {
+    std::ofstream file("test.bin", std::ios::binary);
+    if(file.fail()) {
+        GLEngine::fatalError("Error saving to file: " + worldName + ".bin");
+    }
+
+    file.write(reinterpret_cast<char*>(&world.player), sizeof(Player));
+    std::cout << "\nSaving " << "Player POD";
+
+    file.write(reinterpret_cast<char*>(world.player.m_inventory), sizeof(float) * 2);
+    std::cout << "\nSaving " << "Player Inventory";
+
+    unsigned int items = world.player.m_inventory->getItems()->size();
+    file.write(reinterpret_cast<char*>(&items), sizeof(unsigned int));
+
+    for(int i = 0; i < items; i++) {
+        file.write(reinterpret_cast<char*>(&world.player.m_inventory->m_items[i]), sizeof(Item));
+        std::cout << "\nSaving Player Item " << std::to_string(i+1) << " of " << std::to_string(items);
+    }
+
+    for(int i = 0; i < WORLD_SIZE; i++) {
+        for(int j = 0; j < WORLD_HEIGHT; j++) {
+            for(int k = 0; k < CHUNK_SIZE; k++) {
+                unsigned int len = world.chunks[i]->tiles[k][j]->m_texture.filePath.size();
+                file.write(reinterpret_cast<char*>(&len), sizeof(unsigned int)); //write the size of the texture string so we can read it later
+                file.write(&world.chunks[i]->tiles[k][j]->m_texture.filePath[0], len);
+                world.chunks[i]->tiles[k][j]->m_parentChunk = nullptr;
+                world.chunks[i]->tiles[k][j]->m_texture.filePath = "";
+                file.write(reinterpret_cast<char*>(world.chunks[i]->tiles[k][j]), sizeof(Tile));
+            }
+            for(int k = 0; k < 2; k++) {
+                unsigned int len = world.chunks[i]->extraTiles[k][j]->m_texture.filePath.size();
+                file.write(reinterpret_cast<char*>(&len), sizeof(unsigned int)); //write the size of the texture string so we can read it later
+                file.write(reinterpret_cast<char*>(world.chunks[i]->extraTiles[k][j]), sizeof(Tile));
+            }
+        }
+        for(int j = 0; j < world.chunks[i]->getEntities().size(); j++) {
+            file.write(reinterpret_cast<char*>(world.chunks[i]->getEntities()[j]), sizeof(Entity));
+        }
+        for(int j = 0; j < world.chunks[i]->getTalkingEntities().size(); j++) {
+            file.write(reinterpret_cast<char*>(world.chunks[i]->getTalkingEntities()[j]), sizeof(TalkingNPC));
+        }
+    }
+
+    file.close();
 }
 
 void WorldIOManager::createWorld(unsigned int seed, std::string worldName, bool isFlat) {

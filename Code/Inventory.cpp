@@ -3,56 +3,37 @@
 #include <string>
 #include <math.h>
 
-Inventory::Inventory() : m_items() {
+Inventory::Inventory() {
 
 }
+#include <iostream>
+bool Inventory::addItem(Item newItem) {
+    m_weight += newItem.m_weight * newItem.m_quantity;
 
-bool Inventory::addItem(Item* newItem, int x, int y) {
-    m_weight += newItem->m_weight * newItem->m_quantity;
-
-    if(x == -1 && y == -1) {
-        for(unsigned int i = 0; i < INVENTORY_BOX_NUM_Y; i++) {
-            for(unsigned int j = 0; j < INVENTORY_BOX_NUM_X; j++) {
-                if(m_items[i][j]) {
-                    if(m_items[i][j]->m_id == newItem->m_id) {
-                        m_items[i][j]->m_quantity += newItem->m_quantity;
-                        return true;
-                    }
-                }
-            }
-        }
-        for(unsigned int i = 0; i < INVENTORY_BOX_NUM_Y; i++) {
-            for(unsigned int j = 0; j < INVENTORY_BOX_NUM_X; j++) {
-                if(!m_items[i][j]) {
-                    m_items[i][j] = newItem;
-                    return true;
-                }
-            }
+    for(unsigned int i = 0; i < m_items.size(); i++) {
+        if(m_items[i].m_id == newItem.m_id) {
+            m_items[i].m_quantity += newItem.m_quantity;
+            return true;
         }
     }
+    m_items.push_back(newItem);
     return false;
 }
 
 void Inventory::updateWeight() { // Only use if something needs verification or is bugged
     m_weight = 0;
-    for(int i = 0; i < INVENTORY_BOX_NUM_Y; i++) {
-        for(int j = 0; j < INVENTORY_BOX_NUM_X; j++) {
-            if(m_items[i][j]) {
-                m_weight += m_items[i][j]->m_weight * m_items[i][j]->m_quantity;
-            }
-        }
+    for(int i = 0; i < m_items.size(); i++) {
+        m_weight += m_items[i].m_weight * m_items[i].m_quantity;
     }
 }
 
 void Inventory::update() {
-    for(int i = 0; i < INVENTORY_BOX_NUM_Y; i++) {
-        for(int j = 0; j < INVENTORY_BOX_NUM_X; j++) {
-            if(m_items[i][j]) {
-                if(m_items[i][j]->getQuantity() <= 0) {
-                    delete m_items[i][j];
-                    m_items[i][j] = nullptr;
-                }
+    for(int i = 0; i < m_items.size(); i++) {
+        if(m_items[i].getQuantity() <= 0) {
+            for(int j = i+1; j < m_items.size(); j++) {
+                m_items[i] = m_items[j];
             }
+            m_items.pop_back();
         }
     }
 }
@@ -75,18 +56,17 @@ float Inventory::getSpeedMultiplier() {
 }
 
 void Inventory::draw(float x, float y, GLEngine::SpriteBatch& sb, GLEngine::SpriteFont& sf) {
-    for(int i = 0; i < INVENTORY_BOX_NUM_Y; i++) {
-        for(int j = 0; j < INVENTORY_BOX_NUM_X; j++) {
+    for(int i = 0; i < m_items.size(); i++) {
 
-            glm::vec4 destRect(x + j * (INVENTORY_BOX_SIZE + INVENTORY_BOX_PADDING),
-                               y + i * (INVENTORY_BOX_SIZE + INVENTORY_BOX_PADDING),
+            glm::vec4 destRect(x + i * (INVENTORY_BOX_SIZE + INVENTORY_BOX_PADDING),
+                               y + (i % INVENTORY_BOX_NUM_X) * (INVENTORY_BOX_SIZE + INVENTORY_BOX_PADDING),
                                INVENTORY_BOX_SIZE,
                                INVENTORY_BOX_SIZE);
 
             float uvXSize = 1.0f / (float)INVENTORY_BOX_NUM_X;
             float uvYSize = 1.0f / (float)INVENTORY_BOX_NUM_Y;
 
-            float uvX = uvXSize * (float)j;
+            float uvX = uvXSize * (float)(i % INVENTORY_BOX_NUM_X);
             float uvY = uvYSize * (float)i;
 
             glm::vec4 uv(uvX, uvY, uvXSize, uvYSize); // xy beginDest, xy endDest
@@ -100,27 +80,23 @@ void Inventory::draw(float x, float y, GLEngine::SpriteBatch& sb, GLEngine::Spri
             sb.end();
             sb.renderBatch();
 
-            if(m_items[i][j]) {
-                glm::vec4 itemUV(0, 0, 1, 1);
 
-                int itemImgId = GLEngine::ResourceManager::getTexture(Category_Data::itemData[m_items[i][j]->m_id].texturePath).id;
+            glm::vec4 itemUV(0, 0, 1, 1);
 
-                sb.begin();
+            int itemImgId = GLEngine::ResourceManager::getTexture(Category_Data::itemData[m_items[i].m_id].texturePath).id;
 
-                sb.draw(destRect, itemUV, itemImgId, 0.0f, GLEngine::ColourRGBA8(255, 255, 255, 255));
+            sb.begin();
 
-                sb.end();
-                sb.renderBatch();
+            sb.draw(destRect, itemUV, itemImgId, 0.0f, GLEngine::ColourRGBA8(255, 255, 255, 255));
 
-                sb.begin();
+            sb.end();
+            sb.renderBatch();
 
-                sf.draw(sb, std::to_string(m_items[i][j]->m_quantity).c_str(), glm::vec2(destRect.x + INVENTORY_BOX_SIZE, destRect.y + INVENTORY_BOX_SIZE - 96.0f * 0.35f), glm::vec2(0.35f), 0.0f, GLEngine::ColourRGBA8(255, 255, 255, 255), GLEngine::Justification::RIGHT);
+            sb.begin();
 
-                sb.end();
-                sb.renderBatch();
-            }
+            sf.draw(sb, std::to_string(m_items[i].m_quantity).c_str(), glm::vec2(destRect.x + INVENTORY_BOX_SIZE, destRect.y + INVENTORY_BOX_SIZE - 96.0f * 0.35f), glm::vec2(0.35f), 0.0f, GLEngine::ColourRGBA8(255, 255, 255, 255), GLEngine::Justification::RIGHT);
 
-
-        }
+            sb.end();
+            sb.renderBatch();
     }
 }

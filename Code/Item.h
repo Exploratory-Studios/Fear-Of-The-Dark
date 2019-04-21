@@ -17,8 +17,8 @@ class Item
         Item(unsigned int id, float weight, short unsigned int quantity) : m_id(id), m_weight(weight), m_quantity(quantity) {}
         virtual ~Item() {}
 
-        virtual void onLeftClick(Block* selectedBlock) = 0;
-        virtual void onRightClick(Block* selectedBlock) = 0; /// TODO variadic stuff for character pos, mouse pos, etc.  also: make virtua
+        virtual void onLeftClick(Block* selectedBlock) {}
+        virtual void onRightClick(Block* selectedBlock) {} /// TODO variadic stuff for character pos, mouse pos, etc.  also: make virtua
 
         bool isBlock() { return m_isBlock; }
         int getID() { return m_id; } // -1 is equivalent to null
@@ -28,15 +28,15 @@ class Item
     protected:
 
         // There are 2 types of items: Blocks and non-blocks (food, quest items, etc.)
-        bool m_isBlock; // Block or non-block?
+        bool m_isBlock = false; // Block or non-block?
 
-        bool m_canPlace; // Blocks, etc.
-        bool m_canConsume; // Potions, food, etc.
+        bool m_canPlace = false; // Blocks, etc.
+        bool m_canConsume = false; // Potions, food, etc.
 
         int m_id = -1; // Block/Non-block id
 
-        float m_weight; // How much it weighs in the inventory (kgs)
-        short unsigned int m_quantity; // How much you have
+        float m_weight = 0.0f; // How much it weighs in the inventory (kgs)
+        short unsigned int m_quantity = 0; // How much you have
 
         // Metadata idea (from minecraft)
 };

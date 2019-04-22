@@ -273,9 +273,13 @@
 		<Unit filename="Item.h" />
 		<Unit filename="ItemBlock.cpp" />
 		<Unit filename="ItemBlock.h" />
+		<Unit filename="Items.cpp" />
+		<Unit filename="Items.h" />
 		<Unit filename="Items/BlockItem.h" />
 		<Unit filename="LoadScreen.cpp" />
 		<Unit filename="LoadScreen.h" />
+		<Unit filename="Logging.cpp" />
+		<Unit filename="Logging.h" />
 		<Unit filename="Main.cpp" />
 		<Unit filename="Main.h" />
 		<Unit filename="MainMenuScreen.cpp" />

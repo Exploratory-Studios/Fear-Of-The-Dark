@@ -77,7 +77,7 @@ void Scripter::showEntity(unsigned int index) {
 void Scripter::hideEntity(unsigned int index) {
     (*m_entities)[index].m_transparent = true;
 }
-#include <iostream>
+
 void Scripter::update() {
     // Get active script from ScriptQueue
     // Execute script
@@ -126,7 +126,7 @@ void Scripter::executeCommand(std::string& command) {
 
     if(parameters[0] == "time") {
         if(parameters[1] == "set") {
-            std::cout << "Setting time to " + parameters[2] << std::endl;
+            logger->log("Setting time to " + parameters[2]);
             *(m_worldManager->m_tickTime) = std::stoi(parameters[2]);
         }
     } else if(parameters[0] == "removeBlock") {
@@ -136,7 +136,7 @@ void Scripter::executeCommand(std::string& command) {
             int x = positions[i].x;
             int y = positions[i].y;
 
-            std::cout << "Removing block at: X=" + std::to_string(x) + ", Y=" + std::to_string(y) << std::endl;
+            logger->log("Removing block at: X=" + std::to_string(x) + ", Y=" + std::to_string(y));
 
             removeBlock(x, y);
         }
@@ -147,7 +147,7 @@ void Scripter::executeCommand(std::string& command) {
             int x = positions[i].x;
             int y = positions[i].y;
 
-            std::cout << "Changing block at: X=" + std::to_string(x) + ", Y=" + std::to_string(y) << " to one with the id of: " << parameters[keywordIndex] << std::endl;
+            logger->log("Changing block at: X=" + std::to_string(x) + ", Y=" + std::to_string(y) + " to one with the id of: " + parameters[keywordIndex]);
 
             int chunkIndex = std::floor(x / CHUNK_SIZE);
             Chunk* parent = m_chunks[chunkIndex];
@@ -259,8 +259,8 @@ std::vector<glm::vec2> Scripter::positionTarget(std::vector<std::string> paramet
         keywordIndex += 1;
         std::vector<Entity*> entities = entityTarget(parameters, keywordIndex);
         std::vector<glm::vec2> positions = positionTarget(parameters, keywordIndex);
-        for(int i = 0; i < entities.size(); i++) {
-            for(int j = 0; j < positions.size(); j++) {
+        for(unsigned int i = 0; i < entities.size(); i++) {
+            for(unsigned int j = 0; j < positions.size(); j++) {
                 ret.push_back(entities[i]->getPosition() / glm::vec2(TILE_SIZE) + positions[j]);
             }
         }

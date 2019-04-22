@@ -60,7 +60,7 @@ void GameplayScreen::onEntry() {
 void GameplayScreen::onExit() {
 
 }
-#include <iostream>
+
 void GameplayScreen::update() {
     m_deltaTime = std::abs((60 / m_game->getFps()) + -1);
     m_deltaTime++;
@@ -199,12 +199,12 @@ void GameplayScreen::checkInput() {
             } else if(cmd == "tickRate") {
                 argNum = 1;
             } else {
-                std::cout << "NOT A COMMAND" << std::endl << std::endl;
-                std::cout << "Valid commands are:" << std::endl;
-                std::cout << "time <time>: Sets the tick-time to <time>" << std::endl;
-                std::cout << "give <id> <amnt>: Gives the player <amnt> items with <id> id" << std::endl;
-                std::cout << "getTime: Prints the current tick-time" << std::endl;
-                std::cout << "tickRate <rate>: Sets the tick-rate to <rate>" << std::endl;
+                logger->log("NOT A COMMAND");
+                logger->log("Valid commands are:");
+                logger->log("time <time>: Sets the tick-time to <time>");
+                logger->log("give <id> <amnt>: Gives the player <amnt> items with <id> id");
+                logger->log("getTime: Prints the current tick-time");
+                logger->log("tickRate <rate>: Sets the tick-rate to <rate>");
                 argNum = 0;
             }
 
@@ -226,7 +226,7 @@ void GameplayScreen::checkInput() {
                 m_tickTime = (float)args[0];
             } else if (cmd == "give") {
             } else if(cmd == "getTime") {
-                std::cout << std::endl << "Time: " << m_tickTime;
+                 logger->log("Time: " + std::to_string(m_tickTime));
             } else if(cmd == "tickRate") {
                 if((float)args[0] > 0) m_tickRate = (float)args[0];
             }
@@ -239,10 +239,10 @@ void GameplayScreen::checkInput() {
     #endif // DEV_CONTROLS
 
     if(m_game->inputManager.isKeyPressed(SDLK_ESCAPE)) {
-        m_gameState = GameState::PAUSE;
-        m_WorldIOManager->saveWorld(*m_WorldIOManager->getWorld(), "TestSave");
+        //m_gameState = GameState::PAUSE;
+        m_WorldIOManager->saveWorld(*m_WorldIOManager->getWorld(), "TestSave", nullptr);
     } else if(m_game->inputManager.isKeyPressed(SDLK_F3)) {
-        m_WorldIOManager->loadWorld("TestSave");
+        m_WorldIOManager->loadWorld("TestSave", nullptr);
 
     }
 

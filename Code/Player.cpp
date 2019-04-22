@@ -5,8 +5,6 @@
 
 #include <Errors.h>
 
-#include <iostream>
-
 Player::Player() {
     m_inventory = new Inventory();
 }
@@ -306,6 +304,11 @@ void Player::updateInput() {
 
         if(m_input->isKeyDown(SDL_BUTTON_LEFT) && m_selectedBlock) {
             if(m_favouriteItems[m_selectedHotbox]) m_favouriteItems[m_selectedHotbox]->onLeftClick(m_selectedBlock);
+            if(!m_favouriteItems[m_selectedHotbox]) {
+                Item* i = new Item();
+                i->onLeftClick(m_selectedBlock);
+                delete i;
+            }
             m_inventory->updateWeight();
         }
         if(m_input->isKeyDown(SDL_BUTTON_RIGHT) && m_selectedBlock) {
@@ -313,12 +316,12 @@ void Player::updateInput() {
             m_inventory->updateWeight();
         }
         if(m_input->isKeyPressed(SDLK_r)) {
-            ItemBlock* newItem = new ItemBlock(1, 0.0f, 1, (int)Categories::BlockIDs::DIRT);
+            Item* newItem = createItem((unsigned int)Categories::ItemIDs::BLOCK_DIRT, 1);
             m_inventory->addItem(newItem);
             //m_sq->activateScript(m_scriptID_makeHouse);
         }
         if(m_input->isKeyPressed(SDLK_t)) {
-            ItemBlock* newItem = new ItemBlock(2, 0.0f, 1, (int)Categories::BlockIDs::TORCH);
+            Item* newItem = createItem((unsigned int)Categories::ItemIDs::BLOCK_TORCH, 1);
             m_inventory->addItem(newItem);
         }
         if(m_input->isKeyPressed(SDLK_i)) {
@@ -336,7 +339,6 @@ void Player::updateInput() {
     } else
     if(m_input->isKeyPressed(SDLK_3)) {
         m_selectedHotbox = 2;
-        m_favouriteItems[2] = m_inventory->getItem(2);
     } else
     if(m_input->isKeyPressed(SDLK_4)) {
         m_selectedHotbox = 3;

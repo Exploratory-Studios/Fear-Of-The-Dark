@@ -1,5 +1,4 @@
 #include "Chunk.h"
-#include <iostream>
 
 #include "EntityManager.h"
 #include "Entity.h"
@@ -53,14 +52,14 @@ void Chunk::init(Tile* tileArray[WORLD_HEIGHT][CHUNK_SIZE], Tile* extraTileArray
             if(tiles[i][j]) {
                 tiles[i][j] = tileArray[i][j]; // make sure that there are no uninitialized tiles
             } else {
-                std::cout << "UNINITIALIZED BLOCK!\n";
+                logger->log("UNINITIALIZED BLOCK!", true);
             }
         }
         for(int j = 0; j < 2; j++) {
             if(extraTiles[i][j]) {
                 extraTiles[i][j] = extraTileArray[i][j];
             } else {
-                std::cout << "UNINITIALIZED EXTRA BLOCK!\n";
+                logger->log("UNINITIALIZED EXTRA BLOCK!", true);
             }
         }
     }

@@ -168,9 +168,9 @@ namespace Category_Data {
                                                                                  };
 
     const ItemDatum itemData[Category_Data::TOTAL_ITEMS] = {
-                                                            ItemDatum(0, ASSETS_FOLDER_PATH + "Textures/Items/Sword0.png", "Sword"),
-                                                            ItemDatum(1, ASSETS_FOLDER_PATH + "Textures/Blocks/Dirt.png", "Dirt"),
-                                                            ItemDatum(2, ASSETS_FOLDER_PATH + "Textures/Blocks/Torch.png", "Torch")
+                                                            ItemDatum((unsigned int)Categories::ItemIDs::WEAPON_SWORD, ASSETS_FOLDER_PATH + "Textures/Items/Sword0.png", "Sword"),
+                                                            ItemDatum((unsigned int)Categories::ItemIDs::BLOCK_DIRT, ASSETS_FOLDER_PATH + "Textures/Blocks/Dirt.png", "Dirt"),
+                                                            ItemDatum((unsigned int)Categories::ItemIDs::BLOCK_TORCH, ASSETS_FOLDER_PATH + "Textures/Blocks/Torch.png", "Torch")
                                                            };
 
 

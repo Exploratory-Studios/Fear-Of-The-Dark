@@ -5,6 +5,7 @@
 
 #include "PresetValues.h"
 #include "Tile.h"
+#include "Logging.h"
 
 class EntityManager;
 class Entity;
@@ -49,6 +50,8 @@ class Chunk
         Tile* extraTiles[WORLD_HEIGHT][2] = { { nullptr } }; // On each side, so that we don't have to activate 3 chunks at a time instead of one
 
     private:
+        Logger* logger = Logger::getInstance();
+
         EntityManager* m_entityManager = nullptr;
 
 		Chunk* m_surroundingChunks[2] = { nullptr };

@@ -2,64 +2,106 @@
 
 #include <time.h>
 #include <random>
+#include <ctime>
 
-#include <iostream>
+void WorldIOManager::loadWorld(std::string worldName, float* progress) {
+    float startTime = (float)(std::clock()) / (float)(CLOCKS_PER_SEC / 1000);
 
-void WorldIOManager::loadWorld(std::string worldName) {
-    std::ifstream file("test.bin", std::ios::binary);
+    logger->log("LOAD: STARTING LOAD AT " + std::to_string(startTime), true);
+
+    // INIT
+    std::ifstream file("testSaveFile.bin", std::ios::binary);
     if(file.fail()) {
         GLEngine::fatalError("Error loading from file: " + worldName + ".bin");
     }
 
-    file.read(reinterpret_cast<char*>(&m_world->player), sizeof(Player));
-    ///m_world->player.m_inventory = nullptr;
-    ///std::cout << "\nLoaded Player POD";
+    { // VERSION
+        unsigned int saveLen;
 
-    Inventory newInventory;
-    file.read(reinterpret_cast<char*>(&newInventory), sizeof(float) * 2);
-    ///m_world->player.m_inventory = &newInventory;
-    ///std::cout << "\nLoaded Player Inventory";
+        file.read(reinterpret_cast<char*>(&saveLen), sizeof(unsigned int));
 
-    unsigned int items = -1;
-    file.read(reinterpret_cast<char*>(&items), sizeof(unsigned int));
+        char* saveVersion = new char();
+        file.read(&saveVersion[0], saveLen);
 
-    for(int i = 0; i < items; i++) {
-        Item* loadedItem = new Item();
-        file.read(reinterpret_cast<char*>(loadedItem), sizeof(Item));
-        m_world->player.m_inventory->getItems().push_back(loadedItem);
-        std::cout << "\nLoaded Player Item " << std::to_string(i+1) << " of " << std::to_string(items);
+        logger->log("LOAD: Loaded Version: " + std::string(saveVersion), true);
+
+        if(m_saveVersion + "\177" != saveVersion) {
+            GLEngine::fatalError("Error loading from file: " + worldName + ".bin: Save Version Mismatch");
+        }
     }
 
-    for(int i = 0; i < WORLD_SIZE; i++) {
-        for(int j = 0; j < WORLD_HEIGHT; j++) {
-            for(int k = 0; k < CHUNK_SIZE; k++) { /// Fuck it. Store the tiles as ids, positions, and metadata and recover the other data like textures.
-                Tile newTile = Tile();
+    { // PLAYER
+        file.read(reinterpret_cast<char*>(&m_world->player.m_canInteract), sizeof(bool));
+        file.read(reinterpret_cast<char*>(&m_world->player.m_sanity), sizeof(float));
+        file.read(reinterpret_cast<char*>(&m_world->player.m_health), sizeof(float));
+        file.read(reinterpret_cast<char*>(&m_world->player.m_thirst), sizeof(float));
+        file.read(reinterpret_cast<char*>(&m_world->player.m_hunger), sizeof(float));
+        file.read(reinterpret_cast<char*>(&m_world->player.m_exhaustion), sizeof(float));
+        file.read(reinterpret_cast<char*>(&m_world->player.m_stamina), sizeof(float));
+        file.read(reinterpret_cast<char*>(&m_world->player.m_position), sizeof(glm::vec2));
 
-                unsigned int texturePathSize;
-                std::string texturePath;
-                file.read(reinterpret_cast<char*>(&texturePathSize), sizeof(texturePathSize));
+        unsigned int favouriteIndices[10];
+        file.read(reinterpret_cast<char*>(&favouriteIndices), sizeof(unsigned int) * 10); // Get indices (in the inventory) that the hotbar pointed to
 
-                texturePath.resize(texturePathSize);
-                file.read(&texturePath[0], texturePathSize);
-                file.read(reinterpret_cast<char*>(&newTile), sizeof(Tile));
+        logger->log("LOAD: Loaded Player POD");
 
-                GLEngine::GLTexture blank;
-                blank.height = newTile.m_texture.height;
-                blank.width = newTile.m_texture.width;
-                blank.id = newTile.m_texture.id;
-                newTile.m_texture = blank;
 
-                newTile.m_texture.filePath = texturePath;
+        // INVENTORY
+        unsigned int items = 0;
+        file.read(reinterpret_cast<char*>(&items), sizeof(unsigned int));
+        m_world->player.m_inventory->m_items.clear();
+        m_world->player.m_inventory->m_items.reserve(items);
+        for(unsigned int i = 0; i < items; i++) {
+            // ITEMS
+            ItemData newItem;
+            file.read(reinterpret_cast<char*>(&newItem), sizeof(ItemData));
+
+            m_world->player.m_inventory->addItem(createItem(newItem.id, newItem.quantity));
+
+            logger->log("LOAD: Loaded " + std::to_string(i+1) + " of " + std::to_string(items) + " Items");
+        }
+
+        for(int i = 0; i < 10; i++) {
+            m_world->player.m_favouriteItems[i] = m_world->player.m_inventory->getItem(favouriteIndices[i]); // Set up the pointers based on the indices we loaded earlier
+        }
+
+        file.read(reinterpret_cast<char*>(&m_world->player.m_inventory->m_absMaxWeight), sizeof(float));
+        logger->log("LOAD: Loaded Player Inventory");
+
+    }
+
+    { // WORLD
+        ChunkData chunkData[WORLD_SIZE];
+        file.read(reinterpret_cast<char*>(&chunkData[0]), sizeof(ChunkData) * WORLD_SIZE);
+
+        for(int i = 0; i < WORLD_SIZE; i++) {
+            for(unsigned int y = 0; y < WORLD_HEIGHT; y++) {
+                for(unsigned int x = 0; x < CHUNK_SIZE; x++) {
+                    m_world->chunks[i]->tiles[y][x] = createBlock(chunkData[i].tiles[y][x].id, chunkData[i].tiles[y][x].pos, m_world->chunks[i]);
+                }
             }
         }
-        for(int j = 0; j < m_world->chunks[i]->getEntities()->size(); j++) {
-            //file.read(reinterpret_cast<char*>(m_world->chunks[i]->getEntities()[j]), sizeof(Entity));
+
+        for(int i = 0; i < WORLD_SIZE; i++) {
+            for(int y = 0; y < WORLD_HEIGHT; y++) { // For the extra over-lapping side bits on each chunk.
+                int index = i;
+                int indexP = (i + 1 + WORLD_SIZE) % WORLD_SIZE;
+                int indexM = (i - 1 + WORLD_SIZE) % WORLD_SIZE;
+                m_world->chunks[index]->extraTiles[y][0] = m_world->chunks[indexM]->tiles[y][CHUNK_SIZE-1];
+                m_world->chunks[index]->extraTiles[y][1] = m_world->chunks[indexP]->tiles[y][0];
+            }
+
+            m_world->chunks[i]->setSurroundingChunk(m_world->chunks[((i-1+WORLD_SIZE) % WORLD_SIZE)], 0);
+            m_world->chunks[i]->setSurroundingChunk(m_world->chunks[((i+1+WORLD_SIZE) % WORLD_SIZE)], 1);
+            logger->log("LOAD: Loaded " + std::to_string(i+1) + " of " + std::to_string(WORLD_SIZE) + " Chunks");
         }
-        for(int j = 0; j < m_world->chunks[i]->getTalkingEntities()->size(); j++) {
-            //file.read(reinterpret_cast<char*>(m_world->chunks[i]->getTalkingEntities()[j]), sizeof(TalkingNPC));
-        }
+
+        logger->log("LOAD: Loaded World Chunks");
     }
-    std::cout << "\nLoaded World";
+
+    float finishTime = (float)(std::clock()) / (float)(CLOCKS_PER_SEC / 1000);
+
+    logger->log("LOAD: LOAD COMPLETED. FINISHED AT " + std::to_string(finishTime) + " (" + std::to_string(finishTime-startTime) + " milliseconds)", true);
 
     file.close();
 }
@@ -77,49 +119,103 @@ Chunks
         Otherwise -> need to init properly on load
 */
 
-void WorldIOManager::saveWorld(World& world, std::string worldName) {
-    std::ofstream file("test.bin", std::ios::binary);
+void WorldIOManager::saveWorld(World& world, std::string worldName, float* progress) {
+    logger->log("SAVE: Starting Save Preparations");
+
+    PlayerData p;
+
+    // POD
+    p.canInteract = m_world->player.m_canInteract;
+    p.m_sanity = m_world->player.m_sanity;
+    p.m_health = m_world->player.m_health;
+    p.m_thirst = m_world->player.m_thirst;
+    p.m_hunger = m_world->player.m_hunger;
+    p.m_exhaustion = m_world->player.m_exhaustion;
+    p.m_stamina = m_world->player.m_stamina;
+    p.position = m_world->player.getPosition();
+    for(unsigned int i = 0; i < 10; i++) {
+        p.favouriteItemIndices[i] = m_world->player.m_inventory->getItemIndex(m_world->player.m_favouriteItems[i]);
+    }
+
+    // INVENTORY
+    PlayerInventoryData pInventory;
+    pInventory.items = m_world->player.m_inventory->getItems().size();
+    for(unsigned int i = 0; i < pInventory.items; i++) {
+        ItemData item;
+        item.id = m_world->player.m_inventory->getItem(i)->getID();
+        item.quantity = m_world->player.m_inventory->getItem(i)->getQuantity();
+        pInventory.itemData.push_back(item);
+    }
+    pInventory.absMaxWeight = m_world->player.m_inventory->m_absMaxWeight;
+
+    p.inventory = pInventory;
+
+    logger->log("SAVE: Player Data Prepared");
+
+    // CHUNK
+    ChunkData chunkData[WORLD_SIZE];
+    for(unsigned int i = 0; i < WORLD_SIZE; i++) {
+        for(int y = 0; y < WORLD_HEIGHT; y++) {
+            for(int x = 0; x < CHUNK_SIZE; x++) {
+                TileData tile;
+                tile.pos = m_world->chunks[i]->tiles[y][x]->getPosition();
+                tile.id = m_world->chunks[i]->tiles[y][x]->getID();
+                tile.ambientLight = m_world->chunks[i]->tiles[y][x]->getAmbientLight();
+                chunkData[i].tiles[y][x] = tile;
+            }
+        }
+    }
+
+    logger->log("SAVE: Chunk Data Prepared");
+    logger->log("SAVE: ALL DATA PREPARED, STARTING SAVE", true);
+
+    // INIT
+    std::ofstream file("testSaveFile.bin", std::ios::binary);
     if(file.fail()) {
         GLEngine::fatalError("Error saving to file: " + worldName + ".bin");
     }
 
-    file.write(reinterpret_cast<char*>(&world.player), sizeof(Player));
-    std::cout << "\nSaving " << "Player POD";
+    { // VERSION
+        unsigned int saveLen = m_saveVersion.size();
 
-    file.write(reinterpret_cast<char*>(world.player.m_inventory), sizeof(float) * 2);
-    std::cout << "\nSaving " << "Player Inventory";
+        file.write(reinterpret_cast<char*>(&saveLen), sizeof(unsigned int));
+        file.write(m_saveVersion.c_str(), m_saveVersion.size());
 
-    unsigned int items = world.player.m_inventory->getItems().size();
-    file.write(reinterpret_cast<char*>(&items), sizeof(unsigned int));
-
-    for(int i = 0; i < items; i++) {
-        file.write(reinterpret_cast<char*>(&world.player.m_inventory->m_items[i]), sizeof(Item));
-        std::cout << "\nSaving Player Item " << std::to_string(i+1) << " of " << std::to_string(items);
+        logger->log("SAVE: Started Saving with version: " + m_saveVersion);
     }
 
-    for(int i = 0; i < WORLD_SIZE; i++) {
-        for(int j = 0; j < WORLD_HEIGHT; j++) {
-            for(int k = 0; k < CHUNK_SIZE; k++) {
-                unsigned int len = world.chunks[i]->tiles[k][j]->m_texture.filePath.size();
-                file.write(reinterpret_cast<char*>(&len), sizeof(unsigned int)); //write the size of the texture string so we can read it later
-                file.write(&world.chunks[i]->tiles[k][j]->m_texture.filePath[0], len);
-                world.chunks[i]->tiles[k][j]->m_parentChunk = nullptr;
-                world.chunks[i]->tiles[k][j]->m_texture.filePath = "";
-                file.write(reinterpret_cast<char*>(world.chunks[i]->tiles[k][j]), sizeof(Tile));
-            }
-            for(int k = 0; k < 2; k++) {
-                unsigned int len = world.chunks[i]->extraTiles[k][j]->m_texture.filePath.size();
-                file.write(reinterpret_cast<char*>(&len), sizeof(unsigned int)); //write the size of the texture string so we can read it later
-                file.write(reinterpret_cast<char*>(world.chunks[i]->extraTiles[k][j]), sizeof(Tile));
-            }
+    { // PLAYER
+        //file.write(reinterpret_cast<char*>(), sizeof());
+        file.write(reinterpret_cast<char*>(&p.canInteract), sizeof(bool));
+        file.write(reinterpret_cast<char*>(&p.m_sanity), sizeof(float));
+        file.write(reinterpret_cast<char*>(&p.m_health), sizeof(float));
+        file.write(reinterpret_cast<char*>(&p.m_thirst), sizeof(float));
+        file.write(reinterpret_cast<char*>(&p.m_hunger), sizeof(float));
+        file.write(reinterpret_cast<char*>(&p.m_exhaustion), sizeof(float));
+        file.write(reinterpret_cast<char*>(&p.m_stamina), sizeof(float));
+        file.write(reinterpret_cast<char*>(&p.position), sizeof(glm::vec2));
+        file.write(reinterpret_cast<char*>(&p.favouriteItemIndices), sizeof(unsigned int) * 10);
+        logger->log("SAVE: Wrote Player POD");
+
+
+        // INVENTORY
+        file.write(reinterpret_cast<char*>(&p.inventory.items), sizeof(unsigned int));
+        for(unsigned int i = 0; i < p.inventory.items; i++) {
+            // ITEMS
+            file.write(reinterpret_cast<char*>(&p.inventory.itemData[i]), sizeof(ItemData));
+            logger->log("SAVE: Wrote " + std::to_string(i+1) + " of " + std::to_string(p.inventory.items) + " Items");
         }
-        for(int j = 0; j < world.chunks[i]->getEntities()->size(); j++) {
-            file.write(reinterpret_cast<char*>(&(*world.chunks[i]->getEntities())[j]), sizeof(Entity));
-        }
-        for(int j = 0; j < world.chunks[i]->getTalkingEntities()->size(); j++) {
-            file.write(reinterpret_cast<char*>(&(*world.chunks[i]->getTalkingEntities())[j]), sizeof(TalkingNPC));
-        }
+        file.write(reinterpret_cast<char*>(&p.inventory.absMaxWeight), sizeof(float));
+        logger->log("SAVE: Wrote Player Inventory");
+
     }
+
+    { // WORLD
+        file.write(reinterpret_cast<char*>(&chunkData[0]), sizeof(ChunkData) * WORLD_SIZE);
+        logger->log("SAVE: Wrote World Chunks");
+    }
+
+    logger->log("SAVE: SAVE COMPLETED", true);;
 
     file.close();
 }

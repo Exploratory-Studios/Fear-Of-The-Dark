@@ -109,7 +109,7 @@ float Tile::getSurroundingLight() {
 
     return light;
 }
-#include <iostream>
+
 void Tile::update(float time) {
     float light = getSurroundingLight();
     setAmbientLight(light);

@@ -23,6 +23,13 @@ namespace Categories {
         TORCH
     };
 
+    enum class ItemIDs {
+        WEAPON_SWORD,
+        BLOCK_DIRT,
+        BLOCK_TORCH,
+        BLOCK_GRASS
+    };
+
     enum class Faction {
         BENIGN,
         GOOD,

@@ -6,6 +6,7 @@
 #include <string>
 
 #include "PresetValues.h"
+#include "Logging.h"
 
 enum class SoundEffectIDs {
     WALK_DIRT,
@@ -34,6 +35,8 @@ class AudioManager
         void playSoundEffect(int id);
 
     private:
+        Logger* logger = Logger::getInstance();
+
         GLEngine::AudioEngine* m_audio = new GLEngine::AudioEngine();
 
         bool m_playingMusic = false;

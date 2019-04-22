@@ -9,6 +9,7 @@
 #include "Entities/TalkingNPC.h"
 
 #include "Item.h"
+#include "Items.h"
 #include "Block.h"
 #include "Inventory.h"
 

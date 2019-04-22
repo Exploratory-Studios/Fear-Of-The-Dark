@@ -154,14 +154,14 @@ void Entity::move(float timeStepVariable) {
     m_position += m_velocity;
     m_onGround = false;
 }
-#include <iostream>
+
 void Entity::collide() {
 
     std::vector<Entity>* entities = m_parentChunk->getEntities();
 
     if(getChunkIndex() >= 0) {
         /// ENTITY COLLISION STARTS HERE
-        for(int i = 0; i < entities->size(); i++) {
+        for(unsigned int i = 0; i < entities->size(); i++) {
             if((*entities)[i].getPosition() != m_position) {
                 float xDist = (m_position.x / (float)TILE_SIZE + m_size.x / 2.0f) - ((*entities)[i].getPosition().x / (float)TILE_SIZE + (*entities)[i].getSize().x / 2.0f);
                 float yDist = (m_position.y / (float)TILE_SIZE + m_size.y / 2.0f) - ((*entities)[i].getPosition().y / (float)TILE_SIZE + (*entities)[i].getSize().y / 2.0f);
@@ -401,8 +401,6 @@ void Entity::collideWithTile(glm::vec2 tilePos, bool ground) {
         }
     }
 }
-
-#include <iostream>
 
 void Entity::updateLightLevel() {
     if(m_parentChunk) {

@@ -64,7 +64,7 @@ void WorldManager::init(WorldIOManager* worldIOManager, float* tickTime) {
 
     m_questManager = new QuestManager(ASSETS_FOLDER_PATH + "Questing/DialogueList.txt", ASSETS_FOLDER_PATH + "Questing/FlagList.txt");
 }
-#include <iostream>
+
 void WorldManager::update(GLEngine::Camera2D* worldCamera, float timeStepVariable, float time, GLEngine::InputManager& input, GLEngine::GUI& gui) {
     for(unsigned int i = 0; i < m_activatedChunks.size(); i++) {
         int xOffset = std::abs(m_activatedChunks[i] + WORLD_SIZE) % WORLD_SIZE;
@@ -102,7 +102,7 @@ void WorldManager::tick() {
         ///m_audioManager.playMorningSong(0); TODO
     }
 }
-#include <iostream>
+
 void WorldManager::draw(GLEngine::SpriteBatch& sb, GLEngine::DebugRenderer& dr, int tickTime, GLEngine::GLSLProgram* program) {
     sb.begin();
 
@@ -129,7 +129,6 @@ void WorldManager::startDialogue() {
 
 /// Private Functions
 
-#include <iostream>
 void WorldManager::activateChunks() {
     const int chunkIndex = m_player->getChunkIndex();
 

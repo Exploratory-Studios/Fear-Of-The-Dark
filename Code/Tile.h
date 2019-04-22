@@ -52,7 +52,9 @@ class Tile
         glm::vec2 m_pos;
         glm::vec2 m_size = glm::vec2(1, 1);
 
+        GLEngine::GLTexture m_texture;
         GLEngine::ColourRGBA8 m_colour = GLEngine::ColourRGBA8(255.0f, 255.0f, 255.0f, 255.0f);
+
         float m_ambientLight = 0.0f; // Really should be inherited light or something, as this light is inherited from surrounding blocks
         float m_emittedLight = 0.0f;
         float m_sunLight = 0.0f;
@@ -64,8 +66,6 @@ class Tile
         bool m_transparent = false; // 'Transmits' light?
 
         unsigned int m_id;
-
-        GLEngine::GLTexture m_texture;
 
         Chunk* m_parentChunk = nullptr;
 

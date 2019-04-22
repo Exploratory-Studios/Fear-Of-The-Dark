@@ -3,7 +3,6 @@
 #include <fstream>
 #include <string>
 #include <vector>
-#include <iostream>
 
 #include <SpriteBatch.h>
 #include <SpriteFont.h>
@@ -11,6 +10,7 @@
 #include <InputManager.h>
 
 #include "QuestClasses.h"
+#include "Logging.h"
 
 class DialogueManager;
 class QuestManager;
@@ -34,6 +34,8 @@ class DialogueManager {
 
     private:
         void initConversation(Question* initialQuestion, GLEngine::GUI& gui);
+
+        Logger* logger = Logger::getInstance();
 
         std::vector<Question*>* m_questionList = nullptr;
         std::vector<Flag*>* m_flagList = nullptr;
@@ -71,6 +73,8 @@ class QuestManager
     private:
         void readDialogueFromList(std::string listPath);
         void readFlagsFromList(std::string listPath);
+
+        Logger* logger = Logger::getInstance();
 
         DialogueManager* m_dialogueManager = nullptr; /// TODO make this private again please :)
 

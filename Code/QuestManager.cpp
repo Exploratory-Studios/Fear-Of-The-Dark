@@ -1,7 +1,5 @@
 #include "QuestManager.h"
 
-#include <iostream>
-
 #include <GUI.h>
 
 DialogueManager::~DialogueManager() {
@@ -100,7 +98,7 @@ void DialogueManager::update(GLEngine::InputManager& input, GLEngine::GUI& gui) 
                         unsigned int flagId = m_currentQuestion->answers[i].followingFlags.arrangement[j].id;
 
                         if(flagId >= m_flagList->size()) {
-                            std::cout << "ERROR: Flags list is not long enough. please add more entries or fix the dialogue's flags (following)\nIllegal ID: " << flagId << "\n";
+                            logger->log("ERROR: Flags list is not long enough. please add more entries or fix the dialogue's flags (following)\nIllegal ID: " + std::to_string(flagId));
                             break;
                         }
 
@@ -158,7 +156,7 @@ void QuestManager::readDialogueFromList(std::string listPath) {
     std::ifstream file(listPath);
 
     if(file.fail()) {
-        std::cout << "\n!!! Failed to load quest list at " << listPath << " !!!\n";
+        logger->log("Failed to load quest list at " + listPath, true);
     } else {
         m_questionList = getDialogue(file);
     }
@@ -168,7 +166,7 @@ void QuestManager::readFlagsFromList(std::string listPath) {
     std::ifstream file(listPath);
 
     if(file.fail()) {
-        std::cout << "\n!!! Failed to load flag list at " << listPath << " !!!\n";
+        logger->log("Failed to load flag list at " + listPath, true);
     } else {
         m_flagList = getFlags(file);
     }
@@ -237,7 +235,7 @@ std::vector<Question*> QuestManager::getDialogue(std::ifstream& file) {
     int filesize = file.tellg();
     file.seekg(pos);
 
-    std::cout << "Loading dialogue. " << filesize << " bytes to read.\n";
+    logger->log("Loading dialogue. " + std::to_string(filesize) + " bytes to read.");
 
     std::vector<std::string> lines;
 
@@ -263,7 +261,7 @@ std::vector<Question*> QuestManager::getDialogue(std::ifstream& file) {
         }
     }
 
-    std::cout << "Dialogue loaded! (" << filesize << " bytes)\n";
+    logger->log("Dialogue loaded! (" + std::to_string(filesize) + " bytes)");
 
     return questions;
 }
@@ -274,7 +272,7 @@ std::vector<Flag*> QuestManager::getFlags(std::ifstream& file) {
     int filesize = file.tellg();
     file.seekg(pos);
 
-    std::cout << "Loading flags. " << filesize << " bytes to read.\n";
+    logger->log("Loading flags. " + std::to_string(filesize) + " bytes to read.");
 
     std::vector<Flag*> flags;
 
@@ -282,10 +280,10 @@ std::vector<Flag*> QuestManager::getFlags(std::ifstream& file) {
     while(std::getline(file, line)) {
         Flag* f = new Flag(line);
         flags.push_back(f);
-        std::cout << "Loaded flag with id of " << Flag(line).id << " and value of " << Flag(line).value << "\n";
+        logger->log("Loaded flag with id of " + std::to_string(Flag(line).id) + " and value of " + std::to_string(Flag(line).value));
     }
 
-    std::cout << "Flags loaded! (" << filesize << " bytes)\n";
+    logger->log("Flags loaded! (" + std::to_string(filesize) + " bytes)");
 
     return flags;
 }

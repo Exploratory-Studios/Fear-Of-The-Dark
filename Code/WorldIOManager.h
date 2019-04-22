@@ -12,11 +12,37 @@
 #include "Blocks.h"
 
 #include "PresetValues.h"
+#include "Logging.h"
+
+struct ItemData {
+    unsigned int id;
+    unsigned int quantity;
+};
+
+struct PlayerInventoryData {
+    unsigned int items; // number of items to load
+    std::vector<ItemData> itemData;
+    float absMaxWeight;
+};
+
+struct PlayerData {
+    bool canInteract;
+    float m_sanity, m_health, m_thirst, m_hunger, m_exhaustion, m_stamina;
+    glm::vec2 position;
+    unsigned int favouriteItemIndices[10];
+    PlayerInventoryData inventory;
+};
 
 struct TileData {
     glm::vec2 pos;
     unsigned int id;
-    float lastLight, ambientLight;
+    float ambientLight;
+};
+
+struct ChunkData {
+    //std::vector<EntityData> entities;
+    /// TODO: create entities the same way blocks and items are created (Blocks.h & Items.h)
+    TileData tiles[WORLD_HEIGHT][CHUNK_SIZE];
 };
 
 struct World {
@@ -31,8 +57,8 @@ class WorldIOManager
         WorldIOManager(World* world, GLEngine::InputManager* input) : m_world(world), m_input(input) { }
         WorldIOManager(GLEngine::InputManager* input) : m_input(input) { }
 
-        void loadWorld(std::string worldName);
-        void saveWorld(World& world, std::string worldName);
+        void loadWorld(std::string worldName, float* progress); /// TODO: Make multi-threaded so that we can view progress and load at the same time
+        void saveWorld(World& world, std::string worldName, float* progress); /// TODO: Make multi-threaded so that we can view progress and save at the same time
 
         void createWorld(unsigned int seed, std::string worldName, bool isFlat = false);
         /*
@@ -47,6 +73,10 @@ class WorldIOManager
         ScriptQueue* getScriptQueue() { return m_sq; }
 
     private:
+        std::string m_saveVersion = "1.0.0";
+
+        Logger* logger = Logger::getInstance();
+
         World* m_world = new World();
         GLEngine::InputManager* m_input = nullptr;
         ScriptQueue* m_sq = new ScriptQueue();

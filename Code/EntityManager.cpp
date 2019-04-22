@@ -75,7 +75,6 @@ void EntityManager::removeTalkingEntity(int index) {
     m_talkingEntities->pop_back();
 }
 
-#include <iostream>
 void EntityManager::targetEntities(Player& p) {
     m_entities->push_back(p);
 
@@ -125,7 +124,7 @@ void EntityManager::targetEntities(Player& p) {
 
     m_entities->pop_back();
 }
-#include <iostream>
+
 std::vector<glm::vec2> EntityManager::pathfindToTarget(float jumpHeight, glm::vec2 originalPosition, glm::vec2 targetPosition) {
     std::vector<glm::vec2> targets;
 

@@ -32,7 +32,7 @@ BlockGrass::BlockGrass(glm::vec2 pos, Chunk* parent) : Block(pos, parent) {
 }
 
 BlockTorch::BlockTorch(glm::vec2 pos, Chunk* parent) : Block(pos, parent) {
-    m_id = (unsigned int)Categories::BlockIDs::GRASS;
+    m_id = (unsigned int)Categories::BlockIDs::TORCH;
 
     m_transparent = true; // Does light travel through it?
     m_draw = true; // Is it drawn?

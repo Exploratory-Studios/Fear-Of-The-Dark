@@ -7,11 +7,11 @@
 class ItemBlock : public Item
 {
     public:
-        ItemBlock(unsigned int id, float weight, short unsigned int quantity, unsigned int blockId);
+        ItemBlock();
 
         void onLeftClick(Block* selectedBlock) override;
         void onRightClick(Block* selectedBlock) override;
 
-    private:
+    protected:
         unsigned int m_blockId;
 };

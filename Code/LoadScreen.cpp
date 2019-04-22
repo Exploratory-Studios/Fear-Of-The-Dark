@@ -199,7 +199,7 @@ bool LoadScreen::onLoadWorldLoadButtonClicked(const CEGUI::EventArgs& e) { /// T
 
     std::string text = m_loadWorldNameEditbox->getText().c_str();
 
-    m_worldIOManager->loadWorld(text);
+    m_worldIOManager->loadWorld(text, nullptr);
 
     m_currentState = GLEngine::ScreenState::CHANGE_NEXT;
     m_nextScreenIndex = SCREEN_INDEX_GAMEPLAY;

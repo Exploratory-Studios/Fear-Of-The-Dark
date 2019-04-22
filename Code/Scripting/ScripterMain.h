@@ -4,6 +4,8 @@
 #include "../EntityManager.h"
 #include "ScriptQueue.h"
 
+#include "../Logging.h"
+
 const bool
     SCRIPT_INIT_FLAG_MODIFYWORLD = 0x1,     // 0000 0001
     SCRIPT_INIT_FLAG_MODIFYENTITIES = 0x2,  // 0000 0010
@@ -36,6 +38,8 @@ class Scripter { // Script class will have a virtual function that you fill in. 
 
         void executeScript(Script& script);
         void executeCommand(std::string& command);
+
+        Logger* logger = Logger::getInstance();
 
         std::vector<Entity*> entityTarget(std::vector<std::string> parameters, unsigned int& keywordIndex);
         std::vector<glm::vec2> positionTarget(std::vector<std::string> parameters, unsigned int& keywordIndex);

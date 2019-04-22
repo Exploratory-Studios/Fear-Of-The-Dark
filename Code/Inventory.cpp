@@ -6,7 +6,7 @@
 Inventory::Inventory() {
 
 }
-#include <iostream>
+
 bool Inventory::addItem(Item* newItem) {
     m_weight += newItem->m_weight * newItem->m_quantity;
 

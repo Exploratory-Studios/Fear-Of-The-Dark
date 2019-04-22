@@ -1,0 +1,106 @@
+
+
+
+### LOG: Mon Apr 22 17:39:55 2019 ###
+
+Loaded all 1 music files.
+Loaded all 0 sound files.
+Loading dialogue. 413 bytes to read.
+Dialogue loaded! (413 bytes)
+Loading flags. 15 bytes to read.
+Loaded flag with id of 0 and value of 1
+Loaded flag with id of 1 and value of 0
+Loaded flag with id of 2 and value of 0
+Loaded flag with id of 3 and value of 0
+Flags loaded! (15 bytes)
+
+### LOAD: STARTING LOAD AT 2362.511963 ###
+
+
+### LOAD: Loaded Version: 1.0.0 ###
+
+LOAD: Loaded Player POD
+LOAD: Loaded 1 of 1 Items
+LOAD: Loaded Player Inventory
+LOAD: Loaded 1 of 16 Chunks
+LOAD: Loaded 2 of 16 Chunks
+LOAD: Loaded 3 of 16 Chunks
+LOAD: Loaded 4 of 16 Chunks
+LOAD: Loaded 5 of 16 Chunks
+LOAD: Loaded 6 of 16 Chunks
+LOAD: Loaded 7 of 16 Chunks
+LOAD: Loaded 8 of 16 Chunks
+LOAD: Loaded 9 of 16 Chunks
+LOAD: Loaded 10 of 16 Chunks
+LOAD: Loaded 11 of 16 Chunks
+LOAD: Loaded 12 of 16 Chunks
+LOAD: Loaded 13 of 16 Chunks
+LOAD: Loaded 14 of 16 Chunks
+LOAD: Loaded 15 of 16 Chunks
+LOAD: Loaded 16 of 16 Chunks
+LOAD: Loaded World Chunks
+
+### LOAD: LOAD COMPLETED. FINISHED AT 2396.333984 (33.822021 milliseconds) ###
+
+
+
+
+### LOG: Mon Apr 22 17:40:22 2019 ###
+
+Loaded all 1 music files.
+Loaded all 0 sound files.
+Loading dialogue. 413 bytes to read.
+Dialogue loaded! (413 bytes)
+Loading flags. 15 bytes to read.
+Loaded flag with id of 0 and value of 1
+Loaded flag with id of 1 and value of 0
+Loaded flag with id of 2 and value of 0
+Loaded flag with id of 3 and value of 0
+Flags loaded! (15 bytes)
+Changing block at: X=10, Y=105 to one with the id of: 2
+Changing block at: X=10, Y=106 to one with the id of: 6
+Setting time to 120
+Changing block at: X=10, Y=99 to one with the id of: 2
+Changing block at: X=10, Y=100 to one with the id of: 6
+Setting time to 120
+Changing block at: X=10, Y=100 to one with the id of: 2
+Changing block at: X=10, Y=101 to one with the id of: 6
+Setting time to 120
+Changing block at: X=10, Y=101 to one with the id of: 2
+Changing block at: X=10, Y=102 to one with the id of: 6
+Setting time to 120
+Changing block at: X=10, Y=102 to one with the id of: 2
+Changing block at: X=10, Y=103 to one with the id of: 6
+Setting time to 120
+Changing block at: X=10, Y=103 to one with the id of: 2
+Changing block at: X=10, Y=104 to one with the id of: 6
+Setting time to 120
+
+### LOAD: STARTING LOAD AT 2983.720947 ###
+
+
+### LOAD: Loaded Version: 1.0.0 ###
+
+LOAD: Loaded Player POD
+LOAD: Loaded 1 of 1 Items
+LOAD: Loaded Player Inventory
+LOAD: Loaded 1 of 16 Chunks
+LOAD: Loaded 2 of 16 Chunks
+LOAD: Loaded 3 of 16 Chunks
+LOAD: Loaded 4 of 16 Chunks
+LOAD: Loaded 5 of 16 Chunks
+LOAD: Loaded 6 of 16 Chunks
+LOAD: Loaded 7 of 16 Chunks
+LOAD: Loaded 8 of 16 Chunks
+LOAD: Loaded 9 of 16 Chunks
+LOAD: Loaded 10 of 16 Chunks
+LOAD: Loaded 11 of 16 Chunks
+LOAD: Loaded 12 of 16 Chunks
+LOAD: Loaded 13 of 16 Chunks
+LOAD: Loaded 14 of 16 Chunks
+LOAD: Loaded 15 of 16 Chunks
+LOAD: Loaded 16 of 16 Chunks
+LOAD: Loaded World Chunks
+
+### LOAD: LOAD COMPLETED. FINISHED AT 3017.168945 (33.447998 milliseconds) ###
+

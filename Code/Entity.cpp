@@ -157,23 +157,23 @@ void Entity::move(float timeStepVariable) {
 #include <iostream>
 void Entity::collide() {
 
-    std::vector<Entity*> entities = m_parentChunk->getEntities();
+    std::vector<Entity>* entities = m_parentChunk->getEntities();
 
     if(getChunkIndex() >= 0) {
         /// ENTITY COLLISION STARTS HERE
-        for(auto e : entities) {
-            if(e && e != this) {
-                float xDist = (m_position.x / (float)TILE_SIZE + m_size.x / 2.0f) - (e->getPosition().x / (float)TILE_SIZE + e->getSize().x / 2.0f);
-                float yDist = (m_position.y / (float)TILE_SIZE + m_size.y / 2.0f) - (e->getPosition().y / (float)TILE_SIZE + e->getSize().y / 2.0f);
-                if(abs(xDist) < abs(m_size.x / 2.0f + e->getSize().x / 2.0f)) {
-                    if(abs(yDist) < abs(m_size.y / 2.0f + e->getSize().y / 2.0f)) {
+        for(int i = 0; i < entities->size(); i++) {
+            if((*entities)[i].getPosition() != m_position) {
+                float xDist = (m_position.x / (float)TILE_SIZE + m_size.x / 2.0f) - ((*entities)[i].getPosition().x / (float)TILE_SIZE + (*entities)[i].getSize().x / 2.0f);
+                float yDist = (m_position.y / (float)TILE_SIZE + m_size.y / 2.0f) - ((*entities)[i].getPosition().y / (float)TILE_SIZE + (*entities)[i].getSize().y / 2.0f);
+                if(abs(xDist) < abs(m_size.x / 2.0f + (*entities)[i].getSize().x / 2.0f)) {
+                    if(abs(yDist) < abs(m_size.y / 2.0f + (*entities)[i].getSize().y / 2.0f)) {
 
-                        float depth = xDist - (m_size.x / 2.0f + e->getSize().x / 2.0f);
-                        float force = (depth / 2.0f * TILE_SIZE) * (depth / 2.0f * TILE_SIZE) / ((m_size.x / 2.0f + e->getSize().x / 2.0f) * 512.0f);
+                        float depth = xDist - (m_size.x / 2.0f + (*entities)[i].getSize().x / 2.0f);
+                        float force = (depth / 2.0f * TILE_SIZE) * (depth / 2.0f * TILE_SIZE) / ((m_size.x / 2.0f + (*entities)[i].getSize().x / 2.0f) * 512.0f);
 
 
                         m_position.x -= force;
-                        e->setPosition(glm::vec2(e->getPosition().x + force, e->getPosition().y));
+                        (*entities)[i].setPosition(glm::vec2((*entities)[i].getPosition().x + force, (*entities)[i].getPosition().y));
                     }
                 }
             }

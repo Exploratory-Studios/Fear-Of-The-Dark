@@ -6,22 +6,22 @@
 #include "Entities/TalkingNPC.h"
 #include "Player.h"
 
-void Chunk::addEntity(Entity* ent) {
+void Chunk::addEntity(Entity ent) {
     if(m_entityManager) m_entityManager->addEntity(ent);
 }
-void Chunk::addTalkingEntity(TalkingNPC* ent) {
+void Chunk::addTalkingEntity(TalkingNPC ent) {
     if(m_entityManager) m_entityManager->addTalkingEntity(ent);
 }
 
-std::vector<TalkingNPC*> Chunk::getTalkingEntities() {
+std::vector<TalkingNPC>* Chunk::getTalkingEntities() {
     return m_entityManager->getTalkingEntities();
 }
 
-std::vector<Entity*> Chunk::getEntities() {
+std::vector<Entity>* Chunk::getEntities() {
     return m_entityManager->getEntities();
 }
 
-std::vector<Entity*> Chunk::getAllEntities() {
+std::vector<Entity>* Chunk::getAllEntities() {
     return m_entityManager->getAllEntities();
 }
 
@@ -77,7 +77,7 @@ void Chunk::update(float time, float timeStepVariable, Chunk* chunks[WORLD_SIZE]
     m_entityManager->update(timeStepVariable, chunks);
 }
 
-void Chunk::tick(float* tickTime, Player* p) {
+void Chunk::tick(float* tickTime, Player& p) {
     for(int i = 0; i < WORLD_HEIGHT; i++) {
         for(int j = 0; j < CHUNK_SIZE; j++) {
             tiles[i][j]->tick(tickTime);

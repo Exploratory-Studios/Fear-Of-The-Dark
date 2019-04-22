@@ -149,13 +149,13 @@ void Player::drawGUI(GLEngine::SpriteBatch& sb, GLEngine::SpriteFont& sf) {
                 sb.draw(destRect, uv, hotbarImgId, 0.0f, fullColour);
 
                 {
-                    if(m_inventory->getItem(i)) {
+                    if(m_favouriteItems[i]) {
                         glm::vec4 destRect(HOTBAR_BOX_SIZE / 4 + (HOTBAR_BOX_SIZE + HOTBAR_BOX_PADDING) * i,
                                         HOTBAR_BOX_SIZE / 4,
                                         HOTBAR_BOX_SIZE,
                                         HOTBAR_BOX_SIZE);
                         glm::vec4 itemUV(0, 0, 1, 1);
-                        int itemImgId = GLEngine::ResourceManager::getTexture(Category_Data::itemData[m_inventory->getItem(i)->getID()].texturePath).id;
+                        int itemImgId = GLEngine::ResourceManager::getTexture(Category_Data::itemData[m_favouriteItems[i]->getID()].texturePath).id;
 
                         sb.draw(destRect, itemUV, itemImgId, 0.0f, GLEngine::ColourRGBA8(255, 255, 255, 255));
                     }
@@ -166,13 +166,13 @@ void Player::drawGUI(GLEngine::SpriteBatch& sb, GLEngine::SpriteFont& sf) {
             sb.renderBatch();
 
             for(int i = 0; i < HOTBAR_BOX_NUM; i++) {
-                if(m_inventory->getItem(i)) {
+                if(m_favouriteItems[i]) {
                     glm::vec4 destRect(HOTBAR_BOX_SIZE / 4 + (HOTBAR_BOX_SIZE + HOTBAR_BOX_PADDING) * i,
                                         HOTBAR_BOX_SIZE / 4,
                                         HOTBAR_BOX_SIZE,
                                         HOTBAR_BOX_SIZE);
                     glm::vec4 itemUV(0, 0, 1, 1);
-                    int itemImgId = GLEngine::ResourceManager::getTexture(Category_Data::itemData[m_inventory->getItem(i)->getID()].texturePath).id;
+                    int itemImgId = GLEngine::ResourceManager::getTexture(Category_Data::itemData[m_favouriteItems[i]->getID()].texturePath).id;
 
                     sb.begin();
                     sb.draw(destRect, itemUV, itemImgId, 0.0f, GLEngine::ColourRGBA8(255, 255, 255, 255));
@@ -180,7 +180,7 @@ void Player::drawGUI(GLEngine::SpriteBatch& sb, GLEngine::SpriteFont& sf) {
                     sb.renderBatch();
 
                     sb.begin();
-                    sf.draw(sb, std::to_string(m_inventory->getItem(i)->getQuantity()).c_str(), glm::vec2(destRect.x + INVENTORY_BOX_SIZE * 9/10, destRect.y + INVENTORY_BOX_SIZE - 96.0f * 0.35f), glm::vec2(0.35f), 0.0f, GLEngine::ColourRGBA8(255, 255, 255, 255), GLEngine::Justification::RIGHT);
+                    sf.draw(sb, std::to_string(m_favouriteItems[i]->getQuantity()).c_str(), glm::vec2(destRect.x + INVENTORY_BOX_SIZE * 9/10, destRect.y + INVENTORY_BOX_SIZE - 96.0f * 0.35f), glm::vec2(0.35f), 0.0f, GLEngine::ColourRGBA8(255, 255, 255, 255), GLEngine::Justification::RIGHT);
                     sb.end();
                     sb.renderBatch();
                 }
@@ -305,21 +305,20 @@ void Player::updateInput() {
         }
 
         if(m_input->isKeyDown(SDL_BUTTON_LEFT) && m_selectedBlock) {
-            if(m_inventory->getItem(m_selectedHotbox)) m_inventory->getItem(m_selectedHotbox)->onLeftClick(m_selectedBlock);
-            *(m_selectedBlock) = *(new BlockAir(m_selectedBlock->getPosition(), m_selectedBlock->getParentChunk()));
+            if(m_favouriteItems[m_selectedHotbox]) m_favouriteItems[m_selectedHotbox]->onLeftClick(m_selectedBlock);
             m_inventory->updateWeight();
         }
         if(m_input->isKeyDown(SDL_BUTTON_RIGHT) && m_selectedBlock) {
-            if(m_inventory->getItem(m_selectedHotbox)) m_inventory->getItem(m_selectedHotbox)->onRightClick(m_selectedBlock);
+            if(m_favouriteItems[m_selectedHotbox]) m_favouriteItems[m_selectedHotbox]->onRightClick(m_selectedBlock);
             m_inventory->updateWeight();
         }
         if(m_input->isKeyPressed(SDLK_r)) {
-            ItemBlock newItem(1, 0.0f, 1, (int)Categories::BlockIDs::DIRT);
+            ItemBlock* newItem = new ItemBlock(1, 0.0f, 1, (int)Categories::BlockIDs::DIRT);
             m_inventory->addItem(newItem);
-            m_sq->activateScript(m_scriptID_makeHouse);
+            //m_sq->activateScript(m_scriptID_makeHouse);
         }
         if(m_input->isKeyPressed(SDLK_t)) {
-            ItemBlock newItem(2, 0.0f, 1, (int)Categories::BlockIDs::TORCH);
+            ItemBlock* newItem = new ItemBlock(2, 0.0f, 1, (int)Categories::BlockIDs::TORCH);
             m_inventory->addItem(newItem);
         }
         if(m_input->isKeyPressed(SDLK_i)) {
@@ -329,12 +328,15 @@ void Player::updateInput() {
 
     if(m_input->isKeyPressed(SDLK_1)) {
         m_selectedHotbox = 0;
+        m_favouriteItems[0] = m_inventory->getItem(0);
     } else
     if(m_input->isKeyPressed(SDLK_2)) {
         m_selectedHotbox = 1;
+        m_favouriteItems[1] = m_inventory->getItem(1);
     } else
     if(m_input->isKeyPressed(SDLK_3)) {
         m_selectedHotbox = 2;
+        m_favouriteItems[2] = m_inventory->getItem(2);
     } else
     if(m_input->isKeyPressed(SDLK_4)) {
         m_selectedHotbox = 3;

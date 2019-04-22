@@ -13,6 +13,12 @@
 
 #include "PresetValues.h"
 
+struct TileData {
+    glm::vec2 pos;
+    unsigned int id;
+    float lastLight, ambientLight;
+};
+
 struct World {
     Chunk* chunks[WORLD_SIZE] = { nullptr };
     Player player;

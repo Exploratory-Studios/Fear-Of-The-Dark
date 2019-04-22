@@ -17,7 +17,7 @@ class Item
         Item(unsigned int id, float weight, short unsigned int quantity) : m_id(id), m_weight(weight), m_quantity(quantity) {}
         virtual ~Item() {}
 
-        virtual void onLeftClick(Block* selectedBlock) {}
+        virtual void onLeftClick(Block* selectedBlock) { *selectedBlock = *createBlock((unsigned int)Categories::BlockIDs::AIR, selectedBlock->getPosition(), selectedBlock->getParentChunk()); }
         virtual void onRightClick(Block* selectedBlock) {} /// TODO variadic stuff for character pos, mouse pos, etc.  also: make virtua
 
         bool isBlock() { return m_isBlock; }

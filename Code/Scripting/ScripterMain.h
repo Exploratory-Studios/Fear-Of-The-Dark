@@ -25,7 +25,7 @@ class Scripter { // Script class will have a virtual function that you fill in. 
         void showBlock(int x, int y);
         void hideBlock(int x, int y);
 
-        unsigned int addEntity(Entity newEntity); // Returns new entity's index
+        unsigned int addEntity(Entity& newEntity); // Returns new entity's index
         void removeEntity(unsigned int index); // This doesn't change the size of the vector, just sets the index to NULL values
         void showEntity(unsigned int index); // Index is reference to place in vector
         void hideEntity(unsigned int index);
@@ -44,7 +44,7 @@ class Scripter { // Script class will have a virtual function that you fill in. 
 
         WorldManager* m_worldManager = nullptr;
 
-        std::vector<Entity*> m_entities;
+        std::vector<Entity>* m_entities = nullptr;
         Chunk* m_chunks[WORLD_SIZE];
 
         /*GLEngine::Camera2D* m_camera = nullptr;*/

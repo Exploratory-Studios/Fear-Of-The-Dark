@@ -32,3 +32,5 @@ class Block : public Tile
         m_parentChunk (*)
         */
 };
+
+#include "Blocks.h"

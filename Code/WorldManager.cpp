@@ -23,18 +23,20 @@ void WorldManager::init(WorldIOManager* worldIOManager, float* tickTime) {
     m_audioManager.init();
 
     if(m_worldIOManager->getWorld()) {
-        std::vector<Entity*> entities;
-        std::vector<TalkingNPC*> talkingEntities;
+        std::vector<Entity> entities;
+        std::vector<TalkingNPC> talkingEntities;
 
-        talkingEntities.emplace_back(new TalkingNPC(glm::vec2(10 * TILE_SIZE, 150 * TILE_SIZE), 0, &m_audioManager, m_worldIOManager->getScriptQueue()));
+        talkingEntities.emplace_back(TalkingNPC(glm::vec2(10 * TILE_SIZE, 150 * TILE_SIZE), 0, &m_audioManager, m_worldIOManager->getScriptQueue()));
 
-        /*for(unsigned int i = 0; i < m_worldIOManager->getWorld()->entities.size(); i++) {
-            entities.push_back(&m_worldIOManager->getWorld()->entities[i]);
+        for(unsigned int j = 0; j < WORLD_SIZE; j++) {
+            for(unsigned int i = 0; i < m_worldIOManager->getWorld()->chunks[j]->getEntities()->size(); i++) {
+                entities.push_back((*m_worldIOManager->getWorld()->chunks[j]->getEntities())[i]);
+            }
+
+            for(unsigned int i = 0; i < m_worldIOManager->getWorld()->chunks[j]->getTalkingEntities()->size(); i++) {
+                talkingEntities.push_back((*m_worldIOManager->getWorld()->chunks[j]->getTalkingEntities())[j]);
+            }
         }
-
-        for(unsigned int i = 0; i < m_worldIOManager->getWorld()->talkingEntities.size(); i++) {
-            talkingEntities.push_back(&m_worldIOManager->getWorld()->talkingEntities[i]);
-        }*/
 
         m_player = &m_worldIOManager->getWorld()->player;
 
@@ -44,19 +46,19 @@ void WorldManager::init(WorldIOManager* worldIOManager, float* tickTime) {
         }
 
         {
-           /* for(unsigned int i = 0; i < entities.size(); i++) {
-                int index = (entities[i]->getPosition().x / TILE_SIZE) / CHUNK_SIZE;
-                entities[i]->setParentChunk(m_worldIOManager->getWorld()->chunks[index]);
+            for(unsigned int i = 0; i < entities.size(); i++) {
+                int index = (entities[i].getPosition().x / TILE_SIZE) / CHUNK_SIZE;
+                entities[i].setParentChunk(m_worldIOManager->getWorld()->chunks[index]);
                 m_worldIOManager->getWorld()->chunks[index]->addEntity(entities[i]);
-            }*/
+            }
         }
 
         {
-            /*for(unsigned int i = 0; i < talkingEntities.size(); i++) {
-                int index = (talkingEntities[i]->getPosition().x / TILE_SIZE) / CHUNK_SIZE;
-                talkingEntities[i]->setParentChunk(m_worldIOManager->getWorld()->chunks[index]);
+            for(unsigned int i = 0; i < talkingEntities.size(); i++) {
+                int index = (talkingEntities[i].getPosition().x / TILE_SIZE) / CHUNK_SIZE;
+                talkingEntities[i].setParentChunk(m_worldIOManager->getWorld()->chunks[index]);
                 m_worldIOManager->getWorld()->chunks[index]->addTalkingEntity(talkingEntities[i]);
-            }*/
+            }
         }
     }
 
@@ -75,7 +77,7 @@ void WorldManager::update(GLEngine::Camera2D* worldCamera, float timeStepVariabl
         m_player->update(timeStepVariable, m_worldIOManager->getWorld()->chunks);
         m_player->updateMouse(worldCamera);
         m_player->collide();
-        if(m_player->getTalkingEntity() && m_questManager) {
+        if(m_questManager && m_player->getTalkingEntity()) {
             m_player->getTalkingEntity()->setDialogueStarted(m_questManager->isDialogueStarted());
 
             if(m_player->getTalkingEntity()->isDialogueStarted()) {
@@ -87,18 +89,17 @@ void WorldManager::update(GLEngine::Camera2D* worldCamera, float timeStepVariabl
 
     m_questManager->update(input, gui);
 
-
 }
 
 void WorldManager::tick() {
     for(unsigned int i = 0; i < m_activatedChunks.size(); i++) {
         int xOffset = std::abs(m_activatedChunks[i] + WORLD_SIZE) % WORLD_SIZE;
-        m_worldIOManager->getWorld()->chunks[xOffset]->tick(m_tickTime, m_player);
+        m_worldIOManager->getWorld()->chunks[xOffset]->tick(m_tickTime, *m_player);
     }
     //m_entityManager.tick(tickTime, m_worldIOManager->getWorld()->chunks);
 
     if(!m_audioManager.isMusicPlaying()) {
-        ///m_audioManager.playMorningSong(0);
+        ///m_audioManager.playMorningSong(0); TODO
     }
 }
 #include <iostream>

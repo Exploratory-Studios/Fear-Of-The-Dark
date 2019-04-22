@@ -273,7 +273,6 @@
 		<Unit filename="Item.h" />
 		<Unit filename="ItemBlock.cpp" />
 		<Unit filename="ItemBlock.h" />
-		<Unit filename="Items/BlockItem.cpp" />
 		<Unit filename="Items/BlockItem.h" />
 		<Unit filename="LoadScreen.cpp" />
 		<Unit filename="LoadScreen.h" />

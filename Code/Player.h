@@ -38,7 +38,7 @@ class Player : public Entity {
 
         TalkingNPC* getTalkingEntity() { return m_speakingEntity; }
 
-        void setSpeakingEntity(TalkingNPC* entity) { m_speakingEntity = entity; }
+        void setSpeakingEntity(TalkingNPC& entity) { m_speakingEntity = &entity; }
         void setCanInteract(bool setting) { m_canInteract = setting; }
 
     protected:
@@ -82,5 +82,7 @@ class Player : public Entity {
 
         unsigned int m_scriptID_dayTime = 0;
         unsigned int m_scriptID_makeHouse = 0;
+
+        Item* m_favouriteItems[10] = { nullptr };
 
 };

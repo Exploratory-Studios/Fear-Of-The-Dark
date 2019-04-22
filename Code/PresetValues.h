@@ -171,7 +171,6 @@ namespace Category_Data {
                                                             ItemDatum(0, ASSETS_FOLDER_PATH + "Textures/Items/Sword0.png", "Sword"),
                                                             ItemDatum(1, ASSETS_FOLDER_PATH + "Textures/Blocks/Dirt.png", "Dirt"),
                                                             ItemDatum(2, ASSETS_FOLDER_PATH + "Textures/Blocks/Torch.png", "Torch")
-
                                                            };
 
 

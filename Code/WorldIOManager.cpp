@@ -24,9 +24,9 @@ void WorldIOManager::loadWorld(std::string worldName) {
     file.read(reinterpret_cast<char*>(&items), sizeof(unsigned int));
 
     for(int i = 0; i < items; i++) {
-        Item loadedItem;
-        file.read(reinterpret_cast<char*>(&loadedItem), sizeof(Item));
-        m_world->player.m_inventory->getItems()->push_back(loadedItem);
+        Item* loadedItem = new Item();
+        file.read(reinterpret_cast<char*>(loadedItem), sizeof(Item));
+        m_world->player.m_inventory->getItems().push_back(loadedItem);
         std::cout << "\nLoaded Player Item " << std::to_string(i+1) << " of " << std::to_string(items);
     }
 
@@ -52,10 +52,10 @@ void WorldIOManager::loadWorld(std::string worldName) {
                 newTile.m_texture.filePath = texturePath;
             }
         }
-        for(int j = 0; j < m_world->chunks[i]->getEntities().size(); j++) {
+        for(int j = 0; j < m_world->chunks[i]->getEntities()->size(); j++) {
             //file.read(reinterpret_cast<char*>(m_world->chunks[i]->getEntities()[j]), sizeof(Entity));
         }
-        for(int j = 0; j < m_world->chunks[i]->getTalkingEntities().size(); j++) {
+        for(int j = 0; j < m_world->chunks[i]->getTalkingEntities()->size(); j++) {
             //file.read(reinterpret_cast<char*>(m_world->chunks[i]->getTalkingEntities()[j]), sizeof(TalkingNPC));
         }
     }
@@ -89,7 +89,7 @@ void WorldIOManager::saveWorld(World& world, std::string worldName) {
     file.write(reinterpret_cast<char*>(world.player.m_inventory), sizeof(float) * 2);
     std::cout << "\nSaving " << "Player Inventory";
 
-    unsigned int items = world.player.m_inventory->getItems()->size();
+    unsigned int items = world.player.m_inventory->getItems().size();
     file.write(reinterpret_cast<char*>(&items), sizeof(unsigned int));
 
     for(int i = 0; i < items; i++) {
@@ -113,11 +113,11 @@ void WorldIOManager::saveWorld(World& world, std::string worldName) {
                 file.write(reinterpret_cast<char*>(world.chunks[i]->extraTiles[k][j]), sizeof(Tile));
             }
         }
-        for(int j = 0; j < world.chunks[i]->getEntities().size(); j++) {
-            file.write(reinterpret_cast<char*>(world.chunks[i]->getEntities()[j]), sizeof(Entity));
+        for(int j = 0; j < world.chunks[i]->getEntities()->size(); j++) {
+            file.write(reinterpret_cast<char*>(&(*world.chunks[i]->getEntities())[j]), sizeof(Entity));
         }
-        for(int j = 0; j < world.chunks[i]->getTalkingEntities().size(); j++) {
-            file.write(reinterpret_cast<char*>(world.chunks[i]->getTalkingEntities()[j]), sizeof(TalkingNPC));
+        for(int j = 0; j < world.chunks[i]->getTalkingEntities()->size(); j++) {
+            file.write(reinterpret_cast<char*>(&(*world.chunks[i]->getTalkingEntities())[j]), sizeof(TalkingNPC));
         }
     }
 

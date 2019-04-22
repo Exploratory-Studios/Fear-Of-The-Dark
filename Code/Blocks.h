@@ -6,6 +6,8 @@
 #include <GLEngineErrors.h>
 #include <string.h>
 
+/// This file holds and handles all new TILES and TILE TYPES, not just blocks
+
 class BlockAir : public Block
 {
     public:

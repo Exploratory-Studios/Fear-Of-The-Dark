@@ -9,14 +9,15 @@ Scripter::Scripter(WorldManager* worldManager) {
 void Scripter::init(WorldManager* worldManager) {
 
     m_worldManager = worldManager;
+    m_entities = new std::vector<Entity>();
 
     for(int i = 0; i < WORLD_SIZE; i++) {
         m_chunks[i] = m_worldManager->m_worldIOManager->getWorld()->chunks[i];
     }
 
     for(unsigned int i = 0; i < WORLD_SIZE; i++) {
-        for(unsigned int j = 0; j < m_chunks[i]->getEntities().size(); j++) {
-            m_entities.push_back(m_chunks[i]->getEntities()[j]);
+        for(unsigned int j = 0; j < m_chunks[i]->getEntities()->size(); j++) {
+            m_entities->push_back((*m_chunks[i]->getEntities())[j]);
         }
     }
 
@@ -57,21 +58,24 @@ void Scripter::hideBlock(int x, int y) {
     m_chunks[chunk]->tiles[y][chunkX]->m_draw = false; // Make it transparent
 }
 
-unsigned int Scripter::addEntity(Entity newEntity) {
-    m_entities.push_back(&newEntity);
-    return m_entities.size();
+unsigned int Scripter::addEntity(Entity& newEntity) {
+    m_entities->push_back(newEntity);
+    return m_entities->size();
 }
 
 void Scripter::removeEntity(unsigned int index) {
-    m_entities[index] = nullptr;
+    for(int i = index; i < m_entities->size()-1; i++) {
+        (*m_entities)[i] = (*m_entities)[i+1];
+    }
+    m_entities->pop_back();
 }
 
 void Scripter::showEntity(unsigned int index) {
-    m_entities[index]->m_transparent = false;
+    (*m_entities)[index].m_transparent = false;
 }
 
 void Scripter::hideEntity(unsigned int index) {
-    m_entities[index]->m_transparent = true;
+    (*m_entities)[index].m_transparent = true;
 }
 #include <iostream>
 void Scripter::update() {
@@ -168,7 +172,7 @@ void Scripter::executeCommand(std::string& command) {
 
 /// PRIVATE, DON'T TOUCH!!!!!!!
 
-std::vector<Entity*> Scripter::entityTarget(std::vector<std::string> parameters, unsigned int& keywordIndex) { // gets entity
+std::vector<Entity*> Scripter::entityTarget(std::vector<std::string> parameters, unsigned int& keywordIndex) { // gets entities
     if(parameters[keywordIndex] == "near") {
         glm::vec2 position;
         keywordIndex += 1;
@@ -182,8 +186,8 @@ std::vector<Entity*> Scripter::entityTarget(std::vector<std::string> parameters,
 
         bool found = false;
 
-        for(int i = 0; i < m_chunks[chunkIndex]->getAllEntities().size(); i++) {
-            float dist = std::sqrt(std::abs(position.x - m_chunks[chunkIndex]->getAllEntities()[i]->getPosition().x) + std::abs(position.y - m_chunks[chunkIndex]->getAllEntities()[i]->getPosition().y));
+        for(int i = 0; i < m_chunks[chunkIndex]->getAllEntities()->size(); i++) {
+            float dist = std::sqrt(std::abs(position.x - (*m_chunks[chunkIndex]->getAllEntities())[i].getPosition().x) + std::abs(position.y - (*m_chunks[chunkIndex]->getAllEntities())[i].getPosition().y));
             if(dist < nearestDistance || !found) {
                 nearestDistance = dist;
                 nearestId = i;
@@ -194,8 +198,8 @@ std::vector<Entity*> Scripter::entityTarget(std::vector<std::string> parameters,
 
         while(!found) {
             for(int j = 0; j < WORLD_SIZE / 2 - 1; j++) {
-                for(int i = 0; i < m_chunks[(chunkIndex-i + WORLD_SIZE) % WORLD_SIZE]->getAllEntities().size(); i++) {
-                    float dist = std::sqrt(std::abs(position.x - m_chunks[chunkIndex]->getAllEntities()[i]->getPosition().x) + std::abs(position.y - m_chunks[chunkIndex]->getAllEntities()[i]->getPosition().y));
+                for(int i = 0; i < m_chunks[(chunkIndex-i + WORLD_SIZE) % WORLD_SIZE]->getAllEntities()->size(); i++) {
+                    float dist = std::sqrt(std::abs(position.x - (*m_chunks[chunkIndex]->getAllEntities())[i].getPosition().x) + std::abs(position.y - (*m_chunks[chunkIndex]->getAllEntities())[i].getPosition().y));
                     if(dist < nearestDistance || !found) {
                         nearestDistance = dist;
                         nearestId = i;
@@ -203,8 +207,8 @@ std::vector<Entity*> Scripter::entityTarget(std::vector<std::string> parameters,
                         found = true;
                     }
                 }
-                for(int i = 0; i < m_chunks[(chunkIndex+i + WORLD_SIZE) % WORLD_SIZE]->getAllEntities().size(); i++) {
-                    float dist = std::sqrt(std::abs(position.x - m_chunks[chunkIndex]->getAllEntities()[i]->getPosition().x) + std::abs(position.y - m_chunks[chunkIndex]->getAllEntities()[i]->getPosition().y));
+                for(int i = 0; i < m_chunks[(chunkIndex+i + WORLD_SIZE) % WORLD_SIZE]->getAllEntities()->size(); i++) {
+                    float dist = std::sqrt(std::abs(position.x - (*m_chunks[chunkIndex]->getAllEntities())[i].getPosition().x) + std::abs(position.y - (*m_chunks[chunkIndex]->getAllEntities())[i].getPosition().y));
                     if(dist < nearestDistance || !found) {
                         nearestDistance = dist;
                         nearestId = i;
@@ -216,7 +220,7 @@ std::vector<Entity*> Scripter::entityTarget(std::vector<std::string> parameters,
         }
 
         std::vector<Entity*> ret;
-        ret.push_back(m_chunks[nearestChunkId]->getAllEntities()[nearestId]);
+        ret.push_back(&(*m_chunks[nearestChunkId]->getAllEntities())[nearestId]);
 
         return ret;
     } else if(parameters[keywordIndex] == "area") { /// Not tested
@@ -230,10 +234,10 @@ std::vector<Entity*> Scripter::entityTarget(std::vector<std::string> parameters,
         std::vector<Entity*> ret;
 
         for(int i = 0; i <= chunk1-chunk2; i++) {
-            for(int j = 0; j < m_chunks[(chunk1+i)%WORLD_SIZE]->getAllEntities().size(); j++) {
-                if(m_chunks[(chunk1+i)%WORLD_SIZE]->getAllEntities()[j]->getPosition().x >= position1.x && m_chunks[(chunk1+i)%WORLD_SIZE]->getAllEntities()[j]->getPosition().x <= position2.x) {
-                    if(m_chunks[(chunk1+i)%WORLD_SIZE]->getAllEntities()[j]->getPosition().y >= position1.y && m_chunks[(chunk1+i)%WORLD_SIZE]->getAllEntities()[j]->getPosition().y <= position2.y) {
-                        ret.push_back(m_chunks[(chunk1+i)%WORLD_SIZE]->getAllEntities()[j]);
+            for(int j = 0; j < m_chunks[(chunk1+i)%WORLD_SIZE]->getAllEntities()->size(); j++) {
+                if((*m_chunks[(chunk1+i)%WORLD_SIZE]->getAllEntities())[j].getPosition().x >= position1.x && (*m_chunks[(chunk1+i)%WORLD_SIZE]->getAllEntities())[j].getPosition().x <= position2.x) {
+                    if((*m_chunks[(chunk1+i)%WORLD_SIZE]->getAllEntities())[j].getPosition().y >= position1.y && (*m_chunks[(chunk1+i)%WORLD_SIZE]->getAllEntities())[j].getPosition().y <= position2.y) {
+                        ret.push_back(&(*m_chunks[(chunk1+i)%WORLD_SIZE]->getAllEntities())[j]);
                     }
                 }
             }

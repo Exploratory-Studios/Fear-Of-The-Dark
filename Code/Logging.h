@@ -15,7 +15,7 @@ public:
         }
         message = message + "\n";
         m_logFile << message;
-        std::printf(message.c_str());
+        std::printf("%s", message.c_str());
         m_logFile.flush();
     }
 private:

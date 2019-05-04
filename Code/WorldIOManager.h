@@ -48,6 +48,7 @@ struct ChunkData {
 struct World {
     Chunk* chunks[WORLD_SIZE] = { nullptr };
     Player player;
+    float time = 0.0f;
 };
 
 class WorldIOManager
@@ -66,10 +67,8 @@ class WorldIOManager
             all of the world (random engine #2)
         */
 
-        World* getWorld() { return m_world; } /// I'm using pointers so that the program can always
-                                              /// access the location of the same World, and the same
-                                              /// WorldIOManager. That way, I will never(!) get
-                                              /// duplicates of worlds that don't change at the same time.
+        World* getWorld() { return m_world; } /// Singleton of world, essentially
+        void setWorldTime(float newTime) { m_world->time = newTime; }
         ScriptQueue* getScriptQueue() { return m_sq; }
 
     private:

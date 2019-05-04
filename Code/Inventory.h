@@ -17,7 +17,7 @@ class Inventory
         bool addItem(Item* newItem);
 
         Item* getItem(unsigned int x) { if(m_items.size() > x) { return m_items[x]; } else { return nullptr; } }
-        unsigned int getItemIndex(Item* item) { if(item) { for(int i = 0; i < m_items.size(); i++) { if(m_items[i] == item) return i; } } }
+        unsigned int getItemIndex(Item* item) { if(item) { for(unsigned int i = 0; i < m_items.size(); i++) { if(m_items[i] == item) return i; } } return (unsigned int)-1; }
         std::vector<Item*> getItems() { return m_items; }
         float getCurrentWeight();
         float getSpeedMultiplier();

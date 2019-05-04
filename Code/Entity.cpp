@@ -147,7 +147,7 @@ void Entity::move(float timeStepVariable) {
     if(m_velocity.y < -MAX_SPEED) m_velocity.y = -MAX_SPEED;
 
     if(!m_onGround) {
-        m_velocity.y -= 0.1f;
+        m_velocity.y -= 0.98f / 60.0f * TILE_SIZE;
     } else if(m_velocity.y < 0.0f) {
         m_velocity.y = 0.0f;
     }
@@ -194,7 +194,7 @@ void Entity::collide() {
             glm::vec2 posTL(x, y + height);
             glm::vec2 posTR(x + width, y + height);
 
-            const float testVar = 16.0f;
+            const float testVar = TILE_SIZE * 2;
 
             // Check for ground/ceiling
             checkTilePosition(m_parentChunk->tiles,

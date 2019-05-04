@@ -36,8 +36,8 @@ class EntityManager
                 for(unsigned int i = 0; i < m_talkingEntities->size(); i++) {
                     allEnts->push_back((*m_talkingEntities)[i]);
                 }
-                return allEnts;
             }
+            return allEnts;
         }
 
         void targetEntities(Player& p);

@@ -23,7 +23,7 @@ class Chunk
         void init(Tile* tileArray[WORLD_HEIGHT][CHUNK_SIZE], Tile* extraTileArray[WORLD_HEIGHT][2], Chunk* surroundingChunks[2], EntityManager* entityManager);
 
         void update(float time, float timeStepVariable, Chunk* chunks[WORLD_SIZE]);
-        void tick(float* tickTime, Player& p);
+        void tick(float tickTime, Player& p);
         void draw(GLEngine::SpriteBatch& sb, int xOffset, float time); // xOffset is in chunks
 
         void setPlace(Categories::Places place);

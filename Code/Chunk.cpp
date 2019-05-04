@@ -76,7 +76,7 @@ void Chunk::update(float time, float timeStepVariable, Chunk* chunks[WORLD_SIZE]
     m_entityManager->update(timeStepVariable, chunks);
 }
 
-void Chunk::tick(float* tickTime, Player& p) {
+void Chunk::tick(float tickTime, Player& p) {
     for(int i = 0; i < WORLD_HEIGHT; i++) {
         for(int j = 0; j < CHUNK_SIZE; j++) {
             tiles[i][j]->tick(tickTime);

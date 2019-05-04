@@ -104,3 +104,1893 @@ LOAD: Loaded World Chunks
 
 ### LOAD: LOAD COMPLETED. FINISHED AT 3017.168945 (33.447998 milliseconds) ###
 
+
+
+
+### LOG: Fri Apr 26 20:55:14 2019 ###
+
+
+
+
+### LOG: Fri Apr 26 21:01:27 2019 ###
+
+
+
+
+### LOG: Fri Apr 26 21:03:10 2019 ###
+
+Loaded all 1 music files.
+Loaded all 0 sound files.
+Loading dialogue. 413 bytes to read.
+Dialogue loaded! (413 bytes)
+Loading flags. 15 bytes to read.
+Loaded flag with id of 0 and value of 1
+Loaded flag with id of 1 and value of 0
+Loaded flag with id of 2 and value of 0
+Loaded flag with id of 3 and value of 0
+Flags loaded! (15 bytes)
+
+### LOAD: STARTING LOAD AT 3893.604004 ###
+
+
+### LOAD: Loaded Version: 1.0.0 ###
+
+LOAD: Loaded Player POD
+LOAD: Loaded 1 of 1 Items
+LOAD: Loaded Player Inventory
+LOAD: Loaded 1 of 16 Chunks
+LOAD: Loaded 2 of 16 Chunks
+LOAD: Loaded 3 of 16 Chunks
+LOAD: Loaded 4 of 16 Chunks
+LOAD: Loaded 5 of 16 Chunks
+LOAD: Loaded 6 of 16 Chunks
+LOAD: Loaded 7 of 16 Chunks
+LOAD: Loaded 8 of 16 Chunks
+LOAD: Loaded 9 of 16 Chunks
+LOAD: Loaded 10 of 16 Chunks
+LOAD: Loaded 11 of 16 Chunks
+LOAD: Loaded 12 of 16 Chunks
+LOAD: Loaded 13 of 16 Chunks
+LOAD: Loaded 14 of 16 Chunks
+LOAD: Loaded 15 of 16 Chunks
+LOAD: Loaded 16 of 16 Chunks
+LOAD: Loaded World Chunks
+
+### LOAD: LOAD COMPLETED. FINISHED AT 3928.498047 (34.894043 milliseconds) ###
+
+
+
+
+### LOG: Fri Apr 26 21:04:33 2019 ###
+
+Loaded all 1 music files.
+Loaded all 0 sound files.
+Loading dialogue. 413 bytes to read.
+Dialogue loaded! (413 bytes)
+Loading flags. 15 bytes to read.
+Loaded flag with id of 0 and value of 1
+Loaded flag with id of 1 and value of 0
+Loaded flag with id of 2 and value of 0
+Loaded flag with id of 3 and value of 0
+Flags loaded! (15 bytes)
+
+### LOAD: STARTING LOAD AT 1460.644043 ###
+
+
+### LOAD: Loaded Version: 1.0.0
+ Using version: 1.0.0 ###
+
+LOAD: Loaded Player POD
+LOAD: Loaded 1 of 1 Items
+LOAD: Loaded Player Inventory
+LOAD: Loaded 1 of 16 Chunks
+LOAD: Loaded 2 of 16 Chunks
+LOAD: Loaded 3 of 16 Chunks
+LOAD: Loaded 4 of 16 Chunks
+LOAD: Loaded 5 of 16 Chunks
+LOAD: Loaded 6 of 16 Chunks
+LOAD: Loaded 7 of 16 Chunks
+LOAD: Loaded 8 of 16 Chunks
+LOAD: Loaded 9 of 16 Chunks
+LOAD: Loaded 10 of 16 Chunks
+LOAD: Loaded 11 of 16 Chunks
+LOAD: Loaded 12 of 16 Chunks
+LOAD: Loaded 13 of 16 Chunks
+LOAD: Loaded 14 of 16 Chunks
+LOAD: Loaded 15 of 16 Chunks
+LOAD: Loaded 16 of 16 Chunks
+LOAD: Loaded World Chunks
+
+### LOAD: LOAD COMPLETED. FINISHED AT 1495.729004 (35.084961 milliseconds) ###
+
+
+
+
+### LOG: Fri Apr 26 21:04:59 2019 ###
+
+Loaded all 1 music files.
+Loaded all 0 sound files.
+Loading dialogue. 413 bytes to read.
+Dialogue loaded! (413 bytes)
+Loading flags. 15 bytes to read.
+Loaded flag with id of 0 and value of 1
+Loaded flag with id of 1 and value of 0
+Loaded flag with id of 2 and value of 0
+Loaded flag with id of 3 and value of 0
+Flags loaded! (15 bytes)
+
+### LOAD: STARTING LOAD AT 1047.636963 ###
+
+
+### LOAD: Loaded Version: 1.0.0, Using version: 1.0.0 ###
+
+LOAD: Loaded Player POD
+LOAD: Loaded 1 of 1 Items
+LOAD: Loaded Player Inventory
+LOAD: Loaded 1 of 16 Chunks
+LOAD: Loaded 2 of 16 Chunks
+LOAD: Loaded 3 of 16 Chunks
+LOAD: Loaded 4 of 16 Chunks
+LOAD: Loaded 5 of 16 Chunks
+LOAD: Loaded 6 of 16 Chunks
+LOAD: Loaded 7 of 16 Chunks
+LOAD: Loaded 8 of 16 Chunks
+LOAD: Loaded 9 of 16 Chunks
+LOAD: Loaded 10 of 16 Chunks
+LOAD: Loaded 11 of 16 Chunks
+LOAD: Loaded 12 of 16 Chunks
+LOAD: Loaded 13 of 16 Chunks
+LOAD: Loaded 14 of 16 Chunks
+LOAD: Loaded 15 of 16 Chunks
+LOAD: Loaded 16 of 16 Chunks
+LOAD: Loaded World Chunks
+
+### LOAD: LOAD COMPLETED. FINISHED AT 1103.031006 (55.394043 milliseconds) ###
+
+
+
+
+### LOG: Fri Apr 26 21:06:41 2019 ###
+
+Loaded all 1 music files.
+Loaded all 0 sound files.
+Loading dialogue. 413 bytes to read.
+Dialogue loaded! (413 bytes)
+Loading flags. 15 bytes to read.
+Loaded flag with id of 0 and value of 1
+Loaded flag with id of 1 and value of 0
+Loaded flag with id of 2 and value of 0
+Loaded flag with id of 3 and value of 0
+Flags loaded! (15 bytes)
+SAVE: Starting Save Preparations
+SAVE: Player Data Prepared
+SAVE: Chunk Data Prepared
+
+### SAVE: ALL DATA PREPARED, STARTING SAVE ###
+
+SAVE: Started Saving with version: 1.0.0
+SAVE: Wrote Player POD
+SAVE: Wrote Player Inventory
+SAVE: Wrote World Chunks
+
+### SAVE: SAVE COMPLETED ###
+
+
+
+
+### LOG: Fri Apr 26 21:07:12 2019 ###
+
+Loaded all 1 music files.
+Loaded all 0 sound files.
+Loading dialogue. 413 bytes to read.
+Dialogue loaded! (413 bytes)
+Loading flags. 15 bytes to read.
+Loaded flag with id of 0 and value of 1
+Loaded flag with id of 1 and value of 0
+Loaded flag with id of 2 and value of 0
+Loaded flag with id of 3 and value of 0
+Flags loaded! (15 bytes)
+
+### LOAD: STARTING LOAD AT 847.159973 ###
+
+
+### LOAD: Loaded Version: 1.0.0, Using Version: 1.0.0 ###
+
+LOAD: Loaded Player POD
+LOAD: Loaded Player Inventory
+LOAD: Loaded 1 of 16 Chunks
+LOAD: Loaded 2 of 16 Chunks
+LOAD: Loaded 3 of 16 Chunks
+LOAD: Loaded 4 of 16 Chunks
+LOAD: Loaded 5 of 16 Chunks
+LOAD: Loaded 6 of 16 Chunks
+LOAD: Loaded 7 of 16 Chunks
+LOAD: Loaded 8 of 16 Chunks
+LOAD: Loaded 9 of 16 Chunks
+LOAD: Loaded 10 of 16 Chunks
+LOAD: Loaded 11 of 16 Chunks
+LOAD: Loaded 12 of 16 Chunks
+LOAD: Loaded 13 of 16 Chunks
+LOAD: Loaded 14 of 16 Chunks
+LOAD: Loaded 15 of 16 Chunks
+LOAD: Loaded 16 of 16 Chunks
+LOAD: Loaded World Chunks
+
+### LOAD: LOAD COMPLETED. FINISHED AT 894.044983 (46.885010 milliseconds) ###
+
+
+
+
+### LOG: Fri Apr 26 21:07:30 2019 ###
+
+Loaded all 1 music files.
+Loaded all 0 sound files.
+Loading dialogue. 413 bytes to read.
+Dialogue loaded! (413 bytes)
+Loading flags. 15 bytes to read.
+Loaded flag with id of 0 and value of 1
+Loaded flag with id of 1 and value of 0
+Loaded flag with id of 2 and value of 0
+Loaded flag with id of 3 and value of 0
+Flags loaded! (15 bytes)
+
+### LOAD: STARTING LOAD AT 930.750977 ###
+
+
+### LOAD: Loaded Version: 1.0.0, Using Version: 1.0.1 ###
+
+
+
+
+### LOG: Fri Apr 26 21:10:11 2019 ###
+
+Loaded all 1 music files.
+Loaded all 0 sound files.
+Loading dialogue. 413 bytes to read.
+Dialogue loaded! (413 bytes)
+Loading flags. 15 bytes to read.
+Loaded flag with id of 0 and value of 1
+Loaded flag with id of 1 and value of 0
+Loaded flag with id of 2 and value of 0
+Loaded flag with id of 3 and value of 0
+Flags loaded! (15 bytes)
+
+### LOAD: STARTING LOAD AT 1232.421021 ###
+
+
+### LOAD: Loaded Version: 1.0.0, Using Version: 1.0.0 ###
+
+LOAD: Loaded Player POD
+LOAD: Loaded Player Inventory
+LOAD: Loaded 1 of 16 Chunks
+LOAD: Loaded 2 of 16 Chunks
+LOAD: Loaded 3 of 16 Chunks
+LOAD: Loaded 4 of 16 Chunks
+LOAD: Loaded 5 of 16 Chunks
+LOAD: Loaded 6 of 16 Chunks
+LOAD: Loaded 7 of 16 Chunks
+LOAD: Loaded 8 of 16 Chunks
+LOAD: Loaded 9 of 16 Chunks
+LOAD: Loaded 10 of 16 Chunks
+LOAD: Loaded 11 of 16 Chunks
+LOAD: Loaded 12 of 16 Chunks
+LOAD: Loaded 13 of 16 Chunks
+LOAD: Loaded 14 of 16 Chunks
+LOAD: Loaded 15 of 16 Chunks
+LOAD: Loaded 16 of 16 Chunks
+LOAD: Loaded World Chunks
+
+### LOAD: LOAD COMPLETED. FINISHED AT 1275.166016 (42.744995 milliseconds) ###
+
+
+### LOAD: STARTING LOAD AT 1923.364014 ###
+
+
+### LOAD: Loaded Version: 1.0.0, Using Version: 1.0.0 ###
+
+LOAD: Loaded Player POD
+LOAD: Loaded Player Inventory
+LOAD: Loaded 1 of 16 Chunks
+LOAD: Loaded 2 of 16 Chunks
+LOAD: Loaded 3 of 16 Chunks
+LOAD: Loaded 4 of 16 Chunks
+LOAD: Loaded 5 of 16 Chunks
+LOAD: Loaded 6 of 16 Chunks
+LOAD: Loaded 7 of 16 Chunks
+LOAD: Loaded 8 of 16 Chunks
+LOAD: Loaded 9 of 16 Chunks
+LOAD: Loaded 10 of 16 Chunks
+LOAD: Loaded 11 of 16 Chunks
+LOAD: Loaded 12 of 16 Chunks
+LOAD: Loaded 13 of 16 Chunks
+LOAD: Loaded 14 of 16 Chunks
+LOAD: Loaded 15 of 16 Chunks
+LOAD: Loaded 16 of 16 Chunks
+LOAD: Loaded World Chunks
+
+### LOAD: LOAD COMPLETED. FINISHED AT 1955.831055 (32.467041 milliseconds) ###
+
+
+### LOAD: STARTING LOAD AT 2145.648926 ###
+
+
+### LOAD: Loaded Version: 1.0.0, Using Version: 1.0.0 ###
+
+LOAD: Loaded Player POD
+LOAD: Loaded Player Inventory
+LOAD: Loaded 1 of 16 Chunks
+LOAD: Loaded 2 of 16 Chunks
+LOAD: Loaded 3 of 16 Chunks
+LOAD: Loaded 4 of 16 Chunks
+LOAD: Loaded 5 of 16 Chunks
+LOAD: Loaded 6 of 16 Chunks
+LOAD: Loaded 7 of 16 Chunks
+LOAD: Loaded 8 of 16 Chunks
+LOAD: Loaded 9 of 16 Chunks
+LOAD: Loaded 10 of 16 Chunks
+LOAD: Loaded 11 of 16 Chunks
+LOAD: Loaded 12 of 16 Chunks
+LOAD: Loaded 13 of 16 Chunks
+LOAD: Loaded 14 of 16 Chunks
+LOAD: Loaded 15 of 16 Chunks
+LOAD: Loaded 16 of 16 Chunks
+LOAD: Loaded World Chunks
+
+### LOAD: LOAD COMPLETED. FINISHED AT 2186.115967 (40.467041 milliseconds) ###
+
+
+### LOAD: STARTING LOAD AT 2374.775879 ###
+
+
+### LOAD: Loaded Version: 1.0.0, Using Version: 1.0.0 ###
+
+LOAD: Loaded Player POD
+LOAD: Loaded Player Inventory
+LOAD: Loaded 1 of 16 Chunks
+LOAD: Loaded 2 of 16 Chunks
+LOAD: Loaded 3 of 16 Chunks
+LOAD: Loaded 4 of 16 Chunks
+LOAD: Loaded 5 of 16 Chunks
+LOAD: Loaded 6 of 16 Chunks
+LOAD: Loaded 7 of 16 Chunks
+LOAD: Loaded 8 of 16 Chunks
+LOAD: Loaded 9 of 16 Chunks
+LOAD: Loaded 10 of 16 Chunks
+LOAD: Loaded 11 of 16 Chunks
+LOAD: Loaded 12 of 16 Chunks
+LOAD: Loaded 13 of 16 Chunks
+LOAD: Loaded 14 of 16 Chunks
+LOAD: Loaded 15 of 16 Chunks
+LOAD: Loaded 16 of 16 Chunks
+LOAD: Loaded World Chunks
+
+### LOAD: LOAD COMPLETED. FINISHED AT 2416.408936 (41.633057 milliseconds) ###
+
+
+### LOAD: STARTING LOAD AT 2507.139893 ###
+
+
+### LOAD: Loaded Version: 1.0.0, Using Version: 1.0.0 ###
+
+LOAD: Loaded Player POD
+LOAD: Loaded Player Inventory
+LOAD: Loaded 1 of 16 Chunks
+LOAD: Loaded 2 of 16 Chunks
+LOAD: Loaded 3 of 16 Chunks
+LOAD: Loaded 4 of 16 Chunks
+LOAD: Loaded 5 of 16 Chunks
+LOAD: Loaded 6 of 16 Chunks
+LOAD: Loaded 7 of 16 Chunks
+LOAD: Loaded 8 of 16 Chunks
+LOAD: Loaded 9 of 16 Chunks
+LOAD: Loaded 10 of 16 Chunks
+LOAD: Loaded 11 of 16 Chunks
+LOAD: Loaded 12 of 16 Chunks
+LOAD: Loaded 13 of 16 Chunks
+LOAD: Loaded 14 of 16 Chunks
+LOAD: Loaded 15 of 16 Chunks
+LOAD: Loaded 16 of 16 Chunks
+LOAD: Loaded World Chunks
+
+### LOAD: LOAD COMPLETED. FINISHED AT 2540.480957 (33.341064 milliseconds) ###
+
+
+### LOAD: STARTING LOAD AT 2615.862061 ###
+
+
+### LOAD: Loaded Version: 1.0.0, Using Version: 1.0.0 ###
+
+LOAD: Loaded Player POD
+LOAD: Loaded Player Inventory
+LOAD: Loaded 1 of 16 Chunks
+LOAD: Loaded 2 of 16 Chunks
+LOAD: Loaded 3 of 16 Chunks
+LOAD: Loaded 4 of 16 Chunks
+LOAD: Loaded 5 of 16 Chunks
+LOAD: Loaded 6 of 16 Chunks
+LOAD: Loaded 7 of 16 Chunks
+LOAD: Loaded 8 of 16 Chunks
+LOAD: Loaded 9 of 16 Chunks
+LOAD: Loaded 10 of 16 Chunks
+LOAD: Loaded 11 of 16 Chunks
+LOAD: Loaded 12 of 16 Chunks
+LOAD: Loaded 13 of 16 Chunks
+LOAD: Loaded 14 of 16 Chunks
+LOAD: Loaded 15 of 16 Chunks
+LOAD: Loaded 16 of 16 Chunks
+LOAD: Loaded World Chunks
+
+### LOAD: LOAD COMPLETED. FINISHED AT 2662.215088 (46.353027 milliseconds) ###
+
+
+### LOAD: STARTING LOAD AT 2728.355957 ###
+
+
+### LOAD: Loaded Version: 1.0.0, Using Version: 1.0.0 ###
+
+LOAD: Loaded Player POD
+LOAD: Loaded Player Inventory
+LOAD: Loaded 1 of 16 Chunks
+LOAD: Loaded 2 of 16 Chunks
+LOAD: Loaded 3 of 16 Chunks
+LOAD: Loaded 4 of 16 Chunks
+LOAD: Loaded 5 of 16 Chunks
+LOAD: Loaded 6 of 16 Chunks
+LOAD: Loaded 7 of 16 Chunks
+LOAD: Loaded 8 of 16 Chunks
+LOAD: Loaded 9 of 16 Chunks
+LOAD: Loaded 10 of 16 Chunks
+LOAD: Loaded 11 of 16 Chunks
+LOAD: Loaded 12 of 16 Chunks
+LOAD: Loaded 13 of 16 Chunks
+LOAD: Loaded 14 of 16 Chunks
+LOAD: Loaded 15 of 16 Chunks
+LOAD: Loaded 16 of 16 Chunks
+LOAD: Loaded World Chunks
+
+### LOAD: LOAD COMPLETED. FINISHED AT 2767.246094 (38.890137 milliseconds) ###
+
+
+### LOAD: STARTING LOAD AT 2847.197021 ###
+
+
+### LOAD: Loaded Version: 1.0.0, Using Version: 1.0.0 ###
+
+LOAD: Loaded Player POD
+LOAD: Loaded Player Inventory
+LOAD: Loaded 1 of 16 Chunks
+LOAD: Loaded 2 of 16 Chunks
+LOAD: Loaded 3 of 16 Chunks
+LOAD: Loaded 4 of 16 Chunks
+LOAD: Loaded 5 of 16 Chunks
+LOAD: Loaded 6 of 16 Chunks
+LOAD: Loaded 7 of 16 Chunks
+LOAD: Loaded 8 of 16 Chunks
+LOAD: Loaded 9 of 16 Chunks
+LOAD: Loaded 10 of 16 Chunks
+LOAD: Loaded 11 of 16 Chunks
+LOAD: Loaded 12 of 16 Chunks
+LOAD: Loaded 13 of 16 Chunks
+LOAD: Loaded 14 of 16 Chunks
+LOAD: Loaded 15 of 16 Chunks
+LOAD: Loaded 16 of 16 Chunks
+LOAD: Loaded World Chunks
+
+### LOAD: LOAD COMPLETED. FINISHED AT 2880.304932 (33.107910 milliseconds) ###
+
+
+### LOAD: STARTING LOAD AT 2933.404053 ###
+
+
+### LOAD: Loaded Version: 1.0.0, Using Version: 1.0.0 ###
+
+LOAD: Loaded Player POD
+LOAD: Loaded Player Inventory
+LOAD: Loaded 1 of 16 Chunks
+LOAD: Loaded 2 of 16 Chunks
+LOAD: Loaded 3 of 16 Chunks
+LOAD: Loaded 4 of 16 Chunks
+LOAD: Loaded 5 of 16 Chunks
+LOAD: Loaded 6 of 16 Chunks
+LOAD: Loaded 7 of 16 Chunks
+LOAD: Loaded 8 of 16 Chunks
+LOAD: Loaded 9 of 16 Chunks
+LOAD: Loaded 10 of 16 Chunks
+LOAD: Loaded 11 of 16 Chunks
+LOAD: Loaded 12 of 16 Chunks
+LOAD: Loaded 13 of 16 Chunks
+LOAD: Loaded 14 of 16 Chunks
+LOAD: Loaded 15 of 16 Chunks
+LOAD: Loaded 16 of 16 Chunks
+LOAD: Loaded World Chunks
+
+### LOAD: LOAD COMPLETED. FINISHED AT 2977.483887 (44.079834 milliseconds) ###
+
+
+### LOAD: STARTING LOAD AT 3047.435059 ###
+
+
+### LOAD: Loaded Version: 1.0.0, Using Version: 1.0.0 ###
+
+LOAD: Loaded Player POD
+LOAD: Loaded Player Inventory
+LOAD: Loaded 1 of 16 Chunks
+LOAD: Loaded 2 of 16 Chunks
+LOAD: Loaded 3 of 16 Chunks
+LOAD: Loaded 4 of 16 Chunks
+LOAD: Loaded 5 of 16 Chunks
+LOAD: Loaded 6 of 16 Chunks
+LOAD: Loaded 7 of 16 Chunks
+LOAD: Loaded 8 of 16 Chunks
+LOAD: Loaded 9 of 16 Chunks
+LOAD: Loaded 10 of 16 Chunks
+LOAD: Loaded 11 of 16 Chunks
+LOAD: Loaded 12 of 16 Chunks
+LOAD: Loaded 13 of 16 Chunks
+LOAD: Loaded 14 of 16 Chunks
+LOAD: Loaded 15 of 16 Chunks
+LOAD: Loaded 16 of 16 Chunks
+LOAD: Loaded World Chunks
+
+### LOAD: LOAD COMPLETED. FINISHED AT 3089.626953 (42.191895 milliseconds) ###
+
+
+### LOAD: STARTING LOAD AT 3165.205078 ###
+
+
+### LOAD: Loaded Version: 1.0.0, Using Version: 1.0.0 ###
+
+LOAD: Loaded Player POD
+LOAD: Loaded Player Inventory
+LOAD: Loaded 1 of 16 Chunks
+LOAD: Loaded 2 of 16 Chunks
+LOAD: Loaded 3 of 16 Chunks
+LOAD: Loaded 4 of 16 Chunks
+LOAD: Loaded 5 of 16 Chunks
+LOAD: Loaded 6 of 16 Chunks
+LOAD: Loaded 7 of 16 Chunks
+LOAD: Loaded 8 of 16 Chunks
+LOAD: Loaded 9 of 16 Chunks
+LOAD: Loaded 10 of 16 Chunks
+LOAD: Loaded 11 of 16 Chunks
+LOAD: Loaded 12 of 16 Chunks
+LOAD: Loaded 13 of 16 Chunks
+LOAD: Loaded 14 of 16 Chunks
+LOAD: Loaded 15 of 16 Chunks
+LOAD: Loaded 16 of 16 Chunks
+LOAD: Loaded World Chunks
+
+### LOAD: LOAD COMPLETED. FINISHED AT 3209.464111 (44.259033 milliseconds) ###
+
+
+### LOAD: STARTING LOAD AT 3272.461914 ###
+
+
+### LOAD: Loaded Version: 1.0.0, Using Version: 1.0.0 ###
+
+LOAD: Loaded Player POD
+LOAD: Loaded Player Inventory
+LOAD: Loaded 1 of 16 Chunks
+LOAD: Loaded 2 of 16 Chunks
+LOAD: Loaded 3 of 16 Chunks
+LOAD: Loaded 4 of 16 Chunks
+LOAD: Loaded 5 of 16 Chunks
+LOAD: Loaded 6 of 16 Chunks
+LOAD: Loaded 7 of 16 Chunks
+LOAD: Loaded 8 of 16 Chunks
+LOAD: Loaded 9 of 16 Chunks
+LOAD: Loaded 10 of 16 Chunks
+LOAD: Loaded 11 of 16 Chunks
+LOAD: Loaded 12 of 16 Chunks
+LOAD: Loaded 13 of 16 Chunks
+LOAD: Loaded 14 of 16 Chunks
+LOAD: Loaded 15 of 16 Chunks
+LOAD: Loaded 16 of 16 Chunks
+LOAD: Loaded World Chunks
+
+### LOAD: LOAD COMPLETED. FINISHED AT 3314.740967 (42.279053 milliseconds) ###
+
+
+### LOAD: STARTING LOAD AT 3385.629883 ###
+
+
+### LOAD: Loaded Version: 1.0.0, Using Version: 1.0.0 ###
+
+LOAD: Loaded Player POD
+LOAD: Loaded Player Inventory
+LOAD: Loaded 1 of 16 Chunks
+LOAD: Loaded 2 of 16 Chunks
+LOAD: Loaded 3 of 16 Chunks
+LOAD: Loaded 4 of 16 Chunks
+LOAD: Loaded 5 of 16 Chunks
+LOAD: Loaded 6 of 16 Chunks
+LOAD: Loaded 7 of 16 Chunks
+LOAD: Loaded 8 of 16 Chunks
+LOAD: Loaded 9 of 16 Chunks
+LOAD: Loaded 10 of 16 Chunks
+LOAD: Loaded 11 of 16 Chunks
+LOAD: Loaded 12 of 16 Chunks
+LOAD: Loaded 13 of 16 Chunks
+LOAD: Loaded 14 of 16 Chunks
+LOAD: Loaded 15 of 16 Chunks
+LOAD: Loaded 16 of 16 Chunks
+LOAD: Loaded World Chunks
+
+### LOAD: LOAD COMPLETED. FINISHED AT 3424.261963 (38.632080 milliseconds) ###
+
+
+### LOAD: STARTING LOAD AT 3492.935059 ###
+
+
+### LOAD: Loaded Version: 1.0.0, Using Version: 1.0.0 ###
+
+LOAD: Loaded Player POD
+LOAD: Loaded Player Inventory
+LOAD: Loaded 1 of 16 Chunks
+LOAD: Loaded 2 of 16 Chunks
+LOAD: Loaded 3 of 16 Chunks
+LOAD: Loaded 4 of 16 Chunks
+LOAD: Loaded 5 of 16 Chunks
+LOAD: Loaded 6 of 16 Chunks
+LOAD: Loaded 7 of 16 Chunks
+LOAD: Loaded 8 of 16 Chunks
+LOAD: Loaded 9 of 16 Chunks
+LOAD: Loaded 10 of 16 Chunks
+LOAD: Loaded 11 of 16 Chunks
+LOAD: Loaded 12 of 16 Chunks
+LOAD: Loaded 13 of 16 Chunks
+LOAD: Loaded 14 of 16 Chunks
+LOAD: Loaded 15 of 16 Chunks
+LOAD: Loaded 16 of 16 Chunks
+LOAD: Loaded World Chunks
+
+### LOAD: LOAD COMPLETED. FINISHED AT 3531.403076 (38.468018 milliseconds) ###
+
+
+
+
+### LOG: Fri Apr 26 21:13:07 2019 ###
+
+Loaded all 1 music files.
+Loaded all 0 sound files.
+Loading dialogue. 413 bytes to read.
+Dialogue loaded! (413 bytes)
+Loading flags. 15 bytes to read.
+Loaded flag with id of 0 and value of 1
+Loaded flag with id of 1 and value of 0
+Loaded flag with id of 2 and value of 0
+Loaded flag with id of 3 and value of 0
+Flags loaded! (15 bytes)
+
+### LOAD: STARTING LOAD AT 1475.551025 ###
+
+
+### LOAD: Loaded Version: 1.0.0, Using Version: 1.0.0 ###
+
+LOAD: Loaded Player POD
+LOAD: Loaded Player Inventory
+LOAD: Loaded 1 of 16 Chunks
+LOAD: Loaded 2 of 16 Chunks
+LOAD: Loaded 3 of 16 Chunks
+LOAD: Loaded 4 of 16 Chunks
+LOAD: Loaded 5 of 16 Chunks
+LOAD: Loaded 6 of 16 Chunks
+LOAD: Loaded 7 of 16 Chunks
+LOAD: Loaded 8 of 16 Chunks
+LOAD: Loaded 9 of 16 Chunks
+LOAD: Loaded 10 of 16 Chunks
+LOAD: Loaded 11 of 16 Chunks
+LOAD: Loaded 12 of 16 Chunks
+LOAD: Loaded 13 of 16 Chunks
+LOAD: Loaded 14 of 16 Chunks
+LOAD: Loaded 15 of 16 Chunks
+LOAD: Loaded 16 of 16 Chunks
+LOAD: Loaded World Chunks
+
+### LOAD: LOAD COMPLETED. FINISHED AT 1517.282959 (41.731934 milliseconds) ###
+
+
+
+
+### LOG: Fri Apr 26 21:18:04 2019 ###
+
+Loaded all 1 music files.
+Loaded all 0 sound files.
+Loading dialogue. 413 bytes to read.
+Dialogue loaded! (413 bytes)
+Loading flags. 15 bytes to read.
+Loaded flag with id of 0 and value of 1
+Loaded flag with id of 1 and value of 0
+Loaded flag with id of 2 and value of 0
+Loaded flag with id of 3 and value of 0
+Flags loaded! (15 bytes)
+Time: 0.000000
+
+
+
+### LOG: Fri Apr 26 21:19:38 2019 ###
+
+Loaded all 1 music files.
+Loaded all 0 sound files.
+Loading dialogue. 413 bytes to read.
+Dialogue loaded! (413 bytes)
+Loading flags. 15 bytes to read.
+Loaded flag with id of 0 and value of 1
+Loaded flag with id of 1 and value of 0
+Loaded flag with id of 2 and value of 0
+Loaded flag with id of 3 and value of 0
+Flags loaded! (15 bytes)
+
+
+
+### LOG: Fri Apr 26 21:20:51 2019 ###
+
+Loaded all 1 music files.
+Loaded all 0 sound files.
+Loading dialogue. 413 bytes to read.
+Dialogue loaded! (413 bytes)
+Loading flags. 15 bytes to read.
+Loaded flag with id of 0 and value of 1
+Loaded flag with id of 1 and value of 0
+Loaded flag with id of 2 and value of 0
+Loaded flag with id of 3 and value of 0
+Flags loaded! (15 bytes)
+Time: 0.000000
+
+
+
+### LOG: Fri Apr 26 21:21:18 2019 ###
+
+Loaded all 1 music files.
+Loaded all 0 sound files.
+Loading dialogue. 413 bytes to read.
+Dialogue loaded! (413 bytes)
+Loading flags. 15 bytes to read.
+Loaded flag with id of 0 and value of 1
+Loaded flag with id of 1 and value of 0
+Loaded flag with id of 2 and value of 0
+Loaded flag with id of 3 and value of 0
+Flags loaded! (15 bytes)
+NOT A COMMAND
+Valid commands are:
+time <time>: Sets the tick-time to <time>
+give <id> <amnt>: Gives the player <amnt> items with <id> id
+getTime: Prints the current tick-time
+tickRate <rate>: Sets the tick-rate to <rate>
+Time: 1000.000000
+
+
+
+### LOG: Fri Apr 26 21:24:41 2019 ###
+
+Loaded all 1 music files.
+Loaded all 0 sound files.
+Loading dialogue. 413 bytes to read.
+Dialogue loaded! (413 bytes)
+Loading flags. 15 bytes to read.
+Loaded flag with id of 0 and value of 1
+Loaded flag with id of 1 and value of 0
+Loaded flag with id of 2 and value of 0
+Loaded flag with id of 3 and value of 0
+Flags loaded! (15 bytes)
+Time: 0.000000
+
+
+
+### LOG: Fri Apr 26 21:25:00 2019 ###
+
+Loaded all 1 music files.
+Loaded all 0 sound files.
+Loading dialogue. 413 bytes to read.
+Dialogue loaded! (413 bytes)
+Loading flags. 15 bytes to read.
+Loaded flag with id of 0 and value of 1
+Loaded flag with id of 1 and value of 0
+Loaded flag with id of 2 and value of 0
+Loaded flag with id of 3 and value of 0
+Flags loaded! (15 bytes)
+Time: 0.000000
+
+
+
+### LOG: Fri Apr 26 21:25:20 2019 ###
+
+Loaded all 1 music files.
+Loaded all 0 sound files.
+Loading dialogue. 413 bytes to read.
+Dialogue loaded! (413 bytes)
+Loading flags. 15 bytes to read.
+Loaded flag with id of 0 and value of 1
+Loaded flag with id of 1 and value of 0
+Loaded flag with id of 2 and value of 0
+Loaded flag with id of 3 and value of 0
+Flags loaded! (15 bytes)
+
+
+
+### LOG: Fri Apr 26 21:26:21 2019 ###
+
+Loaded all 1 music files.
+Loaded all 0 sound files.
+Loading dialogue. 413 bytes to read.
+Dialogue loaded! (413 bytes)
+Loading flags. 15 bytes to read.
+Loaded flag with id of 0 and value of 1
+Loaded flag with id of 1 and value of 0
+Loaded flag with id of 2 and value of 0
+Loaded flag with id of 3 and value of 0
+Flags loaded! (15 bytes)
+
+
+
+### LOG: Fri Apr 26 21:27:04 2019 ###
+
+Loaded all 1 music files.
+Loaded all 0 sound files.
+Loading dialogue. 413 bytes to read.
+Dialogue loaded! (413 bytes)
+Loading flags. 15 bytes to read.
+Loaded flag with id of 0 and value of 1
+Loaded flag with id of 1 and value of 0
+Loaded flag with id of 2 and value of 0
+Loaded flag with id of 3 and value of 0
+Flags loaded! (15 bytes)
+
+
+
+### LOG: Fri Apr 26 21:27:49 2019 ###
+
+Loaded all 1 music files.
+Loaded all 0 sound files.
+Loading dialogue. 413 bytes to read.
+Dialogue loaded! (413 bytes)
+Loading flags. 15 bytes to read.
+Loaded flag with id of 0 and value of 1
+Loaded flag with id of 1 and value of 0
+Loaded flag with id of 2 and value of 0
+Loaded flag with id of 3 and value of 0
+Flags loaded! (15 bytes)
+SAVE: Starting Save Preparations
+SAVE: Player Data Prepared
+SAVE: Chunk Data Prepared
+
+### SAVE: ALL DATA PREPARED, STARTING SAVE ###
+
+SAVE: Started Saving with version: 1.0.0
+SAVE: Wrote Player POD
+SAVE: Wrote Player Inventory
+SAVE: Wrote World Chunks
+
+### SAVE: SAVE COMPLETED ###
+
+
+
+
+### LOG: Fri Apr 26 21:30:52 2019 ###
+
+Loaded all 1 music files.
+Loaded all 0 sound files.
+Loading dialogue. 413 bytes to read.
+Dialogue loaded! (413 bytes)
+Loading flags. 15 bytes to read.
+Loaded flag with id of 0 and value of 1
+Loaded flag with id of 1 and value of 0
+Loaded flag with id of 2 and value of 0
+Loaded flag with id of 3 and value of 0
+Flags loaded! (15 bytes)
+
+### LOAD: STARTING LOAD AT 999.372009 ###
+
+
+### LOAD: Loaded Version: 1.0.0, Using Version: 1.0.0 ###
+
+LOAD: Loaded Player POD
+LOAD: Loaded Player Inventory
+LOAD: Loaded 1 of 16 Chunks
+LOAD: Loaded 2 of 16 Chunks
+LOAD: Loaded 3 of 16 Chunks
+LOAD: Loaded 4 of 16 Chunks
+LOAD: Loaded 5 of 16 Chunks
+LOAD: Loaded 6 of 16 Chunks
+LOAD: Loaded 7 of 16 Chunks
+LOAD: Loaded 8 of 16 Chunks
+LOAD: Loaded 9 of 16 Chunks
+LOAD: Loaded 10 of 16 Chunks
+LOAD: Loaded 11 of 16 Chunks
+LOAD: Loaded 12 of 16 Chunks
+LOAD: Loaded 13 of 16 Chunks
+LOAD: Loaded 14 of 16 Chunks
+LOAD: Loaded 15 of 16 Chunks
+LOAD: Loaded 16 of 16 Chunks
+LOAD: Loaded World Chunks
+
+### LOAD: LOAD COMPLETED. FINISHED AT 1032.998047 (33.626038 milliseconds) ###
+
+
+
+
+### LOG: Fri Apr 26 21:31:10 2019 ###
+
+Loaded all 1 music files.
+Loaded all 0 sound files.
+Loading dialogue. 413 bytes to read.
+Dialogue loaded! (413 bytes)
+Loading flags. 15 bytes to read.
+Loaded flag with id of 0 and value of 1
+Loaded flag with id of 1 and value of 0
+Loaded flag with id of 2 and value of 0
+Loaded flag with id of 3 and value of 0
+Flags loaded! (15 bytes)
+
+### LOAD: STARTING LOAD AT 556.638000 ###
+
+
+### LOAD: Loaded Version: 1.0.0~, Using Version: 1.0.0 ###
+
+
+
+
+### LOG: Fri Apr 26 21:31:18 2019 ###
+
+Loaded all 1 music files.
+Loaded all 0 sound files.
+Loading dialogue. 413 bytes to read.
+Dialogue loaded! (413 bytes)
+Loading flags. 15 bytes to read.
+Loaded flag with id of 0 and value of 1
+Loaded flag with id of 1 and value of 0
+Loaded flag with id of 2 and value of 0
+Loaded flag with id of 3 and value of 0
+Flags loaded! (15 bytes)
+
+### LOAD: STARTING LOAD AT 611.343018 ###
+
+
+### LOAD: Loaded Version: 1.0.0, Using Version: 1.0.0 ###
+
+LOAD: Loaded Player POD
+LOAD: Loaded Player Inventory
+LOAD: Loaded 1 of 16 Chunks
+LOAD: Loaded 2 of 16 Chunks
+LOAD: Loaded 3 of 16 Chunks
+LOAD: Loaded 4 of 16 Chunks
+LOAD: Loaded 5 of 16 Chunks
+LOAD: Loaded 6 of 16 Chunks
+LOAD: Loaded 7 of 16 Chunks
+LOAD: Loaded 8 of 16 Chunks
+LOAD: Loaded 9 of 16 Chunks
+LOAD: Loaded 10 of 16 Chunks
+LOAD: Loaded 11 of 16 Chunks
+LOAD: Loaded 12 of 16 Chunks
+LOAD: Loaded 13 of 16 Chunks
+LOAD: Loaded 14 of 16 Chunks
+LOAD: Loaded 15 of 16 Chunks
+LOAD: Loaded 16 of 16 Chunks
+LOAD: Loaded World Chunks
+
+### LOAD: LOAD COMPLETED. FINISHED AT 645.096985 (33.753967 milliseconds) ###
+
+
+### LOAD: STARTING LOAD AT 15435.384766 ###
+
+
+### LOAD: Loaded Version: 1.0.0, Using Version: 1.0.0 ###
+
+LOAD: Loaded Player POD
+LOAD: Loaded Player Inventory
+LOAD: Loaded 1 of 16 Chunks
+LOAD: Loaded 2 of 16 Chunks
+LOAD: Loaded 3 of 16 Chunks
+LOAD: Loaded 4 of 16 Chunks
+LOAD: Loaded 5 of 16 Chunks
+LOAD: Loaded 6 of 16 Chunks
+LOAD: Loaded 7 of 16 Chunks
+LOAD: Loaded 8 of 16 Chunks
+LOAD: Loaded 9 of 16 Chunks
+LOAD: Loaded 10 of 16 Chunks
+LOAD: Loaded 11 of 16 Chunks
+LOAD: Loaded 12 of 16 Chunks
+LOAD: Loaded 13 of 16 Chunks
+LOAD: Loaded 14 of 16 Chunks
+LOAD: Loaded 15 of 16 Chunks
+LOAD: Loaded 16 of 16 Chunks
+LOAD: Loaded World Chunks
+
+### LOAD: LOAD COMPLETED. FINISHED AT 15479.545898 (44.161133 milliseconds) ###
+
+
+### LOAD: STARTING LOAD AT 42384.839844 ###
+
+
+### LOAD: Loaded Version: 1.0.0, Using Version: 1.0.0 ###
+
+LOAD: Loaded Player POD
+LOAD: Loaded Player Inventory
+LOAD: Loaded 1 of 16 Chunks
+LOAD: Loaded 2 of 16 Chunks
+LOAD: Loaded 3 of 16 Chunks
+LOAD: Loaded 4 of 16 Chunks
+LOAD: Loaded 5 of 16 Chunks
+LOAD: Loaded 6 of 16 Chunks
+LOAD: Loaded 7 of 16 Chunks
+LOAD: Loaded 8 of 16 Chunks
+LOAD: Loaded 9 of 16 Chunks
+LOAD: Loaded 10 of 16 Chunks
+LOAD: Loaded 11 of 16 Chunks
+LOAD: Loaded 12 of 16 Chunks
+LOAD: Loaded 13 of 16 Chunks
+LOAD: Loaded 14 of 16 Chunks
+LOAD: Loaded 15 of 16 Chunks
+LOAD: Loaded 16 of 16 Chunks
+LOAD: Loaded World Chunks
+
+### LOAD: LOAD COMPLETED. FINISHED AT 42424.218750 (39.378906 milliseconds) ###
+
+
+### LOAD: STARTING LOAD AT 53904.511719 ###
+
+
+### LOAD: Loaded Version: 1.0.0, Using Version: 1.0.0 ###
+
+LOAD: Loaded Player POD
+LOAD: Loaded Player Inventory
+LOAD: Loaded 1 of 16 Chunks
+LOAD: Loaded 2 of 16 Chunks
+LOAD: Loaded 3 of 16 Chunks
+LOAD: Loaded 4 of 16 Chunks
+LOAD: Loaded 5 of 16 Chunks
+LOAD: Loaded 6 of 16 Chunks
+LOAD: Loaded 7 of 16 Chunks
+LOAD: Loaded 8 of 16 Chunks
+LOAD: Loaded 9 of 16 Chunks
+LOAD: Loaded 10 of 16 Chunks
+LOAD: Loaded 11 of 16 Chunks
+LOAD: Loaded 12 of 16 Chunks
+LOAD: Loaded 13 of 16 Chunks
+LOAD: Loaded 14 of 16 Chunks
+LOAD: Loaded 15 of 16 Chunks
+LOAD: Loaded 16 of 16 Chunks
+LOAD: Loaded World Chunks
+
+### LOAD: LOAD COMPLETED. FINISHED AT 53938.160156 (33.648438 milliseconds) ###
+
+
+
+
+### LOG: Sat Apr 27 15:51:54 2019 ###
+
+Loaded all 1 music files.
+Loaded all 0 sound files.
+Loading dialogue. 413 bytes to read.
+Dialogue loaded! (413 bytes)
+Loading flags. 15 bytes to read.
+Loaded flag with id of 0 and value of 1
+Loaded flag with id of 1 and value of 0
+Loaded flag with id of 2 and value of 0
+Loaded flag with id of 3 and value of 0
+Flags loaded! (15 bytes)
+
+
+
+### LOG: Sat Apr 27 15:53:16 2019 ###
+
+
+
+
+### LOG: Sat Apr 27 15:54:26 2019 ###
+
+Loaded all 1 music files.
+Loaded all 0 sound files.
+Loading dialogue. 413 bytes to read.
+Dialogue loaded! (413 bytes)
+Loading flags. 15 bytes to read.
+Loaded flag with id of 0 and value of 1
+Loaded flag with id of 1 and value of 0
+Loaded flag with id of 2 and value of 0
+Loaded flag with id of 3 and value of 0
+Flags loaded! (15 bytes)
+
+
+
+### LOG: Sat Apr 27 15:58:44 2019 ###
+
+Successfully Loaded Script File: ../Assets/Scripts/Script_player_makeHouse.txt
+Loaded all 1 music files.
+Loaded all 0 sound files.
+Loading dialogue. 413 bytes to read.
+Dialogue loaded! (413 bytes)
+Loading flags. 15 bytes to read.
+Loaded flag with id of 0 and value of 1
+Loaded flag with id of 1 and value of 0
+Loaded flag with id of 2 and value of 0
+Loaded flag with id of 3 and value of 0
+Flags loaded! (15 bytes)
+SAVE: Starting Save Preparations
+SAVE: Player Data Prepared
+SAVE: Chunk Data Prepared
+
+### SAVE: ALL DATA PREPARED, STARTING SAVE ###
+
+SAVE: Started Saving with version: 1.0.0
+SAVE: Wrote Player POD
+SAVE: Wrote Player Inventory
+SAVE: Wrote World Chunks
+
+### SAVE: SAVE COMPLETED ###
+
+SAVE: Starting Save Preparations
+SAVE: Player Data Prepared
+SAVE: Chunk Data Prepared
+
+### SAVE: ALL DATA PREPARED, STARTING SAVE ###
+
+SAVE: Started Saving with version: 1.0.0
+SAVE: Wrote Player POD
+SAVE: Wrote 1 of 2 Items
+SAVE: Wrote 2 of 2 Items
+SAVE: Wrote Player Inventory
+SAVE: Wrote World Chunks
+
+### SAVE: SAVE COMPLETED ###
+
+
+### LOAD: STARTING LOAD AT 14008.945312 ###
+
+
+### LOAD: Loaded Version: 1.0.0, Using Version: 1.0.0 ###
+
+LOAD: Loaded Player POD
+LOAD: Loaded 1 of 2 Items
+LOAD: Loaded 2 of 2 Items
+LOAD: Loaded Player Inventory
+LOAD: Loaded 1 of 16 Chunks
+LOAD: Loaded 2 of 16 Chunks
+LOAD: Loaded 3 of 16 Chunks
+LOAD: Loaded 4 of 16 Chunks
+LOAD: Loaded 5 of 16 Chunks
+LOAD: Loaded 6 of 16 Chunks
+LOAD: Loaded 7 of 16 Chunks
+LOAD: Loaded 8 of 16 Chunks
+LOAD: Loaded 9 of 16 Chunks
+LOAD: Loaded 10 of 16 Chunks
+LOAD: Loaded 11 of 16 Chunks
+LOAD: Loaded 12 of 16 Chunks
+LOAD: Loaded 13 of 16 Chunks
+LOAD: Loaded 14 of 16 Chunks
+LOAD: Loaded 15 of 16 Chunks
+LOAD: Loaded 16 of 16 Chunks
+LOAD: Loaded World Chunks
+
+### LOAD: LOAD COMPLETED. FINISHED AT 14044.598633 (35.653320 milliseconds) ###
+
+
+### LOAD: STARTING LOAD AT 14724.707031 ###
+
+
+### LOAD: Loaded Version: 1.0.0, Using Version: 1.0.0 ###
+
+LOAD: Loaded Player POD
+LOAD: Loaded 1 of 2 Items
+LOAD: Loaded 2 of 2 Items
+LOAD: Loaded Player Inventory
+LOAD: Loaded 1 of 16 Chunks
+LOAD: Loaded 2 of 16 Chunks
+LOAD: Loaded 3 of 16 Chunks
+LOAD: Loaded 4 of 16 Chunks
+LOAD: Loaded 5 of 16 Chunks
+LOAD: Loaded 6 of 16 Chunks
+LOAD: Loaded 7 of 16 Chunks
+LOAD: Loaded 8 of 16 Chunks
+LOAD: Loaded 9 of 16 Chunks
+LOAD: Loaded 10 of 16 Chunks
+LOAD: Loaded 11 of 16 Chunks
+LOAD: Loaded 12 of 16 Chunks
+LOAD: Loaded 13 of 16 Chunks
+LOAD: Loaded 14 of 16 Chunks
+LOAD: Loaded 15 of 16 Chunks
+LOAD: Loaded 16 of 16 Chunks
+LOAD: Loaded World Chunks
+
+### LOAD: LOAD COMPLETED. FINISHED AT 14766.238281 (41.531250 milliseconds) ###
+
+
+
+
+### LOG: Sat Apr 27 16:04:30 2019 ###
+
+Successfully Loaded Script File: ../Assets/Scripts/Script_player_makeHouse.txt
+Loaded all 1 music files.
+Loaded all 0 sound files.
+Loading dialogue. 413 bytes to read.
+Dialogue loaded! (413 bytes)
+Loading flags. 15 bytes to read.
+Loaded flag with id of 0 and value of 1
+Loaded flag with id of 1 and value of 0
+Loaded flag with id of 2 and value of 0
+Loaded flag with id of 3 and value of 0
+Flags loaded! (15 bytes)
+
+
+
+### LOG: Sat Apr 27 16:04:53 2019 ###
+
+Successfully Loaded Script File: ../Assets/Scripts/Script_player_makeHouse.txt
+Loaded all 1 music files.
+Loaded all 0 sound files.
+Loading dialogue. 413 bytes to read.
+Dialogue loaded! (413 bytes)
+Loading flags. 15 bytes to read.
+Loaded flag with id of 0 and value of 1
+Loaded flag with id of 1 and value of 0
+Loaded flag with id of 2 and value of 0
+Loaded flag with id of 3 and value of 0
+Flags loaded! (15 bytes)
+
+
+
+### LOG: Sat Apr 27 16:05:03 2019 ###
+
+Successfully Loaded Script File: ../Assets/Scripts/Script_player_makeHouse.txt
+Loaded all 1 music files.
+Loaded all 0 sound files.
+Loading dialogue. 413 bytes to read.
+Dialogue loaded! (413 bytes)
+Loading flags. 15 bytes to read.
+Loaded flag with id of 0 and value of 1
+Loaded flag with id of 1 and value of 0
+Loaded flag with id of 2 and value of 0
+Loaded flag with id of 3 and value of 0
+Flags loaded! (15 bytes)
+
+
+
+### LOG: Sat Apr 27 16:07:42 2019 ###
+
+Successfully Loaded Script File: ../Assets/Scripts/Script_player_makeHouse.txt
+Loaded all 1 music files.
+Loaded all 0 sound files.
+Loading dialogue. 413 bytes to read.
+Dialogue loaded! (413 bytes)
+Loading flags. 15 bytes to read.
+Loaded flag with id of 0 and value of 1
+Loaded flag with id of 1 and value of 0
+Loaded flag with id of 2 and value of 0
+Loaded flag with id of 3 and value of 0
+Flags loaded! (15 bytes)
+
+
+
+### LOG: Sat Apr 27 16:08:08 2019 ###
+
+Successfully Loaded Script File: ../Assets/Scripts/Script_player_makeHouse.txt
+Loaded all 1 music files.
+Loaded all 0 sound files.
+Loading dialogue. 413 bytes to read.
+Dialogue loaded! (413 bytes)
+Loading flags. 15 bytes to read.
+Loaded flag with id of 0 and value of 1
+Loaded flag with id of 1 and value of 0
+Loaded flag with id of 2 and value of 0
+Loaded flag with id of 3 and value of 0
+Flags loaded! (15 bytes)
+
+
+
+### LOG: Sat Apr 27 16:08:20 2019 ###
+
+Successfully Loaded Script File: ../Assets/Scripts/Script_player_makeHouse.txt
+Loaded all 1 music files.
+Loaded all 0 sound files.
+Loading dialogue. 413 bytes to read.
+Dialogue loaded! (413 bytes)
+Loading flags. 15 bytes to read.
+Loaded flag with id of 0 and value of 1
+Loaded flag with id of 1 and value of 0
+Loaded flag with id of 2 and value of 0
+Loaded flag with id of 3 and value of 0
+Flags loaded! (15 bytes)
+
+
+
+### LOG: Sat Apr 27 16:09:05 2019 ###
+
+Successfully Loaded Script File: ../Assets/Scripts/Script_player_makeHouse.txt
+Loaded all 1 music files.
+Loaded all 0 sound files.
+Loading dialogue. 413 bytes to read.
+Dialogue loaded! (413 bytes)
+Loading flags. 15 bytes to read.
+Loaded flag with id of 0 and value of 1
+Loaded flag with id of 1 and value of 0
+Loaded flag with id of 2 and value of 0
+Loaded flag with id of 3 and value of 0
+Flags loaded! (15 bytes)
+
+
+
+### LOG: Sat Apr 27 16:09:17 2019 ###
+
+Successfully Loaded Script File: ../Assets/Scripts/Script_player_makeHouse.txt
+Loaded all 1 music files.
+Loaded all 0 sound files.
+Loading dialogue. 413 bytes to read.
+Dialogue loaded! (413 bytes)
+Loading flags. 15 bytes to read.
+Loaded flag with id of 0 and value of 1
+Loaded flag with id of 1 and value of 0
+Loaded flag with id of 2 and value of 0
+Loaded flag with id of 3 and value of 0
+Flags loaded! (15 bytes)
+
+
+
+### LOG: Sat May  4 09:17:21 2019 ###
+
+Successfully Loaded Script File: ../Assets/Scripts/Script_player_makeHouse.txt
+Loaded all 1 music files.
+Loaded all 0 sound files.
+Loading dialogue. 413 bytes to read.
+Dialogue loaded! (413 bytes)
+Loading flags. 15 bytes to read.
+Loaded flag with id of 0 and value of 1
+Loaded flag with id of 1 and value of 0
+Loaded flag with id of 2 and value of 0
+Loaded flag with id of 3 and value of 0
+Flags loaded! (15 bytes)
+
+
+
+### LOG: Sat May  4 09:17:57 2019 ###
+
+Successfully Loaded Script File: ../Assets/Scripts/Script_player_makeHouse.txt
+Loaded all 1 music files.
+Loaded all 0 sound files.
+Loading dialogue. 413 bytes to read.
+Dialogue loaded! (413 bytes)
+Loading flags. 15 bytes to read.
+Loaded flag with id of 0 and value of 1
+Loaded flag with id of 1 and value of 0
+Loaded flag with id of 2 and value of 0
+Loaded flag with id of 3 and value of 0
+Flags loaded! (15 bytes)
+
+
+
+### LOG: Sat May  4 09:18:47 2019 ###
+
+Successfully Loaded Script File: ../Assets/Scripts/Script_player_makeHouse.txt
+Loaded all 1 music files.
+Loaded all 0 sound files.
+Loading dialogue. 413 bytes to read.
+Dialogue loaded! (413 bytes)
+Loading flags. 15 bytes to read.
+Loaded flag with id of 0 and value of 1
+Loaded flag with id of 1 and value of 0
+Loaded flag with id of 2 and value of 0
+Loaded flag with id of 3 and value of 0
+Flags loaded! (15 bytes)
+
+
+
+### LOG: Sat May  4 09:19:05 2019 ###
+
+Successfully Loaded Script File: ../Assets/Scripts/Script_player_makeHouse.txt
+Loaded all 1 music files.
+Loaded all 0 sound files.
+Loading dialogue. 413 bytes to read.
+Dialogue loaded! (413 bytes)
+Loading flags. 15 bytes to read.
+Loaded flag with id of 0 and value of 1
+Loaded flag with id of 1 and value of 0
+Loaded flag with id of 2 and value of 0
+Loaded flag with id of 3 and value of 0
+Flags loaded! (15 bytes)
+
+
+
+### LOG: Sat May  4 09:20:45 2019 ###
+
+Successfully Loaded Script File: ../Assets/Scripts/Script_player_makeHouse.txt
+Loaded all 1 music files.
+Loaded all 0 sound files.
+Loading dialogue. 413 bytes to read.
+Dialogue loaded! (413 bytes)
+Loading flags. 15 bytes to read.
+Loaded flag with id of 0 and value of 1
+Loaded flag with id of 1 and value of 0
+Loaded flag with id of 2 and value of 0
+Loaded flag with id of 3 and value of 0
+Flags loaded! (15 bytes)
+
+
+
+### LOG: Sat May  4 09:22:18 2019 ###
+
+Successfully Loaded Script File: ../Assets/Scripts/Script_player_makeHouse.txt
+Loaded all 1 music files.
+Loaded all 0 sound files.
+Loading dialogue. 413 bytes to read.
+Dialogue loaded! (413 bytes)
+Loading flags. 15 bytes to read.
+Loaded flag with id of 0 and value of 1
+Loaded flag with id of 1 and value of 0
+Loaded flag with id of 2 and value of 0
+Loaded flag with id of 3 and value of 0
+Flags loaded! (15 bytes)
+
+
+
+### LOG: Sat May  4 09:23:41 2019 ###
+
+Successfully Loaded Script File: ../Assets/Scripts/Script_player_makeHouse.txt
+Loaded all 1 music files.
+Loaded all 0 sound files.
+Loading dialogue. 413 bytes to read.
+Dialogue loaded! (413 bytes)
+Loading flags. 15 bytes to read.
+Loaded flag with id of 0 and value of 1
+Loaded flag with id of 1 and value of 0
+Loaded flag with id of 2 and value of 0
+Loaded flag with id of 3 and value of 0
+Flags loaded! (15 bytes)
+
+
+
+### LOG: Sat May  4 09:24:15 2019 ###
+
+Successfully Loaded Script File: ../Assets/Scripts/Script_player_makeHouse.txt
+Loaded all 1 music files.
+Loaded all 0 sound files.
+Loading dialogue. 413 bytes to read.
+Dialogue loaded! (413 bytes)
+Loading flags. 15 bytes to read.
+Loaded flag with id of 0 and value of 1
+Loaded flag with id of 1 and value of 0
+Loaded flag with id of 2 and value of 0
+Loaded flag with id of 3 and value of 0
+Flags loaded! (15 bytes)
+
+
+
+### LOG: Sat May  4 16:21:52 2019 ###
+
+Successfully Loaded Script File: ../Assets/Scripts/Script_player_makeHouse.txt
+Loaded all 1 music files.
+Loaded all 0 sound files.
+Loading dialogue. 413 bytes to read.
+Dialogue loaded! (413 bytes)
+Loading flags. 15 bytes to read.
+Loaded flag with id of 0 and value of 1
+Loaded flag with id of 1 and value of 0
+Loaded flag with id of 2 and value of 0
+Loaded flag with id of 3 and value of 0
+Flags loaded! (15 bytes)
+
+
+
+### LOG: Sat May  4 16:29:53 2019 ###
+
+
+
+
+### LOG: Sat May  4 16:39:49 2019 ###
+
+Successfully Loaded Script File: ../Assets/Scripts/Script_player_makeHouse.txt
+Loaded all 1 music files.
+Loaded all 0 sound files.
+Loading dialogue. 413 bytes to read.
+Dialogue loaded! (413 bytes)
+Loading flags. 15 bytes to read.
+Loaded flag with id of 0 and value of 1
+Loaded flag with id of 1 and value of 0
+Loaded flag with id of 2 and value of 0
+Loaded flag with id of 3 and value of 0
+Flags loaded! (15 bytes)
+
+
+
+### LOG: Sat May  4 16:54:29 2019 ###
+
+Successfully Loaded Script File: ../Assets/Scripts/Script_player_makeHouse.txt
+Loaded all 1 music files.
+Loaded all 0 sound files.
+Loading dialogue. 413 bytes to read.
+Dialogue loaded! (413 bytes)
+Loading flags. 15 bytes to read.
+Loaded flag with id of 0 and value of 1
+Loaded flag with id of 1 and value of 0
+Loaded flag with id of 2 and value of 0
+Loaded flag with id of 3 and value of 0
+Flags loaded! (15 bytes)
+
+
+
+### LOG: Sat May  4 17:02:06 2019 ###
+
+Successfully Loaded Script File: ../Assets/Scripts/Script_player_makeHouse.txt
+Loaded all 1 music files.
+Loaded all 0 sound files.
+Loading dialogue. 413 bytes to read.
+Dialogue loaded! (413 bytes)
+Loading flags. 15 bytes to read.
+Loaded flag with id of 0 and value of 1
+Loaded flag with id of 1 and value of 0
+Loaded flag with id of 2 and value of 0
+Loaded flag with id of 3 and value of 0
+Flags loaded! (15 bytes)
+
+
+
+### LOG: Sat May  4 17:04:37 2019 ###
+
+Successfully Loaded Script File: ../Assets/Scripts/Script_player_makeHouse.txt
+Loaded all 1 music files.
+Loaded all 0 sound files.
+Loading dialogue. 413 bytes to read.
+Dialogue loaded! (413 bytes)
+Loading flags. 15 bytes to read.
+Loaded flag with id of 0 and value of 1
+Loaded flag with id of 1 and value of 0
+Loaded flag with id of 2 and value of 0
+Loaded flag with id of 3 and value of 0
+Flags loaded! (15 bytes)
+
+
+
+### LOG: Sat May  4 17:09:29 2019 ###
+
+Successfully Loaded Script File: ../Assets/Scripts/Script_player_makeHouse.txt
+Loaded all 1 music files.
+Loaded all 0 sound files.
+Loading dialogue. 413 bytes to read.
+Dialogue loaded! (413 bytes)
+Loading flags. 15 bytes to read.
+Loaded flag with id of 0 and value of 1
+Loaded flag with id of 1 and value of 0
+Loaded flag with id of 2 and value of 0
+Loaded flag with id of 3 and value of 0
+Flags loaded! (15 bytes)
+
+
+
+### LOG: Sat May  4 17:10:40 2019 ###
+
+Successfully Loaded Script File: ../Assets/Scripts/Script_player_makeHouse.txt
+Loaded all 1 music files.
+Loaded all 0 sound files.
+Loading dialogue. 413 bytes to read.
+Dialogue loaded! (413 bytes)
+Loading flags. 15 bytes to read.
+Loaded flag with id of 0 and value of 1
+Loaded flag with id of 1 and value of 0
+Loaded flag with id of 2 and value of 0
+Loaded flag with id of 3 and value of 0
+Flags loaded! (15 bytes)
+Changing block at: X=5, Y=84 to one with the id of: 0
+Changing block at: X=6, Y=84 to one with the id of: 0
+Changing block at: X=7, Y=84 to one with the id of: 0
+Changing block at: X=8, Y=84 to one with the id of: 0
+Changing block at: X=9, Y=84 to one with the id of: 0
+Changing block at: X=10, Y=84 to one with the id of: 0
+Changing block at: X=5, Y=85 to one with the id of: 0
+Changing block at: X=6, Y=85 to one with the id of: 0
+Changing block at: X=7, Y=85 to one with the id of: 0
+Changing block at: X=8, Y=85 to one with the id of: 0
+Changing block at: X=9, Y=85 to one with the id of: 0
+Changing block at: X=10, Y=85 to one with the id of: 0
+Changing block at: X=5, Y=86 to one with the id of: 0
+Changing block at: X=6, Y=86 to one with the id of: 0
+Changing block at: X=7, Y=86 to one with the id of: 0
+Changing block at: X=8, Y=86 to one with the id of: 0
+Changing block at: X=9, Y=86 to one with the id of: 0
+Changing block at: X=10, Y=86 to one with the id of: 0
+Changing block at: X=5, Y=87 to one with the id of: 0
+Changing block at: X=6, Y=87 to one with the id of: 0
+Changing block at: X=7, Y=87 to one with the id of: 0
+Changing block at: X=8, Y=87 to one with the id of: 0
+Changing block at: X=9, Y=87 to one with the id of: 0
+Changing block at: X=10, Y=87 to one with the id of: 0
+
+
+
+### LOG: Sat May  4 17:12:55 2019 ###
+
+Successfully Loaded Script File: ../Assets/Scripts/Script_player_makeHouse.txt
+Loaded all 1 music files.
+Loaded all 0 sound files.
+Loading dialogue. 413 bytes to read.
+Dialogue loaded! (413 bytes)
+Loading flags. 15 bytes to read.
+Loaded flag with id of 0 and value of 1
+Loaded flag with id of 1 and value of 0
+Loaded flag with id of 2 and value of 0
+Loaded flag with id of 3 and value of 0
+Flags loaded! (15 bytes)
+
+
+
+### LOG: Sat May  4 17:13:44 2019 ###
+
+Successfully Loaded Script File: ../Assets/Scripts/Script_player_makeHouse.txt
+Loaded all 1 music files.
+Loaded all 0 sound files.
+Loading dialogue. 413 bytes to read.
+Dialogue loaded! (413 bytes)
+Loading flags. 15 bytes to read.
+Loaded flag with id of 0 and value of 1
+Loaded flag with id of 1 and value of 0
+Loaded flag with id of 2 and value of 0
+Loaded flag with id of 3 and value of 0
+Flags loaded! (15 bytes)
+Changing block at: X=15, Y=75 to one with the id of: 6
+
+
+
+### LOG: Sat May  4 17:39:30 2019 ###
+
+
+
+
+### LOG: Sat May  4 17:40:14 2019 ###
+
+Successfully Loaded Script File: ../Assets/Scripts/Script_player_makeHouse.txt
+Loaded all 1 music files.
+Loaded all 0 sound files.
+Loading dialogue. 413 bytes to read.
+Dialogue loaded! (413 bytes)
+Loading flags. 15 bytes to read.
+Loaded flag with id of 0 and value of 1
+Loaded flag with id of 1 and value of 0
+Loaded flag with id of 2 and value of 0
+Loaded flag with id of 3 and value of 0
+Flags loaded! (15 bytes)
+
+
+
+### LOG: Sat May  4 17:42:26 2019 ###
+
+Successfully Loaded Script File: ../Assets/Scripts/Script_player_makeHouse.txt
+Loaded all 1 music files.
+Loaded all 0 sound files.
+Loading dialogue. 413 bytes to read.
+Dialogue loaded! (413 bytes)
+Loading flags. 15 bytes to read.
+Loaded flag with id of 0 and value of 1
+Loaded flag with id of 1 and value of 0
+Loaded flag with id of 2 and value of 0
+Loaded flag with id of 3 and value of 0
+Flags loaded! (15 bytes)
+
+
+
+### LOG: Sat May  4 17:43:36 2019 ###
+
+Successfully Loaded Script File: ../Assets/Scripts/Script_player_makeHouse.txt
+Loaded all 1 music files.
+Loaded all 0 sound files.
+Loading dialogue. 413 bytes to read.
+Dialogue loaded! (413 bytes)
+Loading flags. 15 bytes to read.
+Loaded flag with id of 0 and value of 1
+Loaded flag with id of 1 and value of 0
+Loaded flag with id of 2 and value of 0
+Loaded flag with id of 3 and value of 0
+Flags loaded! (15 bytes)
+
+
+
+### LOG: Sat May  4 17:43:51 2019 ###
+
+Successfully Loaded Script File: ../Assets/Scripts/Script_player_makeHouse.txt
+Loaded all 1 music files.
+Loaded all 0 sound files.
+Loading dialogue. 413 bytes to read.
+Dialogue loaded! (413 bytes)
+Loading flags. 15 bytes to read.
+Loaded flag with id of 0 and value of 1
+Loaded flag with id of 1 and value of 0
+Loaded flag with id of 2 and value of 0
+Loaded flag with id of 3 and value of 0
+Flags loaded! (15 bytes)
+
+
+
+### LOG: Sat May  4 17:44:43 2019 ###
+
+Successfully Loaded Script File: ../Assets/Scripts/Script_player_makeHouse.txt
+Loaded all 1 music files.
+Loaded all 0 sound files.
+Loading dialogue. 413 bytes to read.
+Dialogue loaded! (413 bytes)
+Loading flags. 15 bytes to read.
+Loaded flag with id of 0 and value of 1
+Loaded flag with id of 1 and value of 0
+Loaded flag with id of 2 and value of 0
+Loaded flag with id of 3 and value of 0
+Flags loaded! (15 bytes)
+
+
+
+### LOG: Sat May  4 17:45:23 2019 ###
+
+Successfully Loaded Script File: ../Assets/Scripts/Script_player_makeHouse.txt
+Loaded all 1 music files.
+Loaded all 0 sound files.
+Loading dialogue. 413 bytes to read.
+Dialogue loaded! (413 bytes)
+Loading flags. 15 bytes to read.
+Loaded flag with id of 0 and value of 1
+Loaded flag with id of 1 and value of 0
+Loaded flag with id of 2 and value of 0
+Loaded flag with id of 3 and value of 0
+Flags loaded! (15 bytes)
+
+
+
+### LOG: Sat May  4 17:46:20 2019 ###
+
+Successfully Loaded Script File: ../Assets/Scripts/Script_player_makeHouse.txt
+Loaded all 1 music files.
+Loaded all 0 sound files.
+Loading dialogue. 413 bytes to read.
+Dialogue loaded! (413 bytes)
+Loading flags. 15 bytes to read.
+Loaded flag with id of 0 and value of 1
+Loaded flag with id of 1 and value of 0
+Loaded flag with id of 2 and value of 0
+Loaded flag with id of 3 and value of 0
+Flags loaded! (15 bytes)
+
+
+
+### LOG: Sat May  4 17:46:46 2019 ###
+
+
+
+
+### LOG: Sat May  4 17:48:03 2019 ###
+
+Successfully Loaded Script File: ../Assets/Scripts/Script_player_makeHouse.txt
+Loaded all 1 music files.
+Loaded all 0 sound files.
+Loading dialogue. 413 bytes to read.
+Dialogue loaded! (413 bytes)
+Loading flags. 15 bytes to read.
+Loaded flag with id of 0 and value of 1
+Loaded flag with id of 1 and value of 0
+Loaded flag with id of 2 and value of 0
+Loaded flag with id of 3 and value of 0
+Flags loaded! (15 bytes)
+
+
+
+### LOG: Sat May  4 17:48:39 2019 ###
+
+Successfully Loaded Script File: ../Assets/Scripts/Script_player_makeHouse.txt
+Loaded all 1 music files.
+Loaded all 0 sound files.
+Loading dialogue. 413 bytes to read.
+Dialogue loaded! (413 bytes)
+Loading flags. 15 bytes to read.
+Loaded flag with id of 0 and value of 1
+Loaded flag with id of 1 and value of 0
+Loaded flag with id of 2 and value of 0
+Loaded flag with id of 3 and value of 0
+Flags loaded! (15 bytes)
+
+
+
+### LOG: Sat May  4 17:49:05 2019 ###
+
+Successfully Loaded Script File: ../Assets/Scripts/Script_player_makeHouse.txt
+Loaded all 1 music files.
+Loaded all 0 sound files.
+Loading dialogue. 413 bytes to read.
+Dialogue loaded! (413 bytes)
+Loading flags. 15 bytes to read.
+Loaded flag with id of 0 and value of 1
+Loaded flag with id of 1 and value of 0
+Loaded flag with id of 2 and value of 0
+Loaded flag with id of 3 and value of 0
+Flags loaded! (15 bytes)
+
+
+
+### LOG: Sat May  4 17:49:31 2019 ###
+
+Successfully Loaded Script File: ../Assets/Scripts/Script_player_makeHouse.txt
+Loaded all 1 music files.
+Loaded all 0 sound files.
+Loading dialogue. 413 bytes to read.
+Dialogue loaded! (413 bytes)
+Loading flags. 15 bytes to read.
+Loaded flag with id of 0 and value of 1
+Loaded flag with id of 1 and value of 0
+Loaded flag with id of 2 and value of 0
+Loaded flag with id of 3 and value of 0
+Flags loaded! (15 bytes)
+
+
+
+### LOG: Sat May  4 17:50:11 2019 ###
+
+Successfully Loaded Script File: ../Assets/Scripts/Script_player_makeHouse.txt
+Loaded all 1 music files.
+Loaded all 0 sound files.
+Loading dialogue. 413 bytes to read.
+Dialogue loaded! (413 bytes)
+Loading flags. 15 bytes to read.
+Loaded flag with id of 0 and value of 1
+Loaded flag with id of 1 and value of 0
+Loaded flag with id of 2 and value of 0
+Loaded flag with id of 3 and value of 0
+Flags loaded! (15 bytes)
+
+
+
+### LOG: Sat May  4 17:50:36 2019 ###
+
+Successfully Loaded Script File: ../Assets/Scripts/Script_player_makeHouse.txt
+Loaded all 1 music files.
+Loaded all 0 sound files.
+Loading dialogue. 413 bytes to read.
+Dialogue loaded! (413 bytes)
+Loading flags. 15 bytes to read.
+Loaded flag with id of 0 and value of 1
+Loaded flag with id of 1 and value of 0
+Loaded flag with id of 2 and value of 0
+Loaded flag with id of 3 and value of 0
+Flags loaded! (15 bytes)
+
+
+
+### LOG: Sat May  4 17:50:54 2019 ###
+
+Successfully Loaded Script File: ../Assets/Scripts/Script_player_makeHouse.txt
+Loaded all 1 music files.
+Loaded all 0 sound files.
+Loading dialogue. 413 bytes to read.
+Dialogue loaded! (413 bytes)
+Loading flags. 15 bytes to read.
+Loaded flag with id of 0 and value of 1
+Loaded flag with id of 1 and value of 0
+Loaded flag with id of 2 and value of 0
+Loaded flag with id of 3 and value of 0
+Flags loaded! (15 bytes)
+
+
+
+### LOG: Sat May  4 17:51:06 2019 ###
+
+Successfully Loaded Script File: ../Assets/Scripts/Script_player_makeHouse.txt
+Loaded all 1 music files.
+Loaded all 0 sound files.
+Loading dialogue. 413 bytes to read.
+Dialogue loaded! (413 bytes)
+Loading flags. 15 bytes to read.
+Loaded flag with id of 0 and value of 1
+Loaded flag with id of 1 and value of 0
+Loaded flag with id of 2 and value of 0
+Loaded flag with id of 3 and value of 0
+Flags loaded! (15 bytes)
+
+
+
+### LOG: Sat May  4 17:51:18 2019 ###
+
+
+
+
+### LOG: Sat May  4 17:51:29 2019 ###
+
+Successfully Loaded Script File: ../Assets/Scripts/Script_player_makeHouse.txt
+Loaded all 1 music files.
+Loaded all 0 sound files.
+Loading dialogue. 413 bytes to read.
+Dialogue loaded! (413 bytes)
+Loading flags. 15 bytes to read.
+Loaded flag with id of 0 and value of 1
+Loaded flag with id of 1 and value of 0
+Loaded flag with id of 2 and value of 0
+Loaded flag with id of 3 and value of 0
+Flags loaded! (15 bytes)

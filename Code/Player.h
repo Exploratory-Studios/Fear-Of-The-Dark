@@ -39,7 +39,7 @@ class Player : public Entity {
 
         TalkingNPC* getTalkingEntity() { return m_speakingEntity; }
 
-        void setSpeakingEntity(TalkingNPC& entity) { m_speakingEntity = &entity; }
+        void setSpeakingEntity(TalkingNPC* entity) { m_speakingEntity = entity; }
         void setCanInteract(bool setting) { m_canInteract = setting; }
 
     protected:

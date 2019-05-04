@@ -256,7 +256,11 @@
 		<Unit filename="Categories.h" />
 		<Unit filename="Chunk.cpp" />
 		<Unit filename="Chunk.h" />
+		<Unit filename="Console.cpp" />
+		<Unit filename="Console.h" />
 		<Unit filename="Devlog FOTD Start Oct 9 2017" />
+		<Unit filename="Entities.cpp" />
+		<Unit filename="Entities.h" />
 		<Unit filename="Entities/EntityFunctions.cpp" />
 		<Unit filename="Entities/EntityFunctions.h" />
 		<Unit filename="Entities/TalkingNPC.cpp" />

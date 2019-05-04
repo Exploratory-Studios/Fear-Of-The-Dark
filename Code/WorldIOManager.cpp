@@ -23,11 +23,16 @@ void WorldIOManager::loadWorld(std::string worldName, float* progress) {
         char* saveVersion = new char();
         file.read(&saveVersion[0], saveLen);
 
-        logger->log("LOAD: Loaded Version: " + std::string(saveVersion), true);
+        logger->log("LOAD: Loaded Version: " + std::string(saveVersion) + ", Using Version: " + m_saveVersion, true);
 
         if(m_saveVersion + "\177" != saveVersion) {
+            logger->log("LOAD: Loaded Version Doesn't Match Current Loader Version. Quitting...", true);
             GLEngine::fatalError("Error loading from file: " + worldName + ".bin: Save Version Mismatch");
         }
+    }
+
+    { // MISCELLANEOUS WORLD DATA
+        file.read(reinterpret_cast<char*>(&m_world->time), sizeof(float));
     }
 
     { // PLAYER
@@ -167,6 +172,9 @@ void WorldIOManager::saveWorld(World& world, std::string worldName, float* progr
     }
 
     logger->log("SAVE: Chunk Data Prepared");
+
+    float time = m_world->time;
+
     logger->log("SAVE: ALL DATA PREPARED, STARTING SAVE", true);
 
     // INIT
@@ -182,6 +190,10 @@ void WorldIOManager::saveWorld(World& world, std::string worldName, float* progr
         file.write(m_saveVersion.c_str(), m_saveVersion.size());
 
         logger->log("SAVE: Started Saving with version: " + m_saveVersion);
+    }
+
+    { // MISCELLANEOUS WORLD DATA
+        file.write(reinterpret_cast<char*>(&time), sizeof(float));
     }
 
     { // PLAYER

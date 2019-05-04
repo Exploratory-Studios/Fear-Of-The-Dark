@@ -23,15 +23,15 @@ bool Inventory::addItem(Item* newItem) {
 
 void Inventory::updateWeight() { // Only use if something needs verification or is bugged
     m_weight = 0;
-    for(int i = 0; i < m_items.size(); i++) {
+    for(unsigned int i = 0; i < m_items.size(); i++) {
         m_weight += m_items[i]->m_weight * m_items[i]->m_quantity;
     }
 }
 
 void Inventory::update() {
-    for(int i = 0; i < m_items.size(); i++) {
+    for(unsigned int i = 0; i < m_items.size(); i++) {
         if(m_items[i]->getQuantity() <= 0) {
-            for(int j = i+1; j < m_items.size(); j++) {
+            for(unsigned int j = i+1; j < m_items.size(); j++) {
                 m_items[i] = m_items[j];
             }
             m_items.pop_back();
@@ -82,7 +82,7 @@ void Inventory::draw(float x, float y, GLEngine::SpriteBatch& sb, GLEngine::Spri
         sb.renderBatch();
 
 
-        if(m_items.size() > i) {
+        if(m_items.size() > (unsigned int)i) {
             if(m_items[i]) {
                 glm::vec4 itemUV(0, 0, 1, 1);
 

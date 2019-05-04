@@ -3,8 +3,10 @@
 #include <vector>
 #include <string>
 #include <fstream>
-#include <stdio.h>
 #include <GLEngineErrors.h>
+
+#include "../Logging.h"
+#include "../PresetValues.h"
 
 struct Script {
     std::vector<std::string> commands;
@@ -31,6 +33,7 @@ class ScriptQueue {
             std::ifstream file(filePath);
 
             if(file.fail()) {
+                logger->log("Couldn't open script file: " + filePath + ". Quitting...", true);
                 GLEngine::fatalError("Couldn't open script file: " + filePath);
             }
 
@@ -44,7 +47,7 @@ class ScriptQueue {
 
             m_scriptCache.push_back(s);
 
-            std::printf("Successfully Loaded Script File: %s", filePath.c_str());
+            logger->log("Successfully Loaded Script File: " + filePath);
 
             return m_scriptCache.size() - 1;
         }
@@ -62,4 +65,6 @@ class ScriptQueue {
     private:
         std::vector<Script> m_scriptCache; // Holds all scripts in memory to be used/reused later
         std::vector<Script*> m_activeScripts; // Is a list of active scripts' addresses
+
+        Logger* logger = Logger::getInstance();
 };

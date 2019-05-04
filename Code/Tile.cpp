@@ -116,9 +116,9 @@ void Tile::update(float time) {
     m_lastLight = light;
 }
 
-void Tile::tick(float* tickTime) {
+void Tile::tick(float tickTime) {
     if(exposedToSun()) { // check if this block is exposed to sunlight
-        m_sunLight = cos((float)*tickTime / (DAY_LENGTH / 6.28318f)) / 2.0f + 0.5f;
+        m_sunLight = cos(tickTime / (DAY_LENGTH / 6.28318f)) / 2.0f + 0.5f;
     } else {
         m_sunLight = 0.0f;
     }

@@ -20,7 +20,7 @@ class WorldManager
         WorldManager();
         virtual ~WorldManager();
 
-        void init(WorldIOManager* worldIOManager, float* tickTime);
+        void init(WorldIOManager* worldIOManager);
 
         void update(GLEngine::Camera2D* worldCamera, float timeStepVariable, float time, GLEngine::InputManager& input, GLEngine::GUI& gui);
         void tick();
@@ -36,8 +36,6 @@ class WorldManager
 
     private:
         void activateChunks();
-
-        float* m_tickTime = nullptr;
 
         QuestManager* m_questManager = nullptr;
         WorldIOManager* m_worldIOManager = nullptr;

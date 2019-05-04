@@ -64,7 +64,7 @@ unsigned int Scripter::addEntity(Entity& newEntity) {
 }
 
 void Scripter::removeEntity(unsigned int index) {
-    for(int i = index; i < m_entities->size()-1; i++) {
+    for(unsigned int i = index; i < m_entities->size()-1; i++) {
         (*m_entities)[i] = (*m_entities)[i+1];
     }
     m_entities->pop_back();
@@ -86,7 +86,7 @@ void Scripter::update() {
 
     std::vector<Script*> scripts = m_worldManager->m_worldIOManager->getScriptQueue()->m_activeScripts;
 
-    for(int i = 0; i < scripts.size(); i++) {
+    for(unsigned int i = 0; i < scripts.size(); i++) {
         executeScript(*scripts[i]);
     }
     m_worldManager->m_worldIOManager->getScriptQueue()->deactivateScripts();
@@ -95,7 +95,7 @@ void Scripter::update() {
 /// PRIVATE FUNCTIONS
 
 void Scripter::executeScript(Script& script) {
-    for(int i = 0; i < script.commands.size(); i++) {
+    for(unsigned int i = 0; i < script.commands.size(); i++) {
         executeCommand(script.commands[i]);
     }
 }
@@ -104,7 +104,7 @@ void Scripter::executeCommand(std::string& command) {
     std::vector<std::string> parameters;
 
     std::string temp;
-    for(int i = 0; i < command.length(); i++) {
+    for(unsigned int i = 0; i < command.length(); i++) {
         if(command[i] == ' ') {
             parameters.push_back(temp);
             temp = "";
@@ -127,12 +127,12 @@ void Scripter::executeCommand(std::string& command) {
     if(parameters[0] == "time") {
         if(parameters[1] == "set") {
             logger->log("Setting time to " + parameters[2]);
-            *(m_worldManager->m_tickTime) = std::stoi(parameters[2]);
+            m_worldManager->m_worldIOManager->getWorld()->time = std::stoi(parameters[2]);
         }
     } else if(parameters[0] == "removeBlock") {
         unsigned int keywordIndex = 1;
         std::vector<glm::vec2> positions = positionTarget(parameters, keywordIndex);
-        for(int i = 0; i < positions.size(); i++) {
+        for(unsigned int i = 0; i < positions.size(); i++) {
             int x = positions[i].x;
             int y = positions[i].y;
 
@@ -143,7 +143,7 @@ void Scripter::executeCommand(std::string& command) {
     } else if(parameters[0] == "changeBlock") {
         unsigned int keywordIndex = 1;
         std::vector<glm::vec2> positions = positionTarget(parameters, keywordIndex);
-        for(int i = 0; i < positions.size(); i++) {
+        for(unsigned int i = 0; i < positions.size(); i++) {
             int x = positions[i].x;
             int y = positions[i].y;
 
@@ -161,11 +161,18 @@ void Scripter::executeCommand(std::string& command) {
         std::vector<Entity*> entities = entityTarget(parameters, keywordIndex);
         std::vector<glm::vec2> positions = positionTarget(parameters, keywordIndex);
 
-        for(int i = 0; i < entities.size(); i++) {
-            for(int j = 0; j < positions.size(); j++) {
+        for(unsigned int i = 0; i < entities.size(); i++) {
+            for(unsigned int j = 0; j < positions.size(); j++) {
                 entities[i]->setPosition(positions[j] * glm::vec2(TILE_SIZE));
                 entities[i]->setParentChunk(m_chunks);
             }
+        }
+    } else if(parameters[0] == "give") {
+        unsigned int keywordIndex = 1;
+        std::vector<Entity*> entities = entityTarget(parameters, keywordIndex);
+        for(unsigned int i = 0; i < entities.size(); i++) {
+            //entities[i].getInventory().add(X);
+            /// TODO:
         }
     }
 }
@@ -186,7 +193,7 @@ std::vector<Entity*> Scripter::entityTarget(std::vector<std::string> parameters,
 
         bool found = false;
 
-        for(int i = 0; i < m_chunks[chunkIndex]->getAllEntities()->size(); i++) {
+        for(unsigned int i = 0; i < m_chunks[chunkIndex]->getAllEntities()->size(); i++) {
             float dist = std::sqrt(std::abs(position.x - (*m_chunks[chunkIndex]->getAllEntities())[i].getPosition().x) + std::abs(position.y - (*m_chunks[chunkIndex]->getAllEntities())[i].getPosition().y));
             if(dist < nearestDistance || !found) {
                 nearestDistance = dist;
@@ -197,8 +204,8 @@ std::vector<Entity*> Scripter::entityTarget(std::vector<std::string> parameters,
         }
 
         while(!found) {
-            for(int j = 0; j < WORLD_SIZE / 2 - 1; j++) {
-                for(int i = 0; i < m_chunks[(chunkIndex-i + WORLD_SIZE) % WORLD_SIZE]->getAllEntities()->size(); i++) {
+            for(unsigned int j = 0; j < WORLD_SIZE / 2 - 1; j++) {
+                for(unsigned int i = 0; i < m_chunks[(chunkIndex-i + WORLD_SIZE) % WORLD_SIZE]->getAllEntities()->size(); i++) {
                     float dist = std::sqrt(std::abs(position.x - (*m_chunks[chunkIndex]->getAllEntities())[i].getPosition().x) + std::abs(position.y - (*m_chunks[chunkIndex]->getAllEntities())[i].getPosition().y));
                     if(dist < nearestDistance || !found) {
                         nearestDistance = dist;
@@ -207,7 +214,7 @@ std::vector<Entity*> Scripter::entityTarget(std::vector<std::string> parameters,
                         found = true;
                     }
                 }
-                for(int i = 0; i < m_chunks[(chunkIndex+i + WORLD_SIZE) % WORLD_SIZE]->getAllEntities()->size(); i++) {
+                for(unsigned int i = 0; i < m_chunks[(chunkIndex+i + WORLD_SIZE) % WORLD_SIZE]->getAllEntities()->size(); i++) {
                     float dist = std::sqrt(std::abs(position.x - (*m_chunks[chunkIndex]->getAllEntities())[i].getPosition().x) + std::abs(position.y - (*m_chunks[chunkIndex]->getAllEntities())[i].getPosition().y));
                     if(dist < nearestDistance || !found) {
                         nearestDistance = dist;
@@ -233,8 +240,8 @@ std::vector<Entity*> Scripter::entityTarget(std::vector<std::string> parameters,
 
         std::vector<Entity*> ret;
 
-        for(int i = 0; i <= chunk1-chunk2; i++) {
-            for(int j = 0; j < m_chunks[(chunk1+i)%WORLD_SIZE]->getAllEntities()->size(); j++) {
+        for(unsigned int i = 0; i <= chunk1-chunk2; i++) {
+            for(unsigned int j = 0; j < m_chunks[(chunk1+i)%WORLD_SIZE]->getAllEntities()->size(); j++) {
                 if((*m_chunks[(chunk1+i)%WORLD_SIZE]->getAllEntities())[j].getPosition().x >= position1.x && (*m_chunks[(chunk1+i)%WORLD_SIZE]->getAllEntities())[j].getPosition().x <= position2.x) {
                     if((*m_chunks[(chunk1+i)%WORLD_SIZE]->getAllEntities())[j].getPosition().y >= position1.y && (*m_chunks[(chunk1+i)%WORLD_SIZE]->getAllEntities())[j].getPosition().y <= position2.y) {
                         ret.push_back(&(*m_chunks[(chunk1+i)%WORLD_SIZE]->getAllEntities())[j]);
@@ -251,6 +258,18 @@ std::vector<Entity*> Scripter::entityTarget(std::vector<std::string> parameters,
 
         return ret;
     }
+
+    std::string line;
+    for(unsigned int i = 0; i < parameters.size(); i++) {
+        line += parameters[i];
+    }
+
+    logger->log("Script failed on entityTarget with line: " + line + ". Quitting...", true);
+    GLEngine::fatalError("Script failed on entityTarget with line: " + line);
+
+    std::vector<Entity*> ret;
+
+    return ret;
 }
 
 std::vector<glm::vec2> Scripter::positionTarget(std::vector<std::string> parameters, unsigned int& keywordIndex) { // gets position

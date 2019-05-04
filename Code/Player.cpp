@@ -296,10 +296,10 @@ void Player::updateInput() {
 
     if(m_canInteract) {
         if(m_input->isKeyPressed(SDLK_e)) {
-            //if(m_speakingEntity) {
-                //m_speakingEntity->startDialogue();
-                m_sq->activateScript(m_scriptID_dayTime);
-            //}
+            if(m_speakingEntity) {
+                m_speakingEntity->startDialogue();
+                //m_sq->activateScript(m_scriptID_dayTime);
+            }
         }
 
         if(m_input->isKeyDown(SDL_BUTTON_LEFT) && m_selectedBlock) {

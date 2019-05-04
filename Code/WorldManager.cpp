@@ -14,9 +14,7 @@ WorldManager::~WorldManager()
     //dtor
 }
 
-void WorldManager::init(WorldIOManager* worldIOManager, float* tickTime) {
-
-    m_tickTime = tickTime;
+void WorldManager::init(WorldIOManager* worldIOManager) {
 
     m_worldIOManager = worldIOManager;
 
@@ -94,13 +92,15 @@ void WorldManager::update(GLEngine::Camera2D* worldCamera, float timeStepVariabl
 void WorldManager::tick() {
     for(unsigned int i = 0; i < m_activatedChunks.size(); i++) {
         int xOffset = std::abs(m_activatedChunks[i] + WORLD_SIZE) % WORLD_SIZE;
-        m_worldIOManager->getWorld()->chunks[xOffset]->tick(m_tickTime, *m_player);
+        m_worldIOManager->getWorld()->chunks[xOffset]->tick(m_worldIOManager->getWorld()->time, *m_player);
     }
     //m_entityManager.tick(tickTime, m_worldIOManager->getWorld()->chunks);
 
     if(!m_audioManager.isMusicPlaying()) {
         ///m_audioManager.playMorningSong(0); TODO
     }
+
+    m_worldIOManager->setWorldTime(m_worldIOManager->getWorld()->time + 1);
 }
 
 void WorldManager::draw(GLEngine::SpriteBatch& sb, GLEngine::DebugRenderer& dr, int tickTime, GLEngine::GLSLProgram* program) {

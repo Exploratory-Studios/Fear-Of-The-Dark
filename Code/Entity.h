@@ -90,8 +90,8 @@ class Entity
 
                                                 or
 
-                                                2.5j^2 = y
-                                                Where y is the highest height in the jump.
+                                                2.5j^2 = 8y
+                                                Where y is the highest height in the jump, in blocks
 
                                                 and
 

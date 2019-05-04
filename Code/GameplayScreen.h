@@ -15,6 +15,7 @@
 #include "ScreenIndices.h"
 #include "Scripting/ScripterMain.h"
 #include "Logging.h"
+#include "Console.h"
 
 enum class GameState {
     PAUSE,
@@ -65,8 +66,7 @@ class GameplayScreen : public GLEngine::IGameScreen
 
         GameState m_gameState = GameState::PLAY;
 
-        float m_time = 0.0f;
-        float m_tickTime = 0.0f;
+        float m_time = 0.0f; // Used for animations, NOT DAYLIGHT
         float m_frame = 0.0f;
         float m_deltaTime = 1.0f;
         int m_tickRate = 4;
@@ -78,6 +78,8 @@ class GameplayScreen : public GLEngine::IGameScreen
         glm::vec2 m_lastPlayerPos;
 
         Logger* logger = Logger::getInstance();
+
+        Console m_console;
 
         #ifdef DEV_CONTROLS
         CEGUI::DefaultWindow* m_fpsWidget = nullptr;

@@ -54,9 +54,9 @@ void EntityManager::tick(Player& p) {
         if(dist < minDist) {
             //closestId = i;
             minDist = dist;
-            if((*m_talkingEntities)[i].isDialogueStarted()) {
-                p.setSpeakingEntity((*m_talkingEntities)[i]);
-            }
+            //if((*m_talkingEntities)[i].isDialogueStarted()) {
+                p.setSpeakingEntity(&((*m_talkingEntities)[i]));
+            //}
         }
     }
 }

@@ -50,7 +50,7 @@ void GameplayScreen::onEntry() {
 
     m_dr.init();
 
-    m_worldManager.init(m_WorldIOManager, &m_tickTime);
+    m_worldManager.init(m_WorldIOManager);
     m_scripter = new Scripter(&m_worldManager);
 
     initUI();
@@ -93,16 +93,15 @@ void GameplayScreen::update() {
     }
     m_frame++;
 
-    if((int)m_frame++ % (int)(60 / m_tickRate) == 0) { // m_frame is equal to current frame
+    if((int)m_frame % (int)(60 / m_tickRate) == 0) { // m_frame is equal to current frame
         tick();
     }
 }
 
 void GameplayScreen::draw() {
-    if(m_gameState != GameState::PAUSE) {
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-    float dayLight = cos((float)m_tickTime / (DAY_LENGTH / 6.28318f)) / 2.0f + 0.5f;
+    float dayLight = cos((float)m_WorldIOManager->getWorld()->time / (DAY_LENGTH / 6.28318f)) / 2.0f + 0.5f;
 
     glClearColor(0.3f * dayLight, 0.4f * dayLight, 1.0f * dayLight, 1.0f);
 
@@ -114,7 +113,7 @@ void GameplayScreen::draw() {
         GLint pUniform = m_textureProgram.getUniformLocation("P");
         glUniformMatrix4fv(pUniform, 1, GL_FALSE, &projectionMatrix[0][0]);
 
-        m_worldManager.draw(m_spriteBatch, m_dr, m_tickTime, &m_textureProgram);
+        m_worldManager.draw(m_spriteBatch, m_dr, m_WorldIOManager->getWorld()->time, &m_textureProgram);
 
         m_textureProgram.unuse();
     }
@@ -147,7 +146,6 @@ void GameplayScreen::draw() {
 
         m_uiTextureProgram.unuse();
     }
-    }
 
     /// TODO: Don't forget to have a background image for the world based on biome
 }
@@ -157,7 +155,7 @@ void GameplayScreen::draw() {
 void GameplayScreen::checkInput() {
     SDL_Event evnt;
     while (SDL_PollEvent(&evnt)) {
-        m_game->onSDLEvent(evnt);
+        if(!m_console.isShown()) m_game->onSDLEvent(evnt);
         m_gui.onSDLEvent(evnt);
         switch(evnt.type) {
             case SDL_QUIT:
@@ -174,7 +172,7 @@ void GameplayScreen::checkInput() {
     #ifdef DEV_CONTROLS
     if(m_game->inputManager.isKeyPressed(SDLK_BACKSLASH)) {
 
-        std::string in;
+        /*std::string in;
         std::getline(std::cin, in);
 
         std::regex fullCmd(".+(\\s(\\d+))*");
@@ -199,12 +197,11 @@ void GameplayScreen::checkInput() {
             } else if(cmd == "tickRate") {
                 argNum = 1;
             } else {
-                logger->log("NOT A COMMAND");
-                logger->log("Valid commands are:");
-                logger->log("time <time>: Sets the tick-time to <time>");
-                logger->log("give <id> <amnt>: Gives the player <amnt> items with <id> id");
-                logger->log("getTime: Prints the current tick-time");
-                logger->log("tickRate <rate>: Sets the tick-rate to <rate>");
+                logger->log("NOT A COMMAND", true);
+                logger->log("time <time>: Sets the tick-time to <time>", true);
+                logger->log("give <id> <amnt>: Gives the player <amnt> items with <id> id", true);
+                logger->log("getTime: Prints the current tick-time", true);
+                logger->log("tickRate <rate>: Sets the tick-rate to <rate>", true);
                 argNum = 0;
             }
 
@@ -223,14 +220,16 @@ void GameplayScreen::checkInput() {
                 }
             }
             if(cmd == "time") {
-                m_tickTime = (float)args[0];
+                m_WorldIOManager->getWorld()->time = (float)args[0];
             } else if (cmd == "give") {
             } else if(cmd == "getTime") {
-                 logger->log("Time: " + std::to_string(m_tickTime));
+                 logger->log("Time: " + std::to_string(m_WorldIOManager->getWorld()->time));
             } else if(cmd == "tickRate") {
                 if((float)args[0] > 0) m_tickRate = (float)args[0];
             }
-        }
+        }*/
+        // OPEN IN-GAME CONSOLE, DON'T USE PROGRAM CONSOLE, PLEASE
+        m_console.show();
     }
     if(m_game->inputManager.isKeyPressed(SDLK_F1)) {
         m_debuggingInfo = !m_debuggingInfo;
@@ -276,6 +275,7 @@ void GameplayScreen::initUI() {
     }
 
     m_worldManager.getPlayer()->initGUI(&m_gui);
+    m_console.init(m_gui, m_WorldIOManager->getScriptQueue());
 
     #ifdef DEV_CONTROLS
     {
@@ -287,7 +287,6 @@ void GameplayScreen::initUI() {
 
 void GameplayScreen::tick() {
     m_worldManager.tick();
-    m_tickTime++;
 }
 
 void GameplayScreen::updateScale() {

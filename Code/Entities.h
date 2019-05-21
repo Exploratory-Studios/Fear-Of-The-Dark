@@ -39,6 +39,17 @@ class EntityNeutralCompanionCube : public Entity {
         void updateAI() { EntityFunctions::WalkingAI(m_controls, m_targets, m_curTarget, m_velocity, m_size, m_position); }
 };
 
+class EntityBaseProjectile : public Entity { // ABSTRACT
+    public:
+        EntityBaseProjectile(glm::vec2 pos, AudioManager* audioManager, float damage, bool gravity = true);
+        void onInteract(ScriptQueue* sq) = 0;
+        void onDeath(ScriptQueue* sq) = 0;
+    protected:
+        void updateAI() { m_position += m_velocity * m_speed; }
+        float m_damage;
+        bool m_gravity = false;
+};
+
 class EntityBaseQuestGiver : public Entity { // ABSTRACT
     public:
         EntityBaseQuestGiver(glm::vec2 pos, AudioManager* audioManager, QuestManager* qm, unsigned int questionId);

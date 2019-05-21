@@ -194,6 +194,12 @@ std::string Scripter::executeCommand(std::string& command) {
             returnMessage += "unable to interact\n";
         }
 
+    } else if(parameters[0] == "createEntity") {
+        unsigned int keywordIndex = 1;
+        std::vector<glm::vec2> positions = positionTarget(parameters, keywordIndex);
+        Categories::EntityIDs entityId = (Categories::EntityIDs)(std::stoi(parameters[keywordIndex]));
+        keywordIndex++;
+        /// TODO: Have a function in Entities.h return a vector of parameter types that we will need to fill out, based on a given ID.
     } else {
         logger->log("Invalid command: " + command, true);
         returnMessage += "Invalid command: " + command + "\n";

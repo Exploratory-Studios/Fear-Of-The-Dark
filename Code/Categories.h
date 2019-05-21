@@ -46,13 +46,15 @@ namespace Categories {
 
     enum class Entity_Type {
         MOB,
-        DIALOGUE
+        DIALOGUE,
+        PROJECTILE
     };
 
     enum class AI_Type {
         WALKING,
         FLYING,
-        SWIMMING
+        SWIMMING,
+        NONE
     };
 
     enum class Disability_Type {
@@ -66,6 +68,7 @@ namespace Categories {
         RANGED,
         MELEE_ONLY,
         MAGIC,
+        CONTACT,
         NONE
     };
 

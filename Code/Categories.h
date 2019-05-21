@@ -30,6 +30,12 @@ namespace Categories {
         BLOCK_GRASS
     };
 
+    enum class EntityIDs {
+        MOB_PLAYER,
+        MOB_NEUTRAL_COMPANIONCUBE,
+        MOB_NEUTRAL_QUESTGIVER_A
+    };
+
     enum class Faction {
         BENIGN,
         GOOD,
@@ -59,7 +65,8 @@ namespace Categories {
     enum class Attack_Type {
         RANGED,
         MELEE_ONLY,
-        MAGIC
+        MAGIC,
+        NONE
     };
 
 };

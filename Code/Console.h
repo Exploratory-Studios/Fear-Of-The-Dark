@@ -1,8 +1,9 @@
 #pragma once
 
-#include "Scripting/ScriptQueue.h"
-
+#include "Scripting/ScripterMain.h"
 #include <GUI.h>
+
+class Scripter;
 
 class Console
 {
@@ -10,7 +11,7 @@ class Console
         Console();
         virtual ~Console();
 
-        void init(GLEngine::GUI& gui, ScriptQueue* sq);
+        void init(GLEngine::GUI& gui, Scripter* scripter);
 
         void show();
         void hide();
@@ -21,14 +22,20 @@ class Console
 
     private:
         bool onEditboxInput(const CEGUI::EventArgs& e);
+        bool onScrollableMouseWheel(const CEGUI::EventArgs& e);
 
         CEGUI::FrameWindow* m_frame = nullptr;
         CEGUI::ScrollablePane* m_scrollable = nullptr;
-        CEGUI::DefaultWindow* m_historyLabel = nullptr;
+
+        std::vector<CEGUI::DefaultWindow*> m_historyLabels;
+        std::vector<std::string> m_commandHistory;
+        int m_historySelection = -1;
+
         CEGUI::Editbox* m_editbox = nullptr;
 
         bool m_showing = false;
 
-        ScriptQueue* m_sq = nullptr;
+        Scripter* m_scripter = nullptr;
+        GLEngine::GUI* m_gui = nullptr;
 
 };

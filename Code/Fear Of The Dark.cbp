@@ -294,7 +294,6 @@
 		<Unit filename="PerlinNoise/PerlinNoise.h" />
 		<Unit filename="PerlinNoise/ppm.cpp" />
 		<Unit filename="PerlinNoise/ppm.h" />
-		<Unit filename="Physics.h" />
 		<Unit filename="Player.cpp" />
 		<Unit filename="Player.h" />
 		<Unit filename="PresetValues.h" />
@@ -311,8 +310,6 @@
 		<Unit filename="Tile.h" />
 		<Unit filename="WorldIOManager.cpp" />
 		<Unit filename="WorldIOManager.h" />
-		<Unit filename="WorldManager.cpp" />
-		<Unit filename="WorldManager.h" />
 		<Extensions>
 			<code_completion />
 			<debugger />

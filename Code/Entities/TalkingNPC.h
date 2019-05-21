@@ -1,4 +1,4 @@
-#pragma once
+/*#pragma once
 
 #include "../Entity.h"
 
@@ -26,3 +26,4 @@ class TalkingNPC : public Entity
         bool m_dialogueStarted = false;
 
 };
+*/

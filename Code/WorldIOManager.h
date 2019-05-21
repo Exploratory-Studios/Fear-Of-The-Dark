@@ -10,6 +10,7 @@
 #include "Player.h"
 #include "Block.h"
 #include "Blocks.h"
+#include "Entities.h"
 
 #include "PresetValues.h"
 #include "Logging.h"
@@ -47,7 +48,7 @@ struct ChunkData {
 
 struct World {
     Chunk* chunks[WORLD_SIZE] = { nullptr };
-    Player player;
+    Player* player = nullptr;
     float time = 0.0f;
 };
 

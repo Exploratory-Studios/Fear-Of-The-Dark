@@ -9,7 +9,6 @@
 
 class EntityManager;
 class Entity;
-class TalkingNPC;
 class Player;
 
 class Chunk
@@ -23,7 +22,7 @@ class Chunk
         void init(Tile* tileArray[WORLD_HEIGHT][CHUNK_SIZE], Tile* extraTileArray[WORLD_HEIGHT][2], Chunk* surroundingChunks[2], EntityManager* entityManager);
 
         void update(float time, float timeStepVariable, Chunk* chunks[WORLD_SIZE]);
-        void tick(float tickTime, Player& p);
+        void tick(float tickTime, Player* p);
         void draw(GLEngine::SpriteBatch& sb, int xOffset, float time); // xOffset is in chunks
 
         void setPlace(Categories::Places place);
@@ -34,17 +33,14 @@ class Chunk
         void activateChunk() { m_activated = true; }
         void deactivateChunk() { m_activated = false; }
 
-        void addEntity(Entity ent);
-        void addTalkingEntity(TalkingNPC ent);
+        void addEntity(Entity* ent);
 
         Categories::Places          getPlace()                                                  { return m_place;       }
         int                         getIndex()                                                  { return m_index;       }
         Chunk**					    getSurroundingChunks()										{ return m_surroundingChunks; }
         bool                        isDialogueActive()                                          { return m_dialogueActive; }
         bool                        isDialogueStarted()                                         { return m_dialogueStarted; }
-        std::vector<TalkingNPC>*    getTalkingEntities();
-        std::vector<Entity>*        getEntities();
-        std::vector<Entity>*        getAllEntities();
+        std::vector<Entity*>        getEntities();
 
         Tile* tiles[WORLD_HEIGHT][CHUNK_SIZE] = { { nullptr } };
         Tile* extraTiles[WORLD_HEIGHT][2] = { { nullptr } }; // On each side, so that we don't have to activate 3 chunks at a time instead of one

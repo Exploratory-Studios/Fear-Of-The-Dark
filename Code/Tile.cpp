@@ -24,7 +24,7 @@ float Tile::getSurroundingLight() {
 
     float light = 0.0f;
 
-    if(y-1 >= 0)
+    if(y-1 >= 0) {// 1 below
         if(m_parentChunk->tiles[y-1][x]->getLight() > light) {
             if(m_parentChunk->tiles[y-1][x]->isTransparent() || isTransparent()) {
                 float newLight = m_parentChunk->tiles[y-1][x]->getLight() * TRANSPARENT_LIGHT_MULTIPLIER;
@@ -34,7 +34,8 @@ float Tile::getSurroundingLight() {
                 if(newLight > light) light = newLight;
             }
         }
-    if(y+1 < WORLD_HEIGHT)
+    }
+    if(y+1 < WORLD_HEIGHT) { // 1 above
         if(m_parentChunk->tiles[y+1][x]->getLight() > light) {
             if(m_parentChunk->tiles[y+1][x]->isTransparent() || isTransparent()) {
                 float newLight = m_parentChunk->tiles[y+1][x]->getLight() * TRANSPARENT_LIGHT_MULTIPLIER;
@@ -44,7 +45,8 @@ float Tile::getSurroundingLight() {
                 if(newLight > light) light = newLight;
             }
         }
-    if(x-1 >= 0) {
+    }
+    if(x-1 >= 0) { // to the left
         if(m_parentChunk->tiles[y][x-1]->getLight() > light) {
             if(m_parentChunk->tiles[y][x-1]->isTransparent() || isTransparent()) {
                 float newLight = m_parentChunk->tiles[y][x-1]->getLight() * TRANSPARENT_LIGHT_MULTIPLIER;
@@ -65,7 +67,7 @@ float Tile::getSurroundingLight() {
             }
         }
     }
-    if(x+1 < CHUNK_SIZE) {
+    if(x+1 < CHUNK_SIZE) { // to the right
         if(m_parentChunk->tiles[y][x+1]->getLight() > light) {
             if(m_parentChunk->tiles[y][x+1]->isTransparent() || isTransparent()) {
                 float newLight = m_parentChunk->tiles[y][x+1]->getLight() * TRANSPARENT_LIGHT_MULTIPLIER;

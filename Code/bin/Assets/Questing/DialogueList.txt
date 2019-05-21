@@ -1,0 +1,30 @@
+#BEGIN
+How are you doing? This is the question
+#BEGIN
+Pretty swell. This is the 1st answer to the question.
+#FLAGS_END
+#FLAGS_END
+Good. What do you need?
+#BEGIN
+Nothing at all.
+#FLAGS_END
+1 1
+#FLAGS_END
+#END
+#END
+#BEGIN
+Pretty swell. This is the 2nd answer to the question.
+1 1
+2 0
+#FLAGS_END
+2 1
+#FLAGS_END
+#END
+#BEGIN
+Pretty swell. This is the 3rd answer to the question.
+2 1
+#FLAGS_END
+2 0
+#FLAGS_END
+#END
+#END

@@ -20,10 +20,12 @@ class DialogueManager {
         DialogueManager(std::vector<Question*>* questionList, std::vector<Flag*>* flagList) : m_questionList(questionList), m_flagList(flagList) { }
         ~DialogueManager();
 
-        void draw(GLEngine::GUI& gui);
-        void update(GLEngine::InputManager& input, GLEngine::GUI& gui);
+        void draw();
+        void update(GLEngine::InputManager& input);
 
-        void startConversation(unsigned int id, GLEngine::InputManager& input, GLEngine::GUI& gui); // The id is the index of the initial question. This function sets focus and starts a loop to draw and accept input.
+        void initUI(GLEngine::GUI* gui) { m_gui = gui; }
+
+        void startConversation(unsigned int id, GLEngine::InputManager& input); // The id is the index of the initial question. This function sets focus and starts a loop to draw and accept input.
 
         bool isDialogueActive() { return m_dialogueActive; }
         bool isDialogueStarted() { return m_dialogueStarted; }
@@ -33,9 +35,11 @@ class DialogueManager {
         void setDialogueActive(bool setting) { m_dialogueActive = setting; }
 
     private:
-        void initConversation(Question* initialQuestion, GLEngine::GUI& gui);
+        void initConversation(Question* initialQuestion);
 
         Logger* logger = Logger::getInstance();
+
+        GLEngine::GUI* m_gui = nullptr;
 
         std::vector<Question*>* m_questionList = nullptr;
         std::vector<Flag*>* m_flagList = nullptr;
@@ -58,8 +62,10 @@ class QuestManager
         QuestManager(std::string questionListPath, std::string flagListPath);
         ~QuestManager();
 
-        void update(GLEngine::InputManager& input, GLEngine::GUI& gui);
-        void draw(GLEngine::GUI& gui);
+        void update(GLEngine::InputManager& input);
+        void draw();
+
+        void initUI(GLEngine::GUI* gui) { m_gui = gui; m_dialogueManager->initUI(gui); }
 
         std::vector<Question*>* getQuestionList() { return &m_questionList; }
         bool                    isDialogueActive() {return m_dialogueManager->isDialogueActive(); }
@@ -77,6 +83,7 @@ class QuestManager
         Logger* logger = Logger::getInstance();
 
         DialogueManager* m_dialogueManager = nullptr; /// TODO make this private again please :)
+        GLEngine::GUI* m_gui = nullptr;
 
         std::vector<Question*> getDialogue(std::ifstream& file);
         Question* readQuestion(std::vector<std::string> lines); // Forms question struct from given lines

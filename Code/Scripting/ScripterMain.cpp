@@ -2,22 +2,21 @@
 
 #include <Camera2D.h>
 
-Scripter::Scripter(WorldManager* worldManager) {
-    init(worldManager);
+Scripter::Scripter(GameplayScreen* gameplayScreen) {
+    init(gameplayScreen);
 }
 
-void Scripter::init(WorldManager* worldManager) {
+void Scripter::init(GameplayScreen* gameplayScreen) {
 
-    m_worldManager = worldManager;
-    m_entities = new std::vector<Entity>();
+    m_gameplayScreen = gameplayScreen;
 
     for(int i = 0; i < WORLD_SIZE; i++) {
-        m_chunks[i] = m_worldManager->m_worldIOManager->getWorld()->chunks[i];
+        m_chunks[i] = m_gameplayScreen->m_WorldIOManager->getWorld()->chunks[i];
     }
 
     for(unsigned int i = 0; i < WORLD_SIZE; i++) {
-        for(unsigned int j = 0; j < m_chunks[i]->getEntities()->size(); j++) {
-            m_entities->push_back((*m_chunks[i]->getEntities())[j]);
+        for(unsigned int j = 0; j < m_chunks[i]->getEntities().size(); j++) {
+            m_entities.push_back(m_chunks[i]->getEntities()[j]);
         }
     }
 
@@ -58,24 +57,24 @@ void Scripter::hideBlock(int x, int y) {
     m_chunks[chunk]->tiles[y][chunkX]->m_draw = false; // Make it transparent
 }
 
-unsigned int Scripter::addEntity(Entity& newEntity) {
-    m_entities->push_back(newEntity);
-    return m_entities->size();
+unsigned int Scripter::addEntity(Entity* newEntity) {
+    m_entities.push_back(newEntity);
+    return m_entities.size();
 }
 
 void Scripter::removeEntity(unsigned int index) {
-    for(unsigned int i = index; i < m_entities->size()-1; i++) {
-        (*m_entities)[i] = (*m_entities)[i+1];
+    for(unsigned int i = index; i < m_entities.size()-1; i++) {
+        m_entities[i] = m_entities[i+1];
     }
-    m_entities->pop_back();
+    m_entities.pop_back();
 }
 
 void Scripter::showEntity(unsigned int index) {
-    (*m_entities)[index].m_transparent = false;
+    m_entities[index]->m_transparent = false;
 }
 
 void Scripter::hideEntity(unsigned int index) {
-    (*m_entities)[index].m_transparent = true;
+    m_entities[index]->m_transparent = true;
 }
 
 void Scripter::update() {
@@ -84,23 +83,26 @@ void Scripter::update() {
     // Take script off active list
     // Repeat until no active scripts exist
 
-    std::vector<Script*> scripts = m_worldManager->m_worldIOManager->getScriptQueue()->m_activeScripts;
+    std::vector<Script*> scripts = m_gameplayScreen->m_WorldIOManager->getScriptQueue()->m_activeScripts;
 
     for(unsigned int i = 0; i < scripts.size(); i++) {
         executeScript(*scripts[i]);
     }
-    m_worldManager->m_worldIOManager->getScriptQueue()->deactivateScripts();
+    m_gameplayScreen->m_WorldIOManager->getScriptQueue()->deactivateScripts();
 }
 
 /// PRIVATE FUNCTIONS
 
-void Scripter::executeScript(Script& script) {
+std::string Scripter::executeScript(Script& script) {
+    std::string returnMessage;
+
     for(unsigned int i = 0; i < script.commands.size(); i++) {
         executeCommand(script.commands[i]);
     }
 }
 
-void Scripter::executeCommand(std::string& command) {
+std::string Scripter::executeCommand(std::string& command) {
+    std::string returnMessage;
     std::vector<std::string> parameters;
 
     std::string temp;
@@ -127,7 +129,9 @@ void Scripter::executeCommand(std::string& command) {
     if(parameters[0] == "time") {
         if(parameters[1] == "set") {
             logger->log("Setting time to " + parameters[2]);
-            m_worldManager->m_worldIOManager->getWorld()->time = std::stoi(parameters[2]);
+            returnMessage += "Setting time to " + parameters[2] + "\n";
+
+            m_gameplayScreen->m_WorldIOManager->getWorld()->time = std::stoi(parameters[2]);
         }
     } else if(parameters[0] == "removeBlock") {
         unsigned int keywordIndex = 1;
@@ -137,6 +141,7 @@ void Scripter::executeCommand(std::string& command) {
             int y = positions[i].y;
 
             logger->log("Removing block at: X=" + std::to_string(x) + ", Y=" + std::to_string(y));
+            returnMessage += "Removing block at: X=" + std::to_string(x) + ", Y=" + std::to_string(y) + "\n";
 
             removeBlock(x, y);
         }
@@ -148,6 +153,7 @@ void Scripter::executeCommand(std::string& command) {
             int y = positions[i].y;
 
             logger->log("Changing block at: X=" + std::to_string(x) + ", Y=" + std::to_string(y) + " to one with the id of: " + parameters[keywordIndex]);
+            returnMessage += "Changing block at: X=" + std::to_string(x) + ", Y=" + std::to_string(y) + " to one with the id of: " + parameters[keywordIndex] + "\n";
 
             int chunkIndex = std::floor(x / CHUNK_SIZE);
             Chunk* parent = m_chunks[chunkIndex];
@@ -163,6 +169,9 @@ void Scripter::executeCommand(std::string& command) {
 
         for(unsigned int i = 0; i < entities.size(); i++) {
             for(unsigned int j = 0; j < positions.size(); j++) {
+                logger->log("Teleporting entity to: X=" + std::to_string(positions[j].x * TILE_SIZE) + ", Y=" + std::to_string(positions[j].y * TILE_SIZE));
+                returnMessage += "Teleporting entity to: X=" + std::to_string(positions[j].x * TILE_SIZE) + ", Y=" + std::to_string(positions[j].y * TILE_SIZE) + "\n";
+
                 entities[i]->setPosition(positions[j] * glm::vec2(TILE_SIZE));
                 entities[i]->setParentChunk(m_chunks);
             }
@@ -174,7 +183,23 @@ void Scripter::executeCommand(std::string& command) {
             //entities[i].getInventory().add(X);
             /// TODO:
         }
+    } else if(parameters[0] == "setCanInteract") {
+        m_gameplayScreen->m_player->setCanInteract((bool)std::stoi(parameters[1]));
+        returnMessage = "Set player ";
+        if((bool)std::stoi(parameters[1])) {
+            logger->log("Set player able to interact");
+            returnMessage += "able to interact\n";
+        } else {
+            logger->log("Set player unable to interact");
+            returnMessage += "unable to interact\n";
+        }
+
+    } else {
+        logger->log("Invalid command: " + command, true);
+        returnMessage += "Invalid command: " + command + "\n";
     }
+
+    return returnMessage;
 }
 
 /// PRIVATE, DON'T TOUCH!!!!!!!
@@ -193,8 +218,8 @@ std::vector<Entity*> Scripter::entityTarget(std::vector<std::string> parameters,
 
         bool found = false;
 
-        for(unsigned int i = 0; i < m_chunks[chunkIndex]->getAllEntities()->size(); i++) {
-            float dist = std::sqrt(std::abs(position.x - (*m_chunks[chunkIndex]->getAllEntities())[i].getPosition().x) + std::abs(position.y - (*m_chunks[chunkIndex]->getAllEntities())[i].getPosition().y));
+        for(unsigned int i = 0; i < m_chunks[chunkIndex]->getEntities().size(); i++) {
+            float dist = std::sqrt(std::abs(position.x - m_chunks[chunkIndex]->getEntities()[i]->getPosition().x) + std::abs(position.y - m_chunks[chunkIndex]->getEntities()[i]->getPosition().y));
             if(dist < nearestDistance || !found) {
                 nearestDistance = dist;
                 nearestId = i;
@@ -205,8 +230,8 @@ std::vector<Entity*> Scripter::entityTarget(std::vector<std::string> parameters,
 
         while(!found) {
             for(unsigned int j = 0; j < WORLD_SIZE / 2 - 1; j++) {
-                for(unsigned int i = 0; i < m_chunks[(chunkIndex-i + WORLD_SIZE) % WORLD_SIZE]->getAllEntities()->size(); i++) {
-                    float dist = std::sqrt(std::abs(position.x - (*m_chunks[chunkIndex]->getAllEntities())[i].getPosition().x) + std::abs(position.y - (*m_chunks[chunkIndex]->getAllEntities())[i].getPosition().y));
+                for(unsigned int i = 0; i < m_chunks[(chunkIndex-i + WORLD_SIZE) % WORLD_SIZE]->getEntities().size(); i++) {
+                    float dist = std::sqrt(std::abs(position.x - m_chunks[chunkIndex]->getEntities()[i]->getPosition().x) + std::abs(position.y - m_chunks[chunkIndex]->getEntities()[i]->getPosition().y));
                     if(dist < nearestDistance || !found) {
                         nearestDistance = dist;
                         nearestId = i;
@@ -214,8 +239,8 @@ std::vector<Entity*> Scripter::entityTarget(std::vector<std::string> parameters,
                         found = true;
                     }
                 }
-                for(unsigned int i = 0; i < m_chunks[(chunkIndex+i + WORLD_SIZE) % WORLD_SIZE]->getAllEntities()->size(); i++) {
-                    float dist = std::sqrt(std::abs(position.x - (*m_chunks[chunkIndex]->getAllEntities())[i].getPosition().x) + std::abs(position.y - (*m_chunks[chunkIndex]->getAllEntities())[i].getPosition().y));
+                for(unsigned int i = 0; i < m_chunks[(chunkIndex+i + WORLD_SIZE) % WORLD_SIZE]->getEntities().size(); i++) {
+                    float dist = std::sqrt(std::abs(position.x - m_chunks[chunkIndex]->getEntities()[i]->getPosition().x) + std::abs(position.y - m_chunks[chunkIndex]->getEntities()[i]->getPosition().y));
                     if(dist < nearestDistance || !found) {
                         nearestDistance = dist;
                         nearestId = i;
@@ -227,7 +252,7 @@ std::vector<Entity*> Scripter::entityTarget(std::vector<std::string> parameters,
         }
 
         std::vector<Entity*> ret;
-        ret.push_back(&(*m_chunks[nearestChunkId]->getAllEntities())[nearestId]);
+        ret.push_back(m_chunks[nearestChunkId]->getEntities()[nearestId]);
 
         return ret;
     } else if(parameters[keywordIndex] == "area") { /// Not tested
@@ -241,10 +266,10 @@ std::vector<Entity*> Scripter::entityTarget(std::vector<std::string> parameters,
         std::vector<Entity*> ret;
 
         for(unsigned int i = 0; i <= chunk1-chunk2; i++) {
-            for(unsigned int j = 0; j < m_chunks[(chunk1+i)%WORLD_SIZE]->getAllEntities()->size(); j++) {
-                if((*m_chunks[(chunk1+i)%WORLD_SIZE]->getAllEntities())[j].getPosition().x >= position1.x && (*m_chunks[(chunk1+i)%WORLD_SIZE]->getAllEntities())[j].getPosition().x <= position2.x) {
-                    if((*m_chunks[(chunk1+i)%WORLD_SIZE]->getAllEntities())[j].getPosition().y >= position1.y && (*m_chunks[(chunk1+i)%WORLD_SIZE]->getAllEntities())[j].getPosition().y <= position2.y) {
-                        ret.push_back(&(*m_chunks[(chunk1+i)%WORLD_SIZE]->getAllEntities())[j]);
+            for(unsigned int j = 0; j < m_chunks[(chunk1+i)%WORLD_SIZE]->getEntities().size(); j++) {
+                if(m_chunks[(chunk1+i)%WORLD_SIZE]->getEntities()[j]->getPosition().x >= position1.x && m_chunks[(chunk1+i)%WORLD_SIZE]->getEntities()[j]->getPosition().x <= position2.x) {
+                    if(m_chunks[(chunk1+i)%WORLD_SIZE]->getEntities()[j]->getPosition().y >= position1.y && m_chunks[(chunk1+i)%WORLD_SIZE]->getEntities()[j]->getPosition().y <= position2.y) {
+                        ret.push_back(m_chunks[(chunk1+i)%WORLD_SIZE]->getEntities()[j]);
                     }
                 }
             }
@@ -254,7 +279,7 @@ std::vector<Entity*> Scripter::entityTarget(std::vector<std::string> parameters,
     } else if(parameters[keywordIndex] == "player") {
         keywordIndex += 1;
         std::vector<Entity*> ret;
-        ret.push_back(m_worldManager->getPlayer());
+        ret.push_back(m_gameplayScreen->m_player);
 
         return ret;
     }

@@ -36,42 +36,47 @@ void WorldIOManager::loadWorld(std::string worldName, float* progress) {
     }
 
     { // PLAYER
-        file.read(reinterpret_cast<char*>(&m_world->player.m_canInteract), sizeof(bool));
-        file.read(reinterpret_cast<char*>(&m_world->player.m_sanity), sizeof(float));
-        file.read(reinterpret_cast<char*>(&m_world->player.m_health), sizeof(float));
-        file.read(reinterpret_cast<char*>(&m_world->player.m_thirst), sizeof(float));
-        file.read(reinterpret_cast<char*>(&m_world->player.m_hunger), sizeof(float));
-        file.read(reinterpret_cast<char*>(&m_world->player.m_exhaustion), sizeof(float));
-        file.read(reinterpret_cast<char*>(&m_world->player.m_stamina), sizeof(float));
-        file.read(reinterpret_cast<char*>(&m_world->player.m_position), sizeof(glm::vec2));
+        if(m_world->player) {
+            file.read(reinterpret_cast<char*>(&m_world->player->m_canInteract), sizeof(bool));
+            file.read(reinterpret_cast<char*>(&m_world->player->m_sanity), sizeof(float));
+            file.read(reinterpret_cast<char*>(&m_world->player->m_health), sizeof(float));
+            file.read(reinterpret_cast<char*>(&m_world->player->m_thirst), sizeof(float));
+            file.read(reinterpret_cast<char*>(&m_world->player->m_hunger), sizeof(float));
+            file.read(reinterpret_cast<char*>(&m_world->player->m_exhaustion), sizeof(float));
+            file.read(reinterpret_cast<char*>(&m_world->player->m_stamina), sizeof(float));
+            file.read(reinterpret_cast<char*>(&m_world->player->m_position), sizeof(glm::vec2));
 
-        unsigned int favouriteIndices[10];
-        file.read(reinterpret_cast<char*>(&favouriteIndices), sizeof(unsigned int) * 10); // Get indices (in the inventory) that the hotbar pointed to
+            unsigned int favouriteIndices[10];
+            file.read(reinterpret_cast<char*>(&favouriteIndices), sizeof(unsigned int) * 10); // Get indices (in the inventory) that the hotbar pointed to
 
-        logger->log("LOAD: Loaded Player POD");
+            logger->log("LOAD: Loaded Player POD");
 
 
-        // INVENTORY
-        unsigned int items = 0;
-        file.read(reinterpret_cast<char*>(&items), sizeof(unsigned int));
-        m_world->player.m_inventory->m_items.clear();
-        m_world->player.m_inventory->m_items.reserve(items);
-        for(unsigned int i = 0; i < items; i++) {
-            // ITEMS
-            ItemData newItem;
-            file.read(reinterpret_cast<char*>(&newItem), sizeof(ItemData));
+            // INVENTORY
+            unsigned int items = 0;
+            file.read(reinterpret_cast<char*>(&items), sizeof(unsigned int));
+            m_world->player->m_inventory->m_items.clear();
+            m_world->player->m_inventory->m_items.reserve(items);
+            for(unsigned int i = 0; i < items; i++) {
+                // ITEMS
+                ItemData newItem;
+                file.read(reinterpret_cast<char*>(&newItem), sizeof(ItemData));
 
-            m_world->player.m_inventory->addItem(createItem(newItem.id, newItem.quantity));
+                m_world->player->m_inventory->addItem(createItem(newItem.id, newItem.quantity));
 
-            logger->log("LOAD: Loaded " + std::to_string(i+1) + " of " + std::to_string(items) + " Items");
+                logger->log("LOAD: Loaded " + std::to_string(i+1) + " of " + std::to_string(items) + " Items");
+            }
+
+            for(int i = 0; i < 10; i++) {
+                m_world->player->m_favouriteItems[i] = m_world->player->m_inventory->getItem(favouriteIndices[i]); // Set up the pointers based on the indices we loaded earlier
+            }
+
+            file.read(reinterpret_cast<char*>(&m_world->player->m_inventory->m_absMaxWeight), sizeof(float));
+            logger->log("LOAD: Loaded Player Inventory");
+
+        } else {
+            logger->log("LOAD: Player could not be saved: null pointer", true);
         }
-
-        for(int i = 0; i < 10; i++) {
-            m_world->player.m_favouriteItems[i] = m_world->player.m_inventory->getItem(favouriteIndices[i]); // Set up the pointers based on the indices we loaded earlier
-        }
-
-        file.read(reinterpret_cast<char*>(&m_world->player.m_inventory->m_absMaxWeight), sizeof(float));
-        logger->log("LOAD: Loaded Player Inventory");
 
     }
 
@@ -130,28 +135,28 @@ void WorldIOManager::saveWorld(World& world, std::string worldName, float* progr
     PlayerData p;
 
     // POD
-    p.canInteract = m_world->player.m_canInteract;
-    p.m_sanity = m_world->player.m_sanity;
-    p.m_health = m_world->player.m_health;
-    p.m_thirst = m_world->player.m_thirst;
-    p.m_hunger = m_world->player.m_hunger;
-    p.m_exhaustion = m_world->player.m_exhaustion;
-    p.m_stamina = m_world->player.m_stamina;
-    p.position = m_world->player.getPosition();
+    p.canInteract = m_world->player->m_canInteract;
+    p.m_sanity = m_world->player->m_sanity;
+    p.m_health = m_world->player->m_health;
+    p.m_thirst = m_world->player->m_thirst;
+    p.m_hunger = m_world->player->m_hunger;
+    p.m_exhaustion = m_world->player->m_exhaustion;
+    p.m_stamina = m_world->player->m_stamina;
+    p.position = m_world->player->getPosition();
     for(unsigned int i = 0; i < 10; i++) {
-        p.favouriteItemIndices[i] = m_world->player.m_inventory->getItemIndex(m_world->player.m_favouriteItems[i]);
+        p.favouriteItemIndices[i] = m_world->player->m_inventory->getItemIndex(m_world->player->m_favouriteItems[i]);
     }
 
     // INVENTORY
     PlayerInventoryData pInventory;
-    pInventory.items = m_world->player.m_inventory->getItems().size();
+    pInventory.items = m_world->player->m_inventory->getItems().size();
     for(unsigned int i = 0; i < pInventory.items; i++) {
         ItemData item;
-        item.id = m_world->player.m_inventory->getItem(i)->getID();
-        item.quantity = m_world->player.m_inventory->getItem(i)->getQuantity();
+        item.id = m_world->player->m_inventory->getItem(i)->getID();
+        item.quantity = m_world->player->m_inventory->getItem(i)->getQuantity();
         pInventory.itemData.push_back(item);
     }
-    pInventory.absMaxWeight = m_world->player.m_inventory->m_absMaxWeight;
+    pInventory.absMaxWeight = m_world->player->m_inventory->m_absMaxWeight;
 
     p.inventory = pInventory;
 
@@ -322,7 +327,10 @@ void WorldIOManager::createWorld(unsigned int seed, std::string worldName, bool 
                             m_world->chunks[i]->tiles[y][x] = block;
                         }
                         for(int y = 0; y < blockHeights[i * CHUNK_SIZE + x]; y++) {
-                            if(y != blockHeights[i * CHUNK_SIZE + x] - 1) {
+                            if(y < blockHeights[i * CHUNK_SIZE + x] - 1 - 5) {
+                                BlockStone* block = new BlockStone(glm::vec2((i * CHUNK_SIZE) + x, y), m_world->chunks[i]);
+                                m_world->chunks[i]->tiles[y][x] = block;
+                            } else if(y < blockHeights[i * CHUNK_SIZE + x] - 1) {
                                 BlockDirt* block = new BlockDirt(glm::vec2((i * CHUNK_SIZE) + x, y), m_world->chunks[i]);
                                 m_world->chunks[i]->tiles[y][x] = block;
                             } else {
@@ -348,7 +356,10 @@ void WorldIOManager::createWorld(unsigned int seed, std::string worldName, bool 
                     m_world->chunks[k]->tiles[j][i] = block;
                 }
                 for(int j = 0; j < blockHeights[k * CHUNK_SIZE + i]; j++) {
-                    if(j != blockHeights[k * CHUNK_SIZE + i] - 1) {
+                    if(j < blockHeights[k * CHUNK_SIZE + i] - 1 - 5) {
+                        BlockStone* block = new BlockStone(glm::vec2((k * CHUNK_SIZE) + i, j), m_world->chunks[k]);
+                        m_world->chunks[k]->tiles[j][i] = block;
+                    } else if(j < blockHeights[k * CHUNK_SIZE + i] - 1) {
                         BlockDirt* block = new BlockDirt(glm::vec2((k * CHUNK_SIZE) + i, j), m_world->chunks[k]);
                         m_world->chunks[k]->tiles[j][i] = block;
                     } else {
@@ -377,6 +388,6 @@ void WorldIOManager::createWorld(unsigned int seed, std::string worldName, bool 
         m_world->chunks[i]->setSurroundingChunk(m_world->chunks[((i+1+WORLD_SIZE) % WORLD_SIZE)], 1);
     }
 
-    Player player(glm::vec2(5.0f * TILE_SIZE, (blockHeights[5] + 5) * TILE_SIZE), m_input, m_sq);
-    m_world->player = player;
+    //m_world->player = new Player(glm::vec2(5.0f * TILE_SIZE, (blockHeights[5] + 5) * TILE_SIZE), m_input, m_sq);
+    m_world->player = reinterpret_cast<Player*>(createEntity((unsigned int)Categories::EntityIDs::MOB_PLAYER, glm::vec2(5.0f * TILE_SIZE, (blockHeights[5] + 5) * TILE_SIZE), nullptr, m_input, m_sq));
 }

@@ -26,22 +26,12 @@ void Entity::setParentChunk(Chunk* chunk) {
     m_parentChunk = chunk;
 }
 
-Entity::Entity()
-{
-    //ctor
-}
-
-Entity::Entity(glm::vec2 position, unsigned int id, AudioManager* audioManager, ScriptQueue* sq) {
-    m_audioManager = audioManager;
-    init(position, Categories::Entity_Type::MOB, id, sq);
-}
-
 Entity::~Entity()
 {
     //dtor
 }
 
-void Entity::init(glm::vec2 position, Categories::Entity_Type type, unsigned int id, ScriptQueue* sq) {
+/*void Entity::init(glm::vec2 position, Categories::Entity_Type type, unsigned int id, ScriptQueue* sq) {
     m_position = position;
     m_sq = sq;
 
@@ -80,7 +70,7 @@ void Entity::init(glm::vec2 position, Categories::Entity_Type type, unsigned int
                 return;
             }
     }
-}
+}*/
 
 void Entity::update(float timeStep, Chunk* worldChunks[WORLD_SIZE]) {
     updateAI();
@@ -157,23 +147,23 @@ void Entity::move(float timeStepVariable) {
 
 void Entity::collide() {
 
-    std::vector<Entity>* entities = m_parentChunk->getEntities();
+    std::vector<Entity*> entities = m_parentChunk->getEntities();
 
     if(getChunkIndex() >= 0) {
         /// ENTITY COLLISION STARTS HERE
-        for(unsigned int i = 0; i < entities->size(); i++) {
-            if((*entities)[i].getPosition() != m_position) {
-                float xDist = (m_position.x / (float)TILE_SIZE + m_size.x / 2.0f) - ((*entities)[i].getPosition().x / (float)TILE_SIZE + (*entities)[i].getSize().x / 2.0f);
-                float yDist = (m_position.y / (float)TILE_SIZE + m_size.y / 2.0f) - ((*entities)[i].getPosition().y / (float)TILE_SIZE + (*entities)[i].getSize().y / 2.0f);
-                if(abs(xDist) < abs(m_size.x / 2.0f + (*entities)[i].getSize().x / 2.0f)) {
-                    if(abs(yDist) < abs(m_size.y / 2.0f + (*entities)[i].getSize().y / 2.0f)) {
+        for(unsigned int i = 0; i < entities.size(); i++) {
+            if(entities[i]->getPosition() != m_position) {
+                float xDist = (m_position.x / (float)TILE_SIZE + m_size.x / 2.0f) - (entities[i]->getPosition().x / (float)TILE_SIZE + entities[i]->getSize().x / 2.0f);
+                float yDist = (m_position.y / (float)TILE_SIZE + m_size.y / 2.0f) - (entities[i]->getPosition().y / (float)TILE_SIZE + entities[i]->getSize().y / 2.0f);
+                if(abs(xDist) < abs(m_size.x / 2.0f + entities[i]->getSize().x / 2.0f)) {
+                    if(abs(yDist) < abs(m_size.y / 2.0f + entities[i]->getSize().y / 2.0f)) {
 
-                        float depth = xDist - (m_size.x / 2.0f + (*entities)[i].getSize().x / 2.0f);
-                        float force = (depth / 2.0f * TILE_SIZE) * (depth / 2.0f * TILE_SIZE) / ((m_size.x / 2.0f + (*entities)[i].getSize().x / 2.0f) * 512.0f);
+                        float depth = xDist - (m_size.x / 2.0f + entities[i]->getSize().x / 2.0f);
+                        float force = (depth / 2.0f * TILE_SIZE) * (depth / 2.0f * TILE_SIZE) / ((m_size.x / 2.0f + entities[i]->getSize().x / 2.0f) * 512.0f);
 
 
                         m_position.x -= force;
-                        (*entities)[i].setPosition(glm::vec2((*entities)[i].getPosition().x + force, (*entities)[i].getPosition().y));
+                        entities[i]->setPosition(glm::vec2(entities[i]->getPosition().x + force, entities[i]->getPosition().y));
                     }
                 }
             }
@@ -264,7 +254,7 @@ int Entity::setParentChunk(Chunk* worldChunks[WORLD_SIZE]) {
 
     short int indexBegin = std::floor(m_position.x / TILE_SIZE / CHUNK_SIZE);
     short int indexEnd = std::floor((m_position.x + m_size.x * TILE_SIZE) / TILE_SIZE / CHUNK_SIZE);
-    short int index = getChunkIndex(); // End product
+    short int index = 0;
 
     short int r = -1;
 
@@ -290,6 +280,11 @@ int Entity::setParentChunk(Chunk* worldChunks[WORLD_SIZE]) {
         m_position.x -= WORLD_SIZE * CHUNK_SIZE * TILE_SIZE;
         index = 0;
         r = 1;
+    }
+
+    if(!m_parentChunk) {
+        m_parentChunk = worldChunks[index];
+        return r;
     }
 
     if(index != m_parentChunk->getIndex()) {
@@ -423,12 +418,6 @@ void Entity::updateLightLevel() {
         }
     } else {
         m_light = 0.0f;
-    }
-}
-
-void Entity::updateAI() {
-    if(m_ai == Categories::AI_Type::WALKING) {
-        EntityFunctions::WalkingAI(m_controls, m_targets, m_curTarget, m_velocity, m_size, m_position);
     }
 }
 

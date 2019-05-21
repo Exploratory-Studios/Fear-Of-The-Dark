@@ -7,13 +7,14 @@
 #include <SpriteBatch.h>
 #include <GLSLProgram.h>
 #include <SpriteFont.h>
+#include <ParticleEngine2D.h>
 
 #include <cstdio>
 
 #include "WorldIOManager.h"
-#include "WorldManager.h"
+//#include "WorldManager.h"
+
 #include "ScreenIndices.h"
-#include "Scripting/ScripterMain.h"
 #include "Logging.h"
 #include "Console.h"
 
@@ -22,8 +23,13 @@ enum class GameState {
     PLAY
 };
 
+class Scripter;
+class Console;
+
 class GameplayScreen : public GLEngine::IGameScreen
 {
+    friend class Scripter;
+
     public:
         GameplayScreen(GLEngine::Window* window, WorldIOManager* WorldIOManager);
         virtual ~GameplayScreen();
@@ -49,6 +55,7 @@ class GameplayScreen : public GLEngine::IGameScreen
         void drawDebug();
 
         void updateScale();
+        void activateChunks();
 
         GLEngine::Camera2D m_camera;
         GLEngine::Camera2D m_uiCamera;
@@ -59,10 +66,16 @@ class GameplayScreen : public GLEngine::IGameScreen
         GLEngine::GLSLProgram m_uiTextureProgram;
         GLEngine::SpriteFont m_spriteFont;
         GLEngine::DebugRenderer m_dr;
+        GLEngine::ParticleEngine2D m_particle2d;
 
         Scripter* m_scripter = nullptr;
+        QuestManager* m_questManager = nullptr;
+
         WorldIOManager* m_WorldIOManager = nullptr;
-        WorldManager m_worldManager;
+        //WorldManager m_worldManager;
+        AudioManager m_audioManager;
+
+        Player* m_player = nullptr;
 
         GameState m_gameState = GameState::PLAY;
 
@@ -79,9 +92,15 @@ class GameplayScreen : public GLEngine::IGameScreen
 
         Logger* logger = Logger::getInstance();
 
-        Console m_console;
+        Console* m_console = nullptr;
 
         #ifdef DEV_CONTROLS
         CEGUI::DefaultWindow* m_fpsWidget = nullptr;
         #endif // DEV_CONTROLS
+
+        std::vector<int> m_activatedChunks;
+        int m_lastActivated = -1;
 };
+
+#include "Scripting/ScripterMain.h"
+#include "Console.h"

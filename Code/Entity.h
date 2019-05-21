@@ -8,6 +8,7 @@
 #include "PresetValues.h"
 #include "Entities/EntityFunctions.h"
 
+#include "QuestManager.h"
 #include "AudioManager.h"
 
 #include "Scripting/ScriptQueue.h"
@@ -46,11 +47,11 @@ class Entity
     friend class Scripter;
 
     public:
-        Entity();
-        Entity(glm::vec2 position, unsigned int id, AudioManager* audioManager, ScriptQueue* sq);
+        Entity(glm::vec2 position, AudioManager* audioManager, ScriptQueue* sq) : m_position(position), m_audioManager(audioManager), m_sq(sq) { }
         virtual ~Entity();
 
-        void init(glm::vec2 position, Categories::Entity_Type type, unsigned int id, ScriptQueue* sq);
+        virtual void onInteract(ScriptQueue* sq) = 0;
+        virtual void onDeath(ScriptQueue* sq) = 0;
 
         virtual void update(float timeStep, Chunk* worldChunks[WORLD_SIZE]);
         virtual void draw(GLEngine::SpriteBatch& sb, float time, float xOffset);
@@ -77,7 +78,7 @@ class Entity
         bool checkTilePosition(Tile* tiles[WORLD_HEIGHT][CHUNK_SIZE], Tile* extraTileArray[WORLD_HEIGHT][2], std::vector<glm::vec2>& collideTilePositions, float xPos, float yPos);
         void collideWithTile(glm::vec2 tilePos, bool ground = false);
         void updateLightLevel();
-        void updateAI();
+        virtual void updateAI() = 0;
         void updateMovement();
 
         bool m_controls[4]; // Up, down (crouching while on ground), left, right
@@ -127,6 +128,19 @@ class Entity
         ScriptQueue* m_sq = nullptr;
 
         std::vector<Limb> m_limbs;
+
+        /* Entities.h attributes:
+        - Texture
+        - Faction
+        - JumpHeight
+        - Position
+        - Size
+        - Transparency
+        - AI Type
+        - Disability Types
+        - Attack Types
+        - Limbs
+        */
 
 };
 

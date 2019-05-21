@@ -697,7 +697,7 @@
                     <ImageDim name="FOTDSkin/WindowClipL" dimension="Width"/>
                 </Dim>
                 <Dim type="TopEdge">
-                    <WidgetDim widget="__auto_titlebar__" dimension="BottomEdge"/>
+                    <ImageDim name="FOTDSkin/WindowClipT" dimension="Height"/>
                 </Dim>
                 <Dim type="RightEdge">
                     <OperatorDim op="Subtract">
@@ -787,7 +787,7 @@
             <FrameComponent>
                 <Area>
                     <Dim type="TopEdge">
-                        <WidgetDim widget="__auto_titlebar__" dimension="BottomEdge"/>
+                        <ImageDim name="FOTDSkin/WindowClipT" dimension="Height"/>
                     </Dim>
                 </Area>
                 <Image component="BottomLeftCorner" name="FOTDSkin/WindowBL"/>
@@ -815,7 +815,7 @@
             <ImageryComponent>
                 <Area>
                     <Dim type="TopEdge">
-                        <WidgetDim widget="__auto_titlebar__" dimension="Height"/>
+                        <ImageDim name="FOTDSkin/WindowClipT" dimension="Height"/>
                     </Dim>
                 </Area>
                 <Image name="FOTDSkin/WindowFill"/>

@@ -2,6 +2,7 @@
 
 #include "../Block.h"
 #include "../Categories.h"
+#include "../Scripting/ScriptQueue.h"
 
 #include <GLEngineErrors.h>
 #include <string.h>
@@ -12,7 +13,7 @@ class BlockAir : public Block
 {
     public:
         BlockAir(glm::vec2 pos, Chunk* parent);
-        void onInteract(Player& player) {}
+        void onInteract(ScriptQueue* sq) {}
     protected:
 
     private:
@@ -22,7 +23,7 @@ class BlockDirt : public Block
 {
     public:
         BlockDirt(glm::vec2 pos, Chunk* parent);
-        void onInteract(Player& player) {}
+        void onInteract(ScriptQueue* sq) {}
     protected:
 
     private:
@@ -32,7 +33,7 @@ class BlockGrass : public Block
 {
     public:
         BlockGrass(glm::vec2 pos, Chunk* parent);
-        void onInteract(Player& player) {}
+        void onInteract(ScriptQueue* sq) {}
     protected:
 
     private:
@@ -42,7 +43,7 @@ class BlockTorch : public Block
 {
     public:
         BlockTorch(glm::vec2 pos, Chunk* parent);
-        void onInteract(Player& player) {}
+        void onInteract(ScriptQueue* sq) {}
     protected:
 
     private:
@@ -52,7 +53,17 @@ class BlockBush : public Block
 {
     public:
         BlockBush(glm::vec2 pos, Chunk* parent);
-        void onInteract(Player& player) {}
+        void onInteract(ScriptQueue* sq) {}
+    protected:
+
+    private:
+};
+
+class BlockStone : public Block
+{
+    public:
+        BlockStone(glm::vec2 pos, Chunk* parent);
+        void onInteract(ScriptQueue* sq) {}
     protected:
 
     private:

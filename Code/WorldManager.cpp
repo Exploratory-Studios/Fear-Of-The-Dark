@@ -14,29 +14,22 @@ WorldManager::~WorldManager()
     //dtor
 }
 
-void WorldManager::init(WorldIOManager* worldIOManager) {
+void WorldManager::init(WorldIOManager* worldIOManager, GLEngine::ParticleEngine2D* particle2D) {
 
     m_worldIOManager = worldIOManager;
 
     m_audioManager.init();
 
     if(m_worldIOManager->getWorld()) {
-        std::vector<Entity> entities;
-        std::vector<TalkingNPC> talkingEntities;
-
-        talkingEntities.emplace_back(TalkingNPC(glm::vec2(10 * TILE_SIZE, 150 * TILE_SIZE), 0, &m_audioManager, m_worldIOManager->getScriptQueue()));
+        std::vector<Entity*> entities;
 
         for(unsigned int j = 0; j < WORLD_SIZE; j++) {
-            for(unsigned int i = 0; i < m_worldIOManager->getWorld()->chunks[j]->getEntities()->size(); i++) {
-                entities.push_back((*m_worldIOManager->getWorld()->chunks[j]->getEntities())[i]);
-            }
-
-            for(unsigned int i = 0; i < m_worldIOManager->getWorld()->chunks[j]->getTalkingEntities()->size(); i++) {
-                talkingEntities.push_back((*m_worldIOManager->getWorld()->chunks[j]->getTalkingEntities())[j]);
+            for(unsigned int i = 0; i < m_worldIOManager->getWorld()->chunks[j]->getEntities().size(); i++) {
+                entities.push_back(m_worldIOManager->getWorld()->chunks[j]->getEntities()[i]);
             }
         }
 
-        m_player = &m_worldIOManager->getWorld()->player;
+        m_player = m_worldIOManager->getWorld()->player;
 
         {
             int index = (m_player->getPosition().x / TILE_SIZE) / CHUNK_SIZE / WORLD_SIZE;
@@ -45,25 +38,17 @@ void WorldManager::init(WorldIOManager* worldIOManager) {
 
         {
             for(unsigned int i = 0; i < entities.size(); i++) {
-                int index = (entities[i].getPosition().x / TILE_SIZE) / CHUNK_SIZE;
-                entities[i].setParentChunk(m_worldIOManager->getWorld()->chunks[index]);
+                int index = (entities[i]->getPosition().x / TILE_SIZE) / CHUNK_SIZE;
+                entities[i]->setParentChunk(m_worldIOManager->getWorld()->chunks[index]);
                 m_worldIOManager->getWorld()->chunks[index]->addEntity(entities[i]);
-            }
-        }
-
-        {
-            for(unsigned int i = 0; i < talkingEntities.size(); i++) {
-                int index = (talkingEntities[i].getPosition().x / TILE_SIZE) / CHUNK_SIZE;
-                talkingEntities[i].setParentChunk(m_worldIOManager->getWorld()->chunks[index]);
-                m_worldIOManager->getWorld()->chunks[index]->addTalkingEntity(talkingEntities[i]);
             }
         }
     }
 
-    m_questManager = new QuestManager(ASSETS_FOLDER_PATH + "Questing/DialogueList.txt", ASSETS_FOLDER_PATH + "Questing/FlagList.txt");
+    m_questManager = new QuestManager(ASSETS_FOLDER_PATH + "Questing/DialogueList.txt", ASSETS_FOLDER_PATH + "Questing/FlagList.txt", m_gui);
 }
 
-void WorldManager::update(GLEngine::Camera2D* worldCamera, float timeStepVariable, float time, GLEngine::InputManager& input, GLEngine::GUI& gui) {
+void WorldManager::update(GLEngine::Camera2D* worldCamera, float timeStepVariable, float time, GLEngine::InputManager& input, GLEngine::GUI* gui) {
     for(unsigned int i = 0; i < m_activatedChunks.size(); i++) {
         int xOffset = std::abs(m_activatedChunks[i] + WORLD_SIZE) % WORLD_SIZE;
         m_worldIOManager->getWorld()->chunks[xOffset]->update(time, timeStepVariable, m_worldIOManager->getWorld()->chunks);
@@ -75,24 +60,17 @@ void WorldManager::update(GLEngine::Camera2D* worldCamera, float timeStepVariabl
         m_player->update(timeStepVariable, m_worldIOManager->getWorld()->chunks);
         m_player->updateMouse(worldCamera);
         m_player->collide();
-        if(m_questManager && m_player->getTalkingEntity()) {
-            m_player->getTalkingEntity()->setDialogueStarted(m_questManager->isDialogueStarted());
-
-            if(m_player->getTalkingEntity()->isDialogueStarted()) {
-                startDialogue();
-            }
-        }
         activateChunks();
     }
 
-    m_questManager->update(input, gui);
+    m_questManager->update(input);
 
 }
 
 void WorldManager::tick() {
     for(unsigned int i = 0; i < m_activatedChunks.size(); i++) {
         int xOffset = std::abs(m_activatedChunks[i] + WORLD_SIZE) % WORLD_SIZE;
-        m_worldIOManager->getWorld()->chunks[xOffset]->tick(m_worldIOManager->getWorld()->time, *m_player);
+        m_worldIOManager->getWorld()->chunks[xOffset]->tick(m_worldIOManager->getWorld()->time, m_player);
     }
     //m_entityManager.tick(tickTime, m_worldIOManager->getWorld()->chunks);
 
@@ -117,14 +95,8 @@ void WorldManager::draw(GLEngine::SpriteBatch& sb, GLEngine::DebugRenderer& dr, 
     sb.renderBatch();
 }
 
-void WorldManager::drawGUI(GLEngine::SpriteBatch& sb, GLEngine::SpriteFont& sf, GLEngine::GUI& gui) {
-    m_questManager->draw(gui);
+void WorldManager::drawGUI(GLEngine::SpriteBatch& sb, GLEngine::SpriteFont& sf, GLEngine::GUI* gui) {
     m_player->drawGUI(sb, sf);
-}
-
-void WorldManager::startDialogue() {
-    m_questManager->setQuestionId(m_player->getTalkingEntity()->getQuestionId());
-    m_questManager->setDialogueStarted(true);
 }
 
 /// Private Functions

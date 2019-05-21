@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<Imageset version="2" name="FOTDSkin" imagefile="FOTDSkin.png" nativeHorzRes="800" nativeVertRes="600" autoScaled="vertical" >
+<Imageset version="2" name="FOTDSkin" imagefile="FOTDSkin.png" nativeHorzRes="800" nativeVertRes="600" autoScaled="true" >
     <Image name="WindowB" xPos="9" yPos="248" width="663" height="8" />
     <Image name="WindowL" xPos="0" yPos="225" width="8" height="22" />
     <Image name="WindowR" xPos="674" yPos="226" width="8" height="20" />
@@ -183,4 +183,13 @@
     <Image name="TitlebarInactiveFill2" xPos="5" yPos="91" width="673" height="12" />
     <Image name="VertSliderThumbNormal" xPos="0" yPos="533" width="25" height="7" />
     <Image name="VertSliderThumbPushed" xPos="0" yPos="360" width="25" height="7" />
+	<Image name="StatusBox" xPos="500" yPos="400" width="90" height="120" />
+
+	<Image name="SanityIcon" xPos="590" yPos="533" width="32" height="32" />
+	<Image name="HealthIcon" xPos="622" yPos="533" width="32" height="32" />
+	<Image name="ThirstIcon" xPos="590" yPos="565" width="32" height="32" />
+	<Image name="HungerIcon" xPos="622" yPos="565" width="32" height="32" />
+	<Image name="ExhaustionIcon" xPos="590" yPos="597" width="32" height="32" />
+	<Image name="StaminaIcon" xPos="622" yPos="597" width="32" height="32" />
+
 </Imageset>

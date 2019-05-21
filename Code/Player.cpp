@@ -5,16 +5,18 @@
 
 #include <Errors.h>
 
-Player::Player() {
-    m_inventory = new Inventory();
-}
-
-Player::Player(glm::vec2 position, GLEngine::InputManager* input, ScriptQueue* sq) : m_input(input)
+Player::Player(glm::vec2 position, GLEngine::InputManager* input, ScriptQueue* sq) : Entity(position, nullptr, sq), m_input(input)
 {
-    init(position, Categories::Entity_Type::MOB, 0, sq);
     m_inventory = new Inventory();
-    m_speed = 0.2f;
+
+    m_texture = GLEngine::ResourceManager::getTexture(ASSETS_FOLDER_PATH + "/Textures/Mobs/Mob0.png");
+    m_size = glm::vec2(1.0f, 2.0f);
+    m_faction = Categories::Faction::GOOD;
     m_jumpHeight = 2.608f;
+    m_speed = 0.2f;
+    //m_ai = Categories::AI_Type::;
+    //m_disabilities = Categories::Disability_Type::NONE;
+    //m_attackType = Categories::Attack_Type::;
 
     Script s;
     s.commands.push_back("changeBlock relative near relative player 0 0 0 0 2");
@@ -117,7 +119,13 @@ void Player::draw(GLEngine::SpriteBatch& sb, float time, float xOffset) {
 
     sb.draw(destRect, uvRect, m_texture.id, 1.0f, colour, glm::vec3(m_light));
 
-    if(m_selectedBlock) { // Cursor box selection
+    if(m_selectedEntity) {
+        glm::vec4 fullUV(0.0f, 0.0f, 1.0f, 1.0f);
+        int cursorImgId = GLEngine::ResourceManager::getTexture(ASSETS_FOLDER_PATH + "GUI/Player/Cursor.png").id;
+
+        glm::vec4 cursorDestRect(m_selectedEntity->getPosition().x, m_selectedEntity->getPosition().y, m_selectedEntity->getSize().x * TILE_SIZE, m_selectedEntity->getSize().y * TILE_SIZE);
+        sb.draw(cursorDestRect, fullUV, cursorImgId, 0.0f, GLEngine::ColourRGBA8(255, 255, 255, 255));
+    } else if(m_selectedBlock) { // Cursor box selection
         glm::vec4 fullUV(0.0f, 0.0f, 1.0f, 1.0f);
         int cursorImgId = GLEngine::ResourceManager::getTexture(ASSETS_FOLDER_PATH + "GUI/Player/Cursor.png").id;
 
@@ -267,6 +275,22 @@ void Player::updateMouse(GLEngine::Camera2D* worldCamera) {
 
 			m_selectedBlock = static_cast<Block*>(chunk->tiles[(unsigned int)mousePos.y][(unsigned int)mousePos.x]);
 
+			m_selectedEntity = nullptr;
+
+			for(int i = 0; i < chunk->getEntities().size(); i++) {
+                float sizeX = (chunk->getEntities()[i]->getSize().x * TILE_SIZE) / 4;
+                float midX = chunk->getEntities()[i]->getPosition().x + sizeX;
+
+                float sizeY = (chunk->getEntities()[i]->getSize().y * TILE_SIZE) / 4;
+                float midY = chunk->getEntities()[i]->getPosition().y + sizeY;
+
+                if(std::abs(midX - mousePos.x * TILE_SIZE) <= sizeX) {
+                    if(std::abs(midY - mousePos.y * TILE_SIZE) <= sizeY) {
+                        m_selectedEntity = chunk->getEntities()[i];
+                    }
+                }
+			}
+
 	}
 
 }
@@ -296,9 +320,8 @@ void Player::updateInput() {
 
     if(m_canInteract) {
         if(m_input->isKeyPressed(SDLK_e)) {
-            if(m_speakingEntity) {
-                m_speakingEntity->startDialogue();
-                //m_sq->activateScript(m_scriptID_dayTime);
+            if(m_selectedEntity) { // must hover mouse over entity and press 'e'
+                m_selectedEntity->onInteract(m_sq);
             }
         }
 

@@ -7,6 +7,7 @@
 
 #include "Tile.h"
 #include "Categories.h"
+#include "Scripting/ScriptQueue.h"
 
 class Block : public Tile
 {
@@ -14,7 +15,7 @@ class Block : public Tile
         Block(glm::vec2 pos, Chunk* parent);
         virtual ~Block() {}
 
-        virtual void onInteract(Player& player) = 0; // Class already has parent chunk
+        virtual void onInteract(ScriptQueue* sq) = 0; // Class already has parent chunk
 
     protected:
         /// Protected, taken from "Tile" class

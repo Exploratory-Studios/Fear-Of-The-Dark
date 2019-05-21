@@ -2,6 +2,7 @@
 
 #include <SpriteBatch.h>
 #include <vector>
+#include <ParticleEngine2D.h>
 
 #include "Entity.h"
 #include "Chunk.h"
@@ -20,12 +21,12 @@ class WorldManager
         WorldManager();
         virtual ~WorldManager();
 
-        void init(WorldIOManager* worldIOManager);
+        void init(WorldIOManager* worldIOManager, GLEngine::ParticleEngine2D* particle2d);
 
-        void update(GLEngine::Camera2D* worldCamera, float timeStepVariable, float time, GLEngine::InputManager& input, GLEngine::GUI& gui);
+        void update(GLEngine::Camera2D* worldCamera, float timeStepVariable, float time, GLEngine::InputManager& input, GLEngine::GUI* gui);
         void tick();
         void draw(GLEngine::SpriteBatch& sb, GLEngine::DebugRenderer& dr, int tickTime, GLEngine::GLSLProgram* program);
-        void drawGUI(GLEngine::SpriteBatch& sb, GLEngine::SpriteFont& sf, GLEngine::GUI& gui);
+        void drawGUI(GLEngine::SpriteBatch& sb, GLEngine::SpriteFont& sf, GLEngine::GUI* gui);
 
         Player* getPlayer() { return m_player; }
 

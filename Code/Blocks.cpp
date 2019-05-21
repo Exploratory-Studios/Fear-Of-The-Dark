@@ -7,6 +7,9 @@ BlockAir::BlockAir(glm::vec2 pos, Chunk* parent) : Block(pos, parent) {
     m_draw = false; // Is it drawn?
     m_solid = false; // Can we walk through it?
     m_emittedLight = 0.0f; // Does it emit light?
+
+    if(parent->tiles[(unsigned int)pos.y][(unsigned int)pos.x % CHUNK_SIZE])
+        m_ambientLight = parent->tiles[(unsigned int)pos.y][(unsigned int)pos.x % CHUNK_SIZE]->getLight();
 }
 
 BlockDirt::BlockDirt(glm::vec2 pos, Chunk* parent) : Block(pos, parent) {
@@ -56,4 +59,16 @@ BlockBush::BlockBush(glm::vec2 pos, Chunk* parent) : Block(pos, parent) {
     } else {
         m_texture = GLEngine::ResourceManager::getTexture(ASSETS_FOLDER_PATH + "Textures/Blocks/RedFlower.png");
     }
+}
+
+
+BlockStone::BlockStone(glm::vec2 pos, Chunk* parent) : Block(pos, parent) {
+    m_id = (unsigned int)Categories::BlockIDs::STONE;
+
+    m_transparent = false; // Does light travel through it?
+    m_draw = true; // Is it drawn?
+    m_solid = true; // Can we walk through it?
+    m_emittedLight = 0.0f; // Does it emit light?
+
+    m_texture = GLEngine::ResourceManager::getTexture(ASSETS_FOLDER_PATH + "Textures/Blocks/Stone.png");
 }

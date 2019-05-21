@@ -1,6 +1,6 @@
-#include "TalkingNPC.h"
+/*#include "TalkingNPC.h"
 
-TalkingNPC::TalkingNPC(glm::vec2 position, unsigned int id, AudioManager* audioManager, ScriptQueue* sq) {
+TalkingNPC::TalkingNPC(glm::vec2 position, unsigned int id, AudioManager* audioManager, ScriptQueue* sq) : Entity(position, audioManager, sq) {
     m_audioManager = audioManager;
 
     unsigned int mobId = Category_Data::dialogueMobData[id].mobId;
@@ -8,7 +8,7 @@ TalkingNPC::TalkingNPC(glm::vec2 position, unsigned int id, AudioManager* audioM
 
     m_dialogueStarted = false;
 
-    init(position, Categories::Entity_Type::MOB, mobId, sq);
+    //init(position, Categories::Entity_Type::MOB, mobId, sq);
 }
 
 TalkingNPC::~TalkingNPC()
@@ -61,4 +61,4 @@ void TalkingNPC::draw(GLEngine::SpriteBatch& sb, float time, float xOffset) {
     GLEngine::ColourRGBA8 colour(255, 255, 255, 255);
 
     sb.draw(destRect, uvRect, m_texture.id, 0.0f, colour, glm::vec3(m_light));
-}
+}*/

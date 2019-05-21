@@ -6,17 +6,13 @@
 #include <SpriteBatch.h>
 #include <GUI.h>
 
-#include "Entities/TalkingNPC.h"
-
 #include "Item.h"
 #include "Items.h"
+#include "Entity.h"
 #include "Block.h"
 #include "Inventory.h"
 
 #include "PresetValues.h"
-
-/// TODO: GET RID OF
-#include "Categories.h"
 
 class Chunk;
 
@@ -25,8 +21,10 @@ class Player : public Entity {
     friend class WorldIOManager;
 
     public:
-        Player();
         Player(glm::vec2 position, GLEngine::InputManager* input, ScriptQueue* sq);
+
+        void onInteract(ScriptQueue* sq) {}
+        void onDeath(ScriptQueue* sq) {}
 
         void initGUI(GLEngine::GUI* gui);
 
@@ -37,13 +35,10 @@ class Player : public Entity {
         void update(float timeStep, Chunk* worldChunks[WORLD_SIZE]) override;
         void updateMouse(GLEngine::Camera2D* worldCamera);
 
-        TalkingNPC* getTalkingEntity() { return m_speakingEntity; }
-
-        void setSpeakingEntity(TalkingNPC* entity) { m_speakingEntity = entity; }
         void setCanInteract(bool setting) { m_canInteract = setting; }
 
     protected:
-        virtual void updateAI(Chunk* activeChunks[WORLD_SIZE]) {}
+        virtual void updateAI() {}
         virtual void updateMovement() {}
 
         GLEngine::InputManager* m_input = nullptr;
@@ -62,11 +57,11 @@ class Player : public Entity {
 
         glm::vec2 m_mousePos;
         Block* m_selectedBlock = nullptr;
+        Entity* m_selectedEntity = nullptr;
 
         int m_selectedHotbox = 0;
 
         Inventory* m_inventory = nullptr;
-        TalkingNPC* m_speakingEntity = nullptr;
 
         bool m_inventoryOpen = false;
         bool m_debuggingInfo = false; // FPS, selectedBlock, etc.

@@ -7,20 +7,19 @@ DialogueManager::~DialogueManager() {
     delete m_flagList;
 }
 
-void DialogueManager::startConversation(unsigned int id, GLEngine::InputManager& input, GLEngine::GUI& gui) {
+void DialogueManager::startConversation(unsigned int id, GLEngine::InputManager& input) {
     Question* initialQuestion = (*m_questionList)[id];
     m_currentQuestion = initialQuestion;
-    initConversation(initialQuestion, gui);
+    initConversation(initialQuestion);
     m_dialogueActive = true;
     m_dialogueStarted = false;
 }
 
-void DialogueManager::initConversation(Question* initialQuestion, GLEngine::GUI& gui) { // Sets gui for conversation
+void DialogueManager::initConversation(Question* initialQuestion) { // Sets gui for conversation
     if(!m_dialogueActive) {
-
         m_dialogueActive = true;
 
-        CEGUI::FrameWindow* window = static_cast<CEGUI::FrameWindow*>(gui.createWidget("FOTDSkin/FrameWindow", glm::vec4(0.05f, 0.7f, 0.9f, 0.25f), glm::vec4(0.0f), "FrameWindowConversation"));
+        CEGUI::FrameWindow* window = static_cast<CEGUI::FrameWindow*>(m_gui->createWidget("FOTDSkin/FrameWindow", glm::vec4(0.05f, 0.7f, 0.9f, 0.25f), glm::vec4(0.0f), "FrameWindowConversation"));
 
         window->setTitleBarEnabled(false);
         window->setCloseButtonEnabled(false);
@@ -28,7 +27,7 @@ void DialogueManager::initConversation(Question* initialQuestion, GLEngine::GUI&
         window->setDragMovingEnabled(false);
         window->setSizingEnabled(false);
 
-        CEGUI::FrameWindow* textFrame = static_cast<CEGUI::FrameWindow*>(gui.createWidget(window, "FOTDSkin/FrameWindow", glm::vec4(0.02f, 0.05f, 0.96f, 0.25f), glm::vec4(0.0f), "TextFrameConversation"));
+        CEGUI::FrameWindow* textFrame = static_cast<CEGUI::FrameWindow*>(m_gui->createWidget(window, "FOTDSkin/FrameWindow", glm::vec4(0.02f, 0.05f, 0.96f, 0.25f), glm::vec4(0.0f), "TextFrameConversation"));
 
         textFrame->setTitleBarEnabled(false);
         textFrame->setCloseButtonEnabled(false);
@@ -36,12 +35,12 @@ void DialogueManager::initConversation(Question* initialQuestion, GLEngine::GUI&
         textFrame->setDragMovingEnabled(false);
         textFrame->setSizingEnabled(false);
 
-        CEGUI::DefaultWindow* textWindow = static_cast<CEGUI::DefaultWindow*>(gui.createWidget(textFrame, "FOTDSkin/Label", glm::vec4(0.0f, 0.0f, 1.0f, 1.0f), glm::vec4(0.0f), "TextBoxConversation"));\
+        CEGUI::DefaultWindow* textWindow = static_cast<CEGUI::DefaultWindow*>(m_gui->createWidget(textFrame, "FOTDSkin/Label", glm::vec4(0.0f, 0.0f, 1.0f, 1.0f), glm::vec4(0.0f), "TextBoxConversation"));\
         textWindow->setText("[colour='FF000000']" + m_currentQuestion->str);
 
-        CEGUI::DefaultWindow* answersWindow = static_cast<CEGUI::DefaultWindow*>(gui.createWidget(window, "FOTDSkin/Label", glm::vec4(0.02f, 0.325f, 0.96f, 0.7f), glm::vec4(0.0f), "OptionsBoxConversation"));
+        CEGUI::DefaultWindow* answersWindow = static_cast<CEGUI::DefaultWindow*>(m_gui->createWidget(window, "FOTDSkin/Label", glm::vec4(0.02f, 0.325f, 0.96f, 0.7f), glm::vec4(0.0f), "OptionsBoxConversation"));
 
-        CEGUI::ScrollablePane* answersScroller = static_cast<CEGUI::ScrollablePane*>(gui.createWidget(answersWindow, "FOTDSkin/ScrollablePane", glm::vec4(0.0f, 0.0f, 1.0f, 1.0f), glm::vec4(0.0f), "OptionsScrollPaneConversation"));
+        CEGUI::ScrollablePane* answersScroller = static_cast<CEGUI::ScrollablePane*>(m_gui->createWidget(answersWindow, "FOTDSkin/ScrollablePane", glm::vec4(0.0f, 0.0f, 1.0f, 1.0f), glm::vec4(0.0f), "OptionsScrollPaneConversation"));
         answersScroller->setVerticalStepSize(0.01f);
         m_scrollbar = answersScroller->getVertScrollbar();
 
@@ -54,7 +53,7 @@ void DialogueManager::initConversation(Question* initialQuestion, GLEngine::GUI&
 
         float paddingIncrementer = 0;
         for(unsigned int i = 0; i < initialQuestion->answers.size(); i++) {
-            CEGUI::PushButton* answerButton = static_cast<CEGUI::PushButton*>(gui.createWidget(answersScroller, "FOTDSkin/Button", glm::vec4(0.0f, 0.025f + ((0.03f + 0.425f) * paddingIncrementer), 1.0f, 0.425f), glm::vec4(0.0f), std::string("Option" + std::to_string(i) + "Conversation")));
+            CEGUI::PushButton* answerButton = static_cast<CEGUI::PushButton*>(m_gui->createWidget(answersScroller, "FOTDSkin/Button", glm::vec4(0.0f, 0.025f + ((0.03f + 0.425f) * paddingIncrementer), 1.0f, 0.425f), glm::vec4(0.0f), std::string("Option" + std::to_string(i) + "Conversation")));
             answerButton->setText(initialQuestion->answers[i].str);
             m_buttons.push_back(answerButton);
 
@@ -74,13 +73,13 @@ void DialogueManager::initConversation(Question* initialQuestion, GLEngine::GUI&
     }
 }
 
-void DialogueManager::draw(GLEngine::GUI& gui) {
+void DialogueManager::draw() {
 
 }
 
-void DialogueManager::update(GLEngine::InputManager& input, GLEngine::GUI& gui) {
+void DialogueManager::update(GLEngine::InputManager& input) {
     if(m_dialogueStarted) {
-        startConversation(m_questionId, input, gui);
+        startConversation(m_questionId, input);
         return;
     }
 
@@ -124,7 +123,7 @@ void DialogueManager::update(GLEngine::InputManager& input, GLEngine::GUI& gui) 
                 m_dialogueActive = false;
                 if(m_currentQuestion->answers[optionChosen].followingQuestion) {
                     m_currentQuestion = m_currentQuestion->answers[optionChosen].followingQuestion;
-                    initConversation(m_currentQuestion, gui);
+                    initConversation(m_currentQuestion);
                 }
             }
         }
@@ -144,12 +143,12 @@ QuestManager::~QuestManager()
     delete m_dialogueManager;
 }
 
-void QuestManager::update(GLEngine::InputManager& input, GLEngine::GUI& gui) {
-    m_dialogueManager->update(input, gui);
+void QuestManager::update(GLEngine::InputManager& input) {
+    m_dialogueManager->update(input);
 }
 
-void QuestManager::draw(GLEngine::GUI& gui) {
-    m_dialogueManager->draw(gui);
+void QuestManager::draw() {
+    m_dialogueManager->draw();
 }
 
 void QuestManager::readDialogueFromList(std::string listPath) {

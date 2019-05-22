@@ -194,11 +194,25 @@ std::string Scripter::executeCommand(std::string& command) {
             returnMessage += "unable to interact\n";
         }
 
-    } else if(parameters[0] == "createEntity") {
+    } else if(parameters[0] == "createEntity") { // position, id, parameters
         unsigned int keywordIndex = 1;
         std::vector<glm::vec2> positions = positionTarget(parameters, keywordIndex);
         Categories::EntityIDs entityId = (Categories::EntityIDs)(std::stoi(parameters[keywordIndex]));
         keywordIndex++;
+
+        std::vector<Parameter> p;
+        for(int i = keywordIndex; i < parameters.size(); i++) {
+            p.push_back(interpretParameter(parameters, keywordIndex));
+        }
+
+        for(int i = 0; i < positions.size(); i++) {
+            m_chunks[(unsigned int)(positions[i].x / TILE_SIZE / CHUNK_SIZE)]->addEntity(createEntity((unsigned int)entityId, positions[i] * glm::vec2(TILE_SIZE), nullptr, p));
+
+            std::string logString = "Added Entity " + std::to_string(i+1) + " of " + std::to_string(positions.size()) + " at X=" + std::to_string(positions[i].x) + ", Y=" + std::to_string(positions[i].y) + ", with and ID of " + std::to_string((unsigned int)entityId) + " (Chunk " + std::to_string((unsigned int)(positions[i].x / TILE_SIZE / CHUNK_SIZE)) + ")" ;
+            logger->log(logString);
+            returnMessage += logString + "\n";
+        }
+
         /// TODO: Have a function in Entities.h return a vector of parameter types that we will need to fill out, based on a given ID.
     } else {
         logger->log("Invalid command: " + command, true);
@@ -318,7 +332,7 @@ std::vector<glm::vec2> Scripter::positionTarget(std::vector<std::string> paramet
         return ret;
     } else if(parameters[keywordIndex] == "area") {
         keywordIndex += 1;
-        glm::vec2 pos1 = positionTarget(parameters, keywordIndex)[0]; /// Actually implement?
+        glm::vec2 pos1 = positionTarget(parameters, keywordIndex)[0];
         glm::vec2 pos2 = positionTarget(parameters, keywordIndex)[0];
 
         std::vector<glm::vec2> ret;
@@ -336,4 +350,27 @@ std::vector<glm::vec2> Scripter::positionTarget(std::vector<std::string> paramet
         keywordIndex += 2;
         return ret;
     }
+}
+
+Parameter Scripter::interpretParameter(std::vector<std::string> parameters, unsigned int& keywordIndex) {
+    Parameter p;
+    try {
+        float f = std::stof(parameters[keywordIndex]);
+        p.setFloat(f);
+    } catch(std::exception& e) {
+        try {
+            int i = std::stoi(parameters[keywordIndex]);
+            p.setInt(i);
+        } catch(std::exception& e) {
+            if(parameters[keywordIndex] == "inputManager") {
+                p.setPointer(&m_gameplayScreen->m_game->inputManager);
+            } else if(parameters[keywordIndex] == "scriptQueue") {
+                p.setPointer(m_gameplayScreen->m_player->m_sq);
+            } else if(parameters[keywordIndex] == "questManager") {
+                p.setPointer(m_gameplayScreen->m_questManager);
+            }
+        }
+    }
+    keywordIndex++;
+    return p;
 }

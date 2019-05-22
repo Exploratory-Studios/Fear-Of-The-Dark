@@ -5,7 +5,7 @@ EntityNeutralCompanionCube::EntityNeutralCompanionCube(glm::vec2 pos, AudioManag
     m_size = glm::vec2(1.0f, 1.0f);
     m_faction = Categories::Faction::BAD;
     m_jumpHeight = 2.608f;
-    m_speed = 0.4f;
+    m_speed = 0.3f;
     m_ai = Categories::AI_Type::WALKING;
     m_disabilities = Categories::Disability_Type::NONE;
     m_attackType = Categories::Attack_Type::NONE;

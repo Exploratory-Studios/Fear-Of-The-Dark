@@ -82,7 +82,12 @@ void GameplayScreen::onEntry() {
     m_questManager = new QuestManager(ASSETS_FOLDER_PATH + "Questing/DialogueList.txt", ASSETS_FOLDER_PATH + "Questing/FlagList.txt");
     m_console = new Console();
 
-    m_WorldIOManager->getWorld()->chunks[0]->addEntity(createEntity((unsigned int)Categories::EntityIDs::MOB_NEUTRAL_QUESTGIVER_A, glm::vec2(10.0f * TILE_SIZE, (200.0f) * TILE_SIZE), nullptr, m_questManager));
+    std::vector<Parameter> p;
+    Parameter a;
+    a.setPointer(m_questManager);
+    p.push_back(a);
+
+    m_WorldIOManager->getWorld()->chunks[0]->addEntity(createEntity((unsigned int)Categories::EntityIDs::MOB_NEUTRAL_QUESTGIVER_A, glm::vec2(10.0f * TILE_SIZE, (200.0f) * TILE_SIZE), nullptr, p));
 
     initUI();
 
@@ -237,7 +242,8 @@ void GameplayScreen::checkInput() {
         m_fpsWidget->setVisible(m_debuggingInfo);
     }
     if(m_game->inputManager.isKeyPressed(SDLK_F2)) {
-        m_WorldIOManager->getWorld()->chunks[0]->addEntity(createEntity((unsigned int)Categories::EntityIDs::MOB_NEUTRAL_QUESTGIVER_A, glm::vec2(12.0f, 76.0f) * glm::vec2(TILE_SIZE), nullptr, m_questManager));
+        std::string command = "createEntity 12 76 2 questManager";
+        m_scripter->executeCommand(command);
     }
     #endif // DEV_CONTROLS
 

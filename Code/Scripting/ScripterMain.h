@@ -45,6 +45,7 @@ class Scripter {
 
         std::vector<Entity*> entityTarget(std::vector<std::string> parameters, unsigned int& keywordIndex);
         std::vector<glm::vec2> positionTarget(std::vector<std::string> parameters, unsigned int& keywordIndex);
+        Parameter interpretParameter(std::vector<std::string> parameters, unsigned int& keywordIndex);
 
         bool m_scriptInitFlags = 0x00;
 

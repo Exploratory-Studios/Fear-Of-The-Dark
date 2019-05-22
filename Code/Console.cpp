@@ -64,7 +64,8 @@ void Console::processCommand(std::string& command) {
 
     for(int i = 0; i < returnVector.size(); i++) {
         glm::vec4 destRect = glm::vec4(0.0f, m_historyLabels.size() * 0.3f, 1.0f, 0.3f);
-        m_historyLabels.push_back(static_cast<CEGUI::DefaultWindow*>(m_gui->createWidget(m_scrollable, "FOTDSkin/Label", destRect, glm::vec4(0.0f), "ConsoleScrollableHistoryLabel" + m_historyLabels.size())));
+        std::string name = std::string("ConsoleScrollableHistoryLabel") + std::to_string((unsigned int)m_historyLabels.size()) + std::string("_") + std::to_string(i);
+        m_historyLabels.push_back(static_cast<CEGUI::DefaultWindow*>(m_gui->createWidget(m_scrollable, "FOTDSkin/Label", destRect, glm::vec4(0.0f), name)));
         m_historyLabels[m_historyLabels.size()-1]->setText("[vert-alignment='center']" + returnVector[i]);
         m_historyLabels[m_historyLabels.size()-1]->setProperty("HorzFormatting", "LeftAligned");
     }
@@ -91,7 +92,7 @@ bool Console::onEditboxInput(const CEGUI::EventArgs& e) {
         return true;
     } else if(newArgs.scancode == CEGUI::Key::Backspace) {
         std::string command = m_editbox->getText().c_str();
-        command.pop_back();
+        if(command.size() > 0) command.pop_back();
         m_editbox->setText(command);
         return true;
     } else if(newArgs.scancode == CEGUI::Key::Backslash) {

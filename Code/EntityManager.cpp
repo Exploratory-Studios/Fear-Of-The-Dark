@@ -58,23 +58,23 @@ void EntityManager::targetEntities(Player* p) {
         }
         for(unsigned int j = 0; j < m_parentChunk->getSurroundingChunks()[0]->getEntities().size(); j++) {
             if(i != j) {
-                if((int) m_parentChunk->getSurroundingChunks()[0]->getEntities()[i]->getFaction() > (int)Categories::Faction::NEUTRAL &&
+                if((int) m_entities[i]->getFaction() > (int)Categories::Faction::NEUTRAL &&
                    (int) m_parentChunk->getSurroundingChunks()[0]->getEntities()[j]->getFaction() <= (int)Categories::Faction::NEUTRAL) {
-                     m_parentChunk->getSurroundingChunks()[0]->getEntities()[i]->setTargets(pathfindToTarget(m_parentChunk->getSurroundingChunks()[0]->getEntities()[i]->getJumpHeight(),  m_parentChunk->getSurroundingChunks()[0]->getEntities()[i]->getPosition(),  m_parentChunk->getSurroundingChunks()[0]->getEntities()[j]->getPosition()));
-                } else if((int) m_parentChunk->getSurroundingChunks()[0]->getEntities()[i]->getFaction() < (int)Categories::Faction::NEUTRAL &&
+                     m_entities[i]->setTargets(pathfindToTarget(m_entities[i]->getJumpHeight(),  m_entities[i]->getPosition(),  m_parentChunk->getSurroundingChunks()[0]->getEntities()[j]->getPosition()));
+                } else if((int) m_entities[i]->getFaction() < (int)Categories::Faction::NEUTRAL &&
                    (int) m_parentChunk->getSurroundingChunks()[0]->getEntities()[j]->getFaction() > (int)Categories::Faction::NEUTRAL) {
-                     m_parentChunk->getSurroundingChunks()[0]->getEntities()[i]->setTargets(pathfindToTarget(m_parentChunk->getSurroundingChunks()[0]->getEntities()[i]->getJumpHeight(),  m_parentChunk->getSurroundingChunks()[0]->getEntities()[i]->getPosition(),  m_parentChunk->getSurroundingChunks()[0]->getEntities()[j]->getPosition()));
+                     m_entities[i]->setTargets(pathfindToTarget(m_entities[i]->getJumpHeight(),  m_entities[i]->getPosition(),  m_parentChunk->getSurroundingChunks()[0]->getEntities()[j]->getPosition()));
                 }
             }
         }
         for(unsigned int j = 0; j < m_parentChunk->getSurroundingChunks()[1]->getEntities().size(); j++) {
             if(i != j) {
-                if((int) m_parentChunk->getSurroundingChunks()[1]->getEntities()[i]->getFaction() > (int)Categories::Faction::NEUTRAL &&
+                if((int) m_entities[i]->getFaction() > (int)Categories::Faction::NEUTRAL &&
                    (int) m_parentChunk->getSurroundingChunks()[1]->getEntities()[j]->getFaction() <= (int)Categories::Faction::NEUTRAL) {
-                     m_parentChunk->getSurroundingChunks()[1]->getEntities()[i]->setTargets(pathfindToTarget(m_parentChunk->getSurroundingChunks()[1]->getEntities()[i]->getJumpHeight(), m_parentChunk->getSurroundingChunks()[1]->getEntities()[i]->getPosition(), m_parentChunk->getSurroundingChunks()[1]->getEntities()[j]->getPosition()));
-                } else if((int) m_parentChunk->getSurroundingChunks()[1]->getEntities()[i]->getFaction() < (int)Categories::Faction::NEUTRAL &&
+                     m_entities[i]->setTargets(pathfindToTarget(m_entities[i]->getJumpHeight(), m_entities[i]->getPosition(), m_parentChunk->getSurroundingChunks()[1]->getEntities()[j]->getPosition()));
+                } else if((int) m_entities[i]->getFaction() < (int)Categories::Faction::NEUTRAL &&
                    (int) m_parentChunk->getSurroundingChunks()[1]->getEntities()[j]->getFaction() > (int)Categories::Faction::NEUTRAL) {
-                     m_parentChunk->getSurroundingChunks()[1]->getEntities()[i]->setTargets(pathfindToTarget(m_parentChunk->getSurroundingChunks()[1]->getEntities()[i]->getJumpHeight(), m_parentChunk->getSurroundingChunks()[1]->getEntities()[i]->getPosition(), m_parentChunk->getSurroundingChunks()[1]->getEntities()[j]->getPosition()));
+                     m_entities[i]->setTargets(pathfindToTarget(m_entities[i]->getJumpHeight(), m_entities[i]->getPosition(), m_parentChunk->getSurroundingChunks()[1]->getEntities()[j]->getPosition()));
                 }
             }
         }
@@ -141,26 +141,30 @@ std::vector<glm::vec2> EntityManager::pathfindToTarget(float jumpHeight, glm::ve
         bool targetNavigated = false; // True if the path is found.
         for(int yOff = 0; yOff <= maxJumpHeight+1 && yGridspace+yOff+1 < WORLD_HEIGHT; yOff++) {
             if(!targetNavigated) {
-                if(currentChunk->tiles[yGridspace+yOff-1][xGridspace % CHUNK_SIZE]->isSolid()) { // If the block is solid
-                    if(!currentChunk->tiles[yGridspace+yOff][xGridspace % CHUNK_SIZE]->isSolid() && !currentChunk->tiles[yGridspace+yOff+1][xGridspace % CHUNK_SIZE]->isSolid()) { // And the block on top isn't
-                        //if(yOff != 0 || targets.size() == 0) { // And we're not just going in a straight line
-                            targetNavigated = true;
-                            targets.push_back(glm::vec2(xGridspace * TILE_SIZE, (yGridspace+yOff) * TILE_SIZE));
-                            yGridspace += yOff;
-                        //}
+                if(yGridspace + yOff - 1 >= 0) {
+                    if(currentChunk->tiles[yGridspace+yOff-1][(xGridspace + CHUNK_SIZE) % CHUNK_SIZE]->isSolid()) { // If the block is solid
+                        if(!currentChunk->tiles[yGridspace+yOff][(xGridspace + CHUNK_SIZE) % CHUNK_SIZE]->isSolid() && !currentChunk->tiles[yGridspace+yOff+1][(xGridspace + CHUNK_SIZE) % CHUNK_SIZE]->isSolid()) { // And the block on top isn't
+                            //if(yOff != 0 || targets.size() == 0) { // And we're not just going in a straight line
+                                targetNavigated = true;
+                                targets.push_back(glm::vec2(xGridspace * TILE_SIZE, (yGridspace+yOff) * TILE_SIZE));
+                                yGridspace += yOff;
+                            //}
+                        }
                     }
                 }
             }
         }
         for(int yOff = 0; yOff >= -SAFE_FALL_DIST && yGridspace+yOff+2 < WORLD_HEIGHT; yOff--) {
             if(!targetNavigated) {
-                if(currentChunk->tiles[yGridspace+yOff][xGridspace % CHUNK_SIZE]->isSolid()) { // If the block is solid
-                    if(!currentChunk->tiles[yGridspace+yOff+1][xGridspace % CHUNK_SIZE]->isSolid() && !currentChunk->tiles[yGridspace+yOff+2][xGridspace % CHUNK_SIZE]->isSolid()) { // And the block on top isn't
-                        //if(yOff != 0 || targets.size() == 0) { // And we're not just going in a straight line
-                            targetNavigated = true;
-                            targets.push_back(glm::vec2(xGridspace * TILE_SIZE, (yGridspace+yOff) * TILE_SIZE));
-                            yGridspace += yOff;
-                        //}
+                if(yGridspace + yOff >= 0) {
+                    if(currentChunk->tiles[yGridspace+yOff][(xGridspace + CHUNK_SIZE) % CHUNK_SIZE]->isSolid()) { // If the block is solid
+                        if(!currentChunk->tiles[yGridspace+yOff+1][(xGridspace + CHUNK_SIZE) % CHUNK_SIZE]->isSolid() && !currentChunk->tiles[yGridspace+yOff+2][(xGridspace + CHUNK_SIZE) % CHUNK_SIZE]->isSolid()) { // And the block on top isn't
+                            //if(yOff != 0 || targets.size() == 0) { // And we're not just going in a straight line
+                                targetNavigated = true;
+                                targets.push_back(glm::vec2(xGridspace * TILE_SIZE, (yGridspace+yOff) * TILE_SIZE));
+                                yGridspace += yOff;
+                            //}
+                        }
                     }
                 }
             }

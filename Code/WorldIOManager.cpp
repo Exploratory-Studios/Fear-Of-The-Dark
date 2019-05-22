@@ -389,5 +389,13 @@ void WorldIOManager::createWorld(unsigned int seed, std::string worldName, bool 
     }
 
     //m_world->player = new Player(glm::vec2(5.0f * TILE_SIZE, (blockHeights[5] + 5) * TILE_SIZE), m_input, m_sq);
-    m_world->player = reinterpret_cast<Player*>(createEntity((unsigned int)Categories::EntityIDs::MOB_PLAYER, glm::vec2(5.0f * TILE_SIZE, (blockHeights[5] + 5) * TILE_SIZE), nullptr, m_input, m_sq));
+
+    std::vector<Parameter> ps;
+    Parameter p;
+    p.setPointer(m_input);
+    ps.push_back(p);
+    p.setPointer(m_sq);
+    ps.push_back(p);
+
+    m_world->player = reinterpret_cast<Player*>(createEntity((unsigned int)Categories::EntityIDs::MOB_PLAYER, glm::vec2(5.0f * TILE_SIZE, (blockHeights[5] + 5) * TILE_SIZE), nullptr, ps));
 }

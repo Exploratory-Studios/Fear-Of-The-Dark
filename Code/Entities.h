@@ -71,8 +71,37 @@ class EntityNeutralQuestGiverA : public EntityBaseQuestGiver {
     protected:
         void updateAI() { EntityFunctions::WalkingAI(m_controls, m_targets, m_curTarget, m_velocity, m_size, m_position); }
 };
+
+enum class Type {
+    INTEGER,
+    FLOAT,
+    STRING,
+    POINTER,
+    BOOLEAN
+};
+
+union P {
+    int Integer;
+    float Float;
+    char* C_String;
+    void* Pointer;
+    bool Boolean;
+};
+
+class Parameter {
+public:
+    void setInt(int setting) { p.Integer = setting; t = Type::INTEGER; }
+    void setFloat(float setting) { p.Float = setting; t = Type::FLOAT; }
+    void setCString(char* setting) { p.C_String = setting; t = Type::STRING; }
+    void setPointer(void* setting) { p.Pointer = setting; t = Type::POINTER; }
+    void setBool(bool setting) { p.Boolean = setting; t = Type::BOOLEAN; }
+
+    P p;
+    Type t;
+};
+
 #include <iostream>
-static Entity* createEntity(unsigned int id, glm::vec2 position, AudioManager* audioManager, ...) {
+static Entity* createEntity(unsigned int id, glm::vec2 position, AudioManager* audioManager, std::vector<Parameter> extras) {
     /*int extraArgs = 0; FOR EXTRA ARGUMENTS
     va_list args;
     va_start(args, extraArgs);
@@ -82,11 +111,8 @@ static Entity* createEntity(unsigned int id, glm::vec2 position, AudioManager* a
     Entity* ret = nullptr;
     switch(id) {
         case (unsigned int)Categories::EntityIDs::MOB_PLAYER: {
-            int extraArgs = 2;
-            va_list args;
-            va_start(args, extraArgs);
-            ret = new Player(position, va_arg(args, GLEngine::InputManager*), va_arg(args, ScriptQueue*));
-            va_end(args);
+            // extras: inputmanager, scriptqueue
+            ret = new Player(position, reinterpret_cast<GLEngine::InputManager*>(extras[0].p.Pointer), reinterpret_cast<ScriptQueue*>(extras[1].p.Pointer));
             break;
         }
         case (unsigned int)Categories::EntityIDs::MOB_NEUTRAL_COMPANIONCUBE: {
@@ -94,14 +120,34 @@ static Entity* createEntity(unsigned int id, glm::vec2 position, AudioManager* a
             break;
         }
         case (unsigned int)Categories::EntityIDs::MOB_NEUTRAL_QUESTGIVER_A: {
-            int extraArgs = 1;
-            va_list args;
-            va_start(args, extraArgs);
-            ret = new EntityNeutralQuestGiverA(position, audioManager, va_arg(args, QuestManager*));
-            va_end(args);
+            // extras: QuestManager
+            ret = new EntityNeutralQuestGiverA(position, audioManager, reinterpret_cast<QuestManager*>(extras[0].p.Pointer));
             break;
         }
     }
 
     return ret;
 }
+
+/*static std::vector<Parameter> getEntityParameters(unsigned int id) {
+    std::vector<Parameter> ret;
+
+    switch(id) {
+        case (unsigned int)Categories::EntityIDs::MOB_PLAYER: {
+            Parameter p;
+            p.setPointer(nullptr, PointerType::INPUT_MANAGER);
+            ret.push_back(p);
+            p.setPointer(nullptr, PointerType::SCRIPT_QUEUE);
+            ret.push_back(p);
+            break;
+        }
+        case (unsigned int)Categories::EntityIDs::MOB_NEUTRAL_QUESTGIVER_A: {
+            Parameter p;
+            p.setPointer(nullptr, PointerType::QUEST_MANAGER);
+            ret.push_back(p);
+            break;
+        }
+    }
+
+    return ret;
+}*/

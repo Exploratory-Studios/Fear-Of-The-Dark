@@ -1,5 +1,7 @@
 #include "Tile.h"
 
+#include <random>
+
 Tile::Tile() {
     m_texture.filePath = "";
     m_parentChunk = nullptr;
@@ -116,6 +118,7 @@ void Tile::update(float time) {
     float light = getSurroundingLight();
     setAmbientLight(light);
     m_lastLight = light;
+    onUpdate(time);
 }
 
 void Tile::tick(float tickTime) {
@@ -124,6 +127,7 @@ void Tile::tick(float tickTime) {
     } else {
         m_sunLight = 0.0f;
     }
+    onTick(tickTime);
 }
 
 void Tile::draw(GLEngine::SpriteBatch& sb, int xOffset) {

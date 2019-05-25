@@ -20,7 +20,8 @@ namespace Categories {
         SAND,
         STONE,
         BUSH,
-        TORCH
+        TORCH,
+        FOLIAGE
     };
 
     enum class ItemIDs {

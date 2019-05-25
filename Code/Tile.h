@@ -47,6 +47,9 @@ class Tile
         virtual void draw(GLEngine::SpriteBatch& sb, int xOffset);
 
     protected:
+        virtual void onUpdate(float& time) = 0;
+        virtual void onTick(float& tickTime) = 0;
+
         bool exposedToSun();
 
         glm::vec2 m_pos;

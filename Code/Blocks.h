@@ -25,7 +25,7 @@ class BlockDirt : public Block
         BlockDirt(glm::vec2 pos, Chunk* parent);
         void onInteract(ScriptQueue* sq) {}
     protected:
-
+        virtual void onTick(float& tickTime);
     private:
 };
 
@@ -35,7 +35,7 @@ class BlockGrass : public Block
         BlockGrass(glm::vec2 pos, Chunk* parent);
         void onInteract(ScriptQueue* sq) {}
     protected:
-
+        virtual void onTick(float& tickTime);
     private:
 };
 
@@ -69,6 +69,16 @@ class BlockStone : public Block
     private:
 };
 
+class BlockFoliage : public Block
+{
+    public:
+        BlockFoliage(glm::vec2 pos, Chunk* parent);
+        void onInteract(ScriptQueue* sq) {}
+    protected:
+
+    private:
+};
+
 static Block* createBlock(unsigned int id, glm::vec2 pos, Chunk* parent) {
     Block* ret = nullptr;
     switch(id) {
@@ -90,6 +100,10 @@ static Block* createBlock(unsigned int id, glm::vec2 pos, Chunk* parent) {
         }
         case (unsigned int)Categories::BlockIDs::TORCH: {
             ret = new BlockTorch(pos, parent);
+            break;
+        }
+        case (unsigned int)Categories::BlockIDs::FOLIAGE: {
+            ret = new BlockFoliage(pos, parent);
             break;
         }
         default: {

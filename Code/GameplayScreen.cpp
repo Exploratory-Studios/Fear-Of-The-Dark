@@ -323,7 +323,19 @@ void GameplayScreen::updateScale() {
 #ifdef DEV_CONTROLS
 void GameplayScreen::drawDebug() {
     std::string fps = "FPS: " + std::to_string((int)m_game->getFps()) + "\nMouse x,y: " + std::to_string(m_player->m_selectedBlock->getPosition().x) + "," + std::to_string(m_player->m_selectedBlock->getPosition().y);
-    fps += "\nSelected Block ID: " + std::to_string(m_player->m_selectedBlock->getID());
+    std::string placeString;
+    switch((unsigned int)m_player->m_selectedBlock->getParentChunk()->getPlace()) {
+        case (unsigned int)Categories::Places::ARCTIC: { placeString = "Arctic"; break; }
+        case (unsigned int)Categories::Places::ASIA: { placeString = "Asia"; break; }
+        case (unsigned int)Categories::Places::AUSTRALIA: { placeString = "Australia"; break; }
+        case (unsigned int)Categories::Places::CANADA: { placeString = "Canada"; break; }
+        case (unsigned int)Categories::Places::NORTH_AFRICA: { placeString = "North Africa"; break; }
+        case (unsigned int)Categories::Places::RUSSIA: { placeString = "Russia"; break; }
+        case (unsigned int)Categories::Places::SOUTH_AFRICA: { placeString = "South Africa"; break; }
+        case (unsigned int)Categories::Places::USA: { placeString = "Excited States of America"; break; }
+    }
+
+    fps += "\nSelected Block ID: " + std::to_string(m_player->m_selectedBlock->getID()) + placeString;
     m_fpsWidget->setText(fps);
 }
 #endif //DEV_CONTROLS

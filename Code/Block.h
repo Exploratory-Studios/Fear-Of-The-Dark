@@ -18,6 +18,8 @@ class Block : public Tile
         virtual void onInteract(ScriptQueue* sq) = 0; // Class already has parent chunk
 
     protected:
+        virtual void onTick(float& tickTime) { }
+        virtual void onUpdate(float& time) { }
         /// Protected, taken from "Tile" class
         /*
         glm::vec2 m_pos;

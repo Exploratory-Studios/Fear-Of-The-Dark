@@ -245,19 +245,34 @@ void WorldIOManager::createWorld(unsigned int seed, std::string worldName, bool 
 
     // Set the real-world models of each chunk (randomly)
     PerlinNoise placeNoise(seed);
+
+    float places[WORLD_SIZE];
+    float highestPlace, lowestPlace;
+
     for(int i = 0; i < WORLD_SIZE; i++) {
 
         float place = placeNoise.noise(i, 0.8, 0.3);
 
-        place *= 2.0;
-        place -= 0.5;
+        places[i] = place;
 
-        if(place > 1.0f) place = 1.0f;
-        if(place < 0.0f) place = 0.0f;
+        bool lowest = true;
+        bool highest = true;
+        for(int j = 0; j < i; j++) {
+            if(place > places[j]) lowest = false;
+            if(place < places[j]) highest = false;
+        }
+        if(lowest) lowestPlace = place;
+        if(highest) highestPlace = place;
 
-        m_world->chunks[i]->setPlace((Categories::Places)std::ceil(place * Category_Data::TOTAL_PLACES));
+    }
+
+    for(int i = 0; i < WORLD_SIZE; i++) {
+        float placeMapped = (places[i] - lowestPlace) / (highestPlace - lowestPlace);
+
+        logger->log(/*std::to_string(highestPlace));//*/std::to_string(placeMapped));
+
+        m_world->chunks[i]->setPlace((Categories::Places)std::ceil(placeMapped * (Category_Data::TOTAL_PLACES)));
         m_world->chunks[i]->setIndex(i);
-
     }
 
     std::vector<int> blockHeights;

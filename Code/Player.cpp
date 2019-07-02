@@ -2,18 +2,19 @@
 
 #include "PresetValues.h"
 #include "ItemBlock.h"
+#include "BuffData.h"
 
 #include <Errors.h>
 
-Player::Player(glm::vec2 position, GLEngine::InputManager* input, ScriptQueue* sq) : Entity(position, nullptr, sq), m_input(input)
+Player::Player(glm::vec2 position, GLEngine::InputManager* input, ScriptQueue* sq) : Entity(position, nullptr, sq, 12.0f/60.0f), m_input(input)
 {
     m_inventory = new Inventory();
 
     m_texture = GLEngine::ResourceManager::getTexture(ASSETS_FOLDER_PATH + "/Textures/Mobs/Mob0.png");
     m_size = glm::vec2(1.0f, 2.0f);
     m_faction = Categories::Faction::GOOD;
-    m_jumpHeight = 2.608f;
-    m_speed = 0.2f;
+    m_jumpHeight = 0.4f;
+    m_speed = 2.5f/60.0f;
     //m_ai = Categories::AI_Type::;
     //m_disabilities = Categories::Disability_Type::NONE;
     //m_attackType = Categories::Attack_Type::;
@@ -28,6 +29,9 @@ Player::Player(glm::vec2 position, GLEngine::InputManager* input, ScriptQueue* s
 
     m_scriptID_dayTime = m_sq->addScript(s);
     m_scriptID_makeHouse = m_sq->addScript(path);
+
+    Leg* leg0 = new Leg(this, m_texture.id, glm::vec2(-1.0f, 0.0f), glm::vec2(0.4f, 1.0f), 0.0f, 1.57f); // 3.14 = 2(1.57
+    m_limbs.push_back(leg0);
 }
 
 Player::~Player()
@@ -75,6 +79,10 @@ void Player::initGUI(GLEngine::GUI* gui) {
     m_exhaustionBar->setStepSize(0.0000005d);
     m_staminaBar->setStepSize(0.0000005d);
 
+
+    m_buffBoxFrame = static_cast<CEGUI::PopupMenu*>(m_gui->createWidget("FOTDSkin/StatusBox", glm::vec4(0.725f, 0.025f, 0.055f, 0.4f), glm::vec4(0.0f), "PlayerGUI_BuffBox"));
+    m_buffBoxFrame->openPopupMenu();
+
 }
 
 void Player::draw(GLEngine::SpriteBatch& sb, float time, float xOffset) {
@@ -117,14 +125,18 @@ void Player::draw(GLEngine::SpriteBatch& sb, float time, float xOffset) {
 
     GLEngine::ColourRGBA8 colour(255, 255, 255, 255);
 
-    sb.draw(destRect, uvRect, m_texture.id, 1.0f, colour, glm::vec3(m_light));
+    sb.draw(destRect, uvRect, m_texture.id, 0.8f, colour, glm::vec3(m_light));
+
+    for(int i = 0; i < m_limbs.size(); i++) {
+        m_limbs[i]->draw(sb);
+    }
 
     if(m_selectedEntity) {
         glm::vec4 fullUV(0.0f, 0.0f, 1.0f, 1.0f);
         int cursorImgId = GLEngine::ResourceManager::getTexture(ASSETS_FOLDER_PATH + "GUI/Player/Cursor.png").id;
 
         glm::vec4 cursorDestRect(m_selectedEntity->getPosition().x, m_selectedEntity->getPosition().y, m_selectedEntity->getSize().x * TILE_SIZE, m_selectedEntity->getSize().y * TILE_SIZE);
-        sb.draw(cursorDestRect, fullUV, cursorImgId, 0.0f, GLEngine::ColourRGBA8(255, 255, 255, 255));
+        sb.draw(cursorDestRect, fullUV, cursorImgId, 0.9f, GLEngine::ColourRGBA8(255, 255, 255, 255));
     } else if(m_selectedBlock) { // Cursor box selection
         glm::vec4 fullUV(0.0f, 0.0f, 1.0f, 1.0f);
         int cursorImgId = GLEngine::ResourceManager::getTexture(ASSETS_FOLDER_PATH + "GUI/Player/Cursor.png").id;
@@ -133,7 +145,7 @@ void Player::draw(GLEngine::SpriteBatch& sb, float time, float xOffset) {
         int x = (int)(m_mousePos.x + CHUNK_SIZE * TILE_SIZE) % CHUNK_SIZE * TILE_SIZE;
 
         glm::vec4 cursorDestRect(x + chunkIndex * CHUNK_SIZE * TILE_SIZE, m_selectedBlock->getPosition().y * TILE_SIZE, m_selectedBlock->getSize().x * TILE_SIZE, m_selectedBlock->getSize().y * TILE_SIZE);
-        sb.draw(cursorDestRect, fullUV, cursorImgId, 0.0f, GLEngine::ColourRGBA8(255, 255, 255, 255));
+        sb.draw(cursorDestRect, fullUV, cursorImgId, 0.9f, GLEngine::ColourRGBA8(255, 255, 255, 255));
     }
 }
 
@@ -142,17 +154,19 @@ void Player::drawGUI(GLEngine::SpriteBatch& sb, GLEngine::SpriteFont& sf) {
         glm::vec4 fullUV = glm::vec4(0.0f, 0.0f, 1.0f, 1.0f);
         GLEngine::ColourRGBA8 fullColour(255, 255, 255, 255);
 
+        sb.begin(GLEngine::GlyphSortType::FRONT_TO_BACK); // lower numbers in back
+
         { // Hotbar
             int hotbarImgId = GLEngine::ResourceManager::getTexture(ASSETS_FOLDER_PATH + "GUI/Player/Hotbar.png").id;
             int hotbarSelectImgId = GLEngine::ResourceManager::getTexture(ASSETS_FOLDER_PATH + "GUI/Player/HotbarSelection.png").id;
 
-            sb.begin();
+            //sb.begin(GLEngine::GlyphSortType::FRONT_TO_BACK); // lower numbers in back
 
             for(int i = 0; i < HOTBAR_BOX_NUM; i++) {
 
                 glm::vec4 uv(i * (1.0 / HOTBAR_BOX_NUM), 0.0f, (1.0 / HOTBAR_BOX_NUM), 1.0f);
                 glm::vec4 destRect(HOTBAR_BOX_SIZE / 4 + (HOTBAR_BOX_SIZE + HOTBAR_BOX_PADDING) * i, HOTBAR_BOX_SIZE / 4, HOTBAR_BOX_SIZE, HOTBAR_BOX_SIZE);
-                sb.draw(destRect, uv, hotbarImgId, 0.0f, fullColour);
+                sb.draw(destRect, uv, hotbarImgId, 1.0f, fullColour);
 
                 {
                     if(m_favouriteItems[i]) {
@@ -163,13 +177,13 @@ void Player::drawGUI(GLEngine::SpriteBatch& sb, GLEngine::SpriteFont& sf) {
                         glm::vec4 itemUV(0, 0, 1, 1);
                         int itemImgId = GLEngine::ResourceManager::getTexture(Category_Data::itemData[m_favouriteItems[i]->getID()].texturePath).id;
 
-                        sb.draw(destRect, itemUV, itemImgId, 0.0f, GLEngine::ColourRGBA8(255, 255, 255, 255));
+                        sb.draw(destRect, itemUV, itemImgId, 1.0f, GLEngine::ColourRGBA8(255, 255, 255, 255));
                     }
                 }
             }
 
-            sb.end();
-            sb.renderBatch();
+            //sb.end();
+            //sb.renderBatch();
 
             for(int i = 0; i < HOTBAR_BOX_NUM; i++) {
                 if(m_favouriteItems[i]) {
@@ -180,24 +194,24 @@ void Player::drawGUI(GLEngine::SpriteBatch& sb, GLEngine::SpriteFont& sf) {
                     glm::vec4 itemUV(0, 0, 1, 1);
                     int itemImgId = GLEngine::ResourceManager::getTexture(Category_Data::itemData[m_favouriteItems[i]->getID()].texturePath).id;
 
-                    sb.begin();
-                    sb.draw(destRect, itemUV, itemImgId, 0.0f, GLEngine::ColourRGBA8(255, 255, 255, 255));
-                    sb.end();
-                    sb.renderBatch();
+                    //sb.begin(GLEngine::GlyphSortType::FRONT_TO_BACK); // lower numbers in back
+                    sb.draw(destRect, itemUV, itemImgId, 1.0f, GLEngine::ColourRGBA8(255, 255, 255, 255));
+                    //sb.end();
+                    //sb.renderBatch();
 
-                    sb.begin();
+                    //sb.begin(GLEngine::GlyphSortType::FRONT_TO_BACK); // lower numbers in back
                     sf.draw(sb, std::to_string(m_favouriteItems[i]->getQuantity()).c_str(), glm::vec2(destRect.x + INVENTORY_BOX_SIZE * 9/10, destRect.y + INVENTORY_BOX_SIZE - 96.0f * 0.35f), glm::vec2(0.35f), 0.0f, GLEngine::ColourRGBA8(255, 255, 255, 255), GLEngine::Justification::RIGHT);
-                    sb.end();
-                    sb.renderBatch();
+                    //sb.end();
+                    //sb.renderBatch();
                 }
             }
 
-            sb.begin();
+            //sb.begin(GLEngine::GlyphSortType::FRONT_TO_BACK); // lower numbers in back
             glm::vec4 destRect(HOTBAR_BOX_SIZE / 4 + (HOTBAR_BOX_SIZE + HOTBAR_BOX_PADDING) * m_selectedHotbox, HOTBAR_BOX_SIZE / 4, HOTBAR_BOX_SIZE, HOTBAR_BOX_SIZE);
-            sb.draw(destRect, fullUV, hotbarSelectImgId, 0.0f, fullColour);
+            sb.draw(destRect, fullUV, hotbarSelectImgId, 1.1f, fullColour);
 
-            sb.end();
-            sb.renderBatch();
+            //sb.end();
+            //sb.renderBatch();
         } // Hotbar END
 
 
@@ -208,34 +222,23 @@ void Player::drawGUI(GLEngine::SpriteBatch& sb, GLEngine::SpriteFont& sf) {
 
             }
         }
+
+        sb.end();
+        sb.renderBatch();
+
     } else {
         GLEngine::FatalError("Dumb Programmer Didn't Initialize PlayerGUI... ");
     }
 }
 
 void Player::update(float timeStep, Chunk* worldChunks[WORLD_SIZE]) {
-
-    m_sanityBar->setProgress(m_sanity);
-    m_healthBar->setProgress(m_health);
-    m_thirstBar->setProgress(m_thirst);
-    m_hungerBar->setProgress(m_hunger);
-    m_exhaustionBar->setProgress(m_exhaustion);
-    m_staminaBar->setProgress(m_stamina);
-
-    m_sanity -= 0.0001f;
-    m_thirst -= 0.00006f;
-    m_hunger -= 0.00003f;
-    m_exhaustion -= 0.0001f;
-
-    if(m_stamina < 0.8f) {
-        m_exhaustion -= 0.0002f;
-    }
-
     updateLightLevel();
 
     setParentChunk(worldChunks);
 
     updateInput();
+    updateLimbs();
+    updateStats(timeStep, worldChunks);
     move(timeStep);
     m_inventory->update();
 
@@ -246,6 +249,37 @@ void Player::update(float timeStep, Chunk* worldChunks[WORLD_SIZE]) {
     }
 }
 
+void Player::updateStats(float timeStep, Chunk* worldChunks[WORLD_SIZE]) {
+    m_sanityBar->setProgress(m_sanity);
+    m_healthBar->setProgress(m_health);
+    m_thirstBar->setProgress(m_thirst);
+    m_hungerBar->setProgress(m_hunger);
+    m_exhaustionBar->setProgress(m_exhaustion);
+    m_staminaBar->setProgress(m_stamina);
+
+    m_thirst -= 0.00006f;
+    m_hunger -= 0.00003f;
+    m_exhaustion -= 0.0001f;
+
+    if(m_stamina < 0.8f) {
+        m_exhaustion -= 0.0002f;
+    }
+
+    if(m_exhaustion < 0.25f) {
+        m_sanity -= 0.0001f;
+    }
+    if(m_light < 0.25f) {
+        m_sanity -= (0.25f - m_light) * 0.001f;
+        if(m_exposedToSun) {
+            m_buffs.push_back(new Buff_Increase_Sanity_StarLight(&m_sanity));
+        }
+    }
+
+    for(unsigned int i = 0; i < m_buffs.size(); i++) {
+        m_buffs[i]->update();
+    }
+}
+
 void Player::updateMouse(GLEngine::Camera2D* worldCamera) {
     glm::vec2 mousePos = worldCamera->convertScreenToWorld(m_input->getMouseCoords());
 
@@ -253,45 +287,48 @@ void Player::updateMouse(GLEngine::Camera2D* worldCamera) {
 
     m_mousePos = mousePos;
 
-    int chunkIndex = std::floor(mousePos.x / CHUNK_SIZE) - getChunkIndex();
+    if(m_canInteract) {
 
-    mousePos.x = (int)(mousePos.x + CHUNK_SIZE * WORLD_SIZE) % CHUNK_SIZE;
+        int chunkIndex = std::floor(mousePos.x / CHUNK_SIZE) - getChunkIndex();
 
-    if(/*mousePos.x >= 0 &&
-       mousePos.x + (chunkIndex * CHUNK_SIZE) < WORLD_SIZE * CHUNK_SIZE &&*/
-       mousePos.y >= 0 &&
-       mousePos.y < WORLD_HEIGHT) {
-			Chunk* chunk = nullptr;
+        mousePos.x = (int)(mousePos.x + CHUNK_SIZE * WORLD_SIZE) % CHUNK_SIZE;
 
-			if(chunkIndex < 0) {
-                chunk = m_parentChunk->getSurroundingChunks()[0];
-            } else
-			if(chunkIndex > 0) {
-                chunk = m_parentChunk->getSurroundingChunks()[1];
-            } else
-			if(chunkIndex == 0) {
-                chunk = m_parentChunk;
-            }
+        if(/*mousePos.x >= 0 &&
+           mousePos.x + (chunkIndex * CHUNK_SIZE) < WORLD_SIZE * CHUNK_SIZE &&*/
+           mousePos.y >= 0 &&
+           mousePos.y < WORLD_HEIGHT) {
+                Chunk* chunk = nullptr;
 
-			m_selectedBlock = static_cast<Block*>(chunk->tiles[(unsigned int)mousePos.y][(unsigned int)mousePos.x]);
+                if(chunkIndex < 0) {
+                    chunk = m_parentChunk->getSurroundingChunks()[0];
+                } else
+                if(chunkIndex > 0) {
+                    chunk = m_parentChunk->getSurroundingChunks()[1];
+                } else
+                if(chunkIndex == 0) {
+                    chunk = m_parentChunk;
+                }
 
-			m_selectedEntity = nullptr;
+                m_selectedBlock = static_cast<Block*>(chunk->tiles[(unsigned int)mousePos.y][(unsigned int)mousePos.x]);
 
-			for(int i = 0; i < chunk->getEntities().size(); i++) {
-                float sizeX = (chunk->getEntities()[i]->getSize().x * TILE_SIZE) / 4;
-                float midX = chunk->getEntities()[i]->getPosition().x + sizeX;
+                m_selectedEntity = nullptr;
 
-                float sizeY = (chunk->getEntities()[i]->getSize().y * TILE_SIZE) / 4;
-                float midY = chunk->getEntities()[i]->getPosition().y + sizeY;
+                for(int i = 0; i < chunk->getEntities().size(); i++) {
+                    float sizeX = (chunk->getEntities()[i]->getSize().x * TILE_SIZE) / 4;
+                    float midX = chunk->getEntities()[i]->getPosition().x + sizeX;
 
-                if(std::abs(midX - mousePos.x * TILE_SIZE) <= sizeX) {
-                    if(std::abs(midY - mousePos.y * TILE_SIZE) <= sizeY) {
-                        m_selectedEntity = chunk->getEntities()[i];
+                    float sizeY = (chunk->getEntities()[i]->getSize().y * TILE_SIZE) / 4;
+                    float midY = chunk->getEntities()[i]->getPosition().y + sizeY;
+
+                    if(std::abs(midX - mousePos.x * TILE_SIZE) <= sizeX) {
+                        if(std::abs(midY - mousePos.y * TILE_SIZE) <= sizeY) {
+                            m_selectedEntity = chunk->getEntities()[i];
+                        }
                     }
                 }
-			}
 
-	}
+            }
+    }
 
 }
 
@@ -304,16 +341,20 @@ void Player::updateInput() {
         }
     }
 
-    if(m_input->isKeyDown(SDLK_d) && m_stamina > 0.0f) {
+    if(m_input->isKeyDown(SDLK_d) && m_stamina > 0.0f && m_onGround) {
         if(m_velocity.x < 0.0f) m_velocity.x /= 5.0f;
-        m_velocity.x += m_speed * m_inventory->getSpeedMultiplier() * std::pow(m_stamina, 0.4f);
+        if(m_velocity.x < m_maxSpeed) {
+            m_velocity.x += m_speed * m_inventory->getSpeedMultiplier() * std::pow(m_stamina, 0.4f);
+        }
         m_stamina *= 0.999f;
-    } else if(m_input->isKeyDown(SDLK_a) && m_stamina > 0.0f) {
+    } else if(m_input->isKeyDown(SDLK_a) && m_stamina > 0.0f && m_onGround) {
         if(m_velocity.x > 0.0f) m_velocity.x /= 5.0f;
-        m_velocity.x -= m_speed * m_inventory->getSpeedMultiplier() * std::pow(m_stamina, 0.4f);
+        if(m_velocity.x > -m_maxSpeed)
+            m_velocity.x -= m_speed * m_inventory->getSpeedMultiplier() * std::pow(m_stamina, 0.4f);
         m_stamina *= 0.999f;
     } else {
-        m_velocity.x *= 0.9f;
+        if(m_onGround)
+            m_velocity.x *= 0.9f;
     }
 
     if(m_velocity.x < 0.001f && m_velocity.x > -0.001f && m_onGround && m_stamina * 1.003f <= 1.0f) m_stamina *= 1.003f;

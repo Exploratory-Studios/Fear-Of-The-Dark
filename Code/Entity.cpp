@@ -8,6 +8,8 @@
 #include "Chunk.h"
 
 void Limb::draw(GLEngine::SpriteBatch& sb) {
+    updateAngle();
+
     glm::vec2 position = m_parentEntity->getPosition() + (m_pos * (m_parentEntity->getSize()) * glm::vec2(TILE_SIZE));
 
     glm::vec4 destRect(position.x, position.y, m_size.x * TILE_SIZE, m_size.y * TILE_SIZE);
@@ -15,7 +17,11 @@ void Limb::draw(GLEngine::SpriteBatch& sb) {
 
     GLEngine::ColourRGBA8 fullColour(255, 255, 255, 255);
 
-    sb.draw(destRect, uvRect, m_textureId, 0.0f, fullColour, m_angle, glm::vec3(m_parentEntity->getLightLevel()));
+    sb.draw(destRect, uvRect, m_textureId, 0.51f, fullColour, m_angle, glm::vec3(m_parentEntity->getLightLevel()), glm::vec2(0.5f, 0.0f));
+}
+
+void Leg::updateAngle() {
+    /// Useless, I think
 }
 
 unsigned int Entity::getChunkIndex() {
@@ -74,6 +80,7 @@ Entity::~Entity()
 
 void Entity::update(float timeStep, Chunk* worldChunks[WORLD_SIZE]) {
     updateAI();
+    updateLimbs();
     updateMovement();
     updateLightLevel();
     move(timeStep);
@@ -123,10 +130,10 @@ void Entity::draw(GLEngine::SpriteBatch& sb, float time, float xOffset) {
 
     GLEngine::ColourRGBA8 colour(255, 255, 255, 255);
 
-    sb.draw(destRect, uvRect, m_texture.id, 0.0f, colour, glm::vec3(m_light));
+    sb.draw(destRect, uvRect, m_texture.id, 0.5f, colour, glm::vec3(m_light));
 
     for(unsigned int i = 0; i < m_limbs.size(); i++) {
-        m_limbs[i].draw(sb); // no sb.begin() or end()
+        m_limbs[i]->draw(sb); // no sb.begin() or end()
     }
 }
 
@@ -136,13 +143,8 @@ void Entity::move(float timeStepVariable) {
     if(m_velocity.y > MAX_SPEED) m_velocity.y = MAX_SPEED;
     if(m_velocity.y < -MAX_SPEED) m_velocity.y = -MAX_SPEED;
 
-    if(!m_onGround) {
-        m_velocity.y -= 0.98f / 60.0f * TILE_SIZE;
-    } else if(m_velocity.y < 0.0f) {
-        m_velocity.y = 0.0f;
-    }
+    m_velocity.y -= 1.225f / 60.0f; // Earth gravity is far too harsh for games. We use about 1/8th
     m_position += m_velocity;
-    m_onGround = false;
 }
 
 void Entity::collide() {
@@ -184,31 +186,31 @@ void Entity::collide() {
             glm::vec2 posTL(x, y + height);
             glm::vec2 posTR(x + width, y + height);
 
-            const float testVar = TILE_SIZE * 2;
+            const float testVar = 1.0f/16.0f;
 
             // Check for ground/ceiling
             checkTilePosition(m_parentChunk->tiles,
                               m_parentChunk->extraTiles,
                               groundTilePositions,
-                              posBR.x - TILE_SIZE / testVar,
+                              posBR.x - testVar,
                               posBR.y);
 
             checkTilePosition(m_parentChunk->tiles,
                               m_parentChunk->extraTiles,
                               groundTilePositions,
-                              posBL.x + TILE_SIZE / testVar,
+                              posBL.x + testVar,
                               posBL.y);
 
             checkTilePosition(m_parentChunk->tiles,
                               m_parentChunk->extraTiles,
                               groundTilePositions,
-                              posTR.x - TILE_SIZE / testVar,
+                              posTR.x - testVar,
                               posTR.y);
 
             checkTilePosition(m_parentChunk->tiles,
                               m_parentChunk->extraTiles,
                               groundTilePositions,
-                              posTL.x + TILE_SIZE / testVar,
+                              posTL.x + testVar,
                               posTL.y);
 
 
@@ -217,25 +219,25 @@ void Entity::collide() {
                               m_parentChunk->extraTiles,
                               collideTilePositions,
                               posBR.x,
-                              posBR.y + TILE_SIZE / testVar);
+                              posBR.y + testVar);
 
             checkTilePosition(m_parentChunk->tiles,
                               m_parentChunk->extraTiles,
                               collideTilePositions,
                               posBL.x,
-                              posBL.y + TILE_SIZE / testVar);
+                              posBL.y + testVar);
 
             checkTilePosition(m_parentChunk->tiles,
                               m_parentChunk->extraTiles,
                               collideTilePositions,
                               posTL.x,
-                              posTL.y - TILE_SIZE / testVar);
+                              posTL.y - testVar);
 
             checkTilePosition(m_parentChunk->tiles,
                               m_parentChunk->extraTiles,
                               collideTilePositions,
                               posTR.x,
-                              posTR.y - TILE_SIZE / testVar);
+                              posTR.y - testVar);
 
             for (unsigned int i = 0; i < collideTilePositions.size(); i++) {
                 collideWithTile(collideTilePositions[i], false);
@@ -404,15 +406,19 @@ void Entity::updateLightLevel() {
         entityChunkX = (int)((m_position.x) / TILE_SIZE) % CHUNK_SIZE;
         entityChunkY = (int)((m_position.y) / TILE_SIZE) + m_size.y / 2.0f;
 
+        m_exposedToSun = false;
+
         if(entityChunkX >= 0 && entityChunkX < CHUNK_SIZE) {
             if(entityChunkY >= 0 && entityChunkY < WORLD_HEIGHT) {
                 m_light = m_parentChunk->tiles[entityChunkY][entityChunkX]->getLight();
+                if(m_parentChunk->tiles[entityChunkY][entityChunkX]->getSunLight() != 0.0f) m_exposedToSun = true;
             }
         }
 
         if(entityChunkX+m_size.x >= 0 && entityChunkX+m_size.x < CHUNK_SIZE) {
             if(entityChunkY >= 0 && entityChunkY < WORLD_HEIGHT) {
                 m_light += m_parentChunk->tiles[entityChunkY][(int)(entityChunkX+m_size.x)]->getLight();
+                if(m_parentChunk->tiles[entityChunkY][(int)(entityChunkX+m_size.x)]->getSunLight() != 0.0f) m_exposedToSun = true;
                 m_light /= 2.0f;
             }
         }
@@ -432,11 +438,13 @@ void Entity::updateMovement() {
         /// TODO: implement crouching
     }
     if(m_controls[2]) { // LEFT
-        m_velocity.x -= m_speed;
+        if(m_velocity.x > -m_maxSpeed && m_onGround)
+            m_velocity.x -= m_speed;
     } else if(m_controls[3]) { // RIGHT
-        m_velocity.x += m_speed;
+        if(m_velocity.x < m_maxSpeed && m_onGround)
+            m_velocity.x += m_speed;
     } else {
-        m_velocity.x /= 5.0f;//= 5.0f;
+        m_velocity.x /= 5.0f;
     }
 
     if(m_velocity.x > MAX_SPEED) {

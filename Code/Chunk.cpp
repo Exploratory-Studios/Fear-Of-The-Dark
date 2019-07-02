@@ -88,5 +88,9 @@ void Chunk::setPlace(Categories::Places place) {
 }
 
 void Chunk::setTile(Tile* newTile, const unsigned int& x, const unsigned int& y) {
-    tiles[y][x] = newTile;
+    delete tiles[y][(x + CHUNK_SIZE) % CHUNK_SIZE];
+    tiles[y][(x + CHUNK_SIZE) % CHUNK_SIZE] = newTile;
+
+    if((x + CHUNK_SIZE) % CHUNK_SIZE == 0) m_surroundingChunks[0]->extraTiles[y][1] = newTile;
+    if((x + CHUNK_SIZE) % CHUNK_SIZE == CHUNK_SIZE-1) m_surroundingChunks[1]->extraTiles[y][0] = newTile;
 }

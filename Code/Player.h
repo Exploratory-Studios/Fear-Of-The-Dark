@@ -11,6 +11,7 @@
 #include "Entity.h"
 #include "Block.h"
 #include "Inventory.h"
+#include "BuffData.h"
 
 #include "PresetValues.h"
 
@@ -33,7 +34,10 @@ class Player : public Entity {
         void draw(GLEngine::SpriteBatch& sb, float time, float xOffset) override;
         void drawGUI(GLEngine::SpriteBatch& sb, GLEngine::SpriteFont& sf);
         void update(float timeStep, Chunk* worldChunks[WORLD_SIZE]) override;
+        void updateStats(float timeStep, Chunk* worldChunks[WORLD_SIZE]);
         void updateMouse(GLEngine::Camera2D* worldCamera);
+
+        Entity* getSelectedEntity() { return m_selectedEntity; }
 
         void setCanInteract(bool setting) { m_canInteract = setting; }
 
@@ -45,6 +49,7 @@ class Player : public Entity {
         GLEngine::GUI* m_gui = nullptr;
 
         CEGUI::PopupMenu* m_statusBoxFrame = nullptr;
+        CEGUI::PopupMenu* m_buffBoxFrame = nullptr;
 
         CEGUI::ProgressBar* m_sanityBar = nullptr;
         CEGUI::ProgressBar* m_healthBar = nullptr;
@@ -80,5 +85,6 @@ class Player : public Entity {
         unsigned int m_scriptID_makeHouse = 0;
 
         Item* m_favouriteItems[10] = { nullptr };
+        std::vector<Buff*> m_buffs;
 
 };

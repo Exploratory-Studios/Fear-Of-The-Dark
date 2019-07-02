@@ -8,8 +8,15 @@
 #include "../Logging.h"
 #include "../PresetValues.h"
 
-struct Script {
-    std::vector<std::string> commands;
+class Script {
+    public:
+        Script() { commands.clear(); }
+        std::vector<std::string> commands = {};
+        void operator = (Script& s) {
+            for(int i = 0; i < s.commands.size(); i++) {
+                commands.emplace_back(s.commands[i]);
+            }
+        }
 };
 
 class ScriptQueue {
@@ -45,26 +52,28 @@ class ScriptQueue {
                 s.commands.push_back(line);
             }
 
-            m_scriptCache.push_back(s);
+            unsigned int id = addScript(s);
 
-            logger->log("Successfully Loaded Script File: " + filePath);
+            logger->log("Successfully Loaded Script File: " + filePath + ", and given id of: " + std::to_string(id));
 
-            return m_scriptCache.size() - 1;
+            return id;
         }
 
         void activateScript(unsigned int id) // Starts a script using the id given earlier
         {
-            m_activeScripts.push_back(&m_scriptCache[id]);
+            m_activeScripts.push_back(id);
+            logger->log("Activated script with id of: " + std::to_string(id));
         }
 
         void deactivateScripts() // Clears active scripts
         {
             m_activeScripts.clear();
+            m_activeScripts.resize(0);
         }
 
     private:
         std::vector<Script> m_scriptCache; // Holds all scripts in memory to be used/reused later
-        std::vector<Script*> m_activeScripts; // Is a list of active scripts' addresses
+        std::vector<unsigned int> m_activeScripts; // Is a list of active scripts' addresses
 
         Logger* logger = Logger::getInstance();
 };

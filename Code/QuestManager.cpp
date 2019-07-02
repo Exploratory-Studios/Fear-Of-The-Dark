@@ -52,20 +52,25 @@ void DialogueManager::initConversation(Question* initialQuestion) { // Sets gui 
         // We must push them in the order that they are in (children first, then parents)
 
         float paddingIncrementer = 0;
+        m_activeQuestions = 0;
         for(unsigned int i = 0; i < initialQuestion->answers.size(); i++) {
             CEGUI::PushButton* answerButton = static_cast<CEGUI::PushButton*>(m_gui->createWidget(answersScroller, "FOTDSkin/Button", glm::vec4(0.0f, 0.025f + ((0.03f + 0.425f) * paddingIncrementer), 1.0f, 0.425f), glm::vec4(0.0f), std::string("Option" + std::to_string(i) + "Conversation")));
             answerButton->setText(initialQuestion->answers[i].str);
             m_buttons.push_back(answerButton);
 
             paddingIncrementer++;
+            m_activeQuestions++;
             for(unsigned int j = 0; j < m_currentQuestion->answers[i].requiredFlags.arrangement.size(); j++) {
                 unsigned int flagId = m_currentQuestion->answers[i].requiredFlags.arrangement[j].id;
                 if((*m_flagList)[flagId]->value != m_currentQuestion->answers[i].requiredFlags.arrangement[j].value) {
                     paddingIncrementer--;
-                    answerButton->destroy();
+                    m_activeQuestions--;
+                    answerButton->disable();
+                    answerButton->hide();
+                    /*CEGUI::WindowManager::getSingletonPtr()->destroyWindow(answerButton);
                     delete answerButton;
                     m_buttons.pop_back();
-                    m_buttons.resize(m_buttons.size());
+                    m_buttons.resize(m_buttons.size());*/
                     break;
                 }
             }
@@ -84,39 +89,40 @@ void DialogueManager::update(GLEngine::InputManager& input) {
     }
 
     if(m_dialogueActive) {
-        m_scrollbar->setScrollPosition(m_scrollbar->getScrollPosition() + (-input.getMouseScrollPosition() * ((m_scrollbar->getDocumentSize() - m_scrollbar->getPageSize())/(m_buttons.size() * 2))));
-        if(input.isKeyPressed(SDL_BUTTON_LEFT)) {
-
+        if(m_activeQuestions > 0) m_scrollbar->setScrollPosition(m_scrollbar->getScrollPosition() + (-input.getMouseScrollPosition() * ((m_scrollbar->getDocumentSize() - m_scrollbar->getPageSize())/(m_activeQuestions * 2))));
+        if(input.isKeyPressed(SDL_BUTTON_LEFT)) { // Answer clicked, check stuff...
             int optionChosen = -1;
-
-            // Set value of flags
+            // Set new values of flags
             for(unsigned int i = 0; i < m_buttons.size(); i++) {
-                if(m_buttons[i]->isPushed() && m_buttons[i]->isVisible()) {
+                if(m_buttons[i]->isPushed() && m_buttons[i]->isActive()) {
                     optionChosen = i;
+                    // Actual answer clicked! Start doing stuff!
                     for(unsigned int j = 0; j < m_currentQuestion->answers[i].followingFlags.arrangement.size(); j++) {
                         unsigned int flagId = m_currentQuestion->answers[i].followingFlags.arrangement[j].id;
-
                         if(flagId >= m_flagList->size()) {
-                            logger->log("ERROR: Flags list is not long enough. please add more entries or fix the dialogue's flags (following)\nIllegal ID: " + std::to_string(flagId));
+                            logger->log("ERROR: Flags list is not long enough. please add more entries or fix the dialogue's flags (following)\nIllegal ID: " + std::to_string(flagId), true);
                             break;
                         }
-
                         (*m_flagList)[flagId]->value = m_currentQuestion->answers[i].followingFlags.arrangement[j].value;
                     }
+                    // Start script (if applicable)
+                    if(m_currentQuestion->answers[i].followingScriptId != (unsigned int)-1) {
+                        unsigned int id = m_currentQuestion->answers[i].followingScriptId;
+                        m_sq->activateScript(id);
+                    }
+                    break;
                 }
             }
 
             if(optionChosen != -1) {
+                m_activeQuestions = 0;
                 for(unsigned int i = 0; i < m_buttons.size(); i++) {
-                    m_buttons[i]->destroy();
-                    delete m_buttons[i];
-                    m_buttons.pop_back();
+                    CEGUI::WindowManager::getSingleton().destroyWindow(m_buttons[i]);
                 }
                 m_buttons.clear();
                 m_buttons.resize(0);
                 for(unsigned int i = 0; i < m_otherWidgets.size(); i++) {
-                    m_otherWidgets[i]->destroy();
-                    delete m_otherWidgets[i];
+                    CEGUI::WindowManager::getSingleton().destroyWindow(m_otherWidgets[i]);
                 }
                 m_otherWidgets.clear();
                 m_otherWidgets.resize(0);
@@ -130,12 +136,14 @@ void DialogueManager::update(GLEngine::InputManager& input) {
     }
 }
 
-QuestManager::QuestManager(std::string questionListPath, std::string flagListPath)
+QuestManager::QuestManager(std::string questionListPath, std::string flagListPath, ScriptQueue* sq)
 {
+    m_sq = sq;
+
     readDialogueFromList(questionListPath);
     readFlagsFromList(flagListPath);
 
-    m_dialogueManager = new DialogueManager(&m_questionList, &m_flagList);
+    m_dialogueManager = new DialogueManager(&m_questionList, &m_flagList, sq);
 }
 
 QuestManager::~QuestManager()
@@ -198,11 +206,19 @@ Question* QuestManager::readQuestion(std::vector<std::string> lines) {
                 a.str = newLines[0]; // Get string. First is #BEGIN
 
                 unsigned int j = 1;
-                for(int k = 0; k < 2; k++) {
+                for(int k = 0; k < 2; k++) { // Get required flags, then following flags
                     while(newLines[j] != "#FLAGS_END" && newLines[j] != "#END") {
                         Flag f = Flag(newLines[j]);
                         if(k == 0) a.requiredFlags.arrangement.push_back(f);
                         if(k == 1) a.followingFlags.arrangement.push_back(f);
+                        if(j < newLines.size()-1) j++;
+                    }
+                    if(j < newLines.size()-1) j++;
+                }
+
+                { // Get filepath of script(s) to be executed on answer
+                    while(newLines[j] != "#SCRIPTS_END" && newLines[j] != "END") {
+                        a.followingScriptId = m_sq->addScript(newLines[j]); // Adds script to cache with filepath of (Assets path)/Scripts/...
                         if(j < newLines.size()-1) j++;
                     }
                     if(j < newLines.size()-1) j++;

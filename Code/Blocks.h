@@ -75,11 +75,11 @@ class BlockFoliage : public Block
         BlockFoliage(glm::vec2 pos, Chunk* parent);
         void onInteract(ScriptQueue* sq) {}
     protected:
-
+        void onUpdate(float& time);
     private:
 };
 
-static Block* createBlock(unsigned int id, glm::vec2 pos, Chunk* parent) {
+static Block* createBlock(unsigned int id, glm::vec2 pos, Chunk* parent, float tickTime = -1.0f) {
     Block* ret = nullptr;
     switch(id) {
         case (unsigned int)Categories::BlockIDs::AIR: {
@@ -106,10 +106,17 @@ static Block* createBlock(unsigned int id, glm::vec2 pos, Chunk* parent) {
             ret = new BlockFoliage(pos, parent);
             break;
         }
+        case (unsigned int)Categories::BlockIDs::STONE: {
+            ret = new BlockStone(pos, parent);
+            break;
+        }
         default: {
             GLEngine::fatalError("Tried to create block with improper id: " + id);
             break;
         }
+    }
+    if(tickTime > -1.0f) {
+        ret->setSunlight(tickTime);
     }
     return ret;
 }

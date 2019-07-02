@@ -3,3 +3,4 @@ changeBlock area relative player 0 2 relative player 5 2 2
 changeBlock area relative player 0 -1 relative player 5 -1 2
 changeBlock area relative player 5 -1 relative player 5 2 2
 changeBlock relative player 2 1 6
+echo Done

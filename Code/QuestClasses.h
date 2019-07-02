@@ -34,6 +34,7 @@ public:
     int id;
     std::string str;
     FlagArrangement requiredFlags;
-    FlagArrangement followingFlags;
+    FlagArrangement followingFlags; // Equivalent to the followingScript saying "setFlag XXX 1/0" but saves on script cache size
+    unsigned int followingScriptId = (unsigned int)-1; // The id of the script that's executed when the answer is clicked (-1 for no script)
     Question* followingQuestion = nullptr;
 };

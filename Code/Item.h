@@ -22,7 +22,7 @@ class Item
         virtual void onLeftClick(Block* selectedBlock) {
             Block* b = createBlock((unsigned int)Categories::BlockIDs::AIR, selectedBlock->getPosition(), selectedBlock->getParentChunk());
             b->setAmbientLight(selectedBlock->getLight());
-            *selectedBlock = *b;
+            selectedBlock->getParentChunk()->setTile(b, selectedBlock->getPosition().x, selectedBlock->getPosition().y);
         }
         virtual void onRightClick(Block* selectedBlock) {} /// TODO variadic stuff for character pos, mouse pos, etc.  also: make virtua
 

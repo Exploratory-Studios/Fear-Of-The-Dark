@@ -4,12 +4,14 @@ How are you doing? This is the question
 Pretty swell. This is the 1st answer to the question.
 #FLAGS_END
 #FLAGS_END
+#SCRIPTS_END
 Good. What do you need?
 #BEGIN
 Nothing at all.
 #FLAGS_END
 1 1
 #FLAGS_END
+#SCRIPTS_END
 #END
 #END
 #BEGIN
@@ -19,12 +21,15 @@ Pretty swell. This is the 2nd answer to the question.
 #FLAGS_END
 2 1
 #FLAGS_END
+#SCRIPTS_END
 #END
 #BEGIN
-Pretty swell. This is the 3rd answer to the question.
+Pretty swell. I'll build a house here
 2 1
 #FLAGS_END
 2 0
 #FLAGS_END
+Script_selected_makeHouse.txt
+#SCRIPTS_END
 #END
 #END

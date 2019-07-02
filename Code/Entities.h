@@ -37,6 +37,9 @@ class EntityNeutralCompanionCube : public Entity {
         void onDeath(ScriptQueue* sq) { }
     protected:
         void updateAI() { EntityFunctions::WalkingAI(m_controls, m_targets, m_curTarget, m_velocity, m_size, m_position); }
+        void updateLimbs() {}
+
+        Leg* m_leg0 = nullptr;
 };
 
 class EntityBaseProjectile : public Entity { // ABSTRACT
@@ -46,6 +49,7 @@ class EntityBaseProjectile : public Entity { // ABSTRACT
         void onDeath(ScriptQueue* sq) = 0;
     protected:
         void updateAI() { m_position += m_velocity * m_speed; }
+        void updateLimbs() {}
         float m_damage;
         bool m_gravity = false;
 };
@@ -70,6 +74,7 @@ class EntityNeutralQuestGiverA : public EntityBaseQuestGiver {
         void onDeath(ScriptQueue* sq) { }
     protected:
         void updateAI() { EntityFunctions::WalkingAI(m_controls, m_targets, m_curTarget, m_velocity, m_size, m_position); }
+        void updateLimbs() {}
 };
 
 enum class Type {

@@ -36,7 +36,7 @@ class Scripter {
 
         void update();
 
-        std::string executeScript(Script& script);
+        std::string executeScript(Script* script); /// TODO: For the love of all things unholy, do NOT pass scripts by reference. They do not like that very much
         std::string executeCommand(std::string& command);
 
     private:
@@ -47,7 +47,7 @@ class Scripter {
         std::vector<glm::vec2> positionTarget(std::vector<std::string> parameters, unsigned int& keywordIndex);
         Parameter interpretParameter(std::vector<std::string> parameters, unsigned int& keywordIndex);
 
-        bool m_scriptInitFlags = 0x00;
+        unsigned int stringToFlagId(std::string str);
 
         GameplayScreen* m_gameplayScreen = nullptr;
 

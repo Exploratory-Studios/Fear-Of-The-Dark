@@ -73,13 +73,15 @@ void Inventory::draw(float x, float y, GLEngine::SpriteBatch& sb, GLEngine::Spri
         glm::vec4 uv(uvX, uvY, uvXSize, uvYSize); // xy beginDest, xy endDest
 
         int inventoryImgId = GLEngine::ResourceManager::getTexture(ASSETS_FOLDER_PATH + "GUI/Player/Inventory.png").id;
+        int inventoryOverlayImgId = GLEngine::ResourceManager::getTexture(ASSETS_FOLDER_PATH + "GUI/Player/InventoryOverlay.png").id;
 
-        sb.begin();
+        //sb.begin(GLEngine::GlyphSortType::FRONT_TO_BACK); // lower numbers in back
 
-        sb.draw(destRect, uv, inventoryImgId, 0.0f, GLEngine::ColourRGBA8(255, 255, 255, 255));
+        sb.draw(destRect, uv, inventoryImgId, 1.1f, GLEngine::ColourRGBA8(255, 255, 255, 255));
+        sb.draw(destRect, uv, inventoryOverlayImgId, 0.95f, GLEngine::ColourRGBA8(255, 255, 255, 255));
 
-        sb.end();
-        sb.renderBatch();
+        //sb.end();
+        //sb.renderBatch();
 
 
         if(m_items.size() > (unsigned int)i) {
@@ -88,19 +90,19 @@ void Inventory::draw(float x, float y, GLEngine::SpriteBatch& sb, GLEngine::Spri
 
                 int itemImgId = GLEngine::ResourceManager::getTexture(Category_Data::itemData[m_items[i]->m_id].texturePath).id;
 
-                sb.begin();
+                //sb.begin(GLEngine::GlyphSortType::FRONT_TO_BACK); // lower numbers in back
 
-                sb.draw(destRect, itemUV, itemImgId, 0.0f, GLEngine::ColourRGBA8(255, 255, 255, 255));
+                sb.draw(destRect, itemUV, itemImgId, 1.0f, GLEngine::ColourRGBA8(255, 255, 255, 255));
 
-                sb.end();
-                sb.renderBatch();
+                //sb.end();
+                //sb.renderBatch();
 
-                sb.begin();
+                //sb.begin(GLEngine::GlyphSortType::FRONT_TO_BACK); // lower numbers in back
 
-                sf.draw(sb, std::to_string(m_items[i]->m_quantity).c_str(), glm::vec2(destRect.x + INVENTORY_BOX_SIZE, destRect.y + INVENTORY_BOX_SIZE - 96.0f * 0.35f), glm::vec2(0.35f), 0.0f, GLEngine::ColourRGBA8(255, 255, 255, 255), GLEngine::Justification::RIGHT);
+                sf.draw(sb, std::to_string(m_items[i]->m_quantity).c_str(), glm::vec2(destRect.x + INVENTORY_BOX_SIZE, destRect.y + INVENTORY_BOX_SIZE - 96.0f * 0.35f), glm::vec2(0.35f), 1.05f, GLEngine::ColourRGBA8(255, 255, 255, 255), GLEngine::Justification::RIGHT);
 
-                sb.end();
-                sb.renderBatch();
+                //sb.end();
+                //sb.renderBatch();
             }
         }
     }

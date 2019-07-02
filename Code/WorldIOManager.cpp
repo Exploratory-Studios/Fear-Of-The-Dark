@@ -269,8 +269,6 @@ void WorldIOManager::createWorld(unsigned int seed, std::string worldName, bool 
     for(int i = 0; i < WORLD_SIZE; i++) {
         float placeMapped = (places[i] - lowestPlace) / (highestPlace - lowestPlace);
 
-        logger->log(/*std::to_string(highestPlace));//*/std::to_string(placeMapped));
-
         m_world->chunks[i]->setPlace((Categories::Places)std::ceil(placeMapped * (Category_Data::TOTAL_PLACES)));
         m_world->chunks[i]->setIndex(i);
     }

@@ -83,22 +83,31 @@ void Scripter::update() {
     // Take script off active list
     // Repeat until no active scripts exist
 
-    std::vector<Script*> scripts = m_gameplayScreen->m_WorldIOManager->getScriptQueue()->m_activeScripts;
+    std::vector<Script> scripts;
+
+    scripts.clear();
+
+    for(int i = 0; i < m_gameplayScreen->m_WorldIOManager->getScriptQueue()->m_activeScripts.size(); i++) {\
+        scripts.push_back(Script());
+        scripts[i] = (m_gameplayScreen->m_WorldIOManager->getScriptQueue()->m_scriptCache[m_gameplayScreen->m_WorldIOManager->getScriptQueue()->m_activeScripts[i]]);
+    }
 
     for(unsigned int i = 0; i < scripts.size(); i++) {
-        executeScript(*scripts[i]);
+        executeScript(&(scripts[i]));
     }
     m_gameplayScreen->m_WorldIOManager->getScriptQueue()->deactivateScripts();
 }
 
 /// PRIVATE FUNCTIONS
 
-std::string Scripter::executeScript(Script& script) {
+std::string Scripter::executeScript(Script* script) {
     std::string returnMessage;
 
-    for(unsigned int i = 0; i < script.commands.size(); i++) {
-        executeCommand(script.commands[i]);
+    for(unsigned int i = 0; i < script->commands.size(); i++) {
+        returnMessage = executeCommand(script->commands[i]);
     }
+
+    return returnMessage;
 }
 
 std::string Scripter::executeCommand(std::string& command) {
@@ -125,6 +134,9 @@ std::string Scripter::executeCommand(std::string& command) {
     // changeBlock [relative][] (integer) (integer) (integer)               Changes block at x=1st parameter, y=2nd parameter to one with id of 3rd parameter. "relative" makes coordinates relative to player
     // teleport [player] [relative][] (integer) (integer)                       Teleports the player to x=1st parameter, y=2nd parameter. "relative" makes coordinates relative to player
     // teleport [entity] [relative][] (integer) (integer)                   Teleports an entity to x=1st parameter, y=2nd parameter. "relative" makes coordinates relative to entity
+    // setFlag [integer(id)] [integer[1 or 0](value)]                       Sets the id'th flag's value to value
+    // getFlag [string(name)]                                               Returns an integer, which coincides with the id of the flag which has the same name (enum) as name
+    // echo [string]                                                        Logs a string
 
     if(parameters[0] == "time") {
         if(parameters[1] == "set") {
@@ -214,6 +226,22 @@ std::string Scripter::executeCommand(std::string& command) {
         }
 
         /// TODO: Have a function in Entities.h return a vector of parameter types that we will need to fill out, based on a given ID.
+    } else if(parameters[0] == "setFlag") { // getFlag is in interpretParameter
+        unsigned int keywordIndex = 1;
+        int id = static_cast<int>(interpretParameter(parameters, keywordIndex).t);
+        bool val = static_cast<bool>(interpretParameter(parameters, keywordIndex).t);
+
+        m_gameplayScreen->m_questManager->setFlag(id, val);
+        logger->log("Setting flag with id: " +
+         std::to_string(id) +
+        " to " +
+        (val ? "true" : "false"));
+    } else if(parameters[0] == "echo") {
+        std::string ret = "ECHO: ";
+        for(int i = 1; i < parameters.size(); i++) {
+            ret += parameters[i];
+        }
+        logger->log(ret, true);
     } else {
         logger->log("Invalid command: " + command, true);
         returnMessage += "Invalid command: " + command + "\n";
@@ -302,6 +330,12 @@ std::vector<Entity*> Scripter::entityTarget(std::vector<std::string> parameters,
         ret.push_back(m_gameplayScreen->m_player);
 
         return ret;
+    } else if(parameters[keywordIndex] == "speaker") {
+        keywordIndex += 1;
+        std::vector<Entity*> ret;
+        if(m_gameplayScreen->m_player->getSelectedEntity()) ret.push_back(m_gameplayScreen->m_player->getSelectedEntity());
+
+        return ret;
     }
 
     std::string line;
@@ -368,9 +402,22 @@ Parameter Scripter::interpretParameter(std::vector<std::string> parameters, unsi
                 p.setPointer(m_gameplayScreen->m_player->m_sq);
             } else if(parameters[keywordIndex] == "questManager") {
                 p.setPointer(m_gameplayScreen->m_questManager);
+            } else if(parameters[keywordIndex] == "getFlag") {
+                keywordIndex++;
+                p.setInt(stringToFlagId(parameters[keywordIndex]));
             }
         }
     }
     keywordIndex++;
     return p;
+}
+
+unsigned int Scripter::stringToFlagId(std::string str) {
+    if(str == "FLAG_ZERO") {
+        return 0;
+    } else if(str == "FLAG_ONE") {
+        return 1;
+    } else {
+        logger->log("Tried to change value of non-existent flag with name: " + str, true);
+    }
 }

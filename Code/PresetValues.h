@@ -8,13 +8,13 @@
 
 /// World size variables
 // How many tiles in a chunk?
-#define CHUNK_SIZE 64
+#define CHUNK_SIZE 32
 // How many pixels to a tile?
-#define TILE_SIZE 8
+#define TILE_SIZE 1
 // How many tiles high is the world?
 #define WORLD_HEIGHT 150
 // How many chunks does the world have?
-#define WORLD_SIZE 16
+#define WORLD_SIZE 32
 
 // How many chunks can you see? (Odd) (TOTAL CHUNKS DRAWN AT ONCE)
 #define VIEW_DIST 3
@@ -22,7 +22,7 @@
 // What is the minimum scale of the camera?
 #define MIN_ZOOM 1.0
 // What is the maximum scale of the camera?
-#define MAX_ZOOM 7.5
+#define MAX_ZOOM 7.5*100
 
 // How many boxes are in the hotbar?
 #define HOTBAR_BOX_NUM 10
@@ -39,8 +39,8 @@
 // How much space is in between each box?
 #define INVENTORY_BOX_PADDING 4
 
-// How fast is TOO fast? (0.44 tiles/update)
-#define MAX_SPEED TILE_SIZE / 2.25f
+// How fast is TOO fast? (0.666 tiles/update)
+#define MAX_SPEED TILE_SIZE / 1.5f
 
 // How much can the player carry MAX
 #define MAX_WEIGHT 100.0f

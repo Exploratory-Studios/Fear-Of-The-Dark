@@ -11,13 +11,14 @@
 
 #include "QuestClasses.h"
 #include "Logging.h"
+#include "Scripting/ScriptQueue.h"
 
 class DialogueManager;
 class QuestManager;
 
 class DialogueManager {
     public:
-        DialogueManager(std::vector<Question*>* questionList, std::vector<Flag*>* flagList) : m_questionList(questionList), m_flagList(flagList) { }
+        DialogueManager(std::vector<Question*>* questionList, std::vector<Flag*>* flagList, ScriptQueue* sq) : m_questionList(questionList), m_flagList(flagList), m_sq(sq) { }
         ~DialogueManager();
 
         void draw();
@@ -40,6 +41,7 @@ class DialogueManager {
         Logger* logger = Logger::getInstance();
 
         GLEngine::GUI* m_gui = nullptr;
+        ScriptQueue* m_sq = nullptr;
 
         std::vector<Question*>* m_questionList = nullptr;
         std::vector<Flag*>* m_flagList = nullptr;
@@ -54,12 +56,14 @@ class DialogueManager {
         bool m_dialogueStarted = false;
 
         unsigned int m_questionId;
+
+        unsigned int m_activeQuestions; // Really should be activeAnswers
 };
 
 class QuestManager
 {
     public:
-        QuestManager(std::string questionListPath, std::string flagListPath);
+        QuestManager(std::string questionListPath, std::string flagListPath, ScriptQueue* sq);
         ~QuestManager();
 
         void update(GLEngine::InputManager& input);
@@ -76,6 +80,9 @@ class QuestManager
 
         void setQuestionId(unsigned int id) { m_dialogueManager->setQuestionId(id); }
 
+        void setFlag(unsigned int id, bool val) { if(m_flagList.size() <= id) m_flagList[id]->value = val; }
+        bool getFlag(unsigned int id) { if(m_flagList.size() <= id) return m_flagList[id]->value; }
+
     private:
         void readDialogueFromList(std::string listPath);
         void readFlagsFromList(std::string listPath);
@@ -84,6 +91,7 @@ class QuestManager
 
         DialogueManager* m_dialogueManager = nullptr; /// TODO make this private again please :)
         GLEngine::GUI* m_gui = nullptr;
+        ScriptQueue* m_sq = nullptr;
 
         std::vector<Question*> getDialogue(std::ifstream& file);
         Question* readQuestion(std::vector<std::string> lines); // Forms question struct from given lines

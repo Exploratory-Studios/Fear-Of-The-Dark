@@ -3,7 +3,7 @@
 #include <random>
 
 Tile::Tile() {
-    m_texture.filePath = "";
+    m_texture.filePath = ASSETS_FOLDER_PATH + "Textures/Blocks/UNDEFINED.png";
     m_parentChunk = nullptr;
 }
 
@@ -13,8 +13,6 @@ float Tile::getLight() {
     } else if(m_sunLight > m_ambientLight && m_sunLight > m_emittedLight) {
         return m_sunLight;
     } else if(m_emittedLight > m_sunLight && m_emittedLight > m_ambientLight) {
-        return m_emittedLight;
-    } else if(m_emittedLight == m_sunLight && m_emittedLight == m_ambientLight) {
         return m_emittedLight;
     }
     return m_ambientLight;
@@ -122,11 +120,7 @@ void Tile::update(float time) {
 }
 
 void Tile::tick(float tickTime) {
-    if(exposedToSun()) { // check if this block is exposed to sunlight
-        m_sunLight = cos(tickTime / (DAY_LENGTH / 6.28318f)) / 2.0f + 0.5f;
-    } else {
-        m_sunLight = 0.0f;
-    }
+    setSunlight(tickTime);
     onTick(tickTime);
 }
 
@@ -140,7 +134,7 @@ void Tile::draw(GLEngine::SpriteBatch& sb, int xOffset) {
         sb.draw(glm::vec4(m_pos.x * TILE_SIZE + xOffset * CHUNK_SIZE * TILE_SIZE, m_pos.y * TILE_SIZE, m_size.x * TILE_SIZE, m_size.y * TILE_SIZE),
                 glm::vec4(0.0f, 0.0f, 1.0f, 1.0f),
                 m_texture.id,
-                0.0f,
+                0.75f,
                 GLEngine::ColourRGBA8(r, g, b, m_colour.a),
                 glm::vec3(getLight()));
     }

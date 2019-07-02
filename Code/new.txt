@@ -1,0 +1,19 @@
+***   OpenGL Version: 4.5 (Core Profile) Mesa 18.0.5   ***
+Successfully Loaded Script File: ../Assets/Scripts/Script_player_makeHouse.txt, and given id of: 1
+Loaded all 1 music files.
+Loaded all 0 sound files.
+Loading dialogue. 526 bytes to read.
+Successfully Loaded Script File: ../Assets/Scripts/Script_echoDone.txt, and given id of: 2
+Successfully Loaded Script File: ../Assets/Scripts/Script_echoDone.txt, and given id of: 2
+Successfully Loaded Script File: ../Assets/Scripts/Script_echoDone.txt, and given id of: 2
+Dialogue loaded! (526 bytes)
+Loading flags. 15 bytes to read.
+Loaded flag with id of 0 and value of 1
+Loaded flag with id of 1 and value of 0
+Loaded flag with id of 2 and value of 0
+Loaded flag with id of 3 and value of 0
+Flags loaded! (15 bytes)
+Activated script with id of: 2
+
+### ECHO: done ###
+

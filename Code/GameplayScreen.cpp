@@ -79,7 +79,7 @@ void GameplayScreen::onEntry() {
         }
     }
 
-    m_questManager = new QuestManager(ASSETS_FOLDER_PATH + "Questing/DialogueList.txt", ASSETS_FOLDER_PATH + "Questing/FlagList.txt");
+    m_questManager = new QuestManager(ASSETS_FOLDER_PATH + "Questing/DialogueList.txt", ASSETS_FOLDER_PATH + "Questing/FlagList.txt", m_WorldIOManager->getScriptQueue());
     m_console = new Console();
 
     std::vector<Parameter> p;
@@ -90,7 +90,7 @@ void GameplayScreen::onEntry() {
     m_WorldIOManager->getWorld()->chunks[0]->addEntity(createEntity((unsigned int)Categories::EntityIDs::MOB_NEUTRAL_QUESTGIVER_A, glm::vec2(10.0f * TILE_SIZE, (200.0f) * TILE_SIZE), nullptr, p));
 
     initUI();
-
+    tick();
 }
 
 void GameplayScreen::onExit() {
@@ -101,11 +101,23 @@ void GameplayScreen::update() {
     m_deltaTime = std::abs((60 / m_game->getFps()) + -1);
     m_deltaTime++;
 
+    if(m_frame == 0.0f) {
+        if(m_player) {
+            activateChunks();
+            tick();
+        } else {
+            logger->log("Could not initialize world (Full update when frames == 0). Some things may not be as expected.", true);
+        }
+    }
+
+    if((int)m_frame % (int)(60 / m_tickRate) == 0) { // m_frame is equal to current frame
+        tick();
+    }
+
     checkInput();
 
-    m_gui.update();
-
     if(m_gameState != GameState::PAUSE) {
+        m_questManager->update(m_game->inputManager);
         m_scripter->update();
 
         for(unsigned int i = 0; i < m_activatedChunks.size(); i++) {
@@ -116,15 +128,10 @@ void GameplayScreen::update() {
         // Set player caninteract
 
         if(m_player) {
+            activateChunks();
             m_player->update(m_deltaTime, m_WorldIOManager->getWorld()->chunks);
             m_player->updateMouse(&m_camera);
             m_player->collide();
-            activateChunks();
-        }
-
-        m_questManager->update(m_game->inputManager);
-
-        if(m_player) {
             m_player->setCanInteract(!m_questManager->isDialogueActive());
         }
 
@@ -133,7 +140,7 @@ void GameplayScreen::update() {
         } else if(m_player->getPosition().x + m_player->getSize().x / 2.0f - m_lastPlayerPos.x > CHUNK_SIZE * TILE_SIZE) {
             m_lastPlayerPos.x += WORLD_SIZE * CHUNK_SIZE * TILE_SIZE;
         }
-        m_lastPlayerPos = (m_lastPlayerPos + (m_player->getPosition() - m_lastPlayerPos) / glm::vec2(4.0f)) + m_player->getSize() / glm::vec2(2.0f);
+        m_lastPlayerPos = (m_lastPlayerPos + ((m_player->getPosition() + m_player->getSize() / glm::vec2(2.0f)) - m_lastPlayerPos) / glm::vec2(4.0f));
 
         m_camera.setPosition(m_lastPlayerPos);
 
@@ -147,9 +154,7 @@ void GameplayScreen::update() {
     }
     m_frame++;
 
-    if((int)m_frame % (int)(60 / m_tickRate) == 0) { // m_frame is equal to current frame
-        tick();
-    }
+    m_gui.update();
 }
 #include <stdio.h>
 void GameplayScreen::draw() {
@@ -167,7 +172,7 @@ void GameplayScreen::draw() {
         GLint pUniform = m_textureProgram.getUniformLocation("P");
         glUniformMatrix4fv(pUniform, 1, GL_FALSE, &projectionMatrix[0][0]);
 
-        m_spriteBatch.begin();
+        m_spriteBatch.begin(GLEngine::GlyphSortType::FRONT_TO_BACK); // lower numbers in back
 
         for(unsigned int i = 0; i < m_activatedChunks.size(); i++) {
             int xOffset = std::abs(m_activatedChunks[i] + WORLD_SIZE) % WORLD_SIZE;
@@ -335,7 +340,8 @@ void GameplayScreen::drawDebug() {
         case (unsigned int)Categories::Places::USA: { placeString = "Excited States of America"; break; }
     }
 
-    fps += "\nSelected Block ID: " + std::to_string(m_player->m_selectedBlock->getID()) + placeString;
+    if(m_player->m_selectedBlock)
+        fps += "\nSelected Block: Biome: " + placeString + ", " + m_player->m_selectedBlock->getPrintout();
     m_fpsWidget->setText(fps);
 }
 #endif //DEV_CONTROLS

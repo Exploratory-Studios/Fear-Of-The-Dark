@@ -13,7 +13,7 @@ class Block : public Tile
 {
     public:
         Block(glm::vec2 pos, Chunk* parent);
-        virtual ~Block() {}
+        virtual ~Block() { }
 
         virtual void onInteract(ScriptQueue* sq) = 0; // Class already has parent chunk
 

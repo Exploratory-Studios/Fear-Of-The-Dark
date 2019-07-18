@@ -259,7 +259,7 @@ std::vector<Question*> QuestManager::getDialogue(std::ifstream& file) {
     std::string line;
     int depth = 0;
     while(std::getline(file, line)) {
-        lines.push_back(line); // Simply read all lines into vector
+        lines.push_back(extras::removeWhitespace(line)); // Simply read all lines into vector, without tabs or spaces
         if(line == "#BEGIN") {
             depth++;
             if(depth == 1) lines.pop_back();

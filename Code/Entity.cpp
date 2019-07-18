@@ -6,10 +6,9 @@
 #include <math.h>
 
 #include "Chunk.h"
+#include "Player.h"
 
 void Limb::draw(GLEngine::SpriteBatch& sb) {
-    updateAngle();
-
     glm::vec2 position = m_parentEntity->getPosition() + (m_pos * (m_parentEntity->getSize()) * glm::vec2(TILE_SIZE));
 
     glm::vec4 destRect(position.x, position.y, m_size.x * TILE_SIZE, m_size.y * TILE_SIZE);
@@ -17,15 +16,14 @@ void Limb::draw(GLEngine::SpriteBatch& sb) {
 
     GLEngine::ColourRGBA8 fullColour(255, 255, 255, 255);
 
-    sb.draw(destRect, uvRect, m_textureId, 0.51f, fullColour, m_angle, glm::vec3(m_parentEntity->getLightLevel()), glm::vec2(0.5f, 0.0f));
-}
-
-void Leg::updateAngle() {
-    /// Useless, I think
+    sb.draw(destRect, uvRect, m_textureId, 0.51f, fullColour, m_angle, glm::vec3(m_parentEntity->getLightLevel()), m_por);
 }
 
 unsigned int Entity::getChunkIndex() {
-    return m_parentChunk->getIndex();
+    if(!m_parentChunk) {
+        return -10;
+    }
+    return m_parentChunk ? m_parentChunk->getIndex() : 0;
 }
 
 void Entity::setParentChunk(Chunk* chunk) {
@@ -81,9 +79,62 @@ Entity::~Entity()
 void Entity::update(float timeStep, Chunk* worldChunks[WORLD_SIZE]) {
     updateAI();
     updateLimbs();
+    move(timeStep);
+    updateSounds();
     updateMovement();
     updateLightLevel();
-    move(timeStep);
+}
+#include <iostream>
+void Entity::tick(Player* p) {
+    if(m_makesNoise) {
+        if(std::rand() % 100 <= m_noiseFrequency/* && m_currentNoise == -1 Must create some way to check if the sound is finished sounding (TODO: )*/) {
+            unsigned int dist;
+            int crossDist = p->getChunkIndex() > getChunkIndex() ? (getChunkIndex() + WORLD_SIZE - p->getChunkIndex()) : (p->getChunkIndex() + WORLD_SIZE - getChunkIndex()); // This is the combined chunk distances to the end of the world, or the 'crossover'
+            int pureDist = std::abs((int)(p->getChunkIndex() - getChunkIndex())); // This is the 'normal' way of calculating distance through the world, doesn't account for crossover
+
+            int playerPlace = 0;
+
+            if(crossDist < pureDist) playerPlace += crossDist * CHUNK_SIZE;
+            if(crossDist >= pureDist) playerPlace += pureDist * CHUNK_SIZE;
+
+            glm::vec2 d = glm::vec2((int)p->getPosition().x % CHUNK_SIZE + playerPlace, p->getPosition().y) - glm::vec2((int)m_position.x % CHUNK_SIZE, m_position.y);
+            d.x = std::abs(d.x);
+            d.y = std::abs(d.y);
+            dist = (std::sqrt(d.x * d.x + d.y * d.y)); //  Good 'ol pythagoreas
+
+            unsigned int vol = ((dist)*(-MIX_MAX_VOLUME)/(MAX_DIST_HEARD) + MIX_MAX_VOLUME); // Mapping 0-max_dist_heard -> mix_max_volume-0
+
+            if(dist >= MAX_DIST_HEARD) {
+                vol = 0;
+            }
+
+            m_currentNoise = std::rand() % m_ambientNoiseSound.size();
+            m_audioManager->playSoundEffect((unsigned int)m_ambientNoiseSound[m_currentNoise], vol);
+        }
+        if(m_currentNoise != -1) {
+            unsigned int dist;
+            int crossDist = p->getChunkIndex() > getChunkIndex() ? (getChunkIndex() + WORLD_SIZE - p->getChunkIndex()) : (p->getChunkIndex() + WORLD_SIZE - getChunkIndex()); // This is the combined chunk distances to the end of the world, or the 'crossover'
+            int pureDist = std::abs((int)(p->getChunkIndex() - getChunkIndex())); // This is the 'normal' way of calculating distance through the world, doesn't account for crossover
+
+            int playerPlace = 0;
+
+            if(crossDist < pureDist) playerPlace += crossDist * CHUNK_SIZE;
+            if(crossDist >= pureDist) playerPlace += pureDist * CHUNK_SIZE;
+
+            glm::vec2 d = glm::vec2((int)p->getPosition().x % CHUNK_SIZE + playerPlace, p->getPosition().y) - glm::vec2((int)m_position.x % CHUNK_SIZE, m_position.y);
+            d.x = std::abs(d.x);
+            d.y = std::abs(d.y);
+            dist = (std::sqrt(d.x * d.x + d.y * d.y)); //  Good 'ol pythagoreas
+
+            unsigned int vol = ((dist)*(-MIX_MAX_VOLUME)/(MAX_DIST_HEARD) + MIX_MAX_VOLUME); // Mapping 0-max_dist_heard -> mix_max_volume-0
+
+            if(dist >= MAX_DIST_HEARD) {
+                vol = 0;
+            }
+
+            m_audioManager->updateSoundEffect((unsigned int)m_ambientNoiseSound[m_currentNoise], vol);
+        }
+    }
 }
 
 void Entity::draw(GLEngine::SpriteBatch& sb, float time, float xOffset) {
@@ -91,7 +142,7 @@ void Entity::draw(GLEngine::SpriteBatch& sb, float time, float xOffset) {
     //GLint lightUniform = program->getUniformLocation("lightColour");
     //glUniform3fv(lightUniform, 3, &glm::vec3(1.0f, 1.0f, 1.0f)[0]);
 
-    glm::vec4 destRect = glm::vec4(m_position.x, m_position.y, m_size.x * TILE_SIZE, m_size.y * TILE_SIZE);
+    glm::vec4 destRect = glm::vec4(m_position.x + (xOffset * CHUNK_SIZE * TILE_SIZE), m_position.y, m_size.x * TILE_SIZE, m_size.y * TILE_SIZE);
 
     float x, y;
     if(m_velocity.x > m_speed) {
@@ -117,12 +168,12 @@ void Entity::draw(GLEngine::SpriteBatch& sb, float time, float xOffset) {
     glm::vec4 uvRect;
 
     if(!m_flippedTexture) {
-        uvRect = glm::vec4(finalX + (xOffset * CHUNK_SIZE * TILE_SIZE),
+        uvRect = glm::vec4(finalX,
                            finalY,
                            1.0f / ((float)m_texture.width / (m_size.x * 32)),
                            1.0f / ((float)m_texture.height / (m_size.y * 32)));
     } else if(m_flippedTexture) {
-        uvRect = glm::vec4(finalX + 1.0f / ((float)m_texture.width / (m_size.x * 32)) + (xOffset * CHUNK_SIZE * TILE_SIZE),
+        uvRect = glm::vec4(finalX + 1.0f / ((float)m_texture.width / (m_size.x * 32)),
                            finalY,
                            1.0f / -((float)m_texture.width / (m_size.x * 32)),
                            1.0f / ((float)m_texture.height / (m_size.y * 32)));
@@ -147,25 +198,27 @@ void Entity::move(float timeStepVariable) {
     m_position += m_velocity;
 }
 
+#define getEntity(i) (&(*entities)[i])
+
 void Entity::collide() {
 
-    std::vector<Entity*> entities = m_parentChunk->getEntities();
+    std::vector<Entity>* entities = m_parentChunk->getEntities();
 
     if(getChunkIndex() >= 0) {
         /// ENTITY COLLISION STARTS HERE
-        for(unsigned int i = 0; i < entities.size(); i++) {
-            if(entities[i]->getPosition() != m_position) {
-                float xDist = (m_position.x / (float)TILE_SIZE + m_size.x / 2.0f) - (entities[i]->getPosition().x / (float)TILE_SIZE + entities[i]->getSize().x / 2.0f);
-                float yDist = (m_position.y / (float)TILE_SIZE + m_size.y / 2.0f) - (entities[i]->getPosition().y / (float)TILE_SIZE + entities[i]->getSize().y / 2.0f);
-                if(abs(xDist) < abs(m_size.x / 2.0f + entities[i]->getSize().x / 2.0f)) {
-                    if(abs(yDist) < abs(m_size.y / 2.0f + entities[i]->getSize().y / 2.0f)) {
+        for(unsigned int i = 0; i < entities->size(); i++) {
+            if(getEntity(i)->getPosition() != m_position) {
+                float xDist = (m_position.x / (float)TILE_SIZE + m_size.x / 2.0f) - (getEntity(i)->getPosition().x / (float)TILE_SIZE + getEntity(i)->getSize().x / 2.0f);
+                float yDist = (m_position.y / (float)TILE_SIZE + m_size.y / 2.0f) - (getEntity(i)->getPosition().y / (float)TILE_SIZE + getEntity(i)->getSize().y / 2.0f);
+                if(abs(xDist) < abs(m_size.x / 2.0f + getEntity(i)->getSize().x / 2.0f)) {
+                    if(abs(yDist) < abs(m_size.y / 2.0f + getEntity(i)->getSize().y / 2.0f)) {
 
-                        float depth = xDist - (m_size.x / 2.0f + entities[i]->getSize().x / 2.0f);
-                        float force = (depth / 2.0f * TILE_SIZE) * (depth / 2.0f * TILE_SIZE) / ((m_size.x / 2.0f + entities[i]->getSize().x / 2.0f) * 512.0f);
+                        float depth = xDist - (m_size.x / 2.0f + getEntity(i)->getSize().x / 2.0f);
+                        float force = (depth / 2.0f * TILE_SIZE) * (depth / 2.0f * TILE_SIZE) / ((m_size.x / 2.0f + getEntity(i)->getSize().x / 2.0f) * 512.0f);
 
 
                         m_position.x -= force;
-                        entities[i]->setPosition(glm::vec2(entities[i]->getPosition().x + force, entities[i]->getPosition().y));
+                        getEntity(i)->setPosition(glm::vec2(getEntity(i)->getPosition().x + force, getEntity(i)->getPosition().y));
                     }
                 }
             }
@@ -239,9 +292,52 @@ void Entity::collide() {
                               posTR.x,
                               posTR.y - testVar);
 
+            /// Collision prediction time!
+
+            float increment = 0.1f;
+            int signX = (m_velocity.x > 0.0f) ? 1 : -1;
+            int signY = (m_velocity.y > 0.0f) ? 1 : -1;
+
+            std::vector<glm::vec2> predictiveTiles;
+
+            for(int i = 0; i < std::abs(m_velocity.x) / (increment * width) + increment; i++) {
+                for(int j = 0; j < std::abs(m_velocity.y) / (increment * height) + increment; j++) {
+                    glm::vec2 p_posBL(x+(i*increment*width)*signX, y+(j*increment*height)*signY);
+                    glm::vec2 p_posBR(x+(i*increment*width)*signX + width, y+(j*increment*height)*signY);
+                    glm::vec2 p_posTL(x+(i*increment*width)*signX, y+(j*increment*height)*signY + height);
+                    glm::vec2 p_posTR(x+(i*increment*width)*signX + width, y+(j*increment*height)*signY + height);
+
+                    checkTilePosition(m_parentChunk->tiles,
+                                      m_parentChunk->extraTiles,
+                                      predictiveTiles,
+                                      p_posBR.x,
+                                      p_posBR.y);
+
+                    checkTilePosition(m_parentChunk->tiles,
+                                      m_parentChunk->extraTiles,
+                                      predictiveTiles,
+                                      p_posBL.x,
+                                      p_posBL.y);
+
+                    checkTilePosition(m_parentChunk->tiles,
+                                      m_parentChunk->extraTiles,
+                                      predictiveTiles,
+                                      p_posTL.x,
+                                      p_posTL.y);
+
+                    checkTilePosition(m_parentChunk->tiles,
+                                      m_parentChunk->extraTiles,
+                                      predictiveTiles,
+                                      p_posTR.x,
+                                      p_posTR.y);
+                    }
+            }
+
             for (unsigned int i = 0; i < collideTilePositions.size(); i++) {
                 collideWithTile(collideTilePositions[i], false);
             }
+
+            if(predictiveTiles.size() > 0) collideWithTile(predictiveTiles[0], false);
 
             for (unsigned int i = 0; i < groundTilePositions.size(); i++) {
                 collideWithTile(groundTilePositions[i], true);
@@ -254,61 +350,64 @@ void Entity::collide() {
 /// PRIVATE FUNCTIONS
 int Entity::setParentChunk(Chunk* worldChunks[WORLD_SIZE]) {
 
-    short int indexBegin = std::floor(m_position.x / TILE_SIZE / CHUNK_SIZE);
-    short int indexEnd = std::floor((m_position.x + m_size.x * TILE_SIZE) / TILE_SIZE / CHUNK_SIZE);
+    /*short int indexBegin = (int)(std::floor((m_position.x) / (float)CHUNK_SIZE) + WORLD_SIZE) % WORLD_SIZE;
+    short int indexEnd = (int)(std::floor((m_position.x + m_size.x) / (float)CHUNK_SIZE) + WORLD_SIZE) % WORLD_SIZE;
     short int index = 0;
 
     short int r = -1;
 
     if(indexBegin != indexEnd) {
-        float x = (int)m_position.x / TILE_SIZE % (CHUNK_SIZE);
-        if(abs(x - CHUNK_SIZE) > m_size.x / 2.0f * TILE_SIZE) {
-            index = indexBegin;
-            r = 0;
-        } else if(abs(x - TILE_SIZE * CHUNK_SIZE) < m_size.x / 2.0f * TILE_SIZE) {
+        if(m_velocity.x > 0.0f) { // Entity is heading towards right chunk
             index = indexEnd;
             r = 1;
+        } else { // Entity is heading towards left chunk
+            index = indexBegin;
+            r = 0;
         }
     } else {
         index = indexBegin;
     }
 
-    if(index < 0) {
-        m_position.x += WORLD_SIZE * CHUNK_SIZE * TILE_SIZE;
-        index = WORLD_SIZE-1;
-        r = 0;
-    }
-    if(index >= WORLD_SIZE) {
-        m_position.x -= WORLD_SIZE * CHUNK_SIZE * TILE_SIZE;
-        index = 0;
-        r = 1;
+    if(m_velocity.x > 0.0f && m_position.x > WORLD_SIZE * CHUNK_SIZE) {
+        m_position.x = std::abs(m_position.x - WORLD_SIZE * CHUNK_SIZE);
+    } else if(m_velocity.x < 0.0f && m_position.x + m_size.x < 0.0f) {
+        m_position.x = (m_position.x + WORLD_SIZE * CHUNK_SIZE);
     }
 
-    if(!m_parentChunk) {
-        m_parentChunk = worldChunks[index];
-        return r;
-    }
+    m_parentChunk = worldChunks[index];
+
+    return r;*/
+
+    int index = std::floor((m_position.x + m_size.x / 2.0f) / CHUNK_SIZE);
+
+    /*int posBase = ((int)(m_position.x) + WORLD_SIZE*CHUNK_SIZE) % (WORLD_SIZE*CHUNK_SIZE);
+    float extra = m_position.x - (float)(posBase);
+
+    m_position.x = (float)(posBase) + extra;*/
+
+    int ret = 0;
 
     if(index != m_parentChunk->getIndex()) {
-        m_parentChunk = worldChunks[index];
-    }
-
-    return r;
-
-    /*if(index != m_parentChunkIndex) {
         if(index < 0) {
-            m_position.x = (int)(m_position.x + WORLD_SIZE * CHUNK_SIZE * TILE_SIZE) % (WORLD_SIZE * CHUNK_SIZE * TILE_SIZE);
-            index = std::floor((m_position.x + m_size.x * TILE_SIZE) / TILE_SIZE / CHUNK_SIZE);
-            if((int)(m_position.x + m_size.x * TILE_SIZE) == 0) index = 0; // Just to avoid 0 / whatever. It just creates issues :(
+            m_position.x += (WORLD_SIZE * CHUNK_SIZE);
+            index = WORLD_SIZE - 1;
+            ret = -1;
         } else if(index >= WORLD_SIZE) {
-            m_position.x = (int)(m_position.x + WORLD_SIZE * CHUNK_SIZE * TILE_SIZE) % (WORLD_SIZE * CHUNK_SIZE * TILE_SIZE);
-            index = std::floor((m_position.x) / TILE_SIZE / CHUNK_SIZE);
+            m_position.x -= (WORLD_SIZE * CHUNK_SIZE);
+            index = 0;
+            ret = 1;
         }
         if(index >= 0 && index < WORLD_SIZE) {
+            if(index > m_parentChunk->getIndex()) {
+                ret = 1;
+            } else {
+                ret = -1;
+            }
             m_parentChunk = worldChunks[index];
-            m_parentChunkIndex = index;
         }
-    }*/
+    }
+
+    return ret;
 }
 
 bool Entity::checkTilePosition(Tile* tiles[WORLD_HEIGHT][CHUNK_SIZE], Tile* extraTileArray[WORLD_HEIGHT][2], std::vector<glm::vec2>& collideTilePositions, float x, float y) {
@@ -331,12 +430,12 @@ bool Entity::checkTilePosition(Tile* tiles[WORLD_HEIGHT][CHUNK_SIZE], Tile* extr
                 collideTilePositions.push_back(glm::vec2((float)gridPos.x + 0.500f, (float)gridPos.y + 0.500f)); // CollideTilePositions are put in as gridspace coords
                 return true;
             }
-        } else if((int)gridPos.x - ((signed int)getChunkIndex() * CHUNK_SIZE) == -1) {
+        } else if((int)gridPos.x - ((signed int)getChunkIndex() * CHUNK_SIZE) <= -1) {
             if (extraTileArray[(int)gridPos.y][0]->isSolid()) { //  - getChunkIndex()
                 collideTilePositions.push_back(glm::vec2((float)gridPos.x + 0.500f, (float)gridPos.y + 0.500f)); // CollideTilePositions are put in as gridspace coords
                 return true;
             }
-        } else if((int)gridPos.x - (getChunkIndex() * CHUNK_SIZE) == CHUNK_SIZE) {
+        } else if((int)gridPos.x - (getChunkIndex() * CHUNK_SIZE) >= CHUNK_SIZE) {
             if (extraTileArray[(int)gridPos.y][1]->isSolid()) { //  - getChunkIndex()
                 collideTilePositions.push_back(glm::vec2((float)gridPos.x + 0.500f, (float)gridPos.y + 0.500f)); // CollideTilePositions are put in as gridspace coords
                 return true;
@@ -451,5 +550,29 @@ void Entity::updateMovement() {
         m_velocity.x = MAX_SPEED;
     } else if(m_velocity.x < -MAX_SPEED) {
         m_velocity.x = -MAX_SPEED;
+    }
+}
+
+void Entity::updateSounds() {
+    if(m_onGround && std::abs(m_velocity.x) > 0.01f) {
+        m_soundTimer += std::abs(m_velocity.x * 3) + 1;
+    } else if(std::abs(m_velocity.x) <= 0.01f || !m_onGround) {
+        m_soundTimer = 0;
+    }
+    if(m_onGround && m_soundTimer > 10) { // 10 is arbitrary, should probably add a variable to each type of entity (for longer strides, etc.)
+        glm::vec2 tileCoordsFloor = glm::vec2((int)(m_position.x / TILE_SIZE + 0.5f), (int)(m_position.y / TILE_SIZE - 0.5f));
+
+        unsigned int chunkIndex = tileCoordsFloor.x / CHUNK_SIZE;
+
+        tileCoordsFloor.x -= chunkIndex * CHUNK_SIZE;
+
+        if(tileCoordsFloor.x >= CHUNK_SIZE) {
+            m_audioManager->playSoundEffect(m_parentChunk->extraTiles[(int)tileCoordsFloor.y][1]->getWalkedOnSoundEffectID(), MIX_MAX_VOLUME);
+        } else if(tileCoordsFloor.x < 0) {
+            m_audioManager->playSoundEffect(m_parentChunk->extraTiles[(int)tileCoordsFloor.y][0]->getWalkedOnSoundEffectID(), MIX_MAX_VOLUME);
+        } else {
+            m_audioManager->playSoundEffect(m_parentChunk->tiles[(int)tileCoordsFloor.y][(int)tileCoordsFloor.x]->getWalkedOnSoundEffectID(), MIX_MAX_VOLUME);
+        }
+        m_soundTimer = 0;
     }
 }

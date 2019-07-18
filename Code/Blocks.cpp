@@ -20,7 +20,14 @@ BlockDirt::BlockDirt(glm::vec2 pos, Chunk* parent) : Block(pos, parent) {
     m_solid = true; // Can we walk through it?
     m_emittedLight = 0.0f; // Does it emit light?
 
-    m_texture = GLEngine::ResourceManager::getTexture(ASSETS_FOLDER_PATH + "Textures/Blocks/Dirt.png");
+    m_textureId = GLEngine::ResourceManager::getTexture(ASSETS_FOLDER_PATH + "Textures/Blocks/Dirt.png").id;
+
+    m_backdrop = true;
+    m_backdropTextureId = GLEngine::ResourceManager::getTexture(ASSETS_FOLDER_PATH + "Textures/Blocks/Dirt.png").id;
+
+    m_natural = true;
+
+    m_walkEffect = SoundEffectIDs::WALK_DIRT;
 }
 
 void BlockDirt::onTick(float& tickTime) {
@@ -40,13 +47,18 @@ BlockGrass::BlockGrass(glm::vec2 pos, Chunk* parent) : Block(pos, parent) {
     m_solid = true; // Can we walk through it?
     m_emittedLight = 0.0f; // Does it emit light?
 
-    m_texture = GLEngine::ResourceManager::getTexture(ASSETS_FOLDER_PATH + "Textures/Blocks/Grass.png");
+    m_textureId = GLEngine::ResourceManager::getTexture(ASSETS_FOLDER_PATH + "Textures/Blocks/Grass.png").id;
+
+    m_backdrop = true;
+    m_backdropTextureId = GLEngine::ResourceManager::getTexture(ASSETS_FOLDER_PATH + "Textures/Blocks/Dirt.png").id;
+
+    m_natural = true;
 }
 
 void BlockGrass::onTick(float& tickTime) {
     if(m_sunLight >= 0.5f) {
         int chance = std::rand() % 1000;
-        if(chance < 2 && m_parentChunk->tiles[(unsigned int)m_pos.y + 1][(unsigned int)m_pos.x]->getID() == (unsigned int)Categories::BlockIDs::AIR) { // 0.2% chance every tick
+        if(chance < 2 && m_parentChunk->tiles[(unsigned int)m_pos.y + 1][(unsigned int)m_pos.x % CHUNK_SIZE]->getID() == (unsigned int)Categories::BlockIDs::AIR) { // 0.2% chance every tick
             m_parentChunk->setTile(createBlock((unsigned int)Categories::BlockIDs::FOLIAGE, m_pos + glm::vec2(0.0f, 1.0f), m_parentChunk), m_pos.x, m_pos.y + 1);
         }
     }
@@ -59,8 +71,9 @@ BlockTorch::BlockTorch(glm::vec2 pos, Chunk* parent) : Block(pos, parent) {
     m_draw = true; // Is it drawn?
     m_solid = false; // Can we walk through it?
     m_emittedLight = 1.5f; // Does it emit light?
+    m_emittedHeat = 20.0f;
 
-    m_texture = GLEngine::ResourceManager::getTexture(ASSETS_FOLDER_PATH + "Textures/Blocks/Torch.png");
+    m_textureId = GLEngine::ResourceManager::getTexture(ASSETS_FOLDER_PATH + "Textures/Blocks/Torch.png").id;
 }
 
 BlockBush::BlockBush(glm::vec2 pos, Chunk* parent) : Block(pos, parent) {
@@ -73,9 +86,9 @@ BlockBush::BlockBush(glm::vec2 pos, Chunk* parent) : Block(pos, parent) {
 
     int r = rand();
     if(r % 2 == 0) {
-        m_texture = GLEngine::ResourceManager::getTexture(ASSETS_FOLDER_PATH + "Textures/Blocks/WhiteFlower.png");
+        m_textureId = GLEngine::ResourceManager::getTexture(ASSETS_FOLDER_PATH + "Textures/Blocks/WhiteFlower.png").id;
     } else {
-        m_texture = GLEngine::ResourceManager::getTexture(ASSETS_FOLDER_PATH + "Textures/Blocks/RedFlower.png");
+        m_textureId = GLEngine::ResourceManager::getTexture(ASSETS_FOLDER_PATH + "Textures/Blocks/RedFlower.png").id;
     }
 }
 
@@ -88,7 +101,10 @@ BlockStone::BlockStone(glm::vec2 pos, Chunk* parent) : Block(pos, parent) {
     m_solid = true; // Can we walk through it?
     m_emittedLight = 0.0f; // Does it emit light?
 
-    m_texture = GLEngine::ResourceManager::getTexture(ASSETS_FOLDER_PATH + "Textures/Blocks/Stone.png");
+    m_textureId = GLEngine::ResourceManager::getTexture(ASSETS_FOLDER_PATH + "Textures/Blocks/Stone.png").id;
+
+    m_backdrop = true;
+    m_backdropTextureId = GLEngine::ResourceManager::getTexture(ASSETS_FOLDER_PATH + "Textures/Blocks/Stone.png").id;
 }
 
 BlockFoliage::BlockFoliage(glm::vec2 pos, Chunk* parent) : Block(pos, parent) {
@@ -99,7 +115,7 @@ BlockFoliage::BlockFoliage(glm::vec2 pos, Chunk* parent) : Block(pos, parent) {
     m_solid = false;
     m_emittedLight = 0.0f;
 
-    m_texture = GLEngine::ResourceManager::getTexture(ASSETS_FOLDER_PATH + "Textures/Blocks/BushGreen.png");
+    m_textureId = GLEngine::ResourceManager::getTexture(ASSETS_FOLDER_PATH + "Textures/Blocks/BushGreen.png").id;
 
     switch((unsigned int)parent->getPlace()) {
         case (unsigned int)Categories::Places::CANADA: {
@@ -130,4 +146,18 @@ void BlockFoliage::onUpdate(float& time) {
     if(m_parentChunk->tiles[(unsigned int)m_pos.y-1][((unsigned int)(m_pos.x + CHUNK_SIZE) % CHUNK_SIZE)]->getID() != (unsigned int)Categories::BlockIDs::GRASS) {
         m_parentChunk->setTile(createBlock((unsigned int)Categories::BlockIDs::AIR, m_pos, m_parentChunk), m_pos.x, m_pos.y);
     }
+}
+
+BlockWood::BlockWood(glm::vec2 pos, Chunk* parent) : Block(pos, parent) {
+    m_id = (unsigned int)Categories::BlockIDs::WOOD;
+
+    m_transparent = false; // Does light travel through it?
+    m_draw = true; // Is it drawn?
+    m_solid = true; // Can we walk through it?
+    m_emittedLight = 0.0f; // Does it emit light?
+
+    m_textureId = GLEngine::ResourceManager::getTexture(ASSETS_FOLDER_PATH + "Textures/Blocks/WoodBlock.png").id;
+
+    m_backdrop = true;
+    m_backdropTextureId = GLEngine::ResourceManager::getTexture(ASSETS_FOLDER_PATH + "Textures/Blocks/WoodBlock.png").id;
 }

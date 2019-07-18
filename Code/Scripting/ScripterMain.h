@@ -6,6 +6,8 @@
 
 #include "../Logging.h"
 
+#include "../ExtraFunctions.h"
+
 const bool
     SCRIPT_INIT_FLAG_MODIFYWORLD = 0x1,     // 0000 0001
     SCRIPT_INIT_FLAG_MODIFYENTITIES = 0x2,  // 0000 0010
@@ -37,7 +39,7 @@ class Scripter {
         void update();
 
         std::string executeScript(Script* script); /// TODO: For the love of all things unholy, do NOT pass scripts by reference. They do not like that very much
-        std::string executeCommand(std::string& command);
+        std::string executeCommand(std::string& command, Script* script = nullptr);
 
     private:
 
@@ -45,14 +47,16 @@ class Scripter {
 
         std::vector<Entity*> entityTarget(std::vector<std::string> parameters, unsigned int& keywordIndex);
         std::vector<glm::vec2> positionTarget(std::vector<std::string> parameters, unsigned int& keywordIndex);
-        Parameter interpretParameter(std::vector<std::string> parameters, unsigned int& keywordIndex);
+        void* pntr_interpretParameter(std::vector<std::string> parameters, unsigned int& keywordIndex);
+        int int_interpretParameter(std::vector<std::string> parameters, unsigned int& keywordIndex);
+        float float_interpretParameter(std::vector<std::string> parameters, unsigned int& keywordIndex);
 
         unsigned int stringToFlagId(std::string str);
 
         GameplayScreen* m_gameplayScreen = nullptr;
 
         std::vector<Entity*> m_entities;
-        Chunk* m_chunks[WORLD_SIZE];
+        Chunk* m_chunks[WORLD_SIZE] = {};
 
         /*GLEngine::Camera2D* m_camera = nullptr;*/
 };

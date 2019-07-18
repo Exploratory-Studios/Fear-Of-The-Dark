@@ -1,10 +1,14 @@
 #include "EntityManager.h"
 
 #include "Chunk.h"
+#include "Entities.h"
 
-EntityManager::EntityManager(Chunk* parent)
+EntityManager::EntityManager(Chunk* parent, AudioManager* audio)
 {
     m_parentChunk = parent;
+    m_audioManager = audio;
+
+    m_entities = new std::vector<Entity>();
 }
 
 EntityManager::~EntityManager()
@@ -13,74 +17,81 @@ EntityManager::~EntityManager()
 }
 
 void EntityManager::update(float timeStep, Chunk* chunks[WORLD_SIZE]) {
-    for(unsigned int i = 0; i < m_entities.size(); i++) {
-        m_entities[i]->update(timeStep, chunks);
-        int newChunk = m_entities[i]->setParentChunk(chunks);
-        if(newChunk != -1) {
-            m_parentChunk->getSurroundingChunks()[newChunk]->addEntity(m_entities[i]);
+    for(unsigned int i = 0; i < getNumEntities(); i++) {
+        getEntity(i)->update(timeStep, chunks);
+        int newChunk = getEntity(i)->setParentChunk(chunks);
+        if(newChunk == -1) {
+            m_parentChunk->getSurroundingChunks()[0]->addEntity(*getEntity(i));
+            removeEntity(i);
+        } else if(newChunk == 1) {
+            m_parentChunk->getSurroundingChunks()[1]->addEntity(*getEntity(i));
             removeEntity(i);
         }
-        m_entities[i]->collide();
+        getEntity(i)->collide();
     }
 }
 
 void EntityManager::draw(GLEngine::SpriteBatch& sb, float time, float xOffset) {
-    for(unsigned int i = 0; i < m_entities.size(); i++) {
-        m_entities[i]->draw(sb, time, xOffset);
+    for(unsigned int i = 0; i < getNumEntities(); i++) {
+        getEntity(i)->draw(sb, time, xOffset);
     }
 }
 
-void EntityManager::tick(Player* p) {
+void EntityManager::tick(Player* p, float tickTime, WorldEra& era) {
+    for(unsigned int i = 0; i < getNumEntities(); i++) {
+        getEntity(i)->tick(p);
+    }
+    spawnEntities(tickTime, era);
     targetEntities(p);
 }
 
 void EntityManager::removeEntity(int index) {
-    for(unsigned int i = index; i < m_entities.size()-1; i++) {
-        m_entities[i] = m_entities[i+1];
+    for(unsigned int i = index; i < getNumEntities()-1; i++) {
+        *getEntity(i) = *getEntity(i+1);
     }
-    m_entities.pop_back();
+    m_entities->pop_back();
 }
 
 void EntityManager::targetEntities(Player* p) {
-    m_entities.push_back(p);
+    m_entities->push_back(*p);
 
-    for(unsigned int i = 0; i < m_entities.size(); i++) {
-        for(unsigned int j = 0; j < m_entities.size(); j++) {
+    for(unsigned int i = 0; i < getNumEntities(); i++) {
+        for(unsigned int j = 0; j < getNumEntities(); j++) {
             if(i != j) {
-                if((int)m_entities[i]->getFaction() > (int)Categories::Faction::NEUTRAL &&
-                   (int)m_entities[j]->getFaction() <= (int)Categories::Faction::NEUTRAL) {
-                    m_entities[i]->setTargets(pathfindToTarget(m_entities[i]->getJumpHeight(), m_entities[i]->getPosition(), m_entities[j]->getPosition()));
-                } else if((int)m_entities[i]->getFaction() < (int)Categories::Faction::NEUTRAL &&
-                   (int)m_entities[j]->getFaction() > (int)Categories::Faction::NEUTRAL) {
-                    m_entities[i]->setTargets(pathfindToTarget(m_entities[i]->getJumpHeight(), m_entities[i]->getPosition(), m_entities[j]->getPosition()));
+                if((int)getEntity(i)->getFaction() > (int)Categories::Faction::NEUTRAL &&
+                   (int)getEntity(j)->getFaction() <= (int)Categories::Faction::NEUTRAL) {
+                    getEntity(i)->setTargets(pathfindToTarget(getEntity(i)->getJumpHeight(), getEntity(i)->getPosition(), getEntity(j)->getPosition()));
+                } else if((int)getEntity(i)->getFaction() < (int)Categories::Faction::NEUTRAL &&
+                   (int)getEntity(j)->getFaction() > (int)Categories::Faction::NEUTRAL) {
+                    getEntity(i)->setTargets(pathfindToTarget(getEntity(i)->getJumpHeight(), getEntity(i)->getPosition(), getEntity(j)->getPosition()));
                 }
             }
         }
-        for(unsigned int j = 0; j < m_parentChunk->getSurroundingChunks()[0]->getEntities().size(); j++) {
+        for(unsigned int j = 0; j < m_parentChunk->getSurroundingChunks()[0]->getEntities()->size(); j++) {
             if(i != j) {
-                if((int) m_entities[i]->getFaction() > (int)Categories::Faction::NEUTRAL &&
-                   (int) m_parentChunk->getSurroundingChunks()[0]->getEntities()[j]->getFaction() <= (int)Categories::Faction::NEUTRAL) {
-                     m_entities[i]->setTargets(pathfindToTarget(m_entities[i]->getJumpHeight(),  m_entities[i]->getPosition(),  m_parentChunk->getSurroundingChunks()[0]->getEntities()[j]->getPosition()));
-                } else if((int) m_entities[i]->getFaction() < (int)Categories::Faction::NEUTRAL &&
-                   (int) m_parentChunk->getSurroundingChunks()[0]->getEntities()[j]->getFaction() > (int)Categories::Faction::NEUTRAL) {
-                     m_entities[i]->setTargets(pathfindToTarget(m_entities[i]->getJumpHeight(),  m_entities[i]->getPosition(),  m_parentChunk->getSurroundingChunks()[0]->getEntities()[j]->getPosition()));
+                if((int) getEntity(i)->getFaction() > (int)Categories::Faction::NEUTRAL &&
+                   (int) m_parentChunk->getSurroundingChunks()[0]->getEntity(j)->getFaction() <= (int)Categories::Faction::NEUTRAL) {
+                     getEntity(i)->setTargets(pathfindToTarget(getEntity(i)->getJumpHeight(),  getEntity(i)->getPosition(),  m_parentChunk->getSurroundingChunks()[0]->getEntity(j)->getPosition()));
+                } else if((int) getEntity(i)->getFaction() < (int)Categories::Faction::NEUTRAL &&
+                   (int) m_parentChunk->getSurroundingChunks()[0]->getEntity(j)->getFaction() > (int)Categories::Faction::NEUTRAL) {
+                     getEntity(i)->setTargets(pathfindToTarget(getEntity(i)->getJumpHeight(),  getEntity(i)->getPosition(),  m_parentChunk->getSurroundingChunks()[0]->getEntity(j)->getPosition()));
                 }
             }
         }
-        for(unsigned int j = 0; j < m_parentChunk->getSurroundingChunks()[1]->getEntities().size(); j++) {
+        for(unsigned int j = 0; j < m_parentChunk->getSurroundingChunks()[1]->getEntities()->size(); j++) {
             if(i != j) {
-                if((int) m_entities[i]->getFaction() > (int)Categories::Faction::NEUTRAL &&
-                   (int) m_parentChunk->getSurroundingChunks()[1]->getEntities()[j]->getFaction() <= (int)Categories::Faction::NEUTRAL) {
-                     m_entities[i]->setTargets(pathfindToTarget(m_entities[i]->getJumpHeight(), m_entities[i]->getPosition(), m_parentChunk->getSurroundingChunks()[1]->getEntities()[j]->getPosition()));
-                } else if((int) m_entities[i]->getFaction() < (int)Categories::Faction::NEUTRAL &&
-                   (int) m_parentChunk->getSurroundingChunks()[1]->getEntities()[j]->getFaction() > (int)Categories::Faction::NEUTRAL) {
-                     m_entities[i]->setTargets(pathfindToTarget(m_entities[i]->getJumpHeight(), m_entities[i]->getPosition(), m_parentChunk->getSurroundingChunks()[1]->getEntities()[j]->getPosition()));
+                if((int) getEntity(i)->getFaction() > (int)Categories::Faction::NEUTRAL &&
+                   (int) m_parentChunk->getSurroundingChunks()[1]->getEntity(j)->getFaction() <= (int)Categories::Faction::NEUTRAL) {
+                     getEntity(i)->setTargets(pathfindToTarget(getEntity(i)->getJumpHeight(), getEntity(i)->getPosition(), m_parentChunk->getSurroundingChunks()[1]->getEntity(j)->getPosition()));
+                } else if((int) getEntity(i)->getFaction() < (int)Categories::Faction::NEUTRAL &&
+                   (int) m_parentChunk->getSurroundingChunks()[1]->getEntity(j)->getFaction() > (int)Categories::Faction::NEUTRAL) {
+                     getEntity(i)->setTargets(pathfindToTarget(getEntity(i)->getJumpHeight(), getEntity(i)->getPosition(), m_parentChunk->getSurroundingChunks()[1]->getEntity(j)->getPosition()));
                 }
             }
         }
     }
 
-    m_entities.pop_back();
+    m_entities->pop_back();
 }
 
 std::vector<glm::vec2> EntityManager::pathfindToTarget(float jumpHeight, glm::vec2 originalPosition, glm::vec2 targetPosition) {
@@ -201,7 +212,7 @@ std::vector<glm::vec2> EntityManager::pathfindToTarget(float jumpHeight, glm::ve
                 for(int yOff = offsetY; yOff < maxJumpHeight; yOff++) {
                     if(!targetFound) {
                         if(yGridspace+yOff-1 >= 0 && yGridspace+yOff+1 < WORLD_HEIGHT) {
-                            if(!chunks[chunkIndex]->tiles[yGridspace+yOff][i - CHUNK_SIZE * chunkIndex]->isSolid() &&
+                            if(!chunks\[chunkIndex].tiles[yGridspace+yOff][i - CHUNK_SIZE * chunkIndex]->isSolid() &&
                                !chunks[chunkIndex]->tiles[yGridspace+yOff+1][i - CHUNK_SIZE * chunkIndex]->isSolid()) {
                                 if(chunks[chunkIndex]->tiles[yGridspace+yOff-1][i - CHUNK_SIZE * chunkIndex]->isSolid()) {
                                     if(offsetY != yOff || i == targetXGridspace-1) // Is it just a straight line?
@@ -286,4 +297,78 @@ std::vector<glm::vec2> EntityManager::pathfindToTarget(float jumpHeight, glm::ve
     */
 
     return targets;
+}
+
+void EntityManager::spawnEntities(float tickTime, WorldEra& era) {
+    int randomNum = std::rand() % 1000;
+
+    if(randomNum < SPAWN_RATE) {
+        if(m_entities->size() < MAX_CHUNK_ENTITIES) {
+            std::vector<unsigned int> spawnables; // Entities that can be spawned in this era and biome, at this time.
+
+            DayPortion currentPortion;
+            { // Get the current daytime
+                float hour = (float)((int)tickTime % DAY_LENGTH) / (float)DAY_LENGTH + 0.5f;
+
+                if(hour > 4.0f/24.0f && hour < 9.0f/24.0f) { // Morning (4am-9am)
+                    currentPortion = DayPortion::MORNING;
+                } else if(hour > 9.0f/24.0f && hour < 16.0f/24.0f) { // Day (9am-4pm)
+                    currentPortion = DayPortion::DAY;
+                } else if(hour > 16.0f/24.0f && hour < 21.0f/24.0f) { // Afternoon (4pm-9pm)
+                    currentPortion = DayPortion::AFTERNOON;
+                } else if(hour > 21.0f/24.0f || hour < 4.0f/24.0f) { // Night (9pm-4am) (Overlap requires OR logic)
+                    if(hour >= 0.0f && hour <= 1.0f/24.0f) { // Nightmare hour (Midnight-1am)
+                        currentPortion = DayPortion::NIGHTMARE_HOUR;
+                    } else {
+                        currentPortion = DayPortion::NIGHT;
+                    }
+                }
+            }
+
+            for(unsigned int i = 0; i < Category_Data::placeData[(unsigned int)m_parentChunk->getPlace()].mobSpawnIds.size(); i++) { // Go through all the criteria
+                unsigned int id = Category_Data::placeData[(unsigned int)m_parentChunk->getPlace()].mobSpawnIds[i];
+                for(int j = 0; j < Category_Data::mobData[id].spawnEra.size(); j++) {
+                    if(Category_Data::mobData[id].spawnEra[j] == era) {
+                        for(int k = 0; k < Category_Data::mobData[id].spawnTime.size(); k++) {
+                            if(Category_Data::mobData[id].spawnTime[k] == currentPortion) {
+                                spawnables.push_back(id);
+                            }
+                        }
+                    }
+                }
+            }
+
+            if(spawnables.size() > 0) { // Is anything actually spawnable?
+                // Now we have to find a suitable place for a random mob to spawn.
+                // First, choose the random mob
+                randomNum = std::rand() % spawnables.size();
+
+                int sizeX = Category_Data::mobData[spawnables[randomNum]].size.x, sizeY = Category_Data::mobData[spawnables[randomNum]].size.y; // in tile size
+
+                // Next, find a place
+                for(int i = 0; i < CHUNK_SIZE; i++) { // Test a bunch of random spots
+                    int x = std::rand() % CHUNK_SIZE;
+                    for(int y = 0; y < WORLD_HEIGHT; y++) {
+                        if(!m_parentChunk->tiles[y][x]->isSolid()) {
+                            bool isSafe = true;
+                            if(!m_parentChunk->tiles[y-1][x]->isSolid()) {
+                                isSafe = false;
+                            }
+                            for(int xMod = 0; xMod < sizeX-1; xMod++) {
+                                for(int yMod = 0; yMod < sizeY-1; yMod++) {
+                                    if(m_parentChunk->tiles[y+yMod][x+xMod]->isSolid()) {
+                                        isSafe = false;
+                                    }
+                                }
+                            }
+                            if(isSafe) {
+                                m_entities->push_back(*createEntity(spawnables[randomNum], glm::vec2(x, y), m_parentChunk, m_audioManager)); /// TODO: Could have serious problem here
+                                return;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
 }

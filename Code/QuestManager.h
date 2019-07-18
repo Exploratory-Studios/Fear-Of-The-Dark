@@ -13,6 +13,8 @@
 #include "Logging.h"
 #include "Scripting/ScriptQueue.h"
 
+#include "ExtraFunctions.h"
+
 class DialogueManager;
 class QuestManager;
 
@@ -41,10 +43,11 @@ class DialogueManager {
         Logger* logger = Logger::getInstance();
 
         GLEngine::GUI* m_gui = nullptr;
-        ScriptQueue* m_sq = nullptr;
 
         std::vector<Question*>* m_questionList = nullptr;
         std::vector<Flag*>* m_flagList = nullptr;
+
+        ScriptQueue* m_sq = nullptr;
 
         std::vector<CEGUI::PushButton*> m_buttons;
         std::vector<CEGUI::Window*> m_otherWidgets;

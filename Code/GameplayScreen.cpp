@@ -42,6 +42,7 @@ void GameplayScreen::onEntry() {
     m_spriteBatch.init();
     m_spriteFont.init((ASSETS_FOLDER_PATH + "GUI/fonts/Amatic-Bold.ttf").c_str(), 96);
 
+    m_camera.setScale(MIN_ZOOM);
     m_camera.init(m_window->getScreenWidth(), m_window->getScreenHeight());
     m_camera.setPosition(m_camera.getPosition() + (glm::vec2(m_window->getScreenWidth() / 2, m_window->getScreenHeight() / 2)));
 
@@ -52,29 +53,34 @@ void GameplayScreen::onEntry() {
 
     //m_WorldManager.init(m_WorldIOManager, &m_particle2d);
     m_scripter = new Scripter(this);
-    m_audioManager.init();
+    m_WorldIOManager->getAudioManager()->init();
 
     if(m_WorldIOManager->getWorld()) {
-        std::vector<Entity*> entities;
-
         for(unsigned int j = 0; j < WORLD_SIZE; j++) {
-            for(unsigned int i = 0; i < m_WorldIOManager->getWorld()->chunks[j]->getEntities().size(); i++) {
-                entities.push_back(m_WorldIOManager->getWorld()->chunks[j]->getEntities()[i]);
-            }
+            m_WorldIOManager->getWorld()->chunks[j]->setAudioManager(m_WorldIOManager->getAudioManager());
         }
 
-        m_player = m_WorldIOManager->getWorld()->player;
+        if(!m_WorldIOManager->getWorld()->player) {
+            m_player = reinterpret_cast<Player*>(createEntity((unsigned int)Categories::EntityIDs::MOB_PLAYER, glm::vec2(5.0f * TILE_SIZE, 100.0f * TILE_SIZE), m_WorldIOManager->getWorld()->chunks[(int)(5.0f * TILE_SIZE) / CHUNK_SIZE], m_WorldIOManager->getAudioManager(), nullptr, &m_game->inputManager, m_WorldIOManager->getScriptQueue()));
+            m_WorldIOManager->setPlayer(m_player);
+        } else {
+            m_player = m_WorldIOManager->getWorld()->player;
+        }
 
         {
             int index = (m_player->getPosition().x / TILE_SIZE) / CHUNK_SIZE / WORLD_SIZE;
-            m_player->setParentChunk(m_WorldIOManager->getWorld()->chunks[index%WORLD_SIZE]);
+            m_player->setParentChunk(&m_WorldIOManager->getWorld()->chunks[index%WORLD_SIZE]);
         }
 
         {
-            for(unsigned int i = 0; i < entities.size(); i++) {
-                int index = (entities[i]->getPosition().x / TILE_SIZE) / CHUNK_SIZE;
-                entities[i]->setParentChunk(m_WorldIOManager->getWorld()->chunks[index]);
-                m_WorldIOManager->getWorld()->chunks[index]->addEntity(entities[i]);
+            for(unsigned int j = 0; j < WORLD_SIZE; j++) {
+                std::vector<Entity>* entities;
+                entities = m_WorldIOManager->getWorld()->chunks[j]->getEntities();
+                for(unsigned int i = 0; i < entities->size(); i++) {
+                    int index = (m_WorldIOManager->getWorld()->chunks[j]->getEntity(i)->getPosition().x / TILE_SIZE) / CHUNK_SIZE;
+                    m_WorldIOManager->getWorld()->chunks[j]->getEntity(i)->setParentChunk(&m_WorldIOManager->getWorld()->chunks[index]);
+                    m_WorldIOManager->getWorld()->chunks[index]->addEntity(*m_WorldIOManager->getWorld()->chunks[j]->getEntity(i));
+                }
             }
         }
     }
@@ -82,15 +88,14 @@ void GameplayScreen::onEntry() {
     m_questManager = new QuestManager(ASSETS_FOLDER_PATH + "Questing/DialogueList.txt", ASSETS_FOLDER_PATH + "Questing/FlagList.txt", m_WorldIOManager->getScriptQueue());
     m_console = new Console();
 
-    std::vector<Parameter> p;
-    Parameter a;
-    a.setPointer(m_questManager);
-    p.push_back(a);
-
-    m_WorldIOManager->getWorld()->chunks[0]->addEntity(createEntity((unsigned int)Categories::EntityIDs::MOB_NEUTRAL_QUESTGIVER_A, glm::vec2(10.0f * TILE_SIZE, (200.0f) * TILE_SIZE), nullptr, p));
+    m_WorldIOManager->getWorld()->chunks[0]->addEntity(*createEntity((unsigned int)Categories::EntityIDs::MOB_NEUTRAL_QUESTGIVER_A, glm::vec2(10.0f * TILE_SIZE, (200.0f) * TILE_SIZE), m_WorldIOManager->getWorld()->chunks[0], m_WorldIOManager->getAudioManager(), m_questManager));
 
     initUI();
     tick();
+
+    if(m_player) {
+        activateChunks();
+    }
 }
 
 void GameplayScreen::onExit() {
@@ -110,7 +115,7 @@ void GameplayScreen::update() {
         }
     }
 
-    if((int)m_frame % (int)(60 / m_tickRate) == 0) { // m_frame is equal to current frame
+    if((int)m_frame % (int)(60 / TICK_RATE) == 0) { // m_frame is equal to current frame
         tick();
     }
 
@@ -120,31 +125,45 @@ void GameplayScreen::update() {
         m_questManager->update(m_game->inputManager);
         m_scripter->update();
 
-        for(unsigned int i = 0; i < m_activatedChunks.size(); i++) {
-            int xOffset = std::abs(m_activatedChunks[i] + WORLD_SIZE) % WORLD_SIZE;
-            m_WorldIOManager->getWorld()->chunks[xOffset]->update(m_time, m_deltaTime, m_WorldIOManager->getWorld()->chunks);
-        }
-
         // Set player caninteract
 
-        if(m_player) {
-            activateChunks();
+        if(m_player && !m_cutscenePause) {
             m_player->update(m_deltaTime, m_WorldIOManager->getWorld()->chunks);
             m_player->updateMouse(&m_camera);
             m_player->collide();
             m_player->setCanInteract(!m_questManager->isDialogueActive());
         }
 
-        if((m_player->getPosition().x + m_player->getSize().x / 2.0f) - m_lastPlayerPos.x < -CHUNK_SIZE * TILE_SIZE) {
-            m_lastPlayerPos.x -= WORLD_SIZE * CHUNK_SIZE * TILE_SIZE;
-        } else if(m_player->getPosition().x + m_player->getSize().x / 2.0f - m_lastPlayerPos.x > CHUNK_SIZE * TILE_SIZE) {
-            m_lastPlayerPos.x += WORLD_SIZE * CHUNK_SIZE * TILE_SIZE;
+        if(!m_cameraLocked) {
+            if(std::abs((m_player->getPosition().x + m_player->getSize().x / 2.0f) - m_lastPlayerPos.x) >= (float)(CHUNK_SIZE * TILE_SIZE) * (WORLD_SIZE/2)) {
+                int sign = ((m_player->getPosition().x + m_player->getSize().x / 2.0f) - m_lastPlayerPos.x) / std::abs((m_player->getPosition().x + m_player->getSize().x / 2.0f) - m_lastPlayerPos.x);
+                m_lastPlayerPos.x += (float)(WORLD_SIZE * CHUNK_SIZE * TILE_SIZE) * sign;
+                m_camera.setPosition(m_camera.getPosition() + glm::vec2((float)(WORLD_SIZE * CHUNK_SIZE * TILE_SIZE) * sign, 0.0f));
+            }
+            m_lastPlayerPos = (m_lastPlayerPos + ((m_player->getPosition() + m_player->getSize() / glm::vec2(2.0f)) - m_lastPlayerPos) / glm::vec2(4.0f));
+            m_camera.setPosition(m_lastPlayerPos); // If lastplayerpos is never updated, the camera is still 'locked' per say, but we can actually change the lastPlayerPos on purpose to get a smooth movement somewhere.
+        } else {
+            m_lastPlayerPos = (m_lastPlayerPos + (m_smoothMoveTarget - m_lastPlayerPos) * m_smoothMoveSpeed);
+            m_camera.setPosition(m_lastPlayerPos);
         }
-        m_lastPlayerPos = (m_lastPlayerPos + ((m_player->getPosition() + m_player->getSize() / glm::vec2(2.0f)) - m_lastPlayerPos) / glm::vec2(4.0f));
 
-        m_camera.setPosition(m_lastPlayerPos);
+        for(unsigned int i = 0; i < m_activatedChunks.size(); i++) {
+            int xOffset = std::abs(m_activatedChunks[i] + WORLD_SIZE) % WORLD_SIZE;
+            m_WorldIOManager->getWorld()->chunks[xOffset]->update(m_time, m_deltaTime, m_WorldIOManager->getWorld()->chunks, !m_cutscenePause);
+        }
 
-        m_camera.setScale(m_scale);
+        if(m_camera.getPosition().x > (float)(WORLD_SIZE * CHUNK_SIZE)) {
+            m_camera.setPosition(m_camera.getPosition() - glm::vec2((float)(WORLD_SIZE * CHUNK_SIZE), 0.0f));
+        } else if(m_camera.getPosition().x < 0.0000000f) {
+            m_camera.setPosition(m_camera.getPosition() + glm::vec2((float)(WORLD_SIZE * CHUNK_SIZE), 0.0f));
+        }
+
+        if(m_scale > MIN_ZOOM && m_scale < MAX_ZOOM)
+            m_camera.setScale(m_scale);
+
+        if(m_player) {
+            activateChunks();
+        }
 
         m_camera.update();
         m_uiCamera.update();
@@ -154,7 +173,7 @@ void GameplayScreen::update() {
     }
     m_frame++;
 
-    m_gui.update();
+    m_gui.update();\
 }
 #include <stdio.h>
 void GameplayScreen::draw() {
@@ -162,7 +181,35 @@ void GameplayScreen::draw() {
 
     float dayLight = cos((float)m_WorldIOManager->getWorld()->time / (DAY_LENGTH / 6.28318f)) / 2.0f + 0.5f;
 
-    glClearColor(0.3f * dayLight, 0.4f * dayLight, 1.0f * dayLight, 1.0f);
+    //glClearColor(0.3f * dayLight, 0.4f * dayLight, 1.0f * dayLight, 1.0f);
+
+    {
+        m_skyTextureProgram.use();
+
+        // Camera matrix
+        glm::mat4 projectionMatrix = m_uiCamera.getCameraMatrix();
+        GLint pUniform = m_skyTextureProgram.getUniformLocation("P");
+        glUniformMatrix4fv(pUniform, 1, GL_FALSE, &projectionMatrix[0][0]);
+
+        GLint sizeUniform = m_skyTextureProgram.getUniformLocation("screenSizeU");
+        glUniform2f(sizeUniform, m_window->getScreenWidth(), m_window->getScreenHeight());
+
+        //GLint timeUniform = m_skyTextureProgram.getUniformLocation("time");
+        //'glUniform1f(timeUniform, m_time);
+
+        GLint lightUniform = m_skyTextureProgram.getUniformLocation("daylight");
+        glUniform1f(lightUniform, dayLight);
+
+        m_spriteBatch.begin(GLEngine::GlyphSortType::FRONT_TO_BACK);
+
+        m_spriteBatch.draw(glm::vec4(0.0f, 0.0f, m_window->getScreenWidth(), m_window->getScreenHeight()), glm::vec4(0.0f, 0.0f, 1.0f, 1.0f), 0, 1.0f, GLEngine::ColourRGBA8(0, 0, 0, 0));
+
+        m_spriteBatch.end();
+        m_spriteBatch.renderBatch();
+
+        m_skyTextureProgram.unuse();
+
+    }
 
     {
         m_textureProgram.use();
@@ -174,9 +221,9 @@ void GameplayScreen::draw() {
 
         m_spriteBatch.begin(GLEngine::GlyphSortType::FRONT_TO_BACK); // lower numbers in back
 
-        for(unsigned int i = 0; i < m_activatedChunks.size(); i++) {
-            int xOffset = std::abs(m_activatedChunks[i] + WORLD_SIZE) % WORLD_SIZE;
-            m_WorldIOManager->getWorld()->chunks[xOffset]->draw(m_spriteBatch, m_activatedChunks[i] - xOffset, m_time);
+        for(unsigned int i = 0; i < m_drawnChunks.size(); i++) {
+            int xOffset = std::abs(m_drawnChunks[i] + WORLD_SIZE) % WORLD_SIZE;
+            m_WorldIOManager->getWorld()->chunks[xOffset]->draw(m_spriteBatch, m_drawnChunks[i] - xOffset, m_time, m_camera);
         }
 
         m_player->draw(m_spriteBatch, m_time, 0);
@@ -216,7 +263,36 @@ void GameplayScreen::draw() {
         m_uiTextureProgram.unuse();
     }
 
-    /// TODO: Don't forget to have a background image for the world based on biome
+    {
+        m_vignetteTextureProgram.use();
+
+        /*GLint textureUniform = m_vignetteTextureProgram.getUniformLocation("mySampler");
+        glUniform1i(textureUniform, 0);
+        glActiveTexture(GL_TEXTURE0);*/
+
+        // Camera matrix
+        glm::mat4 projectionMatrix = m_uiCamera.getCameraMatrix();
+        GLint pUniform = m_vignetteTextureProgram.getUniformLocation("P");
+        glUniformMatrix4fv(pUniform, 1, GL_FALSE, &projectionMatrix[0][0]);
+
+        GLint sizeUniform = m_vignetteTextureProgram.getUniformLocation("screenSizeU");
+        glUniform2f(sizeUniform, m_window->getScreenWidth(), m_window->getScreenHeight());
+
+        GLint sanityUniform = m_vignetteTextureProgram.getUniformLocation("sanity");
+        glUniform1f(sanityUniform, m_player->getSanity());
+
+        GLint timeUniform = m_vignetteTextureProgram.getUniformLocation("time");
+        glUniform1f(timeUniform, m_time);
+
+        m_spriteBatch.begin(GLEngine::GlyphSortType::FRONT_TO_BACK);
+
+        m_spriteBatch.draw(glm::vec4(0.0f, 0.0f, m_window->getScreenWidth(), m_window->getScreenHeight()), glm::vec4(0.0f, 0.0f, 1.0f, 1.0f), 0, 0.0f, GLEngine::ColourRGBA8(0, 0, 0, 0));
+
+        m_spriteBatch.end();
+        m_spriteBatch.renderBatch();
+
+        m_vignetteTextureProgram.unuse();
+    }
 }
 
 /// GameplayScreen PRIVATE FUNCTIONS
@@ -247,15 +323,35 @@ void GameplayScreen::checkInput() {
         m_fpsWidget->setVisible(m_debuggingInfo);
     }
     if(m_game->inputManager.isKeyPressed(SDLK_F2)) {
-        std::string command = "createEntity 12 76 2 questManager";
-        m_scripter->executeCommand(command);
+        if(!m_selecting) {
+            m_lastSelectedPosition = m_player->getSelectedBlock()->getPosition();
+        } else {
+            if(m_lastSelectedPosition.x > m_player->getSelectedBlock()->getPosition().x || m_lastSelectedPosition.y > m_player->getSelectedBlock()->getPosition().y) {
+                logger->log("Tried to create a structure badly, please try again, first coord is lower left corner, second is upper right.");
+            } else {
+
+                std::string filepath = ASSETS_FOLDER_PATH + "/Structures/Test.bin";
+                m_WorldIOManager->saveStructureToFile(filepath,
+                                                      glm::vec4(m_lastSelectedPosition.x,
+                                                      m_lastSelectedPosition.y,
+                                                      m_player->getSelectedBlock()->getPosition().x - m_lastSelectedPosition.x,
+                                                      m_player->getSelectedBlock()->getPosition().y - m_lastSelectedPosition.y)); // Long-ass line of code, or long ass-line of code? Only god knows, and there is no god.
+            }
+        }
+        m_selecting = !m_selecting;
+    }
+    if(m_game->inputManager.isKeyPressed(SDLK_F3)) {
+        std::string filepath = ASSETS_FOLDER_PATH + "/Structures/Test.bin";
+        StructureData data = m_WorldIOManager->loadStructureFromFile(filepath);
+        m_WorldIOManager->placeStructure(data, m_player->getSelectedBlock()->getPosition());
     }
     #endif // DEV_CONTROLS
 
-    if(m_game->inputManager.isKeyPressed(SDLK_ESCAPE)) {
+    if(m_game->inputManager.isKeyPressed(SDLK_F4)) {
         //m_gameState = GameState::PAUSE;
-        m_WorldIOManager->saveWorld(*m_WorldIOManager->getWorld(), "TestSave", nullptr);
-    } else if(m_game->inputManager.isKeyPressed(SDLK_F3)) {
+        float* f = new float(1.0f);
+        m_WorldIOManager->saveWorld("TestSave", f);
+    } else if(m_game->inputManager.isKeyPressed(SDLK_F5)) {
         m_WorldIOManager->loadWorld("TestSave", nullptr);
 
     }
@@ -275,6 +371,18 @@ void GameplayScreen::initShaders() {
     m_uiTextureProgram.addAttribute("vertexColour");
     m_uiTextureProgram.addAttribute("vertexUV");
     m_uiTextureProgram.linkShaders();
+
+    m_vignetteTextureProgram.compileShaders(ASSETS_FOLDER_PATH + "Shaders/vignetteShader.vert", ASSETS_FOLDER_PATH + "Shaders/vignetteShader.frag");
+    m_vignetteTextureProgram.addAttribute("vertexPosition");
+    m_vignetteTextureProgram.addAttribute("vertexColour");
+    m_vignetteTextureProgram.addAttribute("vertexUV");
+    m_vignetteTextureProgram.linkShaders();
+
+    m_skyTextureProgram.compileShaders(ASSETS_FOLDER_PATH + "Shaders/skyShader.vert", ASSETS_FOLDER_PATH + "Shaders/skyShader.frag");
+    m_skyTextureProgram.addAttribute("vertexPosition");
+    m_skyTextureProgram.addAttribute("vertexColour");
+    m_skyTextureProgram.addAttribute("vertexUV");
+    m_skyTextureProgram.linkShaders();
 }
 
 void GameplayScreen::initUI() {
@@ -295,8 +403,9 @@ void GameplayScreen::initUI() {
 
     #ifdef DEV_CONTROLS
     {
-        m_fpsWidget = static_cast<CEGUI::DefaultWindow*>(m_gui.createWidget("FOTDSkin/Label", glm::vec4(0.05f, 0.05f, 0.9f, 0.25f), glm::vec4(0.0f), "FPS_STRING_WIDGET"));
+        m_fpsWidget = static_cast<CEGUI::DefaultWindow*>(m_gui.createWidget("FOTDSkin/Label", glm::vec4(0.05f, 0.05f, 0.9f, 0.9f), glm::vec4(0.0f), "FPS_STRING_WIDGET"));
         m_fpsWidget->setHorizontalAlignment(CEGUI::HorizontalAlignment::HA_LEFT);
+        m_fpsWidget->setVerticalAlignment(CEGUI::VerticalAlignment::VA_TOP);
     }
     #endif //DEV_CONTROLS
 }
@@ -304,26 +413,47 @@ void GameplayScreen::initUI() {
 void GameplayScreen::tick() {
     for(unsigned int i = 0; i < m_activatedChunks.size(); i++) {
         int xOffset = std::abs(m_activatedChunks[i] + WORLD_SIZE) % WORLD_SIZE;
-        m_WorldIOManager->getWorld()->chunks[xOffset]->tick(m_WorldIOManager->getWorld()->time, m_player);
+        m_WorldIOManager->getWorld()->chunks[xOffset]->tick(m_WorldIOManager->getWorld()->time, m_player, m_WorldIOManager->getWorld()->worldEra, !m_cutscenePause);
     }
 
-    if(!m_audioManager.isMusicPlaying()) {
-        ///m_audioManager.playMorningSong(0); TODO
+    if(!m_WorldIOManager->getAudioManager()->isMusicPlaying()) {
+        int hour = ((int)m_time % DAY_LENGTH) / DAY_LENGTH + 0.5f;//(int)((m_time / TICK_RATE) + 12) % DAY_LENGTH;
+
+        int randNum = std::rand() % 100;
+
+        if(hour > 4.0f/24.0f && hour < 9.0f/24.0f) { // Morning (4am-9am)
+            if(MORNING_MUSIC_LENGTH > 0)
+                m_WorldIOManager->getAudioManager()->playMorningSong(randNum % MORNING_MUSIC_LENGTH);
+        } else if(hour > 9.0f/24.0f && hour < 16.0f/24.0f) { // Day (9am-4pm)
+            if(DAY_MUSIC_LENGTH > 0)
+                m_WorldIOManager->getAudioManager()->playDaySong(randNum % DAY_MUSIC_LENGTH);
+        } else if(hour > 16.0f/24.0f && hour < 21.0f/24.0f) { // Afternoon (4pm-9pm)
+            if(AFTERNOON_MUSIC_LENGTH > 0)
+                m_WorldIOManager->getAudioManager()->playAfternoonSong(randNum % AFTERNOON_MUSIC_LENGTH);
+        } else if(hour > 21.0f/24.0f || hour < 4.0f/24.0f) { // Night (9pm-4am) (Overlap requires OR logic)
+            if(hour >= 0.0f && hour <= 1.0f/24.0f) { // Nightmare hour (Midnight-1am)
+                if(NIGHT_MUSIC_LENGTH > 0)
+                    m_WorldIOManager->getAudioManager()->playNightmareSong(randNum % NIGHTMARE_MUSIC_LENGTH);
+            } else {
+                if(NIGHTMARE_MUSIC_LENGTH > 0)
+                    m_WorldIOManager->getAudioManager()->playNightSong(randNum % NIGHT_MUSIC_LENGTH);
+            }
+        }
     }
 
     m_WorldIOManager->setWorldTime(m_WorldIOManager->getWorld()->time + 1);
 }
 
 void GameplayScreen::updateScale() {
-    //if(!isDialogueActive()) {
-        m_scale += (float)m_game->inputManager.getMouseScrollPosition() * m_scale / 10.0f;
-        if(m_scale < MIN_ZOOM) {
-            m_scale = MIN_ZOOM;
-        } else if(m_scale > MAX_ZOOM) {
-            m_scale = MAX_ZOOM;
-        }
-   // }
+    m_scale += (float)m_game->inputManager.getMouseScrollPosition() * m_scale / 10.0f;
+    if(m_scale < MIN_ZOOM) {
+        m_scale = MIN_ZOOM;
+    } else if(m_scale > MAX_ZOOM) {
+        m_scale = MAX_ZOOM;
+    }
 }
+
+#include "ExtraFunctions.h"
 
 #ifdef DEV_CONTROLS
 void GameplayScreen::drawDebug() {
@@ -347,26 +477,44 @@ void GameplayScreen::drawDebug() {
 #endif //DEV_CONTROLS
 
 void GameplayScreen::activateChunks() {
-    const int chunkIndex = m_player->getChunkIndex();
+    int chunkIndex = m_player->getChunkIndex();
 
-    if(chunkIndex != m_lastActivated && chunkIndex >= 0) { // Make sure that we changed chunks
-        m_activatedChunks.clear(); // I forgot I had this at my disposal :)
+    /*if(chunkIndex != m_lastActivated && chunkIndex >= 0) { // Make sure that we changed chunks
+        m_activatedChunks.clear();
 
         const signed int each = std::ceil((VIEW_DIST - 1) / 2); // How many chunks on each side of the centre of the selection
 
         for(signed int i = -each; i <= each; i++) {
-            //if(chunkIndex + i >= 0) {
-                m_activatedChunks.push_back(chunkIndex + i);
+            m_activatedChunks.push_back(chunkIndex + i);
 
-                int realIndex = (chunkIndex + i + WORLD_SIZE) % WORLD_SIZE;
+            int realIndex = (chunkIndex + i + WORLD_SIZE) % WORLD_SIZE;
 
-                m_WorldIOManager->getWorld()->chunks[realIndex]->activateChunk();
-            //} else if(chunkIndex + i < 0) {
-            //    m_activatedChunks.push_back(((chunkIndex + i) % WORLD_SIZE) + WORLD_SIZE);
-            //}
+            m_WorldIOManager->getWorld()->chunks[realIndex]->activateChunk();
         }
 
         m_lastActivated = chunkIndex;
-        //std::cout << chunkIndex << std::endl;
+    }*/
+
+    bool m_playerChunkCovered = false;
+
+    chunkIndex = (((int)m_camera.getPosition().x + WORLD_SIZE * CHUNK_SIZE) / CHUNK_SIZE) % WORLD_SIZE;
+
+    const unsigned int viewDist = (m_window->getScreenWidth() / m_scale) / CHUNK_SIZE + 2;
+
+    const signed int each = std::ceil((viewDist - 1) / 2);
+    m_drawnChunks.clear();
+    m_activatedChunks.clear();
+    for(signed int i = -each; i <= each; i++) {
+        if(chunkIndex + i == m_player->getChunkIndex()) m_playerChunkCovered = true;
+        m_drawnChunks.push_back(chunkIndex + i);
+        m_activatedChunks.push_back(chunkIndex + i);
+        int realIndex = (chunkIndex + i + WORLD_SIZE) % WORLD_SIZE;
+        m_WorldIOManager->getWorld()->chunks[realIndex]->drawChunk();
+        m_WorldIOManager->getWorld()->chunks[realIndex]->activateChunk();
+    }
+    if(!m_playerChunkCovered) {
+        int realIndex = (m_player->getChunkIndex() + WORLD_SIZE) % WORLD_SIZE;
+        m_WorldIOManager->getWorld()->chunks[realIndex]->drawChunk();
+        m_WorldIOManager->getWorld()->chunks[realIndex]->activateChunk();
     }
 }

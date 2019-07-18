@@ -6,7 +6,7 @@
 
 #include <Errors.h>
 
-Player::Player(glm::vec2 position, GLEngine::InputManager* input, ScriptQueue* sq) : Entity(position, nullptr, sq, 12.0f/60.0f), m_input(input)
+Player::Player(glm::vec2 position, Chunk* parent, GLEngine::InputManager* input, ScriptQueue* sq, AudioManager* audio) : Entity(position, audio, sq, 12.0f/60.0f), m_input(input)
 {
     m_inventory = new Inventory();
 
@@ -18,6 +18,8 @@ Player::Player(glm::vec2 position, GLEngine::InputManager* input, ScriptQueue* s
     //m_ai = Categories::AI_Type::;
     //m_disabilities = Categories::Disability_Type::NONE;
     //m_attackType = Categories::Attack_Type::;
+
+    m_parentChunk = parent;
 
     Script s;
     s.commands.push_back("changeBlock relative near relative player 0 0 0 0 2");
@@ -86,7 +88,7 @@ void Player::initGUI(GLEngine::GUI* gui) {
 }
 
 void Player::draw(GLEngine::SpriteBatch& sb, float time, float xOffset) {
-    glm::vec4 destRect = glm::vec4(m_position.x, m_position.y, m_size.x * TILE_SIZE, m_size.y * TILE_SIZE);
+    glm::vec4 destRect = glm::vec4(m_position.x + xOffset * CHUNK_SIZE * TILE_SIZE, m_position.y, m_size.x * TILE_SIZE, m_size.y * TILE_SIZE);
 
     float x, y;
     if(m_velocity.x > m_speed) {
@@ -135,7 +137,7 @@ void Player::draw(GLEngine::SpriteBatch& sb, float time, float xOffset) {
         glm::vec4 fullUV(0.0f, 0.0f, 1.0f, 1.0f);
         int cursorImgId = GLEngine::ResourceManager::getTexture(ASSETS_FOLDER_PATH + "GUI/Player/Cursor.png").id;
 
-        glm::vec4 cursorDestRect(m_selectedEntity->getPosition().x, m_selectedEntity->getPosition().y, m_selectedEntity->getSize().x * TILE_SIZE, m_selectedEntity->getSize().y * TILE_SIZE);
+        glm::vec4 cursorDestRect(m_selectedEntity->getPosition().x + xOffset * CHUNK_SIZE * TILE_SIZE, m_selectedEntity->getPosition().y, m_selectedEntity->getSize().x * TILE_SIZE, m_selectedEntity->getSize().y * TILE_SIZE);
         sb.draw(cursorDestRect, fullUV, cursorImgId, 0.9f, GLEngine::ColourRGBA8(255, 255, 255, 255));
     } else if(m_selectedBlock) { // Cursor box selection
         glm::vec4 fullUV(0.0f, 0.0f, 1.0f, 1.0f);
@@ -144,7 +146,7 @@ void Player::draw(GLEngine::SpriteBatch& sb, float time, float xOffset) {
         int chunkIndex = (int)floor(m_mousePos.x / CHUNK_SIZE);
         int x = (int)(m_mousePos.x + CHUNK_SIZE * TILE_SIZE) % CHUNK_SIZE * TILE_SIZE;
 
-        glm::vec4 cursorDestRect(x + chunkIndex * CHUNK_SIZE * TILE_SIZE, m_selectedBlock->getPosition().y * TILE_SIZE, m_selectedBlock->getSize().x * TILE_SIZE, m_selectedBlock->getSize().y * TILE_SIZE);
+        glm::vec4 cursorDestRect(x + chunkIndex * CHUNK_SIZE * TILE_SIZE + xOffset * CHUNK_SIZE * TILE_SIZE, m_selectedBlock->getPosition().y * TILE_SIZE, m_selectedBlock->getSize().x * TILE_SIZE, m_selectedBlock->getSize().y * TILE_SIZE);
         sb.draw(cursorDestRect, fullUV, cursorImgId, 0.9f, GLEngine::ColourRGBA8(255, 255, 255, 255));
     }
 }
@@ -234,20 +236,26 @@ void Player::drawGUI(GLEngine::SpriteBatch& sb, GLEngine::SpriteFont& sf) {
 void Player::update(float timeStep, Chunk* worldChunks[WORLD_SIZE]) {
     updateLightLevel();
 
-    setParentChunk(worldChunks);
-
     updateInput();
     updateLimbs();
     updateStats(timeStep, worldChunks);
-    move(timeStep);
+    updateSounds();
+    if(!m_godMode) {
+        move(timeStep);
+    } else {
+        godMove();
+    }
     m_inventory->update();
 
-    if(m_velocity.x > MAX_SPEED * m_inventory->getSpeedMultiplier() * std::pow(m_stamina, 0.4f)) {
+    if(m_velocity.x > MAX_SPEED * m_inventory->getSpeedMultiplier() * std::pow(m_stamina, 0.4f) && !m_godMode) {
         m_velocity.x = MAX_SPEED * m_inventory->getSpeedMultiplier() * std::pow(m_stamina, 0.4f);
-    } else if(m_velocity.x < -MAX_SPEED * m_inventory->getSpeedMultiplier() * std::pow(m_stamina, 0.4f)) {
+    } else if(m_velocity.x < -MAX_SPEED * m_inventory->getSpeedMultiplier() * std::pow(m_stamina, 0.4f) && !m_godMode) {
         m_velocity.x = -MAX_SPEED * m_inventory->getSpeedMultiplier() * std::pow(m_stamina, 0.4f);
     }
+    setParentChunk(worldChunks);
 }
+
+#define cap(x) if(x > 1) x = 1; if(x < 0) x = 0;
 
 void Player::updateStats(float timeStep, Chunk* worldChunks[WORLD_SIZE]) {
     m_sanityBar->setProgress(m_sanity);
@@ -256,6 +264,13 @@ void Player::updateStats(float timeStep, Chunk* worldChunks[WORLD_SIZE]) {
     m_hungerBar->setProgress(m_hunger);
     m_exhaustionBar->setProgress(m_exhaustion);
     m_staminaBar->setProgress(m_stamina);
+
+    cap(m_sanity);
+    cap(m_health);
+    cap(m_thirst);
+    cap(m_hunger);
+    cap(m_exhaustion);
+    cap(m_stamina);
 
     m_thirst -= 0.00006f;
     m_hunger -= 0.00003f;
@@ -269,14 +284,35 @@ void Player::updateStats(float timeStep, Chunk* worldChunks[WORLD_SIZE]) {
         m_sanity -= 0.0001f;
     }
     if(m_light < 0.25f) {
-        m_sanity -= (0.25f - m_light) * 0.001f;
         if(m_exposedToSun) {
-            m_buffs.push_back(new Buff_Increase_Sanity_StarLight(&m_sanity));
+            Buff_Increase_Sanity_StarLight* potentialBuff = new Buff_Increase_Sanity_StarLight(&m_sanity);
+            if(std::find(m_buffs.begin(), m_buffs.end(), potentialBuff) == m_buffs.end() || m_buffs.size() == 0) {
+                m_buffs.push_back(potentialBuff);
+            } else {
+                delete potentialBuff;
+            }
+        }
+    }
+    if(m_light < 0.25f) {
+        Buff_Decrease_Sanity_LowLight* potentialBuff = new Buff_Decrease_Sanity_LowLight(&m_sanity);
+        if(std::find(m_buffs.begin(), m_buffs.end(), potentialBuff) == m_buffs.end() || m_buffs.size() == 0) {
+            m_buffs.push_back(potentialBuff);
+        } else {
+            delete potentialBuff;
         }
     }
 
     for(unsigned int i = 0; i < m_buffs.size(); i++) {
         m_buffs[i]->update();
+    }
+
+    for(unsigned int i = 0; i < m_buffs.size(); i++) {
+        if(!m_buffs[i]->isActive()) {
+            for(int j = i; j < m_buffs.size()-1; j++) {
+                m_buffs[j] = m_buffs[j+1];
+            }
+            m_buffs.pop_back();
+        }
     }
 }
 
@@ -309,20 +345,20 @@ void Player::updateMouse(GLEngine::Camera2D* worldCamera) {
                     chunk = m_parentChunk;
                 }
 
-                m_selectedBlock = static_cast<Block*>(chunk->tiles[(unsigned int)mousePos.y][(unsigned int)mousePos.x]);
+                m_selectedBlock = static_cast<Block*>(chunk->tiles[(unsigned int)mousePos.y][(unsigned int)mousePos.x % CHUNK_SIZE]);
 
                 m_selectedEntity = nullptr;
 
-                for(int i = 0; i < chunk->getEntities().size(); i++) {
-                    float sizeX = (chunk->getEntities()[i]->getSize().x * TILE_SIZE) / 4;
-                    float midX = chunk->getEntities()[i]->getPosition().x + sizeX;
+                for(int i = 0; i < chunk->getEntities()->size(); i++) {
+                    float sizeX = (chunk->getEntity(i)->getSize().x * TILE_SIZE) / 4;
+                    float midX = chunk->getEntity(i)->getPosition().x + sizeX;
 
-                    float sizeY = (chunk->getEntities()[i]->getSize().y * TILE_SIZE) / 4;
-                    float midY = chunk->getEntities()[i]->getPosition().y + sizeY;
+                    float sizeY = (chunk->getEntity(i)->getSize().y * TILE_SIZE) / 4;
+                    float midY = chunk->getEntity(i)->getPosition().y + sizeY;
 
                     if(std::abs(midX - mousePos.x * TILE_SIZE) <= sizeX) {
                         if(std::abs(midY - mousePos.y * TILE_SIZE) <= sizeY) {
-                            m_selectedEntity = chunk->getEntities()[i];
+                            m_selectedEntity = chunk->getEntity(i);
                         }
                     }
                 }
@@ -334,20 +370,23 @@ void Player::updateMouse(GLEngine::Camera2D* worldCamera) {
 
 void Player::updateInput() {
     if(m_input->isKeyDown(SDLK_w) && m_stamina > 0.0f) {
-        if(m_onGround) {
+        if(m_onGround || m_godMode) {
             m_velocity.y = m_jumpHeight; // y=(jumpHeight*TILE_SIZE+3/4*TILE_SIZE+-5.88*x^2)  initial jump power is the absolute of the x when y=0. jumpheight is in eights of tiles and you must add 4
             m_onGround = false;
             m_stamina -= 0.005f;
         }
     }
+    if(m_input->isKeyDown(SDLK_s) && m_godMode) {
+        m_velocity.y -= 0.1f;
+    }
 
-    if(m_input->isKeyDown(SDLK_d) && m_stamina > 0.0f && m_onGround) {
+    if(m_input->isKeyDown(SDLK_d) && ((m_stamina > 0.0f && m_onGround) || m_godMode)) {
         if(m_velocity.x < 0.0f) m_velocity.x /= 5.0f;
         if(m_velocity.x < m_maxSpeed) {
             m_velocity.x += m_speed * m_inventory->getSpeedMultiplier() * std::pow(m_stamina, 0.4f);
         }
         m_stamina *= 0.999f;
-    } else if(m_input->isKeyDown(SDLK_a) && m_stamina > 0.0f && m_onGround) {
+    } else if(m_input->isKeyDown(SDLK_a) && ((m_stamina > 0.0f && m_onGround) || m_godMode)) {
         if(m_velocity.x > 0.0f) m_velocity.x /= 5.0f;
         if(m_velocity.x > -m_maxSpeed)
             m_velocity.x -= m_speed * m_inventory->getSpeedMultiplier() * std::pow(m_stamina, 0.4f);
@@ -357,13 +396,19 @@ void Player::updateInput() {
             m_velocity.x *= 0.9f;
     }
 
-    if(m_velocity.x < 0.001f && m_velocity.x > -0.001f && m_onGround && m_stamina * 1.003f <= 1.0f) m_stamina *= 1.003f;
+    if(m_velocity.x < 0.001f && m_velocity.x > -0.001f && m_onGround && m_stamina * 1.003f <= 1.000000f) m_stamina *= 1.003f;
 
     if(m_canInteract) {
         if(m_input->isKeyPressed(SDLK_e)) {
             if(m_selectedEntity) { // must hover mouse over entity and press 'e'
                 m_selectedEntity->onInteract(m_sq);
+            } else {
+                m_sq->activateScript(m_scriptID_makeHouse);
             }
+        }
+
+        if(m_input->isKeyDown(SDLK_p)) {
+            m_inventory->addItem(createItem((unsigned int)Categories::ItemIDs::BLOCK_WOOD, 1));
         }
 
         if(m_input->isKeyDown(SDL_BUTTON_LEFT) && m_selectedBlock) {
@@ -425,4 +470,11 @@ void Player::updateInput() {
     if(m_input->isKeyPressed(SDLK_0)) {
         m_selectedHotbox = 9;
     }
+}
+
+void Player::godMove() {
+    //m_velocity.y -= 1.225f / 60.0f; // Earth gravity is far too harsh for games. We use about 1/8th
+    m_speed = 2.0f;
+    m_position += m_velocity;
+    m_stamina = 1.0f;
 }

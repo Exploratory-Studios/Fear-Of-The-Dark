@@ -29,7 +29,7 @@ class Console
 
         std::vector<CEGUI::DefaultWindow*> m_historyLabels;
         std::vector<std::string> m_commandHistory;
-        int m_historySelection = -1;
+        unsigned int m_historySelection = (unsigned int)-1;
 
         CEGUI::Editbox* m_editbox = nullptr;
 

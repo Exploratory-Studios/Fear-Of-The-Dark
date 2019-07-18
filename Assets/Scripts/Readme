@@ -1,0 +1,121 @@
+Daviscript FULL GUIDE
+Written July 2nd, 2019
+
+Capitalized words are defined inside the file.
+
+
+
+Commands will be written:
+CommandName [parameter_DataType1](options) [parameter_DataType2] ... // What the command actually does
+
+Ex.
+time [string](set) [integer]							// If parameter 1 is "set" then sets tick time to parameter 2
+NAME PARAM1   PARAM2									DOCUMENTATION
+
+Daviscript has 3 major types of OBJECTS:
+- ENTITIES
+- COORDINATES
+- PRIMITIVE TYPES
+
+Daviscript also has no supported types of variables, but inert ENTITIES can be created, moved, and given metadata, so they can sometimes be used as substitutes.
+
+
+
+ENTITIES:
+ENTITIES are mobs, items (in the world), projectiles, the player, really anything that can move and/or think.
+
+There are a couple ways to TARGET ENTITIES: By
+- KEYWORDS (ENTITIES),
+- Proximity to ENTITIES, or
+- Area
+
+Proximity TARGETING is used to find the nearest entity to another entity, type "near [entity]" (without brackets)
+Area TARGETING is used to target a group of entities inside of a rectangle made of two given COORDINATES, type "area [coord1] [coord2]" (without brackets), and
+KEYWORDS (ENTITIES) can be used to target specific entities, such as the player or a currently speaking entity.
+
+
+
+COORDINATES:
+COORDINATES are positions, sets of two numbers that correspond to x and y positions in the game. They are used in a multitude of ways.
+
+There are a few ways to TARGET COORDINATES:
+- Relative to ENTITIES,
+- Area, or
+- Integers (See PRIMITIVE TYPES)
+
+Targeting relative to ENTITIES is used to find coordinates a set distance away from any given ENTITIES, type "relative [entity]" (without  brackets)
+Area targeting is used to get **all** grid coordinates inside of a rectangle made of two given COORDINATES, type "area [coord1] [coord2]" (without brackets), and
+Integers PRIMITIVE TYPES can be used to simply set a constant x and y, type "[xValue] [yValue]" (without brackets)
+
+
+
+PRIMITIVE TYPES:
+PRIMITIVE TYPES are types of data which are native to C++. 
+
+PRIMITIVE TYPES encapsulates multiple datatypes:
+- Integers (Also double as booleans),
+- Strings, and
+- Floats
+
+Integers are whole, signed numbers, such as 1, -2, 3, but not 3.4, 6.34, etc. Integers can also be used as booleans (true/false values), using either 1/0 for true/false respectively
+Strings are strings of characters (normally parsed without spaces), such as HelloWorld, How'sLife, or This/Is/A/Path.
+Finally, floats are signed, whole or non-whole numbers like 3.6, -54, 6.23, etc.
+Primitive types can simply be typed normally
+
+
+
+OBJECTS:
+OBJECTS are essentially different types of data, used as parameters for commands. They come in a few different types.
+
+
+
+TARGETING:
+TARGETING is how Daviscript refers to finding, filtering, and/or selecting objects from a command or the world.
+
+
+
+KEYWORDS:
+Daviscript has a few special keywords, which simply target specific things when used. They, of course, are substitutes for objects and each have a different type.
+
+ENTITY KEYWORDS target specific entities. They are as follows:
+- player (targets the player)
+- speaker (targets the entity that the player currently has selected. This is always the entity that is speaking during dialogue)
+
+COORDINATES KEYWORDS target specific coordinates. They are as follows:
+- None exist as of yet.
+
+SPECIAL KEYWORDS target very specific pointers to objects hard-coded within the program. They are only used in specific cases where a certain entity being created might need access to the Quest Manager, or a block being created might need access to something else. These special cases will be documented under the header, "SPECIAL PARAMETERS"
+Currently, the SPECIAL KEYWORDS are as follows:
+- inputManager (Pointer to the InputManager, only used for anything that needs to be controlled by the user)
+- scriptQueue (Pointer to the ScriptQueue, only used for anything that needs to run scripts unusually)
+- questManager (Pointer to the QuestManager, only used for anything that needs to access dialogue or quest information, usually any entity that speaks or takes part in a quest)
+- getFlag [string] (Gets ID of a flag from a given alias (string))
+
+
+
+
+COMMANDS:
+time [string](set) [integer]													// If parameter 1 is "set" then sets tick time to parameter 2
+removeBlock [coordinates]														// Changes a block at the given coordinates to air
+changeBlock [coordinates] [integer]												// Changes a block at the given coordinates to one with the id of parameter 2
+teleport [entity] [coordinates]													// Teleports a given entity to coordinates
+setFlag [integer] [integer](1,0)												// Sets a flag with id of parameter 1 to value of parameter 2	
+setCanInteract [integer](1,0)													// Sets the player's ability to interact with the world to parameter 1
+createEntity [coordinates] [integer] [special keywords]							// Creates an entity at the given coordinates with the id of parameter 2 and the special parameters of parameter 3 and onwards
+echo [string]																	// Prints a string in the in-game log, as well as the GameLog
+setPeriod [string]																// Sets era (or period) to the period with a name correlating with parameter 1
+god																				// Toggles player god mode
+camera [string](set,lock,unlock,move)											// Control the camera
+camera "set" [coordinates]														// Sets the camera's position to parameter 2 and locks in place
+camera "lock"																	// Stops the camera from automatically moving, locking it in place
+camera "unlock"																	// Lets the camera follow the player
+camera "move" [coordinates]														// Offsets the camera by the coordinates given in parameter 2
+camera "smoothMove" [coordinates]												// Offsets the camera by the coordinates given in parameter 2, but smoothly
+timer [integer]																	// Suspends current script for parameter 1 amount of frames
+pause																			// Makes sure that the game doesn't update anything. Nothing will collide, move, etc.
+continue																		// Makes the game start updating things again
+
+
+
+
+

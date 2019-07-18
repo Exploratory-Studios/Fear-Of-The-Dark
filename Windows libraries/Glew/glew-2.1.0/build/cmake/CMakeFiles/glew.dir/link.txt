@@ -1,0 +1,1 @@
+/usr/bin/cc -fPIC -O3 -DNDEBUG  -shared -Wl,-soname,libGLEW.so.2.1 -o lib/libGLEW.so.2.1.0 CMakeFiles/glew.dir/home/davis-dev/Documents/Programming/C++/CodingGithub/Fear-Of-The-Dark/Windows_libraries/Glew/glew-2.1.0/src/glew.c.o -lGL -lGLU 

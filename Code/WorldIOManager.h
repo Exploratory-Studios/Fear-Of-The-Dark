@@ -46,21 +46,34 @@ struct ChunkData {
     TileData tiles[WORLD_HEIGHT][CHUNK_SIZE];
 };
 
-struct World {
-    Chunk* chunks[WORLD_SIZE] = { nullptr };
+struct StructureData {
+    unsigned int id;
+    unsigned int width;
+    std::vector<TileData> tiles; // really long, but not 2d. Use width variable to convert to 2d: pos=(int)(x / width) + x % width
+};
+
+class World {
+public:
+    World() {
+        for(int i = 0; i < WORLD_SIZE; i++) {
+            chunks[i] = new Chunk();
+        }
+    }
+    Chunk* chunks[WORLD_SIZE];
     Player* player = nullptr;
     float time = 0.0f;
+    WorldEra worldEra = WorldEra::NEOLITHIC_ERA;
+    std::string name;
 };
 
 class WorldIOManager
 {
     public:
-        WorldIOManager() { }
         WorldIOManager(World* world, GLEngine::InputManager* input) : m_world(world), m_input(input) { }
         WorldIOManager(GLEngine::InputManager* input) : m_input(input) { }
 
         void loadWorld(std::string worldName, float* progress); /// TODO: Make multi-threaded so that we can view progress and load at the same time
-        void saveWorld(World& world, std::string worldName, float* progress); /// TODO: Make multi-threaded so that we can view progress and save at the same time
+        void saveWorld(std::string worldName, float* progress) const; /// TODO: Make multi-threaded so that we can view progress and save at the same time
 
         void createWorld(unsigned int seed, std::string worldName, bool isFlat = false);
         /*
@@ -69,8 +82,20 @@ class WorldIOManager
         */
 
         World* getWorld() { return m_world; } /// Singleton of world, essentially
+        AudioManager* getAudioManager() { return m_audioManager; }
         void setWorldTime(float newTime) { m_world->time = newTime; }
+        void setPlayer(Player* player) { m_world->player = player; }
         ScriptQueue* getScriptQueue() { return m_sq; }
+
+        void setWorldEra(WorldEra newEra);
+
+        StructureData loadStructureFromFile(std::string& filepath);
+        void placeStructure(StructureData& structure, glm::vec2 position);
+
+        #ifdef DEV_CONTROLS
+        void saveStructureToFile(std::string& filepath, StructureData& structureData);
+        void saveStructureToFile(std::string& filepath, glm::vec4 destRect);
+        #endif // DEV_CONTROLS
 
     private:
         std::string m_saveVersion = "1.0.0";
@@ -80,4 +105,5 @@ class WorldIOManager
         World* m_world = new World();
         GLEngine::InputManager* m_input = nullptr;
         ScriptQueue* m_sq = new ScriptQueue();
+        AudioManager* m_audioManager = new AudioManager();
 };

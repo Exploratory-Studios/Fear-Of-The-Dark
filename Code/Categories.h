@@ -21,20 +21,22 @@ namespace Categories {
         STONE,
         BUSH,
         TORCH,
-        FOLIAGE
+        FOLIAGE,
+        WOOD
     };
 
     enum class ItemIDs {
         WEAPON_SWORD,
         BLOCK_DIRT,
         BLOCK_TORCH,
-        BLOCK_GRASS
+        BLOCK_GRASS,
+        BLOCK_WOOD
     };
 
-    enum class EntityIDs {
+    enum class EntityIDs { // Should match up with presetvalues.h entities' data
         MOB_PLAYER,
-        MOB_NEUTRAL_COMPANIONCUBE,
-        MOB_NEUTRAL_QUESTGIVER_A
+        MOB_NEUTRAL_QUESTGIVER_A,
+        MOB_NEUTRAL_COMPANIONCUBE
     };
 
     enum class Faction {

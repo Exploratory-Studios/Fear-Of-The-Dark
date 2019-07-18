@@ -1,4 +1,6 @@
-0 1
-1 0
-2 0
+0 0 // Has the player asked for a house yet?
+1 0 // Has the player asked again?
+2 0 // Has the house been built?
 3 0
+4 0
+5 0

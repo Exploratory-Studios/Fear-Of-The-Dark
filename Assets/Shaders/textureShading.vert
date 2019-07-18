@@ -1,3 +1,4 @@
+
 #version 130
 //The vertex shader operates on each vertex
 
@@ -25,9 +26,7 @@ void main() {
     fragmentPosition = vertexPosition;
 
     fragmentColour = vertexColour;
-    fragmentColour.xyz *= vertexLighting.xyz;
-
-    fragmentColour = clamp(fragmentColour, 0, 255);
+	fragmentColour.xyz *= vertexLighting.xyz;
 
     fragmentUV = vec2(vertexUV.x, 1.0 - vertexUV.y);
 }

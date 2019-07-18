@@ -53,7 +53,7 @@ void Console::processCommand(std::string& command) {
 
     std::string temp;
 
-    for(int i = 0; i < ret.size(); i++) {
+    for(unsigned int i = 0; i < ret.size(); i++) {
         if(ret[i] == '\n') {
             returnVector.push_back(temp);
             temp = "";
@@ -62,7 +62,7 @@ void Console::processCommand(std::string& command) {
         }
     }
 
-    for(int i = 0; i < returnVector.size(); i++) {
+    for(unsigned int i = 0; i < returnVector.size(); i++) {
         glm::vec4 destRect = glm::vec4(0.0f, m_historyLabels.size() * 0.3f, 1.0f, 0.3f);
         std::string name = std::string("ConsoleScrollableHistoryLabel") + std::to_string((unsigned int)m_historyLabels.size()) + std::string("_") + std::to_string(i);
         m_historyLabels.push_back(static_cast<CEGUI::DefaultWindow*>(m_gui->createWidget(m_scrollable, "FOTDSkin/Label", destRect, glm::vec4(0.0f), name)));
@@ -98,7 +98,7 @@ bool Console::onEditboxInput(const CEGUI::EventArgs& e) {
     } else if(newArgs.scancode == CEGUI::Key::Backslash) {
         hide();
     } else if(newArgs.scancode == CEGUI::Key::ArrowUp) {
-        if(m_historySelection > 0) {
+        if(m_historySelection > 0 && m_commandHistory.size() > 0) {
             m_historySelection--;
             m_editbox->setText(m_commandHistory[m_historySelection]);
         }
@@ -116,4 +116,6 @@ bool Console::onScrollableMouseWheel(const CEGUI::EventArgs& e) {
     const CEGUI::MouseEventArgs& newArgs = static_cast<const CEGUI::MouseEventArgs&>(e);
 
     m_scrollable->setVerticalScrollPosition(m_scrollable->getVerticalScrollPosition() + m_scrollable->getHeight().d_scale / m_historyLabels.size() * newArgs.wheelChange);
+
+    return true;
 }

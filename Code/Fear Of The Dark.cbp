@@ -288,6 +288,7 @@
 		<Unit filename="Entity.h" />
 		<Unit filename="EntityManager.cpp" />
 		<Unit filename="EntityManager.h" />
+		<Unit filename="ExtraFunctions.h" />
 		<Unit filename="GameplayScreen.cpp" />
 		<Unit filename="GameplayScreen.h" />
 		<Unit filename="Inventory.cpp" />
@@ -298,7 +299,6 @@
 		<Unit filename="ItemBlock.h" />
 		<Unit filename="Items.cpp" />
 		<Unit filename="Items.h" />
-		<Unit filename="Items/BlockItem.h" />
 		<Unit filename="LoadScreen.cpp" />
 		<Unit filename="LoadScreen.h" />
 		<Unit filename="Logging.cpp" />

@@ -9,15 +9,16 @@
 #include "Logging.h"
 
 enum class SoundEffectIDs {
-    WALK_DIRT,
-    JUMP_DIRT,
-    LAND_DIRT
+    WALK_DIRT, // = 0
+    HUSK_SOUND // = 1
 };
 
-#define SOUND_EFFECT_LENGTH 0 // How many sound effect files there are
+#define SOUND_EFFECT_LENGTH 2 // How many sound effect files there are
 #define MORNING_MUSIC_LENGTH 1 // How many music files there are for 'morning'
 #define DAY_MUSIC_LENGTH 0 // How many music files there are for 'day'
+#define AFTERNOON_MUSIC_LENGTH 0 // How many music files there are for 'afternoon'
 #define NIGHT_MUSIC_LENGTH 0 // How many music files there are for 'night'
+#define NIGHTMARE_MUSIC_LENGTH 0 // How many music files there are for 'nightmare hour'
 
 class AudioManager
 {
@@ -31,8 +32,12 @@ class AudioManager
 
         void playMorningSong(int id);
         void playDaySong(int id);
+        void playAfternoonSong(int id);
         void playNightSong(int id);
-        void playSoundEffect(int id);
+        void playNightmareSong(int id);
+        void playSoundEffect(int id, unsigned int volume);
+
+        void updateSoundEffect(int id, unsigned int volume);
 
     private:
         Logger* logger = Logger::getInstance();
@@ -43,11 +48,10 @@ class AudioManager
 
         std::vector<GLEngine::Music> m_music;
         std::vector<GLEngine::SoundEffect> m_soundEffects;
-        std::string m_soundEffectFiles[SOUND_EFFECT_LENGTH];/* =
+        std::string m_soundEffectFiles[SOUND_EFFECT_LENGTH] =
         {
             "WalkDirt.wav",
-            "JumpDirt.wav",
-            "LandDirt.wav"
-        };*/
+            "HuskNoise.wav"
+        };
 
 };

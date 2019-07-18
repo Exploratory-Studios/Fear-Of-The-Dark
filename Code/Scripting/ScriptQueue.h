@@ -12,10 +12,19 @@ class Script {
     public:
         Script() { commands.clear(); }
         std::vector<std::string> commands = {};
+        unsigned int place = 0; // The current command, used when script is paused
+        bool paused = false;
+        float startTime = 0;
+        float timerTime = 0;
         void operator = (Script& s) {
-            for(int i = 0; i < s.commands.size(); i++) {
+            commands.clear();
+            for(unsigned int i = 0; i < s.commands.size(); i++) {
                 commands.emplace_back(s.commands[i]);
             }
+            place = s.place;
+            paused = s.paused;
+            startTime = s.startTime;
+            timerTime = s.timerTime;
         }
 };
 
@@ -61,7 +70,7 @@ class ScriptQueue {
 
         void activateScript(unsigned int id) // Starts a script using the id given earlier
         {
-            m_activeScripts.push_back(id);
+            m_activeScripts.push_back(m_scriptCache[id]);
             logger->log("Activated script with id of: " + std::to_string(id));
         }
 
@@ -71,9 +80,19 @@ class ScriptQueue {
             m_activeScripts.resize(0);
         }
 
+        void deactivateScript(unsigned int index)
+        {
+            if(m_activeScripts.size() > 1) {
+                for(unsigned int i = index; i < m_activeScripts.size()-1; i++) { // I would think that this should break, but apparently I don't know how to program
+                    m_activeScripts[i] = m_activeScripts[i+1];
+                }
+            }
+            m_activeScripts.pop_back();
+        }
+
     private:
         std::vector<Script> m_scriptCache; // Holds all scripts in memory to be used/reused later
-        std::vector<unsigned int> m_activeScripts; // Is a list of active scripts' addresses
+        std::vector<Script> m_activeScripts; // Is a list of active scripts' copies, with blank data such as place, timer info, etc.
 
         Logger* logger = Logger::getInstance();
 };

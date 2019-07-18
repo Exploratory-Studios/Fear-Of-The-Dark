@@ -35,3 +35,15 @@ ItemBlockTorch::ItemBlockTorch(unsigned int quantity) {
     m_canConsume = false;
     m_canPlace = true;
 }
+
+ItemBlockWood::ItemBlockWood(unsigned int quantity) {
+    m_id = (unsigned int)Categories::ItemIDs::BLOCK_WOOD;
+    m_weight = 0.0f; /// TODO
+    m_quantity = quantity;
+
+    m_blockId = (unsigned int)Categories::BlockIDs::WOOD;
+
+    m_isBlock = true;
+    m_canConsume = false;
+    m_canPlace = true;
+}

@@ -43,6 +43,9 @@ class GameplayScreen : public GLEngine::IGameScreen
         virtual void update() override;
         virtual void draw() override;
 
+        void pauseForCutscene() { m_cutscenePause = true; } // Sets the world to not update stuff, but still display
+        void unpauseCutscene() { m_cutscenePause = false; } // Sets the world back to normal
+
     private:
         void checkInput();
         void initShaders();
@@ -64,6 +67,8 @@ class GameplayScreen : public GLEngine::IGameScreen
         GLEngine::SpriteBatch m_spriteBatch;
         GLEngine::GLSLProgram m_textureProgram;
         GLEngine::GLSLProgram m_uiTextureProgram;
+        GLEngine::GLSLProgram m_vignetteTextureProgram;
+        GLEngine::GLSLProgram m_skyTextureProgram;
         GLEngine::SpriteFont m_spriteFont;
         GLEngine::DebugRenderer m_dr;
         GLEngine::ParticleEngine2D m_particle2d;
@@ -73,18 +78,23 @@ class GameplayScreen : public GLEngine::IGameScreen
 
         WorldIOManager* m_WorldIOManager = nullptr;
         //WorldManager m_worldManager;
-        AudioManager m_audioManager;
 
         Player* m_player = nullptr;
 
         GameState m_gameState = GameState::PLAY;
 
+        glm::vec2 m_smoothMoveTarget; // Only used by camera, set only by scripterMain
+        float m_smoothMoveSpeed = 0.0f; // Only used by camera, set only by ScripterMain
+
         float m_time = 0.0f; // Used for animations, NOT DAYLIGHT
         float m_frame = 0.0f;
         float m_deltaTime = 1.0f;
-        int m_tickRate = 4;
 
-        float m_scale = 1.0f;
+        int m_lastSongPlayed = 0;
+
+        float m_scale = MIN_ZOOM;
+
+        bool m_cutscenePause = false; // This is a sort of 'soft' pause, meaning that only higher-level updating operations will be paused, such as collision, input, etc. (Blocks will still update like normal)
 
         bool m_debuggingInfo = false;
 
@@ -98,8 +108,14 @@ class GameplayScreen : public GLEngine::IGameScreen
         CEGUI::DefaultWindow* m_fpsWidget = nullptr;
         #endif // DEV_CONTROLS
 
-        std::vector<int> m_activatedChunks;
+        std::vector<int> m_activatedChunks; // Chunks that should still update
+        std::vector<int> m_drawnChunks; // Chunks that should still be drawn
         int m_lastActivated = -1;
+
+        glm::vec2 m_lastSelectedPosition; // Only used when saving structures
+        bool m_selecting = false;
+
+        bool m_cameraLocked = false; // Can the camera move with the player, or is it 'locked'?
 };
 
 #include "Scripting/ScripterMain.h"

@@ -12,7 +12,7 @@ BlockItem::BlockItem(unsigned int id, float weight, short unsigned int quantity)
 }
 
 void BlockItem::onLeftClick(Block* selectedBlock) {
-    selectedBlock = createBlock((unsigned int)Categories::BlockIDs::AIR, selectedBlock->getPosition(), selectedBlock->getParentChunk());
+    selectedBlock = selectedBlock->getParentChunk()->setTile(createBlock((unsigned int)Categories::BlockIDs::AIR, selectedBlock->getPosition(), selectedBlock->getParentChunk()), selectedBlock->getPosition().x, selectedBlock->getPosition().y);
 }
 
 void BlockItem::onRightClick(Block* selectedBlock) {

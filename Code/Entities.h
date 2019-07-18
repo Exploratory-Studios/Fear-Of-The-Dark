@@ -5,6 +5,8 @@
 
 #include <stdarg.h>
 
+#include "Logging.h"
+
 /* Entities.h attributes:
 - Texture
 - Faction
@@ -32,7 +34,7 @@ m_transparent = false;
 
 class EntityNeutralCompanionCube : public Entity {
     public:
-        EntityNeutralCompanionCube(glm::vec2 pos, AudioManager* audioManager);
+        EntityNeutralCompanionCube(glm::vec2 pos, Chunk* parent, AudioManager* audioManager);
         void onInteract(ScriptQueue* sq) { }
         void onDeath(ScriptQueue* sq) { }
     protected:
@@ -44,7 +46,7 @@ class EntityNeutralCompanionCube : public Entity {
 
 class EntityBaseProjectile : public Entity { // ABSTRACT
     public:
-        EntityBaseProjectile(glm::vec2 pos, AudioManager* audioManager, float damage, bool gravity = true);
+        EntityBaseProjectile(glm::vec2 pos, Chunk* parent, AudioManager* audioManager, float damage, bool gravity = true);
         void onInteract(ScriptQueue* sq) = 0;
         void onDeath(ScriptQueue* sq) = 0;
     protected:
@@ -56,7 +58,7 @@ class EntityBaseProjectile : public Entity { // ABSTRACT
 
 class EntityBaseQuestGiver : public Entity { // ABSTRACT
     public:
-        EntityBaseQuestGiver(glm::vec2 pos, AudioManager* audioManager, QuestManager* qm, unsigned int questionId);
+        EntityBaseQuestGiver(glm::vec2 pos, Chunk* parent, AudioManager* audioManager, QuestManager* qm, unsigned int questionId);
         void onInteract(ScriptQueue* sq);
         virtual void post_onInteract(ScriptQueue* sq) = 0;
         void onDeath(ScriptQueue* sq) = 0;
@@ -69,14 +71,14 @@ class EntityBaseQuestGiver : public Entity { // ABSTRACT
 
 class EntityNeutralQuestGiverA : public EntityBaseQuestGiver {
     public:
-        EntityNeutralQuestGiverA(glm::vec2 pos, AudioManager* audioManager, QuestManager* qm) : EntityBaseQuestGiver(pos, audioManager, qm, 0) { }
+        EntityNeutralQuestGiverA(glm::vec2 pos, Chunk* parent, AudioManager* audioManager, QuestManager* qm) : EntityBaseQuestGiver(pos, parent, audioManager, qm, 2) { }
         void post_onInteract(ScriptQueue* sq) { }
         void onDeath(ScriptQueue* sq) { }
     protected:
         void updateAI() { EntityFunctions::WalkingAI(m_controls, m_targets, m_curTarget, m_velocity, m_size, m_position); }
         void updateLimbs() {}
 };
-
+/*
 enum class Type {
     INTEGER,
     FLOAT,
@@ -103,30 +105,34 @@ public:
 
     P p;
     Type t;
-};
+};*/ /// DEPRECTATED
 
 #include <iostream>
-static Entity* createEntity(unsigned int id, glm::vec2 position, AudioManager* audioManager, std::vector<Parameter> extras) {
+static Entity* createEntity(unsigned int id, glm::vec2 position, Chunk* parent, AudioManager* audioManager, QuestManager* qm = nullptr, GLEngine::InputManager* im = nullptr, ScriptQueue* sq = nullptr) {
     /*int extraArgs = 0; FOR EXTRA ARGUMENTS
     va_list args;
     va_start(args, extraArgs);
 
     va_end(args);*/
 
+    if(!audioManager) Logger::getInstance()->log("IMPORTANT: ENTITY CREATED WITH NO AUDIO MANAGER!", true);
+
+    // Extras will always be in the following order: Questmanager, InputManager, ScriptQueue
+
     Entity* ret = nullptr;
     switch(id) {
         case (unsigned int)Categories::EntityIDs::MOB_PLAYER: {
             // extras: inputmanager, scriptqueue
-            ret = new Player(position, reinterpret_cast<GLEngine::InputManager*>(extras[0].p.Pointer), reinterpret_cast<ScriptQueue*>(extras[1].p.Pointer));
+            ret = new Player(position, parent, im, sq, audioManager);
             break;
         }
         case (unsigned int)Categories::EntityIDs::MOB_NEUTRAL_COMPANIONCUBE: {
-            ret = new EntityNeutralCompanionCube(position, audioManager);
+            ret = new EntityNeutralCompanionCube(position, parent, audioManager);
             break;
         }
         case (unsigned int)Categories::EntityIDs::MOB_NEUTRAL_QUESTGIVER_A: {
             // extras: QuestManager
-            ret = new EntityNeutralQuestGiverA(position, audioManager, reinterpret_cast<QuestManager*>(extras[0].p.Pointer));
+            ret = new EntityNeutralQuestGiverA(position, parent, audioManager, qm);
             break;
         }
     }

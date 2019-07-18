@@ -3,7 +3,7 @@
 #include <random>
 
 Tile::Tile() {
-    m_texture.filePath = ASSETS_FOLDER_PATH + "Textures/Blocks/UNDEFINED.png";
+    m_textureId = GLEngine::ResourceManager::getTexture(ASSETS_FOLDER_PATH + "Textures/UNDEFINED.png").id;
     m_parentChunk = nullptr;
 }
 
@@ -112,6 +112,100 @@ float Tile::getSurroundingLight() {
     return light;
 }
 
+float Tile::getSurroundingHeat() {
+    int x = (int)m_pos.x - CHUNK_SIZE*m_parentChunk->getIndex();
+    int y = (int)m_pos.y;
+
+    float temp = 0.0f;
+
+    if(y-1 >= 0) {// 1 below
+        if(!m_parentChunk->tiles[y-1][x]->isSolid() || !isSolid()) {
+            float newHeat = m_parentChunk->tiles[y-1][x]->getRawHeat() * TRANSPARENT_LIGHT_MULTIPLIER;
+            temp += newHeat;
+        } else {
+            float newHeat = m_parentChunk->tiles[y-1][x]->getRawHeat() * OPAQUE_LIGHT_MULTIPLIER;
+            temp += newHeat;
+        }
+    }
+    if(y+1 < WORLD_HEIGHT) { // 1 above
+        if(!m_parentChunk->tiles[y+1][x]->isSolid() || !isSolid()) {
+            float newHeat = m_parentChunk->tiles[y+1][x]->getRawHeat() * TRANSPARENT_LIGHT_MULTIPLIER;
+            temp += newHeat;
+        } else {
+            float newHeat = m_parentChunk->tiles[y+1][x]->getRawHeat() * OPAQUE_LIGHT_MULTIPLIER;
+            temp += newHeat;
+        }
+    }
+    if(x-1 >= 0) { // to the left
+        if(!m_parentChunk->tiles[y][x-1]->isSolid() || !isSolid()) {
+            float newHeat = m_parentChunk->tiles[y][x-1]->getRawHeat() * TRANSPARENT_LIGHT_MULTIPLIER;
+            temp += newHeat;
+        } else {
+            float newHeat = m_parentChunk->tiles[y][x-1]->getRawHeat() * OPAQUE_LIGHT_MULTIPLIER;
+            temp += newHeat;
+        }
+    } else if(x-1 == -1) {
+        if(!m_parentChunk->extraTiles[y][0]->isSolid() || !isSolid()) {
+            float newHeat = m_parentChunk->extraTiles[y][0]->getRawHeat() * TRANSPARENT_LIGHT_MULTIPLIER;
+            temp += newHeat;
+        } else {
+            float newHeat = m_parentChunk->extraTiles[y][0]->getRawHeat() * OPAQUE_LIGHT_MULTIPLIER;
+            temp += newHeat;
+        }
+    }
+    if(x+1 < CHUNK_SIZE) { // to the right
+        if(!m_parentChunk->tiles[y][x+1]->isSolid() || !isSolid()) {
+            float newHeat = m_parentChunk->tiles[y][x+1]->getRawHeat() * TRANSPARENT_LIGHT_MULTIPLIER;
+            temp += newHeat;
+        } else {
+            float newHeat = m_parentChunk->tiles[y][x+1]->getRawHeat() * OPAQUE_LIGHT_MULTIPLIER;
+            temp += newHeat;
+        }
+    } else if(x+1 == CHUNK_SIZE) {
+        if(!m_parentChunk->extraTiles[y][1]->isSolid() || !isSolid()) {
+            float newHeat = m_parentChunk->extraTiles[y][1]->getRawHeat() * TRANSPARENT_LIGHT_MULTIPLIER;
+            temp += newHeat;
+        } else {
+            float newHeat = m_parentChunk->extraTiles[y][1]->getRawHeat() * OPAQUE_LIGHT_MULTIPLIER;
+            temp += newHeat;
+        }
+    } else if(x+1 == CHUNK_SIZE+1) {
+        if(!m_parentChunk->getSurroundingChunks()[1]->tiles[y][0]->isSolid() || !isSolid()) {
+            float newHeat = m_parentChunk->getSurroundingChunks()[1]->tiles[y][0]->getRawHeat() * TRANSPARENT_LIGHT_MULTIPLIER;
+            temp += newHeat;
+        } else {
+            float newHeat = m_parentChunk->getSurroundingChunks()[1]->tiles[y][0]->getRawHeat() * OPAQUE_LIGHT_MULTIPLIER;
+            temp += newHeat;
+        }
+    } else if(x-1 == -2) {
+        if(!m_parentChunk->getSurroundingChunks()[0]->tiles[y][CHUNK_SIZE-1]->isSolid() || !isSolid()) {
+            float newHeat = m_parentChunk->getSurroundingChunks()[0]->tiles[y][CHUNK_SIZE-1]->getRawHeat() * TRANSPARENT_LIGHT_MULTIPLIER;
+            temp += newHeat;
+        } else {
+            float newHeat = m_parentChunk->getSurroundingChunks()[0]->tiles[y][CHUNK_SIZE-1]->getRawHeat() * OPAQUE_LIGHT_MULTIPLIER;
+            temp += newHeat;
+        }
+    }
+
+    return temp / 4.0f;
+}
+
+float Tile::getHeat() {
+    float baseHeat = Category_Data::placeData[(unsigned int)m_parentChunk->getPlace()].baseTemperature;
+    float highHeat = Category_Data::placeData[(unsigned int)m_parentChunk->getPlace()].maxTemp;
+
+    float heat = getRawHeat();
+
+    heat += m_sunLight * (highHeat - baseHeat);
+    heat += baseHeat;
+
+    return heat;
+}
+
+float Tile::getRawHeat() {
+    return (m_emittedHeat > m_temperature ? m_emittedHeat : m_temperature);
+}
+
 void Tile::update(float time) {
     float light = getSurroundingLight();
     setAmbientLight(light);
@@ -120,6 +214,9 @@ void Tile::update(float time) {
 }
 
 void Tile::tick(float tickTime) {
+    float heat = getSurroundingHeat();
+    m_temperature = heat;
+
     setSunlight(tickTime);
     onTick(tickTime);
 }
@@ -133,16 +230,31 @@ void Tile::draw(GLEngine::SpriteBatch& sb, int xOffset) {
         int r = m_colour.r, g = m_colour.g, b = m_colour.b;
         sb.draw(glm::vec4(m_pos.x * TILE_SIZE + xOffset * CHUNK_SIZE * TILE_SIZE, m_pos.y * TILE_SIZE, m_size.x * TILE_SIZE, m_size.y * TILE_SIZE),
                 glm::vec4(0.0f, 0.0f, 1.0f, 1.0f),
-                m_texture.id,
+                m_textureId,
                 0.75f,
                 GLEngine::ColourRGBA8(r, g, b, m_colour.a),
                 glm::vec3(getLight()));
     }
 }
 
+void Tile::drawBackdrop(GLEngine::SpriteBatch& sb, int xOffset, int yOffset, float lightLevel) {
+    if(m_draw && m_backdrop) {
+        //GLint lightColourUniform = program.getUniformLocation("lightColour");
+        //glUniform4fv(lightColourUniform, 3, &glm::vec3(0.0f, 1.0f, 0.0f)[0]);
+
+        int r = m_colour.r * 0.2f, g = m_colour.g * 0.2f, b = m_colour.b * 0.2f;
+        sb.draw(glm::vec4(m_pos.x * TILE_SIZE + xOffset * CHUNK_SIZE * TILE_SIZE, m_pos.y * TILE_SIZE + yOffset, m_size.x * TILE_SIZE, m_size.y * TILE_SIZE),
+                glm::vec4(0.0f, 0.0f, 1.0f, 1.0f),
+                m_backdropTextureId,
+                0.1f,
+                GLEngine::ColourRGBA8(r, g, b, m_colour.a),
+                glm::vec3(lightLevel));
+    }
+}
+
 bool Tile::exposedToSun() {
     for(int i = WORLD_HEIGHT-1; i > m_pos.y; i--) {
-        if(m_parentChunk->tiles[i][(int)m_pos.x % CHUNK_SIZE]->isSolid()) {
+        if(!m_parentChunk->tiles[i][(int)m_pos.x % CHUNK_SIZE]->isTransparent()) {
             return false;
         }
     }

@@ -79,6 +79,16 @@ class BlockFoliage : public Block
     private:
 };
 
+class BlockWood : public Block
+{
+    public:
+        BlockWood(glm::vec2 pos, Chunk* parent);
+        void onInteract(ScriptQueue* sq) {}
+    protected:
+
+    private:
+};
+
 static Block* createBlock(unsigned int id, glm::vec2 pos, Chunk* parent, float tickTime = -1.0f) {
     Block* ret = nullptr;
     switch(id) {
@@ -108,6 +118,10 @@ static Block* createBlock(unsigned int id, glm::vec2 pos, Chunk* parent, float t
         }
         case (unsigned int)Categories::BlockIDs::STONE: {
             ret = new BlockStone(pos, parent);
+            break;
+        }
+        case (unsigned int)Categories::BlockIDs::WOOD: {
+            ret = new BlockWood(pos, parent);
             break;
         }
         default: {

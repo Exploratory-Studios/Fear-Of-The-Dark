@@ -10,7 +10,7 @@ void WorldIOManager::loadWorld(std::string worldName, float* progress) {
     logger->log("LOAD: STARTING LOAD AT " + std::to_string(startTime), true);
 
     // INIT
-    std::ifstream file("testSaveFile.bin", std::ios::binary);
+    std::ifstream file(worldName + ".bin", std::ios::binary);
     if(file.fail()) {
         GLEngine::fatalError("Error loading from file: " + worldName + ".bin");
     }
@@ -81,6 +81,7 @@ void WorldIOManager::loadWorld(std::string worldName, float* progress) {
     }
 
     { // WORLD
+
         ChunkData chunkData[WORLD_SIZE];
         file.read(reinterpret_cast<char*>(&chunkData[0]), sizeof(ChunkData) * WORLD_SIZE);
 
@@ -129,7 +130,8 @@ Chunks
         Otherwise -> need to init properly on load
 */
 
-void WorldIOManager::saveWorld(World& world, std::string worldName, float* progress) {
+void WorldIOManager::saveWorld(std::string worldName, float* progress) const {
+    logger->log("SAVE: Starting World Save to File: " + worldName + ".bin");
     logger->log("SAVE: Starting Save Preparations");
 
     PlayerData p;
@@ -183,7 +185,7 @@ void WorldIOManager::saveWorld(World& world, std::string worldName, float* progr
     logger->log("SAVE: ALL DATA PREPARED, STARTING SAVE", true);
 
     // INIT
-    std::ofstream file("testSaveFile.bin", std::ios::binary);
+    std::ofstream file(worldName + ".bin", std::ios::binary);
     if(file.fail()) {
         GLEngine::fatalError("Error saving to file: " + worldName + ".bin");
     }
@@ -236,12 +238,10 @@ void WorldIOManager::saveWorld(World& world, std::string worldName, float* progr
 
     file.close();
 }
-
+#include <iostream>
 void WorldIOManager::createWorld(unsigned int seed, std::string worldName, bool isFlat) {
 
-    for(int i = 0; i < WORLD_SIZE; i++) {
-        m_world->chunks[i] = new Chunk();
-    }
+    m_world->name = worldName;
 
     // Set the real-world models of each chunk (randomly)
     PerlinNoise placeNoise(seed);
@@ -337,21 +337,26 @@ void WorldIOManager::createWorld(unsigned int seed, std::string worldName, bool 
                     for(int x = 0; x < CHUNK_SIZE; x++) {
                         for(int y = blockHeights[i * CHUNK_SIZE + x]; y < WORLD_HEIGHT; y++) {
                             BlockAir* block = new BlockAir(glm::vec2((i * CHUNK_SIZE) + x, y), m_world->chunks[i]);
+                            delete m_world->chunks[i]->tiles[y][x];
                             m_world->chunks[i]->tiles[y][x] = block;
                         }
                         for(int y = 0; y < blockHeights[i * CHUNK_SIZE + x]; y++) {
                             if(y < blockHeights[i * CHUNK_SIZE + x] - 1 - 5) {
                                 BlockStone* block = new BlockStone(glm::vec2((i * CHUNK_SIZE) + x, y), m_world->chunks[i]);
+                                delete m_world->chunks[i]->tiles[y][x];
                                 m_world->chunks[i]->tiles[y][x] = block;
                             } else if(y < blockHeights[i * CHUNK_SIZE + x] - 1) {
                                 BlockDirt* block = new BlockDirt(glm::vec2((i * CHUNK_SIZE) + x, y), m_world->chunks[i]);
+                                delete m_world->chunks[i]->tiles[y][x];
                                 m_world->chunks[i]->tiles[y][x] = block;
                             } else {
                                 BlockGrass* block = new BlockGrass(glm::vec2((i * CHUNK_SIZE) + x, y), m_world->chunks[i]);
+                                delete m_world->chunks[i]->tiles[y][x];
                                 m_world->chunks[i]->tiles[y][x] = block;
                                 int r = std::rand();
                                 if(r % 2 == 0) {
                                     BlockBush* flower = new BlockBush(glm::vec2((i * CHUNK_SIZE) + x, y + 1), m_world->chunks[i]);
+                                    delete m_world->chunks[i]->tiles[y+1][x];
                                     m_world->chunks[i]->tiles[y+1][x] = flower;
                                 }
                             }
@@ -366,21 +371,26 @@ void WorldIOManager::createWorld(unsigned int seed, std::string worldName, bool 
                 blockHeights[k * CHUNK_SIZE + i] = 10;
                 for(int j = blockHeights[k * CHUNK_SIZE + i]; j < WORLD_HEIGHT; j++) {
                     BlockAir* block = new BlockAir(glm::vec2((k * CHUNK_SIZE) + i, j), m_world->chunks[k]);
+                    delete m_world->chunks[k]->tiles[j][i];
                     m_world->chunks[k]->tiles[j][i] = block;
                 }
                 for(int j = 0; j < blockHeights[k * CHUNK_SIZE + i]; j++) {
                     if(j < blockHeights[k * CHUNK_SIZE + i] - 1 - 5) {
                         BlockStone* block = new BlockStone(glm::vec2((k * CHUNK_SIZE) + i, j), m_world->chunks[k]);
+                        delete m_world->chunks[k]->tiles[j][i];
                         m_world->chunks[k]->tiles[j][i] = block;
                     } else if(j < blockHeights[k * CHUNK_SIZE + i] - 1) {
                         BlockDirt* block = new BlockDirt(glm::vec2((k * CHUNK_SIZE) + i, j), m_world->chunks[k]);
+                        delete m_world->chunks[k]->tiles[j][i];
                         m_world->chunks[k]->tiles[j][i] = block;
                     } else {
                         BlockGrass* block = new BlockGrass(glm::vec2((k * CHUNK_SIZE) + i, j), m_world->chunks[k]);
+                        delete m_world->chunks[k]->tiles[j][i];
                         m_world->chunks[k]->tiles[j][i] = block;
                         int r = std::rand() % 2;
                         if(r == 0) {
                             BlockBush* flower = new BlockBush(glm::vec2((k * CHUNK_SIZE) + i, j + 1), m_world->chunks[k]);
+                            delete m_world->chunks[k]->tiles[j+1][i];
                             m_world->chunks[k]->tiles[j+1][i] = flower;
                         }
                     }
@@ -402,13 +412,374 @@ void WorldIOManager::createWorld(unsigned int seed, std::string worldName, bool 
     }
 
     //m_world->player = new Player(glm::vec2(5.0f * TILE_SIZE, (blockHeights[5] + 5) * TILE_SIZE), m_input, m_sq);
-
-    std::vector<Parameter> ps;
-    Parameter p;
-    p.setPointer(m_input);
-    ps.push_back(p);
-    p.setPointer(m_sq);
-    ps.push_back(p);
-
-    m_world->player = reinterpret_cast<Player*>(createEntity((unsigned int)Categories::EntityIDs::MOB_PLAYER, glm::vec2(5.0f * TILE_SIZE, (blockHeights[5] + 5) * TILE_SIZE), nullptr, ps));
 }
+
+void WorldIOManager::setWorldEra(WorldEra newEra) {
+    /*
+        This function will affect the entire world in a way that simulates lots of time passing. This may include:
+            - Buildings collapsing
+            - Things being buried
+            - Land masses moving slightly (mountains smoothing, new mountains forming)
+
+        It will also archive a copy of the world before time passing, so that each time period can be revisited.
+
+        Order of operations:
+        1. Save world under a hidden name (eg. TestWorld.bin -> .TestWorld_NEOLITHIC_BACKUP.bin)
+        2. Find the time difference between two eras
+        3. Use 'gravity' starting from the bottom of the world, and working its way down, collapsing or destroying blocks (based on chance and surrounding block support)
+        4. Change existing dirt to stone, add a noise-based layer of dirt/stone/sediment
+        5. Smooth mountains a little bit, choose random points to 'spike' the land.
+        6. Loop 3-5 the amount of eras between
+    */
+
+    // Save under a different filename (.name_numberoferaenum)
+    std::string worldName = "." + m_world->name + "_" + std::to_string((unsigned int)m_world->worldEra);
+    saveWorld(worldName, nullptr);
+
+    int difference = (int)newEra - (int)m_world->worldEra;
+
+    m_world->worldEra = newEra;
+
+    std::ifstream file("." + m_world->name + "_" + std::to_string((unsigned int)newEra) + ".bin");
+
+    if(file.fail()) {
+        logger->log("No existing save for time period: " + std::to_string((unsigned int)newEra) + ", starting actual generation.");
+    } else {
+        loadWorld("." + m_world->name + "_" + std::to_string((unsigned int)newEra), nullptr);
+        return;
+    }
+
+    if(difference > 0) { // Moving forward through time
+        { // Gravity time, bay-bee
+            for(int y = 1; y < WORLD_HEIGHT; y++) {
+                for(int x = 0; x < WORLD_SIZE; x++) {
+                    for(int chunkX = 0; chunkX < CHUNK_SIZE; chunkX++) {
+                        if(!m_world->chunks[x]->tiles[y][chunkX]->isSolid() && m_world->chunks[x]->tiles[y][chunkX]->m_id != (unsigned int)Categories::BlockIDs::AIR) {
+                            //*m_world->chunks[x]->tiles[y][chunkX] = BlockAir(glm::vec2(chunkX + CHUNK_SIZE * x, y), m_world->chunks[x]);
+                            m_world->chunks[x]->setTile(new BlockAir(glm::vec2(chunkX + CHUNK_SIZE * x, y), m_world->chunks[x]));
+                        }
+                        if(m_world->chunks[x]->tiles[y][chunkX]->m_id != (unsigned int)Categories::BlockIDs::AIR) {
+                            int yOffset = -1;
+                            if(!m_world->chunks[x]->tiles[y-1][chunkX]->isSolid()) {
+                                unsigned int support = 0;
+
+                                if(y+1 < WORLD_HEIGHT-1) // On top
+                                    if(m_world->chunks[x]->tiles[y+1][chunkX]->isSolid()) support++;
+
+                                if(x+1 < CHUNK_SIZE) { // To the right
+                                    if(m_world->chunks[x]->tiles[y][chunkX+1]->isSolid()) support++;
+                                } else {
+                                    if(m_world->chunks[x]->extraTiles[y][1]->isSolid()) support++;
+                                }
+                                if(x-1 >= 0) { // To the left
+                                    if(m_world->chunks[x]->tiles[y][chunkX-1]->isSolid()) support++;
+                                } else {
+                                    if(m_world->chunks[x]->extraTiles[y][0]->isSolid()) support++;
+                                }
+
+                                float chance = (float)(std::rand() % 100) * (float)(support+1); // 400 is the highest you can get with maximum support, 0 the highest with no support, 200 the highest with 1 support
+
+                                if(chance < 175) { // 43.75% chance to fall with maximum support
+                                    while(y + yOffset >= 0) {
+                                        if(m_world->chunks[x]->tiles[y+yOffset][chunkX]->isSolid()) {
+
+                                            /*
+                                                1. Delete A (m_world->chunks[x]->tiles[y+yOffset+1][chunkX])
+                                                2. Move pointer to W (m_world->chunks[x]->tiles[y][chunkX]) to A
+                                                3. Move W's actual position down
+                                                4. DON'T DELETE W! THERE WAS NO COPYING DONE!1!!1
+                                                5. Make a new Air block, point W's pointer to it.
+                                            */
+                                            // 1.
+                                            delete m_world->chunks[x]->tiles[y+yOffset+1][chunkX];
+
+                                            // 2.
+                                            m_world->chunks[x]->tiles[y+yOffset+1][chunkX] = m_world->chunks[x]->tiles[y][chunkX];
+
+                                            // 3.
+                                            m_world->chunks[x]->tiles[y+yOffset+1][chunkX]->setPosition(m_world->chunks[x]->tiles[y+yOffset+1][chunkX]->getPosition() + glm::vec2(0.0f, yOffset+1));
+                                            m_world->chunks[x]->tiles[y+yOffset+1][chunkX]->setNeedsSunCheck();
+
+                                            // 4. Okay, I heard you!
+                                            // 5.
+                                            m_world->chunks[x]->tiles[y][chunkX] = new BlockAir(glm::vec2(chunkX, y), m_world->chunks[x]);
+                                            break;
+                                        } else {
+                                            yOffset--;
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
+            for(int y = 0; y < WORLD_HEIGHT; y++) {
+                for(int x = 0; x < WORLD_SIZE; x++) {
+                    m_world->chunks[x]->extraTiles[y][0] = m_world->chunks[(x-1 + WORLD_SIZE) % WORLD_SIZE]->tiles[y][CHUNK_SIZE-1];
+                    m_world->chunks[x]->extraTiles[y][1] = m_world->chunks[(x+1 + WORLD_SIZE) % WORLD_SIZE]->tiles[y][0];
+                }
+            }
+        } // Gravity's done!
+
+        { // Layer of rock and dirt time, bay-bee
+            // Change everything to stone
+            // Find blockHeights
+            std::vector<unsigned int> blockHeights;
+            blockHeights.resize(CHUNK_SIZE * WORLD_SIZE);
+            for(unsigned int y = 0; y < WORLD_HEIGHT; y++) {
+                for(unsigned int x = 0; x < WORLD_SIZE; x++) {
+                    for(unsigned int chunkX = 0; chunkX < CHUNK_SIZE; chunkX++) {
+                        if(m_world->chunks[x]->tiles[y][chunkX]->isNatural() == true) {
+                            //*m_world->chunks[x]->tiles[y][chunkX] = BlockStone(glm::vec2(chunkX + x * CHUNK_SIZE, y), m_world->chunks[x]);
+                            m_world->chunks[x]->setTile(new BlockStone(glm::vec2(chunkX + x * CHUNK_SIZE, y), m_world->chunks[x]));
+                            blockHeights[chunkX + x * CHUNK_SIZE] = y;
+                        }
+                    }
+                }
+            } // Done!
+
+            for(unsigned int x = 0; x < WORLD_SIZE; x++) {
+                // Get perlin noise to make more dirt!
+                PerlinNoise heightNoise(97682354 / rand() % 6 * (x + 8) * 2348);
+                for(unsigned int chunkX = 0; chunkX < CHUNK_SIZE; chunkX++) {
+                    for(unsigned int y = 1; y < heightNoise.noise(chunkX, x, 1.0f) * 10 + 5; y++) {
+                        if(m_world->chunks[x]->tiles[y+blockHeights[chunkX + x * CHUNK_SIZE]][chunkX]->getID() == (unsigned int)Categories::BlockIDs::AIR || rand() % 100 > 90) {
+                            //*m_world->chunks[x]->tiles[y+blockHeights[chunkX + x * CHUNK_SIZE]][chunkX] = BlockDirt(glm::vec2(chunkX + x * CHUNK_SIZE, y+blockHeights[chunkX + x * CHUNK_SIZE]), m_world->chunks[x]);
+                            m_world->chunks[x]->setTile(new BlockDirt(glm::vec2(chunkX + x * CHUNK_SIZE, y+blockHeights[chunkX + x * CHUNK_SIZE]), m_world->chunks[x]));
+
+                        }
+                    }
+                }
+            }
+
+            for(int y = 0; y < WORLD_HEIGHT; y++) {
+                for(int x = 0; x < WORLD_SIZE; x++) {
+                    m_world->chunks[x]->extraTiles[y][0] = m_world->chunks[(x-1 + WORLD_SIZE) % WORLD_SIZE]->tiles[y][CHUNK_SIZE-1];
+                    m_world->chunks[x]->extraTiles[y][1] = m_world->chunks[(x+1 + WORLD_SIZE) % WORLD_SIZE]->tiles[y][0];
+                }
+            }
+        } // Layering's done!
+    } else if(difference < 0) { // Moving backwards through time, simply load an earlier save
+        std::string oldWorldName = "." + m_world->name + "_" + std::to_string((unsigned int)newEra);
+        loadWorld(oldWorldName, nullptr);
+    }
+}
+
+StructureData WorldIOManager::loadStructureFromFile(std::string& filepath) {
+    /*
+        This function should error-check:
+            - If the file could be opened
+            - If the version is the same
+            - If it's a valid structure
+
+        Structures are stored as binary, starting with a sort of file header, giving:
+        - The version it was saved in
+        - The id (which corresponds to some data in PresetVals
+        - The size (width and height)
+
+        The file should also have a footer, giving:
+        - Special, specific information: A possible id, based on the position of a block in the structure (id = x + width*y), along with any special information (such as contents of a chest, etc.)
+
+        This function should:
+        1. Error-check
+        2. Create a structure object
+        3. Populate it with data from the given file, reading the header, constructing an array of Blocks from the size, then reading the footer for any extra necessary info
+    */
+
+    // Open the file
+    std::ifstream file(filepath);
+    if(file.fail()) {
+        logger->log("FATAL ERROR: The structure file could not be opened: " + filepath, true);
+        GLEngine::fatalError("The structure file could not be opened: " + filepath + "\n");
+    } else {
+        // Get all the information, starting with the header
+        unsigned int saveLen; // The length of the saveVersion string
+        char* saveVersion; // The version that the file was saved at, in char* form because it's easier to read that way
+        unsigned int id; // The ID of the structure, corresponding with PresetVals something
+        unsigned int width, height; // The width and height of the structure
+
+        { // Get header information
+            { // Get the version
+                file.read(reinterpret_cast<char*>(&saveLen), sizeof(unsigned int));
+
+                char* saveVersion = new char();
+                file.read(&saveVersion[0], saveLen);
+
+                logger->log("LOAD: Loaded Version: " + std::string(saveVersion) + ", Using Version: " + m_saveVersion, true);
+
+                if(m_saveVersion + "\177" != saveVersion) {
+                    logger->log("LOAD: Loaded Version Doesn't Match Current Loader Version. Quitting...", true);
+                    GLEngine::fatalError("Error loading structure from file: " + filepath + ".bin: Save Version Mismatch");
+                }
+            }
+
+            { // Get other header information
+                file.read(reinterpret_cast<char*>(&id), sizeof(unsigned int)); // The id of the structure
+
+                file.read(reinterpret_cast<char*>(&width), sizeof(unsigned int)); // The width of the structure
+                file.read(reinterpret_cast<char*>(&height), sizeof(unsigned int)); // The height of the structure
+            }
+        } // Got header information
+
+        std::vector<TileData> tiles; // Made a vector to hold all the block information, right now it's really just the ids
+
+        // Now to make sure we have enough room
+        tiles.resize(height * width);
+
+        { // Get blocks
+            for(unsigned int y = 0; y < height; y++) { // A 3*2 would be structured like so: (x, y) tiles = {(0, 0), (1, 0), (2, 0), (0, 1), (1, 1), (2, 1)}
+                for(unsigned int x = 0; x < width; x++) {
+                    TileData data;
+
+                    unsigned int tileId;
+                    file.read(reinterpret_cast<char*>(&data), sizeof(TileData)); // The id of the tile
+                    //data.id = tileId;
+
+                    //data.pos = glm::vec2(x, y); // This will be summed with the structure's overall position to get it's actual position
+
+                    tiles[y*width+x] = data;
+                }
+            }
+        } // Got blocks, created an object out of them (std::vector<TileData> tiles)
+
+        { // Time to get weird special things (Literally nothing to do here yet) (Hopefully never will be)
+
+        }
+
+        // Simply make a StructureData object to return that stores all of it
+        StructureData retStructure;
+        retStructure.id = id;
+        retStructure.width = width;
+        retStructure.tiles = tiles;
+
+        return retStructure;
+    }
+}
+
+void WorldIOManager::placeStructure(StructureData& structure, glm::vec2 position) {
+    /*
+        This function should simply iterate through all the tiles, special info, and PresetVals, and place a structure in the world, at a given position
+    */
+
+    unsigned int id = structure.id;
+    unsigned int width = structure.width;
+    unsigned int height = structure.tiles.size() / width;
+    unsigned int xPos = (int)(position.x + WORLD_SIZE * CHUNK_SIZE) % (WORLD_SIZE * CHUNK_SIZE);
+    unsigned int yPos = (int)(position.y);
+
+    { // Tiles time
+        for(unsigned int y = yPos; y < (WORLD_HEIGHT > yPos + height ? yPos + height : WORLD_HEIGHT-1); y++) {
+            for(unsigned int x = xPos; x < xPos + width; x++) {
+                unsigned int tileIndex = (y - yPos) * width + (x - xPos);
+
+                unsigned int tileX = (int)(xPos + structure.tiles[tileIndex].pos.x) % (WORLD_SIZE * CHUNK_SIZE);
+                unsigned int tileY = yPos + structure.tiles[tileIndex].pos.y;
+
+                unsigned int chunkX = (tileX / CHUNK_SIZE + WORLD_SIZE);
+                unsigned int realX = tileX % CHUNK_SIZE;
+
+                m_world->chunks[(chunkX % WORLD_SIZE)]->setTile(createBlock(structure.tiles[tileIndex].id, glm::vec2(tileX, tileY), m_world->chunks[(chunkX % WORLD_SIZE)]), realX, tileY);
+
+            }
+        }
+    }
+
+    /// TODO: Special info, presetVals
+}
+
+#ifdef DEV_CONTROLS
+#include <iostream>
+void WorldIOManager::saveStructureToFile(std::string& filepath, StructureData& structureData) {
+    /*
+        This function should error-check:
+            - If the file could be opened
+            - If it's a valid structure
+
+        Structures are stored as binary, starting with a sort of file header, giving:
+        - The version it was saved in
+        - The id (which corresponds to some data in PresetVals
+        - The size (width and height)
+
+        The file should also have a footer, giving:
+        - Special, specific information: A possible id, based on the position of a block in the structure (id = x + width*y), along with any special information (such as contents of a chest, etc.)
+
+        This function should:
+        1. Error-check
+        2. Break down the structureData object into its constituent parts (width, height, id, tileData -> special data as well, etc.)
+        3. Save each one (in the right order) to the save file
+        4. Save extra-special information such as inventories, etc.
+    */
+
+    // Open the file
+    std::ofstream file(filepath);
+    if(file.fail()) {
+        logger->log("FATAL ERROR: The structure file could not be opened: " + filepath, true);
+        GLEngine::fatalError("The structure file could not be opened: " + filepath + "\n");
+    } else {
+        // Collect all the information (break down structureData)
+        unsigned int id; // The ID of the structure, corresponding with PresetVals stuff
+
+        // Since we are saving a new structure, the id will have to be set by the user. This means ONLY the programmer can make structures that link with PresetVals...
+        /// TODO: ^^^^^^^^^^^^
+        std::cout << "Please enter the id of the new structure... ";
+        std::cin >> id;
+
+        unsigned int width = structureData.width; // The width of the structure
+        unsigned int height = structureData.tiles.size() / width; // The height of the structure
+        std::vector<TileData> tiles = structureData.tiles;
+
+        { // Save header information
+            { // Save the version and its length
+                unsigned int saveLen = m_saveVersion.size();
+
+                file.write(reinterpret_cast<char*>(&saveLen), sizeof(unsigned int));
+                file.write(m_saveVersion.c_str(), m_saveVersion.size());
+            }
+
+            { // Save other header information
+                file.write(reinterpret_cast<char*>(&id), sizeof(unsigned int)); // The id of the structure
+
+                file.write(reinterpret_cast<char*>(&width), sizeof(unsigned int)); // The width of the structure
+                file.write(reinterpret_cast<char*>(&height), sizeof(unsigned int)); // The height of the structure
+            }
+        } // Saved header information
+
+        { // Save blocks (TileData)
+            for(unsigned int i = 0; i < width*height; i++) { // Should break if I did something wrong
+                file.write(reinterpret_cast<char*>(&tiles[i]), sizeof(TileData));
+            }
+        } // Saved TileData
+
+        { // Time to save weird special things (Literally nothing to do here yet) (Hopefully never will be)
+
+        }
+
+        // Say everything is all good
+        logger->log("SAVE: Saved structure with width of " + std::to_string(width) + " and height of " + std::to_string(height) + " successfully under id " + std::to_string(id) + ".");
+    }
+}
+
+void WorldIOManager::saveStructureToFile(std::string& filepath, glm::vec4 destRect) {
+    StructureData data;
+
+    data.tiles.resize((destRect.w + 1) * (destRect.z + 1)); // y*x
+
+    data.width = (int)destRect.z + 1;
+    for(int y = (int)destRect.y; y < (int)destRect.w + 1 + (int)destRect.y; y++) {
+        for(int x = (int)destRect.x; x < (int)destRect.z + 1 + (int)destRect.x; x++) {
+            unsigned int realX = (x + WORLD_SIZE * CHUNK_SIZE) % (WORLD_SIZE * CHUNK_SIZE);
+            unsigned int realY = y;
+            unsigned int chunkX = (int)(realX / CHUNK_SIZE);
+
+            data.tiles[(y - destRect.y) * data.width + (x - destRect.x)].id = m_world->chunks[chunkX]->tiles[realY][realX]->getID();
+            data.tiles[(y - destRect.y) * data.width + (x - destRect.x)].pos = glm::vec2(x - (destRect.x), y - (destRect.y));
+            data.tiles[(y - destRect.y) * data.width + (x - destRect.x)].ambientLight = 0.0f;
+        }
+    }
+
+    saveStructureToFile(filepath, data);
+}
+
+#endif // DEV_CONTROLS

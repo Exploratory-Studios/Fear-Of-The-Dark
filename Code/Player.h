@@ -20,9 +20,10 @@ class Chunk;
 class Player : public Entity {
     friend class GameplayScreen;
     friend class WorldIOManager;
+    friend class Scripter;
 
     public:
-        Player(glm::vec2 position, GLEngine::InputManager* input, ScriptQueue* sq);
+        Player(glm::vec2 position, Chunk* parent, GLEngine::InputManager* input, ScriptQueue* sq, AudioManager* audio);
 
         void onInteract(ScriptQueue* sq) {}
         void onDeath(ScriptQueue* sq) {}
@@ -37,13 +38,20 @@ class Player : public Entity {
         void updateStats(float timeStep, Chunk* worldChunks[WORLD_SIZE]);
         void updateMouse(GLEngine::Camera2D* worldCamera);
 
+        float getSanity() { return m_sanity; }
+
+        float getTemperature() { return 1; }
+
         Entity* getSelectedEntity() { return m_selectedEntity; }
+        Block* getSelectedBlock() { return m_selectedBlock; }
 
         void setCanInteract(bool setting) { m_canInteract = setting; }
 
     protected:
         virtual void updateAI() {}
         virtual void updateMovement() {}
+
+        void godMove();
 
         GLEngine::InputManager* m_input = nullptr;
         GLEngine::GUI* m_gui = nullptr;
@@ -86,5 +94,7 @@ class Player : public Entity {
 
         Item* m_favouriteItems[10] = { nullptr };
         std::vector<Buff*> m_buffs;
+
+        bool m_godMode = false;
 
 };

@@ -17,56 +17,67 @@ class Chunk;
 
 class Entity;
 
+enum class LimbSection {
+    HEAD, // High section (head(s), etc.)
+    BODY, // Middle section (arms, torso, etc.)
+    LEGS  // Low section (legs, feet, etc.)
+};
+
 class Limb { // Display purposes only (displaying proper weapon coords, armour, etc.)
-public:
-    Limb(Entity* parentEnt, GLint textureId, glm::vec2 relPos, glm::vec2 size, float angle) :
-         m_parentEntity(parentEnt),
-         m_textureId(textureId),
-         m_pos(relPos),
-         m_size(size),
-         m_angle(angle) { }
+    public:
+        Limb(Entity* parentEnt, GLint textureId, glm::vec2 relPos, glm::vec2 size, float angle, glm::vec2 pointOfRotation = glm::vec2(0.0f)) :
+             m_parentEntity(parentEnt),
+             m_textureId(textureId),
+             m_pos(relPos),
+             m_size(size),
+             m_angle(angle),
+             m_por(pointOfRotation) { }
 
-    void setPosition(glm::vec2 newPos) { m_pos = newPos; }
-    void setAngle(float newAngle) { m_angle = newAngle; }
-    void setSpeed(float speed) { m_speed = speed; }
+        void setPosition(glm::vec2 newPos) { m_pos = newPos; }
+        void setAngle(float newAngle) { m_angle = newAngle; }
+        void setSpeed(float speed) { m_speed = speed; }
 
-    glm::vec2 getPosition() { return m_pos; }
-    float getAngle() { return m_angle; }
+        glm::vec2 getPosition() { return m_pos; }
+        float getAngle() { return m_angle; }
 
-    void draw(GLEngine::SpriteBatch& sb);
+        virtual void draw(GLEngine::SpriteBatch& sb);
 
-    virtual void animate() {}
+        virtual void animate() {}
 
-protected:
-    virtual void updateAngle() {}
+    protected:
+        virtual void updateAngle() {}
 
-    Entity* m_parentEntity = nullptr;
-    GLint m_textureId;
-    glm::vec2 m_pos;
-    glm::vec2 m_size;
-    float m_angle = 0.0f;
-    float m_speed = 0.0f;
+        //LimbSection m_section; // Defense time
+        //ArmourPiece m_armour;
+
+        Entity* m_parentEntity = nullptr;
+        GLint m_textureId;
+        glm::vec2 m_pos;
+        glm::vec2 m_size;
+        float m_angle = 0.0f;
+        float m_speed = 0.0f;
+        glm::vec2 m_por;
 };
 #include <iostream>
 class Leg : public Limb { // Display purposes only (displaying proper weapon coords, armour, etc.)
-public:
-    Leg(Entity* parentEnt, GLint textureId, glm::vec2 relPos, glm::vec2 size, float angle, float swingAmntRadians) : Limb(parentEnt, textureId, relPos, size, angle), m_swingAmnt(swingAmntRadians), m_centreAngle(angle) {}
+    public:
+        Leg(Entity* parentEnt, GLint textureId, glm::vec2 relPos, glm::vec2 size, float angle, float swingAmntRadians) : Limb(parentEnt, textureId, relPos, size, angle), m_swingAmnt(swingAmntRadians), m_centreAngle(angle) {}
 
-    virtual void animate() {
-        m_angle = std::cos(m_cosTracker) * m_swingAmnt;
-        m_cosTracker += m_speed * 0.1f;
-        m_cosTracker *= 0.95f;
-    }
+        virtual void animate() {
+            m_angle += std::cos(m_cosTracker) * m_swingAmnt;
+            m_cosTracker += m_speed * 0.1f;
+            m_cosTracker *= 0.95f;
+        }
 
-private:
-    void updateAngle();
+    private:
+        float m_swingAmnt;
+        float m_centreAngle;
+        bool m_directionPos = true;
 
-    float m_centreAngle;
-    float m_swingAmnt;
-    bool m_directionPos = true;
-
-    float m_cosTracker;
+        float m_cosTracker;
 };
+
+class Player;
 
 class Entity
 {
@@ -76,10 +87,11 @@ class Entity
         Entity(glm::vec2 position, AudioManager* audioManager, ScriptQueue* sq, float maxRunningSpeed) : m_position(position), m_audioManager(audioManager), m_sq(sq), m_maxSpeed(maxRunningSpeed) { }
         virtual ~Entity();
 
-        virtual void onInteract(ScriptQueue* sq) = 0;
-        virtual void onDeath(ScriptQueue* sq) = 0;
+        virtual void onInteract(ScriptQueue* sq) {};
+        virtual void onDeath(ScriptQueue* sq) {};
 
         virtual void update(float timeStep, Chunk* worldChunks[WORLD_SIZE]);
+        virtual void tick(Player* p);
         virtual void draw(GLEngine::SpriteBatch& sb, float time, float xOffset);
         void move(float timeStepVariable);
 
@@ -97,6 +109,7 @@ class Entity
         void                           setTargets(std::vector<glm::vec2> targets)  { m_targets = targets; }
 
         void setParentChunk(Chunk* chunk);
+        void setAudioManager(AudioManager* audio) { m_audioManager = audio; }
         int setParentChunk(Chunk* worldChunks[WORLD_SIZE]);
         unsigned int getChunkIndex();
 
@@ -104,20 +117,20 @@ class Entity
         bool checkTilePosition(Tile* tiles[WORLD_HEIGHT][CHUNK_SIZE], Tile* extraTileArray[WORLD_HEIGHT][2], std::vector<glm::vec2>& collideTilePositions, float xPos, float yPos);
         void collideWithTile(glm::vec2 tilePos, bool ground = false);
         void updateLightLevel();
-        virtual void updateAI() = 0;
+        virtual void updateAI() {};
         virtual void updateLimbs() {
             for(unsigned int i = 0; i < m_limbs.size(); i++) {
-                m_limbs[i]->setSpeed(std::abs(m_velocity.x));
+                m_limbs[i]->setSpeed(std::abs(m_velocity.x * 2.0f));
                 m_limbs[i]->animate();
             }
         }
         void updateMovement();
+        virtual void updateSounds();
 
         bool m_exposedToSun = false;
 
         bool m_controls[4]; // Up, down (crouching while on ground), left, right
         float m_speed = 0.02;
-        float m_maxSpeed;
         float m_jumpHeight = 0.767f * 10.0f; // Jumpheight == y = (2.736t+(-0.098t^2))/8
                                             /*
                                                 Calculate:
@@ -162,7 +175,15 @@ class Entity
         AudioManager* m_audioManager = nullptr;
         ScriptQueue* m_sq = nullptr;
 
+        float m_maxSpeed;
+
         std::vector<Limb*> m_limbs;
+
+        unsigned int m_soundTimer = 0;
+        bool m_makesNoise = false; // Does this mob make ambient noise? (Mooing, etc.)
+        unsigned int m_noiseFrequency = 0; // Determines the chance of this mob making a noise
+        int m_currentNoise = -1; // The id of the noise the mob is making
+        std::vector<SoundEffectIDs> m_ambientNoiseSound; // What ambient noise does this mob make?
 
         /* Entities.h attributes:
         - Texture

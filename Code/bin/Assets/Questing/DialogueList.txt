@@ -1,30 +1,83 @@
 #BEGIN
-How are you doing? This is the question
-#BEGIN
-Pretty swell. This is the 1st answer to the question.
-#FLAGS_END
-#FLAGS_END
-Good. What do you need?
-#BEGIN
-Nothing at all.
-#FLAGS_END
-1 1
-#FLAGS_END
+	How are you doing? This is the question
+	#BEGIN
+		Pretty swell. This is the 1st answer to the question.
+		#FLAGS_END
+		#FLAGS_END
+		#SCRIPTS_END
+		Good. What do you need?
+		#BEGIN
+			Nothing at all.
+			#FLAGS_END
+			1 1
+			#FLAGS_END
+			#SCRIPTS_END
+		#END
+	#END
+	#BEGIN
+		Pretty swell. This is the 2nd answer to the question.
+		1 1
+		2 0
+		#FLAGS_END
+		2 1
+		#FLAGS_END
+		#SCRIPTS_END
+	#END
+	#BEGIN
+		Pretty swell. I'll build a house here
+		2 1
+		#FLAGS_END
+		2 0
+		#FLAGS_END
+		Script_selected_makeHouse.txt
+		#SCRIPTS_END
+	#END
 #END
+#BEGIN
+	Hey there, I'm a test dummy!
+	#BEGIN
+		That's pretty cool I guess
+		#FLAGS_END
+		#FLAGS_END
+		#SCRIPTS_END
+	#END
 #END
 #BEGIN
-Pretty swell. This is the 2nd answer to the question.
-1 1
-2 0
-#FLAGS_END
-2 1
-#FLAGS_END
-#END
-#BEGIN
-Pretty swell. This is the 3rd answer to the question.
-2 1
-#FLAGS_END
-2 0
-#FLAGS_END
-#END
+	Hello, fine gentlesir!
+	#BEGIN
+		Goodbye, sir!
+		#FLAGS_END
+		#FLAGS_END
+		#SCRIPTS_END
+	#END
+	#BEGIN
+		Hello, could you possibly make me a house?
+		0 0
+		#FLAGS_END
+		0 1
+		#FLAGS_END
+		Script_player_makeHouse.txt
+		#SCRIPTS_END
+	#END
+	#BEGIN
+		Hello, I need another house, please.
+		0 1
+		#FLAGS_END
+		1 1
+		#FLAGS_END
+		#SCRIPTS_END
+		Excuse me? What do you take me for? A builder!? I'm not making ANOTHER house!
+		#BEGIN
+			Okay
+			#FLAGS_END
+			#FLAGS_END
+			#SCRIPTS_END
+		#END
+		#BEGIN
+			And I thank you for that! I don't actually need another one!
+			#FLAGS_END
+			#FLAGS_END
+			#SCRIPTS_END
+		#END
+	#END
 #END

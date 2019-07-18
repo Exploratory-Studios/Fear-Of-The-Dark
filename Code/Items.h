@@ -18,6 +18,11 @@ class ItemBlockTorch : public ItemBlock {
         ItemBlockTorch(unsigned int quantity);
 };
 
+class ItemBlockWood : public ItemBlock {
+    public:
+        ItemBlockWood(unsigned int quantity);
+};
+
 static Item* createItem(unsigned int id, unsigned int quantity) {
     Item* ret = nullptr;
 
@@ -26,6 +31,7 @@ static Item* createItem(unsigned int id, unsigned int quantity) {
         case (unsigned int)Categories::ItemIDs::BLOCK_GRASS: ret = new ItemBlockGrass(quantity); break;
         case (unsigned int)Categories::ItemIDs::BLOCK_DIRT: ret = new ItemBlockDirt(quantity); break;
         case (unsigned int)Categories::ItemIDs::BLOCK_TORCH: ret = new ItemBlockTorch(quantity); break;
+        case (unsigned int)Categories::ItemIDs::BLOCK_WOOD: ret = new ItemBlockWood(quantity); break;
     }
 
     return ret;

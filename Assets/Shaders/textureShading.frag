@@ -10,14 +10,14 @@ in vec2 fragmentUV;
 out vec4 color;
 
 uniform sampler2D mySampler;
+uniform vec2 screenSizeU;
 
 void main() {
 
-    //cos(x) returns a number between -1 and 1. To convert it into the range 0 to 1
-    //you simply do (cos(x) + 1.0) * 0.5
+	vec4 textureColour = texture(mySampler, fragmentUV);
 
-    vec4 textureColour = texture(mySampler, fragmentUV);
+	float mod = (pow(abs(0.5 - fragmentUV.x), 2) + pow(abs(0.5 - fragmentUV.y), 2)) / 2.0;
 
-    //Make crazy colors using time and position!
-    color = fragmentColour * textureColour * vec4(0.75f, 0.75f, 0.75f, 1.0f);
+	color = textureColour * fragmentColour * vec4(vec3(1.0-mod), 1);
 }
+

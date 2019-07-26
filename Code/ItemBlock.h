@@ -9,8 +9,8 @@ class ItemBlock : public Item
     public:
         ItemBlock();
 
-        void onLeftClick(Block* selectedBlock) override;
-        void onRightClick(Block* selectedBlock) override;
+        void onLeftClick(Tile* selectedBlock) override;
+        void onRightClick(Tile* selectedBlock) override;
 
     protected:
         unsigned int m_blockId;

@@ -43,7 +43,7 @@ class Player : public Entity {
         float getTemperature() { return 1; }
 
         Entity* getSelectedEntity() { return m_selectedEntity; }
-        Block* getSelectedBlock() { return m_selectedBlock; }
+        Tile* getSelectedBlock() { return m_selectedBlock; }
 
         void setCanInteract(bool setting) { m_canInteract = setting; }
 
@@ -69,7 +69,7 @@ class Player : public Entity {
         CEGUI::DefaultWindow* m_statusBoxLabel = nullptr;
 
         glm::vec2 m_mousePos;
-        Block* m_selectedBlock = nullptr;
+        Tile* m_selectedBlock = nullptr;
         Entity* m_selectedEntity = nullptr;
 
         int m_selectedHotbox = 0;

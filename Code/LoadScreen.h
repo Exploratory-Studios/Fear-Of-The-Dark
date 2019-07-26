@@ -7,6 +7,7 @@
 #include <SpriteBatch.h>
 #include <GLSLProgram.h>
 #include <SpriteFont.h>
+#include <boost/thread.hpp>
 
 #include "ScreenIndices.h"
 #include "WorldIOManager.h"

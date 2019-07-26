@@ -13,6 +13,12 @@ enum class SoundEffectIDs {
     HUSK_SOUND // = 1
 };
 
+enum class ParticleIDs {
+    DIRT_PARTICLE,
+    WATER_PARTICLE,
+    FIRE_PARTICLE
+};
+
 #define SOUND_EFFECT_LENGTH 2 // How many sound effect files there are
 #define MORNING_MUSIC_LENGTH 1 // How many music files there are for 'morning'
 #define DAY_MUSIC_LENGTH 0 // How many music files there are for 'day'

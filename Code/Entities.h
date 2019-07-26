@@ -29,7 +29,7 @@ m_speed = 0.2f;
 //m_disabilities = Categories::Disability_Type::NONE;
 //m_attackType = Categories::Attack_Type::;
 m_transparent = false;
-/// LIMBS (TODO)
+/// LIMBS (TODO (delete, we're not using it))
 */
 
 class EntityNeutralCompanionCube : public Entity {

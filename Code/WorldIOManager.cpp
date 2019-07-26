@@ -4,7 +4,24 @@
 #include <random>
 #include <ctime>
 
-void WorldIOManager::loadWorld(std::string worldName, float* progress) {
+void WorldIOManager::loadWorld(std::string worldName) {
+    boost::thread t( [=]() { P_loadWorld(worldName); } );
+    t.detach();
+}
+
+void WorldIOManager::saveWorld(std::string worldName) {
+    //boost::thread t( [=]() { P_saveWorld(worldName); } );
+    //t.detach();
+    this->P_saveWorld(worldName);
+}
+
+void WorldIOManager::createWorld(unsigned int seed, std::string worldName, bool isFlat) {
+    boost::thread t( [=]() { P_createWorld(seed, worldName, isFlat); } );
+    t.detach();
+    //P_createWorld(seed, worldName, isFlat);
+}
+
+void WorldIOManager::P_loadWorld(std::string worldName) {
     float startTime = (float)(std::clock()) / (float)(CLOCKS_PER_SEC / 1000);
 
     logger->log("LOAD: STARTING LOAD AT " + std::to_string(startTime), true);
@@ -88,7 +105,7 @@ void WorldIOManager::loadWorld(std::string worldName, float* progress) {
         for(int i = 0; i < WORLD_SIZE; i++) {
             for(unsigned int y = 0; y < WORLD_HEIGHT; y++) {
                 for(unsigned int x = 0; x < CHUNK_SIZE; x++) {
-                    m_world->chunks[i]->tiles[y][x] = createBlock(chunkData[i].tiles[y][x].id, chunkData[i].tiles[y][x].pos, m_world->chunks[i]);
+                    m_world->chunks[i]->tiles[y][x] = createBlock(chunkData[i].tiles[y][x].id, chunkData[i].tiles[y][x].pos, m_world->chunks[i], false);
                 }
             }
         }
@@ -128,9 +145,9 @@ Chunks
     Entities -> need to init properly on load
         Talking -> need to init properly on load
         Otherwise -> need to init properly on load
-*/
+*/ // stacksize is 8192 kbytes
 
-void WorldIOManager::saveWorld(std::string worldName, float* progress) const {
+void WorldIOManager::P_saveWorld(std::string worldName) {
     logger->log("SAVE: Starting World Save to File: " + worldName + ".bin");
     logger->log("SAVE: Starting Save Preparations");
 
@@ -169,11 +186,7 @@ void WorldIOManager::saveWorld(std::string worldName, float* progress) const {
     for(unsigned int i = 0; i < WORLD_SIZE; i++) {
         for(int y = 0; y < WORLD_HEIGHT; y++) {
             for(int x = 0; x < CHUNK_SIZE; x++) {
-                TileData tile;
-                tile.pos = m_world->chunks[i]->tiles[y][x]->getPosition();
-                tile.id = m_world->chunks[i]->tiles[y][x]->getID();
-                tile.ambientLight = m_world->chunks[i]->tiles[y][x]->getAmbientLight();
-                chunkData[i].tiles[y][x] = tile;
+                //chunkData[i].tiles[y][x] = m_world->chunks[i]->tiles[y][x]->getSaveData();
             }
         }
     }
@@ -230,7 +243,9 @@ void WorldIOManager::saveWorld(std::string worldName, float* progress) const {
     }
 
     { // WORLD
-        file.write(reinterpret_cast<char*>(&chunkData[0]), sizeof(ChunkData) * WORLD_SIZE);
+        for(int i = 0; i < WORLD_SIZE; i++) {
+            //file.write(reinterpret_cast<char*>(&chunkData[i]), sizeof(ChunkData));
+        }
         logger->log("SAVE: Wrote World Chunks");
     }
 
@@ -239,7 +254,9 @@ void WorldIOManager::saveWorld(std::string worldName, float* progress) const {
     file.close();
 }
 #include <iostream>
-void WorldIOManager::createWorld(unsigned int seed, std::string worldName, bool isFlat) {
+void WorldIOManager::P_createWorld(unsigned int seed, std::string worldName, bool isFlat) {
+
+    *m_progress = 0.0f;
 
     m_world->name = worldName;
 
@@ -266,12 +283,16 @@ void WorldIOManager::createWorld(unsigned int seed, std::string worldName, bool 
 
     }
 
+    *m_progress = 0.1f;
+
     for(int i = 0; i < WORLD_SIZE; i++) {
         float placeMapped = (places[i] - lowestPlace) / (highestPlace - lowestPlace);
 
-        m_world->chunks[i]->setPlace((Categories::Places)std::ceil(placeMapped * (Category_Data::TOTAL_PLACES)));
+        m_world->chunks[i]->setPlace((Categories::Places)std::ceil(placeMapped * (Category_Data::TOTAL_PLACES - 1)));
         m_world->chunks[i]->setIndex(i);
     }
+
+    *m_progress = 0.2f;
 
     std::vector<int> blockHeights;
     blockHeights.resize(WORLD_SIZE * CHUNK_SIZE);
@@ -295,6 +316,8 @@ void WorldIOManager::createWorld(unsigned int seed, std::string worldName, bool 
                 blockHeights[i * CHUNK_SIZE + j] = height;
             }
         }
+
+        *m_progress = 0.3f;
 
         {
             const float SMOOTHED_PORTION_D = 3; // 2/3
@@ -336,26 +359,32 @@ void WorldIOManager::createWorld(unsigned int seed, std::string worldName, bool 
                 if(i < WORLD_SIZE) {
                     for(int x = 0; x < CHUNK_SIZE; x++) {
                         for(int y = blockHeights[i * CHUNK_SIZE + x]; y < WORLD_HEIGHT; y++) {
-                            BlockAir* block = new BlockAir(glm::vec2((i * CHUNK_SIZE) + x, y), m_world->chunks[i]);
-                            delete m_world->chunks[i]->tiles[y][x];
-                            m_world->chunks[i]->tiles[y][x] = block;
-                        }
-                        for(int y = 0; y < blockHeights[i * CHUNK_SIZE + x]; y++) {
-                            if(y < blockHeights[i * CHUNK_SIZE + x] - 1 - 5) {
-                                BlockStone* block = new BlockStone(glm::vec2((i * CHUNK_SIZE) + x, y), m_world->chunks[i]);
-                                delete m_world->chunks[i]->tiles[y][x];
-                                m_world->chunks[i]->tiles[y][x] = block;
-                            } else if(y < blockHeights[i * CHUNK_SIZE + x] - 1) {
-                                BlockDirt* block = new BlockDirt(glm::vec2((i * CHUNK_SIZE) + x, y), m_world->chunks[i]);
+                            if(y <= WATER_LEVEL) {
+                                BlockWater* block = new BlockWater(glm::vec2((i * CHUNK_SIZE) + x, y), m_world->chunks[i], 1.0f, false);
                                 delete m_world->chunks[i]->tiles[y][x];
                                 m_world->chunks[i]->tiles[y][x] = block;
                             } else {
-                                BlockGrass* block = new BlockGrass(glm::vec2((i * CHUNK_SIZE) + x, y), m_world->chunks[i]);
+                                BlockAir* block = new BlockAir(glm::vec2((i * CHUNK_SIZE) + x, y), m_world->chunks[i], false);
+                                delete m_world->chunks[i]->tiles[y][x];
+                                m_world->chunks[i]->tiles[y][x] = block;
+                            }
+                        }
+                        for(int y = 0; y < blockHeights[i * CHUNK_SIZE + x]; y++) {
+                            if(y < blockHeights[i * CHUNK_SIZE + x] - 1 - 5 || y <= WATER_LEVEL) {
+                                BlockStone* block = new BlockStone(glm::vec2((i * CHUNK_SIZE) + x, y), m_world->chunks[i], false);
+                                delete m_world->chunks[i]->tiles[y][x];
+                                m_world->chunks[i]->tiles[y][x] = block;
+                            } else if(y < blockHeights[i * CHUNK_SIZE + x] - 1 && y > WATER_LEVEL) {
+                                BlockDirt* block = new BlockDirt(glm::vec2((i * CHUNK_SIZE) + x, y), m_world->chunks[i], false);
+                                delete m_world->chunks[i]->tiles[y][x];
+                                m_world->chunks[i]->tiles[y][x] = block;
+                            } else if(y < blockHeights[i * CHUNK_SIZE + x] && y > WATER_LEVEL) {
+                                BlockGrass* block = new BlockGrass(glm::vec2((i * CHUNK_SIZE) + x, y), m_world->chunks[i], false);
                                 delete m_world->chunks[i]->tiles[y][x];
                                 m_world->chunks[i]->tiles[y][x] = block;
                                 int r = std::rand();
                                 if(r % 2 == 0) {
-                                    BlockBush* flower = new BlockBush(glm::vec2((i * CHUNK_SIZE) + x, y + 1), m_world->chunks[i]);
+                                    BlockBush* flower = new BlockBush(glm::vec2((i * CHUNK_SIZE) + x, y + 1), m_world->chunks[i], false);
                                     delete m_world->chunks[i]->tiles[y+1][x];
                                     m_world->chunks[i]->tiles[y+1][x] = flower;
                                 }
@@ -364,6 +393,8 @@ void WorldIOManager::createWorld(unsigned int seed, std::string worldName, bool 
                     }
                 }
             }
+
+            *m_progress = 0.4f;
         }
     } else {
         for(int k = 0; k < WORLD_SIZE; k++) {
@@ -397,6 +428,8 @@ void WorldIOManager::createWorld(unsigned int seed, std::string worldName, bool 
                 }
             }
         }
+
+        *m_progress = 0.4f;
     }
     for(int i = 0; i < WORLD_SIZE; i++) {
         for(int y = 0; y < WORLD_HEIGHT; y++) { // For the extra over-lapping side bits on each chunk.
@@ -410,6 +443,10 @@ void WorldIOManager::createWorld(unsigned int seed, std::string worldName, bool 
         m_world->chunks[i]->setSurroundingChunk(m_world->chunks[((i-1+WORLD_SIZE) % WORLD_SIZE)], 0);
         m_world->chunks[i]->setSurroundingChunk(m_world->chunks[((i+1+WORLD_SIZE) % WORLD_SIZE)], 1);
     }
+
+    *m_progress = 1.0f;
+
+    return;
 
     //m_world->player = new Player(glm::vec2(5.0f * TILE_SIZE, (blockHeights[5] + 5) * TILE_SIZE), m_input, m_sq);
 }
@@ -434,7 +471,7 @@ void WorldIOManager::setWorldEra(WorldEra newEra) {
 
     // Save under a different filename (.name_numberoferaenum)
     std::string worldName = "." + m_world->name + "_" + std::to_string((unsigned int)m_world->worldEra);
-    saveWorld(worldName, nullptr);
+    P_saveWorld(worldName);
 
     int difference = (int)newEra - (int)m_world->worldEra;
 
@@ -445,7 +482,7 @@ void WorldIOManager::setWorldEra(WorldEra newEra) {
     if(file.fail()) {
         logger->log("No existing save for time period: " + std::to_string((unsigned int)newEra) + ", starting actual generation.");
     } else {
-        loadWorld("." + m_world->name + "_" + std::to_string((unsigned int)newEra), nullptr);
+        P_loadWorld("." + m_world->name + "_" + std::to_string((unsigned int)newEra));
         return;
     }
 
@@ -563,7 +600,7 @@ void WorldIOManager::setWorldEra(WorldEra newEra) {
         } // Layering's done!
     } else if(difference < 0) { // Moving backwards through time, simply load an earlier save
         std::string oldWorldName = "." + m_world->name + "_" + std::to_string((unsigned int)newEra);
-        loadWorld(oldWorldName, nullptr);
+        P_loadWorld(oldWorldName);
     }
 }
 

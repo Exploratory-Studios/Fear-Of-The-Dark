@@ -187,3 +187,477 @@ Flags loaded! (125 bytes)
 
 ### LOG: Wed Jul 17 22:12:29 2019 ###
 
+
+
+
+### LOG: Mon Jul 22 17:14:27 2019 ###
+
+
+
+
+### LOG: Mon Jul 22 17:15:15 2019 ###
+
+Loaded all 1 music files.
+Loaded all 2 sound files.
+Successfully Loaded Script File: ../Assets/Scripts/Script_player_makeHouse.txt, and given id of: 1
+Loading dialogue. 1297 bytes to read.
+Successfully Loaded Script File: ../Assets/Scripts/Script_selected_makeHouse.txt, and given id of: 2
+Successfully Loaded Script File: ../Assets/Scripts/Script_player_makeHouse.txt, and given id of: 1
+Dialogue loaded! (1297 bytes)
+Loading flags. 125 bytes to read.
+Loaded flag with id of 0 and value of 0
+Loaded flag with id of 1 and value of 0
+Loaded flag with id of 2 and value of 0
+Loaded flag with id of 3 and value of 0
+Loaded flag with id of 4 and value of 0
+Loaded flag with id of 5 and value of 0
+Flags loaded! (125 bytes)
+
+
+
+### LOG: Mon Jul 22 17:15:55 2019 ###
+
+Loaded all 1 music files.
+Loaded all 2 sound files.
+Successfully Loaded Script File: ../Assets/Scripts/Script_player_makeHouse.txt, and given id of: 1
+Loading dialogue. 1297 bytes to read.
+Successfully Loaded Script File: ../Assets/Scripts/Script_selected_makeHouse.txt, and given id of: 2
+Successfully Loaded Script File: ../Assets/Scripts/Script_player_makeHouse.txt, and given id of: 1
+Dialogue loaded! (1297 bytes)
+Loading flags. 125 bytes to read.
+Loaded flag with id of 0 and value of 0
+Loaded flag with id of 1 and value of 0
+Loaded flag with id of 2 and value of 0
+Loaded flag with id of 3 and value of 0
+Loaded flag with id of 4 and value of 0
+Loaded flag with id of 5 and value of 0
+Flags loaded! (125 bytes)
+Clicked: 2.000000
+Clicked: 3.000000
+Clicked: 4.000000
+Clicked: 4.000000
+Clicked: 5.000000
+Clicked: 5.000000
+Clicked: 5.000000
+Clicked: 6.000000
+Clicked: 6.000000
+Clicked: 6.000000
+Clicked: 6.000000
+Clicked: 6.000000
+Clicked: 6.000000
+Clicked: 6.000000
+Clicked: 6.000000
+Clicked: 6.000000
+Clicked: 12.000000
+Clicked: 22.000000
+Clicked: 25.000000
+Clicked: 26.000000
+Clicked: 26.000000
+Clicked: 26.000000
+Clicked: 26.000000
+Clicked: 26.000000
+Clicked: 26.000000
+Clicked: 26.000000
+Clicked: 26.000000
+Clicked: 26.000000
+Clicked: 26.000000
+Clicked: 26.000000
+Clicked: 26.000000
+Clicked: 26.000000
+Clicked: 26.000000
+Clicked: 26.000000
+Clicked: 26.000000
+Clicked: 26.000000
+Clicked: 26.000000
+Clicked: 26.000000
+Clicked: 26.000000
+Clicked: 26.000000
+Clicked: 26.000000
+Clicked: 26.000000
+Clicked: 26.000000
+Clicked: 26.000000
+Clicked: 26.000000
+Clicked: 26.000000
+Clicked: 26.000000
+Clicked: 26.000000
+Clicked: 26.000000
+Clicked: 26.000000
+Clicked: 26.000000
+Clicked: 26.000000
+Clicked: 26.000000
+Clicked: 26.000000
+Clicked: 26.000000
+Clicked: 26.000000
+Clicked: 26.000000
+Clicked: 26.000000
+Clicked: 26.000000
+Clicked: 26.000000
+Clicked: 26.000000
+Clicked: 26.000000
+Clicked: 26.000000
+Clicked: 26.000000
+Clicked: 26.000000
+Clicked: 26.000000
+Clicked: 26.000000
+Clicked: 26.000000
+Clicked: 26.000000
+Clicked: 26.000000
+Clicked: 26.000000
+Clicked: 26.000000
+Clicked: 26.000000
+Clicked: 26.000000
+Clicked: 26.000000
+Clicked: 26.000000
+Clicked: 26.000000
+Clicked: 26.000000
+Clicked: 26.000000
+Clicked: 26.000000
+Clicked: 27.000000
+Clicked: 27.000000
+Clicked: 27.000000
+Clicked: 27.000000
+Clicked: 27.000000
+Clicked: 27.000000
+Clicked: 28.000000
+Clicked: 28.000000
+Clicked: 28.000000
+Clicked: 28.000000
+Clicked: 28.000000
+Clicked: 28.000000
+Clicked: 29.000000
+Clicked: 29.000000
+Clicked: 29.000000
+Clicked: 26.000000
+Clicked: 22.000000
+Clicked: 22.000000
+Clicked: 22.000000
+Clicked: 22.000000
+Clicked: 23.000000
+Clicked: 24.000000
+Clicked: 25.000000
+Clicked: 26.000000
+Clicked: 28.000000
+Clicked: 30.000000
+Clicked: 31.000000
+Clicked: 32.000000
+Clicked: 34.000000
+Clicked: 35.000000
+Clicked: 37.000000
+Clicked: 38.000000
+Clicked: 39.000000
+Clicked: 39.000000
+Clicked: 39.000000
+Clicked: 39.000000
+Clicked: 38.000000
+Clicked: 38.000000
+Clicked: 38.000000
+Clicked: 37.000000
+Clicked: 35.000000
+Clicked: 34.000000
+Clicked: 34.000000
+Clicked: 32.000000
+Clicked: 30.000000
+Clicked: 29.000000
+Clicked: 30.000000
+Clicked: 34.000000
+Clicked: 49.000000
+Clicked: 49.000000
+Clicked: 49.000000
+Clicked: 49.000000
+Clicked: 40.000000
+Clicked: 26.000000
+Clicked: 21.000000
+Clicked: 21.000000
+Clicked: 21.000000
+Clicked: 21.000000
+Clicked: 21.000000
+Clicked: 22.000000
+Clicked: 23.000000
+Clicked: 24.000000
+Clicked: 24.000000
+Clicked: 22.000000
+Clicked: 22.000000
+Clicked: 21.000000
+Clicked: 21.000000
+Clicked: 22.000000
+Clicked: 22.000000
+Clicked: 21.000000
+Clicked: 21.000000
+Clicked: 21.000000
+Clicked: 21.000000
+Clicked: 22.000000
+Clicked: 23.000000
+Clicked: 23.000000
+Clicked: 24.000000
+Clicked: 25.000000
+Clicked: 26.000000
+Clicked: 27.000000
+Clicked: 25.000000
+Clicked: 24.000000
+Clicked: 23.000000
+Clicked: 23.000000
+Clicked: 24.000000
+Clicked: 26.000000
+Clicked: 27.000000
+Clicked: 28.000000
+Clicked: 29.000000
+Clicked: 30.000000
+Clicked: 25.000000
+Clicked: 22.000000
+Clicked: 22.000000
+Clicked: 25.000000
+Clicked: 28.000000
+Clicked: 29.000000
+Clicked: 29.000000
+Clicked: 29.000000
+Clicked: 30.000000
+Clicked: 31.000000
+Clicked: 31.000000
+Clicked: 31.000000
+Clicked: 32.000000
+Clicked: 33.000000
+Clicked: 33.000000
+Clicked: 32.000000
+Clicked: 32.000000
+Clicked: 31.000000
+Clicked: 32.000000
+Clicked: 34.000000
+Clicked: 35.000000
+Clicked: 35.000000
+Clicked: 35.000000
+Clicked: 34.000000
+Clicked: 33.000000
+Clicked: 32.000000
+Clicked: 32.000000
+Clicked: 33.000000
+Clicked: 34.000000
+Clicked: 35.000000
+Clicked: 36.000000
+Clicked: 36.000000
+Clicked: 35.000000
+Clicked: 34.000000
+Clicked: 35.000000
+Clicked: 36.000000
+Clicked: 37.000000
+Clicked: 38.000000
+Clicked: 37.000000
+Clicked: 36.000000
+Clicked: 35.000000
+Clicked: 36.000000
+Clicked: 38.000000
+Clicked: 38.000000
+Clicked: 39.000000
+Clicked: 39.000000
+Clicked: 38.000000
+Clicked: 37.000000
+Clicked: 37.000000
+Clicked: 39.000000
+Clicked: 40.000000
+Clicked: 41.000000
+Clicked: 40.000000
+Clicked: 39.000000
+Clicked: 38.000000
+Clicked: 39.000000
+Clicked: 40.000000
+Clicked: 42.000000
+Clicked: 42.000000
+Clicked: 43.000000
+Clicked: 41.000000
+Clicked: 41.000000
+Clicked: 41.000000
+Clicked: 41.000000
+Clicked: 44.000000
+Clicked: 45.000000
+Clicked: 45.000000
+Clicked: 43.000000
+Clicked: 41.000000
+Clicked: 40.000000
+Clicked: 40.000000
+Clicked: 41.000000
+Clicked: 42.000000
+Clicked: 41.000000
+Clicked: 40.000000
+Clicked: 41.000000
+Clicked: 44.000000
+Clicked: 44.000000
+Clicked: 44.000000
+Clicked: 43.000000
+Clicked: 42.000000
+Clicked: 42.000000
+Clicked: 43.000000
+Clicked: 44.000000
+Clicked: 44.000000
+Clicked: 43.000000
+Clicked: 43.000000
+Clicked: 44.000000
+Clicked: 45.000000
+Clicked: 45.000000
+Clicked: 46.000000
+Clicked: 46.000000
+Clicked: 46.000000
+Clicked: 46.000000
+Clicked: 46.000000
+Clicked: 44.000000
+Clicked: 44.000000
+Clicked: 44.000000
+Clicked: 45.000000
+Clicked: 45.000000
+Clicked: 45.000000
+Clicked: 47.000000
+Clicked: 48.000000
+Clicked: 49.000000
+Clicked: 52.000000
+Clicked: 52.000000
+Clicked: 53.000000
+Clicked: 55.000000
+Clicked: 55.000000
+Clicked: 56.000000
+Clicked: 56.000000
+Clicked: 56.000000
+Clicked: 56.000000
+Clicked: 56.000000
+Clicked: 56.000000
+Clicked: 56.000000
+Clicked: 57.000000
+Clicked: 57.000000
+Clicked: 57.000000
+Clicked: 57.000000
+Clicked: 57.000000
+Clicked: 57.000000
+Clicked: 57.000000
+Clicked: 57.000000
+Clicked: 56.000000
+Clicked: 56.000000
+Clicked: 56.000000
+Clicked: 56.000000
+Clicked: 56.000000
+Clicked: 56.000000
+Clicked: 56.000000
+Clicked: 56.000000
+Clicked: 56.000000
+Clicked: 57.000000
+Clicked: 57.000000
+Clicked: 57.000000
+Clicked: 57.000000
+Clicked: 57.000000
+Clicked: 57.000000
+Clicked: 57.000000
+Clicked: 57.000000
+Clicked: 57.000000
+Clicked: 57.000000
+Clicked: 57.000000
+Clicked: 57.000000
+Clicked: 57.000000
+Clicked: 57.000000
+Clicked: 57.000000
+Clicked: 57.000000
+Clicked: 57.000000
+Clicked: 57.000000
+Clicked: 57.000000
+Clicked: 57.000000
+Clicked: 57.000000
+Clicked: 57.000000
+Clicked: 57.000000
+Clicked: 57.000000
+Clicked: 57.000000
+Clicked: 57.000000
+Clicked: 57.000000
+Clicked: 60.000000
+Clicked: 61.000000
+Clicked: 61.000000
+Clicked: 61.000000
+Clicked: 61.000000
+Clicked: 61.000000
+Clicked: 61.000000
+Clicked: 61.000000
+Clicked: 60.000000
+Clicked: 60.000000
+Clicked: 59.000000
+Clicked: 59.000000
+Clicked: 59.000000
+Clicked: 59.000000
+Clicked: 60.000000
+Clicked: 61.000000
+Clicked: 61.000000
+Clicked: 57.000000
+Clicked: 56.000000
+Clicked: 56.000000
+Clicked: 55.000000
+Clicked: 55.000000
+Clicked: 55.000000
+Clicked: 55.000000
+Clicked: 55.000000
+Clicked: 55.000000
+Clicked: 55.000000
+Clicked: 60.000000
+Clicked: 60.000000
+Clicked: 60.000000
+Clicked: 60.000000
+Clicked: 60.000000
+Clicked: 62.000000
+Clicked: 64.000000
+
+
+
+### LOG: Fri Jul 26 13:35:48 2019 ###
+
+Loaded all 1 music files.
+Loaded all 2 sound files.
+Successfully Loaded Script File: ../Assets/Scripts/Script_player_makeHouse.txt, and given id of: 1
+Loading dialogue. 1297 bytes to read.
+Successfully Loaded Script File: ../Assets/Scripts/Script_selected_makeHouse.txt, and given id of: 2
+Successfully Loaded Script File: ../Assets/Scripts/Script_player_makeHouse.txt, and given id of: 1
+Dialogue loaded! (1297 bytes)
+Loading flags. 125 bytes to read.
+Loaded flag with id of 0 and value of 0
+Loaded flag with id of 1 and value of 0
+Loaded flag with id of 2 and value of 0
+Loaded flag with id of 3 and value of 0
+Loaded flag with id of 4 and value of 0
+Loaded flag with id of 5 and value of 0
+Flags loaded! (125 bytes)
+
+
+
+### LOG: Fri Jul 26 13:37:17 2019 ###
+
+Loaded all 1 music files.
+Loaded all 2 sound files.
+Successfully Loaded Script File: ../Assets/Scripts/Script_player_makeHouse.txt, and given id of: 1
+Loading dialogue. 1297 bytes to read.
+Successfully Loaded Script File: ../Assets/Scripts/Script_selected_makeHouse.txt, and given id of: 2
+Successfully Loaded Script File: ../Assets/Scripts/Script_player_makeHouse.txt, and given id of: 1
+Dialogue loaded! (1297 bytes)
+Loading flags. 125 bytes to read.
+Loaded flag with id of 0 and value of 0
+Loaded flag with id of 1 and value of 0
+Loaded flag with id of 2 and value of 0
+Loaded flag with id of 3 and value of 0
+Loaded flag with id of 4 and value of 0
+Loaded flag with id of 5 and value of 0
+Flags loaded! (125 bytes)
+
+
+
+### LOG: Fri Jul 26 13:38:55 2019 ###
+
+
+
+
+### LOG: Fri Jul 26 13:39:52 2019 ###
+
+Loaded all 1 music files.
+Loaded all 2 sound files.
+Successfully Loaded Script File: ../Assets/Scripts/Script_player_makeHouse.txt, and given id of: 1
+Loading dialogue. 1297 bytes to read.
+Successfully Loaded Script File: ../Assets/Scripts/Script_selected_makeHouse.txt, and given id of: 2
+Successfully Loaded Script File: ../Assets/Scripts/Script_player_makeHouse.txt, and given id of: 1
+Dialogue loaded! (1297 bytes)
+Loading flags. 125 bytes to read.
+Loaded flag with id of 0 and value of 0
+Loaded flag with id of 1 and value of 0
+Loaded flag with id of 2 and value of 0
+Loaded flag with id of 3 and value of 0
+Loaded flag with id of 4 and value of 0
+Loaded flag with id of 5 and value of 0
+Flags loaded! (125 bytes)

@@ -94,6 +94,8 @@
 			<Add option="-lGLU" />
 			<Add option="-lGLEW" />
 			<Add option="-lstdc++fs" />
+			<Add option="-lboost_system" />
+			<Add option="-lboost_thread" />
 			<Add directory="../../GLEngine" />
 		</Linker>
 		<Unit filename="../Assets/Art/Animations/Readme.txt" />
@@ -250,10 +252,14 @@
 		<Unit filename="../Assets/Questing/DialogueList.txt" />
 		<Unit filename="../Assets/Questing/FlagList.txt" />
 		<Unit filename="../Assets/Readme.txt" />
+		<Unit filename="../Assets/Shaders/skyShader.frag" />
+		<Unit filename="../Assets/Shaders/skyShader.vert" />
 		<Unit filename="../Assets/Shaders/textureShading.frag" />
 		<Unit filename="../Assets/Shaders/textureShading.vert" />
 		<Unit filename="../Assets/Shaders/uiShader.frag" />
 		<Unit filename="../Assets/Shaders/uiShader.vert" />
+		<Unit filename="../Assets/Shaders/vignetteShader.frag" />
+		<Unit filename="../Assets/Shaders/vignetteShader.vert" />
 		<Unit filename="../Assets/Sounds/Readme.txt" />
 		<Unit filename="../Assets/Textures/Blocks/Dirt.png" />
 		<Unit filename="../Assets/Textures/Blocks/Grass.png" />
@@ -327,6 +333,8 @@
 		<Unit filename="StartupScreen.h" />
 		<Unit filename="Tile.cpp" />
 		<Unit filename="Tile.h" />
+		<Unit filename="WaitScreen.cpp" />
+		<Unit filename="WaitScreen.h" />
 		<Unit filename="WorldIOManager.cpp" />
 		<Unit filename="WorldIOManager.h" />
 		<Extensions>

@@ -345,7 +345,9 @@ void Player::updateMouse(GLEngine::Camera2D* worldCamera) {
                     chunk = m_parentChunk;
                 }
 
-                m_selectedBlock = static_cast<Block*>(chunk->tiles[(unsigned int)mousePos.y][(unsigned int)mousePos.x % CHUNK_SIZE]);
+                m_selectedBlock = nullptr;
+                if(chunk->tiles[(unsigned int)mousePos.y][(unsigned int)mousePos.x % CHUNK_SIZE]->getParentChunk()) m_selectedBlock = chunk->tiles[(unsigned int)mousePos.y][(unsigned int)mousePos.x % CHUNK_SIZE];
+                //Logger::getInstance()->log("Clicked: " + std::to_string(m_selectedBlock->getPosition().x));
 
                 m_selectedEntity = nullptr;
 
@@ -411,16 +413,15 @@ void Player::updateInput() {
             m_inventory->addItem(createItem((unsigned int)Categories::ItemIDs::BLOCK_WOOD, 1));
         }
 
-        if(m_input->isKeyDown(SDL_BUTTON_LEFT) && m_selectedBlock) {
+        if(m_input->isKeyPressed(SDL_BUTTON_LEFT) && m_selectedBlock) {
             if(m_favouriteItems[m_selectedHotbox]) m_favouriteItems[m_selectedHotbox]->onLeftClick(m_selectedBlock);
             if(!m_favouriteItems[m_selectedHotbox]) {
-                Item* i = new Item();
-                i->onLeftClick(m_selectedBlock);
-                delete i;
+                BlockWater* b = new BlockWater(m_selectedBlock->getPosition(), m_selectedBlock->getParentChunk(), 1.0f);//createBlock((unsigned int)Categories::BlockIDs::WATER, m_selectedBlock->getPosition(), m_selectedBlock->getParentChunk());
+                m_selectedBlock->getParentChunk()->setTile(b, m_selectedBlock->getPosition().x, m_selectedBlock->getPosition().y);
             }
             m_inventory->updateWeight();
         }
-        if(m_input->isKeyDown(SDL_BUTTON_RIGHT) && m_selectedBlock) {
+        if(m_input->isKeyPressed(SDL_BUTTON_RIGHT) && m_selectedBlock) {
             if(m_favouriteItems[m_selectedHotbox]) m_favouriteItems[m_selectedHotbox]->onRightClick(m_selectedBlock);
             m_inventory->updateWeight();
         }
@@ -474,7 +475,7 @@ void Player::updateInput() {
 
 void Player::godMove() {
     //m_velocity.y -= 1.225f / 60.0f; // Earth gravity is far too harsh for games. We use about 1/8th
-    m_speed = 2.0f;
+    //m_speed = 2.0f;
     m_position += m_velocity;
     m_stamina = 1.0f;
 }

@@ -78,7 +78,7 @@ void GameplayScreen::onEntry() {
                 entities = m_WorldIOManager->getWorld()->chunks[j]->getEntities();
                 for(unsigned int i = 0; i < entities->size(); i++) {
                     int index = (m_WorldIOManager->getWorld()->chunks[j]->getEntity(i)->getPosition().x / TILE_SIZE) / CHUNK_SIZE;
-                    m_WorldIOManager->getWorld()->chunks[j]->getEntity(i)->setParentChunk(&m_WorldIOManager->getWorld()->chunks[index]);
+                    m_WorldIOManager->getWorld()->chunks[j]->getEntity(i)->setParentChunk(m_WorldIOManager->getWorld()->chunks[index]);
                     m_WorldIOManager->getWorld()->chunks[index]->addEntity(*m_WorldIOManager->getWorld()->chunks[j]->getEntity(i));
                 }
             }
@@ -173,7 +173,7 @@ void GameplayScreen::update() {
     }
     m_frame++;
 
-    m_gui.update();\
+    m_gui.update();
 }
 #include <stdio.h>
 void GameplayScreen::draw() {
@@ -194,8 +194,8 @@ void GameplayScreen::draw() {
         GLint sizeUniform = m_skyTextureProgram.getUniformLocation("screenSizeU");
         glUniform2f(sizeUniform, m_window->getScreenWidth(), m_window->getScreenHeight());
 
-        //GLint timeUniform = m_skyTextureProgram.getUniformLocation("time");
-        //'glUniform1f(timeUniform, m_time);
+        GLint timeUniform = m_skyTextureProgram.getUniformLocation("time");
+        glUniform1f(timeUniform, m_time);
 
         GLint lightUniform = m_skyTextureProgram.getUniformLocation("daylight");
         glUniform1f(lightUniform, dayLight);
@@ -349,10 +349,9 @@ void GameplayScreen::checkInput() {
 
     if(m_game->inputManager.isKeyPressed(SDLK_F4)) {
         //m_gameState = GameState::PAUSE;
-        float* f = new float(1.0f);
-        m_WorldIOManager->saveWorld("TestSave", f);
+        m_WorldIOManager->saveWorld("TestSave");
     } else if(m_game->inputManager.isKeyPressed(SDLK_F5)) {
-        m_WorldIOManager->loadWorld("TestSave", nullptr);
+        m_WorldIOManager->loadWorld("TestSave");
 
     }
 

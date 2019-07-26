@@ -3,6 +3,9 @@
 #include <string>
 #include <vector>
 #include <InputManager.h>
+#include <boost/thread.hpp>
+
+#include <Window.h>
 
 #include "PerlinNoise/PerlinNoise.h"
 
@@ -34,16 +37,10 @@ struct PlayerData {
     PlayerInventoryData inventory;
 };
 
-struct TileData {
-    glm::vec2 pos;
-    unsigned int id;
-    float ambientLight;
-};
-
 struct ChunkData {
     //std::vector<EntityData> entities;
     /// TODO: create entities the same way blocks and items are created (Blocks.h & Items.h)
-    TileData tiles[WORLD_HEIGHT][CHUNK_SIZE];
+    TileData tiles[WORLD_HEIGHT][CHUNK_SIZE] {};
 };
 
 struct StructureData {
@@ -69,17 +66,12 @@ public:
 class WorldIOManager
 {
     public:
-        WorldIOManager(World* world, GLEngine::InputManager* input) : m_world(world), m_input(input) { }
-        WorldIOManager(GLEngine::InputManager* input) : m_input(input) { }
+        WorldIOManager(World* world, GLEngine::InputManager* input, GLEngine::Window* window) : m_world(world), m_input(input), m_window(window) { }
+        WorldIOManager(GLEngine::InputManager* input, GLEngine::Window* window) : m_input(input), m_window(window) { }
 
-        void loadWorld(std::string worldName, float* progress); /// TODO: Make multi-threaded so that we can view progress and load at the same time
-        void saveWorld(std::string worldName, float* progress) const; /// TODO: Make multi-threaded so that we can view progress and save at the same time
-
-        void createWorld(unsigned int seed, std::string worldName, bool isFlat = false);
-        /*
-            Seed will govern where the biomes are (random engine #1) and it will also seed the random engine for
-            all of the world (random engine #2)
-        */
+        void loadWorld(std::string worldName); // These public versions of the functions are multi-threading versions for anybody to use
+        void saveWorld(std::string worldName);
+        void createWorld(unsigned int seed, std::string worldName, bool isFlat);
 
         World* getWorld() { return m_world; } /// Singleton of world, essentially
         AudioManager* getAudioManager() { return m_audioManager; }
@@ -97,8 +89,19 @@ class WorldIOManager
         void saveStructureToFile(std::string& filepath, glm::vec4 destRect);
         #endif // DEV_CONTROLS
 
+        float getProgress() const { return *m_progress; }
+
     private:
-        std::string m_saveVersion = "1.0.0";
+        void P_loadWorld(std::string worldName); /// TODO: Make multi-threaded so that we can view progress and load at the same time
+        void P_saveWorld(std::string worldName); /// TODO: Make multi-threaded so that we can view progress and save at the same time
+
+        void P_createWorld(unsigned int seed, std::string worldName, bool isFlat);
+        /*
+            Seed will govern where the biomes are (random engine #1) and it will also seed the random engine for
+            all of the world (random engine #2)
+        */
+
+        std::string m_saveVersion = "1.0.1";
 
         Logger* logger = Logger::getInstance();
 
@@ -106,4 +109,8 @@ class WorldIOManager
         GLEngine::InputManager* m_input = nullptr;
         ScriptQueue* m_sq = new ScriptQueue();
         AudioManager* m_audioManager = new AudioManager();
+
+        GLEngine::Window* m_window = nullptr;
+
+        float* m_progress = new float(0.0f);
 };

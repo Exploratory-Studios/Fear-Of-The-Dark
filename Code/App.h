@@ -4,6 +4,7 @@
 #include "MainMenuScreen.h"
 #include "OptionsMenuScreen.h"
 #include "LoadScreen.h"
+#include "WaitScreen.h"
 #include "GameplayScreen.h"
 
 #include "WorldIOManager.h"
@@ -27,7 +28,8 @@ class App : public GLEngine::IMainGame
         std::unique_ptr<MainMenuScreen> m_mainMenuScreen;
         std::unique_ptr<OptionsMenuScreen> m_optionsMenuScreen;
         std::unique_ptr<LoadScreen> m_loadScreen;
+        std::unique_ptr<WaitScreen> m_waitScreen;
         std::unique_ptr<GameplayScreen> m_gameplayScreen;
 
-        WorldIOManager* m_WorldIOManager = new WorldIOManager(&inputManager);
+        WorldIOManager* m_WorldIOManager = new WorldIOManager(&inputManager, &m_window);
 };

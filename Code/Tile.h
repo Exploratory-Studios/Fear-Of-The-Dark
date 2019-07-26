@@ -8,6 +8,24 @@
 #include "AudioManager.h"
 #include "PresetValues.h"
 
+enum class DataType {
+    FLOAT,
+    INT,
+    STRING
+};
+
+struct GenericData {
+    void* data;
+    DataType type;
+};
+
+struct TileData {
+    glm::vec2 pos;
+    unsigned int id;
+    float ambientLight;
+    //std::vector<GenericData> otherData; // This will be read from and assigned to a Tile's data (like water's level) based on its ID. The program should know what to do with it based on id
+};
+
 class Chunk;
 
 class Tile
@@ -43,22 +61,30 @@ class Tile
         }
         #endif
 
-        glm::vec2&      getPosition() { return m_pos;   }
-        glm::vec2       getSize()     { return m_size;  }
-        unsigned int    getID()       { return m_id;    }
-        bool            isSolid()     { return m_solid; }
-        bool            isNatural()   { return m_natural; }
+        glm::vec2       getPosition() const { return m_pos;   }
+        glm::vec2       getSize()     const { return m_size;  }
+        GLuint          getTextureID()const { return m_textureId; }
+        GLuint          getBackdropTextureID() const { return m_backdropTextureId; }
+        unsigned int    getID()       const { return m_id;    }
+        bool            isSolid()     const { return m_solid; }
+        bool            isNatural()   const { return m_natural; }
         float           getLight();
-        float           getAmbientLight() { return m_ambientLight; }
-        float           getEmittedLight() { return m_emittedLight; }
+        float           getAmbientLight() const { return m_ambientLight; }
+        float           getEmittedLight() const { return m_emittedLight; }
         float           getSurroundingLight();
         float           getSurroundingHeat();
-        unsigned int    getWalkedOnSoundEffectID() { return (unsigned int)m_walkEffect; }
-        float           getSunLight()     { return m_sunLight;     }
-        bool            isTransparent()   { return m_transparent;  }
-        Chunk*          getParentChunk()  const { return m_parentChunk;  }
+        unsigned int    getWalkedOnSoundEffectID() const { return (unsigned int)m_walkEffect; }
+        float           getSunLight()              const { return m_sunLight;     }
+        bool            isTransparent()            const { return m_transparent;  }
+        Chunk*          getParentChunk()           const { return m_parentChunk;  }
         float           getHeat(); // Used when gameplay mechanics are in play (modifiers in use, not used when tiles are inheriting temperatures)
         float           getRawHeat(); // Used whenever two tiles' temperatures are being compared, etc. (No modifiers excepting baseHeat)
+        float           getEmittedHeat() const { return m_emittedHeat; }
+        bool            doDraw()         const { return m_draw; }
+        bool            doDrawBackdrop() const { return m_backdrop; }
+        ParticleIDs     getWalkedOnParticleID() const { return m_walkParticle; }
+
+        virtual TileData        getSaveData() const = 0;
 
         void            setAmbientLight(float light) { m_ambientLight = light; }
         void            setSunlight(float& tickTime)
@@ -90,12 +116,14 @@ class Tile
         virtual void onUpdate(float& time) = 0;
         virtual void onTick(float& tickTime) = 0;
 
+        virtual void loadTexture() = 0; // Fill this out with your own texture
+
         bool exposedToSun();
 
-        glm::vec2 m_pos = glm::vec2(0.0f, 0.0f);
+        glm::vec2 m_pos = glm::vec2(69.420f, 69.420f);
         glm::vec2 m_size = glm::vec2(1, 1);
 
-        GLuint m_textureId;
+        GLuint m_textureId = (GLuint)-1;
         GLuint m_backdropTextureId;
         GLEngine::ColourRGBA8 m_colour = GLEngine::ColourRGBA8(255.0f, 255.0f, 255.0f, 255.0f);
 
@@ -112,7 +140,7 @@ class Tile
 
         float m_lastLight; // This is used to make sure that we aren't giving other blocks light for no reason
 
-        bool m_solid = true; // Don't collide if true: Air, water, etc.
+        bool m_solid = true; // Don't collide if true: Air, water, background pillars, etc. -> This is the 'passable' aspect of blocks
         bool m_draw = false; // Don't draw if true: Air, etc.
         bool m_transparent = false; // 'Transmits' light?
         bool m_backdrop = false; // Does it draw a back wall?
@@ -123,6 +151,7 @@ class Tile
         Chunk* m_parentChunk = nullptr;
 
         SoundEffectIDs m_walkEffect = SoundEffectIDs::WALK_DIRT;
+        ParticleIDs m_walkParticle = ParticleIDs::DIRT_PARTICLE;
 
 };
 

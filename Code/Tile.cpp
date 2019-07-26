@@ -19,7 +19,7 @@ float Tile::getLight() {
 }
 
 float Tile::getSurroundingLight() {
-    int x = (int)m_pos.x - CHUNK_SIZE*m_parentChunk->getIndex();
+    int x = (int)m_pos.x % CHUNK_SIZE;
     int y = (int)m_pos.y;
 
     float light = 0.0f;
@@ -224,6 +224,10 @@ void Tile::tick(float tickTime) {
 void Tile::draw(GLEngine::SpriteBatch& sb, int xOffset) {
 
     if(m_draw) {
+        if(m_textureId == (GLuint)-1) {
+            loadTexture();
+        }
+
         //GLint lightColourUniform = program.getUniformLocation("lightColour");
         //glUniform4fv(lightColourUniform, 3, &glm::vec3(0.0f, 1.0f, 0.0f)[0]);
 

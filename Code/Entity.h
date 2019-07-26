@@ -51,12 +51,12 @@ class Limb { // Display purposes only (displaying proper weapon coords, armour, 
         //ArmourPiece m_armour;
 
         Entity* m_parentEntity = nullptr;
-        GLint m_textureId;
-        glm::vec2 m_pos;
-        glm::vec2 m_size;
+        GLint m_textureId = (GLuint)-1;
+        glm::vec2 m_pos = glm::vec2(1.0f);
+        glm::vec2 m_size = glm::vec2(1.0f);
         float m_angle = 0.0f;
         float m_speed = 0.0f;
-        glm::vec2 m_por;
+        glm::vec2 m_por = glm::vec2(0.0f);
 };
 #include <iostream>
 class Leg : public Limb { // Display purposes only (displaying proper weapon coords, armour, etc.)
@@ -70,11 +70,11 @@ class Leg : public Limb { // Display purposes only (displaying proper weapon coo
         }
 
     private:
-        float m_swingAmnt;
-        float m_centreAngle;
+        float m_swingAmnt = 0.0f;
+        float m_centreAngle = 0.0f;
         bool m_directionPos = true;
 
-        float m_cosTracker;
+        float m_cosTracker = 0.0f;
 };
 
 class Player;
@@ -114,7 +114,7 @@ class Entity
         unsigned int getChunkIndex();
 
     protected:
-        bool checkTilePosition(Tile* tiles[WORLD_HEIGHT][CHUNK_SIZE], Tile* extraTileArray[WORLD_HEIGHT][2], std::vector<glm::vec2>& collideTilePositions, float xPos, float yPos);
+        bool checkTilePosition(Tile*** tiles, Tile*** extraTileArray, std::vector<glm::vec2>& collideTilePositions, float xPos, float yPos);
         void collideWithTile(glm::vec2 tilePos, bool ground = false);
         void updateLightLevel();
         virtual void updateAI() {};

@@ -23,7 +23,7 @@ class Chunk
 
         void init(Tile* tileArray[WORLD_HEIGHT][CHUNK_SIZE], Tile* extraTileArray[WORLD_HEIGHT][2], Chunk* surroundingChunks[2], EntityManager* entityManager, AudioManager* audio);
 
-        void update(float time, float timeStepVariable, Chunk* chunks[WORLD_SIZE], bool updateEntities = true); // updateEntities is used for script pausing
+        void update(float time, float timeStepVariable, Chunk** chunks, bool updateEntities = true); // updateEntities is used for script pausing
         void tick(float tickTime, Player* p, WorldEra& era, bool updateEntities = true);
         void draw(GLEngine::SpriteBatch& sb, int xOffset, float time, GLEngine::Camera2D camera); // xOffset is in chunks
 
@@ -38,6 +38,8 @@ class Chunk
         void drawChunk() { m_draw = true; }
         void stopdrawingChunk() { m_draw = false; }
 
+        void deleteDeadTiles();
+
         void addEntity(Entity ent);
         Entity* getEntity(unsigned int index);
 
@@ -50,8 +52,8 @@ class Chunk
 
         void setAudioManager(AudioManager* audio);
 
-        Tile* tiles[WORLD_HEIGHT][CHUNK_SIZE] = { { nullptr } };
-        Tile* extraTiles[WORLD_HEIGHT][2] = { { nullptr } }; // On each side, so that we don't have to activate 3 chunks at a time instead of one
+        Tile*** tiles = new Tile**[WORLD_HEIGHT];
+        Tile*** extraTiles = new Tile**[WORLD_HEIGHT]; // On each side, so that we don't have to activate 3 chunks at a time instead of one
 
     private:
         Logger* logger = Logger::getInstance();
@@ -59,6 +61,8 @@ class Chunk
         EntityManager* m_entityManager = nullptr;
 
 		Chunk* m_surroundingChunks[2] = { nullptr };
+
+		std::vector<Tile*> m_deadTiles; // Tiles that need to be deleted, but still might be attached to something. My solution: to keep them for a full frame cycle and then delete
 
         Categories::Places m_place;
         int m_index;

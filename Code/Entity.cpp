@@ -410,7 +410,7 @@ int Entity::setParentChunk(Chunk* worldChunks[WORLD_SIZE]) {
     return ret;
 }
 
-bool Entity::checkTilePosition(Tile* tiles[WORLD_HEIGHT][CHUNK_SIZE], Tile* extraTileArray[WORLD_HEIGHT][2], std::vector<glm::vec2>& collideTilePositions, float x, float y) {
+bool Entity::checkTilePosition(Tile*** tiles, Tile*** extraTileArray, std::vector<glm::vec2>& collideTilePositions, float x, float y) {
     // Get the position of this corner in grid-space
     glm::vec2 gridPos = glm::vec2(floor(x / TILE_SIZE),
                                       floor(y / TILE_SIZE)); // grid-space coords

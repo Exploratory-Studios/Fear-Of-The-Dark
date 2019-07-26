@@ -22,7 +22,8 @@ namespace Categories {
         BUSH,
         TORCH,
         FOLIAGE,
-        WOOD
+        WOOD,
+        WATER
     };
 
     enum class ItemIDs {

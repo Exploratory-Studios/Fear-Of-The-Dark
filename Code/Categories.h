@@ -31,7 +31,8 @@ namespace Categories {
         BLOCK_DIRT,
         BLOCK_TORCH,
         BLOCK_GRASS,
-        BLOCK_WOOD
+        BLOCK_WOOD,
+        MISC_BUCKET
     };
 
     enum class EntityIDs { // Should match up with presetvalues.h entities' data

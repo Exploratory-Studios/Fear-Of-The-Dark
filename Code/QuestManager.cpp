@@ -3,8 +3,7 @@
 #include <GUI.h>
 
 DialogueManager::~DialogueManager() {
-    delete m_questionList;
-    delete m_flagList;
+
 }
 
 void DialogueManager::startConversation(unsigned int id, GLEngine::InputManager& input) {

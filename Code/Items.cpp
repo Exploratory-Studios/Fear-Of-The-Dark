@@ -47,3 +47,13 @@ ItemBlockWood::ItemBlockWood(unsigned int quantity) {
     m_canConsume = false;
     m_canPlace = true;
 }
+
+ItemMiscBucket::ItemMiscBucket(unsigned int quantity) {
+    m_id = (unsigned int)Categories::ItemIDs::MISC_BUCKET;
+    m_weight = 0.0f;
+    m_quantity = quantity;
+
+    m_isBlock = false;
+    m_canConsume = false;
+    m_canPlace = true;
+}

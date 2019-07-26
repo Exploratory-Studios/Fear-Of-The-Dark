@@ -9,13 +9,11 @@
 
 /// World size variables
 // How many tiles in a chunk?
-#define CHUNK_SIZE 48 // 48
-// How many pixels to a tile?
-#define TILE_SIZE 1
+#define CHUNK_SIZE 64 // 48
 // How many tiles high is the world?
-#define WORLD_HEIGHT 320 // 320
+#define WORLD_HEIGHT 500 // 320
 // How many chunks does the world have?
-#define WORLD_SIZE 64 // 32 (doesnt segfault on save) (64 does)
+#define WORLD_SIZE 128 // 32 (doesnt segfault on save) (64 does NOT NOW!)
 
 // How high does water spawn naturally?
 #define WATER_LEVEL 50
@@ -26,10 +24,15 @@
 // How many ticks per second?
 #define TICK_RATE 4
 
+#ifndef DEV_CONTROLS
 // What is the minimum scale of the camera?
-#define MIN_ZOOM 15.0f//0.001f // 15
+#define MIN_ZOOM 20.0f//0.001f // 15
 // What is the maximum scale of the camera?
-#define MAX_ZOOM 15.0f//15.0*12.5
+#define MAX_ZOOM 20.0f//15.0*12.5
+#else
+#define MIN_ZOOM 1.0f
+#define MAX_ZOOM 100.0f
+#endif // DEV_CONTROLS
 
 // How many boxes are in the hotbar?
 #define HOTBAR_BOX_NUM 10
@@ -47,7 +50,7 @@
 #define INVENTORY_BOX_PADDING 4
 
 // How fast is TOO fast? (2.0 tiles/update, 120.0 tiles/sec.)
-#define MAX_SPEED TILE_SIZE * 2.0f
+#define MAX_SPEED 2.0f
 
 // How much can the player carry MAX
 #define MAX_WEIGHT 100.0f
@@ -199,7 +202,7 @@ namespace Category_Data {
     const unsigned int TOTAL_PLACES = 8;
     const unsigned int TOTAL_MOBS = 3;
     const unsigned int TOTAL_DIALOGUE_MOBS = 1;
-    const unsigned int TOTAL_ITEMS = 5;
+    const unsigned int TOTAL_ITEMS = 6;
 
     const PlaceDatum placeData[Category_Data::TOTAL_PLACES] = {
                                                                  PlaceDatum(20, -14, 25, 10, 7.5, {2}), // temperature averages in late fall-ish, as that's the kind of feel the game should have. Fall-ish...
@@ -235,8 +238,9 @@ namespace Category_Data {
                                                             ItemDatum((unsigned int)Categories::ItemIDs::BLOCK_DIRT, ASSETS_FOLDER_PATH + "Textures/Blocks/Dirt.png", "Dirt"),
                                                             ItemDatum((unsigned int)Categories::ItemIDs::BLOCK_TORCH, ASSETS_FOLDER_PATH + "Textures/Blocks/Torch.png", "Torch"),
                                                             ItemDatum((unsigned int)Categories::ItemIDs::BLOCK_GRASS, ASSETS_FOLDER_PATH + "Textures/Blocks/Grass.png", "Grass"),
-                                                            ItemDatum((unsigned int)Categories::ItemIDs::BLOCK_WOOD, ASSETS_FOLDER_PATH + "Textures/Blocks/WoodBlock.png", "Wood")
-                                                           };
+                                                            ItemDatum((unsigned int)Categories::ItemIDs::BLOCK_WOOD, ASSETS_FOLDER_PATH + "Textures/Blocks/WoodBlock.png", "Wood"),
+                                                            ItemDatum((unsigned int)Categories::ItemIDs::MISC_BUCKET, ASSETS_FOLDER_PATH + "Textures/Items/Bucket.png", "Bucket")
+                                                           }; /// TODO Make all of these value things static! We don't want them on the stack, but on the heap instead
 
 
 };

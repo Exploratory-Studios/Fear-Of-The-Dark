@@ -232,7 +232,7 @@ void Tile::draw(GLEngine::SpriteBatch& sb, int xOffset) {
         //glUniform4fv(lightColourUniform, 3, &glm::vec3(0.0f, 1.0f, 0.0f)[0]);
 
         int r = m_colour.r, g = m_colour.g, b = m_colour.b;
-        sb.draw(glm::vec4(m_pos.x * TILE_SIZE + xOffset * CHUNK_SIZE * TILE_SIZE, m_pos.y * TILE_SIZE, m_size.x * TILE_SIZE, m_size.y * TILE_SIZE),
+        sb.draw(glm::vec4(m_pos.x + xOffset * CHUNK_SIZE, m_pos.y, m_size.x, m_size.y),
                 glm::vec4(0.0f, 0.0f, 1.0f, 1.0f),
                 m_textureId,
                 0.75f,
@@ -247,7 +247,7 @@ void Tile::drawBackdrop(GLEngine::SpriteBatch& sb, int xOffset, int yOffset, flo
         //glUniform4fv(lightColourUniform, 3, &glm::vec3(0.0f, 1.0f, 0.0f)[0]);
 
         int r = m_colour.r * 0.2f, g = m_colour.g * 0.2f, b = m_colour.b * 0.2f;
-        sb.draw(glm::vec4(m_pos.x * TILE_SIZE + xOffset * CHUNK_SIZE * TILE_SIZE, m_pos.y * TILE_SIZE + yOffset, m_size.x * TILE_SIZE, m_size.y * TILE_SIZE),
+        sb.draw(glm::vec4(m_pos.x + xOffset * CHUNK_SIZE, m_pos.y + yOffset, m_size.x, m_size.y),
                 glm::vec4(0.0f, 0.0f, 1.0f, 1.0f),
                 m_backdropTextureId,
                 0.1f,

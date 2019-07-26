@@ -8,7 +8,7 @@ App::App()
 
 App::~App()
 {
-    //dtor
+
 }
 
 void App::onInit() {

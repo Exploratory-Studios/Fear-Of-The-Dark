@@ -10,19 +10,19 @@ namespace EntityFunctions {
 
             if(targets.size() > currentTarget) {
                 //float modifier = 0.0f;
-                if(targets[currentTarget].x + TILE_SIZE / 2.0f > position.x + size.x * TILE_SIZE / 2.0f) {
+                if(targets[currentTarget].x / 2.0f > position.x + size.x / 2.0f) {
                     controls[3] = true; // RIGHT
                     controls[2] = false;
                 }
-                if(targets[currentTarget].x + TILE_SIZE / 2.0f < position.x + size.x * TILE_SIZE / 2.0f) {
+                if(targets[currentTarget].x / 2.0f < position.x + size.x / 2.0f) {
                     controls[2] = true; // LEFT
                     controls[3] = false;
                 }
-                if((int)targets[currentTarget].y - (int)position.y > TILE_SIZE / 2.0f) {
+                if((int)targets[currentTarget].y - (int)position.y > 1.0f / 2.0f) {
                     controls[0] = true;
                 }
 
-                if(abs(position.x + size.x * TILE_SIZE / 2.0f - targets[currentTarget].x + TILE_SIZE / 2.0f) <= 0.0f) {
+                if(abs(position.x + size.x / 2.0f - targets[currentTarget].x / 2.0f) <= 0.0f) {
                     currentTarget++;
                     if(currentTarget >= targets.size()) {
                         targets.clear();

@@ -8,21 +8,11 @@
 #include "AudioManager.h"
 #include "PresetValues.h"
 
-enum class DataType {
-    FLOAT,
-    INT,
-    STRING
-};
-
-struct GenericData {
-    void* data;
-    DataType type;
-};
-
 struct TileData {
     glm::vec2 pos;
     unsigned int id;
     float ambientLight;
+    MetaData metaData;
     //std::vector<GenericData> otherData; // This will be read from and assigned to a Tile's data (like water's level) based on its ID. The program should know what to do with it based on id
 };
 

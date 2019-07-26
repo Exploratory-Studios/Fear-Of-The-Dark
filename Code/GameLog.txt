@@ -784750,3 +784750,1353 @@ Loaded flag with id of 3 and value of 0
 Loaded flag with id of 4 and value of 0
 Loaded flag with id of 5 and value of 0
 Flags loaded! (125 bytes)
+
+
+
+### LOG: Fri Jul 26 16:15:09 2019 ###
+
+Loaded all 1 music files.
+Loaded all 2 sound files.
+Successfully Loaded Script File: ../Assets/Scripts/Script_player_makeHouse.txt, and given id of: 1
+Loading dialogue. 1297 bytes to read.
+Successfully Loaded Script File: ../Assets/Scripts/Script_selected_makeHouse.txt, and given id of: 2
+Successfully Loaded Script File: ../Assets/Scripts/Script_player_makeHouse.txt, and given id of: 1
+Dialogue loaded! (1297 bytes)
+Loading flags. 125 bytes to read.
+Loaded flag with id of 0 and value of 0
+Loaded flag with id of 1 and value of 0
+Loaded flag with id of 2 and value of 0
+Loaded flag with id of 3 and value of 0
+Loaded flag with id of 4 and value of 0
+Loaded flag with id of 5 and value of 0
+Flags loaded! (125 bytes)
+
+
+
+### LOG: Fri Jul 26 16:27:20 2019 ###
+
+
+
+
+### LOG: Fri Jul 26 16:47:40 2019 ###
+
+Loaded all 1 music files.
+Loaded all 2 sound files.
+Successfully Loaded Script File: ../Assets/Scripts/Script_player_makeHouse.txt, and given id of: 1
+Loading dialogue. 1297 bytes to read.
+Successfully Loaded Script File: ../Assets/Scripts/Script_selected_makeHouse.txt, and given id of: 2
+Successfully Loaded Script File: ../Assets/Scripts/Script_player_makeHouse.txt, and given id of: 1
+Dialogue loaded! (1297 bytes)
+Loading flags. 125 bytes to read.
+Loaded flag with id of 0 and value of 0
+Loaded flag with id of 1 and value of 0
+Loaded flag with id of 2 and value of 0
+Loaded flag with id of 3 and value of 0
+Loaded flag with id of 4 and value of 0
+Loaded flag with id of 5 and value of 0
+Flags loaded! (125 bytes)
+
+
+
+### LOG: Fri Jul 26 16:47:53 2019 ###
+
+Loaded all 1 music files.
+Loaded all 2 sound files.
+Successfully Loaded Script File: ../Assets/Scripts/Script_player_makeHouse.txt, and given id of: 1
+Loading dialogue. 1297 bytes to read.
+Successfully Loaded Script File: ../Assets/Scripts/Script_selected_makeHouse.txt, and given id of: 2
+Successfully Loaded Script File: ../Assets/Scripts/Script_player_makeHouse.txt, and given id of: 1
+Dialogue loaded! (1297 bytes)
+Loading flags. 125 bytes to read.
+Loaded flag with id of 0 and value of 0
+Loaded flag with id of 1 and value of 0
+Loaded flag with id of 2 and value of 0
+Loaded flag with id of 3 and value of 0
+Loaded flag with id of 4 and value of 0
+Loaded flag with id of 5 and value of 0
+Flags loaded! (125 bytes)
+
+
+
+### LOG: Fri Jul 26 16:49:00 2019 ###
+
+Loaded all 1 music files.
+Loaded all 2 sound files.
+Successfully Loaded Script File: ../Assets/Scripts/Script_player_makeHouse.txt, and given id of: 1
+Loading dialogue. 1297 bytes to read.
+Successfully Loaded Script File: ../Assets/Scripts/Script_selected_makeHouse.txt, and given id of: 2
+Successfully Loaded Script File: ../Assets/Scripts/Script_player_makeHouse.txt, and given id of: 1
+Dialogue loaded! (1297 bytes)
+Loading flags. 125 bytes to read.
+Loaded flag with id of 0 and value of 0
+Loaded flag with id of 1 and value of 0
+Loaded flag with id of 2 and value of 0
+Loaded flag with id of 3 and value of 0
+Loaded flag with id of 4 and value of 0
+Loaded flag with id of 5 and value of 0
+Flags loaded! (125 bytes)
+
+
+
+### LOG: Fri Jul 26 16:56:22 2019 ###
+
+Loaded all 1 music files.
+Loaded all 2 sound files.
+Successfully Loaded Script File: ../Assets/Scripts/Script_player_makeHouse.txt, and given id of: 1
+Loading dialogue. 1297 bytes to read.
+Successfully Loaded Script File: ../Assets/Scripts/Script_selected_makeHouse.txt, and given id of: 2
+Successfully Loaded Script File: ../Assets/Scripts/Script_player_makeHouse.txt, and given id of: 1
+Dialogue loaded! (1297 bytes)
+Loading flags. 125 bytes to read.
+Loaded flag with id of 0 and value of 0
+Loaded flag with id of 1 and value of 0
+Loaded flag with id of 2 and value of 0
+Loaded flag with id of 3 and value of 0
+Loaded flag with id of 4 and value of 0
+Loaded flag with id of 5 and value of 0
+Flags loaded! (125 bytes)
+
+
+
+### LOG: Fri Jul 26 16:59:00 2019 ###
+
+Loaded all 1 music files.
+Loaded all 2 sound files.
+Successfully Loaded Script File: ../Assets/Scripts/Script_player_makeHouse.txt, and given id of: 1
+Loading dialogue. 1297 bytes to read.
+Successfully Loaded Script File: ../Assets/Scripts/Script_selected_makeHouse.txt, and given id of: 2
+Successfully Loaded Script File: ../Assets/Scripts/Script_player_makeHouse.txt, and given id of: 1
+Dialogue loaded! (1297 bytes)
+Loading flags. 125 bytes to read.
+Loaded flag with id of 0 and value of 0
+Loaded flag with id of 1 and value of 0
+Loaded flag with id of 2 and value of 0
+Loaded flag with id of 3 and value of 0
+Loaded flag with id of 4 and value of 0
+Loaded flag with id of 5 and value of 0
+Flags loaded! (125 bytes)
+
+
+
+### LOG: Fri Jul 26 17:01:58 2019 ###
+
+Loaded all 1 music files.
+Loaded all 2 sound files.
+Successfully Loaded Script File: ../Assets/Scripts/Script_player_makeHouse.txt, and given id of: 1
+Loading dialogue. 1297 bytes to read.
+Successfully Loaded Script File: ../Assets/Scripts/Script_selected_makeHouse.txt, and given id of: 2
+Successfully Loaded Script File: ../Assets/Scripts/Script_player_makeHouse.txt, and given id of: 1
+Dialogue loaded! (1297 bytes)
+Loading flags. 125 bytes to read.
+Loaded flag with id of 0 and value of 0
+Loaded flag with id of 1 and value of 0
+Loaded flag with id of 2 and value of 0
+Loaded flag with id of 3 and value of 0
+Loaded flag with id of 4 and value of 0
+Loaded flag with id of 5 and value of 0
+Flags loaded! (125 bytes)
+
+
+
+### LOG: Fri Jul 26 17:11:01 2019 ###
+
+Loaded all 1 music files.
+Loaded all 2 sound files.
+Successfully Loaded Script File: ../Assets/Scripts/Script_player_makeHouse.txt, and given id of: 1
+Loading dialogue. 1297 bytes to read.
+Successfully Loaded Script File: ../Assets/Scripts/Script_selected_makeHouse.txt, and given id of: 2
+Successfully Loaded Script File: ../Assets/Scripts/Script_player_makeHouse.txt, and given id of: 1
+Dialogue loaded! (1297 bytes)
+Loading flags. 125 bytes to read.
+Loaded flag with id of 0 and value of 0
+Loaded flag with id of 1 and value of 0
+Loaded flag with id of 2 and value of 0
+Loaded flag with id of 3 and value of 0
+Loaded flag with id of 4 and value of 0
+Loaded flag with id of 5 and value of 0
+Flags loaded! (125 bytes)
+
+
+
+### LOG: Fri Jul 26 17:12:59 2019 ###
+
+Loaded all 1 music files.
+Loaded all 2 sound files.
+Successfully Loaded Script File: ../Assets/Scripts/Script_player_makeHouse.txt, and given id of: 1
+Loading dialogue. 1297 bytes to read.
+Successfully Loaded Script File: ../Assets/Scripts/Script_selected_makeHouse.txt, and given id of: 2
+Successfully Loaded Script File: ../Assets/Scripts/Script_player_makeHouse.txt, and given id of: 1
+Dialogue loaded! (1297 bytes)
+Loading flags. 125 bytes to read.
+Loaded flag with id of 0 and value of 0
+Loaded flag with id of 1 and value of 0
+Loaded flag with id of 2 and value of 0
+Loaded flag with id of 3 and value of 0
+Loaded flag with id of 4 and value of 0
+Loaded flag with id of 5 and value of 0
+Flags loaded! (125 bytes)
+
+
+
+### LOG: Fri Jul 26 17:28:41 2019 ###
+
+
+
+
+### LOG: Fri Jul 26 17:28:59 2019 ###
+
+Loaded all 1 music files.
+Loaded all 2 sound files.
+Successfully Loaded Script File: ../Assets/Scripts/Script_player_makeHouse.txt, and given id of: 1
+Loading dialogue. 1297 bytes to read.
+Successfully Loaded Script File: ../Assets/Scripts/Script_selected_makeHouse.txt, and given id of: 2
+Successfully Loaded Script File: ../Assets/Scripts/Script_player_makeHouse.txt, and given id of: 1
+Dialogue loaded! (1297 bytes)
+Loading flags. 125 bytes to read.
+Loaded flag with id of 0 and value of 0
+Loaded flag with id of 1 and value of 0
+Loaded flag with id of 2 and value of 0
+Loaded flag with id of 3 and value of 0
+Loaded flag with id of 4 and value of 0
+Loaded flag with id of 5 and value of 0
+Flags loaded! (125 bytes)
+
+
+
+### LOG: Fri Jul 26 17:32:39 2019 ###
+
+
+
+
+### LOG: Fri Jul 26 17:33:08 2019 ###
+
+Loaded all 1 music files.
+Loaded all 2 sound files.
+Successfully Loaded Script File: ../Assets/Scripts/Script_player_makeHouse.txt, and given id of: 1
+Loading dialogue. 1297 bytes to read.
+Successfully Loaded Script File: ../Assets/Scripts/Script_selected_makeHouse.txt, and given id of: 2
+Successfully Loaded Script File: ../Assets/Scripts/Script_player_makeHouse.txt, and given id of: 1
+Dialogue loaded! (1297 bytes)
+Loading flags. 125 bytes to read.
+Loaded flag with id of 0 and value of 0
+Loaded flag with id of 1 and value of 0
+Loaded flag with id of 2 and value of 0
+Loaded flag with id of 3 and value of 0
+Loaded flag with id of 4 and value of 0
+Loaded flag with id of 5 and value of 0
+Flags loaded! (125 bytes)
+
+
+
+### LOG: Fri Jul 26 17:43:37 2019 ###
+
+Loaded all 1 music files.
+Loaded all 2 sound files.
+Successfully Loaded Script File: ../Assets/Scripts/Script_player_makeHouse.txt, and given id of: 1
+Loading dialogue. 1297 bytes to read.
+Successfully Loaded Script File: ../Assets/Scripts/Script_selected_makeHouse.txt, and given id of: 2
+Successfully Loaded Script File: ../Assets/Scripts/Script_player_makeHouse.txt, and given id of: 1
+Dialogue loaded! (1297 bytes)
+Loading flags. 125 bytes to read.
+Loaded flag with id of 0 and value of 0
+Loaded flag with id of 1 and value of 0
+Loaded flag with id of 2 and value of 0
+Loaded flag with id of 3 and value of 0
+Loaded flag with id of 4 and value of 0
+Loaded flag with id of 5 and value of 0
+Flags loaded! (125 bytes)
+
+
+
+### LOG: Fri Jul 26 17:53:09 2019 ###
+
+Loaded all 1 music files.
+Loaded all 2 sound files.
+Successfully Loaded Script File: ../Assets/Scripts/Script_player_makeHouse.txt, and given id of: 1
+Loading dialogue. 1297 bytes to read.
+Successfully Loaded Script File: ../Assets/Scripts/Script_selected_makeHouse.txt, and given id of: 2
+Successfully Loaded Script File: ../Assets/Scripts/Script_player_makeHouse.txt, and given id of: 1
+Dialogue loaded! (1297 bytes)
+Loading flags. 125 bytes to read.
+Loaded flag with id of 0 and value of 0
+Loaded flag with id of 1 and value of 0
+Loaded flag with id of 2 and value of 0
+Loaded flag with id of 3 and value of 0
+Loaded flag with id of 4 and value of 0
+Loaded flag with id of 5 and value of 0
+Flags loaded! (125 bytes)
+
+### IMPORTANT: ENTITY CREATED WITH NO AUDIO MANAGER! ###
+
+
+
+
+### LOG: Fri Jul 26 17:55:15 2019 ###
+
+Loaded all 1 music files.
+Loaded all 2 sound files.
+Successfully Loaded Script File: ../Assets/Scripts/Script_player_makeHouse.txt, and given id of: 1
+Loading dialogue. 1297 bytes to read.
+Successfully Loaded Script File: ../Assets/Scripts/Script_selected_makeHouse.txt, and given id of: 2
+Successfully Loaded Script File: ../Assets/Scripts/Script_player_makeHouse.txt, and given id of: 1
+Dialogue loaded! (1297 bytes)
+Loading flags. 125 bytes to read.
+Loaded flag with id of 0 and value of 0
+Loaded flag with id of 1 and value of 0
+Loaded flag with id of 2 and value of 0
+Loaded flag with id of 3 and value of 0
+Loaded flag with id of 4 and value of 0
+Loaded flag with id of 5 and value of 0
+Flags loaded! (125 bytes)
+Setting time to 0
+Tried to create a structure badly, please try again, first coord is lower left corner, second is upper right.
+
+### IMPORTANT: ENTITY CREATED WITH NO AUDIO MANAGER! ###
+
+SAVE: Saved structure with width of 8 and height of 9 successfully under id 0.
+SAVE: Saved structure with width of 8 and height of 6 successfully under id 0.
+
+### LOAD: Loaded Version: 1.0.1, Using Version: 1.0.1 ###
+
+
+### LOAD: Loaded Version: 1.0.1, Using Version: 1.0.1 ###
+
+
+### LOAD: Loaded Version: 1.0.1, Using Version: 1.0.1 ###
+
+
+### LOAD: Loaded Version: 1.0.1, Using Version: 1.0.1 ###
+
+
+### LOAD: Loaded Version: 1.0.1, Using Version: 1.0.1 ###
+
+Setting time to 0
+
+### IMPORTANT: ENTITY CREATED WITH NO AUDIO MANAGER! ###
+
+
+### IMPORTANT: ENTITY CREATED WITH NO AUDIO MANAGER! ###
+
+SAVE: Saved structure with width of 9 and height of 6 successfully under id 0.
+
+### IMPORTANT: ENTITY CREATED WITH NO AUDIO MANAGER! ###
+
+
+### LOAD: Loaded Version: 1.0.1, Using Version: 1.0.1 ###
+
+
+### LOAD: Loaded Version: 1.0.1, Using Version: 1.0.1 ###
+
+
+### LOAD: Loaded Version: 1.0.1, Using Version: 1.0.1 ###
+
+
+### LOAD: Loaded Version: 1.0.1, Using Version: 1.0.1 ###
+
+
+
+
+### LOG: Fri Jul 26 17:57:43 2019 ###
+
+Loaded all 1 music files.
+Loaded all 2 sound files.
+Successfully Loaded Script File: ../Assets/Scripts/Script_player_makeHouse.txt, and given id of: 1
+Loading dialogue. 1297 bytes to read.
+Successfully Loaded Script File: ../Assets/Scripts/Script_selected_makeHouse.txt, and given id of: 2
+Successfully Loaded Script File: ../Assets/Scripts/Script_player_makeHouse.txt, and given id of: 1
+Dialogue loaded! (1297 bytes)
+Loading flags. 125 bytes to read.
+Loaded flag with id of 0 and value of 0
+Loaded flag with id of 1 and value of 0
+Loaded flag with id of 2 and value of 0
+Loaded flag with id of 3 and value of 0
+Loaded flag with id of 4 and value of 0
+Loaded flag with id of 5 and value of 0
+Flags loaded! (125 bytes)
+
+
+
+### LOG: Fri Jul 26 17:58:14 2019 ###
+
+Loaded all 1 music files.
+Loaded all 2 sound files.
+Successfully Loaded Script File: ../Assets/Scripts/Script_player_makeHouse.txt, and given id of: 1
+Loading dialogue. 1297 bytes to read.
+Successfully Loaded Script File: ../Assets/Scripts/Script_selected_makeHouse.txt, and given id of: 2
+Successfully Loaded Script File: ../Assets/Scripts/Script_player_makeHouse.txt, and given id of: 1
+Dialogue loaded! (1297 bytes)
+Loading flags. 125 bytes to read.
+Loaded flag with id of 0 and value of 0
+Loaded flag with id of 1 and value of 0
+Loaded flag with id of 2 and value of 0
+Loaded flag with id of 3 and value of 0
+Loaded flag with id of 4 and value of 0
+Loaded flag with id of 5 and value of 0
+Flags loaded! (125 bytes)
+
+
+
+### LOG: Fri Jul 26 18:00:37 2019 ###
+
+Loaded all 1 music files.
+Loaded all 2 sound files.
+Successfully Loaded Script File: ../Assets/Scripts/Script_player_makeHouse.txt, and given id of: 1
+Loading dialogue. 1297 bytes to read.
+Successfully Loaded Script File: ../Assets/Scripts/Script_selected_makeHouse.txt, and given id of: 2
+Successfully Loaded Script File: ../Assets/Scripts/Script_player_makeHouse.txt, and given id of: 1
+Dialogue loaded! (1297 bytes)
+Loading flags. 125 bytes to read.
+Loaded flag with id of 0 and value of 0
+Loaded flag with id of 1 and value of 0
+Loaded flag with id of 2 and value of 0
+Loaded flag with id of 3 and value of 0
+Loaded flag with id of 4 and value of 0
+Loaded flag with id of 5 and value of 0
+Flags loaded! (125 bytes)
+
+
+
+### LOG: Fri Jul 26 18:01:52 2019 ###
+
+Loaded all 1 music files.
+Loaded all 2 sound files.
+Successfully Loaded Script File: ../Assets/Scripts/Script_player_makeHouse.txt, and given id of: 1
+Loading dialogue. 1297 bytes to read.
+Successfully Loaded Script File: ../Assets/Scripts/Script_selected_makeHouse.txt, and given id of: 2
+Successfully Loaded Script File: ../Assets/Scripts/Script_player_makeHouse.txt, and given id of: 1
+Dialogue loaded! (1297 bytes)
+Loading flags. 125 bytes to read.
+Loaded flag with id of 0 and value of 0
+Loaded flag with id of 1 and value of 0
+Loaded flag with id of 2 and value of 0
+Loaded flag with id of 3 and value of 0
+Loaded flag with id of 4 and value of 0
+Loaded flag with id of 5 and value of 0
+Flags loaded! (125 bytes)
+
+
+
+### LOG: Fri Jul 26 18:02:39 2019 ###
+
+Loaded all 1 music files.
+Loaded all 2 sound files.
+Successfully Loaded Script File: ../Assets/Scripts/Script_player_makeHouse.txt, and given id of: 1
+Loading dialogue. 1297 bytes to read.
+Successfully Loaded Script File: ../Assets/Scripts/Script_selected_makeHouse.txt, and given id of: 2
+Successfully Loaded Script File: ../Assets/Scripts/Script_player_makeHouse.txt, and given id of: 1
+Dialogue loaded! (1297 bytes)
+Loading flags. 125 bytes to read.
+Loaded flag with id of 0 and value of 0
+Loaded flag with id of 1 and value of 0
+Loaded flag with id of 2 and value of 0
+Loaded flag with id of 3 and value of 0
+Loaded flag with id of 4 and value of 0
+Loaded flag with id of 5 and value of 0
+Flags loaded! (125 bytes)
+
+
+
+### LOG: Fri Jul 26 18:03:51 2019 ###
+
+Loaded all 1 music files.
+Loaded all 2 sound files.
+Successfully Loaded Script File: ../Assets/Scripts/Script_player_makeHouse.txt, and given id of: 1
+Loading dialogue. 1297 bytes to read.
+Successfully Loaded Script File: ../Assets/Scripts/Script_selected_makeHouse.txt, and given id of: 2
+Successfully Loaded Script File: ../Assets/Scripts/Script_player_makeHouse.txt, and given id of: 1
+Dialogue loaded! (1297 bytes)
+Loading flags. 125 bytes to read.
+Loaded flag with id of 0 and value of 0
+Loaded flag with id of 1 and value of 0
+Loaded flag with id of 2 and value of 0
+Loaded flag with id of 3 and value of 0
+Loaded flag with id of 4 and value of 0
+Loaded flag with id of 5 and value of 0
+Flags loaded! (125 bytes)
+
+### LOAD: STARTING LOAD AT 2987.985107 ###
+
+
+
+
+### LOG: Fri Jul 26 18:05:10 2019 ###
+
+Loaded all 1 music files.
+Loaded all 2 sound files.
+Successfully Loaded Script File: ../Assets/Scripts/Script_player_makeHouse.txt, and given id of: 1
+Loading dialogue. 1297 bytes to read.
+Successfully Loaded Script File: ../Assets/Scripts/Script_selected_makeHouse.txt, and given id of: 2
+Successfully Loaded Script File: ../Assets/Scripts/Script_player_makeHouse.txt, and given id of: 1
+Dialogue loaded! (1297 bytes)
+Loading flags. 125 bytes to read.
+Loaded flag with id of 0 and value of 0
+Loaded flag with id of 1 and value of 0
+Loaded flag with id of 2 and value of 0
+Loaded flag with id of 3 and value of 0
+Loaded flag with id of 4 and value of 0
+Loaded flag with id of 5 and value of 0
+Flags loaded! (125 bytes)
+SAVE: Starting World Save to File: TestSave.bin
+SAVE: Starting Save Preparations
+SAVE: Player Data Prepared
+
+### SAVE: ALL DATA PREPARED, STARTING SAVE ###
+
+SAVE: Started Saving with version: 1.0.1
+SAVE: Wrote Player POD
+SAVE: Wrote Player Inventory
+SAVE: Wrote World Chunks
+
+### SAVE: SAVE COMPLETED ###
+
+
+
+
+### LOG: Fri Jul 26 18:06:37 2019 ###
+
+Loaded all 1 music files.
+Loaded all 2 sound files.
+Successfully Loaded Script File: ../Assets/Scripts/Script_player_makeHouse.txt, and given id of: 1
+Loading dialogue. 1297 bytes to read.
+Successfully Loaded Script File: ../Assets/Scripts/Script_selected_makeHouse.txt, and given id of: 2
+Successfully Loaded Script File: ../Assets/Scripts/Script_player_makeHouse.txt, and given id of: 1
+Dialogue loaded! (1297 bytes)
+Loading flags. 125 bytes to read.
+Loaded flag with id of 0 and value of 0
+Loaded flag with id of 1 and value of 0
+Loaded flag with id of 2 and value of 0
+Loaded flag with id of 3 and value of 0
+Loaded flag with id of 4 and value of 0
+Loaded flag with id of 5 and value of 0
+Flags loaded! (125 bytes)
+
+
+
+### LOG: Fri Jul 26 18:08:43 2019 ###
+
+Loaded all 1 music files.
+Loaded all 2 sound files.
+Successfully Loaded Script File: ../Assets/Scripts/Script_player_makeHouse.txt, and given id of: 1
+Loading dialogue. 1297 bytes to read.
+Successfully Loaded Script File: ../Assets/Scripts/Script_selected_makeHouse.txt, and given id of: 2
+Successfully Loaded Script File: ../Assets/Scripts/Script_player_makeHouse.txt, and given id of: 1
+Dialogue loaded! (1297 bytes)
+Loading flags. 125 bytes to read.
+Loaded flag with id of 0 and value of 0
+Loaded flag with id of 1 and value of 0
+Loaded flag with id of 2 and value of 0
+Loaded flag with id of 3 and value of 0
+Loaded flag with id of 4 and value of 0
+Loaded flag with id of 5 and value of 0
+Flags loaded! (125 bytes)
+SAVE: Starting World Save to File: TestSave.bin
+SAVE: Starting Save Preparations
+SAVE: Player Data Prepared
+SAVE: Chunk Data Prepared
+
+### SAVE: ALL DATA PREPARED, STARTING SAVE ###
+
+SAVE: Started Saving with version: 1.0.1
+SAVE: Wrote Player POD
+SAVE: Wrote Player Inventory
+SAVE: Wrote World Chunks
+
+### SAVE: SAVE COMPLETED ###
+
+
+
+
+### LOG: Fri Jul 26 18:09:43 2019 ###
+
+Loaded all 1 music files.
+Loaded all 2 sound files.
+Successfully Loaded Script File: ../Assets/Scripts/Script_player_makeHouse.txt, and given id of: 1
+Loading dialogue. 1297 bytes to read.
+Successfully Loaded Script File: ../Assets/Scripts/Script_selected_makeHouse.txt, and given id of: 2
+Successfully Loaded Script File: ../Assets/Scripts/Script_player_makeHouse.txt, and given id of: 1
+Dialogue loaded! (1297 bytes)
+Loading flags. 125 bytes to read.
+Loaded flag with id of 0 and value of 0
+Loaded flag with id of 1 and value of 0
+Loaded flag with id of 2 and value of 0
+Loaded flag with id of 3 and value of 0
+Loaded flag with id of 4 and value of 0
+Loaded flag with id of 5 and value of 0
+Flags loaded! (125 bytes)
+SAVE: Starting World Save to File: TestSave.bin
+SAVE: Starting Save Preparations
+SAVE: Player Data Prepared
+SAVE: Chunk Data Prepared
+
+### SAVE: ALL DATA PREPARED, STARTING SAVE ###
+
+SAVE: Started Saving with version: 1.0.1
+SAVE: Wrote Player POD
+SAVE: Wrote Player Inventory
+SAVE: Wrote World Chunks
+
+### SAVE: SAVE COMPLETED ###
+
+
+
+
+### LOG: Fri Jul 26 18:09:53 2019 ###
+
+Loaded all 1 music files.
+Loaded all 2 sound files.
+Successfully Loaded Script File: ../Assets/Scripts/Script_player_makeHouse.txt, and given id of: 1
+Loading dialogue. 1297 bytes to read.
+Successfully Loaded Script File: ../Assets/Scripts/Script_selected_makeHouse.txt, and given id of: 2
+Successfully Loaded Script File: ../Assets/Scripts/Script_player_makeHouse.txt, and given id of: 1
+Dialogue loaded! (1297 bytes)
+Loading flags. 125 bytes to read.
+Loaded flag with id of 0 and value of 0
+Loaded flag with id of 1 and value of 0
+Loaded flag with id of 2 and value of 0
+Loaded flag with id of 3 and value of 0
+Loaded flag with id of 4 and value of 0
+Loaded flag with id of 5 and value of 0
+Flags loaded! (125 bytes)
+SAVE: Starting World Save to File: TestSave.bin
+SAVE: Starting Save Preparations
+SAVE: Player Data Prepared
+SAVE: Chunk Data Prepared
+
+### SAVE: ALL DATA PREPARED, STARTING SAVE ###
+
+SAVE: Started Saving with version: 1.0.1
+SAVE: Wrote Player POD
+SAVE: Wrote Player Inventory
+SAVE: Wrote World Chunks
+
+### SAVE: SAVE COMPLETED ###
+
+
+
+
+### LOG: Fri Jul 26 18:10:24 2019 ###
+
+Loaded all 1 music files.
+Loaded all 2 sound files.
+Successfully Loaded Script File: ../Assets/Scripts/Script_player_makeHouse.txt, and given id of: 1
+Loading dialogue. 1297 bytes to read.
+Successfully Loaded Script File: ../Assets/Scripts/Script_selected_makeHouse.txt, and given id of: 2
+Successfully Loaded Script File: ../Assets/Scripts/Script_player_makeHouse.txt, and given id of: 1
+Dialogue loaded! (1297 bytes)
+Loading flags. 125 bytes to read.
+Loaded flag with id of 0 and value of 0
+Loaded flag with id of 1 and value of 0
+Loaded flag with id of 2 and value of 0
+Loaded flag with id of 3 and value of 0
+Loaded flag with id of 4 and value of 0
+Loaded flag with id of 5 and value of 0
+Flags loaded! (125 bytes)
+SAVE: Starting World Save to File: TestSave.bin
+SAVE: Starting Save Preparations
+SAVE: Player Data Prepared
+SAVE: Chunk Data Prepared
+
+### SAVE: ALL DATA PREPARED, STARTING SAVE ###
+
+SAVE: Started Saving with version: 1.0.1
+SAVE: Wrote Player POD
+SAVE: Wrote Player Inventory
+SAVE: Wrote World Chunks
+
+### SAVE: SAVE COMPLETED ###
+
+
+
+
+### LOG: Fri Jul 26 18:10:41 2019 ###
+
+Loaded all 1 music files.
+Loaded all 2 sound files.
+Successfully Loaded Script File: ../Assets/Scripts/Script_player_makeHouse.txt, and given id of: 1
+Loading dialogue. 1297 bytes to read.
+Successfully Loaded Script File: ../Assets/Scripts/Script_selected_makeHouse.txt, and given id of: 2
+Successfully Loaded Script File: ../Assets/Scripts/Script_player_makeHouse.txt, and given id of: 1
+Dialogue loaded! (1297 bytes)
+Loading flags. 125 bytes to read.
+Loaded flag with id of 0 and value of 0
+Loaded flag with id of 1 and value of 0
+Loaded flag with id of 2 and value of 0
+Loaded flag with id of 3 and value of 0
+Loaded flag with id of 4 and value of 0
+Loaded flag with id of 5 and value of 0
+Flags loaded! (125 bytes)
+SAVE: Starting World Save to File: TestSave.bin
+SAVE: Starting Save Preparations
+SAVE: Player Data Prepared
+SAVE: Chunk Data Prepared
+
+### SAVE: ALL DATA PREPARED, STARTING SAVE ###
+
+SAVE: Started Saving with version: 1.0.1
+SAVE: Wrote Player POD
+SAVE: Wrote Player Inventory
+SAVE: Wrote World Chunks
+
+### SAVE: SAVE COMPLETED ###
+
+
+
+
+### LOG: Fri Jul 26 18:12:10 2019 ###
+
+Loaded all 1 music files.
+Loaded all 2 sound files.
+Successfully Loaded Script File: ../Assets/Scripts/Script_player_makeHouse.txt, and given id of: 1
+Loading dialogue. 1297 bytes to read.
+Successfully Loaded Script File: ../Assets/Scripts/Script_selected_makeHouse.txt, and given id of: 2
+Successfully Loaded Script File: ../Assets/Scripts/Script_player_makeHouse.txt, and given id of: 1
+Dialogue loaded! (1297 bytes)
+Loading flags. 125 bytes to read.
+Loaded flag with id of 0 and value of 0
+Loaded flag with id of 1 and value of 0
+Loaded flag with id of 2 and value of 0
+Loaded flag with id of 3 and value of 0
+Loaded flag with id of 4 and value of 0
+Loaded flag with id of 5 and value of 0
+Flags loaded! (125 bytes)
+SAVE: Starting World Save to File: TestSave.bin
+SAVE: Starting Save Preparations
+SAVE: Player Data Prepared
+SAVE: Chunk Data Prepared
+
+### SAVE: ALL DATA PREPARED, STARTING SAVE ###
+
+SAVE: Started Saving with version: 1.0.1
+SAVE: Wrote Player POD
+SAVE: Wrote Player Inventory
+SAVE: Wrote World Chunks
+
+### SAVE: SAVE COMPLETED ###
+
+
+
+
+### LOG: Fri Jul 26 18:13:11 2019 ###
+
+Loaded all 1 music files.
+Loaded all 2 sound files.
+Successfully Loaded Script File: ../Assets/Scripts/Script_player_makeHouse.txt, and given id of: 1
+Loading dialogue. 1297 bytes to read.
+Successfully Loaded Script File: ../Assets/Scripts/Script_selected_makeHouse.txt, and given id of: 2
+Successfully Loaded Script File: ../Assets/Scripts/Script_player_makeHouse.txt, and given id of: 1
+Dialogue loaded! (1297 bytes)
+Loading flags. 125 bytes to read.
+Loaded flag with id of 0 and value of 0
+Loaded flag with id of 1 and value of 0
+Loaded flag with id of 2 and value of 0
+Loaded flag with id of 3 and value of 0
+Loaded flag with id of 4 and value of 0
+Loaded flag with id of 5 and value of 0
+Flags loaded! (125 bytes)
+SAVE: Starting World Save to File: TestSave.bin
+SAVE: Starting Save Preparations
+SAVE: Player Data Prepared
+SAVE: Chunk Data Prepared
+
+### SAVE: ALL DATA PREPARED, STARTING SAVE ###
+
+SAVE: Started Saving with version: 1.0.1
+SAVE: Wrote Player POD
+SAVE: Wrote Player Inventory
+SAVE: Wrote World Chunks
+
+### SAVE: SAVE COMPLETED ###
+
+
+
+
+### LOG: Fri Jul 26 18:13:32 2019 ###
+
+Loaded all 1 music files.
+Loaded all 2 sound files.
+Successfully Loaded Script File: ../Assets/Scripts/Script_player_makeHouse.txt, and given id of: 1
+Loading dialogue. 1297 bytes to read.
+Successfully Loaded Script File: ../Assets/Scripts/Script_selected_makeHouse.txt, and given id of: 2
+Successfully Loaded Script File: ../Assets/Scripts/Script_player_makeHouse.txt, and given id of: 1
+Dialogue loaded! (1297 bytes)
+Loading flags. 125 bytes to read.
+Loaded flag with id of 0 and value of 0
+Loaded flag with id of 1 and value of 0
+Loaded flag with id of 2 and value of 0
+Loaded flag with id of 3 and value of 0
+Loaded flag with id of 4 and value of 0
+Loaded flag with id of 5 and value of 0
+Flags loaded! (125 bytes)
+SAVE: Starting World Save to File: TestSave.bin
+SAVE: Starting Save Preparations
+SAVE: Player Data Prepared
+SAVE: Chunk Data Prepared
+
+### SAVE: ALL DATA PREPARED, STARTING SAVE ###
+
+SAVE: Started Saving with version: 1.0.1
+SAVE: Wrote Player POD
+SAVE: Wrote Player Inventory
+SAVE: Wrote World Chunks
+
+### SAVE: SAVE COMPLETED ###
+
+
+
+
+### LOG: Fri Jul 26 18:14:51 2019 ###
+
+
+
+
+### LOG: Fri Jul 26 18:15:03 2019 ###
+
+Loaded all 1 music files.
+Loaded all 2 sound files.
+Successfully Loaded Script File: ../Assets/Scripts/Script_player_makeHouse.txt, and given id of: 1
+Loading dialogue. 1297 bytes to read.
+Successfully Loaded Script File: ../Assets/Scripts/Script_selected_makeHouse.txt, and given id of: 2
+Successfully Loaded Script File: ../Assets/Scripts/Script_player_makeHouse.txt, and given id of: 1
+Dialogue loaded! (1297 bytes)
+Loading flags. 125 bytes to read.
+Loaded flag with id of 0 and value of 0
+Loaded flag with id of 1 and value of 0
+Loaded flag with id of 2 and value of 0
+Loaded flag with id of 3 and value of 0
+Loaded flag with id of 4 and value of 0
+Loaded flag with id of 5 and value of 0
+Flags loaded! (125 bytes)
+SAVE: Starting World Save to File: TestSave.bin
+SAVE: Starting Save Preparations
+SAVE: Player Data Prepared
+SAVE: Chunk Data Prepared
+
+### SAVE: ALL DATA PREPARED, STARTING SAVE ###
+
+SAVE: Started Saving with version: 1.0.1
+SAVE: Wrote Player POD
+SAVE: Wrote Player Inventory
+SAVE: Wrote World Chunks
+
+### SAVE: SAVE COMPLETED ###
+
+
+
+
+### LOG: Fri Jul 26 18:16:29 2019 ###
+
+Loaded all 1 music files.
+Loaded all 2 sound files.
+Successfully Loaded Script File: ../Assets/Scripts/Script_player_makeHouse.txt, and given id of: 1
+Loading dialogue. 1297 bytes to read.
+Successfully Loaded Script File: ../Assets/Scripts/Script_selected_makeHouse.txt, and given id of: 2
+Successfully Loaded Script File: ../Assets/Scripts/Script_player_makeHouse.txt, and given id of: 1
+Dialogue loaded! (1297 bytes)
+Loading flags. 125 bytes to read.
+Loaded flag with id of 0 and value of 0
+Loaded flag with id of 1 and value of 0
+Loaded flag with id of 2 and value of 0
+Loaded flag with id of 3 and value of 0
+Loaded flag with id of 4 and value of 0
+Loaded flag with id of 5 and value of 0
+Flags loaded! (125 bytes)
+
+
+
+### LOG: Fri Jul 26 18:18:07 2019 ###
+
+Loaded all 1 music files.
+Loaded all 2 sound files.
+Successfully Loaded Script File: ../Assets/Scripts/Script_player_makeHouse.txt, and given id of: 1
+Loading dialogue. 1297 bytes to read.
+Successfully Loaded Script File: ../Assets/Scripts/Script_selected_makeHouse.txt, and given id of: 2
+Successfully Loaded Script File: ../Assets/Scripts/Script_player_makeHouse.txt, and given id of: 1
+Dialogue loaded! (1297 bytes)
+Loading flags. 125 bytes to read.
+Loaded flag with id of 0 and value of 0
+Loaded flag with id of 1 and value of 0
+Loaded flag with id of 2 and value of 0
+Loaded flag with id of 3 and value of 0
+Loaded flag with id of 4 and value of 0
+Loaded flag with id of 5 and value of 0
+Flags loaded! (125 bytes)
+
+
+
+### LOG: Fri Jul 26 18:19:13 2019 ###
+
+Loaded all 1 music files.
+Loaded all 2 sound files.
+Successfully Loaded Script File: ../Assets/Scripts/Script_player_makeHouse.txt, and given id of: 1
+Loading dialogue. 1297 bytes to read.
+Successfully Loaded Script File: ../Assets/Scripts/Script_selected_makeHouse.txt, and given id of: 2
+Successfully Loaded Script File: ../Assets/Scripts/Script_player_makeHouse.txt, and given id of: 1
+Dialogue loaded! (1297 bytes)
+Loading flags. 125 bytes to read.
+Loaded flag with id of 0 and value of 0
+Loaded flag with id of 1 and value of 0
+Loaded flag with id of 2 and value of 0
+Loaded flag with id of 3 and value of 0
+Loaded flag with id of 4 and value of 0
+Loaded flag with id of 5 and value of 0
+Flags loaded! (125 bytes)
+
+
+
+### LOG: Fri Jul 26 18:46:08 2019 ###
+
+
+
+
+### LOG: Fri Jul 26 18:46:47 2019 ###
+
+Loaded all 1 music files.
+Loaded all 2 sound files.
+Successfully Loaded Script File: ../Assets/Scripts/Script_player_makeHouse.txt, and given id of: 1
+Loading dialogue. 1297 bytes to read.
+Successfully Loaded Script File: ../Assets/Scripts/Script_selected_makeHouse.txt, and given id of: 2
+Successfully Loaded Script File: ../Assets/Scripts/Script_player_makeHouse.txt, and given id of: 1
+Dialogue loaded! (1297 bytes)
+Loading flags. 125 bytes to read.
+Loaded flag with id of 0 and value of 0
+Loaded flag with id of 1 and value of 0
+Loaded flag with id of 2 and value of 0
+Loaded flag with id of 3 and value of 0
+Loaded flag with id of 4 and value of 0
+Loaded flag with id of 5 and value of 0
+Flags loaded! (125 bytes)
+
+### IMPORTANT: ENTITY CREATED WITH NO AUDIO MANAGER! ###
+
+Setting time to 0
+
+
+
+### LOG: Fri Jul 26 18:48:43 2019 ###
+
+Loaded all 1 music files.
+Loaded all 2 sound files.
+Successfully Loaded Script File: ../Assets/Scripts/Script_player_makeHouse.txt, and given id of: 1
+Loading dialogue. 1297 bytes to read.
+Successfully Loaded Script File: ../Assets/Scripts/Script_selected_makeHouse.txt, and given id of: 2
+Successfully Loaded Script File: ../Assets/Scripts/Script_player_makeHouse.txt, and given id of: 1
+Dialogue loaded! (1297 bytes)
+Loading flags. 125 bytes to read.
+Loaded flag with id of 0 and value of 0
+Loaded flag with id of 1 and value of 0
+Loaded flag with id of 2 and value of 0
+Loaded flag with id of 3 and value of 0
+Loaded flag with id of 4 and value of 0
+Loaded flag with id of 5 and value of 0
+Flags loaded! (125 bytes)
+
+### IMPORTANT: ENTITY CREATED WITH NO AUDIO MANAGER! ###
+
+
+### IMPORTANT: ENTITY CREATED WITH NO AUDIO MANAGER! ###
+
+
+
+
+### LOG: Fri Jul 26 18:49:02 2019 ###
+
+Loaded all 1 music files.
+Loaded all 2 sound files.
+Successfully Loaded Script File: ../Assets/Scripts/Script_player_makeHouse.txt, and given id of: 1
+Loading dialogue. 1297 bytes to read.
+Successfully Loaded Script File: ../Assets/Scripts/Script_selected_makeHouse.txt, and given id of: 2
+Successfully Loaded Script File: ../Assets/Scripts/Script_player_makeHouse.txt, and given id of: 1
+Dialogue loaded! (1297 bytes)
+Loading flags. 125 bytes to read.
+Loaded flag with id of 0 and value of 0
+Loaded flag with id of 1 and value of 0
+Loaded flag with id of 2 and value of 0
+Loaded flag with id of 3 and value of 0
+Loaded flag with id of 4 and value of 0
+Loaded flag with id of 5 and value of 0
+Flags loaded! (125 bytes)
+
+### IMPORTANT: ENTITY CREATED WITH NO AUDIO MANAGER! ###
+
+
+### IMPORTANT: ENTITY CREATED WITH NO AUDIO MANAGER! ###
+
+
+
+
+### LOG: Fri Jul 26 18:50:14 2019 ###
+
+Loaded all 1 music files.
+Loaded all 2 sound files.
+Successfully Loaded Script File: ../Assets/Scripts/Script_player_makeHouse.txt, and given id of: 1
+Loading dialogue. 1297 bytes to read.
+Successfully Loaded Script File: ../Assets/Scripts/Script_selected_makeHouse.txt, and given id of: 2
+Successfully Loaded Script File: ../Assets/Scripts/Script_player_makeHouse.txt, and given id of: 1
+Dialogue loaded! (1297 bytes)
+Loading flags. 125 bytes to read.
+Loaded flag with id of 0 and value of 0
+Loaded flag with id of 1 and value of 0
+Loaded flag with id of 2 and value of 0
+Loaded flag with id of 3 and value of 0
+Loaded flag with id of 4 and value of 0
+Loaded flag with id of 5 and value of 0
+Flags loaded! (125 bytes)
+
+### IMPORTANT: ENTITY CREATED WITH NO AUDIO MANAGER! ###
+
+
+### IMPORTANT: ENTITY CREATED WITH NO AUDIO MANAGER! ###
+
+
+
+
+### LOG: Fri Jul 26 18:52:23 2019 ###
+
+
+
+
+### LOG: Fri Jul 26 18:52:30 2019 ###
+
+Loaded all 1 music files.
+Loaded all 2 sound files.
+Successfully Loaded Script File: ../Assets/Scripts/Script_player_makeHouse.txt, and given id of: 1
+Loading dialogue. 1297 bytes to read.
+Successfully Loaded Script File: ../Assets/Scripts/Script_selected_makeHouse.txt, and given id of: 2
+Successfully Loaded Script File: ../Assets/Scripts/Script_player_makeHouse.txt, and given id of: 1
+Dialogue loaded! (1297 bytes)
+Loading flags. 125 bytes to read.
+Loaded flag with id of 0 and value of 0
+Loaded flag with id of 1 and value of 0
+Loaded flag with id of 2 and value of 0
+Loaded flag with id of 3 and value of 0
+Loaded flag with id of 4 and value of 0
+Loaded flag with id of 5 and value of 0
+Flags loaded! (125 bytes)
+
+### IMPORTANT: ENTITY CREATED WITH NO AUDIO MANAGER! ###
+
+
+
+
+### LOG: Fri Jul 26 18:57:52 2019 ###
+
+Loaded all 1 music files.
+Loaded all 2 sound files.
+Successfully Loaded Script File: ../Assets/Scripts/Script_player_makeHouse.txt, and given id of: 1
+Loading dialogue. 1297 bytes to read.
+Successfully Loaded Script File: ../Assets/Scripts/Script_selected_makeHouse.txt, and given id of: 2
+Successfully Loaded Script File: ../Assets/Scripts/Script_player_makeHouse.txt, and given id of: 1
+Dialogue loaded! (1297 bytes)
+Loading flags. 125 bytes to read.
+Loaded flag with id of 0 and value of 0
+Loaded flag with id of 1 and value of 0
+Loaded flag with id of 2 and value of 0
+Loaded flag with id of 3 and value of 0
+Loaded flag with id of 4 and value of 0
+Loaded flag with id of 5 and value of 0
+Flags loaded! (125 bytes)
+
+### IMPORTANT: ENTITY CREATED WITH NO AUDIO MANAGER! ###
+
+
+### IMPORTANT: ENTITY CREATED WITH NO AUDIO MANAGER! ###
+
+
+### IMPORTANT: ENTITY CREATED WITH NO AUDIO MANAGER! ###
+
+
+### IMPORTANT: ENTITY CREATED WITH NO AUDIO MANAGER! ###
+
+
+### IMPORTANT: ENTITY CREATED WITH NO AUDIO MANAGER! ###
+
+Clicked at: 15.000000, 59.000000
+Clicked at: 16.000000, 59.000000
+Clicked at: 17.000000, 59.000000
+Clicked at: 18.000000, 59.000000
+Clicked at: 19.000000, 59.000000
+Clicked at: 20.000000, 59.000000
+
+
+
+### LOG: Fri Jul 26 18:59:14 2019 ###
+
+Loaded all 1 music files.
+Loaded all 2 sound files.
+Successfully Loaded Script File: ../Assets/Scripts/Script_player_makeHouse.txt, and given id of: 1
+Loading dialogue. 1297 bytes to read.
+Successfully Loaded Script File: ../Assets/Scripts/Script_selected_makeHouse.txt, and given id of: 2
+Successfully Loaded Script File: ../Assets/Scripts/Script_player_makeHouse.txt, and given id of: 1
+Dialogue loaded! (1297 bytes)
+Loading flags. 125 bytes to read.
+Loaded flag with id of 0 and value of 0
+Loaded flag with id of 1 and value of 0
+Loaded flag with id of 2 and value of 0
+Loaded flag with id of 3 and value of 0
+Loaded flag with id of 4 and value of 0
+Loaded flag with id of 5 and value of 0
+Flags loaded! (125 bytes)
+
+### IMPORTANT: ENTITY CREATED WITH NO AUDIO MANAGER! ###
+
+Clicked at: 11.000000, 61.000000
+Clicked at: 12.000000, 58.000000
+Clicked at: 16.000000, 56.000000
+Clicked at: 14.000000, 61.000000
+Clicked at: 14.000000, 61.000000
+
+### IMPORTANT: ENTITY CREATED WITH NO AUDIO MANAGER! ###
+
+Clicked at: 14.000000, 62.000000
+Clicked at: 15.000000, 62.000000
+Clicked at: 15.000000, 61.000000
+Clicked at: 15.000000, 61.000000
+Clicked at: 8.000000, 63.000000
+Clicked at: 9.000000, 62.000000
+Clicked at: 8.000000, 62.000000
+Clicked at: 10.000000, 62.000000
+Clicked at: 10.000000, 62.000000
+Clicked at: 11.000000, 62.000000
+Clicked at: 10.000000, 61.000000
+Clicked at: 10.000000, 61.000000
+Clicked at: 9.000000, 61.000000
+Clicked at: 8.000000, 60.000000
+Clicked at: 8.000000, 61.000000
+Clicked at: 9.000000, 60.000000
+Clicked at: 10.000000, 60.000000
+Clicked at: 11.000000, 60.000000
+
+
+
+### LOG: Fri Jul 26 19:09:08 2019 ###
+
+Loaded all 1 music files.
+Loaded all 2 sound files.
+Successfully Loaded Script File: ../Assets/Scripts/Script_player_makeHouse.txt, and given id of: 1
+Loading dialogue. 1297 bytes to read.
+Successfully Loaded Script File: ../Assets/Scripts/Script_selected_makeHouse.txt, and given id of: 2
+Successfully Loaded Script File: ../Assets/Scripts/Script_player_makeHouse.txt, and given id of: 1
+Dialogue loaded! (1297 bytes)
+Loading flags. 125 bytes to read.
+Loaded flag with id of 0 and value of 0
+Loaded flag with id of 1 and value of 0
+Loaded flag with id of 2 and value of 0
+Loaded flag with id of 3 and value of 0
+Loaded flag with id of 4 and value of 0
+Loaded flag with id of 5 and value of 0
+Flags loaded! (125 bytes)
+
+### IMPORTANT: ENTITY CREATED WITH NO AUDIO MANAGER! ###
+
+
+
+
+### LOG: Fri Jul 26 19:11:18 2019 ###
+
+
+
+
+### LOG: Fri Jul 26 19:14:25 2019 ###
+
+Loaded all 1 music files.
+Loaded all 2 sound files.
+Successfully Loaded Script File: ../Assets/Scripts/Script_player_makeHouse.txt, and given id of: 1
+Loading dialogue. 1297 bytes to read.
+Successfully Loaded Script File: ../Assets/Scripts/Script_selected_makeHouse.txt, and given id of: 2
+Successfully Loaded Script File: ../Assets/Scripts/Script_player_makeHouse.txt, and given id of: 1
+Dialogue loaded! (1297 bytes)
+Loading flags. 125 bytes to read.
+Loaded flag with id of 0 and value of 0
+Loaded flag with id of 1 and value of 0
+Loaded flag with id of 2 and value of 0
+Loaded flag with id of 3 and value of 0
+Loaded flag with id of 4 and value of 0
+Loaded flag with id of 5 and value of 0
+Flags loaded! (125 bytes)
+
+### IMPORTANT: ENTITY CREATED WITH NO AUDIO MANAGER! ###
+
+Setting time to 0
+Setting time to 0
+SAVE: Starting World Save to File: TestSave.bin
+SAVE: Starting Save Preparations
+SAVE: Player Data Prepared
+SAVE: Chunk Data Prepared
+
+### SAVE: ALL DATA PREPARED, STARTING SAVE ###
+
+SAVE: Started Saving with version: 1.0.1
+SAVE: Wrote Player POD
+SAVE: Wrote 1 of 1 Items
+SAVE: Wrote Player Inventory
+SAVE: Wrote World Chunks
+
+### SAVE: SAVE COMPLETED ###
+
+
+### IMPORTANT: ENTITY CREATED WITH NO AUDIO MANAGER! ###
+
+
+
+
+### LOG: Fri Jul 26 19:16:34 2019 ###
+
+Loaded all 1 music files.
+Loaded all 2 sound files.
+Successfully Loaded Script File: ../Assets/Scripts/Script_player_makeHouse.txt, and given id of: 1
+Loading dialogue. 1297 bytes to read.
+Successfully Loaded Script File: ../Assets/Scripts/Script_selected_makeHouse.txt, and given id of: 2
+Successfully Loaded Script File: ../Assets/Scripts/Script_player_makeHouse.txt, and given id of: 1
+Dialogue loaded! (1297 bytes)
+Loading flags. 125 bytes to read.
+Loaded flag with id of 0 and value of 0
+Loaded flag with id of 1 and value of 0
+Loaded flag with id of 2 and value of 0
+Loaded flag with id of 3 and value of 0
+Loaded flag with id of 4 and value of 0
+Loaded flag with id of 5 and value of 0
+Flags loaded! (125 bytes)
+
+### IMPORTANT: ENTITY CREATED WITH NO AUDIO MANAGER! ###
+
+
+### LOAD: STARTING LOAD AT 8149.520020 ###
+
+
+### LOAD: Loaded Version: 1.0.1, Using Version: 1.0.1 ###
+
+LOAD: Loaded Player POD
+LOAD: Loaded 1 of 1 Items
+LOAD: Loaded Player Inventory
+LOAD: Loaded 1 of 128 Chunks
+LOAD: Loaded 2 of 128 Chunks
+LOAD: Loaded 3 of 128 Chunks
+LOAD: Loaded 4 of 128 Chunks
+LOAD: Loaded 5 of 128 Chunks
+LOAD: Loaded 6 of 128 Chunks
+LOAD: Loaded 7 of 128 Chunks
+LOAD: Loaded 8 of 128 Chunks
+LOAD: Loaded 9 of 128 Chunks
+LOAD: Loaded 10 of 128 Chunks
+LOAD: Loaded 11 of 128 Chunks
+LOAD: Loaded 12 of 128 Chunks
+LOAD: Loaded 13 of 128 Chunks
+LOAD: Loaded 14 of 128 Chunks
+LOAD: Loaded 15 of 128 Chunks
+LOAD: Loaded 16 of 128 Chunks
+LOAD: Loaded 17 of 128 Chunks
+LOAD: Loaded 18 of 128 Chunks
+LOAD: Loaded 19 of 128 Chunks
+LOAD: Loaded 20 of 128 Chunks
+LOAD: Loaded 21 of 128 Chunks
+LOAD: Loaded 22 of 128 Chunks
+LOAD: Loaded 23 of 128 Chunks
+LOAD: Loaded 24 of 128 Chunks
+LOAD: Loaded 25 of 128 Chunks
+LOAD: Loaded 26 of 128 Chunks
+LOAD: Loaded 27 of 128 Chunks
+LOAD: Loaded 28 of 128 Chunks
+LOAD: Loaded 29 of 128 Chunks
+LOAD: Loaded 30 of 128 Chunks
+LOAD: Loaded 31 of 128 Chunks
+LOAD: Loaded 32 of 128 Chunks
+LOAD: Loaded 33 of 128 Chunks
+LOAD: Loaded 34 of 128 Chunks
+LOAD: Loaded 35 of 128 Chunks
+LOAD: Loaded 36 of 128 Chunks
+LOAD: Loaded 37 of 128 Chunks
+LOAD: Loaded 38 of 128 Chunks
+LOAD: Loaded 39 of 128 Chunks
+LOAD: Loaded 40 of 128 Chunks
+LOAD: Loaded 41 of 128 Chunks
+LOAD: Loaded 42 of 128 Chunks
+LOAD: Loaded 43 of 128 Chunks
+LOAD: Loaded 44 of 128 Chunks
+LOAD: Loaded 45 of 128 Chunks
+LOAD: Loaded 46 of 128 Chunks
+LOAD: Loaded 47 of 128 Chunks
+LOAD: Loaded 48 of 128 Chunks
+LOAD: Loaded 49 of 128 Chunks
+LOAD: Loaded 50 of 128 Chunks
+LOAD: Loaded 51 of 128 Chunks
+LOAD: Loaded 52 of 128 Chunks
+LOAD: Loaded 53 of 128 Chunks
+LOAD: Loaded 54 of 128 Chunks
+LOAD: Loaded 55 of 128 Chunks
+LOAD: Loaded 56 of 128 Chunks
+LOAD: Loaded 57 of 128 Chunks
+LOAD: Loaded 58 of 128 Chunks
+LOAD: Loaded 59 of 128 Chunks
+LOAD: Loaded 60 of 128 Chunks
+LOAD: Loaded 61 of 128 Chunks
+LOAD: Loaded 62 of 128 Chunks
+LOAD: Loaded 63 of 128 Chunks
+LOAD: Loaded 64 of 128 Chunks
+LOAD: Loaded 65 of 128 Chunks
+LOAD: Loaded 66 of 128 Chunks
+LOAD: Loaded 67 of 128 Chunks
+LOAD: Loaded 68 of 128 Chunks
+LOAD: Loaded 69 of 128 Chunks
+LOAD: Loaded 70 of 128 Chunks
+LOAD: Loaded 71 of 128 Chunks
+LOAD: Loaded 72 of 128 Chunks
+LOAD: Loaded 73 of 128 Chunks
+LOAD: Loaded 74 of 128 Chunks
+LOAD: Loaded 75 of 128 Chunks
+LOAD: Loaded 76 of 128 Chunks
+LOAD: Loaded 77 of 128 Chunks
+LOAD: Loaded 78 of 128 Chunks
+LOAD: Loaded 79 of 128 Chunks
+LOAD: Loaded 80 of 128 Chunks
+LOAD: Loaded 81 of 128 Chunks
+LOAD: Loaded 82 of 128 Chunks
+LOAD: Loaded 83 of 128 Chunks
+LOAD: Loaded 84 of 128 Chunks
+LOAD: Loaded 85 of 128 Chunks
+LOAD: Loaded 86 of 128 Chunks
+LOAD: Loaded 87 of 128 Chunks
+LOAD: Loaded 88 of 128 Chunks
+LOAD: Loaded 89 of 128 Chunks
+LOAD: Loaded 90 of 128 Chunks
+LOAD: Loaded 91 of 128 Chunks
+LOAD: Loaded 92 of 128 Chunks
+LOAD: Loaded 93 of 128 Chunks
+LOAD: Loaded 94 of 128 Chunks
+LOAD: Loaded 95 of 128 Chunks
+LOAD: Loaded 96 of 128 Chunks
+LOAD: Loaded 97 of 128 Chunks
+LOAD: Loaded 98 of 128 Chunks
+LOAD: Loaded 99 of 128 Chunks
+LOAD: Loaded 100 of 128 Chunks
+LOAD: Loaded 101 of 128 Chunks
+LOAD: Loaded 102 of 128 Chunks
+LOAD: Loaded 103 of 128 Chunks
+LOAD: Loaded 104 of 128 Chunks
+LOAD: Loaded 105 of 128 Chunks
+LOAD: Loaded 106 of 128 Chunks
+LOAD: Loaded 107 of 128 Chunks
+LOAD: Loaded 108 of 128 Chunks
+LOAD: Loaded 109 of 128 Chunks
+LOAD: Loaded 110 of 128 Chunks
+LOAD: Loaded 111 of 128 Chunks
+LOAD: Loaded 112 of 128 Chunks
+LOAD: Loaded 113 of 128 Chunks
+LOAD: Loaded 114 of 128 Chunks
+LOAD: Loaded 115 of 128 Chunks
+LOAD: Loaded 116 of 128 Chunks
+LOAD: Loaded 117 of 128 Chunks
+LOAD: Loaded 118 of 128 Chunks
+LOAD: Loaded 119 of 128 Chunks
+LOAD: Loaded 120 of 128 Chunks
+LOAD: Loaded 121 of 128 Chunks
+LOAD: Loaded 122 of 128 Chunks
+LOAD: Loaded 123 of 128 Chunks
+LOAD: Loaded 124 of 128 Chunks
+LOAD: Loaded 125 of 128 Chunks
+LOAD: Loaded 126 of 128 Chunks
+LOAD: Loaded 127 of 128 Chunks
+LOAD: Loaded 128 of 128 Chunks
+LOAD: Loaded World Chunks
+
+### LOAD: LOAD COMPLETED. FINISHED AT 9495.858398 (1346.338379 milliseconds) ###
+

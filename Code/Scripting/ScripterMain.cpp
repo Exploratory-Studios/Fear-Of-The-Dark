@@ -199,10 +199,10 @@ std::string Scripter::executeCommand(std::string& command, Script* script) {
 
             for(unsigned int i = 0; i < entities.size(); i++) {
                 for(unsigned int j = 0; j < positions.size(); j++) {
-                    logger->log("Teleporting entity to: X=" + std::to_string(positions[j].x * TILE_SIZE) + ", Y=" + std::to_string(positions[j].y * TILE_SIZE));
-                    returnMessage += "Teleporting entity to: X=" + std::to_string(positions[j].x * TILE_SIZE) + ", Y=" + std::to_string(positions[j].y * TILE_SIZE) + "\n";
+                    logger->log("Teleporting entity to: X=" + std::to_string(positions[j].x) + ", Y=" + std::to_string(positions[j].y));
+                    returnMessage += "Teleporting entity to: X=" + std::to_string(positions[j].x) + ", Y=" + std::to_string(positions[j].y) + "\n";
 
-                    entities[i]->setPosition(positions[j] * glm::vec2(TILE_SIZE));
+                    entities[i]->setPosition(positions[j]);
                     entities[i]->setParentChunk(m_chunks);
                 }
             }
@@ -231,9 +231,9 @@ std::string Scripter::executeCommand(std::string& command, Script* script) {
             keywordIndex++;
 
             for(unsigned int i = 0; i < positions.size(); i++) {
-                m_chunks[(unsigned int)(positions[i].x / TILE_SIZE / CHUNK_SIZE)]->addEntity(*createEntity((unsigned int)entityId, positions[i] * glm::vec2(TILE_SIZE), m_chunks[(unsigned int)(positions[i].x / TILE_SIZE / CHUNK_SIZE)], m_gameplayScreen->m_WorldIOManager->getAudioManager(), m_gameplayScreen->m_questManager, &m_gameplayScreen->m_game->inputManager, m_gameplayScreen->m_WorldIOManager->getScriptQueue()));
+                m_chunks[(unsigned int)(positions[i].x / CHUNK_SIZE)]->addEntity(*createEntity((unsigned int)entityId, positions[i], m_chunks[(unsigned int)(positions[i].x / CHUNK_SIZE)], m_gameplayScreen->m_WorldIOManager->getAudioManager(), m_gameplayScreen->m_questManager, &m_gameplayScreen->m_game->inputManager, m_gameplayScreen->m_WorldIOManager->getScriptQueue()));
 
-                std::string logString = "Added Entity " + std::to_string(i+1) + " of " + std::to_string(positions.size()) + " at X=" + std::to_string(positions[i].x) + ", Y=" + std::to_string(positions[i].y) + ", with and ID of " + std::to_string((unsigned int)entityId) + " (Chunk " + std::to_string((unsigned int)(positions[i].x / TILE_SIZE / CHUNK_SIZE)) + ")" ;
+                std::string logString = "Added Entity " + std::to_string(i+1) + " of " + std::to_string(positions.size()) + " at X=" + std::to_string(positions[i].x) + ", Y=" + std::to_string(positions[i].y) + ", with and ID of " + std::to_string((unsigned int)entityId) + " (Chunk " + std::to_string((unsigned int)(positions[i].x / CHUNK_SIZE)) + ")" ;
                 logger->log(logString);
                 returnMessage += logString + "\n";
             }
@@ -364,7 +364,7 @@ std::vector<Entity*> Scripter::entityTarget(std::vector<std::string> parameters,
         keywordIndex += 1;
         position = positionTarget(parameters, keywordIndex)[0]; // for this specific command, we will never need to use multiple points (in a reasonable world)
 
-        unsigned int chunkIndex = std::floor(position.x / TILE_SIZE / CHUNK_SIZE);
+        unsigned int chunkIndex = std::floor(position.x / CHUNK_SIZE);
 
         float nearestDistance;
         unsigned int nearestId;
@@ -465,7 +465,7 @@ std::vector<glm::vec2> Scripter::positionTarget(std::vector<std::string> paramet
         std::vector<glm::vec2> positions = positionTarget(parameters, keywordIndex);
         for(unsigned int i = 0; i < entities.size(); i++) {
             for(unsigned int j = 0; j < positions.size(); j++) {
-                ret.push_back(entities[i]->getPosition() / glm::vec2(TILE_SIZE) + positions[j]);
+                ret.push_back(entities[i]->getPosition() + positions[j]);
             }
         }
 

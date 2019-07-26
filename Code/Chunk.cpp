@@ -161,7 +161,7 @@ void Chunk::setPlace(Categories::Places place) {
 
 void Chunk::setTile(Tile* newTile, const unsigned int& x, const unsigned int& y) {
     unsigned int xPos = (x >= CHUNK_SIZE) ? (int)newTile->getPosition().x % CHUNK_SIZE : x;
-    unsigned int yPos = (y >= WORLD_SIZE) ? (int)newTile->getPosition().y : x;
+    unsigned int yPos = (y >= WORLD_HEIGHT) ? (int)newTile->getPosition().y : y;
 
     m_deadTiles.push_back(tiles[yPos][(xPos + CHUNK_SIZE) % CHUNK_SIZE]);
 

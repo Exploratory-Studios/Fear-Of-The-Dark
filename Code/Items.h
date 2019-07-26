@@ -23,6 +23,38 @@ class ItemBlockWood : public ItemBlock {
         ItemBlockWood(unsigned int quantity);
 };
 
+class ItemMiscBucket : public Item {
+    public:
+        ItemMiscBucket(unsigned int quantity);
+
+        virtual void onLeftClick(Tile* selectedBlock) override {
+            if(selectedBlock) {
+                if(selectedBlock->getID() == (unsigned int)Categories::BlockIDs::WATER) {
+                    m_level += static_cast<BlockWater*>(selectedBlock)->getLevel();
+
+                    Block* b = createBlock((unsigned int)Categories::BlockIDs::AIR, selectedBlock->getPosition(), selectedBlock->getParentChunk());
+                    b->setAmbientLight(selectedBlock->getLight());
+                    selectedBlock->getParentChunk()->setTile(b, selectedBlock->getPosition().x, selectedBlock->getPosition().y);
+                }
+            }
+        }
+        virtual void onRightClick(Tile* selectedBlock) override {
+            if(selectedBlock && m_level > 0.0f) {
+                BlockWater* b = static_cast<BlockWater*>(createBlock((unsigned int)Categories::BlockIDs::WATER, selectedBlock->getPosition(), selectedBlock->getParentChunk()));
+                b->setAmbientLight(selectedBlock->getLight());
+
+                float addedLevel = m_level > 1.0f ? 1.0f : m_level;
+
+                b->setLevel(addedLevel);
+                m_level -= addedLevel;
+                selectedBlock->getParentChunk()->setTile(b, selectedBlock->getPosition().x, selectedBlock->getPosition().y);
+            }
+        }
+
+    private:
+        float m_level = 0.0f;
+};
+
 static Item* createItem(unsigned int id, unsigned int quantity) {
     Item* ret = nullptr;
 
@@ -32,6 +64,7 @@ static Item* createItem(unsigned int id, unsigned int quantity) {
         case (unsigned int)Categories::ItemIDs::BLOCK_DIRT: ret = new ItemBlockDirt(quantity); break;
         case (unsigned int)Categories::ItemIDs::BLOCK_TORCH: ret = new ItemBlockTorch(quantity); break;
         case (unsigned int)Categories::ItemIDs::BLOCK_WOOD: ret = new ItemBlockWood(quantity); break;
+        case (unsigned int)Categories::ItemIDs::MISC_BUCKET: ret = new ItemMiscBucket(quantity); break;
     }
 
     return ret;

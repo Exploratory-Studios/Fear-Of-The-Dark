@@ -176,7 +176,7 @@ void BlockWater::draw(GLEngine::SpriteBatch& sb, int xOffset) {
     }
 
     int r = m_colour.r, g = m_colour.g, b = m_colour.b;
-    sb.draw(glm::vec4(m_pos.x * TILE_SIZE + xOffset * CHUNK_SIZE * TILE_SIZE, m_pos.y * TILE_SIZE, m_size.x * TILE_SIZE, m_waterLevel * TILE_SIZE),
+    sb.draw(glm::vec4(m_pos.x + xOffset * CHUNK_SIZE, m_pos.y, m_size.x, m_waterLevel),
             glm::vec4(0.0f, 0.0f, 1.0f, m_waterLevel),
             m_textureId,
             2.0f,

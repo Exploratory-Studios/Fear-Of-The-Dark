@@ -32,7 +32,9 @@ void GameplayScreen::build() {
 }
 
 void GameplayScreen::destroy() {
-
+    delete m_scripter;
+    delete m_questManager;
+    delete m_console;
 }
 
 void GameplayScreen::onEntry() {
@@ -61,14 +63,14 @@ void GameplayScreen::onEntry() {
         }
 
         if(!m_WorldIOManager->getWorld()->player) {
-            m_player = reinterpret_cast<Player*>(createEntity((unsigned int)Categories::EntityIDs::MOB_PLAYER, glm::vec2(5.0f * TILE_SIZE, 100.0f * TILE_SIZE), m_WorldIOManager->getWorld()->chunks[(int)(5.0f * TILE_SIZE) / CHUNK_SIZE], m_WorldIOManager->getAudioManager(), nullptr, &m_game->inputManager, m_WorldIOManager->getScriptQueue()));
+            m_player = reinterpret_cast<Player*>(createEntity((unsigned int)Categories::EntityIDs::MOB_PLAYER, glm::vec2(5.0f, 100.0f), m_WorldIOManager->getWorld()->chunks[(int)(5.0f) / CHUNK_SIZE], m_WorldIOManager->getAudioManager(), nullptr, &m_game->inputManager, m_WorldIOManager->getScriptQueue()));
             m_WorldIOManager->setPlayer(m_player);
         } else {
             m_player = m_WorldIOManager->getWorld()->player;
         }
 
         {
-            int index = (m_player->getPosition().x / TILE_SIZE) / CHUNK_SIZE / WORLD_SIZE;
+            int index = (m_player->getPosition().x) / CHUNK_SIZE / WORLD_SIZE;
             m_player->setParentChunk(&m_WorldIOManager->getWorld()->chunks[index%WORLD_SIZE]);
         }
 
@@ -77,7 +79,7 @@ void GameplayScreen::onEntry() {
                 std::vector<Entity>* entities;
                 entities = m_WorldIOManager->getWorld()->chunks[j]->getEntities();
                 for(unsigned int i = 0; i < entities->size(); i++) {
-                    int index = (m_WorldIOManager->getWorld()->chunks[j]->getEntity(i)->getPosition().x / TILE_SIZE) / CHUNK_SIZE;
+                    int index = (m_WorldIOManager->getWorld()->chunks[j]->getEntity(i)->getPosition().x) / CHUNK_SIZE;
                     m_WorldIOManager->getWorld()->chunks[j]->getEntity(i)->setParentChunk(m_WorldIOManager->getWorld()->chunks[index]);
                     m_WorldIOManager->getWorld()->chunks[index]->addEntity(*m_WorldIOManager->getWorld()->chunks[j]->getEntity(i));
                 }
@@ -88,7 +90,7 @@ void GameplayScreen::onEntry() {
     m_questManager = new QuestManager(ASSETS_FOLDER_PATH + "Questing/DialogueList.txt", ASSETS_FOLDER_PATH + "Questing/FlagList.txt", m_WorldIOManager->getScriptQueue());
     m_console = new Console();
 
-    m_WorldIOManager->getWorld()->chunks[0]->addEntity(*createEntity((unsigned int)Categories::EntityIDs::MOB_NEUTRAL_QUESTGIVER_A, glm::vec2(10.0f * TILE_SIZE, (200.0f) * TILE_SIZE), m_WorldIOManager->getWorld()->chunks[0], m_WorldIOManager->getAudioManager(), m_questManager));
+    m_WorldIOManager->getWorld()->chunks[0]->addEntity(*createEntity((unsigned int)Categories::EntityIDs::MOB_NEUTRAL_QUESTGIVER_A, glm::vec2(10.0f, (200.0f)), m_WorldIOManager->getWorld()->chunks[0], m_WorldIOManager->getAudioManager(), m_questManager));
 
     initUI();
     tick();
@@ -121,7 +123,7 @@ void GameplayScreen::update() {
 
     checkInput();
 
-    if(m_gameState != GameState::PAUSE) {
+    if(m_gameState != GameState::PAUSE && m_currentState != GLEngine::ScreenState::EXIT_APPLICATION) {
         m_questManager->update(m_game->inputManager);
         m_scripter->update();
 
@@ -135,10 +137,10 @@ void GameplayScreen::update() {
         }
 
         if(!m_cameraLocked) {
-            if(std::abs((m_player->getPosition().x + m_player->getSize().x / 2.0f) - m_lastPlayerPos.x) >= (float)(CHUNK_SIZE * TILE_SIZE) * (WORLD_SIZE/2)) {
+            if(std::abs((m_player->getPosition().x + m_player->getSize().x / 2.0f) - m_lastPlayerPos.x) >= (float)(CHUNK_SIZE) * (WORLD_SIZE/2)) {
                 int sign = ((m_player->getPosition().x + m_player->getSize().x / 2.0f) - m_lastPlayerPos.x) / std::abs((m_player->getPosition().x + m_player->getSize().x / 2.0f) - m_lastPlayerPos.x);
-                m_lastPlayerPos.x += (float)(WORLD_SIZE * CHUNK_SIZE * TILE_SIZE) * sign;
-                m_camera.setPosition(m_camera.getPosition() + glm::vec2((float)(WORLD_SIZE * CHUNK_SIZE * TILE_SIZE) * sign, 0.0f));
+                m_lastPlayerPos.x += (float)(WORLD_SIZE * CHUNK_SIZE) * sign;
+                m_camera.setPosition(m_camera.getPosition() + glm::vec2((float)(WORLD_SIZE * CHUNK_SIZE) * sign, 0.0f));
             }
             m_lastPlayerPos = (m_lastPlayerPos + ((m_player->getPosition() + m_player->getSize() / glm::vec2(2.0f)) - m_lastPlayerPos) / glm::vec2(4.0f));
             m_camera.setPosition(m_lastPlayerPos); // If lastplayerpos is never updated, the camera is still 'locked' per say, but we can actually change the lastPlayerPos on purpose to get a smooth movement somewhere.

@@ -13,7 +13,7 @@ EntityManager::EntityManager(Chunk* parent, AudioManager* audio)
 
 EntityManager::~EntityManager()
 {
-    //dtor
+    delete m_entities;
 }
 
 void EntityManager::update(float timeStep, Chunk* chunks[WORLD_SIZE]) {
@@ -104,12 +104,12 @@ std::vector<glm::vec2> EntityManager::pathfindToTarget(float jumpHeight, glm::ve
     chunks[1] = m_parentChunk;
     chunks[2] = m_parentChunk->getSurroundingChunks()[1];
 
-    int maxJumpHeight = 2.5*(jumpHeight*jumpHeight) / TILE_SIZE * 2;
+    int maxJumpHeight = 2.5*(jumpHeight*jumpHeight) * 2;
 
     // Find grid-space coords:
-    int xGridspace = std::floor(originalPosition.x / TILE_SIZE);
-    int yGridspace = std::floor(originalPosition.y / TILE_SIZE);
-    int targetXGridspace = std::floor(targetPosition.x / TILE_SIZE);
+    int xGridspace = std::floor(originalPosition.x);
+    int yGridspace = std::floor(originalPosition.y);
+    int targetXGridspace = std::floor(targetPosition.x);
 
     // Find chunk index
     int chunkIndex = std::floor(xGridspace / CHUNK_SIZE);
@@ -157,7 +157,7 @@ std::vector<glm::vec2> EntityManager::pathfindToTarget(float jumpHeight, glm::ve
                         if(!currentChunk->tiles[yGridspace+yOff][(xGridspace + CHUNK_SIZE) % CHUNK_SIZE]->isSolid() && !currentChunk->tiles[yGridspace+yOff+1][(xGridspace + CHUNK_SIZE) % CHUNK_SIZE]->isSolid()) { // And the block on top isn't
                             //if(yOff != 0 || targets.size() == 0) { // And we're not just going in a straight line
                                 targetNavigated = true;
-                                targets.push_back(glm::vec2(xGridspace * TILE_SIZE, (yGridspace+yOff) * TILE_SIZE));
+                                targets.push_back(glm::vec2(xGridspace, (yGridspace+yOff)));
                                 yGridspace += yOff;
                             //}
                         }
@@ -172,7 +172,7 @@ std::vector<glm::vec2> EntityManager::pathfindToTarget(float jumpHeight, glm::ve
                         if(!currentChunk->tiles[yGridspace+yOff+1][(xGridspace + CHUNK_SIZE) % CHUNK_SIZE]->isSolid() && !currentChunk->tiles[yGridspace+yOff+2][(xGridspace + CHUNK_SIZE) % CHUNK_SIZE]->isSolid()) { // And the block on top isn't
                             //if(yOff != 0 || targets.size() == 0) { // And we're not just going in a straight line
                                 targetNavigated = true;
-                                targets.push_back(glm::vec2(xGridspace * TILE_SIZE, (yGridspace+yOff) * TILE_SIZE));
+                                targets.push_back(glm::vec2(xGridspace, (yGridspace+yOff)));
                                 yGridspace += yOff;
                             //}
                         }

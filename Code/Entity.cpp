@@ -9,9 +9,9 @@
 #include "Player.h"
 
 void Limb::draw(GLEngine::SpriteBatch& sb) {
-    glm::vec2 position = m_parentEntity->getPosition() + (m_pos * (m_parentEntity->getSize()) * glm::vec2(TILE_SIZE));
+    glm::vec2 position = m_parentEntity->getPosition() + (m_pos * (m_parentEntity->getSize()));
 
-    glm::vec4 destRect(position.x, position.y, m_size.x * TILE_SIZE, m_size.y * TILE_SIZE);
+    glm::vec4 destRect(position.x, position.y, m_size.x, m_size.y);
     glm::vec4 uvRect(0.0f, 0.0f, 1.0f, 1.0f);
 
     GLEngine::ColourRGBA8 fullColour(255, 255, 255, 255);
@@ -142,7 +142,7 @@ void Entity::draw(GLEngine::SpriteBatch& sb, float time, float xOffset) {
     //GLint lightUniform = program->getUniformLocation("lightColour");
     //glUniform3fv(lightUniform, 3, &glm::vec3(1.0f, 1.0f, 1.0f)[0]);
 
-    glm::vec4 destRect = glm::vec4(m_position.x + (xOffset * CHUNK_SIZE * TILE_SIZE), m_position.y, m_size.x * TILE_SIZE, m_size.y * TILE_SIZE);
+    glm::vec4 destRect = glm::vec4(m_position.x + (xOffset * CHUNK_SIZE), m_position.y, m_size.x, m_size.y);
 
     float x, y;
     if(m_velocity.x > m_speed) {
@@ -208,13 +208,13 @@ void Entity::collide() {
         /// ENTITY COLLISION STARTS HERE
         for(unsigned int i = 0; i < entities->size(); i++) {
             if(getEntity(i)->getPosition() != m_position) {
-                float xDist = (m_position.x / (float)TILE_SIZE + m_size.x / 2.0f) - (getEntity(i)->getPosition().x / (float)TILE_SIZE + getEntity(i)->getSize().x / 2.0f);
-                float yDist = (m_position.y / (float)TILE_SIZE + m_size.y / 2.0f) - (getEntity(i)->getPosition().y / (float)TILE_SIZE + getEntity(i)->getSize().y / 2.0f);
+                float xDist = (m_position.x / 1.0f + m_size.x / 2.0f) - (getEntity(i)->getPosition().x / 1.0f + getEntity(i)->getSize().x / 2.0f);
+                float yDist = (m_position.y / 1.0f + m_size.y / 2.0f) - (getEntity(i)->getPosition().y / 1.0f + getEntity(i)->getSize().y / 2.0f);
                 if(abs(xDist) < abs(m_size.x / 2.0f + getEntity(i)->getSize().x / 2.0f)) {
                     if(abs(yDist) < abs(m_size.y / 2.0f + getEntity(i)->getSize().y / 2.0f)) {
 
                         float depth = xDist - (m_size.x / 2.0f + getEntity(i)->getSize().x / 2.0f);
-                        float force = (depth / 2.0f * TILE_SIZE) * (depth / 2.0f * TILE_SIZE) / ((m_size.x / 2.0f + getEntity(i)->getSize().x / 2.0f) * 512.0f);
+                        float force = (depth / 2.0f) * (depth / 2.0f) / ((m_size.x / 2.0f + getEntity(i)->getSize().x / 2.0f) * 512.0f);
 
 
                         m_position.x -= force;
@@ -232,7 +232,7 @@ void Entity::collide() {
             std::vector<glm::vec2> collideTilePositions;
             std::vector<glm::vec2> groundTilePositions;
 
-            float x = m_position.x, y = m_position.y, width = m_size.x * TILE_SIZE, height = m_size.y * TILE_SIZE;
+            float x = m_position.x, y = m_position.y, width = m_size.x, height = m_size.y;
 
             glm::vec2 posBL(x, y);
             glm::vec2 posBR(x + width, y);
@@ -412,8 +412,8 @@ int Entity::setParentChunk(Chunk* worldChunks[WORLD_SIZE]) {
 
 bool Entity::checkTilePosition(Tile*** tiles, Tile*** extraTileArray, std::vector<glm::vec2>& collideTilePositions, float x, float y) {
     // Get the position of this corner in grid-space
-    glm::vec2 gridPos = glm::vec2(floor(x / TILE_SIZE),
-                                      floor(y / TILE_SIZE)); // grid-space coords
+    glm::vec2 gridPos = glm::vec2(floor(x),
+                                      floor(y)); // grid-space coords
 
 
     // If we are outside the world, just return
@@ -450,19 +450,19 @@ void Entity::collideWithTile(glm::vec2 tilePos, bool ground) {
     float x = m_position.x, y = m_position.y;
 
     glm::vec2 entRelativeCentrePosition; //Relative position of the centre of entity (to bottom left corner)
-    entRelativeCentrePosition = glm::vec2(m_size.x / 2.0f * (float)TILE_SIZE, m_size.y / 2.0f * (float)TILE_SIZE);
+    entRelativeCentrePosition = glm::vec2(m_size.x / 2.0f, m_size.y / 2.0f);
 
     glm::vec2 entCentrePosition; //Position of the centre of entity in pixel coords
     // m_size is in grid coords so multiply it by TILE_SIZE
     entCentrePosition = glm::vec2(x + entRelativeCentrePosition.x, y + entRelativeCentrePosition.y);
 
     glm::vec2 tileRelativeCentrePosition; //Relative position of the centre of tile (to bottom left corner)
-    tileRelativeCentrePosition = glm::vec2((float)TILE_SIZE * 0.5f);
+    tileRelativeCentrePosition = glm::vec2(0.5f);
 
     glm::vec2 tileCentrePosition; // Position of the centre of tile in pixel coords
     // tilePos is in grid coords, so mutiply it by TILE_SIZE
     // Don't add relativeCentrePosition because "tilePos" is already centered
-    tileCentrePosition = glm::vec2(tilePos * glm::vec2((float)TILE_SIZE));
+    tileCentrePosition = glm::vec2(tilePos);
 
     glm::vec2 distanceVec; //Distance from centre of tile to centre of entity
     // subtract the points to get total distance, fairly simple
@@ -502,8 +502,8 @@ void Entity::updateLightLevel() {
     if(m_parentChunk) {
         int entityChunkX, entityChunkY; // The entity's coords in the chunk
 
-        entityChunkX = (int)((m_position.x) / TILE_SIZE) % CHUNK_SIZE;
-        entityChunkY = (int)((m_position.y) / TILE_SIZE) + m_size.y / 2.0f;
+        entityChunkX = (int)((m_position.x)) % CHUNK_SIZE;
+        entityChunkY = (int)((m_position.y)) + m_size.y / 2.0f;
 
         m_exposedToSun = false;
 
@@ -560,7 +560,7 @@ void Entity::updateSounds() {
         m_soundTimer = 0;
     }
     if(m_onGround && m_soundTimer > 10) { // 10 is arbitrary, should probably add a variable to each type of entity (for longer strides, etc.)
-        glm::vec2 tileCoordsFloor = glm::vec2((int)(m_position.x / TILE_SIZE + 0.5f), (int)(m_position.y / TILE_SIZE - 0.5f));
+        glm::vec2 tileCoordsFloor = glm::vec2((int)(m_position.x + 0.5f), (int)(m_position.y - 0.5f));
 
         unsigned int chunkIndex = tileCoordsFloor.x / CHUNK_SIZE;
 

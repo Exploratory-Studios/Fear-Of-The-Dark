@@ -5,8 +5,10 @@
 #include <ctime>
 
 void WorldIOManager::loadWorld(std::string worldName) {
-    boost::thread t( [=]() { P_loadWorld(worldName); } );
-    t.detach();
+    //boost::thread t( [=]() { P_loadWorld(worldName); } );
+    //t.detach();
+    P_loadWorld(worldName);
+    //P_createWorld(1, worldName, false); WORKS
 }
 
 void WorldIOManager::saveWorld(std::string worldName) {
@@ -99,7 +101,7 @@ void WorldIOManager::P_loadWorld(std::string worldName) {
 
     { // WORLD
 
-        ChunkData chunkData[WORLD_SIZE];
+        ChunkData* chunkData = new ChunkData[WORLD_SIZE];
         file.read(reinterpret_cast<char*>(&chunkData[0]), sizeof(ChunkData) * WORLD_SIZE);
 
         for(int i = 0; i < WORLD_SIZE; i++) {
@@ -182,11 +184,11 @@ void WorldIOManager::P_saveWorld(std::string worldName) {
     logger->log("SAVE: Player Data Prepared");
 
     // CHUNK
-    ChunkData chunkData[WORLD_SIZE];
+    ChunkData* chunkData = new ChunkData[WORLD_SIZE];
     for(unsigned int i = 0; i < WORLD_SIZE; i++) {
         for(int y = 0; y < WORLD_HEIGHT; y++) {
             for(int x = 0; x < CHUNK_SIZE; x++) {
-                //chunkData[i].tiles[y][x] = m_world->chunks[i]->tiles[y][x]->getSaveData();
+                chunkData[i].tiles[y][x] = m_world->chunks[i]->tiles[y][x]->getSaveData();
             }
         }
     }
@@ -243,9 +245,10 @@ void WorldIOManager::P_saveWorld(std::string worldName) {
     }
 
     { // WORLD
-        for(int i = 0; i < WORLD_SIZE; i++) {
-            //file.write(reinterpret_cast<char*>(&chunkData[i]), sizeof(ChunkData));
-        }
+        //for(int i = 0; i < WORLD_SIZE; i++) {
+        file.write(reinterpret_cast<char*>(chunkData), sizeof(ChunkData) * WORLD_SIZE);
+        //}
+        delete[] chunkData;
         logger->log("SAVE: Wrote World Chunks");
     }
 
@@ -448,7 +451,7 @@ void WorldIOManager::P_createWorld(unsigned int seed, std::string worldName, boo
 
     return;
 
-    //m_world->player = new Player(glm::vec2(5.0f * TILE_SIZE, (blockHeights[5] + 5) * TILE_SIZE), m_input, m_sq);
+    //m_world->player = new Player(glm::vec2(5.0f, (blockHeights[5] + 5)), m_input, m_sq);
 }
 
 void WorldIOManager::setWorldEra(WorldEra newEra) {

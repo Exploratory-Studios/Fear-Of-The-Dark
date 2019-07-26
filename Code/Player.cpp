@@ -38,7 +38,8 @@ Player::Player(glm::vec2 position, Chunk* parent, GLEngine::InputManager* input,
 
 Player::~Player()
 {
-    //dtor
+    delete m_inventory;
+    delete m_limbs[0];
 }
 
 void Player::initGUI(GLEngine::GUI* gui) {
@@ -88,7 +89,7 @@ void Player::initGUI(GLEngine::GUI* gui) {
 }
 
 void Player::draw(GLEngine::SpriteBatch& sb, float time, float xOffset) {
-    glm::vec4 destRect = glm::vec4(m_position.x + xOffset * CHUNK_SIZE * TILE_SIZE, m_position.y, m_size.x * TILE_SIZE, m_size.y * TILE_SIZE);
+    glm::vec4 destRect = glm::vec4(m_position.x + xOffset * CHUNK_SIZE, m_position.y, m_size.x, m_size.y);
 
     float x, y;
     if(m_velocity.x > m_speed) {
@@ -137,16 +138,16 @@ void Player::draw(GLEngine::SpriteBatch& sb, float time, float xOffset) {
         glm::vec4 fullUV(0.0f, 0.0f, 1.0f, 1.0f);
         int cursorImgId = GLEngine::ResourceManager::getTexture(ASSETS_FOLDER_PATH + "GUI/Player/Cursor.png").id;
 
-        glm::vec4 cursorDestRect(m_selectedEntity->getPosition().x + xOffset * CHUNK_SIZE * TILE_SIZE, m_selectedEntity->getPosition().y, m_selectedEntity->getSize().x * TILE_SIZE, m_selectedEntity->getSize().y * TILE_SIZE);
+        glm::vec4 cursorDestRect(m_selectedEntity->getPosition().x + xOffset * CHUNK_SIZE, m_selectedEntity->getPosition().y, m_selectedEntity->getSize().x, m_selectedEntity->getSize().y);
         sb.draw(cursorDestRect, fullUV, cursorImgId, 0.9f, GLEngine::ColourRGBA8(255, 255, 255, 255));
     } else if(m_selectedBlock) { // Cursor box selection
         glm::vec4 fullUV(0.0f, 0.0f, 1.0f, 1.0f);
         int cursorImgId = GLEngine::ResourceManager::getTexture(ASSETS_FOLDER_PATH + "GUI/Player/Cursor.png").id;
 
         int chunkIndex = (int)floor(m_mousePos.x / CHUNK_SIZE);
-        int x = (int)(m_mousePos.x + CHUNK_SIZE * TILE_SIZE) % CHUNK_SIZE * TILE_SIZE;
+        int x = (int)(m_mousePos.x + CHUNK_SIZE) % CHUNK_SIZE;
 
-        glm::vec4 cursorDestRect(x + chunkIndex * CHUNK_SIZE * TILE_SIZE + xOffset * CHUNK_SIZE * TILE_SIZE, m_selectedBlock->getPosition().y * TILE_SIZE, m_selectedBlock->getSize().x * TILE_SIZE, m_selectedBlock->getSize().y * TILE_SIZE);
+        glm::vec4 cursorDestRect(x + chunkIndex * CHUNK_SIZE + xOffset * CHUNK_SIZE, m_selectedBlock->getPosition().y, m_selectedBlock->getSize().x, m_selectedBlock->getSize().y);
         sb.draw(cursorDestRect, fullUV, cursorImgId, 0.9f, GLEngine::ColourRGBA8(255, 255, 255, 255));
     }
 }
@@ -319,7 +320,7 @@ void Player::updateStats(float timeStep, Chunk* worldChunks[WORLD_SIZE]) {
 void Player::updateMouse(GLEngine::Camera2D* worldCamera) {
     glm::vec2 mousePos = worldCamera->convertScreenToWorld(m_input->getMouseCoords());
 
-    mousePos = glm::vec2(floor(mousePos.x / TILE_SIZE), floor(mousePos.y / TILE_SIZE)); // Changes it to grid-space
+    mousePos = glm::vec2(floor(mousePos.x / 1), floor(mousePos.y / 1)); // Changes it to grid-space
 
     m_mousePos = mousePos;
 
@@ -352,14 +353,14 @@ void Player::updateMouse(GLEngine::Camera2D* worldCamera) {
                 m_selectedEntity = nullptr;
 
                 for(int i = 0; i < chunk->getEntities()->size(); i++) {
-                    float sizeX = (chunk->getEntity(i)->getSize().x * TILE_SIZE) / 4;
+                    float sizeX = (chunk->getEntity(i)->getSize().x) / 4;
                     float midX = chunk->getEntity(i)->getPosition().x + sizeX;
 
-                    float sizeY = (chunk->getEntity(i)->getSize().y * TILE_SIZE) / 4;
+                    float sizeY = (chunk->getEntity(i)->getSize().y) / 4;
                     float midY = chunk->getEntity(i)->getPosition().y + sizeY;
 
-                    if(std::abs(midX - mousePos.x * TILE_SIZE) <= sizeX) {
-                        if(std::abs(midY - mousePos.y * TILE_SIZE) <= sizeY) {
+                    if(std::abs(midX - mousePos.x) <= sizeX) {
+                        if(std::abs(midY - mousePos.y) <= sizeY) {
                             m_selectedEntity = chunk->getEntity(i);
                         }
                     }
@@ -412,11 +413,14 @@ void Player::updateInput() {
         if(m_input->isKeyDown(SDLK_p)) {
             m_inventory->addItem(createItem((unsigned int)Categories::ItemIDs::BLOCK_WOOD, 1));
         }
+        if(m_input->isKeyPressed(SDLK_o)) {
+            m_inventory->addItem(createItem((unsigned int)Categories::ItemIDs::MISC_BUCKET, 1));
+        }
 
-        if(m_input->isKeyPressed(SDL_BUTTON_LEFT) && m_selectedBlock) {
+        if(m_input->isKeyDown(SDL_BUTTON_LEFT) && m_selectedBlock) {
             if(m_favouriteItems[m_selectedHotbox]) m_favouriteItems[m_selectedHotbox]->onLeftClick(m_selectedBlock);
             if(!m_favouriteItems[m_selectedHotbox]) {
-                BlockWater* b = new BlockWater(m_selectedBlock->getPosition(), m_selectedBlock->getParentChunk(), 1.0f);//createBlock((unsigned int)Categories::BlockIDs::WATER, m_selectedBlock->getPosition(), m_selectedBlock->getParentChunk());
+                BlockAir* b = new BlockAir(m_selectedBlock->getPosition(), m_selectedBlock->getParentChunk());//createBlock((unsigned int)Categories::BlockIDs::WATER, m_selectedBlock->getPosition(), m_selectedBlock->getParentChunk());
                 m_selectedBlock->getParentChunk()->setTile(b, m_selectedBlock->getPosition().x, m_selectedBlock->getPosition().y);
             }
             m_inventory->updateWeight();

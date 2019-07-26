@@ -57,6 +57,9 @@
 					<Add directory="Code/QuestSystem" />
 					<Add directory="include" />
 				</Compiler>
+				<Linker>
+					<Add option="-O3" />
+				</Linker>
 			</Target>
 			<Target title="ValgrindReady">
 				<Option output="bin/Debug/Fear Of The Dark" prefix_auto="1" extension_auto="1" />

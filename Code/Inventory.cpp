@@ -88,7 +88,7 @@ void Inventory::draw(float x, float y, GLEngine::SpriteBatch& sb, GLEngine::Spri
             if(m_items[i]) {
                 glm::vec4 itemUV(0, 0, 1, 1);
 
-                int itemImgId = GLEngine::ResourceManager::getTexture(Category_Data::itemData[m_items[i]->m_id].texturePath).id;
+                GLuint itemImgId = m_items[i]->getTexture().id;
 
                 //sb.begin(GLEngine::GlyphSortType::FRONT_TO_BACK); // lower numbers in back
 

@@ -46,6 +46,7 @@ class MetaData {
         template<class T>
         T getAspect(std::string name) {
             // Finds an aspect's value based on a given name, using string::find();
+            /// TODO
         }
     private:
         std::string m_data;

@@ -32,13 +32,16 @@ namespace Categories {
         BLOCK_TORCH,
         BLOCK_GRASS,
         BLOCK_WOOD,
-        MISC_BUCKET
+        MISC_BUCKET,
+        MISC_MEAT_RAW,
+        MISC_LEATHER
     };
 
     enum class EntityIDs { // Should match up with presetvalues.h entities' data
         MOB_PLAYER,
         MOB_NEUTRAL_QUESTGIVER_A,
-        MOB_NEUTRAL_COMPANIONCUBE
+        MOB_NEUTRAL_COMPANIONCUBE,
+        ITEM
     };
 
     enum class Faction {
@@ -52,7 +55,8 @@ namespace Categories {
     enum class Entity_Type {
         MOB,
         DIALOGUE,
-        PROJECTILE
+        PROJECTILE,
+        ITEM
     };
 
     enum class AI_Type {
@@ -74,6 +78,14 @@ namespace Categories {
         MELEE_ONLY,
         MAGIC,
         CONTACT,
+        NONE
+    };
+
+    enum class LootTableIds {
+        ANIMAL,
+        DEMON,
+        HUMANOID,
+        UNIQUE,
         NONE
     };
 

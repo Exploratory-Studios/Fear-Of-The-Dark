@@ -4,9 +4,11 @@
 #include "ItemBlock.h"
 #include "BuffData.h"
 
+#include "Entities.h"
+
 #include <Errors.h>
 
-Player::Player(glm::vec2 position, Chunk* parent, GLEngine::InputManager* input, ScriptQueue* sq, AudioManager* audio) : Entity(position, audio, sq, 12.0f/60.0f), m_input(input)
+Player::Player(glm::vec2 position, Chunk* parent, GLEngine::InputManager* input, ScriptQueue* sq, AudioManager* audio) : Entity(position, audio, sq, 12.0f/60.0f, Categories::LootTableIds::NONE, 0, 0), m_input(input)
 {
     m_inventory = new Inventory();
 
@@ -254,6 +256,21 @@ void Player::update(float timeStep, Chunk* worldChunks[WORLD_SIZE]) {
         m_velocity.x = -MAX_SPEED * m_inventory->getSpeedMultiplier() * std::pow(m_stamina, 0.4f);
     }
     setParentChunk(worldChunks);
+
+    for(int i = 0; i < m_parentChunk->getEntities().size(); i++) {
+        Entity* e = m_parentChunk->getEntities()[i];
+        if(e->getType() == Categories::Entity_Type::ITEM) {
+            float xDist = std::abs(e->getPosition().x - m_position.x);
+            float yDist = std::abs(e->getPosition().y - m_position.y);
+            float dist = std::sqrt(xDist * xDist + yDist * yDist);
+
+            if(dist <= 3.0f) {
+                m_inventory->addItem((static_cast<EntityNeutralItem*>(e)->getItem()));
+                delete e;
+                m_parentChunk->removeEntity(i);
+            }
+        }
+    }
 }
 
 #define cap(x) if(x > 1) x = 1; if(x < 0) x = 0;
@@ -352,16 +369,16 @@ void Player::updateMouse(GLEngine::Camera2D* worldCamera) {
 
                 m_selectedEntity = nullptr;
 
-                for(int i = 0; i < chunk->getEntities()->size(); i++) {
-                    float sizeX = (chunk->getEntity(i)->getSize().x) / 4;
-                    float midX = chunk->getEntity(i)->getPosition().x + sizeX;
+                for(int i = 0; i < chunk->getEntities().size(); i++) {
+                    float sizeX = (chunk->getEntities()[i]->getSize().x) / 4;
+                    float midX = chunk->getEntities()[i]->getPosition().x + sizeX;
 
-                    float sizeY = (chunk->getEntity(i)->getSize().y) / 4;
-                    float midY = chunk->getEntity(i)->getPosition().y + sizeY;
+                    float sizeY = (chunk->getEntities()[i]->getSize().y) / 4;
+                    float midY = chunk->getEntities()[i]->getPosition().y + sizeY;
 
                     if(std::abs(midX - mousePos.x) <= sizeX) {
                         if(std::abs(midY - mousePos.y) <= sizeY) {
-                            m_selectedEntity = chunk->getEntity(i);
+                            m_selectedEntity = chunk->getEntities()[i];
                         }
                     }
                 }

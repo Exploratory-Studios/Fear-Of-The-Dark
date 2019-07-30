@@ -40,7 +40,8 @@ class Chunk
 
         void deleteDeadTiles();
 
-        void addEntity(Entity ent);
+        void addEntity(Entity* ent);
+        void removeEntity(unsigned int index);
         Entity* getEntity(unsigned int index);
 
         Categories::Places          getPlace()                                                  { return m_place;       }
@@ -48,7 +49,7 @@ class Chunk
         Chunk**					    getSurroundingChunks()										{ return m_surroundingChunks; }
         bool                        isDialogueActive()                                          { return m_dialogueActive; }
         bool                        isDialogueStarted()                                         { return m_dialogueStarted; }
-        std::vector<Entity>*        getEntities();
+        std::vector<Entity*>        getEntities();
 
         void setAudioManager(AudioManager* audio);
 

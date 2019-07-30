@@ -55,6 +55,16 @@ class ItemMiscBucket : public Item {
         float m_level = 0.0f;
 };
 
+class ItemMiscMeat_Raw : public Item {
+    public:
+        ItemMiscMeat_Raw(unsigned int quantity);
+};
+
+class ItemMiscLeather : public Item {
+    public:
+        ItemMiscLeather(unsigned int quantity);
+};
+
 static Item* createItem(unsigned int id, unsigned int quantity) {
     Item* ret = nullptr;
 
@@ -65,6 +75,9 @@ static Item* createItem(unsigned int id, unsigned int quantity) {
         case (unsigned int)Categories::ItemIDs::BLOCK_TORCH: ret = new ItemBlockTorch(quantity); break;
         case (unsigned int)Categories::ItemIDs::BLOCK_WOOD: ret = new ItemBlockWood(quantity); break;
         case (unsigned int)Categories::ItemIDs::MISC_BUCKET: ret = new ItemMiscBucket(quantity); break;
+        case (unsigned int)Categories::ItemIDs::MISC_MEAT_RAW: ret = new ItemMiscMeat_Raw(quantity); break;
+        case (unsigned int)Categories::ItemIDs::MISC_LEATHER: ret = new ItemMiscLeather(quantity); break;
+
     }
 
     return ret;

@@ -8,6 +8,8 @@
 #include "Chunk.h"
 #include "Player.h"
 
+#include "Entities.h"
+
 void Limb::draw(GLEngine::SpriteBatch& sb) {
     glm::vec2 position = m_parentEntity->getPosition() + (m_pos * (m_parentEntity->getSize()));
 
@@ -32,7 +34,7 @@ void Entity::setParentChunk(Chunk* chunk) {
 
 Entity::~Entity()
 {
-    //dtor
+
 }
 
 /*void Entity::init(glm::vec2 position, Categories::Entity_Type type, unsigned int id, ScriptQueue* sq) {
@@ -83,6 +85,10 @@ void Entity::update(float timeStep, Chunk* worldChunks[WORLD_SIZE]) {
     updateSounds();
     updateMovement();
     updateLightLevel();
+
+    if(m_health <= 0.0f) {
+        die();
+    }
 }
 #include <iostream>
 void Entity::tick(Player* p) {
@@ -146,11 +152,11 @@ void Entity::draw(GLEngine::SpriteBatch& sb, float time, float xOffset) {
 
     float x, y;
     if(m_velocity.x > m_speed) {
-        x = (int)time*abs((int)m_velocity.x)+1 % 3;
+        x = (int)time*abs((int)m_velocity.x)+1 % m_animation_runFrames;
         y = 1;
         m_flippedTexture = false;
     } else if(m_velocity.x < -m_speed) {
-        x = (int)time*abs((int)m_velocity.x)+1 % 3;
+        x = (int)time*abs((int)m_velocity.x)+1 % m_animation_runFrames;
         y = 1;
         m_flippedTexture = true;
     } else {
@@ -158,7 +164,7 @@ void Entity::draw(GLEngine::SpriteBatch& sb, float time, float xOffset) {
         y = 1;
     }
     if(m_velocity.y > 0.0f) {
-        x = (int)time % 3;
+        x = (int)time % m_animation_jumpFrames;
         y = 0;
     }
 
@@ -181,7 +187,12 @@ void Entity::draw(GLEngine::SpriteBatch& sb, float time, float xOffset) {
 
     GLEngine::ColourRGBA8 colour(255, 255, 255, 255);
 
-    sb.draw(destRect, uvRect, m_texture.id, 0.5f, colour, glm::vec3(m_light));
+    float depth = 0.5f;
+    if(m_type == Categories::Entity_Type::ITEM) {
+        depth = 1.0f;
+    }
+
+    sb.draw(destRect, uvRect, m_texture.id, depth, colour, glm::vec3(m_light));
 
     for(unsigned int i = 0; i < m_limbs.size(); i++) {
         m_limbs[i]->draw(sb); // no sb.begin() or end()
@@ -194,31 +205,43 @@ void Entity::move(float timeStepVariable) {
     if(m_velocity.y > MAX_SPEED) m_velocity.y = MAX_SPEED;
     if(m_velocity.y < -MAX_SPEED) m_velocity.y = -MAX_SPEED;
 
-    m_velocity.y -= 1.225f / 60.0f; // Earth gravity is far too harsh for games. We use about 1/8th
     m_position += m_velocity;
-}
 
-#define getEntity(i) (&(*entities)[i])
+    if(m_takesFallDamage) {
+        if(m_velocity.y < 0.0f) {
+            m_fallenDistance += -m_velocity.y;
+        } else {
+            if(m_fallenDistance > 4.0f) {
+                m_health -= std::pow(m_fallenDistance - 4.0f, 1.5f) * 0.08f;
+            }
+            m_fallenDistance = 0.0f;
+        }
+    }
+
+    m_velocity.y -= 1.225f / 60.0f; // Earth gravity is far too harsh for games. We use about 1/8th
+}
 
 void Entity::collide() {
 
-    std::vector<Entity>* entities = m_parentChunk->getEntities();
+    std::vector<Entity*> entities = m_parentChunk->getEntities();
 
     if(getChunkIndex() >= 0) {
         /// ENTITY COLLISION STARTS HERE
-        for(unsigned int i = 0; i < entities->size(); i++) {
-            if(getEntity(i)->getPosition() != m_position) {
-                float xDist = (m_position.x / 1.0f + m_size.x / 2.0f) - (getEntity(i)->getPosition().x / 1.0f + getEntity(i)->getSize().x / 2.0f);
-                float yDist = (m_position.y / 1.0f + m_size.y / 2.0f) - (getEntity(i)->getPosition().y / 1.0f + getEntity(i)->getSize().y / 2.0f);
-                if(abs(xDist) < abs(m_size.x / 2.0f + getEntity(i)->getSize().x / 2.0f)) {
-                    if(abs(yDist) < abs(m_size.y / 2.0f + getEntity(i)->getSize().y / 2.0f)) {
+        for(unsigned int i = 0; i < entities.size(); i++) {
+            if(entities[i] != this) {
+                if(entities[i]->getType() != Categories::Entity_Type::ITEM) {
+                    float xDist = (m_position.x / 1.0f + m_size.x / 2.0f) - (entities[i]->getPosition().x / 1.0f + entities[i]->getSize().x / 2.0f);
+                    float yDist = (m_position.y / 1.0f + m_size.y / 2.0f) - (entities[i]->getPosition().y / 1.0f + entities[i]->getSize().y / 2.0f);
+                    if(abs(xDist) < abs(m_size.x / 2.0f + entities[i]->getSize().x / 2.0f)) {
+                        if(abs(yDist) < abs(m_size.y / 2.0f + entities[i]->getSize().y / 2.0f)) {
 
-                        float depth = xDist - (m_size.x / 2.0f + getEntity(i)->getSize().x / 2.0f);
-                        float force = (depth / 2.0f) * (depth / 2.0f) / ((m_size.x / 2.0f + getEntity(i)->getSize().x / 2.0f) * 512.0f);
+                            float depth = xDist - (m_size.x / 2.0f + entities[i]->getSize().x / 2.0f);
+                            float force = (depth / 2.0f) * (depth / 2.0f) / ((m_size.x / 2.0f + entities[i]->getSize().x / 2.0f) * 512.0f);
 
 
-                        m_position.x -= force;
-                        getEntity(i)->setPosition(glm::vec2(getEntity(i)->getPosition().x + force, getEntity(i)->getPosition().y));
+                            m_position.x -= force;
+                            entities[i]->setPosition(glm::vec2(entities[i]->getPosition().x + force, entities[i]->getPosition().y));
+                        }
                     }
                 }
             }
@@ -574,5 +597,19 @@ void Entity::updateSounds() {
             m_audioManager->playSoundEffect(m_parentChunk->tiles[(int)tileCoordsFloor.y][(int)tileCoordsFloor.x]->getWalkedOnSoundEffectID(), MIX_MAX_VOLUME);
         }
         m_soundTimer = 0;
+    }
+}
+
+void Entity::die() {
+    if(m_canDie) {
+        if(m_lootTableStart.getRarity() != -1.0f) {
+            for(int i = 0; i < m_lootRolls; i++) {
+                EntityNeutralItem* item = new EntityNeutralItem(m_position + glm::vec2(0.0f, 2.0f), m_parentChunk, m_audioManager, createItem((unsigned int)m_lootTableStart.roll(), 1));
+                m_parentChunk->addEntity(item);
+            }
+        }
+        m_isDead = true;
+    } else {
+        m_isDead = false; // Just in case
     }
 }

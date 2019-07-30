@@ -4,6 +4,7 @@
 #include <DebugRenderer.h>
 
 #include "Block.h"
+#include "Inventory.h"
 
 #include "PresetValues.h"
 #include "Entities/EntityFunctions.h"
@@ -84,11 +85,26 @@ class Entity
     friend class Scripter;
 
     public:
-        Entity(glm::vec2 position, AudioManager* audioManager, ScriptQueue* sq, float maxRunningSpeed) : m_position(position), m_audioManager(audioManager), m_sq(sq), m_maxSpeed(maxRunningSpeed) { }
+        Entity(glm::vec2 position,
+               AudioManager* audioManager,
+               ScriptQueue* sq,
+               float maxRunningSpeed,
+               Categories::LootTableIds lootTable,
+               unsigned int lootBeginLevel, unsigned int lootBeginIndex) :
+                                                                           m_position(position),
+                                                                           m_audioManager(audioManager),
+                                                                           m_sq(sq),
+                                                                           m_maxSpeed(maxRunningSpeed),
+                                                                           m_inventory(new Inventory()) {
+                                                                               if(lootTable != Categories::LootTableIds::NONE) m_lootTableStart = Category_Data::lootTables[(unsigned int)lootTable].getNode(lootBeginLevel, lootBeginIndex);
+                                                                           }
+
         virtual ~Entity();
 
-        virtual void onInteract(ScriptQueue* sq) {};
-        virtual void onDeath(ScriptQueue* sq) {};
+        virtual void onInteract(ScriptQueue* sq) {} // Deprecated?
+        virtual void onTalk(ScriptQueue* sq) {}
+        virtual void onTrade(ScriptQueue* sq) {}
+        virtual void onDeath(ScriptQueue* sq) {}
 
         virtual void update(float timeStep, Chunk* worldChunks[WORLD_SIZE]);
         virtual void tick(Player* p);
@@ -104,14 +120,21 @@ class Entity
               std::vector<glm::vec2>   getTargets()      const { return m_targets; }
               float                    getJumpHeight()   const { return m_jumpHeight; }
               float                    getLightLevel()   const { return m_light; }
+              bool                     isDead()          const { return m_isDead; }
 
         void                           setPosition(glm::vec2 pos)   { m_position = pos; }
         void                           setTargets(std::vector<glm::vec2> targets)  { m_targets = targets; }
+        Categories::Entity_Type        getType()         const { return m_type; }
 
         void setParentChunk(Chunk* chunk);
         void setAudioManager(AudioManager* audio) { m_audioManager = audio; }
         int setParentChunk(Chunk* worldChunks[WORLD_SIZE]);
         unsigned int getChunkIndex();
+
+        void giveItem(Item* item) { if(m_inventory) { m_inventory->addItem(item); } else { Logger::getInstance()->log("ERROR: Entity inventory not initialized, could not give item", true); } }
+
+        virtual bool canTalk() const { return false; }
+        virtual bool canTrade() const { return true; }
 
     protected:
         bool checkTilePosition(Tile*** tiles, Tile*** extraTileArray, std::vector<glm::vec2>& collideTilePositions, float xPos, float yPos);
@@ -127,7 +150,24 @@ class Entity
         void updateMovement();
         virtual void updateSounds();
 
+        virtual void die();
+
+        Inventory* m_inventory = nullptr;
+        std::vector<unsigned int> m_equippedItems; // For armour, weapons, etc.
+
+        DropDatum m_lootTableStart = DropDatum(0, (Categories::ItemIDs)(0), 0, 0, -1.0f);
+        unsigned int m_lootRolls = 0; // How many times the table is rolled on death
+
         bool m_exposedToSun = false;
+
+        float m_fallenDistance = 0.0f;
+        bool m_takesFallDamage = true;
+
+        bool m_isDead = false;
+        bool m_canDie = true;
+
+        unsigned int m_animation_jumpFrames = 3;
+        unsigned int m_animation_runFrames = 3;
 
         bool m_controls[4]; // Up, down (crouching while on ground), left, right
         float m_speed = 0.02;
@@ -170,6 +210,7 @@ class Entity
         Categories::AI_Type m_ai = Categories::AI_Type::WALKING;
         Categories::Disability_Type m_disabilities = Categories::Disability_Type::NONE;
         Categories::Attack_Type m_attackType = Categories::Attack_Type::MELEE_ONLY;
+        Categories::Entity_Type m_type = Categories::Entity_Type::MOB;
 
         Chunk* m_parentChunk = nullptr;
         AudioManager* m_audioManager = nullptr;
@@ -184,6 +225,8 @@ class Entity
         unsigned int m_noiseFrequency = 0; // Determines the chance of this mob making a noise
         int m_currentNoise = -1; // The id of the noise the mob is making
         std::vector<SoundEffectIDs> m_ambientNoiseSound; // What ambient noise does this mob make?
+
+        float m_health = 1.0f; // There is no concept of "different max health values" for each mob, but each one has a percent of their total health, and defense stats, which will determine what percentage they lose.
 
         /* Entities.h attributes:
         - Texture

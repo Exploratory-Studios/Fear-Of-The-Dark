@@ -44,7 +44,8 @@ void GameplayScreen::onEntry() {
     m_spriteBatch.init();
     m_spriteFont.init((ASSETS_FOLDER_PATH + "GUI/fonts/Amatic-Bold.ttf").c_str(), 96);
 
-    m_camera.setScale(MIN_ZOOM);
+    m_scale = INITIAL_ZOOM;
+    m_camera.setScale(m_scale);
     m_camera.init(m_window->getScreenWidth(), m_window->getScreenHeight());
     m_camera.setPosition(m_camera.getPosition() + (glm::vec2(m_window->getScreenWidth() / 2, m_window->getScreenHeight() / 2)));
 
@@ -76,12 +77,12 @@ void GameplayScreen::onEntry() {
 
         {
             for(unsigned int j = 0; j < WORLD_SIZE; j++) {
-                std::vector<Entity>* entities;
+                std::vector<Entity*> entities;
                 entities = m_WorldIOManager->getWorld()->chunks[j]->getEntities();
-                for(unsigned int i = 0; i < entities->size(); i++) {
-                    int index = (m_WorldIOManager->getWorld()->chunks[j]->getEntity(i)->getPosition().x) / CHUNK_SIZE;
-                    m_WorldIOManager->getWorld()->chunks[j]->getEntity(i)->setParentChunk(m_WorldIOManager->getWorld()->chunks[index]);
-                    m_WorldIOManager->getWorld()->chunks[index]->addEntity(*m_WorldIOManager->getWorld()->chunks[j]->getEntity(i));
+                for(unsigned int i = 0; i < entities.size(); i++) {
+                    int index = (m_WorldIOManager->getWorld()->chunks[j]->getEntities()[i]->getPosition().x) / CHUNK_SIZE;
+                    m_WorldIOManager->getWorld()->chunks[j]->getEntities()[i]->setParentChunk(m_WorldIOManager->getWorld()->chunks[index]);
+                    m_WorldIOManager->getWorld()->chunks[index]->addEntity(m_WorldIOManager->getWorld()->chunks[j]->getEntities()[i]);
                 }
             }
         }
@@ -90,7 +91,7 @@ void GameplayScreen::onEntry() {
     m_questManager = new QuestManager(ASSETS_FOLDER_PATH + "Questing/DialogueList.txt", ASSETS_FOLDER_PATH + "Questing/FlagList.txt", m_WorldIOManager->getScriptQueue());
     m_console = new Console();
 
-    m_WorldIOManager->getWorld()->chunks[0]->addEntity(*createEntity((unsigned int)Categories::EntityIDs::MOB_NEUTRAL_QUESTGIVER_A, glm::vec2(10.0f, (200.0f)), m_WorldIOManager->getWorld()->chunks[0], m_WorldIOManager->getAudioManager(), m_questManager));
+    m_WorldIOManager->getWorld()->chunks[0]->addEntity(createEntity((unsigned int)Categories::EntityIDs::MOB_NEUTRAL_QUESTGIVER_A, glm::vec2(10.0f, (200.0f)), m_WorldIOManager->getWorld()->chunks[0], m_WorldIOManager->getAudioManager(), m_questManager));
 
     initUI();
     tick();
@@ -500,18 +501,17 @@ void GameplayScreen::activateChunks() {
 
     chunkIndex = (((int)m_camera.getPosition().x + WORLD_SIZE * CHUNK_SIZE) / CHUNK_SIZE) % WORLD_SIZE;
 
-    const unsigned int viewDist = (m_window->getScreenWidth() / m_scale) / CHUNK_SIZE + 2;
-
-    const signed int each = std::ceil((viewDist - 1) / 2);
     m_drawnChunks.clear();
     m_activatedChunks.clear();
-    for(signed int i = -each; i <= each; i++) {
-        if(chunkIndex + i == m_player->getChunkIndex()) m_playerChunkCovered = true;
-        m_drawnChunks.push_back(chunkIndex + i);
-        m_activatedChunks.push_back(chunkIndex + i);
-        int realIndex = (chunkIndex + i + WORLD_SIZE) % WORLD_SIZE;
-        m_WorldIOManager->getWorld()->chunks[realIndex]->drawChunk();
-        m_WorldIOManager->getWorld()->chunks[realIndex]->activateChunk();
+    for(signed int i = -MAX_VIEW_DIST; i <= MAX_VIEW_DIST; i++) {
+        if(m_camera.isBoxInView(m_camera.getPosition() + glm::vec2(i * CHUNK_SIZE, 0.0f), glm::vec2(CHUNK_SIZE, WORLD_HEIGHT))) {
+            if(chunkIndex + i == m_player->getChunkIndex()) m_playerChunkCovered = true;
+            m_drawnChunks.push_back(chunkIndex + i);
+            m_activatedChunks.push_back(chunkIndex + i);
+            int realIndex = (chunkIndex + i + WORLD_SIZE) % WORLD_SIZE;
+            m_WorldIOManager->getWorld()->chunks[realIndex]->drawChunk();
+            m_WorldIOManager->getWorld()->chunks[realIndex]->activateChunk();
+        }
     }
     if(!m_playerChunkCovered) {
         int realIndex = (m_player->getChunkIndex() + WORLD_SIZE) % WORLD_SIZE;

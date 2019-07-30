@@ -1,6 +1,6 @@
 #include "ItemBlock.h"
 
-ItemBlock::ItemBlock() {
+ItemBlock::ItemBlock(unsigned short int quantity, GLEngine::GLTexture texture) : Item(quantity, texture) {
 
 }
 

@@ -744,3 +744,26 @@ Loaded flag with id of 3 and value of 0
 Loaded flag with id of 4 and value of 0
 Loaded flag with id of 5 and value of 0
 Flags loaded! (125 bytes)
+
+
+
+### LOG: Sun Jul 28 21:34:11 2019 ###
+
+Loaded all 1 music files.
+Loaded all 2 sound files.
+Successfully Loaded Script File: ../Assets/Scripts/Script_player_makeHouse.txt, and given id of: 1
+Loading dialogue. 1297 bytes to read.
+Successfully Loaded Script File: ../Assets/Scripts/Script_selected_makeHouse.txt, and given id of: 2
+Successfully Loaded Script File: ../Assets/Scripts/Script_player_makeHouse.txt, and given id of: 1
+Dialogue loaded! (1297 bytes)
+Loading flags. 125 bytes to read.
+Loaded flag with id of 0 and value of 0
+Loaded flag with id of 1 and value of 0
+Loaded flag with id of 2 and value of 0
+Loaded flag with id of 3 and value of 0
+Loaded flag with id of 4 and value of 0
+Loaded flag with id of 5 and value of 0
+Flags loaded! (125 bytes)
+
+### IMPORTANT: ENTITY CREATED WITH NO AUDIO MANAGER! ###
+

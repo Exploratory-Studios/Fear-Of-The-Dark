@@ -7,91 +7,96 @@ EntityManager::EntityManager(Chunk* parent, AudioManager* audio)
 {
     m_parentChunk = parent;
     m_audioManager = audio;
-
-    m_entities = new std::vector<Entity>();
 }
 
 EntityManager::~EntityManager()
 {
-    delete m_entities;
+    for(int i = 0; i < m_entities.size(); i++) {
+        removeEntity(m_entities.size()-1);
+    }
 }
 
 void EntityManager::update(float timeStep, Chunk* chunks[WORLD_SIZE]) {
-    for(unsigned int i = 0; i < getNumEntities(); i++) {
-        getEntity(i)->update(timeStep, chunks);
-        int newChunk = getEntity(i)->setParentChunk(chunks);
+    for(unsigned int i = 0; i < m_entities.size(); i++) {
+        m_entities[i]->update(timeStep, chunks);
+        int newChunk = m_entities[i]->setParentChunk(chunks);
         if(newChunk == -1) {
-            m_parentChunk->getSurroundingChunks()[0]->addEntity(*getEntity(i));
+            m_parentChunk->getSurroundingChunks()[0]->addEntity(m_entities[i]);
             removeEntity(i);
         } else if(newChunk == 1) {
-            m_parentChunk->getSurroundingChunks()[1]->addEntity(*getEntity(i));
+            m_parentChunk->getSurroundingChunks()[1]->addEntity(m_entities[i]);
             removeEntity(i);
         }
-        getEntity(i)->collide();
+        m_entities[i]->collide();
+
+        if(m_entities[i]->isDead()) {
+            delete m_entities[i];
+            removeEntity(i);
+        }
     }
 }
 
 void EntityManager::draw(GLEngine::SpriteBatch& sb, float time, float xOffset) {
-    for(unsigned int i = 0; i < getNumEntities(); i++) {
-        getEntity(i)->draw(sb, time, xOffset);
+    for(unsigned int i = 0; i < m_entities.size(); i++) {
+        m_entities[i]->draw(sb, time, xOffset);
     }
 }
 
 void EntityManager::tick(Player* p, float tickTime, WorldEra& era) {
-    for(unsigned int i = 0; i < getNumEntities(); i++) {
-        getEntity(i)->tick(p);
+    for(unsigned int i = 0; i < m_entities.size(); i++) {
+        m_entities[i]->tick(p);
     }
     spawnEntities(tickTime, era);
     targetEntities(p);
 }
 
 void EntityManager::removeEntity(int index) {
-    for(unsigned int i = index; i < getNumEntities()-1; i++) {
-        *getEntity(i) = *getEntity(i+1);
+    for(unsigned int i = index; i < m_entities.size()-1; i++) {
+        m_entities[i] = m_entities[i+1];
     }
-    m_entities->pop_back();
+    m_entities.pop_back();
 }
 
 void EntityManager::targetEntities(Player* p) {
-    m_entities->push_back(*p);
+    m_entities.push_back(p);
 
-    for(unsigned int i = 0; i < getNumEntities(); i++) {
-        for(unsigned int j = 0; j < getNumEntities(); j++) {
+    for(unsigned int i = 0; i < m_entities.size(); i++) {
+        for(unsigned int j = 0; j < m_entities.size(); j++) {
             if(i != j) {
-                if((int)getEntity(i)->getFaction() > (int)Categories::Faction::NEUTRAL &&
-                   (int)getEntity(j)->getFaction() <= (int)Categories::Faction::NEUTRAL) {
-                    getEntity(i)->setTargets(pathfindToTarget(getEntity(i)->getJumpHeight(), getEntity(i)->getPosition(), getEntity(j)->getPosition()));
-                } else if((int)getEntity(i)->getFaction() < (int)Categories::Faction::NEUTRAL &&
-                   (int)getEntity(j)->getFaction() > (int)Categories::Faction::NEUTRAL) {
-                    getEntity(i)->setTargets(pathfindToTarget(getEntity(i)->getJumpHeight(), getEntity(i)->getPosition(), getEntity(j)->getPosition()));
+                if((int)m_entities[i]->getFaction() > (int)Categories::Faction::NEUTRAL &&
+                   (int)m_entities[j]->getFaction() <= (int)Categories::Faction::NEUTRAL) {
+                    m_entities[i]->setTargets(pathfindToTarget(m_entities[i]->getJumpHeight(), m_entities[i]->getPosition(), m_entities[j]->getPosition()));
+                } else if((int)m_entities[i]->getFaction() < (int)Categories::Faction::NEUTRAL &&
+                   (int)m_entities[j]->getFaction() > (int)Categories::Faction::NEUTRAL) {
+                    m_entities[i]->setTargets(pathfindToTarget(m_entities[i]->getJumpHeight(), m_entities[i]->getPosition(), m_entities[j]->getPosition()));
                 }
             }
         }
-        for(unsigned int j = 0; j < m_parentChunk->getSurroundingChunks()[0]->getEntities()->size(); j++) {
+        for(unsigned int j = 0; j < m_parentChunk->getSurroundingChunks()[0]->getEntities().size(); j++) {
             if(i != j) {
-                if((int) getEntity(i)->getFaction() > (int)Categories::Faction::NEUTRAL &&
-                   (int) m_parentChunk->getSurroundingChunks()[0]->getEntity(j)->getFaction() <= (int)Categories::Faction::NEUTRAL) {
-                     getEntity(i)->setTargets(pathfindToTarget(getEntity(i)->getJumpHeight(),  getEntity(i)->getPosition(),  m_parentChunk->getSurroundingChunks()[0]->getEntity(j)->getPosition()));
-                } else if((int) getEntity(i)->getFaction() < (int)Categories::Faction::NEUTRAL &&
-                   (int) m_parentChunk->getSurroundingChunks()[0]->getEntity(j)->getFaction() > (int)Categories::Faction::NEUTRAL) {
-                     getEntity(i)->setTargets(pathfindToTarget(getEntity(i)->getJumpHeight(),  getEntity(i)->getPosition(),  m_parentChunk->getSurroundingChunks()[0]->getEntity(j)->getPosition()));
+                if((int) m_entities[i]->getFaction() > (int)Categories::Faction::NEUTRAL &&
+                   (int) m_parentChunk->getSurroundingChunks()[0]->getEntities()[j]->getFaction() <= (int)Categories::Faction::NEUTRAL) {
+                     m_entities[i]->setTargets(pathfindToTarget(m_entities[i]->getJumpHeight(),  m_entities[i]->getPosition(),  m_parentChunk->getSurroundingChunks()[0]->getEntities()[j]->getPosition()));
+                } else if((int) m_entities[i]->getFaction() < (int)Categories::Faction::NEUTRAL &&
+                   (int) m_parentChunk->getSurroundingChunks()[0]->getEntities()[j]->getFaction() > (int)Categories::Faction::NEUTRAL) {
+                     m_entities[i]->setTargets(pathfindToTarget(m_entities[i]->getJumpHeight(),  m_entities[i]->getPosition(),  m_parentChunk->getSurroundingChunks()[0]->getEntities()[j]->getPosition()));
                 }
             }
         }
-        for(unsigned int j = 0; j < m_parentChunk->getSurroundingChunks()[1]->getEntities()->size(); j++) {
+        for(unsigned int j = 0; j < m_parentChunk->getSurroundingChunks()[1]->getEntities().size(); j++) {
             if(i != j) {
-                if((int) getEntity(i)->getFaction() > (int)Categories::Faction::NEUTRAL &&
-                   (int) m_parentChunk->getSurroundingChunks()[1]->getEntity(j)->getFaction() <= (int)Categories::Faction::NEUTRAL) {
-                     getEntity(i)->setTargets(pathfindToTarget(getEntity(i)->getJumpHeight(), getEntity(i)->getPosition(), m_parentChunk->getSurroundingChunks()[1]->getEntity(j)->getPosition()));
-                } else if((int) getEntity(i)->getFaction() < (int)Categories::Faction::NEUTRAL &&
-                   (int) m_parentChunk->getSurroundingChunks()[1]->getEntity(j)->getFaction() > (int)Categories::Faction::NEUTRAL) {
-                     getEntity(i)->setTargets(pathfindToTarget(getEntity(i)->getJumpHeight(), getEntity(i)->getPosition(), m_parentChunk->getSurroundingChunks()[1]->getEntity(j)->getPosition()));
+                if((int) m_entities[i]->getFaction() > (int)Categories::Faction::NEUTRAL &&
+                   (int) m_parentChunk->getSurroundingChunks()[1]->getEntities()[j]->getFaction() <= (int)Categories::Faction::NEUTRAL) {
+                     m_entities[i]->setTargets(pathfindToTarget(m_entities[i]->getJumpHeight(), m_entities[i]->getPosition(), m_parentChunk->getSurroundingChunks()[1]->getEntities()[j]->getPosition()));
+                } else if((int) m_entities[i]->getFaction() < (int)Categories::Faction::NEUTRAL &&
+                   (int) m_parentChunk->getSurroundingChunks()[1]->getEntities()[j]->getFaction() > (int)Categories::Faction::NEUTRAL) {
+                     m_entities[i]->setTargets(pathfindToTarget(m_entities[i]->getJumpHeight(), m_entities[i]->getPosition(), m_parentChunk->getSurroundingChunks()[1]->getEntities()[j]->getPosition()));
                 }
             }
         }
     }
 
-    m_entities->pop_back();
+    m_entities.pop_back();
 }
 
 std::vector<glm::vec2> EntityManager::pathfindToTarget(float jumpHeight, glm::vec2 originalPosition, glm::vec2 targetPosition) {
@@ -303,7 +308,7 @@ void EntityManager::spawnEntities(float tickTime, WorldEra& era) {
     int randomNum = std::rand() % 1000;
 
     if(randomNum < SPAWN_RATE) {
-        if(m_entities->size() < MAX_CHUNK_ENTITIES) {
+        if(m_entities.size() < MAX_CHUNK_ENTITIES) {
             std::vector<unsigned int> spawnables; // Entities that can be spawned in this era and biome, at this time.
 
             DayPortion currentPortion;
@@ -362,7 +367,7 @@ void EntityManager::spawnEntities(float tickTime, WorldEra& era) {
                                 }
                             }
                             if(isSafe) {
-                                m_entities->push_back(*createEntity(spawnables[randomNum], glm::vec2(x, y), m_parentChunk, m_audioManager)); /// TODO: Could have serious problem here
+                                m_entities.push_back(createEntity(spawnables[randomNum], glm::vec2(x, y), m_parentChunk, m_audioManager)); /// TODO: Could have serious problem here
                                 return;
                             }
                         }

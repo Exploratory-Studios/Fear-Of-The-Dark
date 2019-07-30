@@ -15,8 +15,8 @@ void Scripter::init(GameplayScreen* gameplayScreen) {
     }
 
     for(unsigned int i = 0; i < WORLD_SIZE; i++) {
-        for(unsigned int j = 0; j < m_chunks[i]->getEntities()->size(); j++) {
-            m_entities.push_back(m_chunks[i]->getEntity(j));
+        for(unsigned int j = 0; j < m_chunks[i]->getEntities().size(); j++) {
+            m_entities.push_back(m_chunks[i]->getEntities()[j]);
         }
     }
 
@@ -231,7 +231,7 @@ std::string Scripter::executeCommand(std::string& command, Script* script) {
             keywordIndex++;
 
             for(unsigned int i = 0; i < positions.size(); i++) {
-                m_chunks[(unsigned int)(positions[i].x / CHUNK_SIZE)]->addEntity(*createEntity((unsigned int)entityId, positions[i], m_chunks[(unsigned int)(positions[i].x / CHUNK_SIZE)], m_gameplayScreen->m_WorldIOManager->getAudioManager(), m_gameplayScreen->m_questManager, &m_gameplayScreen->m_game->inputManager, m_gameplayScreen->m_WorldIOManager->getScriptQueue()));
+                m_chunks[(unsigned int)(positions[i].x / CHUNK_SIZE)]->addEntity(createEntity((unsigned int)entityId, positions[i], m_chunks[(unsigned int)(positions[i].x / CHUNK_SIZE)], m_gameplayScreen->m_WorldIOManager->getAudioManager(), m_gameplayScreen->m_questManager, &m_gameplayScreen->m_game->inputManager, m_gameplayScreen->m_WorldIOManager->getScriptQueue()));
 
                 std::string logString = "Added Entity " + std::to_string(i+1) + " of " + std::to_string(positions.size()) + " at X=" + std::to_string(positions[i].x) + ", Y=" + std::to_string(positions[i].y) + ", with and ID of " + std::to_string((unsigned int)entityId) + " (Chunk " + std::to_string((unsigned int)(positions[i].x / CHUNK_SIZE)) + ")" ;
                 logger->log(logString);
@@ -372,8 +372,8 @@ std::vector<Entity*> Scripter::entityTarget(std::vector<std::string> parameters,
 
         bool found = false;
 
-        for(unsigned int i = 0; i < m_chunks[chunkIndex]->getEntities()->size(); i++) {
-            float dist = std::sqrt(std::abs(position.x - m_chunks[chunkIndex]->getEntity(i)->getPosition().x) + std::abs(position.y - m_chunks[chunkIndex]->getEntity(i)->getPosition().y));
+        for(unsigned int i = 0; i < m_chunks[chunkIndex]->getEntities().size(); i++) {
+            float dist = std::sqrt(std::abs(position.x - m_chunks[chunkIndex]->getEntities()[i]->getPosition().x) + std::abs(position.y - m_chunks[chunkIndex]->getEntities()[i]->getPosition().y));
             if(dist < nearestDistance || !found) {
                 nearestDistance = dist;
                 nearestId = i;
@@ -384,8 +384,8 @@ std::vector<Entity*> Scripter::entityTarget(std::vector<std::string> parameters,
 
         while(!found) {
             for(unsigned int j = 0; j < WORLD_SIZE / 2 - 1; j++) {
-                for(unsigned int i = 0; i < m_chunks[(chunkIndex-i + WORLD_SIZE) % WORLD_SIZE]->getEntities()->size(); i++) {
-                    float dist = std::sqrt(std::abs(position.x - m_chunks[chunkIndex]->getEntity(i)->getPosition().x) + std::abs(position.y - m_chunks[chunkIndex]->getEntity(i)->getPosition().y));
+                for(unsigned int i = 0; i < m_chunks[(chunkIndex-i + WORLD_SIZE) % WORLD_SIZE]->getEntities().size(); i++) {
+                    float dist = std::sqrt(std::abs(position.x - m_chunks[chunkIndex]->getEntities()[i]->getPosition().x) + std::abs(position.y - m_chunks[chunkIndex]->getEntities()[i]->getPosition().y));
                     if(dist < nearestDistance || !found) {
                         nearestDistance = dist;
                         nearestId = i;
@@ -393,8 +393,8 @@ std::vector<Entity*> Scripter::entityTarget(std::vector<std::string> parameters,
                         found = true;
                     }
                 }
-                for(unsigned int i = 0; i < m_chunks[(chunkIndex+i + WORLD_SIZE) % WORLD_SIZE]->getEntities()->size(); i++) {
-                    float dist = std::sqrt(std::abs(position.x - m_chunks[chunkIndex]->getEntity(i)->getPosition().x) + std::abs(position.y - m_chunks[chunkIndex]->getEntity(i)->getPosition().y));
+                for(unsigned int i = 0; i < m_chunks[(chunkIndex+i + WORLD_SIZE) % WORLD_SIZE]->getEntities().size(); i++) {
+                    float dist = std::sqrt(std::abs(position.x - m_chunks[chunkIndex]->getEntities()[i]->getPosition().x) + std::abs(position.y - m_chunks[chunkIndex]->getEntities()[i]->getPosition().y));
                     if(dist < nearestDistance || !found) {
                         nearestDistance = dist;
                         nearestId = i;
@@ -420,10 +420,10 @@ std::vector<Entity*> Scripter::entityTarget(std::vector<std::string> parameters,
         std::vector<Entity*> ret;
 
         for(unsigned int i = 0; i <= chunk1-chunk2; i++) {
-            for(unsigned int j = 0; j < m_chunks[(chunk1+i)%WORLD_SIZE]->getEntities()->size(); j++) {
-                if(m_chunks[(chunk1+i)%WORLD_SIZE]->getEntity(j)->getPosition().x >= position1.x && m_chunks[(chunk1+i)%WORLD_SIZE]->getEntity(j)->getPosition().x <= position2.x) {
-                    if(m_chunks[(chunk1+i)%WORLD_SIZE]->getEntity(j)->getPosition().y >= position1.y && m_chunks[(chunk1+i)%WORLD_SIZE]->getEntity(j)->getPosition().y <= position2.y) {
-                        ret.push_back(m_chunks[(chunk1+i)%WORLD_SIZE]->getEntity(j));
+            for(unsigned int j = 0; j < m_chunks[(chunk1+i)%WORLD_SIZE]->getEntities().size(); j++) {
+                if(m_chunks[(chunk1+i)%WORLD_SIZE]->getEntities()[j]->getPosition().x >= position1.x && m_chunks[(chunk1+i)%WORLD_SIZE]->getEntities()[j]->getPosition().x <= position2.x) {
+                    if(m_chunks[(chunk1+i)%WORLD_SIZE]->getEntities()[j]->getPosition().y >= position1.y && m_chunks[(chunk1+i)%WORLD_SIZE]->getEntities()[j]->getPosition().y <= position2.y) {
+                        ret.push_back(m_chunks[(chunk1+i)%WORLD_SIZE]->getEntities()[j]);
                     }
                 }
             }

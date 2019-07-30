@@ -4,7 +4,7 @@
 #include "Entity.h"
 #include "Player.h"
 
-void Chunk::addEntity(Entity ent) { m_entityManager->addEntity(ent); }
+void Chunk::addEntity(Entity* ent) { m_entityManager->addEntity(ent); }
 
 void Chunk::deleteDeadTiles() {
     for(int i = 0; i < m_deadTiles.size(); i++) {
@@ -13,7 +13,7 @@ void Chunk::deleteDeadTiles() {
     m_deadTiles.clear();
 }
 
-std::vector<Entity>* Chunk::getEntities() {
+std::vector<Entity*> Chunk::getEntities() {
     return m_entityManager->getEntities();
 }
 
@@ -189,11 +189,15 @@ void Chunk::setTile(Tile* newTile, const unsigned int& x, const unsigned int& y)
 
 void Chunk::setAudioManager(AudioManager* audio) {
     m_audioManager = audio;
-    for(int i = 0; i < m_entityManager->getEntities()->size(); i++) {
-        m_entityManager->getEntity(i)->setAudioManager(audio);
+    for(int i = 0; i < m_entityManager->getEntities().size(); i++) {
+        m_entityManager->getEntities()[i]->setAudioManager(audio);
     }
 }
 
+void Chunk::removeEntity(unsigned int index) {
+    m_entityManager->removeEntity(index);
+}
+
 Entity* Chunk::getEntity(unsigned int index) {
-    return m_entityManager->getEntity(index);
+    return m_entityManager->getEntities()[index];
 }

@@ -32,6 +32,22 @@ m_transparent = false;
 /// LIMBS (TODO (delete, we're not using it))
 */
 
+class EntityNeutralItem : public Entity {
+    public:
+        EntityNeutralItem(glm::vec2 pos, Chunk* parent, AudioManager* audioManager, Item* item);
+        ~EntityNeutralItem() { }
+        void onInteract(ScriptQueue* sq) { }
+        void onDeath(ScriptQueue* sq) { }
+
+        void setItem(Item* item) { m_item = item; }
+        Item* getItem() { return m_item; }
+    private:
+        void updateAI() { }
+        void updateLimbs() { }
+
+        Item* m_item = nullptr;
+};
+
 class EntityNeutralCompanionCube : public Entity {
     public:
         EntityNeutralCompanionCube(glm::vec2 pos, Chunk* parent, AudioManager* audioManager);
@@ -56,22 +72,58 @@ class EntityBaseProjectile : public Entity { // ABSTRACT
         bool m_gravity = false;
 };
 
-class EntityBaseQuestGiver : public Entity { // ABSTRACT
+class EntityBaseSpeaker : public Entity { // ABSTRACT
     public:
-        EntityBaseQuestGiver(glm::vec2 pos, Chunk* parent, AudioManager* audioManager, QuestManager* qm, unsigned int questionId);
-        void onInteract(ScriptQueue* sq);
+        EntityBaseSpeaker(glm::vec2 pos,
+                          Chunk* parent,
+                          AudioManager* audioManager,
+                          QuestManager* qm,
+                          ScriptQueue* sq,
+                          float maxRunningSpeed,
+                          Categories::LootTableIds lootTable,
+                          unsigned int lootTableStartLevel,
+                          unsigned int lootTableStartIndex,
+                          unsigned int questionId,
+                          unsigned int tradeTableId) :
+                            Entity(pos,
+                                   audioManager,
+                                   sq,
+                                   maxRunningSpeed,
+                                   lootTable,
+                                   lootTableStartLevel,
+                                   lootTableStartIndex)
+                            {
+                                m_questionId = questionId;
+                                m_qm = qm;
+                                m_tradeTableId = tradeTableId;
+                            }
+        virtual void onTalk(ScriptQueue* sq);
+        virtual void onTrade(ScriptQueue* sq);
+        virtual void post_onInteract(ScriptQueue* sq) = 0;
+        void onDeath(ScriptQueue* sq) = 0;
+
+        virtual bool canTrade() const override { return (m_tradeTableId != (unsigned int) -1); }
+        virtual bool canTalk()  const override { return (m_questionId != (unsigned int) -1);   }
+    protected:
+        QuestManager* m_qm = nullptr;
+        unsigned int m_questionId = (unsigned int) -1;
+        unsigned int m_tradeTableId = (unsigned int) -1;
+
+        void updateAI() = 0;
+};
+
+class EntityBaseQuestGiver : public EntityBaseSpeaker { // ALSO ABSTRACT
+    public:
+        EntityBaseQuestGiver(glm::vec2 pos, Chunk* parent, AudioManager* audioManager, float maxRunSpeed, Categories::LootTableIds lootTable, unsigned int lootBeginLevel, unsigned int lootBeginIndex, QuestManager* qm, unsigned int questionId);
         virtual void post_onInteract(ScriptQueue* sq) = 0;
         void onDeath(ScriptQueue* sq) = 0;
     protected:
-        QuestManager* m_qm = nullptr;
-        unsigned int m_questionId = 0;
-
         void updateAI() = 0;
 };
 
 class EntityNeutralQuestGiverA : public EntityBaseQuestGiver {
     public:
-        EntityNeutralQuestGiverA(glm::vec2 pos, Chunk* parent, AudioManager* audioManager, QuestManager* qm) : EntityBaseQuestGiver(pos, parent, audioManager, qm, 2) { }
+        EntityNeutralQuestGiverA(glm::vec2 pos, Chunk* parent, AudioManager* audioManager, QuestManager* qm) : EntityBaseQuestGiver(pos, parent, audioManager, 0.3f, Categories::LootTableIds::ANIMAL, 1, 0, qm, 2) { }
         void post_onInteract(ScriptQueue* sq) { }
         void onDeath(ScriptQueue* sq) { }
     protected:

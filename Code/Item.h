@@ -15,8 +15,8 @@ class Item
     friend class Inventory;
 
     public:
-        Item() {}
-        Item(short unsigned int quantity) : m_quantity(quantity) {}
+        //Item() {}
+        Item(short unsigned int quantity, GLEngine::GLTexture texture) : m_quantity(quantity), m_texture(texture) {}
         virtual ~Item() {}
 
         virtual void onLeftClick(Tile* selectedBlock) {
@@ -29,6 +29,7 @@ class Item
         bool isBlock() { return m_isBlock; }
         unsigned int getID() { return m_id; } // (unsigned int)(-1) is equivalent to null
         short unsigned int getQuantity() { return m_quantity; }
+        GLEngine::GLTexture getTexture() { return m_texture; }
         // Make new classes for different types of items: blocks, weapons, food, etc. with each one having different default left & right click events
 
     protected:
@@ -40,6 +41,7 @@ class Item
         bool m_canConsume = false; // Potions, food, etc.
 
         unsigned int m_id = (unsigned int)(-1); // Block/Non-block id
+        GLEngine::GLTexture m_texture; // So we can have animated items!
 
         float m_weight = 0.0f; // How much it weighs in the inventory (kgs)
         short unsigned int m_quantity = 0; // How much you have

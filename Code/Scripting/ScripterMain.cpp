@@ -209,8 +209,12 @@ std::string Scripter::executeCommand(std::string& command, Script* script) {
         } else if(parameters[0] == "give") {
             unsigned int keywordIndex = 1;
             std::vector<Entity*> entities = entityTarget(parameters, keywordIndex);
+
+            unsigned int id = int_interpretParameter(parameters, keywordIndex);
+            unsigned int quantity = int_interpretParameter(parameters, keywordIndex);
+
             for(unsigned int i = 0; i < entities.size(); i++) {
-                //entities[i].getInventory().add(X);
+                entities[i]->giveItem(createItem(id, quantity));
                 /// TODO:
             }
         } else if(parameters[0] == "setCanInteract") {

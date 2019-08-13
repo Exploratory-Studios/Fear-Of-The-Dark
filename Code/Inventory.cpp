@@ -21,6 +21,10 @@ bool Inventory::addItem(Item* newItem) {
     return false;
 }
 
+void Inventory::subtractItem(Item* item) {
+    getItem(getItemIndex(item))->m_quantity -= item->getQuantity();
+}
+
 void Inventory::updateWeight() { // Only use if something needs verification or is bugged
     m_weight = 0;
     for(unsigned int i = 0; i < m_items.size(); i++) {

@@ -68,7 +68,7 @@ void EntityManager::targetEntities(Player* p) {
                     m_entities[i]->setTargets(pathfindToTarget(m_entities[i]->getJumpHeight(), m_entities[i]->getPosition(), m_entities[j]->getPosition()));
                 } else if((int)m_entities[i]->getFaction() < (int)Categories::Faction::NEUTRAL &&
                    (int)m_entities[j]->getFaction() > (int)Categories::Faction::NEUTRAL) {
-                    m_entities[i]->setTargets(pathfindToTarget(m_entities[i]->getJumpHeight(), m_entities[i]->getPosition(), m_entities[j]->getPosition()));
+                    //m_entities[j]->setTargets(pathfindToTarget(m_entities[i]->getJumpHeight(), m_entities[i]->getPosition(), m_entities[j]->getPosition()));
                 }
             }
         }
@@ -79,7 +79,7 @@ void EntityManager::targetEntities(Player* p) {
                      m_entities[i]->setTargets(pathfindToTarget(m_entities[i]->getJumpHeight(),  m_entities[i]->getPosition(),  m_parentChunk->getSurroundingChunks()[0]->getEntities()[j]->getPosition()));
                 } else if((int) m_entities[i]->getFaction() < (int)Categories::Faction::NEUTRAL &&
                    (int) m_parentChunk->getSurroundingChunks()[0]->getEntities()[j]->getFaction() > (int)Categories::Faction::NEUTRAL) {
-                     m_entities[i]->setTargets(pathfindToTarget(m_entities[i]->getJumpHeight(),  m_entities[i]->getPosition(),  m_parentChunk->getSurroundingChunks()[0]->getEntities()[j]->getPosition()));
+                     //m_entities[j]->setTargets(pathfindToTarget(m_entities[i]->getJumpHeight(),  m_entities[i]->getPosition(),  m_parentChunk->getSurroundingChunks()[0]->getEntities()[j]->getPosition()));
                 }
             }
         }
@@ -90,7 +90,7 @@ void EntityManager::targetEntities(Player* p) {
                      m_entities[i]->setTargets(pathfindToTarget(m_entities[i]->getJumpHeight(), m_entities[i]->getPosition(), m_parentChunk->getSurroundingChunks()[1]->getEntities()[j]->getPosition()));
                 } else if((int) m_entities[i]->getFaction() < (int)Categories::Faction::NEUTRAL &&
                    (int) m_parentChunk->getSurroundingChunks()[1]->getEntities()[j]->getFaction() > (int)Categories::Faction::NEUTRAL) {
-                     m_entities[i]->setTargets(pathfindToTarget(m_entities[i]->getJumpHeight(), m_entities[i]->getPosition(), m_parentChunk->getSurroundingChunks()[1]->getEntities()[j]->getPosition()));
+                     //m_entities[j]->setTargets(pathfindToTarget(m_entities[i]->getJumpHeight(), m_entities[i]->getPosition(), m_parentChunk->getSurroundingChunks()[1]->getEntities()[j]->getPosition()));
                 }
             }
         }
@@ -100,25 +100,101 @@ void EntityManager::targetEntities(Player* p) {
 }
 
 std::vector<glm::vec2> EntityManager::pathfindToTarget(float jumpHeight, glm::vec2 originalPosition, glm::vec2 targetPosition) {
+    /*  Algorithm Below:
+        1. Construct a 2d vector of all tiles between originalPos and target
+        2. Move horizontally towards target
+        3. If 'cursor' is solid, move up one, add target to return vector
+        4. If 'cursor' is above a tile that's not solid, move down one
+        5. If 'cursor' is at target, add target to return vector, return.
+        6. Else, repeat 2-6
+
+    */
+
     std::vector<glm::vec2> targets;
 
-    Chunk* chunks[3] = { nullptr };
+    std::vector<std::vector<bool>> solidTiles;
+
     Chunk* currentChunk = m_parentChunk;
 
-    chunks[0] = m_parentChunk->getSurroundingChunks()[0];
-    chunks[1] = m_parentChunk;
-    chunks[2] = m_parentChunk->getSurroundingChunks()[1];
+    // Step 1: build vector of tiles' solidity
+    // Step 1.1: figure out which direction to go!
+    unsigned int dist1 = std::abs(originalPosition.x - targetPosition.x);
+    unsigned int dist2 = (originalPosition.x < targetPosition.x ? originalPosition.x : targetPosition.x) + WORLD_SIZE * CHUNK_SIZE - (originalPosition.x > targetPosition.x ? originalPosition.x : targetPosition.x);
 
-    int maxJumpHeight = 2.5*(jumpHeight*jumpHeight) * 2;
+    unsigned int leftDist = originalPosition.x > targetPosition.x ? dist1 : dist2; // Distance if we go left
+    unsigned int rightDist = originalPosition.x < targetPosition.x ? dist1 : dist2; // Distance if we go right
 
-    // Find grid-space coords:
-    int xGridspace = std::floor(originalPosition.x);
-    int yGridspace = std::floor(originalPosition.y);
-    int targetXGridspace = std::floor(targetPosition.x);
+    unsigned int dist = leftDist < rightDist ? leftDist : rightDist;
 
-    // Find chunk index
-    int chunkIndex = std::floor(xGridspace / CHUNK_SIZE);
-    int chunkIndexN = std::floor(targetXGridspace / CHUNK_SIZE);
+    for(int i = 0; i < WORLD_HEIGHT; i++) {
+        std::vector<bool> solid;
+        for(int j = 0; j < dist; j++) {
+            int xPos = (originalPosition.x < targetPosition.x ? originalPosition.x : targetPosition.x) + j;
+
+            int cursorChunk = (int)(std::floor((float)xPos / (float)CHUNK_SIZE) + WORLD_SIZE) % WORLD_SIZE;
+
+            Chunk* c = nullptr;
+
+            while(currentChunk->getIndex() != cursorChunk) {
+                currentChunk = currentChunk->getSurroundingChunks()[1];
+            }
+            c = currentChunk;
+
+            if(!c) {
+                Logger::getInstance()->log("WARNING: Pathfinding: Could not get cursor chunk at pos: " + std::to_string(xPos) + ", " + std::to_string(i), true);
+                return std::vector<glm::vec2>{};
+            }
+
+            xPos = (xPos + CHUNK_SIZE) % CHUNK_SIZE;
+
+            bool isSolid = c->tiles[i][xPos]->isSolid();
+
+            solid.push_back(isSolid);
+        }
+        solidTiles.push_back(solid);
+    }
+
+    if(originalPosition.x < targetPosition.x) {
+        int yOffset = 0;
+        for(int x = 0; x < dist; x++) { // Step 2: Move horizontally
+            bool target = false;
+            while(solidTiles[originalPosition.y + yOffset][x]) {
+                yOffset++; // Move cursor up until we find a space
+                if(yOffset + originalPosition.y == WORLD_HEIGHT) {
+                    return targets;
+                }
+            }
+            while(!solidTiles[originalPosition.y + yOffset - 1][x]) {
+                yOffset--;
+                if(yOffset + originalPosition.y - 1 < 0) {
+                    return targets;
+                }
+            }
+            targets.push_back(glm::vec2(originalPosition.x + x, originalPosition.y + yOffset));
+        }
+    } else {
+        int yOffset = 0;
+        for(int x = 1; x <= dist; x++) { // Step 2: Move horizontally
+            bool target = false;
+            while(solidTiles[originalPosition.y + yOffset][dist - x]) {
+                yOffset++; // Move cursor up until we find a space
+                if(yOffset + (int)originalPosition.y == WORLD_HEIGHT) {
+                    return targets;
+                }
+            }
+            while(!solidTiles[originalPosition.y + yOffset - 1][dist - x]) {
+                yOffset--;
+                if(yOffset + (int)originalPosition.y - 1 < 0) {
+                    return targets;
+                }
+            }
+            targets.push_back(glm::vec2(originalPosition.x - x, originalPosition.y + yOffset));
+        }
+    }
+
+    targets.push_back(targetPosition);
+
+    /*
 
     //int currentYOffset = 0;
     while(!(abs(xGridspace - targetXGridspace) <= 0.0f)) {
@@ -185,121 +261,7 @@ std::vector<glm::vec2> EntityManager::pathfindToTarget(float jumpHeight, glm::ve
                 }
             }
         }
-    }
-
-        /*chunkIndex -= m_parentChunk->getIndex();
-        if(targetXGridspace > xGridspace) {
-            for(int i = xGridspace+1; i < targetXGridspace; i++) {
-                neighbouring = false;
-                if(std::abs(chunkIndex - chunkIndexN) <= 1) {
-                    neighbouring = true;
-                } else {
-                    if(chunkIndex == 0 || chunkIndexN == WORLD_SIZE - 1) {
-                        if(chunkIndexN == 0 || chunkIndexN == WORLD_SIZE - 1) {
-                            neighbouring = true;
-                        }
-                    }
-                }
-
-                if(neighbouring == false) {
-                    break;
-                }
-
-                // Update coords
-                if(i >= CHUNK_SIZE * (chunkIndex+1)) chunkIndex++;
-                if(i < CHUNK_SIZE * chunkIndex) chunkIndex--;
-                if(chunkIndex < 0) chunkIndex = WORLD_SIZE-1;
-                if(chunkIndex >= WORLD_SIZE) chunkIndex = 0;
-
-                // Make sure there's room to walk
-                bool targetFound = false;
-                lastOffsetY = offsetY;
-                for(int yOff = offsetY; yOff < maxJumpHeight; yOff++) {
-                    if(!targetFound) {
-                        if(yGridspace+yOff-1 >= 0 && yGridspace+yOff+1 < WORLD_HEIGHT) {
-                            if(!chunks\[chunkIndex].tiles[yGridspace+yOff][i - CHUNK_SIZE * chunkIndex]->isSolid() &&
-                               !chunks[chunkIndex]->tiles[yGridspace+yOff+1][i - CHUNK_SIZE * chunkIndex]->isSolid()) {
-                                if(chunks[chunkIndex]->tiles[yGridspace+yOff-1][i - CHUNK_SIZE * chunkIndex]->isSolid()) {
-                                    if(offsetY != yOff || i == targetXGridspace-1) // Is it just a straight line?
-                                        targets.push_back(glm::vec2(i*TILE_SIZE, (yGridspace+yOff)*TILE_SIZE));
-                                    offsetY = yOff;
-                                    targetFound = true;
-                                    break;
-                                }
-                            }
-                        }
-                    }
-                }
-                if(!targetFound) {
-                    offsetY = lastOffsetY;
-                    for(int yOff = offsetY; yOff + yGridspace >= 0; yOff--) {
-                        if(yGridspace+yOff-1 >= 0 && yGridspace+yOff+1 < WORLD_HEIGHT) {
-                            if(!chunks[chunkIndex]->tiles[yGridspace+yOff][i - CHUNK_SIZE * chunkIndex]->isSolid() &&
-                               !chunks[chunkIndex]->tiles[yGridspace+yOff+1][i - CHUNK_SIZE * chunkIndex]->isSolid()) {
-                                if(chunks[chunkIndex]->tiles[yGridspace+yOff-1][i - CHUNK_SIZE * chunkIndex]->isSolid()) {
-                                    if(offsetY != yOff || i == targetXGridspace-1) // Is it a straight line?
-                                        targets.push_back(glm::vec2(i*TILE_SIZE, (yGridspace+yOff)*TILE_SIZE));
-                                    offsetY = yOff;
-                                    targetFound = true;
-                                    break;
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        } else {
-            for(int i = xGridspace-1; i > targetXGridspace; i--) {
-                // Update coords
-                if(i >= CHUNK_SIZE * (chunkIndex+1)) chunkIndex++;
-                if(i < CHUNK_SIZE * chunkIndex) chunkIndex--;
-                if(chunkIndex < 0) chunkIndex = WORLD_SIZE-1;
-                if(chunkIndex >= WORLD_SIZE) chunkIndex = 0;
-
-                // Make sure there's room to walk
-                bool targetFound = false;
-                lastOffsetY = offsetY;
-                for(int yOff = offsetY; yOff < maxJumpHeight; yOff++) {
-                    if(!targetFound) {
-                        if(yGridspace+yOff-1 >= 0 && yGridspace+yOff+1 < WORLD_HEIGHT) {
-                            if(!chunks[chunkIndex]->tiles[yGridspace+yOff][i - CHUNK_SIZE * chunkIndex]->isSolid() &&
-                               !chunks[chunkIndex]->tiles[yGridspace+yOff+1][i - CHUNK_SIZE * chunkIndex]->isSolid()) {
-                                if(chunks[chunkIndex]->tiles[yGridspace+yOff-1][i - CHUNK_SIZE * chunkIndex]->isSolid()) {
-                                    if(offsetY != yOff || i == targetXGridspace+1) // Is it a straight line?
-                                        targets.push_back(glm::vec2(i*TILE_SIZE, (yGridspace+yOff)*TILE_SIZE));
-                                    offsetY = yOff;
-                                    targetFound = true;
-                                    break;
-                                }
-                            }
-                        }
-                    }
-                }
-                if(!targetFound) {
-                    offsetY = lastOffsetY;
-                    for(int yOff = offsetY; yOff + yGridspace >= 0; yOff--) {
-                        if(yGridspace+yOff-1 >= 0 && yGridspace+yOff+1 < WORLD_HEIGHT) {
-                            if(!chunks[chunkIndex]->tiles[yGridspace+yOff][i - CHUNK_SIZE * chunkIndex]->isSolid() &&
-                               !chunks[chunkIndex]->tiles[yGridspace+yOff+1][i - CHUNK_SIZE * chunkIndex]->isSolid()) {
-                                if(chunks[chunkIndex]->tiles[yGridspace+yOff-1][i - CHUNK_SIZE * chunkIndex]->isSolid()) {
-                                    if(offsetY != yOff || i == targetXGridspace+1) // Is it a straight line?
-                                        targets.push_back(glm::vec2(i*TILE_SIZE, (yGridspace+yOff)*TILE_SIZE));
-                                    offsetY = yOff;
-                                    targetFound = true;
-                                    break;
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        }*/
-    /*
-    for(int i = 0; i < targets.size(); i++) {
-        std::cout << "X: " << targets[i].x << " Y: " << targets[i].y << std::endl;
-    }
-    std::cout << "Original X: " << xGridspace << " Original Y: " << yGridspace << std::endl;
-    */
+    }*/
 
     return targets;
 }

@@ -88,10 +88,10 @@ void GameplayScreen::onEntry() {
         }
     }
 
-    m_questManager = new QuestManager(ASSETS_FOLDER_PATH + "Questing/DialogueList.txt", ASSETS_FOLDER_PATH + "Questing/FlagList.txt", m_WorldIOManager->getScriptQueue());
+    m_questManager = new QuestManager(ASSETS_FOLDER_PATH + "Questing/DialogueList.txt", ASSETS_FOLDER_PATH + "Questing/FlagList.txt", ASSETS_FOLDER_PATH + "Questing/TradeList.txt", m_WorldIOManager->getScriptQueue());
     m_console = new Console();
 
-    m_WorldIOManager->getWorld()->chunks[0]->addEntity(createEntity((unsigned int)Categories::EntityIDs::MOB_NEUTRAL_QUESTGIVER_A, glm::vec2(10.0f, (200.0f)), m_WorldIOManager->getWorld()->chunks[0], m_WorldIOManager->getAudioManager(), m_questManager));
+    m_WorldIOManager->getWorld()->chunks[0]->addEntity(createEntity((unsigned int)Categories::EntityIDs::MOB_NEUTRAL_QUESTGIVER_A, glm::vec2(10.0f, (10.0f)), m_WorldIOManager->getWorld()->chunks[0], m_WorldIOManager->getAudioManager(), m_questManager));
 
     initUI();
     tick();
@@ -125,7 +125,7 @@ void GameplayScreen::update() {
     checkInput();
 
     if(m_gameState != GameState::PAUSE && m_currentState != GLEngine::ScreenState::EXIT_APPLICATION) {
-        m_questManager->update(m_game->inputManager);
+        m_questManager->update(m_game->inputManager, m_player);
         m_scripter->update();
 
         // Set player caninteract
@@ -312,7 +312,7 @@ void GameplayScreen::checkInput() {
             case SDL_MOUSEBUTTONDOWN:
                 break;
             case SDL_MOUSEWHEEL:
-                updateScale();
+                if(!m_questManager->isDialogueActive() && !m_questManager->isTradingActive()) updateScale();
                 break;
         }
     }

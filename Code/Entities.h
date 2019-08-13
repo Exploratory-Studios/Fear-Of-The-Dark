@@ -36,7 +36,6 @@ class EntityNeutralItem : public Entity {
     public:
         EntityNeutralItem(glm::vec2 pos, Chunk* parent, AudioManager* audioManager, Item* item);
         ~EntityNeutralItem() { }
-        void onInteract(ScriptQueue* sq) { }
         void onDeath(ScriptQueue* sq) { }
 
         void setItem(Item* item) { m_item = item; }
@@ -51,7 +50,6 @@ class EntityNeutralItem : public Entity {
 class EntityNeutralCompanionCube : public Entity {
     public:
         EntityNeutralCompanionCube(glm::vec2 pos, Chunk* parent, AudioManager* audioManager);
-        void onInteract(ScriptQueue* sq) { }
         void onDeath(ScriptQueue* sq) { }
     protected:
         void updateAI() { EntityFunctions::WalkingAI(m_controls, m_targets, m_curTarget, m_velocity, m_size, m_position); }
@@ -63,7 +61,6 @@ class EntityNeutralCompanionCube : public Entity {
 class EntityBaseProjectile : public Entity { // ABSTRACT
     public:
         EntityBaseProjectile(glm::vec2 pos, Chunk* parent, AudioManager* audioManager, float damage, bool gravity = true);
-        void onInteract(ScriptQueue* sq) = 0;
         void onDeath(ScriptQueue* sq) = 0;
     protected:
         void updateAI() { m_position += m_velocity * m_speed; }
@@ -124,7 +121,7 @@ class EntityBaseQuestGiver : public EntityBaseSpeaker { // ALSO ABSTRACT
 class EntityNeutralQuestGiverA : public EntityBaseQuestGiver {
     public:
         EntityNeutralQuestGiverA(glm::vec2 pos, Chunk* parent, AudioManager* audioManager, QuestManager* qm) : EntityBaseQuestGiver(pos, parent, audioManager, 0.3f, Categories::LootTableIds::ANIMAL, 1, 0, qm, 2) { }
-        void post_onInteract(ScriptQueue* sq) { }
+        void post_onInteract(ScriptQueue* sq) { } /// TODO: remove
         void onDeath(ScriptQueue* sq) { }
     protected:
         void updateAI() { EntityFunctions::WalkingAI(m_controls, m_targets, m_curTarget, m_velocity, m_size, m_position); }

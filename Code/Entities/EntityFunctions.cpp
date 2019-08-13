@@ -9,12 +9,23 @@ namespace EntityFunctions {
             controls[3] = false;
 
             if(targets.size() > currentTarget) {
-                //float modifier = 0.0f;
-                if(targets[currentTarget].x / 2.0f > position.x + size.x / 2.0f) {
+                float targetXPos = targets[currentTarget].x;
+                float xPos = position.x + size.x / 2.0f;
+
+                unsigned int dist1 = std::abs(xPos - targetXPos);
+                unsigned int dist2 = (xPos < targetXPos ? xPos : targetXPos) + WORLD_SIZE * CHUNK_SIZE - (xPos > targetXPos ? xPos : targetXPos);
+
+                unsigned int leftDist = xPos > targetXPos ? dist1 : dist2; // Distance if we go left
+                unsigned int rightDist = xPos < targetXPos ? dist1 : dist2; // Distance if we go right
+
+                /// TODO: 'Tis but a dream, really
+                //float distToDecelerate = velocity.x / std::pow(5.0f, std::log(0.1f * velocity.x) / std::log(5));
+
+                if(leftDist > rightDist) {
                     controls[3] = true; // RIGHT
                     controls[2] = false;
                 }
-                if(targets[currentTarget].x / 2.0f < position.x + size.x / 2.0f) {
+                if(leftDist < rightDist) {
                     controls[2] = true; // LEFT
                     controls[3] = false;
                 }
@@ -22,7 +33,7 @@ namespace EntityFunctions {
                     controls[0] = true;
                 }
 
-                if(abs(position.x + size.x / 2.0f - targets[currentTarget].x / 2.0f) <= 0.0f) {
+                if(std::abs(xPos - targetXPos) <= 0.1f) {
                     currentTarget++;
                     if(currentTarget >= targets.size()) {
                         targets.clear();

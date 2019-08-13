@@ -4,11 +4,15 @@
 
 #include "Block.h"
 
-
-
 /// Item class is basically abstract.
 /// Create new classes for different items
 /// The classes will inherit from sub-classes of this one (Block, Food, Potion, etc.) for specific functions (Place, Eat, Poison)
+
+enum class ItemType {
+    WEAPON,
+    BLOCK,
+    MISC
+};
 
 class Item
 {
@@ -26,7 +30,15 @@ class Item
         }
         virtual void onRightClick(Tile* selectedBlock) {} /// TODO variadic stuff for character pos, mouse pos, etc.  also: make virtual
 
-        bool isBlock() { return m_isBlock; }
+        bool operator==(Item* other) {
+            if(other->getID() == m_id) {
+                return true;
+            }
+            return false;
+        }
+
+        bool isBlock() { return (m_type == ItemType::BLOCK); }
+        bool isWeapon() { return (m_type == ItemType::WEAPON); }
         unsigned int getID() { return m_id; } // (unsigned int)(-1) is equivalent to null
         short unsigned int getQuantity() { return m_quantity; }
         GLEngine::GLTexture getTexture() { return m_texture; }
@@ -34,8 +46,8 @@ class Item
 
     protected:
 
-        // There are 2 types of items: Blocks and non-blocks (food, quest items, etc.)
-        bool m_isBlock = false; // Block or non-block?
+        // There are 3 types of items: Blocks, weapons, and more to come
+        ItemType m_type;
 
         bool m_canPlace = false; // Blocks, etc.
         bool m_canConsume = false; // Potions, food, etc.

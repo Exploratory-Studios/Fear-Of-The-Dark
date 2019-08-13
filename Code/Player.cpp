@@ -165,13 +165,11 @@ void Player::drawGUI(GLEngine::SpriteBatch& sb, GLEngine::SpriteFont& sf) {
             int hotbarImgId = GLEngine::ResourceManager::getTexture(ASSETS_FOLDER_PATH + "GUI/Player/Hotbar.png").id;
             int hotbarSelectImgId = GLEngine::ResourceManager::getTexture(ASSETS_FOLDER_PATH + "GUI/Player/HotbarSelection.png").id;
 
-            //sb.begin(GLEngine::GlyphSortType::FRONT_TO_BACK); // lower numbers in back
-
             for(int i = 0; i < HOTBAR_BOX_NUM; i++) {
 
                 glm::vec4 uv(i * (1.0 / HOTBAR_BOX_NUM), 0.0f, (1.0 / HOTBAR_BOX_NUM), 1.0f);
                 glm::vec4 destRect(HOTBAR_BOX_SIZE / 4 + (HOTBAR_BOX_SIZE + HOTBAR_BOX_PADDING) * i, HOTBAR_BOX_SIZE / 4, HOTBAR_BOX_SIZE, HOTBAR_BOX_SIZE);
-                sb.draw(destRect, uv, hotbarImgId, 1.0f, fullColour);
+                sb.draw(destRect, uv, hotbarImgId, 0.0f, fullColour);
 
                 {
                     if(m_favouriteItems[i]) {
@@ -180,15 +178,12 @@ void Player::drawGUI(GLEngine::SpriteBatch& sb, GLEngine::SpriteFont& sf) {
                                         HOTBAR_BOX_SIZE,
                                         HOTBAR_BOX_SIZE);
                         glm::vec4 itemUV(0, 0, 1, 1);
-                        int itemImgId = GLEngine::ResourceManager::getTexture(Category_Data::itemData[m_favouriteItems[i]->getID()].texturePath).id;
+                        int itemImgId = m_favouriteItems[i]->getTexture().id;//GLEngine::ResourceManager::getTexture(Category_Data::itemData[m_favouriteItems[i]->getID()].texturePath).id;
 
-                        sb.draw(destRect, itemUV, itemImgId, 1.0f, GLEngine::ColourRGBA8(255, 255, 255, 255));
+                        sb.draw(destRect, itemUV, itemImgId, 0.4f, GLEngine::ColourRGBA8(255, 255, 255, 255));
                     }
                 }
             }
-
-            //sb.end();
-            //sb.renderBatch();
 
             for(int i = 0; i < HOTBAR_BOX_NUM; i++) {
                 if(m_favouriteItems[i]) {
@@ -197,26 +192,16 @@ void Player::drawGUI(GLEngine::SpriteBatch& sb, GLEngine::SpriteFont& sf) {
                                         HOTBAR_BOX_SIZE,
                                         HOTBAR_BOX_SIZE);
                     glm::vec4 itemUV(0, 0, 1, 1);
-                    int itemImgId = GLEngine::ResourceManager::getTexture(Category_Data::itemData[m_favouriteItems[i]->getID()].texturePath).id;
+                    int itemImgId = m_favouriteItems[i]->getTexture().id;//GLEngine::ResourceManager::getTexture(Category_Data::itemData[m_favouriteItems[i]->getID()].texturePath).id;
 
-                    //sb.begin(GLEngine::GlyphSortType::FRONT_TO_BACK); // lower numbers in back
-                    sb.draw(destRect, itemUV, itemImgId, 1.0f, GLEngine::ColourRGBA8(255, 255, 255, 255));
-                    //sb.end();
-                    //sb.renderBatch();
+                    sb.draw(destRect, itemUV, itemImgId, 0.4f, GLEngine::ColourRGBA8(255, 255, 255, 255));
 
-                    //sb.begin(GLEngine::GlyphSortType::FRONT_TO_BACK); // lower numbers in back
-                    sf.draw(sb, std::to_string(m_favouriteItems[i]->getQuantity()).c_str(), glm::vec2(destRect.x + INVENTORY_BOX_SIZE * 9/10, destRect.y + INVENTORY_BOX_SIZE - 96.0f * 0.35f), glm::vec2(0.35f), 0.0f, GLEngine::ColourRGBA8(255, 255, 255, 255), GLEngine::Justification::RIGHT);
-                    //sb.end();
-                    //sb.renderBatch();
+                    sf.draw(sb, std::to_string(m_favouriteItems[i]->getQuantity()).c_str(), glm::vec2(destRect.x + INVENTORY_BOX_SIZE * 9/10, destRect.y + INVENTORY_BOX_SIZE - 96.0f * 0.35f), glm::vec2(0.35f), 1.0f, GLEngine::ColourRGBA8(255, 255, 255, 255), GLEngine::Justification::RIGHT);
                 }
             }
 
-            //sb.begin(GLEngine::GlyphSortType::FRONT_TO_BACK); // lower numbers in back
             glm::vec4 destRect(HOTBAR_BOX_SIZE / 4 + (HOTBAR_BOX_SIZE + HOTBAR_BOX_PADDING) * m_selectedHotbox, HOTBAR_BOX_SIZE / 4, HOTBAR_BOX_SIZE, HOTBAR_BOX_SIZE);
             sb.draw(destRect, fullUV, hotbarSelectImgId, 1.1f, fullColour);
-
-            //sb.end();
-            //sb.renderBatch();
         } // Hotbar END
 
 
@@ -421,9 +406,11 @@ void Player::updateInput() {
     if(m_canInteract) {
         if(m_input->isKeyPressed(SDLK_e)) {
             if(m_selectedEntity) { // must hover mouse over entity and press 'e'
-                m_selectedEntity->onInteract(m_sq);
-            } else {
-                m_sq->activateScript(m_scriptID_makeHouse);
+                m_selectedEntity->onTalk(m_sq);
+            }
+        } else if(m_input->isKeyPressed(SDLK_t)) {
+            if(m_selectedEntity) {
+                m_selectedEntity->onTrade(m_sq);
             }
         }
 

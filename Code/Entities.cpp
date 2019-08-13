@@ -68,21 +68,25 @@ void EntityBaseSpeaker::onTalk(ScriptQueue* sq) {
 
 void EntityBaseSpeaker::onTrade(ScriptQueue* sq) {
     if(m_qm && m_tradeTableId != (unsigned int) -1) {
-        //m_qm->setTradingStarted(true);
+        m_qm->setTradeTableId(m_tradeTableId);
+        m_qm->setTradingStarted(true);
     }
 }
 
 
-EntityBaseQuestGiver::EntityBaseQuestGiver(glm::vec2 pos, Chunk* parent, AudioManager* audioManager, float maxRunSpeed, Categories::LootTableIds lootTable, unsigned int lootBeginLevel, unsigned int lootBeginIndex, QuestManager* qm, unsigned int questionId) : EntityBaseSpeaker(pos, parent, audioManager, qm, nullptr, maxRunSpeed, lootTable, lootBeginLevel, lootBeginIndex, questionId, -1) {
+EntityBaseQuestGiver::EntityBaseQuestGiver(glm::vec2 pos, Chunk* parent, AudioManager* audioManager, float maxRunSpeed, Categories::LootTableIds lootTable, unsigned int lootBeginLevel, unsigned int lootBeginIndex, QuestManager* qm, unsigned int questionId) : EntityBaseSpeaker(pos, parent, audioManager, qm, nullptr, maxRunSpeed, lootTable, lootBeginLevel, lootBeginIndex, questionId, 0) {
     m_texture = GLEngine::ResourceManager::getTexture(ASSETS_FOLDER_PATH + "/Textures/Mobs/Mob0.png");
     m_size = glm::vec2(1.0f, 2.0f);
-    m_faction = Categories::Faction::NEUTRAL;
-    m_jumpHeight = 2.608f;
-    m_speed = 0.1f;
+    m_faction = Categories::Faction::EVIL;
+    m_jumpHeight = 0.608f;
+    m_speed = 0.01f;
     m_ai = Categories::AI_Type::WALKING;
     m_disabilities = Categories::Disability_Type::NONE;
     m_attackType = Categories::Attack_Type::NONE;
     m_transparent = false;
+    m_maxSpeed = maxRunSpeed;
+
+    m_canDie = false;
 
     m_parentChunk = parent;
 

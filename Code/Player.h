@@ -46,6 +46,7 @@ class Player : public Entity {
         Tile* getSelectedBlock() { return m_selectedBlock; }
 
         void setCanInteract(bool setting) { m_canInteract = setting; }
+        bool canInteract() const { return m_canInteract; }
 
     protected:
         virtual void updateAI() {}
@@ -73,8 +74,6 @@ class Player : public Entity {
         Entity* m_selectedEntity = nullptr;
 
         int m_selectedHotbox = 0;
-
-        Inventory* m_inventory = nullptr;
 
         bool m_inventoryOpen = false;
         bool m_debuggingInfo = false; // FPS, selectedBlock, etc.

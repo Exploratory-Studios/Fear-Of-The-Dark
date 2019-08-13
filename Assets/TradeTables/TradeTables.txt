@@ -1,0 +1,4 @@
+Simply trade 3 dirt for 1 torch, with no MD involved
+#BEGIN
+	1:""*3>2:""*1
+#END

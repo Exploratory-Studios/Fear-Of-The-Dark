@@ -5,16 +5,16 @@
 #include <ctime>
 
 void WorldIOManager::loadWorld(std::string worldName) {
-    //boost::thread t( [=]() { P_loadWorld(worldName); } );
-    //t.detach();
-    P_loadWorld(worldName);
+    boost::thread t( [=]() { P_loadWorld(worldName); } );
+    t.detach();
+    //P_loadWorld(worldName);
     //P_createWorld(1, worldName, false); WORKS
 }
 
 void WorldIOManager::saveWorld(std::string worldName) {
-    //boost::thread t( [=]() { P_saveWorld(worldName); } );
-    //t.detach();
-    this->P_saveWorld(worldName);
+    boost::thread t( [=]() { P_saveWorld(worldName); } );
+    t.detach();
+    //this->P_saveWorld(worldName);
 }
 
 void WorldIOManager::createWorld(unsigned int seed, std::string worldName, bool isFlat) {
@@ -404,26 +404,26 @@ void WorldIOManager::P_createWorld(unsigned int seed, std::string worldName, boo
             for(int i = 0; i < CHUNK_SIZE; i++) {
                 blockHeights[k * CHUNK_SIZE + i] = 10;
                 for(int j = blockHeights[k * CHUNK_SIZE + i]; j < WORLD_HEIGHT; j++) {
-                    BlockAir* block = new BlockAir(glm::vec2((k * CHUNK_SIZE) + i, j), m_world->chunks[k]);
+                    BlockAir* block = new BlockAir(glm::vec2((k * CHUNK_SIZE) + i, j), m_world->chunks[k], false);
                     delete m_world->chunks[k]->tiles[j][i];
                     m_world->chunks[k]->tiles[j][i] = block;
                 }
                 for(int j = 0; j < blockHeights[k * CHUNK_SIZE + i]; j++) {
                     if(j < blockHeights[k * CHUNK_SIZE + i] - 1 - 5) {
-                        BlockStone* block = new BlockStone(glm::vec2((k * CHUNK_SIZE) + i, j), m_world->chunks[k]);
+                        BlockStone* block = new BlockStone(glm::vec2((k * CHUNK_SIZE) + i, j), m_world->chunks[k], false);
                         delete m_world->chunks[k]->tiles[j][i];
                         m_world->chunks[k]->tiles[j][i] = block;
                     } else if(j < blockHeights[k * CHUNK_SIZE + i] - 1) {
-                        BlockDirt* block = new BlockDirt(glm::vec2((k * CHUNK_SIZE) + i, j), m_world->chunks[k]);
+                        BlockDirt* block = new BlockDirt(glm::vec2((k * CHUNK_SIZE) + i, j), m_world->chunks[k], false);
                         delete m_world->chunks[k]->tiles[j][i];
                         m_world->chunks[k]->tiles[j][i] = block;
                     } else {
-                        BlockGrass* block = new BlockGrass(glm::vec2((k * CHUNK_SIZE) + i, j), m_world->chunks[k]);
+                        BlockGrass* block = new BlockGrass(glm::vec2((k * CHUNK_SIZE) + i, j), m_world->chunks[k], false);
                         delete m_world->chunks[k]->tiles[j][i];
                         m_world->chunks[k]->tiles[j][i] = block;
                         int r = std::rand() % 2;
                         if(r == 0) {
-                            BlockBush* flower = new BlockBush(glm::vec2((k * CHUNK_SIZE) + i, j + 1), m_world->chunks[k]);
+                            BlockBush* flower = new BlockBush(glm::vec2((k * CHUNK_SIZE) + i, j + 1), m_world->chunks[k], false);
                             delete m_world->chunks[k]->tiles[j+1][i];
                             m_world->chunks[k]->tiles[j+1][i] = flower;
                         }

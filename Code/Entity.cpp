@@ -227,7 +227,7 @@ void Entity::collide() {
 
     if(getChunkIndex() >= 0) {
         /// ENTITY COLLISION STARTS HERE
-        for(unsigned int i = 0; i < entities.size(); i++) {
+        /*for(unsigned int i = 0; i < entities.size(); i++) {
             if(entities[i] != this) {
                 if(entities[i]->getType() != Categories::Entity_Type::ITEM) {
                     float xDist = (m_position.x / 1.0f + m_size.x / 2.0f) - (entities[i]->getPosition().x / 1.0f + entities[i]->getSize().x / 2.0f);
@@ -245,7 +245,7 @@ void Entity::collide() {
                     }
                 }
             }
-        }
+        }*/
         /// ENTITY COLLISION ENDS HERE
 
         /// TILE COLLISION STARTS HERE
@@ -421,9 +421,9 @@ int Entity::setParentChunk(Chunk* worldChunks[WORLD_SIZE]) {
             ret = 1;
         }
         if(index >= 0 && index < WORLD_SIZE) {
-            if(index > m_parentChunk->getIndex()) {
+            if(index > m_parentChunk->getIndex() && ret == 0) {
                 ret = 1;
-            } else {
+            } else if(ret == 0) {
                 ret = -1;
             }
             m_parentChunk = worldChunks[index];
@@ -560,10 +560,10 @@ void Entity::updateMovement() {
         /// TODO: implement crouching
     }
     if(m_controls[2]) { // LEFT
-        if(m_velocity.x > -m_maxSpeed && m_onGround)
+        if(m_velocity.x > -m_maxSpeed)
             m_velocity.x -= m_speed;
     } else if(m_controls[3]) { // RIGHT
-        if(m_velocity.x < m_maxSpeed && m_onGround)
+        if(m_velocity.x < m_maxSpeed)
             m_velocity.x += m_speed;
     } else {
         m_velocity.x /= 5.0f;
@@ -612,4 +612,24 @@ void Entity::die() {
     } else {
         m_isDead = false; // Just in case
     }
+}
+
+void Entity::attack(Entity* enemy) {
+    /// TODO: determine limbSection
+
+    float damage = 0.0f;
+    LimbSection limb = LimbSection::BODY;
+    ItemWeapon* weapon = nullptr;
+
+    for(int i = 0; i < m_equippedItems.size(); i++) {
+        if(m_inventory->getItem(m_equippedItems[i])->isWeapon()) weapon = static_cast<ItemWeapon*>(m_inventory->getItem(m_equippedItems[i]));
+    }
+
+    damage = weapon ? (weapon->getDamage()) : 1.0f;
+
+    enemy->defend(this, damage, limb, weapon);
+}
+
+void Entity::defend(Entity* attacker, float damage, LimbSection section, Item* weapon) {
+
 }

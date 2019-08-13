@@ -101,7 +101,7 @@ class Entity
 
         virtual ~Entity();
 
-        virtual void onInteract(ScriptQueue* sq) {} // Deprecated?
+        //virtual void onInteract(ScriptQueue* sq) {} // Deprecated? Yes. Hotel? Trivago.
         virtual void onTalk(ScriptQueue* sq) {}
         virtual void onTrade(ScriptQueue* sq) {}
         virtual void onDeath(ScriptQueue* sq) {}
@@ -132,9 +132,13 @@ class Entity
         unsigned int getChunkIndex();
 
         void giveItem(Item* item) { if(m_inventory) { m_inventory->addItem(item); } else { Logger::getInstance()->log("ERROR: Entity inventory not initialized, could not give item", true); } }
+        Inventory* getInventory() { return m_inventory; }
 
         virtual bool canTalk() const { return false; }
         virtual bool canTrade() const { return true; }
+
+        virtual void attack(Entity* enemy); /// TODO: make swinging swords etc. by making a new Entity (SwordBlade), and attaching it to this Entity, with a customized collide function
+        virtual void defend(Entity* attacker, float damage, LimbSection section, Item* weapon);
 
     protected:
         bool checkTilePosition(Tile*** tiles, Tile*** extraTileArray, std::vector<glm::vec2>& collideTilePositions, float xPos, float yPos);
@@ -226,7 +230,8 @@ class Entity
         int m_currentNoise = -1; // The id of the noise the mob is making
         std::vector<SoundEffectIDs> m_ambientNoiseSound; // What ambient noise does this mob make?
 
-        float m_health = 1.0f; // There is no concept of "different max health values" for each mob, but each one has a percent of their total health, and defense stats, which will determine what percentage they lose.
+        float m_maxHealth = 100.0f;
+        float m_health = m_maxHealth;
 
         /* Entities.h attributes:
         - Texture
@@ -238,7 +243,7 @@ class Entity
         - AI Type
         - Disability Types
         - Attack Types
-        - Limbs
+        - Max Health
         */
 
 };

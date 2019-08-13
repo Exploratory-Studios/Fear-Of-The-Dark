@@ -1,21 +1,31 @@
 #include "QuestManager.h"
 
+#include "Items.h"
+#include "Player.h"
+
 #include <GUI.h>
 
 DialogueManager::~DialogueManager() {
 
 }
 
-void DialogueManager::startConversation(unsigned int id, GLEngine::InputManager& input) {
-    Question* initialQuestion = (*m_questionList)[id];
-    m_currentQuestion = initialQuestion;
-    initConversation(initialQuestion);
-    m_dialogueActive = true;
-    m_dialogueStarted = false;
+void DialogueManager::startConversation(GLEngine::InputManager& input) {
+    if(!m_tradingStarted) {
+        Question* initialQuestion = (*m_questionList)[m_questionId];
+        m_currentQuestion = initialQuestion;
+        initConversation();
+        m_dialogueActive = true;
+        m_dialogueStarted = false;
+    } else if(m_tradingStarted) {
+        TradeTable* currentTable = (*m_tradeTables)[m_tradeTable];
+        initConversation();
+        m_tradingActive = true;
+        m_tradingStarted = false;
+    }
 }
 
-void DialogueManager::initConversation(Question* initialQuestion) { // Sets gui for conversation
-    if(!m_dialogueActive) {
+void DialogueManager::initConversation() { // Sets gui for conversation
+    if(!m_dialogueActive && !m_tradingStarted) {
         m_dialogueActive = true;
 
         CEGUI::FrameWindow* window = static_cast<CEGUI::FrameWindow*>(m_gui->createWidget("FOTDSkin/FrameWindow", glm::vec4(0.05f, 0.7f, 0.9f, 0.25f), glm::vec4(0.0f), "FrameWindowConversation"));
@@ -52,9 +62,9 @@ void DialogueManager::initConversation(Question* initialQuestion) { // Sets gui 
 
         float paddingIncrementer = 0;
         m_activeQuestions = 0;
-        for(unsigned int i = 0; i < initialQuestion->answers.size(); i++) {
+        for(unsigned int i = 0; i < m_currentQuestion->answers.size(); i++) {
             CEGUI::PushButton* answerButton = static_cast<CEGUI::PushButton*>(m_gui->createWidget(answersScroller, "FOTDSkin/Button", glm::vec4(0.0f, 0.025f + ((0.03f + 0.425f) * paddingIncrementer), 1.0f, 0.425f), glm::vec4(0.0f), std::string("Option" + std::to_string(i) + "Conversation")));
-            answerButton->setText(initialQuestion->answers[i].str);
+            answerButton->setText(m_currentQuestion->answers[i].str);
             m_buttons.push_back(answerButton);
 
             paddingIncrementer++;
@@ -66,13 +76,72 @@ void DialogueManager::initConversation(Question* initialQuestion) { // Sets gui 
                     m_activeQuestions--;
                     answerButton->disable();
                     answerButton->hide();
-                    /*CEGUI::WindowManager::getSingletonPtr()->destroyWindow(answerButton);
-                    delete answerButton;
-                    m_buttons.pop_back();
-                    m_buttons.resize(m_buttons.size());*/
+
+                    answerButton->setMouseInputPropagationEnabled(true);
                     break;
                 }
             }
+        }
+    } else if(!m_tradingActive && !m_dialogueStarted) {
+        m_tradingActive = true;
+
+        CEGUI::FrameWindow* window = static_cast<CEGUI::FrameWindow*>(m_gui->createWidget("FOTDSkin/FrameWindow", glm::vec4(0.05f, 0.05f, 0.9f, 0.9f), glm::vec4(0.0f), "FrameWindowTrading"));
+
+        window->setTitleBarEnabled(false);
+        window->setCloseButtonEnabled(false);
+        window->setRollupEnabled(false);
+        window->setDragMovingEnabled(false);
+        window->setSizingEnabled(false);
+
+        CEGUI::PushButton* leaveButton = static_cast<CEGUI::PushButton*>(m_gui->createWidget(window, "FOTDSkin/Button", glm::vec4(0.8f, 0.9f, 0.15f, 0.08f), glm::vec4(0.0f), "LeaveButtonTrading"));
+
+        leaveButton->setText("Leave");
+
+        leaveButton->subscribeEvent(CEGUI::PushButton::EventClicked, CEGUI::Event::Subscriber(&DialogueManager::onLeaveButtonClicked, this));
+
+        CEGUI::FrameWindow* textFrame = static_cast<CEGUI::FrameWindow*>(m_gui->createWidget(window, "FOTDSkin/FrameWindow", glm::vec4(0.02f, 0.02f, 0.96f, 0.08f), glm::vec4(0.0f), "TextFrameTrading"));
+
+        textFrame->setTitleBarEnabled(false);
+        textFrame->setCloseButtonEnabled(false);
+        textFrame->setRollupEnabled(false);
+        textFrame->setDragMovingEnabled(false);
+        textFrame->setSizingEnabled(false);
+
+        CEGUI::DefaultWindow* textWindow = static_cast<CEGUI::DefaultWindow*>(m_gui->createWidget(textFrame, "FOTDSkin/Label", glm::vec4(0.0f, 0.0f, 1.0f, 1.0f), glm::vec4(0.0f), "TextBoxTrading"));
+        textWindow->setText("[colour='FF000000']I'll give you...");
+
+        CEGUI::DefaultWindow* answersWindow = static_cast<CEGUI::DefaultWindow*>(m_gui->createWidget(window, "FOTDSkin/Label", glm::vec4(0.02f, 0.11f, 0.96f, 0.78f), glm::vec4(0.0f), "OptionsBoxTrading"));
+
+        CEGUI::ScrollablePane* answersScroller = static_cast<CEGUI::ScrollablePane*>(m_gui->createWidget(answersWindow, "FOTDSkin/ScrollablePane", glm::vec4(0.0f, 0.0f, 1.0f, 1.0f), glm::vec4(0.0f), "OptionsScrollPaneTrading"));
+        answersScroller->setVerticalStepSize(0.01f);
+        m_scrollbar = answersScroller->getVertScrollbar();
+
+        m_otherWidgets.push_back(leaveButton);
+        m_otherWidgets.push_back(answersScroller);
+        m_otherWidgets.push_back(answersWindow);
+        m_otherWidgets.push_back(textWindow);
+        m_otherWidgets.push_back(textFrame);
+        m_otherWidgets.push_back(window);
+        // We must push them in the order that they are in (children first, then parents)
+
+        float paddingIncrementer = 0;
+        for(unsigned int i = 0; i < (*m_tradeTables)[m_tradeTable]->trades.size(); i++) {
+            Trade* t = (*m_tradeTables)[m_tradeTable]->trades[i];
+
+            CEGUI::PushButton* answerButton = static_cast<CEGUI::PushButton*>(m_gui->createWidget(answersScroller, "FOTDSkin/Button", glm::vec4(0.0f, 0.05f + ((0.02f + 0.1f) * paddingIncrementer), 1.0f, 0.1f), glm::vec4(0.0f), std::string("Option" + std::to_string(i) + "Trade")));
+
+            std::string tradeString = std::to_string(t->rewardedItem->getQuantity());
+            tradeString += " " + Category_Data::itemData[t->rewardedItem->getID()].name;
+            tradeString += " for ";
+            tradeString += std::to_string(t->requiredItem->getQuantity());
+            tradeString += " " + Category_Data::itemData[t->requiredItem->getID()].name;
+
+            answerButton->setText(tradeString);
+            m_buttons.push_back(answerButton);
+
+            answerButton->setMouseInputPropagationEnabled(true);
+
+            paddingIncrementer++;
         }
     }
 }
@@ -81,9 +150,9 @@ void DialogueManager::draw() {
 
 }
 
-void DialogueManager::update(GLEngine::InputManager& input) {
-    if(m_dialogueStarted) {
-        startConversation(m_questionId, input);
+void DialogueManager::update(GLEngine::InputManager& input, Player* p) {
+    if(m_dialogueStarted || m_tradingStarted) {
+        startConversation(input);
         return;
     }
 
@@ -128,21 +197,62 @@ void DialogueManager::update(GLEngine::InputManager& input) {
                 m_dialogueActive = false;
                 if(m_currentQuestion->answers[optionChosen].followingQuestion) {
                     m_currentQuestion = m_currentQuestion->answers[optionChosen].followingQuestion;
-                    initConversation(m_currentQuestion);
+                    initConversation();
+                }
+            }
+        }
+    } else if(m_tradingActive) {
+        if(input.isKeyPressed(SDL_BUTTON_LEFT)) { // Answer clicked, check stuff...
+            int optionChosen = -1;
+            // Set new values of flags
+            for(unsigned int i = 0; i < m_buttons.size(); i++) {
+                if(m_buttons[i]->isPushed() && m_buttons[i]->isActive()) {
+                    optionChosen = i;
+
+                    Trade* t = (*m_tradeTables)[m_tradeTable]->trades[i];
+
+                    // Check player's inventory to make sure they can buy the item
+                    Inventory* inv = p->getInventory();
+
+                    if(inv) {
+                        unsigned int index = inv->getItemIndex(t->requiredItem);
+                        if(index != (unsigned int)-1) {
+                            inv->subtractItem(t->requiredItem);
+                            inv->addItem(t->rewardedItem);
+                        }
+                    }
+
                 }
             }
         }
     }
 }
 
-QuestManager::QuestManager(std::string questionListPath, std::string flagListPath, ScriptQueue* sq)
+bool DialogueManager::onLeaveButtonClicked(const CEGUI::EventArgs& e) {
+    for(unsigned int i = 0; i < m_buttons.size(); i++) {
+        CEGUI::WindowManager::getSingleton().destroyWindow(m_buttons[i]);
+    }
+    m_buttons.clear();
+    m_buttons.resize(0);
+    for(unsigned int i = 0; i < m_otherWidgets.size(); i++) {
+        CEGUI::WindowManager::getSingleton().destroyWindow(m_otherWidgets[i]);
+    }
+    m_otherWidgets.clear();
+    m_otherWidgets.resize(0);
+    m_tradingActive = false;
+
+    return true;
+}
+
+QuestManager::QuestManager(std::string questionListPath, std::string flagListPath, std::string tradeListPath, ScriptQueue* sq)
 {
     m_sq = sq;
 
     readDialogueFromList(questionListPath);
     readFlagsFromList(flagListPath);
+    readTradesFromList(tradeListPath);
 
-    m_dialogueManager = new DialogueManager(&m_questionList, &m_flagList, sq);
+    m_dialogueManager = new DialogueManager(&m_questionList, &m_flagList, &m_tradeTables, sq);
 }
 
 QuestManager::~QuestManager()
@@ -150,8 +260,8 @@ QuestManager::~QuestManager()
     delete m_dialogueManager;
 }
 
-void QuestManager::update(GLEngine::InputManager& input) {
-    m_dialogueManager->update(input);
+void QuestManager::update(GLEngine::InputManager& input, Player* p) {
+    m_dialogueManager->update(input, p);
 }
 
 void QuestManager::draw() {
@@ -175,6 +285,16 @@ void QuestManager::readFlagsFromList(std::string listPath) {
         logger->log("Failed to load flag list at " + listPath, true);
     } else {
         m_flagList = getFlags(file);
+    }
+}
+
+void QuestManager::readTradesFromList(std::string listPath) {
+    std::ifstream file(listPath);
+
+    if(file.fail()) {
+        logger->log("Failed to load trades list at " + listPath, true);
+    } else {
+        m_tradeTables = getTradeTables(file);
     }
 }
 
@@ -267,15 +387,15 @@ std::vector<Question*> QuestManager::getDialogue(std::ifstream& file) {
             if(depth == 0) lines.pop_back();
             if(depth <= 0) {
                 // Got one question's lines completely
-                Question* q = new Question();
-                *q = *readQuestion(lines);
+                Question* q = nullptr;
+                q = readQuestion(lines);
                 questions.push_back(q);
                 lines.clear();
             }
         }
     }
 
-    logger->log("Dialogue loaded! (" + std::to_string(filesize) + " bytes)");
+    logger->log("Dialogue loaded! (" + std::to_string(sizeof(questions)) + " bytes)");
 
     return questions;
 }
@@ -297,7 +417,116 @@ std::vector<Flag*> QuestManager::getFlags(std::ifstream& file) {
         logger->log("Loaded flag with id of " + std::to_string(Flag(line).id) + " and value of " + std::to_string(Flag(line).value));
     }
 
-    logger->log("Flags loaded! (" + std::to_string(filesize) + " bytes)");
+    logger->log("Flags loaded! (" + std::to_string(sizeof(flags)) + " bytes)");
 
     return flags;
+}
+
+std::vector<TradeTable*> QuestManager::getTradeTables(std::ifstream& file) {
+    int pos = file.tellg();
+    file.seekg(0, std::ios::end);
+    int filesize = file.tellg();
+    file.seekg(pos);
+
+    logger->log("Loading trade tables. " + std::to_string(filesize) + " bytes to read.");
+
+    std::vector<std::string> lines;
+
+    std::vector<TradeTable*> tables;
+
+    std::string line;
+
+    bool reading = false;
+
+    unsigned int id = 0;
+    while(std::getline(file, line)) {
+        if(reading) lines.push_back(extras::removeWhitespace(line)); // Simply read all lines into vector, without tabs or spaces
+        if(line == "#BEGIN") {
+            reading = true;
+        } else if (line == "#END") {
+            reading = false;
+            lines.pop_back();
+
+            // Got one trade table's lines completely
+            TradeTable* table = nullptr;
+            table = readTradeTable(lines, id++);
+            tables.push_back(table);
+            lines.clear();
+        }
+    }
+
+    logger->log("Loaded trade tables! (" + std::to_string(sizeof(tables)) + " bytes)");
+
+    return tables;
+}
+
+TradeTable* QuestManager::readTradeTable(std::vector<std::string> lines, unsigned int id) {
+    TradeTable* table = new TradeTable;
+
+    table->id = id;
+
+    for(int i = 0; i < lines.size(); i++) {
+        table->trades.push_back(readTrade(lines[i]));
+    }
+
+    return table;
+}
+
+Trade* QuestManager::readTrade(std::string line) {
+    // Format is as follows: [required item id w/o brackets]:"metadata here in quotes"*[quantity w/o brackets]>[rewarded item id w/o brackets]:"metadata here in quotes"*[quantity w/o brackets]
+    // So, int:string*int>int:string*int
+
+    unsigned int reqId = -1, rewId = -1;
+    std::string reqMeta, rewMeta;
+    unsigned int reqQuan = -1, rewQuan = -1;
+
+    bool requiredRead = false; // Has the required Item been completely read?
+
+    std::string chars;
+
+    for(int i = 0; i < line.size(); i++) {
+        if(line[i] == ':') { // After an id
+            if(requiredRead) {
+                rewId = std::stoi(chars);
+            } else {
+                reqId = std::stoi(chars);
+            }
+            chars.clear();
+        } else if(line[i] == '\"') {
+            i++;
+            while(line[i] != '\"') {
+                chars += line[i];
+                i++;
+            }
+            if(requiredRead) {
+                //rewMeta = chars; /// TODO: Metadata
+            } else {
+                //reqMeta = chars;
+            }
+            chars.clear();
+            i += 1;
+            continue;
+        } else if(line[i] == '>') {
+            reqQuan = std::stoi(chars);
+            requiredRead = true;
+            chars.clear();
+            continue;
+        }
+        chars += line[i];
+    }
+    rewQuan = std::stoi(chars);
+
+    Trade* t = new Trade;
+    Item* reqItem;
+    Item* rewItem;
+
+    reqItem = createItem(reqId, reqQuan);
+    /// TODO: Metadata
+    rewItem = createItem(rewId, rewQuan);
+    /// TODO: Metadata
+
+    t->requiredItem = reqItem;
+    t->rewardedItem = rewItem;
+
+    return t;
 }

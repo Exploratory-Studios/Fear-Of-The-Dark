@@ -307,9 +307,9 @@ namespace Category_Data {
                                                                 ASIA*/
 
     static const MobDatum mobData[Category_Data::TOTAL_MOBS] = {
-                                                         MobDatum(0, 10.0f, ASSETS_FOLDER_PATH + "Textures/Mobs/Mob0.png", glm::vec2(1.0f, 2.0f), Categories::Faction::BAD, 2.608f, 0.02f, Categories::AI_Type::WALKING, Categories::Disability_Type::NONE, Categories::Attack_Type::MELEE_ONLY, { {0.0f, 0.0f}, {1.0f, 0.0f}, {0.0f, 1.0f}, {1.0f, 1.0f} }, { }, { }),
-                                                         MobDatum(1, 20.0f, ASSETS_FOLDER_PATH + "Textures/Mobs/Mob0.png", glm::vec2(1.0f, 2.0f), Categories::Faction::GOOD, 2.608f, 0.02f, Categories::AI_Type::WALKING, Categories::Disability_Type::NONE, Categories::Attack_Type::MELEE_ONLY, { {0.0f, 0.0f}, {0.0f, 0.0f}, {0.0f, 0.0f}, {0.0f, 0.0f} }, { }, { }),
-                                                         MobDatum(2, 30.0f, ASSETS_FOLDER_PATH + "Textures/Mobs/Mob0.png", glm::vec2(1.0f, 1.0f), Categories::Faction::BAD, 2.608f, 0.02f, Categories::AI_Type::WALKING, Categories::Disability_Type::NONE, Categories::Attack_Type::MELEE_ONLY, { {0.0f, 0.0f}, {0.0f, 0.0f}, {0.0f, 0.0f}, {0.0f, 0.0f} }, { DayPortion::DAY }, { WorldEra::NEOLITHIC_ERA })
+                                                         //MobDatum(0, 10.0f, ASSETS_FOLDER_PATH + "Textures/Mobs/Mob0.png", glm::vec2(1.0f, 2.0f), Categories::Faction::BAD, 2.608f, 0.02f, Categories::AI_Type::WALKING, Categories::Disability_Type::NONE, Categories::Attack_Type::MELEE_ONLY, { {0.0f, 0.0f}, {1.0f, 0.0f}, {0.0f, 1.0f}, {1.0f, 1.0f} }, { }, { }),
+                                                         //MobDatum(1, 20.0f, ASSETS_FOLDER_PATH + "Textures/Mobs/Mob0.png", glm::vec2(1.0f, 2.0f), Categories::Faction::GOOD, 2.608f, 0.02f, Categories::AI_Type::WALKING, Categories::Disability_Type::NONE, Categories::Attack_Type::MELEE_ONLY, { {0.0f, 0.0f}, {0.0f, 0.0f}, {0.0f, 0.0f}, {0.0f, 0.0f} }, { }, { }),
+                                                         //MobDatum(2, 30.0f, ASSETS_FOLDER_PATH + "Textures/Mobs/Mob0.png", glm::vec2(1.0f, 1.0f), Categories::Faction::BAD, 2.608f, 0.02f, Categories::AI_Type::WALKING, Categories::Disability_Type::NONE, Categories::Attack_Type::MELEE_ONLY, { {0.0f, 0.0f}, {0.0f, 0.0f}, {0.0f, 0.0f}, {0.0f, 0.0f} }, { DayPortion::DAY }, { WorldEra::NEOLITHIC_ERA })
                                                         };
 
     static const DialogueMobDatum dialogueMobData[Category_Data::TOTAL_DIALOGUE_MOBS] = {

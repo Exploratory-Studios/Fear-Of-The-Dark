@@ -3,6 +3,8 @@
 #include "Entity.h"
 #include "Player.h"
 
+#include <DebugRenderer.h>
+
 class Chunk;
 
 class EntityManager
@@ -12,9 +14,13 @@ class EntityManager
         EntityManager(Chunk* parent, AudioManager* audio);
         virtual ~EntityManager();
 
-        void update(float timeStep, Chunk* chunks[WORLD_SIZE]); // Updates entities (AI, parentChunk, activatedState)
+        void update(float timeStep, Chunk* chunks[WORLD_SIZE], Player* p); // Updates entities (AI, parentChunk, activatedState)
         void draw(GLEngine::SpriteBatch& sb, float time, float xOffset); // Draws entities
         void tick(Player* p, float tickTime, WorldEra& era);
+
+        #ifdef DEBUG
+        void drawDebug(GLEngine::DebugRenderer& dr, int xOffset);
+        #endif // DEBUG
 
         void addEntity(Entity* ent) { m_entities.push_back(ent); }
 

@@ -78,7 +78,7 @@ EntityBaseQuestGiver::EntityBaseQuestGiver(glm::vec2 pos, Chunk* parent, AudioMa
     m_texture = GLEngine::ResourceManager::getTexture(ASSETS_FOLDER_PATH + "/Textures/Mobs/Mob0.png");
     m_size = glm::vec2(1.0f, 2.0f);
     m_faction = Categories::Faction::EVIL;
-    m_jumpHeight = 0.608f;
+    m_jumpHeight = 0.4f;
     m_speed = 0.01f;
     m_ai = Categories::AI_Type::WALKING;
     m_disabilities = Categories::Disability_Type::NONE;

@@ -559,12 +559,14 @@ void Entity::updateMovement() {
     if(m_controls[1]) { // DOWN
         /// TODO: implement crouching
     }
-    if(m_controls[2]) { // LEFT
-        if(m_velocity.x > -m_maxSpeed)
+    if(m_controls[2] && !m_controls[3]) { // LEFT
+        if(std::abs(m_velocity.x) < m_maxSpeed) {
             m_velocity.x -= m_speed;
-    } else if(m_controls[3]) { // RIGHT
-        if(m_velocity.x < m_maxSpeed)
+        }
+    } else if(m_controls[3] && !m_controls[2]) { // RIGHT
+        if(std::abs(m_velocity.x) < m_maxSpeed) {
             m_velocity.x += m_speed;
+        }
     } else {
         m_velocity.x /= 5.0f;
     }
@@ -574,6 +576,11 @@ void Entity::updateMovement() {
     } else if(m_velocity.x < -MAX_SPEED) {
         m_velocity.x = -MAX_SPEED;
     }
+
+    m_controls[0] = false;
+    m_controls[1] = false;
+    m_controls[2] = false;
+    m_controls[3] = false;
 }
 
 void Entity::updateSounds() {

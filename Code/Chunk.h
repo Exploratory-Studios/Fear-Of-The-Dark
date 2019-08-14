@@ -3,6 +3,7 @@
 #include <vector>
 #include <SpriteBatch.h>
 #include <Camera2D.h>
+#include <DebugRenderer.h>
 
 #include "PresetValues.h"
 #include "Tile.h"
@@ -23,9 +24,13 @@ class Chunk
 
         void init(Tile* tileArray[WORLD_HEIGHT][CHUNK_SIZE], Tile* extraTileArray[WORLD_HEIGHT][2], Chunk* surroundingChunks[2], EntityManager* entityManager, AudioManager* audio);
 
-        void update(float time, float timeStepVariable, Chunk** chunks, bool updateEntities = true); // updateEntities is used for script pausing
+        void update(float time, float timeStepVariable, Chunk** chunks, Player* p, bool updateEntities = true); // updateEntities is used for script pausing
         void tick(float tickTime, Player* p, WorldEra& era, bool updateEntities = true);
         void draw(GLEngine::SpriteBatch& sb, int xOffset, float time, GLEngine::Camera2D camera); // xOffset is in chunks
+
+        #ifdef DEBUG
+        void drawDebug(GLEngine::DebugRenderer& dr, int xOffset);
+        #endif // DEBUG
 
         void setPlace(Categories::Places place);
         void setTile(Tile* newTile, const unsigned int& x = CHUNK_SIZE, const unsigned int& y = WORLD_SIZE);

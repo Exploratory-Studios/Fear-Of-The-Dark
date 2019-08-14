@@ -36,6 +36,8 @@ Player::Player(glm::vec2 position, Chunk* parent, GLEngine::InputManager* input,
 
     Leg* leg0 = new Leg(this, m_texture.id, glm::vec2(-1.0f, 0.0f), glm::vec2(0.4f, 1.0f), 0.0f, 1.57f); // 3.14 = 2(1.57
     m_limbs.push_back(leg0);
+
+    m_type = Categories::Entity_Type::PLAYER;
 }
 
 Player::~Player()

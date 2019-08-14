@@ -107,7 +107,7 @@ void Chunk::init(Tile* tileArray[WORLD_HEIGHT][CHUNK_SIZE], Tile* extraTileArray
     }
 }
 
-void Chunk::update(float time, float timeStepVariable, Chunk** chunks, bool updateEntities/* = true*/) {
+void Chunk::update(float time, float timeStepVariable, Chunk** chunks, Player* p, bool updateEntities/* = true*/) {
     deleteDeadTiles();
 
     for(int i = 0; i < WORLD_HEIGHT; i++) {
@@ -118,7 +118,7 @@ void Chunk::update(float time, float timeStepVariable, Chunk** chunks, bool upda
         extraTiles[i][1]->update(time);
     }
     if(updateEntities)
-        m_entityManager->update(timeStepVariable, chunks);
+        m_entityManager->update(timeStepVariable, chunks, p);
 }
 
 void Chunk::tick(float tickTime, Player* p, WorldEra& era, bool updateEntities/* = true*/) {
@@ -154,6 +154,12 @@ void Chunk::draw(GLEngine::SpriteBatch& sb, int xOffset, float time, GLEngine::C
     }
     m_entityManager->draw(sb, time, xOffset);
 }
+
+#ifdef DEBUG
+void Chunk::drawDebug(GLEngine::DebugRenderer& dr, int xOffset) {
+    m_entityManager->drawDebug(dr, xOffset);
+}
+#endif // DEBUG
 
 void Chunk::setPlace(Categories::Places place) {
     m_place = place;

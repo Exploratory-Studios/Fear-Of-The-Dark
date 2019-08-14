@@ -16,7 +16,7 @@ EntityManager::~EntityManager()
     }
 }
 
-void EntityManager::update(float timeStep, Chunk* chunks[WORLD_SIZE]) {
+void EntityManager::update(float timeStep, Chunk* chunks[WORLD_SIZE], Player* p) {
     for(unsigned int i = 0; i < m_entities.size(); i++) {
         m_entities[i]->update(timeStep, chunks);
         int newChunk = m_entities[i]->setParentChunk(chunks);
@@ -33,6 +33,7 @@ void EntityManager::update(float timeStep, Chunk* chunks[WORLD_SIZE]) {
             delete m_entities[i];
             removeEntity(i);
         }
+        targetEntities(p);
     }
 }
 
@@ -47,8 +48,22 @@ void EntityManager::tick(Player* p, float tickTime, WorldEra& era) {
         m_entities[i]->tick(p);
     }
     spawnEntities(tickTime, era);
-    targetEntities(p);
 }
+
+#ifdef DEBUG
+void EntityManager::drawDebug(GLEngine::DebugRenderer& dr, int xOffset) {
+    for(int i = 0; i < m_entities.size(); i++) {
+        if(m_entities[i]->getType() != Categories::Entity_Type::PLAYER) {
+            for(int j = 0; j < m_entities[i]->getTargets().size(); j++) {
+                dr.drawBox(glm::vec4(m_entities[i]->getTargets()[j].x + (xOffset * CHUNK_SIZE), m_entities[i]->getTargets()[j].y, 1.0f, 1.0f), GLEngine::ColourRGBA8(255, 255, 255, 255), 0.0f);
+                if(j < m_entities[i]->getTargets().size()-1) {
+                    dr.drawLine(m_entities[i]->getTargets()[j], m_entities[i]->getTargets()[j+1], GLEngine::ColourRGBA8(0, 255, 0, 255));
+                }
+            }
+        }
+    }
+}
+#endif // DEBUG
 
 void EntityManager::removeEntity(int index) {
     for(unsigned int i = index; i < m_entities.size()-1; i++) {
@@ -118,11 +133,11 @@ std::vector<glm::vec2> EntityManager::pathfindToTarget(float jumpHeight, glm::ve
 
     // Step 1: build vector of tiles' solidity
     // Step 1.1: figure out which direction to go!
-    unsigned int dist1 = std::abs(originalPosition.x - targetPosition.x);
-    unsigned int dist2 = (originalPosition.x < targetPosition.x ? originalPosition.x : targetPosition.x) + WORLD_SIZE * CHUNK_SIZE - (originalPosition.x > targetPosition.x ? originalPosition.x : targetPosition.x);
+    float dist1 = std::abs(originalPosition.x - targetPosition.x);
+    float dist2 = (originalPosition.x < targetPosition.x ? originalPosition.x : targetPosition.x) + WORLD_SIZE * CHUNK_SIZE - (originalPosition.x >= targetPosition.x ? originalPosition.x : targetPosition.x);
 
-    unsigned int leftDist = originalPosition.x > targetPosition.x ? dist1 : dist2; // Distance if we go left
-    unsigned int rightDist = originalPosition.x < targetPosition.x ? dist1 : dist2; // Distance if we go right
+    float leftDist = originalPosition.x > targetPosition.x ? dist1 : dist2; // Distance if we go left
+    float rightDist = originalPosition.x <= targetPosition.x ? dist1 : dist2; // Distance if we go right
 
     unsigned int dist = leftDist < rightDist ? leftDist : rightDist;
 
@@ -154,7 +169,7 @@ std::vector<glm::vec2> EntityManager::pathfindToTarget(float jumpHeight, glm::ve
         solidTiles.push_back(solid);
     }
 
-    if(originalPosition.x < targetPosition.x) {
+    if(rightDist < leftDist) {
         int yOffset = 0;
         for(int x = 0; x < dist; x++) { // Step 2: Move horizontally
             bool target = false;
@@ -170,7 +185,9 @@ std::vector<glm::vec2> EntityManager::pathfindToTarget(float jumpHeight, glm::ve
                     return targets;
                 }
             }
-            targets.push_back(glm::vec2(originalPosition.x + x, originalPosition.y + yOffset));
+            if(x + std::abs(yOffset) >= 1.0f) {
+                targets.push_back(glm::vec2(originalPosition.x + x + 0.5f, originalPosition.y + yOffset + 0.5f));
+            }
         }
     } else {
         int yOffset = 0;
@@ -188,11 +205,13 @@ std::vector<glm::vec2> EntityManager::pathfindToTarget(float jumpHeight, glm::ve
                     return targets;
                 }
             }
-            targets.push_back(glm::vec2(originalPosition.x - x, originalPosition.y + yOffset));
+            if((dist-x) + std::abs(yOffset) >= 1.0f) {
+                targets.push_back(glm::vec2(originalPosition.x - x + 0.5f, originalPosition.y + yOffset + 0.5f));
+            }
         }
     }
 
-    targets.push_back(targetPosition);
+    targets.push_back(targetPosition + glm::vec2(0.5f));
 
     /*
 

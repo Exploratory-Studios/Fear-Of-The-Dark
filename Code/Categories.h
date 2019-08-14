@@ -56,7 +56,8 @@ namespace Categories {
         MOB,
         DIALOGUE,
         PROJECTILE,
-        ITEM
+        ITEM,
+        PLAYER
     };
 
     enum class AI_Type {

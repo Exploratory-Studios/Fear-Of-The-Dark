@@ -152,7 +152,7 @@ void GameplayScreen::update() {
 
         for(unsigned int i = 0; i < m_activatedChunks.size(); i++) {
             int xOffset = std::abs(m_activatedChunks[i] + WORLD_SIZE) % WORLD_SIZE;
-            m_WorldIOManager->getWorld()->chunks[xOffset]->update(m_time, m_deltaTime, m_WorldIOManager->getWorld()->chunks, !m_cutscenePause);
+            m_WorldIOManager->getWorld()->chunks[xOffset]->update(m_time, m_deltaTime, m_WorldIOManager->getWorld()->chunks, m_player, !m_cutscenePause);
         }
 
         if(m_camera.getPosition().x > (float)(WORLD_SIZE * CHUNK_SIZE)) {
@@ -227,12 +227,18 @@ void GameplayScreen::draw() {
         for(unsigned int i = 0; i < m_drawnChunks.size(); i++) {
             int xOffset = std::abs(m_drawnChunks[i] + WORLD_SIZE) % WORLD_SIZE;
             m_WorldIOManager->getWorld()->chunks[xOffset]->draw(m_spriteBatch, m_drawnChunks[i] - xOffset, m_time, m_camera);
+            #ifdef DEBUG
+            m_WorldIOManager->getWorld()->chunks[xOffset]->drawDebug(m_dr, m_drawnChunks[i] - xOffset);
+            m_dr.end();
+            #endif // DEBUG
         }
 
         m_player->draw(m_spriteBatch, m_time, 0);
 
         m_spriteBatch.end();
         m_spriteBatch.renderBatch();
+
+        m_dr.render(projectionMatrix, 2);
 
         m_textureProgram.unuse();
     }
@@ -504,7 +510,11 @@ void GameplayScreen::activateChunks() {
     m_drawnChunks.clear();
     m_activatedChunks.clear();
     for(signed int i = -MAX_VIEW_DIST; i <= MAX_VIEW_DIST; i++) {
-        if(m_camera.isBoxInView(m_camera.getPosition() + glm::vec2(i * CHUNK_SIZE, 0.0f), glm::vec2(CHUNK_SIZE, WORLD_HEIGHT))) {
+        int x, y;
+        x = m_WorldIOManager->getWorld()->chunks[chunkIndex]->tiles[0][0]->getPosition().x + (i * CHUNK_SIZE);
+        y = m_WorldIOManager->getWorld()->chunks[chunkIndex]->tiles[0][0]->getPosition().y;
+
+        if(m_camera.isBoxInView(glm::vec2(x, y), glm::vec2(CHUNK_SIZE, WORLD_HEIGHT))) {
             if(chunkIndex + i == m_player->getChunkIndex()) m_playerChunkCovered = true;
             m_drawnChunks.push_back(chunkIndex + i);
             m_activatedChunks.push_back(chunkIndex + i);

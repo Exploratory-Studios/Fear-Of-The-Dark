@@ -221,7 +221,6 @@ void DialogueManager::update(GLEngine::InputManager& input, Player* p) {
                             inv->addItem(t->rewardedItem);
                         }
                     }
-
                 }
             }
         }

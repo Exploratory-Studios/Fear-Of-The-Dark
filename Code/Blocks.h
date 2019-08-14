@@ -11,18 +11,11 @@
 
 class GenericBlock : public Block {
     public:
-        GenericBlock(glm::vec2 pos, Chunk* parent, bool loadTexture = true) : Block(pos, parent) {}
+        GenericBlock(glm::vec2 pos, Chunk* parent, MetaData metaData, bool loadTexture = true) : Block(pos, parent, metaData) {}
         void onInteract(ScriptQueue* sq) {}
 
-        virtual TileData getSaveData() const {
-            TileData tile;
-            tile.pos = getPosition();
-            tile.id = getID();
-            tile.ambientLight = getAmbientLight();
-            return tile;
-        }
-
     protected:
+        virtual void handleMetaDataInit(MetaData& data) override {}
 };
 
 class BlockAir : public GenericBlock
@@ -121,7 +114,7 @@ class BlockWood : public GenericBlock
 class BlockWater : public GenericBlock
 {
     public:
-        BlockWater(glm::vec2 pos, Chunk* parent, float level, bool loadTexture = true);
+        BlockWater(glm::vec2 pos, Chunk* parent, float level, MetaData metaData = MetaData(), bool loadTexture = true);
         void onInteract(ScriptQueue* sq) {}
 
         virtual void draw(GLEngine::SpriteBatch& sb, int xOffset) override;
@@ -129,28 +122,22 @@ class BlockWater : public GenericBlock
         float getLevel() { return m_waterLevel; }
         void setLevel(float& level) { m_waterLevel = level; }
 
-        virtual TileData getSaveData() const override {
-            TileData tile;
-            tile.pos = getPosition();
-            tile.id = getID();
-            tile.ambientLight = getAmbientLight();
-
-            /*GenericData levelData;
-            levelData.data = (void*)&m_waterLevel;
-            levelData.type = DataType::FLOAT;
-            tile.otherData.push_back(levelData);*/
-
-            return tile;
+    protected:
+        virtual void handleMetaDataInit(MetaData& data) override {
+            data.getAspect("level", m_waterLevel);
+        }
+        virtual MetaData* getMetaData() override {
+            MetaData* m = new MetaData{MetaData_Aspect("level", m_waterLevel)};
+            return m;
         }
 
-    protected:
         void loadTexture() override { m_textureId = GLEngine::ResourceManager::getTexture(ASSETS_FOLDER_PATH + "/Textures/Blocks/Water.png").id; }
         void onUpdate(float& time) override;
     private:
         float m_waterLevel = 1.0f; // ranges from 1.0f (top of the block) to 0.0f (literally no water present)
 };
 
-static Block* createBlock(unsigned int id, glm::vec2 pos, Chunk* parent, bool loadTexture = true, float tickTime = -1.0f) {
+static Block* createBlock(unsigned int id, glm::vec2 pos, Chunk* parent, MetaData metaData = MetaData{}, bool loadTexture = true, float tickTime = -1.0f) {
     Block* ret = nullptr;
     switch(id) {
         case (unsigned int)Categories::BlockIDs::AIR: {
@@ -186,7 +173,7 @@ static Block* createBlock(unsigned int id, glm::vec2 pos, Chunk* parent, bool lo
             break;
         }
         case (unsigned int)Categories::BlockIDs::WATER: {
-            ret = new BlockWater(pos, parent, 1.0f, loadTexture);
+            ret = new BlockWater(pos, parent, 1.0f, metaData, loadTexture);
             break;
         }
         default: {

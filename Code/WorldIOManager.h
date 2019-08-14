@@ -4,6 +4,7 @@
 #include <vector>
 #include <InputManager.h>
 #include <boost/thread.hpp>
+#include <stdarg.h>
 
 #include <Window.h>
 
@@ -18,71 +19,7 @@
 #include "PresetValues.h"
 #include "Logging.h"
 
-class MetaData {
-    public:
-        MetaData(std::string data, ...) {
-            // Variadic, so that we can combine multiple metaData aspects together into one string
-        }
-        MetaData() {
-            // Nothing, just init an empty metadata so that we can add aspects
-        }
-
-        void addAspect(std::string aspectName, float val) {
-            // Add a float aspect
-        }
-        void addAspect(std::string aspectName, int val) {
-            // Add an integer aspect
-        }
-        void addAspect(std::string aspectName, std::string val) {
-            // Add a string aspect
-        }
-
-        void save(std::ofstream& file) {
-            unsigned int len = m_data.size();
-            file.write(reinterpret_cast<char*>(&len), sizeof(unsigned int));
-            file.write(m_data.c_str(), m_data.size());
-        }
-
-        template<class T>
-        T getAspect(std::string name) {
-            // Finds an aspect's value based on a given name, using string::find();
-            /// TODO
-        }
-    private:
-        std::string m_data;
-};
-
-struct ItemData {
-    unsigned int id;
-    unsigned int quantity;
-    MetaData metaData;
-};
-
-struct PlayerInventoryData {
-    unsigned int items; // number of items to load
-    std::vector<ItemData> itemData;
-    float absMaxWeight;
-};
-
-struct PlayerData {
-    bool canInteract;
-    float m_sanity, m_health, m_thirst, m_hunger, m_exhaustion, m_stamina;
-    glm::vec2 position;
-    unsigned int favouriteItemIndices[10];
-    PlayerInventoryData inventory;
-};
-
-struct ChunkData {
-    //std::vector<EntityData> entities;
-    /// TODO: create entities the same way blocks and items are created (Blocks.h & Items.h)
-    TileData tiles[WORLD_HEIGHT][CHUNK_SIZE] {};
-};
-
-struct StructureData {
-    unsigned int id;
-    unsigned int width;
-    std::vector<TileData> tiles; // really long, but not 2d. Use width variable to convert to 2d: pos=(int)(x / width) + x % width
-};
+#include "SaveDataTypes.h"
 
 class World {
 public:
@@ -141,7 +78,7 @@ class WorldIOManager
             all of the world (random engine #2)
         */
 
-        std::string m_saveVersion = "1.0.1";
+        std::string m_saveVersion = "1.1.1";
 
         Logger* logger = Logger::getInstance();
 

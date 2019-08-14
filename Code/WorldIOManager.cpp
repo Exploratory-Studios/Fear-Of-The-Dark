@@ -79,7 +79,9 @@ void WorldIOManager::P_loadWorld(std::string worldName) {
             for(unsigned int i = 0; i < items; i++) {
                 // ITEMS
                 ItemData newItem;
-                file.read(reinterpret_cast<char*>(&newItem), sizeof(ItemData));
+                file.read(reinterpret_cast<char*>(&newItem.id), sizeof(unsigned int));
+                file.read(reinterpret_cast<char*>(&newItem.quantity), sizeof(unsigned int));
+                //newItem.metaData->read(file);
 
                 m_world->player->m_inventory->addItem(createItem(newItem.id, newItem.quantity));
 
@@ -102,12 +104,16 @@ void WorldIOManager::P_loadWorld(std::string worldName) {
     { // WORLD
 
         ChunkData* chunkData = new ChunkData[WORLD_SIZE];
-        file.read(reinterpret_cast<char*>(&chunkData[0]), sizeof(ChunkData) * WORLD_SIZE);
+        //file.read(reinterpret_cast<char*>(&chunkData[0]), sizeof(ChunkData) * WORLD_SIZE);
+
+        for(int i = 0; i < WORLD_SIZE; i++) {
+            chunkData[i].read(file);
+        }
 
         for(int i = 0; i < WORLD_SIZE; i++) {
             for(unsigned int y = 0; y < WORLD_HEIGHT; y++) {
                 for(unsigned int x = 0; x < CHUNK_SIZE; x++) {
-                    m_world->chunks[i]->tiles[y][x] = createBlock(chunkData[i].tiles[y][x].id, chunkData[i].tiles[y][x].pos, m_world->chunks[i], false);
+                    m_world->chunks[i]->tiles[y][x] = createBlock(chunkData[i].tiles[y][x].id, chunkData[i].tiles[y][x].pos, m_world->chunks[i], *chunkData[i].tiles[y][x].metaData, false);
                 }
             }
         }
@@ -175,6 +181,7 @@ void WorldIOManager::P_saveWorld(std::string worldName) {
         ItemData item;
         item.id = m_world->player->m_inventory->getItem(i)->getID();
         item.quantity = m_world->player->m_inventory->getItem(i)->getQuantity();
+        //*item.metaData = *m_world->player->m_inventory->getItem(i)->getMetaData();
         pInventory.itemData.push_back(item);
     }
     pInventory.absMaxWeight = m_world->player->m_inventory->m_absMaxWeight;
@@ -236,7 +243,9 @@ void WorldIOManager::P_saveWorld(std::string worldName) {
         file.write(reinterpret_cast<char*>(&p.inventory.items), sizeof(unsigned int));
         for(unsigned int i = 0; i < p.inventory.items; i++) {
             // ITEMS
-            file.write(reinterpret_cast<char*>(&p.inventory.itemData[i]), sizeof(ItemData));
+            file.write(reinterpret_cast<char*>(&p.inventory.itemData[i].id), sizeof(unsigned int));
+            file.write(reinterpret_cast<char*>(&p.inventory.itemData[i].quantity), sizeof(unsigned int));
+            //p.inventory.itemData[i].metaData->save(file);
             logger->log("SAVE: Wrote " + std::to_string(i+1) + " of " + std::to_string(p.inventory.items) + " Items");
         }
         file.write(reinterpret_cast<char*>(&p.inventory.absMaxWeight), sizeof(float));
@@ -245,9 +254,10 @@ void WorldIOManager::P_saveWorld(std::string worldName) {
     }
 
     { // WORLD
-        //for(int i = 0; i < WORLD_SIZE; i++) {
-        file.write(reinterpret_cast<char*>(chunkData), sizeof(ChunkData) * WORLD_SIZE);
-        //}
+        for(int i = 0; i < WORLD_SIZE; i++) {
+        //file.write(reinterpret_cast<char*>(chunkData), sizeof(ChunkData) * WORLD_SIZE);
+            chunkData[i].save(file);
+        }
         delete[] chunkData;
         logger->log("SAVE: Wrote World Chunks");
     }
@@ -363,7 +373,7 @@ void WorldIOManager::P_createWorld(unsigned int seed, std::string worldName, boo
                     for(int x = 0; x < CHUNK_SIZE; x++) {
                         for(int y = blockHeights[i * CHUNK_SIZE + x]; y < WORLD_HEIGHT; y++) {
                             if(y <= WATER_LEVEL) {
-                                BlockWater* block = new BlockWater(glm::vec2((i * CHUNK_SIZE) + x, y), m_world->chunks[i], 1.0f, false);
+                                BlockWater* block = new BlockWater(glm::vec2((i * CHUNK_SIZE) + x, y), m_world->chunks[i], 1.0f, MetaData(), false);
                                 delete m_world->chunks[i]->tiles[y][x];
                                 m_world->chunks[i]->tiles[y][x] = block;
                             } else {
@@ -721,7 +731,6 @@ void WorldIOManager::placeStructure(StructureData& structure, glm::vec2 position
                 unsigned int realX = tileX % CHUNK_SIZE;
 
                 m_world->chunks[(chunkX % WORLD_SIZE)]->setTile(createBlock(structure.tiles[tileIndex].id, glm::vec2(tileX, tileY), m_world->chunks[(chunkX % WORLD_SIZE)]), realX, tileY);
-
             }
         }
     }

@@ -8,13 +8,7 @@
 #include "AudioManager.h"
 #include "PresetValues.h"
 
-struct TileData {
-    glm::vec2 pos;
-    unsigned int id;
-    float ambientLight;
-    //MetaData metaData;
-    //std::vector<GenericData> otherData; // This will be read from and assigned to a Tile's data (like water's level) based on its ID. The program should know what to do with it based on id
-};
+#include "SaveDataTypes.h"
 
 class Chunk;
 
@@ -31,14 +25,16 @@ class Tile
              GLEngine::ColourRGBA8 colour,
              bool isSolid,
              unsigned int id,
-             Chunk* parent) :
+             Chunk* parent,
+             MetaData data) :
                 m_pos(pos),
                 m_textureId(textureId),
                 m_backdropTextureId(backdropTextureId),
                 m_colour(colour),
                 m_solid(isSolid),
                 m_id(id),
-                m_parentChunk(parent) { }
+                m_parentChunk(parent),
+                m_metaData(data) { handleMetaDataInit(data); }
         virtual ~Tile() {}
 
         #ifdef DEV_CONTROLS
@@ -74,7 +70,15 @@ class Tile
         bool            doDrawBackdrop() const { return m_backdrop; }
         ParticleIDs     getWalkedOnParticleID() const { return m_walkParticle; }
 
-        virtual TileData        getSaveData() const = 0;
+        virtual TileData getSaveData() {
+            TileData d;
+            d.pos = m_pos;
+            d.id = m_id;
+            d.ambientLight = m_ambientLight;
+            delete d.metaData;
+            d.metaData = getMetaData();
+            return d;
+        }
 
         void            setAmbientLight(float light) { m_ambientLight = light; }
         void            setSunlight(float& tickTime)
@@ -103,6 +107,9 @@ class Tile
         // ... More interact functions, only used for special occasions :)
 
     protected:
+        virtual void handleMetaDataInit(MetaData& data) = 0;
+        virtual MetaData* getMetaData() { return new MetaData(); }
+
         virtual void onUpdate(float& time) = 0;
         virtual void onTick(float& tickTime) = 0;
 
@@ -142,6 +149,8 @@ class Tile
 
         SoundEffectIDs m_walkEffect = SoundEffectIDs::WALK_DIRT;
         ParticleIDs m_walkParticle = ParticleIDs::DIRT_PARTICLE;
+
+        MetaData m_metaData;
 
 };
 

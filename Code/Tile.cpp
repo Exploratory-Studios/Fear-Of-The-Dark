@@ -2,6 +2,8 @@
 
 #include <random>
 
+#include "WorldIOManager.h"
+
 Tile::Tile() {
     m_textureId = GLEngine::ResourceManager::getTexture(ASSETS_FOLDER_PATH + "Textures/UNDEFINED.png").id;
     m_parentChunk = nullptr;

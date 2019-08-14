@@ -511,8 +511,8 @@ void GameplayScreen::activateChunks() {
     m_activatedChunks.clear();
     for(signed int i = -MAX_VIEW_DIST; i <= MAX_VIEW_DIST; i++) {
         int x, y;
-        x = m_WorldIOManager->getWorld()->chunks[chunkIndex]->tiles[0][0]->getPosition().x + (i * CHUNK_SIZE);
-        y = m_WorldIOManager->getWorld()->chunks[chunkIndex]->tiles[0][0]->getPosition().y;
+        x = m_WorldIOManager->getWorld()->chunks[chunkIndex]->getTile(CHUNK_SIZE * chunkIndex, 0, 0)->getPosition().x + (i * CHUNK_SIZE);
+        y = m_WorldIOManager->getWorld()->chunks[chunkIndex]->getTile(CHUNK_SIZE * chunkIndex, 0, 0)->getPosition().y;
 
         if(m_camera.isBoxInView(glm::vec2(x, y), glm::vec2(CHUNK_SIZE, WORLD_HEIGHT))) {
             if(chunkIndex + i == m_player->getChunkIndex()) m_playerChunkCovered = true;

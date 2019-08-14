@@ -27,9 +27,9 @@ class Scripter {
         void init(GameplayScreen* gameplayScreen);
 
         void changeBlock(Block* newBlock);
-        void removeBlock(int x, int y); // doesn't actually 'remove' per say, but changes it to air.
-        void showBlock(int x, int y);
-        void hideBlock(int x, int y);
+        void removeBlock(int x, int y, unsigned int layer); // doesn't actually 'remove' per say, but changes it to air.
+        void showBlock(int x, int y, unsigned int layer);
+        void hideBlock(int x, int y, unsigned int layer);
 
         unsigned int addEntity(Entity* newEntity); // Returns new entity's index
         void removeEntity(unsigned int index); // This doesn't change the size of the vector, just sets the index to NULL values

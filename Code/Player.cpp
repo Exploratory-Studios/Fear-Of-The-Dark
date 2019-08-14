@@ -324,15 +324,13 @@ void Player::updateStats(float timeStep, Chunk* worldChunks[WORLD_SIZE]) {
 void Player::updateMouse(GLEngine::Camera2D* worldCamera) {
     glm::vec2 mousePos = worldCamera->convertScreenToWorld(m_input->getMouseCoords());
 
-    mousePos = glm::vec2(floor(mousePos.x / 1), floor(mousePos.y / 1)); // Changes it to grid-space
+    mousePos = glm::vec2(floor(mousePos.x), floor(mousePos.y)); // Changes it to grid-space
 
     m_mousePos = mousePos;
 
     if(m_canInteract) {
 
         int chunkIndex = std::floor(mousePos.x / CHUNK_SIZE) - getChunkIndex();
-
-        mousePos.x = (int)(mousePos.x + CHUNK_SIZE * WORLD_SIZE) % CHUNK_SIZE;
 
         if(/*mousePos.x >= 0 &&
            mousePos.x + (chunkIndex * CHUNK_SIZE) < WORLD_SIZE * CHUNK_SIZE &&*/
@@ -351,7 +349,7 @@ void Player::updateMouse(GLEngine::Camera2D* worldCamera) {
                 }
 
                 m_selectedBlock = nullptr;
-                if(chunk->tiles[(unsigned int)mousePos.y][(unsigned int)mousePos.x % CHUNK_SIZE]->getParentChunk()) m_selectedBlock = chunk->tiles[(unsigned int)mousePos.y][(unsigned int)mousePos.x % CHUNK_SIZE];
+                if(chunk->getTile(mousePos.x, mousePos.y, m_layer)->getParentChunk()) m_selectedBlock = chunk->getTile(mousePos.x, mousePos.y, m_layer);
                 //Logger::getInstance()->log("Clicked: " + std::to_string(m_selectedBlock->getPosition().x));
 
                 m_selectedEntity = nullptr;
@@ -427,7 +425,7 @@ void Player::updateInput() {
             if(m_favouriteItems[m_selectedHotbox]) m_favouriteItems[m_selectedHotbox]->onLeftClick(m_selectedBlock);
             if(!m_favouriteItems[m_selectedHotbox]) {
                 BlockAir* b = new BlockAir(m_selectedBlock->getPosition(), m_selectedBlock->getParentChunk());//createBlock((unsigned int)Categories::BlockIDs::WATER, m_selectedBlock->getPosition(), m_selectedBlock->getParentChunk());
-                m_selectedBlock->getParentChunk()->setTile(b, m_selectedBlock->getPosition().x, m_selectedBlock->getPosition().y);
+                m_selectedBlock->getParentChunk()->setTile(b, m_selectedBlock->getLayer());
             }
             m_inventory->updateWeight();
         }

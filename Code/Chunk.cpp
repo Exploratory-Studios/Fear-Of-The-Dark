@@ -8,7 +8,7 @@ void Chunk::addEntity(Entity* ent) { m_entityManager->addEntity(ent); }
 
 void Chunk::deleteDeadTiles() {
     for(int i = 0; i < m_deadTiles.size(); i++) {
-        delete m_deadTiles[i];
+        if(m_deadTiles[i]) delete m_deadTiles[i];
     }
     m_deadTiles.clear();
 }
@@ -21,39 +21,39 @@ Chunk::Chunk() {
     m_entityManager = new EntityManager(this, nullptr);
 
     for(unsigned int i = 0; i < WORLD_HEIGHT; i++) {
-        tiles[i] = new Tile*[CHUNK_SIZE];
+        m_tiles[i] = new std::vector<Tile*>[CHUNK_SIZE];
         for(int j = 0; j < CHUNK_SIZE; j++) {
-            tiles[i][j] = nullptr;
+            m_tiles[i][j].push_back(nullptr);
         }
     }
 
-    for(unsigned int i = 0; i < WORLD_HEIGHT; i++) {
-        extraTiles[i] = new Tile*[2];
+    /*for(unsigned int i = 0; i < WORLD_HEIGHT; i++) {
+        m_extraTiles[i] = new std::vector<Tile*>[2];
         for(int j = 0; j < 2; j++) {
-            extraTiles[i][j] = nullptr;
+            m_extraTiles[i][j].push_back(nullptr);
         }
-    }
+    }*/
 }
 
 Chunk::Chunk(AudioManager* audio) {
     m_entityManager = new EntityManager(this, audio);
 
     for(unsigned int i = 0; i < WORLD_HEIGHT; i++) {
-        tiles[i] = new Tile*[CHUNK_SIZE];
+        m_tiles[i] = new std::vector<Tile*>[CHUNK_SIZE];
         for(int j = 0; j < CHUNK_SIZE; j++) {
-            tiles[i][j] = nullptr;
+            m_tiles[i][j].push_back(nullptr);
         }
     }
 
-    for(unsigned int i = 0; i < WORLD_HEIGHT; i++) {
-        extraTiles[i] = new Tile*[2];
+    /*for(unsigned int i = 0; i < WORLD_HEIGHT; i++) {
+        m_extraTiles[i] = new std::vector<Tile*>[2];
         for(int j = 0; j < 2; j++) {
-            extraTiles[i][j] = nullptr;
+            m_extraTiles[i][j].push_back(nullptr);
         }
-    }
+    }*/
 }
 
-Chunk::Chunk(Tile* tileArray[WORLD_HEIGHT][CHUNK_SIZE], Tile* extraTileArray[WORLD_HEIGHT][2], int index, Chunk* surroundingChunks[2], EntityManager* entityManager, AudioManager* audio) {
+Chunk::Chunk(std::vector<Tile*> tileArray[WORLD_HEIGHT][CHUNK_SIZE], std::vector<Tile*> extraTileArray[WORLD_HEIGHT][2], int index, Chunk* surroundingChunks[2], EntityManager* entityManager, AudioManager* audio) {
     init(tileArray, extraTileArray, surroundingChunks, entityManager, audio);
     m_index = index;
     m_entityManager = new EntityManager(this, audio);
@@ -64,46 +64,42 @@ Chunk::~Chunk() {
 
     for(int i = 0; i < WORLD_HEIGHT; i++) {
         for(int j = 0; j < CHUNK_SIZE; j++) {
-            delete tiles[i][j];
+            for(int k = 0; k < m_tiles[i][j].size(); k++) {
+                if(m_tiles[i][j][k]) delete m_tiles[i][j][k];
+            }
         }
-        delete[] tiles[i];
+        delete[] m_tiles[i];
     }
-    delete[] tiles;
+    delete[] m_tiles;
 }
 
-void Chunk::init(Tile* tileArray[WORLD_HEIGHT][CHUNK_SIZE], Tile* extraTileArray[WORLD_HEIGHT][2], Chunk* surroundingChunks[2], EntityManager* entityManager, AudioManager* audio) {
+void Chunk::init(std::vector<Tile*> tileArray[WORLD_HEIGHT][CHUNK_SIZE], std::vector<Tile*> extraTileArray[WORLD_HEIGHT][2], Chunk* surroundingChunks[2], EntityManager* entityManager, AudioManager* audio) {
     for(unsigned int i = 0; i < WORLD_HEIGHT; i++) {
-        tiles[i] = new Tile*[CHUNK_SIZE];
+        m_tiles[i] = new std::vector<Tile*>[CHUNK_SIZE];
         for(int j = 0; j < CHUNK_SIZE; j++) {
-            tiles[i][j] = nullptr;
+            m_tiles[i][j].push_back(nullptr);
         }
     }
 
-    for(unsigned int i = 0; i < WORLD_HEIGHT; i++) {
-        extraTiles[i] = new Tile*[2];
+    /*for(unsigned int i = 0; i < WORLD_HEIGHT; i++) {
+        m_extraTiles[i] = new std::vector<Tile*>[2];
         for(int j = 0; j < 2; j++) {
-            extraTiles[i][j] = nullptr;
+            m_extraTiles[i][j].push_back(nullptr);
         }
-    }
+    }*/
 
 	m_surroundingChunks[0] = surroundingChunks[0];
 	m_surroundingChunks[1] = surroundingChunks[1];
 
     for(int i = 0; i < WORLD_HEIGHT; i++) {
         for(int j = 0; j < CHUNK_SIZE; j++) {
-            if(tiles[i][j]) {
-                tiles[i][j] = tileArray[i][j]; // make sure that there are no uninitialized tiles
-            } else {
-                logger->log("UNINITIALIZED BLOCK!", true);
-            }
+            m_tiles[i][j].reserve(tileArray[i][j].size());
+            m_tiles[i][j] = tileArray[i][j]; // make sure that there are no uninitialized tiles
         }
-        for(int j = 0; j < 2; j++) {
-            if(extraTiles[i][j]) {
-                extraTiles[i][j] = extraTileArray[i][j];
-            } else {
-                logger->log("UNINITIALIZED EXTRA BLOCK!", true);
-            }
-        }
+        /*for(int j = 0; j < 2; j++) {
+            m_extraTiles[i][j].reserve(extraTileArray[i][j].size());
+            m_extraTiles[i][j] = extraTileArray[i][j];
+        }*/
     }
 }
 
@@ -112,10 +108,16 @@ void Chunk::update(float time, float timeStepVariable, Chunk** chunks, Player* p
 
     for(int i = 0; i < WORLD_HEIGHT; i++) {
         for(int j = 0; j < CHUNK_SIZE; j++) {
-            tiles[i][j]->update(time);
+            for(int k = 0; k < m_tiles[i][j].size(); k++) {
+                m_tiles[i][j][k]->update(time);
+            }
         }
-        extraTiles[i][0]->update(time);
-        extraTiles[i][1]->update(time);
+        /*for(int k = 0; k < m_extraTiles[i][0].size(); k++) {
+            m_extraTiles[i][0][k]->update(time);
+        }
+        for(int k = 0; k < m_extraTiles[i][1].size(); k++) {
+            m_extraTiles[i][1][k]->update(time);
+        }*/
     }
     if(updateEntities)
         m_entityManager->update(timeStepVariable, chunks, p);
@@ -124,10 +126,16 @@ void Chunk::update(float time, float timeStepVariable, Chunk** chunks, Player* p
 void Chunk::tick(float tickTime, Player* p, WorldEra& era, bool updateEntities/* = true*/) {
     for(int i = 0; i < WORLD_HEIGHT; i++) {
         for(int j = 0; j < CHUNK_SIZE; j++) {
-            tiles[i][j]->tick(tickTime);
+            for(int k = 0; k < m_tiles[i][j].size(); k++) {
+                m_tiles[i][j][k]->tick(tickTime);
+            }
         }
-        extraTiles[i][0]->tick(tickTime);
-        extraTiles[i][1]->tick(tickTime);
+        /*for(int k = 0; k < m_extraTiles[i][0].size(); k++) {
+            m_extraTiles[i][0][k]->tick(tickTime);
+        }
+        for(int k = 0; k < m_extraTiles[i][0].size(); k++) {
+            m_extraTiles[i][1][k]->tick(tickTime);
+        }*/
     }
     if(updateEntities)
         m_entityManager->tick(p, tickTime, era);
@@ -136,21 +144,27 @@ void Chunk::tick(float tickTime, Player* p, WorldEra& era, bool updateEntities/*
 void Chunk::draw(GLEngine::SpriteBatch& sb, int xOffset, float time, GLEngine::Camera2D camera) {
     for(int i = 0; i < WORLD_HEIGHT; i++) {
         for(int j = 0; j < CHUNK_SIZE; j++) {
-            if(camera.isBoxInView(glm::vec2(j + CHUNK_SIZE * m_index + xOffset * CHUNK_SIZE, i), glm::vec2(1.0f, 1.0f))) {
-                tiles[i][j]->draw(sb, xOffset);
-                int backdrop = -1;
-                while(i+backdrop > 0) {
-                    if(tiles[i+backdrop][j]->isTransparent()) {
-                        tiles[i][j]->drawBackdrop(sb, xOffset, backdrop, tiles[i+backdrop][j]->getLight());
-                    } else {
-                        break;
+            for(int k = 0; k < m_tiles[i][j].size(); k++) {
+                if(camera.isBoxInView(glm::vec2(j + CHUNK_SIZE * m_index + xOffset * CHUNK_SIZE, i), glm::vec2(1.0f, 1.0f))) {
+                    m_tiles[i][j][k]->draw(sb, xOffset);
+                    int backdrop = -1;
+                    while(i+backdrop > 0) {
+                        if(m_tiles[i+backdrop][j][k]->isTransparent()) {
+                            m_tiles[i][j][k]->drawBackdrop(sb, xOffset, backdrop, m_tiles[i+backdrop][j][k]->getLight());
+                        } else {
+                            break;
+                        }
+                        backdrop--;
                     }
-                    backdrop--;
                 }
             }
         }
-        extraTiles[i][0]->draw(sb, xOffset);
-        extraTiles[i][1]->draw(sb, xOffset);
+        /*for(int k = 0; k < m_extraTiles[i][0].size(); k++) {
+            m_extraTiles[i][0][k]->draw(sb, xOffset);
+        }
+        for(int k = 0; k < m_extraTiles[i][1].size(); k++) {
+            m_extraTiles[i][1][k]->draw(sb, xOffset);
+        }*/
     }
     m_entityManager->draw(sb, time, xOffset);
 }
@@ -165,32 +179,49 @@ void Chunk::setPlace(Categories::Places place) {
     m_place = place;
 }
 
-void Chunk::setTile(Tile* newTile, const unsigned int& x, const unsigned int& y) {
-    unsigned int xPos = (x >= CHUNK_SIZE) ? (int)newTile->getPosition().x % CHUNK_SIZE : x;
-    unsigned int yPos = (y >= WORLD_HEIGHT) ? (int)newTile->getPosition().y : y;
+void Chunk::setTile(Tile* newTile, unsigned int layer) {
+    unsigned int xPos = (int)newTile->getPosition().x % CHUNK_SIZE;
+    unsigned int yPos = (int)newTile->getPosition().y;
 
-    m_deadTiles.push_back(tiles[yPos][(xPos + CHUNK_SIZE) % CHUNK_SIZE]);
+    m_deadTiles.push_back(getTile(xPos, yPos, layer));
 
-    //delete tiles[yPos][(xPos + CHUNK_SIZE) % CHUNK_SIZE];
-    tiles[yPos][(xPos + CHUNK_SIZE) % CHUNK_SIZE] = newTile;
+    if(m_tiles[yPos][xPos].size() > layer) {
+        m_tiles[yPos][xPos][layer] = newTile;
+    } else {
+        for(int i = m_tiles[yPos][xPos].size(); i < layer; i++) {
+            m_tiles[yPos][xPos].push_back(nullptr);
+        }
+        m_tiles[yPos][xPos][layer] = newTile;
+    }
 
-    for(int i = y; i > 0; i--) {
-        tiles[i][(xPos + CHUNK_SIZE) % CHUNK_SIZE]->setNeedsSunCheck();
-        if(!tiles[i][(xPos + CHUNK_SIZE) % CHUNK_SIZE]->isTransparent()) {
+    for(int i = yPos; i > 0; i--) {
+        if(!getTile(xPos, i, layer)) break;
+        getTile(xPos, i, layer)->setNeedsSunCheck();
+        if(!getTile(xPos, i, layer)->isTransparent()) {
             break;
         }
     }
 
-    if((xPos % CHUNK_SIZE) <= 0) {
-        //if(m_surroundingChunks[0]->extraTiles[yPos][1])
-            //delete m_surroundingChunks[0]->extraTiles[yPos][1];
-        m_surroundingChunks[0]->extraTiles[yPos][1] = newTile;
+    /*if((xPos % CHUNK_SIZE) <= 0) {
+        if(m_surroundingChunks[0]->m_extraTiles[yPos][1].size() > layer) {
+            m_surroundingChunks[0]->m_extraTiles[yPos][1][layer] = newTile;
+        } else {
+            for(int i = m_surroundingChunks[0]->m_extraTiles[yPos][1].size(); i < layer; i++) {
+                m_surroundingChunks[0]->m_extraTiles[yPos][1].push_back(nullptr);
+            }
+            m_surroundingChunks[0]->m_extraTiles[yPos][1][layer] = newTile;
+        }
     }
     if((xPos % CHUNK_SIZE) >= CHUNK_SIZE-1) {
-        //if(m_surroundingChunks[1]->extraTiles[yPos][0])
-            //delete m_surroundingChunks[1]->extraTiles[yPos][0];
-        m_surroundingChunks[1]->extraTiles[yPos][0] = newTile;
-    }
+        if(m_surroundingChunks[1]->m_extraTiles[yPos][0].size() > layer) {
+            m_surroundingChunks[1]->m_extraTiles[yPos][0][layer] = newTile;
+        } else {
+            for(int i = m_surroundingChunks[1]->m_extraTiles[yPos][0].size(); i < layer; i++) {
+                m_surroundingChunks[1]->m_extraTiles[yPos][0].push_back(nullptr);
+            }
+            m_surroundingChunks[1]->m_extraTiles[yPos][0][layer] = newTile;
+        }
+    }*/
 }
 
 void Chunk::setAudioManager(AudioManager* audio) {

@@ -141,7 +141,7 @@ class Entity
         virtual void defend(Entity* attacker, float damage, LimbSection section, Item* weapon);
 
     protected:
-        bool checkTilePosition(Tile*** tiles, Tile*** extraTileArray, std::vector<glm::vec2>& collideTilePositions, float xPos, float yPos);
+        bool checkTilePosition(std::vector<glm::vec2>& collideTilePositions, float xPos, float yPos);
         void collideWithTile(glm::vec2 tilePos, bool ground = false);
         void updateLightLevel();
         virtual void updateAI() {};
@@ -202,6 +202,7 @@ class Entity
 
         glm::vec2 m_position;
         glm::vec2 m_size;
+        unsigned int m_layer = 0;
 
         glm::vec2 m_velocity;
 

@@ -10,8 +10,8 @@ BlockAir::BlockAir(glm::vec2 pos, Chunk* parent, bool loadTexture/* = true*/) : 
 
     if(loadTexture) { this->loadTexture(); } else { m_textureId = (GLuint)-1; }
 
-    if(parent->tiles[(unsigned int)pos.y][(unsigned int)pos.x % CHUNK_SIZE])
-        m_ambientLight = parent->tiles[(unsigned int)pos.y][(unsigned int)pos.x % CHUNK_SIZE]->getLight();
+    if(parent->getTile((int)pos.x % CHUNK_SIZE, pos.y, 0))
+        m_ambientLight = parent->getTile(pos.x, (int)pos.y, 0)->getLight();
 }
 
 BlockDirt::BlockDirt(glm::vec2 pos, Chunk* parent, bool loadTexture/* = true*/) : GenericBlock(pos, parent, MetaData(), loadTexture) {
@@ -35,7 +35,7 @@ void BlockDirt::onTick(float& tickTime) {
     if(m_sunLight >= 0.5f) {
         int chance = std::rand() % 100;
         if(chance < 1) { // 1% chance every tick
-            m_parentChunk->setTile(createBlock((unsigned int)Categories::BlockIDs::GRASS, m_pos, m_parentChunk, MetaData(), tickTime), m_pos.x, m_pos.y);
+            m_parentChunk->setTile(createBlock((unsigned int)Categories::BlockIDs::GRASS, m_pos, m_parentChunk, MetaData(), tickTime), m_layer);
         }
     }
 }
@@ -58,7 +58,7 @@ BlockGrass::BlockGrass(glm::vec2 pos, Chunk* parent, bool loadTexture/* = true*/
 void BlockGrass::onTick(float& tickTime) {
     if(m_sunLight >= 0.5f) {
         int chance = std::rand() % 1000;
-        if(chance < 2 && m_parentChunk->tiles[(unsigned int)m_pos.y + 1][(unsigned int)m_pos.x % CHUNK_SIZE]->getID() == (unsigned int)Categories::BlockIDs::AIR) { // 0.2% chance every tick
+        if(chance < 2 && m_parentChunk->getTile(m_pos.x, m_pos.y + 1, m_layer)->getID() == (unsigned int)Categories::BlockIDs::AIR) { // 0.2% chance every tick
             //m_parentChunk->setTile(createBlock((unsigned int)Categories::BlockIDs::FOLIAGE, m_pos + glm::vec2(0.0f, 1.0f), m_parentChunk), m_pos.x, m_pos.y + 1);
         }
     }
@@ -137,8 +137,8 @@ BlockFoliage::BlockFoliage(glm::vec2 pos, Chunk* parent, bool loadTexture/* = tr
 }
 
 void BlockFoliage::onUpdate(float& time) {
-    if(m_parentChunk->tiles[(unsigned int)m_pos.y-1][((unsigned int)(m_pos.x + CHUNK_SIZE) % CHUNK_SIZE)]->getID() != (unsigned int)Categories::BlockIDs::GRASS) {
-        m_parentChunk->setTile(createBlock((unsigned int)Categories::BlockIDs::AIR, m_pos, m_parentChunk), m_pos.x, m_pos.y);
+    if(m_parentChunk->getTile(m_pos.x, m_pos.y - 1, m_layer)->getID() != (unsigned int)Categories::BlockIDs::GRASS) {
+        m_parentChunk->setTile(createBlock((unsigned int)Categories::BlockIDs::AIR, m_pos, m_parentChunk), m_layer);
     }
 }
 
@@ -195,21 +195,11 @@ void BlockWater::onUpdate(float& time) {
         Tile* right = nullptr;
         Tile* down = nullptr;
 
-        if((int)(m_pos.x) % CHUNK_SIZE > 0) {
-            left = m_parentChunk->tiles[(int)m_pos.y][(int)(m_pos.x - 1) % CHUNK_SIZE];
-        } else {
-            left = m_parentChunk->extraTiles[(int)m_pos.y][0];
-        }
+        left = m_parentChunk->getTile(m_pos.x - 1, m_pos.y, m_layer); /// TODO: Cross-layer water movement
 
-        if((int)(m_pos.x) % CHUNK_SIZE < CHUNK_SIZE-1) {
-            right = m_parentChunk->tiles[(int)m_pos.y][(int)(m_pos.x + 1) % CHUNK_SIZE];
-        } else {
-            right = m_parentChunk->extraTiles[(int)m_pos.y][1];
-        }
+        right = m_parentChunk->getTile(m_pos.x + 1, m_pos.y, m_layer);
 
-        if((int)(m_pos.y) > 0) {
-            down = m_parentChunk->tiles[(int)m_pos.y-1][(int)m_pos.x % CHUNK_SIZE];
-        }
+        down = m_parentChunk->getTile(m_pos.x, m_pos.y - 1, m_layer);
 
         // First, get levels of surrounding water blocks, set each to average
         {
@@ -301,32 +291,24 @@ void BlockWater::onUpdate(float& time) {
             m_waterLevel = newLevel;
             if(goDown) {
                 glm::vec2 pos = glm::vec2(m_pos.x, m_pos.y - 1);
-                down->getParentChunk()->setTile(createBlock((unsigned int)Categories::BlockIDs::WATER, pos, down->getParentChunk()), (int)pos.x, (int)pos.y);
+                down->getParentChunk()->setTile(createBlock((unsigned int)Categories::BlockIDs::WATER, pos, down->getParentChunk()), m_layer); /// TODO: Cross-layer water movement
 
                 reinterpret_cast<BlockWater*>(down)->setLevel(m_waterLevel); // All of the water should fall
                 m_waterLevel = 0.0f;
             } else {
                 if(goLeft) {
                     glm::vec2 pos = glm::vec2(m_pos.x - 1, m_pos.y);
-                    left->getParentChunk()->setTile(createBlock((unsigned int)Categories::BlockIDs::WATER, pos, left->getParentChunk()), (int)pos.x % CHUNK_SIZE, (int)pos.y);
+                    left->getParentChunk()->setTile(createBlock((unsigned int)Categories::BlockIDs::WATER, pos, left->getParentChunk()), m_layer); /// TODO: Cross-layer water movement
 
-                    if((int)(m_pos.x) % CHUNK_SIZE > 0) {
-                        left = m_parentChunk->tiles[(int)m_pos.y][(int)(m_pos.x - 1) % CHUNK_SIZE];
-                    } else {
-                        left = m_parentChunk->extraTiles[(int)m_pos.y][0];
-                    }
+                    left = m_parentChunk->getTile(m_pos.x - 1, m_pos.y, m_layer);
 
                     reinterpret_cast<BlockWater*>(left)->setLevel(newLevel);
                 }
                 if(goRight) {
                     glm::vec2 pos = glm::vec2(m_pos.x + 1, m_pos.y);
-                    right->getParentChunk()->setTile(createBlock((unsigned int)Categories::BlockIDs::WATER, pos, right->getParentChunk()), (int)pos.x % CHUNK_SIZE, (int)pos.y);
+                    right->getParentChunk()->setTile(createBlock((unsigned int)Categories::BlockIDs::WATER, pos, right->getParentChunk()), m_layer); /// TODO: Cross-layer water movement
 
-                    if((int)(m_pos.x) % CHUNK_SIZE < CHUNK_SIZE-1) {
-                        right = m_parentChunk->tiles[(int)m_pos.y][(int)(m_pos.x + 1) % CHUNK_SIZE];
-                    } else {
-                        right = m_parentChunk->extraTiles[(int)m_pos.y][1];
-                    }
+                    right = m_parentChunk->getTile(m_pos.x + 1, m_pos.y, m_layer);
 
                     reinterpret_cast<BlockWater*>(right)->setLevel(newLevel);
                 }

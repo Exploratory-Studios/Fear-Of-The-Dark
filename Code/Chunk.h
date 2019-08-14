@@ -18,11 +18,11 @@ class Chunk
     public:
         Chunk();
         Chunk(AudioManager* audio);
-        Chunk(Tile* tileArray[WORLD_HEIGHT][CHUNK_SIZE], Tile* extraTileArray[WORLD_HEIGHT][2], int index, Chunk* surroundingChunks[2], EntityManager* entityManager, AudioManager* audio);
+        Chunk(std::vector<Tile*> tileArray[WORLD_HEIGHT][CHUNK_SIZE], std::vector<Tile*> extraTileArray[WORLD_HEIGHT][2], int index, Chunk* surroundingChunks[2], EntityManager* entityManager, AudioManager* audio);
 
         ~Chunk();
 
-        void init(Tile* tileArray[WORLD_HEIGHT][CHUNK_SIZE], Tile* extraTileArray[WORLD_HEIGHT][2], Chunk* surroundingChunks[2], EntityManager* entityManager, AudioManager* audio);
+        void init(std::vector<Tile*> tileArray[WORLD_HEIGHT][CHUNK_SIZE], std::vector<Tile*> extraTileArray[WORLD_HEIGHT][2], Chunk* surroundingChunks[2], EntityManager* entityManager, AudioManager* audio);
 
         void update(float time, float timeStepVariable, Chunk** chunks, Player* p, bool updateEntities = true); // updateEntities is used for script pausing
         void tick(float tickTime, Player* p, WorldEra& era, bool updateEntities = true);
@@ -33,7 +33,7 @@ class Chunk
         #endif // DEBUG
 
         void setPlace(Categories::Places place);
-        void setTile(Tile* newTile, const unsigned int& x = CHUNK_SIZE, const unsigned int& y = WORLD_SIZE);
+        void setTile(Tile* newTile, unsigned int layer);
         void setIndex(int index) { m_index = index; }
         void setSurroundingChunk(Chunk* chunk, int i) { m_surroundingChunks[i] = chunk; }
 
@@ -58,10 +58,40 @@ class Chunk
 
         void setAudioManager(AudioManager* audio);
 
-        Tile*** tiles = new Tile**[WORLD_HEIGHT];
-        Tile*** extraTiles = new Tile**[WORLD_HEIGHT]; // On each side, so that we don't have to activate 3 chunks at a time instead of one
+        Tile* getTile(int x, int y, unsigned int layer) { // Takes x between (0) and (CHUNK_SIZE-1), inclusive
+            if(y >= 0 && y < WORLD_HEIGHT) {
+                if(x < 0 || x >= CHUNK_SIZE) {
+                    return getSurroundingTile(x, y, layer);
+                }
+                if(m_tiles[y][(x + CHUNK_SIZE) % CHUNK_SIZE].size() > layer) {
+                    return m_tiles[y][(x + CHUNK_SIZE) % CHUNK_SIZE][layer];
+                }
+            }
+            return nullptr;
+        }
 
     private:
+        /*Tile* getExtraTile(unsigned int x, unsigned int y, unsigned int layer) {
+            if(x < (m_index-1) * CHUNK_SIZE) {
+                if(m_extraTiles[y][0].size() > layer) {
+                    return m_extraTiles[y][x][layer];
+                }
+            } else {
+                if(m_extraTiles[y][0].size() > layer) {
+                    return m_extraTiles[y][x][layer];
+                }
+            }
+            return nullptr;
+        }*/
+        Tile* getSurroundingTile(int x, int y, unsigned int layer) {
+            if(x < 0) return m_surroundingChunks[0]->getTile(x + CHUNK_SIZE, y, layer);
+            if(x >= CHUNK_SIZE) return m_surroundingChunks[1]->getTile(x - CHUNK_SIZE, y, layer);
+            return nullptr;
+        }
+
+        std::vector<Tile*>** m_tiles = new std::vector<Tile*>*[WORLD_HEIGHT];
+        //std::vector<Tile*>** m_extraTiles = new std::vector<Tile*>*[WORLD_HEIGHT]; // On each side, so that we don't have to activate 3 chunks at a time instead of one
+
         Logger* logger = Logger::getInstance();
 
         EntityManager* m_entityManager = nullptr;

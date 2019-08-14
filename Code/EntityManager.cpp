@@ -160,9 +160,7 @@ std::vector<glm::vec2> EntityManager::pathfindToTarget(float jumpHeight, glm::ve
                 return std::vector<glm::vec2>{};
             }
 
-            xPos = (xPos + CHUNK_SIZE) % CHUNK_SIZE;
-
-            bool isSolid = c->tiles[i][xPos]->isSolid();
+            bool isSolid = c->getTile(xPos, i, 0) ? c->getTile(xPos, i, 0)->isSolid() : false; /// TODO: Cross-layer pathfinding
 
             solid.push_back(isSolid);
         }
@@ -335,14 +333,14 @@ void EntityManager::spawnEntities(float tickTime, WorldEra& era) {
                 for(int i = 0; i < CHUNK_SIZE; i++) { // Test a bunch of random spots
                     int x = std::rand() % CHUNK_SIZE;
                     for(int y = 0; y < WORLD_HEIGHT; y++) {
-                        if(!m_parentChunk->tiles[y][x]->isSolid()) {
+                        if(!m_parentChunk->getTile(x, y, 0)->isSolid()) { /// TODO: Cross-layer spawning
                             bool isSafe = true;
-                            if(!m_parentChunk->tiles[y-1][x]->isSolid()) {
+                            if(!m_parentChunk->getTile(x, y - 1, 0)->isSolid()) { /// Here too
                                 isSafe = false;
                             }
                             for(int xMod = 0; xMod < sizeX-1; xMod++) {
                                 for(int yMod = 0; yMod < sizeY-1; yMod++) {
-                                    if(m_parentChunk->tiles[y+yMod][x+xMod]->isSolid()) {
+                                    if(m_parentChunk->getTile(x+xMod, y+yMod, 0)->isSolid()) { /// And here
                                         isSafe = false;
                                     }
                                 }

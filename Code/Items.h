@@ -34,7 +34,7 @@ class ItemMiscBucket : public Item {
 
 					Block* b = createBlock((unsigned int)Categories::BlockIDs::AIR, selectedBlock->getPosition(), selectedBlock->getParentChunk());
 					b->setAmbientLight(selectedBlock->getLight());
-					selectedBlock->getParentChunk()->setTile(b, selectedBlock->getPosition().x, selectedBlock->getPosition().y);
+					selectedBlock->getParentChunk()->setTile(b, selectedBlock->getLayer());
 				}
 			}
 		}
@@ -47,7 +47,7 @@ class ItemMiscBucket : public Item {
 
 				b->setLevel(addedLevel);
 				m_level -= addedLevel;
-				selectedBlock->getParentChunk()->setTile(b, selectedBlock->getPosition().x, selectedBlock->getPosition().y);
+				selectedBlock->getParentChunk()->setTile(b, selectedBlock->getLayer());
 			}
 		}
 

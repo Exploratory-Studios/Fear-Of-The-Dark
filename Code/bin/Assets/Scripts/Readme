@@ -114,6 +114,7 @@ camera "smoothMove" [coordinates]												// Offsets the camera by the coordi
 timer [integer]																	// Suspends current script for parameter 1 amount of frames
 pause																			// Makes sure that the game doesn't update anything. Nothing will collide, move, etc.
 continue																		// Makes the game start updating things again
+give [entity] [int] [int]														// Gives the selected entity an item with an ID of parameter 2 and quantity of parameter 3
 
 
 

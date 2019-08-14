@@ -265,53 +265,37 @@ void Entity::collide() {
             const float testVar = 1.0f/16.0f;
 
             // Check for ground/ceiling
-            checkTilePosition(m_parentChunk->tiles,
-                              m_parentChunk->extraTiles,
-                              groundTilePositions,
+            checkTilePosition(groundTilePositions,
                               posBR.x - testVar,
                               posBR.y);
 
-            checkTilePosition(m_parentChunk->tiles,
-                              m_parentChunk->extraTiles,
-                              groundTilePositions,
+            checkTilePosition(groundTilePositions,
                               posBL.x + testVar,
                               posBL.y);
 
-            checkTilePosition(m_parentChunk->tiles,
-                              m_parentChunk->extraTiles,
-                              groundTilePositions,
+            checkTilePosition(groundTilePositions,
                               posTR.x - testVar,
                               posTR.y);
 
-            checkTilePosition(m_parentChunk->tiles,
-                              m_parentChunk->extraTiles,
-                              groundTilePositions,
+            checkTilePosition(groundTilePositions,
                               posTL.x + testVar,
                               posTL.y);
 
 
             // Check the corners
-            checkTilePosition(m_parentChunk->tiles,
-                              m_parentChunk->extraTiles,
-                              collideTilePositions,
+            checkTilePosition(collideTilePositions,
                               posBR.x,
                               posBR.y + testVar);
 
-            checkTilePosition(m_parentChunk->tiles,
-                              m_parentChunk->extraTiles,
-                              collideTilePositions,
+            checkTilePosition(collideTilePositions,
                               posBL.x,
                               posBL.y + testVar);
 
-            checkTilePosition(m_parentChunk->tiles,
-                              m_parentChunk->extraTiles,
-                              collideTilePositions,
+            checkTilePosition(collideTilePositions,
                               posTL.x,
                               posTL.y - testVar);
 
-            checkTilePosition(m_parentChunk->tiles,
-                              m_parentChunk->extraTiles,
-                              collideTilePositions,
+            checkTilePosition(collideTilePositions,
                               posTR.x,
                               posTR.y - testVar);
 
@@ -330,27 +314,19 @@ void Entity::collide() {
                     glm::vec2 p_posTL(x+(i*increment*width)*signX, y+(j*increment*height)*signY + height);
                     glm::vec2 p_posTR(x+(i*increment*width)*signX + width, y+(j*increment*height)*signY + height);
 
-                    checkTilePosition(m_parentChunk->tiles,
-                                      m_parentChunk->extraTiles,
-                                      predictiveTiles,
+                    checkTilePosition(predictiveTiles,
                                       p_posBR.x,
                                       p_posBR.y);
 
-                    checkTilePosition(m_parentChunk->tiles,
-                                      m_parentChunk->extraTiles,
-                                      predictiveTiles,
+                    checkTilePosition(predictiveTiles,
                                       p_posBL.x,
                                       p_posBL.y);
 
-                    checkTilePosition(m_parentChunk->tiles,
-                                      m_parentChunk->extraTiles,
-                                      predictiveTiles,
+                    checkTilePosition(predictiveTiles,
                                       p_posTL.x,
                                       p_posTL.y);
 
-                    checkTilePosition(m_parentChunk->tiles,
-                                      m_parentChunk->extraTiles,
-                                      predictiveTiles,
+                    checkTilePosition(predictiveTiles,
                                       p_posTR.x,
                                       p_posTR.y);
                     }
@@ -423,7 +399,7 @@ int Entity::setParentChunk(Chunk* worldChunks[WORLD_SIZE]) {
         if(index >= 0 && index < WORLD_SIZE) {
             if(index > m_parentChunk->getIndex() && ret == 0) {
                 ret = 1;
-            } else if(ret == 0) {
+            } else if(index < m_parentChunk->getIndex() && ret == 0) {
                 ret = -1;
             }
             m_parentChunk = worldChunks[index];
@@ -433,37 +409,14 @@ int Entity::setParentChunk(Chunk* worldChunks[WORLD_SIZE]) {
     return ret;
 }
 
-bool Entity::checkTilePosition(Tile*** tiles, Tile*** extraTileArray, std::vector<glm::vec2>& collideTilePositions, float x, float y) {
+bool Entity::checkTilePosition(std::vector<glm::vec2>& collideTilePositions, float x, float y) {
     // Get the position of this corner in grid-space
-    glm::vec2 gridPos = glm::vec2(floor(x),
-                                      floor(y)); // grid-space coords
-
-
-    // If we are outside the world, just return
-    /*if (gridPos.x < CHUNK_SIZE * m_parentChunkIndex || gridPos.x >= CHUNK_SIZE + CHUNK_SIZE * m_parentChunkIndex ||
-        gridPos.y < 0 || gridPos.y >= WORLD_HEIGHT) {
-        return false;
-    }*/
+    glm::vec2 gridPos = glm::vec2(floor(x), floor(y)); // grid-space coords
 
     // If this is not an air tile, we should collide with it
-    if((int)gridPos.y >= 0 && (int)gridPos.y < WORLD_HEIGHT) {
-        if ((int)gridPos.x - (getChunkIndex() * CHUNK_SIZE) >= 0 && (int)gridPos.x - (getChunkIndex() * CHUNK_SIZE) < CHUNK_SIZE) {
-            // returning gridpos.x as NAN
-            if (tiles[(int)gridPos.y][(int)gridPos.x - (getChunkIndex() * CHUNK_SIZE)]->isSolid()) { //  - getChunkIndex()
-                collideTilePositions.push_back(glm::vec2((float)gridPos.x + 0.500f, (float)gridPos.y + 0.500f)); // CollideTilePositions are put in as gridspace coords
-                return true;
-            }
-        } else if((int)gridPos.x - ((signed int)getChunkIndex() * CHUNK_SIZE) <= -1) {
-            if (extraTileArray[(int)gridPos.y][0]->isSolid()) { //  - getChunkIndex()
-                collideTilePositions.push_back(glm::vec2((float)gridPos.x + 0.500f, (float)gridPos.y + 0.500f)); // CollideTilePositions are put in as gridspace coords
-                return true;
-            }
-        } else if((int)gridPos.x - (getChunkIndex() * CHUNK_SIZE) >= CHUNK_SIZE) {
-            if (extraTileArray[(int)gridPos.y][1]->isSolid()) { //  - getChunkIndex()
-                collideTilePositions.push_back(glm::vec2((float)gridPos.x + 0.500f, (float)gridPos.y + 0.500f)); // CollideTilePositions are put in as gridspace coords
-                return true;
-            }
-        }
+    if (m_parentChunk->getTile(gridPos.x, gridPos.y, m_layer)->isSolid()) {
+        collideTilePositions.push_back(glm::vec2((float)gridPos.x + 0.500f, (float)gridPos.y + 0.500f)); // CollideTilePositions are put in as gridspace coords
+        return true;
     }
 
     return false;
@@ -523,27 +476,14 @@ void Entity::collideWithTile(glm::vec2 tilePos, bool ground) {
 
 void Entity::updateLightLevel() {
     if(m_parentChunk) {
-        int entityChunkX, entityChunkY; // The entity's coords in the chunk
-
-        entityChunkX = (int)((m_position.x)) % CHUNK_SIZE;
-        entityChunkY = (int)((m_position.y)) + m_size.y / 2.0f;
-
         m_exposedToSun = false;
 
-        if(entityChunkX >= 0 && entityChunkX < CHUNK_SIZE) {
-            if(entityChunkY >= 0 && entityChunkY < WORLD_HEIGHT) {
-                m_light = m_parentChunk->tiles[entityChunkY][entityChunkX]->getLight();
-                if(m_parentChunk->tiles[entityChunkY][entityChunkX]->getSunLight() != 0.0f) m_exposedToSun = true;
-            }
-        }
+        m_light = m_parentChunk->getTile(m_position.x, m_position.y + m_size.y / 2.0f, m_layer)->getLight();
+        if(m_parentChunk->getTile(m_position.x, m_position.y + m_size.y / 2.0f, m_layer)->getSunLight() != 0.0f) m_exposedToSun = true;
 
-        if(entityChunkX+m_size.x >= 0 && entityChunkX+m_size.x < CHUNK_SIZE) {
-            if(entityChunkY >= 0 && entityChunkY < WORLD_HEIGHT) {
-                m_light += m_parentChunk->tiles[entityChunkY][(int)(entityChunkX+m_size.x)]->getLight();
-                if(m_parentChunk->tiles[entityChunkY][(int)(entityChunkX+m_size.x)]->getSunLight() != 0.0f) m_exposedToSun = true;
-                m_light /= 2.0f;
-            }
-        }
+        m_light += m_parentChunk->getTile(m_position.x + m_size.x, m_position.y + m_size.y / 2.0f, m_layer)->getLight();
+        if(m_parentChunk->getTile(m_position.x + m_size.x, m_position.y + m_size.y / 2.0f, m_layer)->getSunLight() != 0.0f) m_exposedToSun = true;
+        m_light /= 2.0f;
     } else {
         m_light = 0.0f;
     }
@@ -596,13 +536,7 @@ void Entity::updateSounds() {
 
         tileCoordsFloor.x -= chunkIndex * CHUNK_SIZE;
 
-        if(tileCoordsFloor.x >= CHUNK_SIZE) {
-            m_audioManager->playSoundEffect(m_parentChunk->extraTiles[(int)tileCoordsFloor.y][1]->getWalkedOnSoundEffectID(), MIX_MAX_VOLUME);
-        } else if(tileCoordsFloor.x < 0) {
-            m_audioManager->playSoundEffect(m_parentChunk->extraTiles[(int)tileCoordsFloor.y][0]->getWalkedOnSoundEffectID(), MIX_MAX_VOLUME);
-        } else {
-            m_audioManager->playSoundEffect(m_parentChunk->tiles[(int)tileCoordsFloor.y][(int)tileCoordsFloor.x]->getWalkedOnSoundEffectID(), MIX_MAX_VOLUME);
-        }
+        m_audioManager->playSoundEffect(m_parentChunk->getTile(tileCoordsFloor.x, tileCoordsFloor.y, m_layer)->getWalkedOnSoundEffectID(), MIX_MAX_VOLUME);
         m_soundTimer = 0;
     }
 }

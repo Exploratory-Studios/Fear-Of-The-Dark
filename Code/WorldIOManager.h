@@ -78,7 +78,7 @@ class WorldIOManager
             all of the world (random engine #2)
         */
 
-        std::string m_saveVersion = "1.1.1";
+        std::string m_saveVersion = "1.2.1";
 
         Logger* logger = Logger::getInstance();
 

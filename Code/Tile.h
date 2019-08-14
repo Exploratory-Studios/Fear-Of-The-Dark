@@ -47,38 +47,33 @@ class Tile
         }
         #endif
 
-        glm::vec2       getPosition() const { return m_pos;   }
-        glm::vec2       getSize()     const { return m_size;  }
-        GLuint          getTextureID()const { return m_textureId; }
-        GLuint          getBackdropTextureID() const { return m_backdropTextureId; }
-        unsigned int    getID()       const { return m_id;    }
-        bool            isSolid()     const { return m_solid; }
-        bool            isNatural()   const { return m_natural; }
+        glm::vec2       getPosition()                   const { return m_pos;                       }
+        glm::vec2       getSize()                       const { return m_size;                      }
+        GLuint          getTextureID()                  const { return m_textureId;                 }
+        GLuint          getBackdropTextureID()          const { return m_backdropTextureId;         }
+        unsigned int    getID()                         const { return m_id;                        }
+        bool            isSolid()                       const { return m_solid;                     }
+        bool            isNatural()                     const { return m_natural;                   }
         float           getLight();
-        float           getAmbientLight() const { return m_ambientLight; }
-        float           getEmittedLight() const { return m_emittedLight; }
+        float           getAmbientLight()               const { return m_ambientLight;              }
+        float           getEmittedLight()               const { return m_emittedLight;              }
         float           getSurroundingLight();
         float           getSurroundingHeat();
-        unsigned int    getWalkedOnSoundEffectID() const { return (unsigned int)m_walkEffect; }
-        float           getSunLight()              const { return m_sunLight;     }
-        bool            isTransparent()            const { return m_transparent;  }
-        Chunk*          getParentChunk()           const { return m_parentChunk;  }
-        float           getHeat(); // Used when gameplay mechanics are in play (modifiers in use, not used when tiles are inheriting temperatures)
-        float           getRawHeat(); // Used whenever two tiles' temperatures are being compared, etc. (No modifiers excepting baseHeat)
-        float           getEmittedHeat() const { return m_emittedHeat; }
-        bool            doDraw()         const { return m_draw; }
-        bool            doDrawBackdrop() const { return m_backdrop; }
-        ParticleIDs     getWalkedOnParticleID() const { return m_walkParticle; }
+        unsigned int    getWalkedOnSoundEffectID()      const { return (unsigned int)m_walkEffect;  }
+        float           getSunLight()                   const { return m_sunLight;                  }
+        bool            isTransparent()                 const { return m_transparent;               }
+        Chunk*          getParentChunk()                const { return m_parentChunk;               }
+        float           getHeat();                      // Used when gameplay mechanics are in play (modifiers in use, not used when tiles are inheriting temperatures)
+        float           getRawHeat();                   // Used whenever two tiles' temperatures are being compared, etc. (No modifiers excepting baseHeat)
+        float           getEmittedHeat()                const { return m_emittedHeat;               }
+        bool            doDraw()                        const { return m_draw;                      }
+        bool            doDrawBackdrop()                const { return m_backdrop;                  }
+        ParticleIDs     getWalkedOnParticleID()         const { return m_walkParticle;              }
+        unsigned int    getLayer()                      const { return m_layer;                     }
 
-        virtual TileData getSaveData() {
-            TileData d;
-            d.pos = m_pos;
-            d.id = m_id;
-            d.ambientLight = m_ambientLight;
-            delete d.metaData;
-            d.metaData = getMetaData();
-            return d;
-        }
+        /// TODO: Don't fuck with my formatting
+
+        virtual TileData getSaveData();
 
         void            setAmbientLight(float light) { m_ambientLight = light; }
         void            setSunlight(float& tickTime)
@@ -118,6 +113,7 @@ class Tile
         bool exposedToSun();
 
         glm::vec2 m_pos = glm::vec2(69.420f, 69.420f);
+        unsigned int m_layer = 0; // Higher numbers are farther behind
         glm::vec2 m_size = glm::vec2(1, 1);
 
         GLuint m_textureId = (GLuint)-1;

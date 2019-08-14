@@ -130,6 +130,13 @@ class TileData {
             file.write(reinterpret_cast<char*>(&id), sizeof(unsigned int));
             file.write(reinterpret_cast<char*>(&ambientLight), sizeof(float));
             metaData->save(file);
+
+            bool hasChild = lowerLayer ? true : false;
+            file.write(reinterpret_cast<char*>(&hasChild), sizeof(bool));
+
+            if(lowerLayer) {
+                lowerLayer->save(file);
+            }
         }
 
         void read(std::ifstream& file) {
@@ -138,12 +145,21 @@ class TileData {
             file.read(reinterpret_cast<char*>(&id), sizeof(unsigned int));
             file.read(reinterpret_cast<char*>(&ambientLight), sizeof(float));
             metaData->read(file);
+
+            bool hasChild = false;
+            file.read(reinterpret_cast<char*>(&hasChild), sizeof(bool));
+
+            if(hasChild) {
+                lowerLayer = new TileData;
+                lowerLayer->read(file);
+            }
         }
 
         glm::vec2 pos;
         unsigned int id;
         float ambientLight;
         MetaData* metaData = new MetaData();
+        TileData* lowerLayer = nullptr;
 };
 
 struct ItemData {

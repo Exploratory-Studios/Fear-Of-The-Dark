@@ -24,37 +24,28 @@ void Scripter::init(GameplayScreen* gameplayScreen) {
 
 void Scripter::changeBlock(Block* newBlock) {
     int chunk = std::floor(newBlock->getPosition().x / CHUNK_SIZE); // What chunk index it belongs to
-    int chunkX = (int)newBlock->getPosition().x % CHUNK_SIZE;            // What x in the chunk is
 
-    if(chunkX == 0) {
-        m_chunks[((chunk-1 + WORLD_SIZE) % WORLD_SIZE)]->extraTiles[(int)newBlock->getPosition().y][1] = newBlock;
-    } else if(chunkX == CHUNK_SIZE-2) {
-        m_chunks[((chunk+1 + WORLD_SIZE) % WORLD_SIZE)]->extraTiles[(int)newBlock->getPosition().y][0] = newBlock;
-    }
-
-    m_chunks[chunk]->setTile(newBlock, chunkX, newBlock->getPosition().y); // Set the block, of course
+    m_chunks[chunk]->setTile(newBlock, newBlock->getLayer()); // Set the block, of course
     /// TODO: compile array of chunks in init()
 }
 
-void Scripter::removeBlock(int x, int y) {
+void Scripter::removeBlock(int x, int y, unsigned int layer) {
     int chunk = std::floor(x / CHUNK_SIZE); // What chunk index it belongs to
     int chunkX = (int)x % CHUNK_SIZE;            // What x in the chunk is
 
-    m_chunks[chunk]->tiles[y][chunkX] = new BlockAir(m_chunks[chunk]->tiles[y][chunkX]->getPosition(), m_chunks[chunk]->tiles[y][chunkX]->getParentChunk());
+    m_chunks[chunk]->setTile(new BlockAir(m_chunks[chunk]->getTile(chunkX, y, layer)->getPosition(), m_chunks[chunk]->getTile(chunkX, y, layer)->getParentChunk()), layer);
 }
 
-void Scripter::showBlock(int x, int y) {
+void Scripter::showBlock(int x, int y, unsigned int layer) {
     int chunk = std::floor(x / CHUNK_SIZE); // What chunk index it belongs to
-    int chunkX = (int)x % CHUNK_SIZE;            // What x in the chunk is
 
-    m_chunks[chunk]->tiles[y][chunkX]->m_draw = true; // Make it not-transparent
+    m_chunks[chunk]->getTile(x, y, layer)->m_draw = true; // Make it not-transparent
 }
 
-void Scripter::hideBlock(int x, int y) {
+void Scripter::hideBlock(int x, int y, unsigned int layer) {
     int chunk = std::floor(x / CHUNK_SIZE); // What chunk index it belongs to
-    int chunkX = (int)x % CHUNK_SIZE;            // What x in the chunk is
 
-    m_chunks[chunk]->tiles[y][chunkX]->m_draw = false; // Make it transparent
+    m_chunks[chunk]->getTile(x, y, layer)->m_draw = false; // Make it not-transparent
 }
 
 unsigned int Scripter::addEntity(Entity* newEntity) {
@@ -173,7 +164,7 @@ std::string Scripter::executeCommand(std::string& command, Script* script) {
                 logger->log("Removing block at: X=" + std::to_string(x) + ", Y=" + std::to_string(y));
                 returnMessage += "Removing block at: X=" + std::to_string(x) + ", Y=" + std::to_string(y) + "\n";
 
-                removeBlock(x, y);
+                removeBlock(x, y, 0); /// TODO: Incorporate Layers
             }
         } else if(parameters[0] == "changeBlock") {
             unsigned int keywordIndex = 1;

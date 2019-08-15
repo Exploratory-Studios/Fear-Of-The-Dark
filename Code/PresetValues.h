@@ -10,11 +10,11 @@
 
 /// World size variables
 // How many tiles in a chunk?
-#define CHUNK_SIZE 48
+#define CHUNK_SIZE 16//48
 // How many tiles high is the world?
-#define WORLD_HEIGHT 500 // 320
+#define WORLD_HEIGHT 200//500
 // How many chunks does the world have?
-#define WORLD_SIZE 64
+#define WORLD_SIZE 10//64
 
 // How high does water spawn naturally?
 #define WATER_LEVEL 50

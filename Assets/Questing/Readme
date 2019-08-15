@@ -17,6 +17,7 @@ Answers have 4 parts:
 4. Scripts that will be run after choosing
 
 Questions can be written as such: ("//" indicates a comment; it should not be written in the actual dialogue file)
+You can indent to make dialogue more readable
 
 #BEGIN 										// This tells the interpreter that this is a new question
 Hello, this is the NPC's text

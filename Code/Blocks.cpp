@@ -10,7 +10,7 @@ BlockAir::BlockAir(glm::vec2 pos, Chunk* parent, bool loadTexture/* = true*/) : 
 
     if(loadTexture) { this->loadTexture(); } else { m_textureId = (GLuint)-1; }
 
-    if(parent->getTile((int)pos.x % CHUNK_SIZE, pos.y, 0))
+    if(parent->getTile((int)pos.x, pos.y, 0))
         m_ambientLight = parent->getTile(pos.x, (int)pos.y, 0)->getLight();
 }
 

@@ -1,0 +1,5 @@
+Code/bin/*
+Code/obj/*
+DeprecatedCode/*
+Windows\ libraries/*
+Code/GameLog.txt

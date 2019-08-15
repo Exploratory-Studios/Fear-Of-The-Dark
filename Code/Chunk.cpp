@@ -183,7 +183,7 @@ void Chunk::setTile(Tile* newTile, unsigned int layer) {
     unsigned int xPos = (int)newTile->getPosition().x % CHUNK_SIZE;
     unsigned int yPos = (int)newTile->getPosition().y;
 
-    m_deadTiles.push_back(getTile(xPos, yPos, layer));
+    m_deadTiles.push_back(getTile(newTile->getPosition().x, yPos, layer));
 
     if(m_tiles[yPos][xPos].size() > layer) {
         m_tiles[yPos][xPos][layer] = newTile;
@@ -195,9 +195,9 @@ void Chunk::setTile(Tile* newTile, unsigned int layer) {
     }
 
     for(int i = yPos; i > 0; i--) {
-        if(!getTile(xPos, i, layer)) break;
-        getTile(xPos, i, layer)->setNeedsSunCheck();
-        if(!getTile(xPos, i, layer)->isTransparent()) {
+        if(!getTile(newTile->getPosition().x, i, layer)) break;
+        getTile(newTile->getPosition().x, i, layer)->setNeedsSunCheck();
+        if(!getTile(newTile->getPosition().x, i, layer)->isTransparent()) {
             break;
         }
     }

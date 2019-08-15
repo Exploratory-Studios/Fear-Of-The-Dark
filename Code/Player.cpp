@@ -224,6 +224,8 @@ void Player::drawGUI(GLEngine::SpriteBatch& sb, GLEngine::SpriteFont& sf) {
 }
 
 void Player::update(float timeStep, Chunk* worldChunks[WORLD_SIZE]) {
+    Logger::getInstance()->log("Parent Chunk id: " + std::to_string(m_parentChunk->getIndex()));
+
     updateLightLevel();
 
     updateInput();
@@ -349,7 +351,10 @@ void Player::updateMouse(GLEngine::Camera2D* worldCamera) {
                 }
 
                 m_selectedBlock = nullptr;
-                if(chunk->getTile(mousePos.x, mousePos.y, m_layer)->getParentChunk()) m_selectedBlock = chunk->getTile(mousePos.x, mousePos.y, m_layer);
+
+                Logger::getInstance()->log(std::to_string(mousePos.x));
+
+                if(chunk->getTile((int)mousePos.x, mousePos.y, m_layer)->getParentChunk()) m_selectedBlock = chunk->getTile((int)mousePos.x, mousePos.y, m_layer);
                 //Logger::getInstance()->log("Clicked: " + std::to_string(m_selectedBlock->getPosition().x));
 
                 m_selectedEntity = nullptr;

@@ -60,7 +60,7 @@ class Chunk
 
         Tile* getTile(int x, int y, unsigned int layer) { // Takes x between (0) and (CHUNK_SIZE-1), inclusive
             if(y >= 0 && y < WORLD_HEIGHT) {
-                if(x < 0 || x >= CHUNK_SIZE) {
+                if(x < m_index * CHUNK_SIZE || x >= (m_index + 1) * CHUNK_SIZE) {
                     return getSurroundingTile(x, y, layer);
                 }
                 if(m_tiles[y][(x + CHUNK_SIZE) % CHUNK_SIZE].size() > layer) {
@@ -84,9 +84,8 @@ class Chunk
             return nullptr;
         }*/
         Tile* getSurroundingTile(int x, int y, unsigned int layer) {
-            if(x < 0) return m_surroundingChunks[0]->getTile(x + CHUNK_SIZE, y, layer);
-            if(x >= CHUNK_SIZE) return m_surroundingChunks[1]->getTile(x - CHUNK_SIZE, y, layer);
-            return nullptr;
+            if((x + CHUNK_SIZE) % CHUNK_SIZE < CHUNK_SIZE / 2) return m_surroundingChunks[1]->getTile((x + CHUNK_SIZE) % CHUNK_SIZE, y, layer);
+            return m_surroundingChunks[0]->getTile((x + CHUNK_SIZE) % CHUNK_SIZE, y, layer);
         }
 
         std::vector<Tile*>** m_tiles = new std::vector<Tile*>*[WORLD_HEIGHT];

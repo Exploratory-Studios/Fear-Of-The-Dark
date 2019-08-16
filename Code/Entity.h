@@ -125,6 +125,7 @@ class Entity
         void                           setPosition(glm::vec2 pos)   { m_position = pos; }
         void                           setTargets(std::vector<glm::vec2> targets)  { m_targets = targets; }
         Categories::Entity_Type        getType()         const { return m_type; }
+        unsigned int                   getLayer()        const { return m_layer; }
 
         void setParentChunk(Chunk* chunk);
         void setAudioManager(AudioManager* audio) { m_audioManager = audio; }

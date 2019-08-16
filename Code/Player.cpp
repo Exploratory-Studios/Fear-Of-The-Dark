@@ -132,7 +132,7 @@ void Player::draw(GLEngine::SpriteBatch& sb, float time, float xOffset) {
 
     GLEngine::ColourRGBA8 colour(255, 255, 255, 255);
 
-    sb.draw(destRect, uvRect, m_texture.id, 0.8f, colour, glm::vec3(m_light));
+    sb.draw(destRect, uvRect, m_texture.id, 0.8f * (WORLD_DEPTH - m_layer), colour, glm::vec3(m_light));
 
     for(int i = 0; i < m_limbs.size(); i++) {
         m_limbs[i]->draw(sb);
@@ -143,7 +143,7 @@ void Player::draw(GLEngine::SpriteBatch& sb, float time, float xOffset) {
         int cursorImgId = GLEngine::ResourceManager::getTexture(ASSETS_FOLDER_PATH + "GUI/Player/Cursor.png").id;
 
         glm::vec4 cursorDestRect(m_selectedEntity->getPosition().x + xOffset * CHUNK_SIZE, m_selectedEntity->getPosition().y, m_selectedEntity->getSize().x, m_selectedEntity->getSize().y);
-        sb.draw(cursorDestRect, fullUV, cursorImgId, 0.9f, GLEngine::ColourRGBA8(255, 255, 255, 255));
+        sb.draw(cursorDestRect, fullUV, cursorImgId, 0.9f * (WORLD_DEPTH - m_layer), GLEngine::ColourRGBA8(255, 255, 255, 255));
     } else if(m_selectedBlock) { // Cursor box selection
         glm::vec4 fullUV(0.0f, 0.0f, 1.0f, 1.0f);
         int cursorImgId = GLEngine::ResourceManager::getTexture(ASSETS_FOLDER_PATH + "GUI/Player/Cursor.png").id;
@@ -152,7 +152,7 @@ void Player::draw(GLEngine::SpriteBatch& sb, float time, float xOffset) {
         int x = (int)(m_mousePos.x + CHUNK_SIZE) % CHUNK_SIZE;
 
         glm::vec4 cursorDestRect(x + chunkIndex * CHUNK_SIZE + xOffset * CHUNK_SIZE, m_selectedBlock->getPosition().y, m_selectedBlock->getSize().x, m_selectedBlock->getSize().y);
-        sb.draw(cursorDestRect, fullUV, cursorImgId, 0.9f, GLEngine::ColourRGBA8(255, 255, 255, 255));
+        sb.draw(cursorDestRect, fullUV, cursorImgId, 0.9f * (WORLD_DEPTH - m_layer), GLEngine::ColourRGBA8(255, 255, 255, 255));
     }
 }
 
@@ -224,7 +224,6 @@ void Player::drawGUI(GLEngine::SpriteBatch& sb, GLEngine::SpriteFont& sf) {
 }
 
 void Player::update(float timeStep, Chunk* worldChunks[WORLD_SIZE]) {
-    Logger::getInstance()->log("Parent Chunk id: " + std::to_string(m_parentChunk->getIndex()));
 
     updateLightLevel();
 
@@ -279,16 +278,16 @@ void Player::updateStats(float timeStep, Chunk* worldChunks[WORLD_SIZE]) {
     cap(m_exhaustion);
     cap(m_stamina);
 
-    m_thirst -= 0.00006f;
-    m_hunger -= 0.00003f;
-    m_exhaustion -= 0.0001f;
+    m_thirst -= 0.00006f * timeStep;
+    m_hunger -= 0.00003f * timeStep;
+    m_exhaustion -= 0.0001f * timeStep;
 
     if(m_stamina < 0.8f) {
-        m_exhaustion -= 0.0002f;
+        m_exhaustion -= 0.0002f * timeStep;
     }
 
     if(m_exhaustion < 0.25f) {
-        m_sanity -= 0.0001f;
+        m_sanity -= 0.0001f * timeStep;
     }
     if(m_light < 0.25f) {
         if(m_exposedToSun) {
@@ -351,8 +350,6 @@ void Player::updateMouse(GLEngine::Camera2D* worldCamera) {
                 }
 
                 m_selectedBlock = nullptr;
-
-                Logger::getInstance()->log(std::to_string(mousePos.x));
 
                 if(chunk->getTile((int)mousePos.x, mousePos.y, m_layer)->getParentChunk()) m_selectedBlock = chunk->getTile((int)mousePos.x, mousePos.y, m_layer);
                 //Logger::getInstance()->log("Clicked: " + std::to_string(m_selectedBlock->getPosition().x));
@@ -429,8 +426,8 @@ void Player::updateInput() {
         if(m_input->isKeyDown(SDL_BUTTON_LEFT) && m_selectedBlock) {
             if(m_favouriteItems[m_selectedHotbox]) m_favouriteItems[m_selectedHotbox]->onLeftClick(m_selectedBlock);
             if(!m_favouriteItems[m_selectedHotbox]) {
-                BlockAir* b = new BlockAir(m_selectedBlock->getPosition(), m_selectedBlock->getParentChunk());//createBlock((unsigned int)Categories::BlockIDs::WATER, m_selectedBlock->getPosition(), m_selectedBlock->getParentChunk());
-                m_selectedBlock->getParentChunk()->setTile(b, m_selectedBlock->getLayer());
+                BlockAir* b = new BlockAir(m_selectedBlock->getPosition(), m_selectedBlock->getLayer(), m_selectedBlock->getParentChunk());//createBlock((unsigned int)Categories::BlockIDs::WATER, m_selectedBlock->getPosition(), m_selectedBlock->getParentChunk());
+                m_selectedBlock->getParentChunk()->setTile(b);
             }
             m_inventory->updateWeight();
         }

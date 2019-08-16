@@ -41,6 +41,7 @@ class WaitScreen : public GLEngine::IGameScreen
         GLEngine::Window* m_window = nullptr;
 
         CEGUI::ProgressBar* m_progressBar = nullptr;
+        CEGUI::DefaultWindow* m_messageBox = nullptr;
 
         float m_time = 0.0f;
 

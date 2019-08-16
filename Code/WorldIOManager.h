@@ -68,6 +68,7 @@ class WorldIOManager
         #endif // DEV_CONTROLS
 
         float getProgress() const { return *m_progress; }
+        std::string getMessage() const { return *m_saveLoadMessage; }
 
     private:
         void P_loadWorld(std::string worldName); /// TODO: Make multi-threaded so that we can view progress and load at the same time
@@ -90,4 +91,5 @@ class WorldIOManager
         GLEngine::Window* m_window = nullptr;
 
         float* m_progress = new float(0.0f);
+        std::string* m_saveLoadMessage = new std::string("");
 };

@@ -55,6 +55,7 @@ void WaitScreen::update() {
     m_time++;
 
     m_progressBar->setProgress(m_worldIOManager->getProgress());
+    m_messageBox->setText(m_worldIOManager->getMessage());
 
     if(m_worldIOManager->getProgress() >= 1.0f) {
         m_currentState = GLEngine::ScreenState::CHANGE_NEXT;
@@ -125,6 +126,9 @@ void WaitScreen::initUI() {
         m_progressBar = static_cast<CEGUI::ProgressBar*> (m_gui.createWidget("FOTDSkin/ProgressBar", glm::vec4(0.1f, 0.1f, 0.8f, 0.1f), glm::vec4(0.0f), "WaitScreenProgressBar"));
         m_progressBar->setText("[padding='l:0 t:15 r:0 b:0']Progress: ");
         m_progressBar->setFont("QuietHorror-42");
+
+        m_messageBox = static_cast<CEGUI::DefaultWindow*> (m_gui.createWidget("FOTDSkin/Label", glm::vec4(0.1f, 0.2f, 0.8f, 0.2f), glm::vec4(0.0f), "WaitScreenWaitMessage"));
+        m_messageBox->setText(m_worldIOManager->getMessage());
     }
 }
 

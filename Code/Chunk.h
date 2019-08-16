@@ -15,6 +15,9 @@ class Player;
 
 class Chunk
 {
+    friend class Chunk;
+    friend class WorldIOManager;
+
     public:
         Chunk();
         Chunk(AudioManager* audio);
@@ -33,7 +36,7 @@ class Chunk
         #endif // DEBUG
 
         void setPlace(Categories::Places place);
-        void setTile(Tile* newTile, unsigned int layer);
+        void setTile(Tile* newTile);
         void setIndex(int index) { m_index = index; }
         void setSurroundingChunk(Chunk* chunk, int i) { m_surroundingChunks[i] = chunk; }
 
@@ -59,13 +62,8 @@ class Chunk
         void setAudioManager(AudioManager* audio);
 
         Tile* getTile(int x, int y, unsigned int layer) { // Takes x between (0) and (CHUNK_SIZE-1), inclusive
-            if(y >= 0 && y < WORLD_HEIGHT) {
-                if(x < m_index * CHUNK_SIZE || x >= (m_index + 1) * CHUNK_SIZE) {
-                    return getSurroundingTile(x, y, layer);
-                }
-                if(m_tiles[y][(x + CHUNK_SIZE) % CHUNK_SIZE].size() > layer) {
-                    return m_tiles[y][(x + CHUNK_SIZE) % CHUNK_SIZE][layer];
-                }
+            if(y < WORLD_HEIGHT && y >= 0) {
+                return ySafe_getTile(x, y, layer);
             }
             return nullptr;
         }
@@ -83,9 +81,15 @@ class Chunk
             }
             return nullptr;
         }*/
+        Tile* ySafe_getTile(int x, int y, unsigned int layer) {
+            if(x < m_index * CHUNK_SIZE || x >= (m_index + 1) * CHUNK_SIZE) {
+                return getSurroundingTile(x, y, layer);
+            }
+            return m_tiles[y][(x + CHUNK_SIZE) % CHUNK_SIZE][layer];
+        }
         Tile* getSurroundingTile(int x, int y, unsigned int layer) {
-            if((x + CHUNK_SIZE) % CHUNK_SIZE < CHUNK_SIZE / 2) return m_surroundingChunks[1]->getTile((x + CHUNK_SIZE) % CHUNK_SIZE, y, layer);
-            return m_surroundingChunks[0]->getTile((x + CHUNK_SIZE) % CHUNK_SIZE, y, layer);
+            if((x + CHUNK_SIZE) % CHUNK_SIZE < CHUNK_SIZE / 2) { return m_surroundingChunks[1]->ySafe_getTile((x + CHUNK_SIZE * WORLD_SIZE) % (CHUNK_SIZE * WORLD_SIZE), y, layer); }
+            return m_surroundingChunks[0]->ySafe_getTile((x + CHUNK_SIZE * WORLD_SIZE) % (CHUNK_SIZE * WORLD_SIZE), y, layer);
         }
 
         std::vector<Tile*>** m_tiles = new std::vector<Tile*>*[WORLD_HEIGHT];

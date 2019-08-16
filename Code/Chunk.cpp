@@ -23,7 +23,9 @@ Chunk::Chunk() {
     for(unsigned int i = 0; i < WORLD_HEIGHT; i++) {
         m_tiles[i] = new std::vector<Tile*>[CHUNK_SIZE];
         for(int j = 0; j < CHUNK_SIZE; j++) {
-            m_tiles[i][j].push_back(nullptr);
+            for(int k = 0; k < WORLD_DEPTH; k++) {
+                m_tiles[i][j].push_back(nullptr);
+            }
         }
     }
 
@@ -41,7 +43,9 @@ Chunk::Chunk(AudioManager* audio) {
     for(unsigned int i = 0; i < WORLD_HEIGHT; i++) {
         m_tiles[i] = new std::vector<Tile*>[CHUNK_SIZE];
         for(int j = 0; j < CHUNK_SIZE; j++) {
-            m_tiles[i][j].push_back(nullptr);
+            for(int k = 0; k < WORLD_DEPTH; k++) {
+                m_tiles[i][j].push_back(nullptr);
+            }
         }
     }
 
@@ -77,7 +81,9 @@ void Chunk::init(std::vector<Tile*> tileArray[WORLD_HEIGHT][CHUNK_SIZE], std::ve
     for(unsigned int i = 0; i < WORLD_HEIGHT; i++) {
         m_tiles[i] = new std::vector<Tile*>[CHUNK_SIZE];
         for(int j = 0; j < CHUNK_SIZE; j++) {
-            m_tiles[i][j].push_back(nullptr);
+            for(int k = 0; k < WORLD_DEPTH; k++) {
+                m_tiles[i][j].push_back(nullptr);
+            }
         }
     }
 
@@ -109,7 +115,7 @@ void Chunk::update(float time, float timeStepVariable, Chunk** chunks, Player* p
     for(int i = 0; i < WORLD_HEIGHT; i++) {
         for(int j = 0; j < CHUNK_SIZE; j++) {
             for(int k = 0; k < m_tiles[i][j].size(); k++) {
-                m_tiles[i][j][k]->update(time);
+                m_tiles[i][j][k]->update(time, (std::abs(k - (int)p->getLayer()) <= 1));
             }
         }
         /*for(int k = 0; k < m_extraTiles[i][0].size(); k++) {
@@ -147,14 +153,19 @@ void Chunk::draw(GLEngine::SpriteBatch& sb, int xOffset, float time, GLEngine::C
             for(int k = 0; k < m_tiles[i][j].size(); k++) {
                 if(camera.isBoxInView(glm::vec2(j + CHUNK_SIZE * m_index + xOffset * CHUNK_SIZE, i), glm::vec2(1.0f, 1.0f))) {
                     m_tiles[i][j][k]->draw(sb, xOffset);
-                    int backdrop = -1;
-                    while(i+backdrop > 0) {
-                        if(m_tiles[i+backdrop][j][k]->isTransparent()) {
-                            m_tiles[i][j][k]->drawBackdrop(sb, xOffset, backdrop, m_tiles[i+backdrop][j][k]->getLight());
-                        } else {
-                            break;
+                    if(m_tiles[i][j][k]->doDraw() && !m_tiles[i][j][k]->isTransparent()) {
+                        break;
+                    }
+                    if(k == WORLD_DEPTH-1) {
+                        int backdrop = -1;
+                        while(i+backdrop > 0) {
+                            if(m_tiles[i+backdrop][j][k]->isTransparent()) {
+                                m_tiles[i][j][k]->drawBackdrop(sb, xOffset, backdrop, m_tiles[i+backdrop][j][k]->getLight());
+                            } else {
+                                break;
+                            }
+                            backdrop--;
                         }
-                        backdrop--;
                     }
                 }
             }
@@ -179,26 +190,26 @@ void Chunk::setPlace(Categories::Places place) {
     m_place = place;
 }
 
-void Chunk::setTile(Tile* newTile, unsigned int layer) {
+void Chunk::setTile(Tile* newTile) {
     unsigned int xPos = (int)newTile->getPosition().x % CHUNK_SIZE;
     unsigned int yPos = (int)newTile->getPosition().y;
 
-    m_deadTiles.push_back(getTile(newTile->getPosition().x, yPos, layer));
+    Tile* oldTile = ySafe_getTile(newTile->getPosition().x, yPos, newTile->getLayer());
 
-    if(m_tiles[yPos][xPos].size() > layer) {
-        m_tiles[yPos][xPos][layer] = newTile;
-    } else {
-        for(int i = m_tiles[yPos][xPos].size(); i < layer; i++) {
-            m_tiles[yPos][xPos].push_back(nullptr);
-        }
-        m_tiles[yPos][xPos][layer] = newTile;
-    }
+    if(oldTile) m_deadTiles.push_back(oldTile);
 
-    for(int i = yPos; i > 0; i--) {
-        if(!getTile(newTile->getPosition().x, i, layer)) break;
-        getTile(newTile->getPosition().x, i, layer)->setNeedsSunCheck();
-        if(!getTile(newTile->getPosition().x, i, layer)->isTransparent()) {
-            break;
+    m_tiles[yPos][xPos][newTile->getLayer()] = newTile;
+
+    if(!newTile->isTransparent()) {
+        for(int i = yPos-1; i >= 0; i--) {
+            Tile* t = ySafe_getTile(newTile->getPosition().x, i, newTile->getLayer());
+            if(!t) {
+                break;
+            }
+            t->setNeedsSunCheck();
+            if(!t->isTransparent()) {
+                break;
+            }
         }
     }
 

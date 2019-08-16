@@ -20,6 +20,7 @@ class Tile
     public:
         Tile();
         Tile(glm::vec2 pos,
+             unsigned int layer,
              GLuint textureId,
              GLuint backdropTextureId,
              GLEngine::ColourRGBA8 colour,
@@ -28,6 +29,7 @@ class Tile
              Chunk* parent,
              MetaData data) :
                 m_pos(pos),
+                m_layer(layer),
                 m_textureId(textureId),
                 m_backdropTextureId(backdropTextureId),
                 m_colour(colour),
@@ -90,8 +92,10 @@ class Tile
         }
         void setNeedsSunCheck() { m_needsSunCheck = true; }
         void setPosition(glm::vec2 pos) { m_pos = pos; }
+        void setToUpdate_light() { m_updateLight = true; } // Sends the signal to update lighting
+        void setToUpdate_heat() { m_updateHeat = true; } // Sends the signal to update heat
 
-        virtual void update(float time);
+        virtual void update(float time, bool updateLighting);
         virtual void tick(float tickTime);
         virtual void draw(GLEngine::SpriteBatch& sb, int xOffset);
         virtual void drawBackdrop(GLEngine::SpriteBatch& sb, int xOffset, int yOffset, float lightLevel);
@@ -99,7 +103,7 @@ class Tile
         virtual void interact_WalkedOn() {}
         virtual void interact_LeftClicked() {}
         virtual void interact_RightClicked() {}
-        // ... More interact functions, only used for special occasions :)
+        // ... More interact functions
 
     protected:
         virtual void handleMetaDataInit(MetaData& data) = 0;
@@ -130,8 +134,12 @@ class Tile
         float m_emittedHeat = 0.0f;
 
         float m_temperature = 0.0f; // This should be affected by the biome, sunlight, and nearby heat sources.
+        float m_lastTemperature = 0.0f;
 
         float m_lastLight; // This is used to make sure that we aren't giving other blocks light for no reason
+
+        bool m_updateLight = true;
+        bool m_updateHeat = true;
 
         bool m_solid = true; // Don't collide if true: Air, water, background pillars, etc. -> This is the 'passable' aspect of blocks
         bool m_draw = false; // Don't draw if true: Air, etc.

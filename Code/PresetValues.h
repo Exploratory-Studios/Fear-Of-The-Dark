@@ -10,11 +10,12 @@
 
 /// World size variables
 // How many tiles in a chunk?
-#define CHUNK_SIZE 16//48
+#define CHUNK_SIZE 48
 // How many tiles high is the world?
-#define WORLD_HEIGHT 200//500
+#define WORLD_HEIGHT 500
 // How many chunks does the world have?
-#define WORLD_SIZE 10//64
+#define WORLD_SIZE 32
+#define WORLD_DEPTH 3
 
 // How high does water spawn naturally?
 #define WATER_LEVEL 50
@@ -61,10 +62,13 @@
 // How long a day is (frames at the moment)
 #define DAY_LENGTH 240  // Should be 10 minutes per CYCLE (Full day and night) 600*4
 // How much the light level is multiplied by when going through transparent tiles
-#define TRANSPARENT_LIGHT_MULTIPLIER 5.0f/7.0f
+#define TRANSPARENT_LIGHT_MULTIPLIER 0.75f
 // How much the light level is multiplied by when going through blocks
-#define OPAQUE_LIGHT_MULTIPLIER 1.0f/3.0f
+#define OPAQUE_LIGHT_MULTIPLIER 0.25f
 /// Both those multipliers double as multipliers for heat, as well
+
+#define TRANSPARENT_LIGHT_MINUS 0.1
+#define OPAQUE_LIGHT_MINUS 0.3
 
 // How many chunks can we see in either direction (multiply by two and add 1 for total chunks)
 #define MAX_VIEW_DIST 4

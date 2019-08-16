@@ -11,7 +11,7 @@
 
 class GenericBlock : public Block {
     public:
-        GenericBlock(glm::vec2 pos, Chunk* parent, MetaData metaData, bool loadTexture = true) : Block(pos, parent, metaData) {}
+        GenericBlock(glm::vec2 pos, unsigned int layer, Chunk* parent, MetaData metaData, bool loadTexture = true) : Block(pos, layer, parent, metaData) {}
         void onInteract(ScriptQueue* sq) {}
 
     protected:
@@ -21,7 +21,7 @@ class GenericBlock : public Block {
 class BlockAir : public GenericBlock
 {
     public:
-        BlockAir(glm::vec2 pos, Chunk* parent, bool loadTexture = true);
+        BlockAir(glm::vec2 pos, unsigned int layer, Chunk* parent, bool loadTexture = true);
 
     protected:
         void loadTexture() override { m_textureId = GLEngine::ResourceManager::getTexture(ASSETS_FOLDER_PATH + "/Textures/UNDEFINED.png").id; }
@@ -30,7 +30,7 @@ class BlockAir : public GenericBlock
 class BlockDirt : public GenericBlock
 {
     public:
-        BlockDirt(glm::vec2 pos, Chunk* parent, bool loadTexture = true);
+        BlockDirt(glm::vec2 pos, unsigned int layer, Chunk* parent, bool loadTexture = true);
         void onInteract(ScriptQueue* sq) {}
     protected:
         void loadTexture() override { m_textureId = GLEngine::ResourceManager::getTexture(ASSETS_FOLDER_PATH + "/Textures/Blocks/Dirt.png").id; m_backdropTextureId = GLEngine::ResourceManager::getTexture(ASSETS_FOLDER_PATH + "/Textures/Blocks/Dirt.png").id; }
@@ -41,7 +41,7 @@ class BlockDirt : public GenericBlock
 class BlockGrass : public GenericBlock
 {
     public:
-        BlockGrass(glm::vec2 pos, Chunk* parent, bool loadTexture = true);
+        BlockGrass(glm::vec2 pos, unsigned int layer, Chunk* parent, bool loadTexture = true);
         void onInteract(ScriptQueue* sq) {}
     protected:
         void loadTexture() override { m_textureId = GLEngine::ResourceManager::getTexture(ASSETS_FOLDER_PATH + "/Textures/Blocks/Grass.png").id; m_backdropTextureId = GLEngine::ResourceManager::getTexture(ASSETS_FOLDER_PATH + "/Textures/Blocks/Dirt.png").id; }
@@ -52,7 +52,7 @@ class BlockGrass : public GenericBlock
 class BlockTorch : public GenericBlock
 {
     public:
-        BlockTorch(glm::vec2 pos, Chunk* parent, bool loadTexture = true);
+        BlockTorch(glm::vec2 pos, unsigned int layer, Chunk* parent, bool loadTexture = true);
         void onInteract(ScriptQueue* sq) {}
     protected:
         void loadTexture() override { m_textureId = GLEngine::ResourceManager::getTexture(ASSETS_FOLDER_PATH + "/Textures/Blocks/Torch.png").id; }
@@ -63,7 +63,7 @@ class BlockTorch : public GenericBlock
 class BlockBush : public GenericBlock
 {
     public:
-        BlockBush(glm::vec2 pos, Chunk* parent, bool loadTexture = true);
+        BlockBush(glm::vec2 pos, unsigned int layer, Chunk* parent, bool loadTexture = true);
         void onInteract(ScriptQueue* sq) {}
     protected:
         void loadTexture() override {
@@ -81,7 +81,7 @@ class BlockBush : public GenericBlock
 class BlockStone : public GenericBlock
 {
     public:
-        BlockStone(glm::vec2 pos, Chunk* parent, bool loadTexture = true);
+        BlockStone(glm::vec2 pos, unsigned int layer, Chunk* parent, bool loadTexture = true);
         void onInteract(ScriptQueue* sq) {}
     protected:
         void loadTexture() override { m_textureId = GLEngine::ResourceManager::getTexture(ASSETS_FOLDER_PATH + "/Textures/Blocks/Stone.png").id; m_backdropTextureId = m_textureId; }
@@ -92,7 +92,7 @@ class BlockStone : public GenericBlock
 class BlockFoliage : public GenericBlock
 {
     public:
-        BlockFoliage(glm::vec2 pos, Chunk* parent, bool loadTexture = true);
+        BlockFoliage(glm::vec2 pos, unsigned int layer, Chunk* parent, bool loadTexture = true);
         void onInteract(ScriptQueue* sq) {}
     protected:
         void loadTexture() override { m_textureId = GLEngine::ResourceManager::getTexture(ASSETS_FOLDER_PATH + "Textures/Blocks/BushGreen.png").id; }
@@ -103,7 +103,7 @@ class BlockFoliage : public GenericBlock
 class BlockWood : public GenericBlock
 {
     public:
-        BlockWood(glm::vec2 pos, Chunk* parent, bool loadTexture = true);
+        BlockWood(glm::vec2 pos, unsigned int layer, Chunk* parent, bool loadTexture = true);
         void onInteract(ScriptQueue* sq) {}
     protected:
         void loadTexture() override { m_textureId = GLEngine::ResourceManager::getTexture(ASSETS_FOLDER_PATH + "Textures/Blocks/WoodBlock.png").id; m_backdropTextureId = m_textureId; }
@@ -114,7 +114,7 @@ class BlockWood : public GenericBlock
 class BlockWater : public GenericBlock
 {
     public:
-        BlockWater(glm::vec2 pos, Chunk* parent, float level, MetaData metaData = MetaData(), bool loadTexture = true);
+        BlockWater(glm::vec2 pos, unsigned int layer, Chunk* parent, float level, MetaData metaData = MetaData(), bool loadTexture = true);
         void onInteract(ScriptQueue* sq) {}
 
         virtual void draw(GLEngine::SpriteBatch& sb, int xOffset) override;
@@ -137,43 +137,43 @@ class BlockWater : public GenericBlock
         float m_waterLevel = 1.0f; // ranges from 1.0f (top of the block) to 0.0f (literally no water present)
 };
 
-static Block* createBlock(unsigned int id, glm::vec2 pos, Chunk* parent, MetaData metaData = MetaData{}, bool loadTexture = true, float tickTime = -1.0f) {
+static Block* createBlock(unsigned int id, glm::vec2 pos, unsigned int layer, Chunk* parent, MetaData metaData = MetaData{}, bool loadTexture = true, float tickTime = -1.0f) {
     Block* ret = nullptr;
     switch(id) {
         case (unsigned int)Categories::BlockIDs::AIR: {
-            ret = new BlockAir(pos, parent, loadTexture);
+            ret = new BlockAir(pos, layer, parent, loadTexture);
             break;
         }
         case (unsigned int)Categories::BlockIDs::DIRT: {
-            ret = new BlockDirt(pos, parent, loadTexture);
+            ret = new BlockDirt(pos, layer, parent, loadTexture);
             break;
         }
         case (unsigned int)Categories::BlockIDs::GRASS: {
-            ret = new BlockGrass(pos, parent, loadTexture);
+            ret = new BlockGrass(pos, layer, parent, loadTexture);
             break;
         }
         case (unsigned int)Categories::BlockIDs::BUSH: {
-            ret = new BlockBush(pos, parent, loadTexture);
+            ret = new BlockBush(pos, layer, parent, loadTexture);
             break;
         }
         case (unsigned int)Categories::BlockIDs::TORCH: {
-            ret = new BlockTorch(pos, parent, loadTexture);
+            ret = new BlockTorch(pos, layer, parent, loadTexture);
             break;
         }
         case (unsigned int)Categories::BlockIDs::FOLIAGE: {
-            ret = new BlockFoliage(pos, parent, loadTexture);
+            ret = new BlockFoliage(pos, layer, parent, loadTexture);
             break;
         }
         case (unsigned int)Categories::BlockIDs::STONE: {
-            ret = new BlockStone(pos, parent, loadTexture);
+            ret = new BlockStone(pos, layer, parent, loadTexture);
             break;
         }
         case (unsigned int)Categories::BlockIDs::WOOD: {
-            ret = new BlockWood(pos, parent, loadTexture);
+            ret = new BlockWood(pos, layer, parent, loadTexture);
             break;
         }
         case (unsigned int)Categories::BlockIDs::WATER: {
-            ret = new BlockWater(pos, parent, 1.0f, metaData, loadTexture);
+            ret = new BlockWater(pos, layer, parent, 1.0f, metaData, loadTexture);
             break;
         }
         default: {

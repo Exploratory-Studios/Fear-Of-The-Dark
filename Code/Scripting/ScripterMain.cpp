@@ -25,15 +25,14 @@ void Scripter::init(GameplayScreen* gameplayScreen) {
 void Scripter::changeBlock(Block* newBlock) {
     int chunk = std::floor(newBlock->getPosition().x / CHUNK_SIZE); // What chunk index it belongs to
 
-    m_chunks[chunk]->setTile(newBlock, newBlock->getLayer()); // Set the block, of course
+    m_chunks[chunk]->setTile(newBlock); // Set the block, of course
     /// TODO: compile array of chunks in init()
 }
 
 void Scripter::removeBlock(int x, int y, unsigned int layer) {
     int chunk = std::floor(x / CHUNK_SIZE); // What chunk index it belongs to
-    int chunkX = (int)x % CHUNK_SIZE;            // What x in the chunk is
 
-    m_chunks[chunk]->setTile(new BlockAir(m_chunks[chunk]->getTile(chunkX, y, layer)->getPosition(), m_chunks[chunk]->getTile(chunkX, y, layer)->getParentChunk()), layer);
+    m_chunks[chunk]->setTile(new BlockAir(m_chunks[chunk]->getTile(x, y, layer)->getPosition(), layer, m_chunks[chunk]->getTile(x, y, layer)->getParentChunk()));
 }
 
 void Scripter::showBlock(int x, int y, unsigned int layer) {
@@ -179,7 +178,7 @@ std::string Scripter::executeCommand(std::string& command, Script* script) {
                 int chunkIndex = std::floor(x / CHUNK_SIZE);
                 Chunk* parent = m_chunks[chunkIndex];
 
-                Block* block = createBlock(std::stoi(parameters[keywordIndex]), glm::vec2(x, y), parent);
+                Block* block = createBlock(std::stoi(parameters[keywordIndex]), glm::vec2(x, y), 0, parent);
 
                 changeBlock(block);
             }

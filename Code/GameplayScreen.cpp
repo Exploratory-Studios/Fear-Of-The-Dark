@@ -64,7 +64,7 @@ void GameplayScreen::onEntry() {
         }
 
         if(!m_WorldIOManager->getWorld()->player) {
-            m_player = reinterpret_cast<Player*>(createEntity((unsigned int)Categories::EntityIDs::MOB_PLAYER, glm::vec2(5.0f, 100.0f), m_WorldIOManager->getWorld()->chunks[(int)(5.0f) / CHUNK_SIZE], m_WorldIOManager->getAudioManager(), nullptr, &m_game->inputManager, m_WorldIOManager->getScriptQueue()));
+            m_player = reinterpret_cast<Player*>(createEntity((unsigned int)Categories::EntityIDs::MOB_PLAYER, glm::vec2(5.0f, 10.0f), m_WorldIOManager->getWorld()->chunks[(int)(5.0f) / CHUNK_SIZE], m_WorldIOManager->getAudioManager(), nullptr, &m_game->inputManager, m_WorldIOManager->getScriptQueue()));
             m_WorldIOManager->setPlayer(m_player);
         } else {
             m_player = m_WorldIOManager->getWorld()->player;
@@ -514,7 +514,7 @@ void GameplayScreen::activateChunks() {
         x = m_WorldIOManager->getWorld()->chunks[chunkIndex]->getTile(CHUNK_SIZE * chunkIndex, 0, 0)->getPosition().x + (i * CHUNK_SIZE);
         y = m_WorldIOManager->getWorld()->chunks[chunkIndex]->getTile(CHUNK_SIZE * chunkIndex, 0, 0)->getPosition().y;
 
-        if(m_camera.isBoxInView(glm::vec2(x, y), glm::vec2(CHUNK_SIZE, WORLD_HEIGHT))) {
+        if(m_camera.isBoxInView(glm::vec2(x, y), glm::vec2(CHUNK_SIZE, WORLD_HEIGHT)) || m_camera.isBoxInView(glm::vec2(x + CHUNK_SIZE * 0.5f, y), glm::vec2(CHUNK_SIZE, WORLD_HEIGHT)) || m_camera.isBoxInView(glm::vec2(x - CHUNK_SIZE * 0.5f, y), glm::vec2(CHUNK_SIZE, WORLD_HEIGHT))) {
             if(chunkIndex + i == m_player->getChunkIndex()) m_playerChunkCovered = true;
             m_drawnChunks.push_back(chunkIndex + i);
             m_activatedChunks.push_back(chunkIndex + i);

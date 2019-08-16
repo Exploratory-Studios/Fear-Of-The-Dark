@@ -192,7 +192,7 @@ void Entity::draw(GLEngine::SpriteBatch& sb, float time, float xOffset) {
         depth = 1.0f;
     }
 
-    sb.draw(destRect, uvRect, m_texture.id, depth, colour, glm::vec3(m_light));
+    sb.draw(destRect, uvRect, m_texture.id, depth * (WORLD_DEPTH - m_layer), colour, glm::vec3(m_light));
 
     for(unsigned int i = 0; i < m_limbs.size(); i++) {
         m_limbs[i]->draw(sb); // no sb.begin() or end()
@@ -205,11 +205,11 @@ void Entity::move(float timeStepVariable) {
     if(m_velocity.y > MAX_SPEED) m_velocity.y = MAX_SPEED;
     if(m_velocity.y < -MAX_SPEED) m_velocity.y = -MAX_SPEED;
 
-    m_position += m_velocity;
+    m_position += m_velocity * timeStepVariable;
 
     if(m_takesFallDamage) {
         if(m_velocity.y < 0.0f) {
-            m_fallenDistance += -m_velocity.y;
+            m_fallenDistance += -m_velocity.y * timeStepVariable;
         } else {
             if(m_fallenDistance > 4.0f) {
                 m_health -= std::pow(m_fallenDistance - 4.0f, 1.5f) * 0.08f;
@@ -218,7 +218,7 @@ void Entity::move(float timeStepVariable) {
         }
     }
 
-    m_velocity.y -= 1.225f / 60.0f; // Earth gravity is far too harsh for games. We use about 1/8th
+    m_velocity.y -= 1.225f / 60.0f * timeStepVariable; // Earth gravity is far too harsh for games. We use about 1/8th
 }
 
 void Entity::collide() {

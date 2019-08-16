@@ -32,22 +32,22 @@ class ItemMiscBucket : public Item {
 				if(selectedBlock->getID() == (unsigned int)Categories::BlockIDs::WATER) {
 					m_level += static_cast<BlockWater*>(selectedBlock)->getLevel();
 
-					Block* b = createBlock((unsigned int)Categories::BlockIDs::AIR, selectedBlock->getPosition(), selectedBlock->getParentChunk());
+					Block* b = createBlock((unsigned int)Categories::BlockIDs::AIR, selectedBlock->getPosition(), selectedBlock->getLayer(), selectedBlock->getParentChunk());
 					b->setAmbientLight(selectedBlock->getLight());
-					selectedBlock->getParentChunk()->setTile(b, selectedBlock->getLayer());
+					selectedBlock->getParentChunk()->setTile(b);
 				}
 			}
 		}
 		virtual void onRightClick(Tile* selectedBlock) override {
 			if(selectedBlock && m_level > 0.0f) {
-				BlockWater* b = static_cast<BlockWater*>(createBlock((unsigned int)Categories::BlockIDs::WATER, selectedBlock->getPosition(), selectedBlock->getParentChunk()));
+				BlockWater* b = static_cast<BlockWater*>(createBlock((unsigned int)Categories::BlockIDs::WATER, selectedBlock->getPosition(), selectedBlock->getLayer(), selectedBlock->getParentChunk()));
 				b->setAmbientLight(selectedBlock->getLight());
 
 				float addedLevel = m_level > 1.0f ? 1.0f : m_level;
 
 				b->setLevel(addedLevel);
 				m_level -= addedLevel;
-				selectedBlock->getParentChunk()->setTile(b, selectedBlock->getLayer());
+				selectedBlock->getParentChunk()->setTile(b);
 			}
 		}
 

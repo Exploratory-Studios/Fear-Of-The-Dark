@@ -24,9 +24,9 @@ class Item
         virtual ~Item() {}
 
         virtual void onLeftClick(Tile* selectedBlock) {
-            Block* b = createBlock((unsigned int)Categories::BlockIDs::AIR, selectedBlock->getPosition(), selectedBlock->getParentChunk());
+            Block* b = createBlock((unsigned int)Categories::BlockIDs::AIR, selectedBlock->getPosition(), selectedBlock->getLayer(), selectedBlock->getParentChunk());
             b->setAmbientLight(selectedBlock->getLight());
-            selectedBlock->getParentChunk()->setTile(b, selectedBlock->getLayer());
+            selectedBlock->getParentChunk()->setTile(b);
         }
         virtual void onRightClick(Tile* selectedBlock) {} /// TODO variadic stuff for character pos, mouse pos, etc.  also: make virtual
 

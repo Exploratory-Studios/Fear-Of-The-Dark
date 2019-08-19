@@ -60,6 +60,12 @@ class BlockTorch : public GenericBlock
     private:
 };
 
+class BlockTorchBright : public BlockTorch
+{
+    public:
+        BlockTorchBright(glm::vec2 pos, unsigned int layer, Chunk* parent, bool loadTexture = true);
+};
+
 class BlockBush : public GenericBlock
 {
     public:
@@ -187,6 +193,10 @@ static Block* createBlock(unsigned int id, glm::vec2 pos, unsigned int layer, Ch
         }
         case (unsigned int)Categories::BlockIDs::WOOD_POLE: {
             ret = new BlockPole(pos, layer, parent, metaData, loadTexture);
+            break;
+        }
+        case (unsigned int)Categories::BlockIDs::TORCH_BRIGHT: {
+            ret = new BlockTorchBright(pos, layer, parent, loadTexture);
             break;
         }
         default: {

@@ -77,6 +77,7 @@ class Tile
         void light_transferToNeighbours(float light, Tile* source);
         void light_removeSource(Tile* source, std::vector<Tile*>& newSources);
         void light_addEffected(Tile* effected);
+        void light_reset();
 
         void sunlight_transferToNeighbour(float light);
         void sunlight_set(float light) { m_sunLight = light; }
@@ -104,6 +105,7 @@ class Tile
         void setNeedsSunCheck() { m_needsSunCheck = true; }
         void setPosition(glm::vec2 pos) { m_pos = pos; }
         void light_setToUpdate() { m_updateLight = true; } // Sends the signal to update lighting
+        void light_set_reset() { m_light_reset = true; }
         void setToUpdate_heat() { m_updateHeat = true; } // Sends the signal to update heat
 
         virtual void update(float time, bool updateLighting);
@@ -154,9 +156,10 @@ class Tile
         std::vector<glm::vec3> m_lightEffected; // This is a vector that ONLY light sources have. It is to keep track of the tiles that use this light source. We use positions as the actual tiles could have been deleted/changed since adding to the vector
 
         bool m_updateLight = true;
+        bool m_light_reset = false;
         bool m_updateHeat = true;
 
-        bool m_solid = true; // Don't collide if true: Air, water, background pillars, etc. -> This is the 'passable' aspect of blocks
+        bool m_solid = true; // Don't collide if true: Air, water, pillars, etc. -> This is the 'passable' aspect of blocks
         bool m_draw = false; // Don't draw if true: Air, etc.
         bool m_transparent = false; // 'Transmits' light?
         bool m_backdrop = false; // Does it draw a back wall?

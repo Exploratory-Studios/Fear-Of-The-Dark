@@ -10,8 +10,8 @@ BlockAir::BlockAir(glm::vec2 pos, unsigned int layer, Chunk* parent, bool loadTe
 
     if(loadTexture) { this->loadTexture(); } else { m_textureId = (GLuint)-1; }
 
-    if(parent->getTile((int)pos.x, pos.y, 0))
-        m_ambientLight = parent->getTile(pos.x, (int)pos.y, 0)->getLight();
+    //if(parent->getTile((int)pos.x, pos.y, 0))
+        //m_ambientLight = parent->getTile(pos.x, (int)pos.y, 0)->getLight();
 }
 
 BlockDirt::BlockDirt(glm::vec2 pos, unsigned int layer, Chunk* parent, bool loadTexture/* = true*/) : GenericBlock(pos, layer, parent, MetaData(), loadTexture) {
@@ -74,6 +74,10 @@ BlockTorch::BlockTorch(glm::vec2 pos, unsigned int layer, Chunk* parent, bool lo
     m_emittedHeat = 20.0f;
 
     if(loadTexture) { this->loadTexture(); } else { m_textureId = (GLuint)-1; }
+}
+
+BlockTorchBright::BlockTorchBright(glm::vec2 pos, unsigned int layer, Chunk* parent, bool loadTexture) : BlockTorch(pos, layer, parent, loadTexture) {
+    m_emittedLight = 2.0f;
 }
 
 BlockBush::BlockBush(glm::vec2 pos, unsigned int layer, Chunk* parent, bool loadTexture/* = true*/) : GenericBlock(pos, layer, parent, MetaData(), loadTexture) {

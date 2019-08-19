@@ -1,6 +1,7 @@
 #include "Tile.h"
 
 #include <random>
+#include <boost/thread.hpp>
 
 #include "WorldIOManager.h"
 #include "Chunk.h"
@@ -80,12 +81,6 @@ void Tile::light_transferToNeighbours(float light, Tile* source) {
     if(this == source) {
         return;
     }
-    if(!alreadyUpdated) {
-        m_lightSources.push_back(source);
-        m_ambientLight += light;
-    } else {
-        if(light > m_ambientLight) m_ambientLight = light;
-    }
     if(m_transparent) {
         light -= TRANSPARENT_LIGHT_MINUS;
     } else {
@@ -93,6 +88,12 @@ void Tile::light_transferToNeighbours(float light, Tile* source) {
     }
     if(light <= 0.01f) {
         return;
+    }
+    if(!alreadyUpdated) {
+        m_lightSources.push_back(source);
+        m_ambientLight = light;
+    } else {
+        if(light > m_ambientLight) m_ambientLight = light;
     }
     light_update(light, source);
 }
@@ -133,10 +134,94 @@ void Tile::light_addEffected(Tile* effected) {
     m_lightEffected.push_back(pos);
 }
 
+void Tile::light_reset() {
+    Tile* right = m_parentChunk->getTile(m_pos.x + 1, m_pos.y,     m_layer);
+    Tile* left =  m_parentChunk->getTile(m_pos.x - 1, m_pos.y,     m_layer);
+    Tile* up =    m_parentChunk->getTile(m_pos.x,     m_pos.y + 1, m_layer);
+    Tile* down =  m_parentChunk->getTile(m_pos.x,     m_pos.y - 1, m_layer);
+
+    float highest = 0.0f;
+    int direction = -1;
+
+    if(right) {
+        float l = right->getLight();
+        if(l > highest) {
+            highest = l;
+            direction = 0;
+        }
+    }
+    if(left) {
+        float l = left->getLight();
+        if(l > highest) {
+            highest = l;
+            direction = 1;
+        }
+    }
+    if(up) {
+        float l = up->getLight();
+        if(l > highest) {
+            highest = l;
+            direction = 2;
+        }
+    }
+    if(down) {
+        float l = down->getLight();
+        if(l > highest) {
+            highest = l;
+            direction = 3;
+        }
+    }
+
+    if(m_transparent) {
+        highest -= TRANSPARENT_LIGHT_MINUS;
+    } else {
+        highest -= OPAQUE_LIGHT_MINUS;
+    }
+
+    if(highest < 0.0f) {
+        highest = 0.0f;
+        m_ambientLight = 0.0f;
+        return;
+    }
+
+    //if(highest != getLight()) {
+        /*switch(direction) {
+            case 0: { // coming from right
+                if(left) left->light_set_reset();
+                if(up) up->light_set_reset();
+                if(down) down->light_set_reset();
+                break;}
+            case 1: { // coming from left{
+                if(right) right->light_set_reset();
+                if(up) up->light_set_reset();
+                if(down) down->light_set_reset();
+                break;}
+            case 2: { // coming from top
+                if(right) right->light_set_reset();
+                if(left) left->light_set_reset();
+                if(down) down->light_set_reset();
+                break;}
+            case 3: { // coming from below
+                if(right) right->light_set_reset();
+                if(left) left->light_set_reset();
+                if(up) up->light_set_reset();
+                break;}
+            default:*/
+                if(left) left->light_set_reset();
+                if(right) right->light_set_reset();
+                if(up) up->light_set_reset();
+                if(down) down->light_set_reset();
+                /*break;
+        }*/
+    //}
+
+    m_ambientLight = highest;
+}
+
 void Tile::sunlight_transferToNeighbour(float light) {
     Tile* down = m_parentChunk->getTile(m_pos.x, m_pos.y-1, m_layer);
 
-    if(down) {
+    if(down && light > 0.0f) {
         down->sunlight_set(light);
         down->sunlight_transferToNeighbour(light - SUNLIGHT_MINUS);
     }
@@ -319,10 +404,13 @@ void Tile::update(float time, bool updateLighting) {
         /*float light = getSurroundingLight();
         setAmbientLight(light);
         m_lastLight = light;*/
-
         light_update(m_emittedLight, this);
 
         m_updateLight = false;
+    }
+    if(m_light_reset) {
+        light_reset();
+        m_light_reset = false;
     }
     onUpdate(time);
 }
@@ -376,6 +464,8 @@ void Tile::destroy() {
     if(m_lightEffected.size() > 0) {
         std::vector<Tile*> sources;
 
+        m_ambientLight = 0.0f;
+
         for(unsigned int i = 0; i < m_lightEffected.size(); i++) {
             Tile* t = m_parentChunk->getTile(m_lightEffected[i].x, m_lightEffected[i].y, m_lightEffected[i].z);
             if(t) t->light_removeSource(this, sources);
@@ -384,11 +474,12 @@ void Tile::destroy() {
         for(unsigned int i = 0; i < sources.size(); i++) {
             sources[i]->light_setToUpdate();
         }
+        m_emittedLight = 0.0f;
+        m_ambientLight = 0.0f;
+        return;
     }
     if(m_lightSources.size() > 0) {
-        for(unsigned int i = 0; i < m_lightSources.size(); i++) {
-            m_lightSources[i]->light_setToUpdate(); /// TODO: Maybe split this up over frames
-        }
+        m_parentChunk->getTile(m_pos.x, m_pos.y, m_layer)->light_set_reset();
     }
 }
 

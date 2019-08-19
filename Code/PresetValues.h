@@ -291,7 +291,7 @@ namespace Category_Data {
     static const unsigned int TOTAL_PLACES = 8;
     static const unsigned int TOTAL_MOBS = 3;
     static const unsigned int TOTAL_DIALOGUE_MOBS = 1;
-    static const unsigned int TOTAL_ITEMS = 9;
+    static const unsigned int TOTAL_ITEMS = 10;
     static const unsigned int TOTAL_LOOT_TABLES = 1;
 
     static const PlaceDatum placeData[Category_Data::TOTAL_PLACES] = {
@@ -327,6 +327,7 @@ namespace Category_Data {
                                                             ItemDatum((unsigned int)Categories::ItemIDs::WEAPON_SWORD, ASSETS_FOLDER_PATH + "Textures/Items/Sword0.png", "Sword"),
                                                             ItemDatum((unsigned int)Categories::ItemIDs::BLOCK_DIRT, ASSETS_FOLDER_PATH + "Textures/Blocks/Dirt.png", "Dirt"),
                                                             ItemDatum((unsigned int)Categories::ItemIDs::BLOCK_TORCH, ASSETS_FOLDER_PATH + "Textures/Blocks/Torch.png", "Torch"),
+                                                            ItemDatum((unsigned int)Categories::ItemIDs::BLOCK_TORCH_BRIGHT, ASSETS_FOLDER_PATH + "Textures/Blocks/Torch.png", "Bright Torch"),
                                                             ItemDatum((unsigned int)Categories::ItemIDs::BLOCK_GRASS, ASSETS_FOLDER_PATH + "Textures/Blocks/Grass.png", "Grass"),
                                                             ItemDatum((unsigned int)Categories::ItemIDs::BLOCK_WOOD, ASSETS_FOLDER_PATH + "Textures/Blocks/WoodBlock.png", "Wood"),
                                                             ItemDatum((unsigned int)Categories::ItemIDs::BLOCK_WOOD_POLE, ASSETS_FOLDER_PATH + "Textures/Blocks/Wood_Pole.png", "Wood Pole"),

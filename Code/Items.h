@@ -18,6 +18,11 @@ class ItemBlockTorch : public ItemBlock {
 		ItemBlockTorch(unsigned int quantity);
 };
 
+class ItemBlockTorchBright : public ItemBlock {
+    public:
+        ItemBlockTorchBright(unsigned int quantity);
+};
+
 class ItemBlockWood : public ItemBlock {
 	public:
 		ItemBlockWood(unsigned int quantity);
@@ -126,7 +131,11 @@ static Item* createItem(unsigned int id, unsigned int quantity) {
     case (unsigned int)Categories::ItemIDs::BLOCK_WOOD_POLE:
         ret = new ItemBlockWood_Pole(quantity);
         break;
-
+    case (unsigned int)Categories::ItemIDs::BLOCK_TORCH_BRIGHT:
+        ret = new ItemBlockTorchBright(quantity);
+        break;
+    default:
+        ret = new Item(1, GLEngine::ResourceManager::getTexture(ASSETS_FOLDER_PATH + "/Textures/UNDEFINED.png"));
 	}
 
 	return ret;

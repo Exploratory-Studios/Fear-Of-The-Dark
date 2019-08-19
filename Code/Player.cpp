@@ -449,8 +449,13 @@ void Player::updateInput() {
             //m_sq->activateScript(m_scriptID_makeHouse);
         }
         if(m_input->isKeyPressed(SDLK_t)) {
-            Item* newItem = createItem((unsigned int)Categories::ItemIDs::BLOCK_TORCH, 1);
-            m_inventory->addItem(newItem);
+            if(m_input->isKeyDown(SDLK_LSHIFT)) {
+                Item* newItem = createItem((unsigned int)Categories::ItemIDs::BLOCK_TORCH_BRIGHT, 1);
+                m_inventory->addItem(newItem);
+            } else {
+                Item* newItem = createItem((unsigned int)Categories::ItemIDs::BLOCK_TORCH, 1);
+                m_inventory->addItem(newItem);
+            }
         }
         if(m_input->isKeyPressed(SDLK_i)) {
             m_inventoryOpen = !m_inventoryOpen;

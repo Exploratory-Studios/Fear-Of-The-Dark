@@ -112,14 +112,10 @@ void GameplayScreen::update() {
     if(m_frame == 0.0f) {
         if(m_player) {
             activateChunks();
-            tick();
+            //tick();
         } else {
             logger->log("Could not initialize world (Full update when frames == 0). Some things may not be as expected.", true);
         }
-    }
-
-    if((int)m_frame % (int)(60 / TICK_RATE) == 0) { // m_frame is equal to current frame
-        tick();
     }
 
     checkInput();
@@ -174,6 +170,11 @@ void GameplayScreen::update() {
         m_time++; /// Change the increment if time is slowed or quicker (potion effects?)
 
     }
+
+    if((int)m_frame % (int)(60 / TICK_RATE) == 0) { // m_frame is equal to current frame
+        tick();
+    }
+
     m_frame++;
 
     m_gui.update();

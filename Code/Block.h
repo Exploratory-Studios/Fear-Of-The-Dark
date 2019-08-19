@@ -40,6 +40,7 @@ class Block : public Tile
     protected:
         virtual void onTick(float& tickTime) { }
         virtual void onUpdate(float& time) { }
+        virtual void onDestruction() { }
 
         /// Protected, taken from "Tile" class
         /*

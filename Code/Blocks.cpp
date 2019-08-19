@@ -158,7 +158,7 @@ BlockWood::BlockWood(glm::vec2 pos, unsigned int layer, Chunk* parent, bool load
 BlockWater::BlockWater(glm::vec2 pos, unsigned int layer, Chunk* parent, float level, MetaData metaData,/* = MetaData*/ bool loadTexture/* = true*/) : GenericBlock(pos, layer, parent, metaData, loadTexture) {
     m_id = (unsigned int)Categories::BlockIDs::WATER;
 
-    m_transparent = true; // Does light travel through it?
+    m_transparent = false; // Does light travel through it?
     m_draw = true; // Is it drawn?
     m_solid = false; // Can we walk through it?
     m_emittedLight = 0.0f; // Does it emit light?
@@ -319,4 +319,17 @@ void BlockWater::onUpdate(float& time) {
     if(m_waterLevel <= 0.0f) {
         //m_parentChunk->setTile(createBlock((unsigned int)Categories::BlockIDs::AIR, m_pos, m_parentChunk), (int)m_pos.x % CHUNK_SIZE, m_pos.y);
     }
+}
+
+BlockPole::BlockPole(glm::vec2 pos, unsigned int layer, Chunk* parent, MetaData metaData/* = MetaData()*/, bool loadTexture/* = true*/) : GenericBlock(pos, layer, parent, metaData, loadTexture) {
+    m_id = (unsigned int)Categories::BlockIDs::WOOD_POLE;
+
+    m_transparent = true; // Does light travel through it?
+    m_draw = true; // Is it drawn?
+    m_solid = false; // Can we walk through it?
+    m_emittedLight = 0.0f; // Does it emit light?
+
+    m_backdrop = false;
+
+    if(loadTexture) { this->loadTexture(); } else { m_textureId = (GLuint)-1; }
 }

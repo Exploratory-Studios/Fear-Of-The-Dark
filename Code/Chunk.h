@@ -15,7 +15,6 @@ class Player;
 
 class Chunk
 {
-    friend class Chunk;
     friend class WorldIOManager;
 
     public:

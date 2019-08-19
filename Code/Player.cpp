@@ -387,6 +387,14 @@ void Player::updateInput() {
         m_velocity.y -= 0.1f;
     }
 
+    if(m_input->isKeyPressed(SDLK_e)) {
+        m_layer++;
+    }
+    if(m_input->isKeyPressed(SDLK_q)) {
+        m_layer--;
+    }
+    m_layer = (m_layer < 0) ? 0 : (m_layer >= WORLD_DEPTH) ? WORLD_DEPTH-1 : m_layer;
+
     if(m_input->isKeyDown(SDLK_d) && ((m_stamina > 0.0f && m_onGround) || m_godMode)) {
         if(m_velocity.x < 0.0f) m_velocity.x /= 5.0f;
         if(m_velocity.x < m_maxSpeed) {

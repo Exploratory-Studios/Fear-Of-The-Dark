@@ -23,7 +23,8 @@ namespace Categories {
         TORCH,
         FOLIAGE,
         WOOD,
-        WATER
+        WATER,
+        WOOD_POLE
     };
 
     enum class ItemIDs {
@@ -32,6 +33,7 @@ namespace Categories {
         BLOCK_TORCH,
         BLOCK_GRASS,
         BLOCK_WOOD,
+        BLOCK_WOOD_POLE,
         MISC_BUCKET,
         MISC_MEAT_RAW,
         MISC_LEATHER

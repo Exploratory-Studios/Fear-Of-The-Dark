@@ -23,6 +23,11 @@ class ItemBlockWood : public ItemBlock {
 		ItemBlockWood(unsigned int quantity);
 };
 
+class ItemBlockWood_Pole : public ItemBlock {
+    public:
+        ItemBlockWood_Pole(unsigned int quantity);
+};
+
 class ItemMiscBucket : public Item {
 	public:
 		ItemMiscBucket(unsigned int quantity);
@@ -118,6 +123,9 @@ static Item* createItem(unsigned int id, unsigned int quantity) {
 	case (unsigned int)Categories::ItemIDs::WEAPON_SWORD:
 		ret = new ItemWeaponSword(quantity);
 		break;
+    case (unsigned int)Categories::ItemIDs::BLOCK_WOOD_POLE:
+        ret = new ItemBlockWood_Pole(quantity);
+        break;
 
 	}
 

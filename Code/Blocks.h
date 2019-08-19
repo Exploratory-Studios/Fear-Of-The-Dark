@@ -137,6 +137,15 @@ class BlockWater : public GenericBlock
         float m_waterLevel = 1.0f; // ranges from 1.0f (top of the block) to 0.0f (literally no water present)
 };
 
+class BlockPole : public GenericBlock
+{
+    public:
+        BlockPole(glm::vec2 pos, unsigned int layer, Chunk* parent, MetaData metaData = MetaData(), bool loadTexture = true);
+        void onInteract(ScriptQueue* sq) {}
+
+        void loadTexture() override { m_textureId = GLEngine::ResourceManager::getTexture(ASSETS_FOLDER_PATH + "/Textures/Blocks/Wood_Pole.png").id; }
+};
+
 static Block* createBlock(unsigned int id, glm::vec2 pos, unsigned int layer, Chunk* parent, MetaData metaData = MetaData{}, bool loadTexture = true, float tickTime = -1.0f) {
     Block* ret = nullptr;
     switch(id) {
@@ -174,6 +183,10 @@ static Block* createBlock(unsigned int id, glm::vec2 pos, unsigned int layer, Ch
         }
         case (unsigned int)Categories::BlockIDs::WATER: {
             ret = new BlockWater(pos, layer, parent, 1.0f, metaData, loadTexture);
+            break;
+        }
+        case (unsigned int)Categories::BlockIDs::WOOD_POLE: {
+            ret = new BlockPole(pos, layer, parent, metaData, loadTexture);
             break;
         }
         default: {

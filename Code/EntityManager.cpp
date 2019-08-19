@@ -141,6 +141,8 @@ std::vector<glm::vec2> EntityManager::pathfindToTarget(float jumpHeight, glm::ve
 
     unsigned int dist = leftDist < rightDist ? leftDist : rightDist;
 
+    if(dist < 3) return targets;
+
     for(int i = 0; i < WORLD_HEIGHT; i++) {
         std::vector<bool> solid;
         for(int j = 0; j < dist; j++) {

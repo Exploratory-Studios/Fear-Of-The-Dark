@@ -79,15 +79,17 @@ Entity::~Entity()
 }*/
 
 void Entity::update(float timeStep, Chunk* worldChunks[WORLD_SIZE]) {
-    updateAI();
-    updateLimbs();
-    move(timeStep);
-    updateSounds();
-    updateMovement();
-    updateLightLevel();
+    for(int i = 0; i < timeStep; i++) {
+        updateAI();
+        updateLimbs();
+        move(1);
+        updateSounds();
+        updateMovement();
+        updateLightLevel();
 
-    if(m_health <= 0.0f) {
-        die();
+        if(m_health <= 0.0f) {
+            die();
+        }
     }
 }
 #include <iostream>
@@ -227,7 +229,7 @@ void Entity::collide() {
 
     if(getChunkIndex() >= 0) {
         /// ENTITY COLLISION STARTS HERE
-        /*for(unsigned int i = 0; i < entities.size(); i++) {
+        for(unsigned int i = 0; i < entities.size(); i++) {
             if(entities[i] != this) {
                 if(entities[i]->getType() != Categories::Entity_Type::ITEM) {
                     float xDist = (m_position.x / 1.0f + m_size.x / 2.0f) - (entities[i]->getPosition().x / 1.0f + entities[i]->getSize().x / 2.0f);
@@ -245,7 +247,7 @@ void Entity::collide() {
                     }
                 }
             }
-        }*/
+        }
         /// ENTITY COLLISION ENDS HERE
 
         /// TILE COLLISION STARTS HERE
@@ -413,10 +415,12 @@ bool Entity::checkTilePosition(std::vector<glm::vec2>& collideTilePositions, flo
     // Get the position of this corner in grid-space
     glm::vec2 gridPos = glm::vec2(floor(x), floor(y)); // grid-space coords
 
-    // If this is not an air tile, we should collide with it
-    if (m_parentChunk->getTile(gridPos.x, gridPos.y, m_layer)->isSolid()) {
-        collideTilePositions.push_back(glm::vec2((float)gridPos.x + 0.500f, (float)gridPos.y + 0.500f)); // CollideTilePositions are put in as gridspace coords
-        return true;
+    if(gridPos.y >= 0) {
+        // If this is not an air tile, we should collide with it
+        if (m_parentChunk->getTile(gridPos.x, gridPos.y, m_layer)->isSolid()) {
+            collideTilePositions.push_back(glm::vec2((float)gridPos.x + 0.500f, (float)gridPos.y + 0.500f)); // CollideTilePositions are put in as gridspace coords
+            return true;
+        }
     }
 
     return false;
@@ -478,12 +482,14 @@ void Entity::updateLightLevel() {
     if(m_parentChunk) {
         m_exposedToSun = false;
 
-        m_light = m_parentChunk->getTile(m_position.x, m_position.y + m_size.y / 2.0f, m_layer)->getLight();
-        if(m_parentChunk->getTile(m_position.x, m_position.y + m_size.y / 2.0f, m_layer)->getSunLight() != 0.0f) m_exposedToSun = true;
+        if(m_position.y >= 0) {
+            m_light = m_parentChunk->getTile(m_position.x, m_position.y + m_size.y / 2.0f, m_layer)->getLight();
+            if(m_parentChunk->getTile(m_position.x, m_position.y + m_size.y / 2.0f, m_layer)->getSunLight() != 0.0f) m_exposedToSun = true;
 
-        m_light += m_parentChunk->getTile(m_position.x + m_size.x, m_position.y + m_size.y / 2.0f, m_layer)->getLight();
-        if(m_parentChunk->getTile(m_position.x + m_size.x, m_position.y + m_size.y / 2.0f, m_layer)->getSunLight() != 0.0f) m_exposedToSun = true;
-        m_light /= 2.0f;
+            m_light += m_parentChunk->getTile(m_position.x + m_size.x, m_position.y + m_size.y / 2.0f, m_layer)->getLight();
+            if(m_parentChunk->getTile(m_position.x + m_size.x, m_position.y + m_size.y / 2.0f, m_layer)->getSunLight() != 0.0f) m_exposedToSun = true;
+            m_light /= 2.0f;
+        }
     } else {
         m_light = 0.0f;
     }

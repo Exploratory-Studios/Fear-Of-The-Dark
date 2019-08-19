@@ -8,11 +8,13 @@
 
 #include "Categories.h"
 
+/// TODO: Change some of these to static so that they can at least be changed in settings
+
 /// World size variables
 // How many tiles in a chunk?
-#define CHUNK_SIZE 48
+#define CHUNK_SIZE 32 // 24
 // How many tiles high is the world?
-#define WORLD_HEIGHT 500
+#define WORLD_HEIGHT 400
 // How many chunks does the world have?
 #define WORLD_SIZE 32
 #define WORLD_DEPTH 3
@@ -65,10 +67,11 @@
 #define TRANSPARENT_LIGHT_MULTIPLIER 0.75f
 // How much the light level is multiplied by when going through blocks
 #define OPAQUE_LIGHT_MULTIPLIER 0.25f
+#define SUNLIGHT_MINUS 0.3
 /// Both those multipliers double as multipliers for heat, as well
 
 #define TRANSPARENT_LIGHT_MINUS 0.1
-#define OPAQUE_LIGHT_MINUS 0.3
+#define OPAQUE_LIGHT_MINUS 0.4 // For heat
 
 // How many chunks can we see in either direction (multiply by two and add 1 for total chunks)
 #define MAX_VIEW_DIST 4
@@ -288,7 +291,7 @@ namespace Category_Data {
     static const unsigned int TOTAL_PLACES = 8;
     static const unsigned int TOTAL_MOBS = 3;
     static const unsigned int TOTAL_DIALOGUE_MOBS = 1;
-    static const unsigned int TOTAL_ITEMS = 8;
+    static const unsigned int TOTAL_ITEMS = 9;
     static const unsigned int TOTAL_LOOT_TABLES = 1;
 
     static const PlaceDatum placeData[Category_Data::TOTAL_PLACES] = {
@@ -326,6 +329,7 @@ namespace Category_Data {
                                                             ItemDatum((unsigned int)Categories::ItemIDs::BLOCK_TORCH, ASSETS_FOLDER_PATH + "Textures/Blocks/Torch.png", "Torch"),
                                                             ItemDatum((unsigned int)Categories::ItemIDs::BLOCK_GRASS, ASSETS_FOLDER_PATH + "Textures/Blocks/Grass.png", "Grass"),
                                                             ItemDatum((unsigned int)Categories::ItemIDs::BLOCK_WOOD, ASSETS_FOLDER_PATH + "Textures/Blocks/WoodBlock.png", "Wood"),
+                                                            ItemDatum((unsigned int)Categories::ItemIDs::BLOCK_WOOD_POLE, ASSETS_FOLDER_PATH + "Textures/Blocks/Wood_Pole.png", "Wood Pole"),
                                                             ItemDatum((unsigned int)Categories::ItemIDs::MISC_BUCKET, ASSETS_FOLDER_PATH + "Textures/Items/Bucket.png", "Bucket"),
                                                             ItemDatum((unsigned int)Categories::ItemIDs::MISC_MEAT_RAW, ASSETS_FOLDER_PATH + "Textures/Items/MeatRaw.png", "Raw Meat"),
                                                             ItemDatum((unsigned int)Categories::ItemIDs::MISC_LEATHER, ASSETS_FOLDER_PATH + "Textures/Items/Leather.png", "Leather")

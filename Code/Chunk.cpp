@@ -8,7 +8,10 @@ void Chunk::addEntity(Entity* ent) { m_entityManager->addEntity(ent); }
 
 void Chunk::deleteDeadTiles() {
     for(int i = 0; i < m_deadTiles.size(); i++) {
-        if(m_deadTiles[i]) delete m_deadTiles[i];
+        if(m_deadTiles[i]) {
+            m_deadTiles[i]->destroy();
+            delete m_deadTiles[i];
+        }
     }
     m_deadTiles.clear();
 }
@@ -115,16 +118,17 @@ void Chunk::update(float time, float timeStepVariable, Chunk** chunks, Player* p
     for(int i = 0; i < WORLD_HEIGHT; i++) {
         for(int j = 0; j < CHUNK_SIZE; j++) {
             for(int k = 0; k < m_tiles[i][j].size(); k++) {
-                m_tiles[i][j][k]->update(time, (std::abs(k - (int)p->getLayer()) <= 1));
+                m_tiles[i][j][k]->update(time, true);
             }
         }
-        /*for(int k = 0; k < m_extraTiles[i][0].size(); k++) {
-            m_extraTiles[i][0][k]->update(time);
-        }
-        for(int k = 0; k < m_extraTiles[i][1].size(); k++) {
-            m_extraTiles[i][1][k]->update(time);
-        }*/
     }
+    /*for(int i = 0; i < WORLD_HEIGHT; i++) {
+        for(int j = 0; j < CHUNK_SIZE; j++) {
+            for(int k = 0; k < m_tiles[i][j].size(); k++) {
+                m_tiles[i][j][k]->finishFrame();
+            }
+        }
+    }*/
     if(updateEntities)
         m_entityManager->update(timeStepVariable, chunks, p);
 }

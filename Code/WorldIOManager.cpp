@@ -395,9 +395,11 @@ void WorldIOManager::P_createWorld(unsigned int seed, std::string worldName, boo
 
                     }
                     *m_saveLoadMessage = "Smoothing terrain... \n(" + std::to_string(i * CHUNK_SIZE + j) + "/" + std::to_string((WORLD_SIZE+1) * CHUNK_SIZE) + ")";
-                    *m_progress += 1.0f / (float)(CHUNK_SIZE * (WORLD_SIZE+1)) * 0.3f;
+                    *m_progress += 1.0f / (float)(CHUNK_SIZE * (WORLD_SIZE+1)) * 0.1f;
                 }
             }
+
+            // m_progress at 0.4f
 
             *m_saveLoadMessage = "Placing blocks...";
 
@@ -420,7 +422,7 @@ void WorldIOManager::P_createWorld(unsigned int seed, std::string worldName, boo
                                     m_world->chunks[i]->setTile(flower);
                                 }
                             }
-                            *m_progress += 1.0f / (float)(CHUNK_SIZE * WORLD_SIZE * WORLD_DEPTH * WORLD_HEIGHT) * 0.0f; // 0.3
+                            *m_progress += 1.0f / (float)(CHUNK_SIZE * WORLD_SIZE * WORLD_DEPTH * WORLD_HEIGHT) * 0.1f; // 0.3
                             *m_saveLoadMessage = "Placing blocks... \n(" + std::to_string((layer * CHUNK_SIZE * WORLD_HEIGHT * WORLD_SIZE) + (i * CHUNK_SIZE * WORLD_HEIGHT) + (x * WORLD_HEIGHT) + y) + "/" + std::to_string(CHUNK_SIZE * WORLD_SIZE * WORLD_HEIGHT * WORLD_DEPTH) + ")";
                         }
                         for(int y = blockHeights[i * CHUNK_SIZE + x]; y < WORLD_HEIGHT; y++) {
@@ -431,17 +433,17 @@ void WorldIOManager::P_createWorld(unsigned int seed, std::string worldName, boo
                                 BlockAir* block = new BlockAir(glm::vec2((i * CHUNK_SIZE) + x, y), layer, m_world->chunks[i], false);
                                 m_world->chunks[i]->setTile(block); /// TODO: Cross-layer worldgen
                             }
-                            *m_progress += 1.0f / (float)(CHUNK_SIZE * WORLD_SIZE * WORLD_DEPTH * WORLD_HEIGHT) * 0.0f;
+                            *m_progress += 1.0f / (float)(CHUNK_SIZE * WORLD_SIZE * WORLD_DEPTH * WORLD_HEIGHT) * 0.1f;
                             *m_saveLoadMessage = "Placing blocks... \n(" + std::to_string((layer * CHUNK_SIZE * WORLD_HEIGHT * WORLD_SIZE) + (i * CHUNK_SIZE * WORLD_HEIGHT) + (x * WORLD_HEIGHT) + y) + "/" + std::to_string(CHUNK_SIZE * WORLD_SIZE * WORLD_HEIGHT * WORLD_DEPTH) + ")";
                         }
                     }
                 }
             }
 
-            // m_progress at 0.9f
+            // m_progress at 0.7f
         }
     } else {
-        // Progress is at 0.2, ends at 0.9
+        // Progress is at 0.2, ends at 0.7
         for(int layer = 0; layer < WORLD_DEPTH; layer++) {
             for(int k = 0; k < WORLD_SIZE; k++) {
                 for(int i = 0; i < CHUNK_SIZE; i++) {
@@ -468,10 +470,10 @@ void WorldIOManager::P_createWorld(unsigned int seed, std::string worldName, boo
                         }
                         *m_saveLoadMessage = "Placing blocks... \n(" + std::to_string((layer * CHUNK_SIZE * WORLD_HEIGHT * WORLD_DEPTH * WORLD_SIZE) + (k * CHUNK_SIZE * WORLD_HEIGHT) + (i * WORLD_HEIGHT) + j) + "/" + std::to_string(CHUNK_SIZE * WORLD_SIZE * WORLD_HEIGHT * WORLD_DEPTH) + ")";
                     }
-                    *m_progress += 1.0f / (float)(CHUNK_SIZE * WORLD_SIZE * WORLD_DEPTH * WORLD_HEIGHT) * 0.7f;
+                    *m_progress += 1.0f / (float)(CHUNK_SIZE * WORLD_SIZE * WORLD_DEPTH) * 0.5f;
                 }
             }
-            // m_progress at 0.9f
+            // m_progress at 0.7f
         }
     }
     for(int i = 0; i < WORLD_SIZE; i++) {
@@ -485,8 +487,19 @@ void WorldIOManager::P_createWorld(unsigned int seed, std::string worldName, boo
 
         m_world->chunks[i]->setSurroundingChunk(m_world->chunks[((i-1+WORLD_SIZE) % WORLD_SIZE)], 0);
         m_world->chunks[i]->setSurroundingChunk(m_world->chunks[((i+1+WORLD_SIZE) % WORLD_SIZE)], 1);
-        *m_progress += 1.0f / WORLD_SIZE * 0.1f;
     }
+    // m_progress is at 0.7f
+
+    *m_saveLoadMessage = "Making sure everything looks great!";
+    for(int j = 0; j < 5; j++) {
+        for(int i = 0; i < WORLD_SIZE; i++) {
+            m_world->chunks[i]->update(0, 1, m_world->chunks, nullptr, false);
+            m_world->chunks[i]->tick(0, nullptr, m_world->worldEra, false);
+            *m_saveLoadMessage = "Making sure everything looks great! (" + std::to_string(i + j * WORLD_SIZE) + "/" + std::to_string(WORLD_SIZE * 5) + ")";
+            *m_progress += 1.0f / (WORLD_SIZE * 5) * 0.25f;
+        }
+    }
+    // m_progress should be at 1.0
 
     *m_progress = 1.0f;
 

@@ -59,7 +59,7 @@ class Tile
         float           getLight();
         float           getAmbientLight()               const { return m_ambientLight;              }
         float           getEmittedLight()               const { return m_emittedLight;              }
-        float           getSurroundingLight();
+        //float           getSurroundingLight();
         float           getSurroundingHeat();
         unsigned int    getWalkedOnSoundEffectID()      const { return (unsigned int)m_walkEffect;  }
         float           getSunLight()                   const { return m_sunLight;                  }
@@ -72,6 +72,14 @@ class Tile
         bool            doDrawBackdrop()                const { return m_backdrop;                  }
         ParticleIDs     getWalkedOnParticleID()         const { return m_walkParticle;              }
         unsigned int    getLayer()                      const { return m_layer;                     }
+
+        void light_update(float light, Tile* source);
+        void light_transferToNeighbours(float light, Tile* source);
+        void light_removeSource(Tile* source, std::vector<Tile*>& newSources);
+        void light_addEffected(Tile* effected);
+
+        void sunlight_transferToNeighbour(float light);
+        void sunlight_set(float light) { m_sunLight = light; }
 
         /// TODO: Don't fuck with my formatting
 
@@ -86,19 +94,24 @@ class Tile
             }
             if(m_exposedToSun) {
                 m_sunLight = cos(tickTime / (DAY_LENGTH / 6.28318f)) / 2.0f + 0.5f;
+                if(!m_transparent) {
+                    sunlight_transferToNeighbour(m_sunLight - SUNLIGHT_MINUS);
+                }
             } else {
                 m_sunLight = 0.0f;
             }
         }
         void setNeedsSunCheck() { m_needsSunCheck = true; }
         void setPosition(glm::vec2 pos) { m_pos = pos; }
-        void setToUpdate_light() { m_updateLight = true; } // Sends the signal to update lighting
+        void light_setToUpdate() { m_updateLight = true; } // Sends the signal to update lighting
         void setToUpdate_heat() { m_updateHeat = true; } // Sends the signal to update heat
 
         virtual void update(float time, bool updateLighting);
         virtual void tick(float tickTime);
         virtual void draw(GLEngine::SpriteBatch& sb, int xOffset);
         virtual void drawBackdrop(GLEngine::SpriteBatch& sb, int xOffset, int yOffset, float lightLevel);
+
+        void destroy();
 
         virtual void interact_WalkedOn() {}
         virtual void interact_LeftClicked() {}
@@ -137,6 +150,8 @@ class Tile
         float m_lastTemperature = 0.0f;
 
         float m_lastLight; // This is used to make sure that we aren't giving other blocks light for no reason
+        std::vector<Tile*> m_lightSources; // This is to make sure we aren't giving blocks light multiple times for each source
+        std::vector<glm::vec3> m_lightEffected; // This is a vector that ONLY light sources have. It is to keep track of the tiles that use this light source. We use positions as the actual tiles could have been deleted/changed since adding to the vector
 
         bool m_updateLight = true;
         bool m_updateHeat = true;

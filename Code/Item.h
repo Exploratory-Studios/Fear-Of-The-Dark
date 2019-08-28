@@ -20,7 +20,7 @@ class Item
 
     public:
         //Item() {}
-        Item(short unsigned int quantity, GLEngine::GLTexture texture) : m_quantity(quantity), m_texture(texture) {}
+        Item(short unsigned int quantity, GLEngine::GLTexture texture, std::string name) : m_quantity(quantity), m_texture(texture), m_name(name) {}
         virtual ~Item() {}
 
         virtual void onLeftClick(Tile* selectedBlock) {
@@ -42,6 +42,7 @@ class Item
         unsigned int getID() { return m_id; } // (unsigned int)(-1) is equivalent to null
         short unsigned int getQuantity() { return m_quantity; }
         GLEngine::GLTexture getTexture() { return m_texture; }
+        std::string& getName() { return m_name; }
         // Make new classes for different types of items: blocks, weapons, food, etc. with each one having different default left & right click events
 
     protected:
@@ -57,6 +58,8 @@ class Item
 
         float m_weight = 0.0f; // How much it weighs in the inventory (kgs)
         short unsigned int m_quantity = 0; // How much you have
+
+        std::string m_name = "UNDEFINED";
 
         // Metadata idea (from minecraft)
 };

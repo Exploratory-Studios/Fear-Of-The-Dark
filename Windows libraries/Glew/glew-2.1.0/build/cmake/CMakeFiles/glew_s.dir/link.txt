@@ -1,2 +1,0 @@
-/usr/bin/ar qc lib/libGLEW.a  CMakeFiles/glew_s.dir/home/davis-dev/Documents/Programming/C++/CodingGithub/Fear-Of-The-Dark/Windows_libraries/Glew/glew-2.1.0/src/glew.c.o
-/usr/bin/ranlib lib/libGLEW.a

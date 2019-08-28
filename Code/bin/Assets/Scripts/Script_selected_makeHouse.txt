@@ -1,6 +1,0 @@
-changeBlock area relative speaker 0 -1 relative speaker 5 2 0
-changeBlock area relative speaker 0 2 relative speaker 5 2 2
-changeBlock area relative speaker 0 -1 relative speaker 5 -1 2
-changeBlock area relative speaker 5 -1 relative speaker 5 2 2
-changeBlock relative speaker 2 1 6
-echo Done

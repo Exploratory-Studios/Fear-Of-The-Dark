@@ -76,12 +76,15 @@ class Player : public Entity {
         int m_selectedHotbox = 0;
 
         bool m_inventoryOpen = false;
+        bool m_questListOpen = false;
+        bool m_skillTreeOpen = false;
+
         bool m_debuggingInfo = false; // FPS, selectedBlock, etc.
         bool m_canInteract = true; // Sets if the player can't interact with objects, people, etc. Used when player is in cutscenes, talking, etc.
 
         void updateInput();
 
-        float m_sanity = 1.0f; // Fear level will be displayed as a heartbeat sound
+        float m_sanity = 1.0f; // Fear level will be displayed as a heartbeat sound (fear is how fast your sanity drops)
         float m_health = 1.0f;
         float m_thirst = 1.0f;
         float m_hunger = 1.0f;

@@ -131,10 +131,10 @@ void DialogueManager::initConversation() { // Sets gui for conversation
             CEGUI::PushButton* answerButton = static_cast<CEGUI::PushButton*>(m_gui->createWidget(answersScroller, "FOTDSkin/Button", glm::vec4(0.0f, 0.05f + ((0.02f + 0.1f) * paddingIncrementer), 1.0f, 0.1f), glm::vec4(0.0f), std::string("Option" + std::to_string(i) + "Trade")));
 
             std::string tradeString = std::to_string(t->rewardedItem->getQuantity());
-            tradeString += " " + Category_Data::itemData[t->rewardedItem->getID()].name;
+            tradeString += " " + t->rewardedItem->getName();
             tradeString += " for ";
             tradeString += std::to_string(t->requiredItem->getQuantity());
-            tradeString += " " + Category_Data::itemData[t->requiredItem->getID()].name;
+            tradeString += " " + t->requiredItem->getName();
 
             answerButton->setText(tradeString);
             m_buttons.push_back(answerButton);

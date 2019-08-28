@@ -57,6 +57,14 @@ class GameplayScreen : public GLEngine::IGameScreen
         void drawWorld();
         void drawDebug();
 
+        void pauseGame(); // Inits pause UI and sets GameState
+        void continueGame(); // Hides pause UI and sets GameState
+
+        std::vector<CEGUI::Window*> m_pauseWidgets;
+        bool pause_resume_button_clicked(const CEGUI::EventArgs& e);
+        bool pause_save_button_clicked(const CEGUI::EventArgs& e);
+        bool pause_quit_button_clicked(const CEGUI::EventArgs& e);
+
         void updateScale();
         void activateChunks();
 
@@ -83,7 +91,7 @@ class GameplayScreen : public GLEngine::IGameScreen
 
         GameState m_gameState = GameState::PLAY;
 
-        glm::vec2 m_smoothMoveTarget; // Only used by camera, set only by scripterMain
+        glm::vec2 m_smoothMoveTarget; // Only used by camera, set only by ScripterMain
         float m_smoothMoveSpeed = 0.0f; // Only used by camera, set only by ScripterMain
 
         float m_time = 0.0f; // Used for animations, NOT DAYLIGHT
@@ -116,6 +124,8 @@ class GameplayScreen : public GLEngine::IGameScreen
         bool m_selecting = false;
 
         bool m_cameraLocked = false; // Can the camera move with the player, or is it 'locked'?
+
+        unsigned int m_nextScreenIndex = SCREEN_INDEX_NO_SCREEN;
 };
 
 #include "Scripting/ScripterMain.h"

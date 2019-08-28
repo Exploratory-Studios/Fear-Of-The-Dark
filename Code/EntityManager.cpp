@@ -141,7 +141,9 @@ std::vector<glm::vec2> EntityManager::pathfindToTarget(float jumpHeight, glm::ve
 
     unsigned int dist = leftDist < rightDist ? leftDist : rightDist;
 
-    if(dist < 3) return targets;
+    if(originalPosition.y < 0 || originalPosition.y > WORLD_HEIGHT-1) {
+        return targets;
+    }
 
     for(int i = 0; i < WORLD_HEIGHT; i++) {
         std::vector<bool> solid;
@@ -311,7 +313,7 @@ void EntityManager::spawnEntities(float tickTime, WorldEra& era) {
                 }
             }
 
-            for(unsigned int i = 0; i < Category_Data::placeData[(unsigned int)m_parentChunk->getPlace()].mobSpawnIds.size(); i++) { // Go through all the criteria
+            /*for(unsigned int i = 0; i < Category_Data::placeData[(unsigned int)m_parentChunk->getPlace()].mobSpawnIds.size(); i++) { // Go through all the criteria
                 unsigned int id = Category_Data::placeData[(unsigned int)m_parentChunk->getPlace()].mobSpawnIds[i];
                 for(int j = 0; j < Category_Data::mobData[id].spawnEra.size(); j++) {
                     if(Category_Data::mobData[id].spawnEra[j] == era) {
@@ -354,7 +356,7 @@ void EntityManager::spawnEntities(float tickTime, WorldEra& era) {
                         }
                     }
                 }
-            }
+            }*/ /// TODO: Bring this back to life
         }
     }
 }

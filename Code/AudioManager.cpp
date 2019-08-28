@@ -27,8 +27,15 @@ void AudioManager::init() {
     }
     for(int i = 0; i < NIGHTMARE_MUSIC_LENGTH; i++) {
         m_music.push_back(m_audio->loadMusic(ASSETS_FOLDER_PATH + "Music/NightmareMus" + std::to_string(i) + ".mus"));
-    }
-    logger->log("Loaded all " + std::to_string(MORNING_MUSIC_LENGTH + DAY_MUSIC_LENGTH + NIGHT_MUSIC_LENGTH) + " music files.");
+    } /// TODO: Interpret a file that tells what each file's music is
+    /* Ex: Music.txt
+    Music1_ThisIsAName:MORNING
+    Music2_ThisIsACreativeName:AFTERNOON
+    .
+    .
+    .
+    */
+    logger->log("Loaded all " + std::to_string(MORNING_MUSIC_LENGTH + DAY_MUSIC_LENGTH + AFTERNOON_MUSIC_LENGTH + NIGHT_MUSIC_LENGTH) + " music files.");
 
     for(int i = 0; i < SOUND_EFFECT_LENGTH; i++) {
         m_soundEffects.push_back(m_audio->loadSoundEffect(ASSETS_FOLDER_PATH + "Sounds/" + m_soundEffectFiles[i]));

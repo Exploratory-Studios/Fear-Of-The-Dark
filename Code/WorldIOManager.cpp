@@ -26,6 +26,8 @@ void WorldIOManager::createWorld(unsigned int seed, std::string worldName, bool 
 void WorldIOManager::P_loadWorld(std::string worldName) {
     float startTime = (float)(std::clock()) / (float)(CLOCKS_PER_SEC / 1000);
 
+    *m_progress = 0.0f;
+
     logger->log("LOAD: STARTING LOAD AT " + std::to_string(startTime), true);
 
     // INIT
@@ -54,52 +56,53 @@ void WorldIOManager::P_loadWorld(std::string worldName) {
         file.read(reinterpret_cast<char*>(&m_world->time), sizeof(float));
     }
 
+    *m_progress = 0.1f;
+
     { // PLAYER
-        if(m_world->player) {
-            file.read(reinterpret_cast<char*>(&m_world->player->m_canInteract), sizeof(bool));
-            file.read(reinterpret_cast<char*>(&m_world->player->m_sanity), sizeof(float));
-            file.read(reinterpret_cast<char*>(&m_world->player->m_health), sizeof(float));
-            file.read(reinterpret_cast<char*>(&m_world->player->m_thirst), sizeof(float));
-            file.read(reinterpret_cast<char*>(&m_world->player->m_hunger), sizeof(float));
-            file.read(reinterpret_cast<char*>(&m_world->player->m_exhaustion), sizeof(float));
-            file.read(reinterpret_cast<char*>(&m_world->player->m_stamina), sizeof(float));
-            file.read(reinterpret_cast<char*>(&m_world->player->m_position), sizeof(glm::vec2));
 
-            unsigned int favouriteIndices[10];
-            file.read(reinterpret_cast<char*>(&favouriteIndices), sizeof(unsigned int) * 10); // Get indices (in the inventory) that the hotbar pointed to
+        m_world->player = new Player(glm::vec2(0.0f, 0.0f), m_world->chunks[0], m_input, m_sq, m_audioManager);
 
-            logger->log("LOAD: Loaded Player POD");
+        file.read(reinterpret_cast<char*>(&m_world->player->m_canInteract), sizeof(bool));
+        file.read(reinterpret_cast<char*>(&m_world->player->m_sanity), sizeof(float));
+        file.read(reinterpret_cast<char*>(&m_world->player->m_health), sizeof(float));
+        file.read(reinterpret_cast<char*>(&m_world->player->m_thirst), sizeof(float));
+        file.read(reinterpret_cast<char*>(&m_world->player->m_hunger), sizeof(float));
+        file.read(reinterpret_cast<char*>(&m_world->player->m_exhaustion), sizeof(float));
+        file.read(reinterpret_cast<char*>(&m_world->player->m_stamina), sizeof(float));
+        file.read(reinterpret_cast<char*>(&m_world->player->m_position), sizeof(glm::vec2));
+
+        unsigned int favouriteIndices[10];
+        file.read(reinterpret_cast<char*>(&favouriteIndices), sizeof(unsigned int) * 10); // Get indices (in the inventory) that the hotbar pointed to
+
+        logger->log("LOAD: Loaded Player POD");
 
 
-            // INVENTORY
-            unsigned int items = 0;
-            file.read(reinterpret_cast<char*>(&items), sizeof(unsigned int));
-            m_world->player->m_inventory->m_items.clear();
-            m_world->player->m_inventory->m_items.reserve(items);
-            for(unsigned int i = 0; i < items; i++) {
-                // ITEMS
-                ItemData newItem;
-                file.read(reinterpret_cast<char*>(&newItem.id), sizeof(unsigned int));
-                file.read(reinterpret_cast<char*>(&newItem.quantity), sizeof(unsigned int));
-                //newItem.metaData->read(file);
+        // INVENTORY
+        unsigned int items = 0;
+        file.read(reinterpret_cast<char*>(&items), sizeof(unsigned int));
+        m_world->player->m_inventory->m_items.clear();
+        m_world->player->m_inventory->m_items.reserve(items);
+        for(unsigned int i = 0; i < items; i++) {
+            // ITEMS
+            ItemData newItem;
+            file.read(reinterpret_cast<char*>(&newItem.id), sizeof(unsigned int));
+            file.read(reinterpret_cast<char*>(&newItem.quantity), sizeof(unsigned int));
+            //newItem.metaData->read(file);
 
-                m_world->player->m_inventory->addItem(createItem(newItem.id, newItem.quantity));
+            m_world->player->m_inventory->addItem(createItem(newItem.id, newItem.quantity));
 
-                logger->log("LOAD: Loaded " + std::to_string(i+1) + " of " + std::to_string(items) + " Items");
-            }
-
-            for(int i = 0; i < 10; i++) {
-                m_world->player->m_favouriteItems[i] = m_world->player->m_inventory->getItem(favouriteIndices[i]); // Set up the pointers based on the indices we loaded earlier
-            }
-
-            file.read(reinterpret_cast<char*>(&m_world->player->m_inventory->m_absMaxWeight), sizeof(float));
-            logger->log("LOAD: Loaded Player Inventory");
-
-        } else {
-            logger->log("LOAD: Player could not be saved: null pointer", true);
+            logger->log("LOAD: Loaded " + std::to_string(i+1) + " of " + std::to_string(items) + " Items");
         }
 
+        for(int i = 0; i < 10; i++) {
+            m_world->player->m_favouriteItems[i] = m_world->player->m_inventory->getItem(favouriteIndices[i]); // Set up the pointers based on the indices we loaded earlier
+        }
+
+        file.read(reinterpret_cast<char*>(&m_world->player->m_inventory->m_absMaxWeight), sizeof(float));
+        logger->log("LOAD: Loaded Player Inventory");
     }
+
+    *m_progress = 0.2f;
 
     { // WORLD
 
@@ -108,6 +111,7 @@ void WorldIOManager::P_loadWorld(std::string worldName) {
 
         for(int i = 0; i < WORLD_SIZE; i++) {
             chunkData[i].read(file);
+            *m_progress += 1.0f / (WORLD_SIZE) * 0.1f; // 0.3
         }
 
         for(int i = 0; i < WORLD_SIZE; i++) {
@@ -124,9 +128,12 @@ void WorldIOManager::P_loadWorld(std::string worldName) {
                         layer++;
                     } while(temp);
                     m_world->chunks[i]->setTile(block);
+                    *m_progress += 1.0f / (CHUNK_SIZE * WORLD_HEIGHT * WORLD_SIZE) * 0.1f; // 0.3
                 }
             }
         }
+
+        // progress at 0.8
 
         for(int i = 0; i < WORLD_SIZE; i++) {
             /*for(int y = 0; y < WORLD_HEIGHT; y++) { // For the extra over-lapping side bits on each chunk.
@@ -140,14 +147,19 @@ void WorldIOManager::P_loadWorld(std::string worldName) {
             m_world->chunks[i]->setSurroundingChunk(m_world->chunks[((i-1+WORLD_SIZE) % WORLD_SIZE)], 0);
             m_world->chunks[i]->setSurroundingChunk(m_world->chunks[((i+1+WORLD_SIZE) % WORLD_SIZE)], 1);
             logger->log("LOAD: Loaded " + std::to_string(i+1) + " of " + std::to_string(WORLD_SIZE) + " Chunks");
+            *m_progress += 1.0f / (WORLD_SIZE) * 0.2f;
         }
 
         logger->log("LOAD: Loaded World Chunks");
+
+        //m_world->player->setParentChunk(m_world->chunks);
     }
 
     float finishTime = (float)(std::clock()) / (float)(CLOCKS_PER_SEC / 1000);
 
     logger->log("LOAD: LOAD COMPLETED. FINISHED AT " + std::to_string(finishTime) + " (" + std::to_string(finishTime-startTime) + " milliseconds)", true);
+
+    *m_progress = 1.0f;
 
     file.close();
 }
@@ -491,10 +503,13 @@ void WorldIOManager::P_createWorld(unsigned int seed, std::string worldName, boo
     // m_progress is at 0.7f
 
     *m_saveLoadMessage = "Making sure everything looks great!";
-    for(int j = 0; j < 5; j++) {
+
+    startTime = (float)(std::clock()) / (float)(CLOCKS_PER_SEC / 1000);
+
+    for(int j = 0; j < 1; j++) {
         for(int i = 0; i < WORLD_SIZE; i++) {
-            m_world->chunks[i]->update(0, 1, m_world->chunks, nullptr, false);
-            m_world->chunks[i]->tick(0, nullptr, m_world->worldEra, false);
+            //m_world->chunks[i]->update(0, 1, m_world->chunks, nullptr, false);
+            if(j == 0) m_world->chunks[i]->tick(0, nullptr, m_world->worldEra, false);
             *m_saveLoadMessage = "Making sure everything looks great! (" + std::to_string(i + j * WORLD_SIZE) + "/" + std::to_string(WORLD_SIZE * 5) + ")";
             *m_progress += 1.0f / (WORLD_SIZE * 5) * 0.25f;
         }
@@ -504,7 +519,7 @@ void WorldIOManager::P_createWorld(unsigned int seed, std::string worldName, boo
     *m_progress = 1.0f;
 
     float endTime = (float)(std::clock()) / (float)(CLOCKS_PER_SEC / 1000);
-    logger->log("CREATE: Finished world creation at time: " + std::to_string(endTime) + " (Elapsed: " + std::to_string(endTime - startTime) + "ms)");
+    logger->log("CREATE: Finished world creation at time: " + std::to_string(endTime) + " (Elapsed: " + std::to_string((endTime - startTime) / (32.0f)) + "ms)");
 
     return;
 

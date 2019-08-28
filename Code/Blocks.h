@@ -123,7 +123,7 @@ class BlockWater : public GenericBlock
         BlockWater(glm::vec2 pos, unsigned int layer, Chunk* parent, float level, MetaData metaData = MetaData(), bool loadTexture = true);
         void onInteract(ScriptQueue* sq) {}
 
-        virtual void draw(GLEngine::SpriteBatch& sb, int xOffset) override;
+        virtual void draw(GLEngine::SpriteBatch& sb, int xOffset, int depthDifference) override;
 
         float getLevel() { return m_waterLevel; }
         void setLevel(float& level) { m_waterLevel = level; }
@@ -205,7 +205,8 @@ static Block* createBlock(unsigned int id, glm::vec2 pos, unsigned int layer, Ch
         }
     }
     if(tickTime != -1.0f) {
-        ret->setSunlight(tickTime);
+        float sunlight = std::cos(tickTime / (DAY_LENGTH / 6.28318f)) / 2.0f + 0.5f;
+        ret->setSunlight(tickTime, sunlight);
     }
     return ret;
 }

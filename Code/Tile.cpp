@@ -139,6 +139,8 @@ void Tile::light_reset() {
     Tile* left =  m_parentChunk->getTile(m_pos.x - 1, m_pos.y,     m_layer);
     Tile* up =    m_parentChunk->getTile(m_pos.x,     m_pos.y + 1, m_layer);
     Tile* down =  m_parentChunk->getTile(m_pos.x,     m_pos.y - 1, m_layer);
+    Tile* front = nullptr;
+    Tile* back =  nullptr;
 
     float highest = 0.0f;
     int direction = -1;
@@ -169,6 +171,28 @@ void Tile::light_reset() {
         if(l > highest) {
             highest = l;
             direction = 3;
+        }
+    }
+
+    if(m_layer+1 < WORLD_DEPTH) {
+        back =  m_parentChunk->getTile(m_pos.x,     m_pos.y,     m_layer + 1);
+        if(back) {
+            float l = back->getLight();
+            if(l > highest) {
+                highest = l;
+                direction = 4;
+            }
+        }
+    }
+
+    if(m_layer > 0) {
+        front = m_parentChunk->getTile(m_pos.x,     m_pos.y,     m_layer - 1);
+        if(front) {
+            float l = front->getLight();
+            if(l > highest) {
+                highest = l;
+                direction = 5;
+            }
         }
     }
 
@@ -211,6 +235,8 @@ void Tile::light_reset() {
                 if(right) right->light_set_reset();
                 if(up) up->light_set_reset();
                 if(down) down->light_set_reset();
+                if(back) back->light_set_reset();
+                if(front) front->light_set_reset();
                 /*break;
         }*/
     //}
@@ -218,12 +244,65 @@ void Tile::light_reset() {
     m_ambientLight = highest;
 }
 
-void Tile::sunlight_transferToNeighbour(float light) {
+void Tile::sunlight_transferToNeighbour(float& light) {
+    float newLight = light - SUNLIGHT_MINUS;
+
+    if(light <= 0.0f) return;
     Tile* down = m_parentChunk->getTile(m_pos.x, m_pos.y-1, m_layer);
 
-    if(down && light > 0.0f) {
+    if(down) {
         down->sunlight_set(light);
-        down->sunlight_transferToNeighbour(light - SUNLIGHT_MINUS);
+        down->sunlight_transferToNeighbour(newLight);
+    }
+}
+
+void Tile::sunlight_transferLeft(float& light) {
+    float newLight = light - SUNLIGHT_MINUS;
+
+    if(newLight > 0.0f) {
+        Tile* left = m_parentChunk->getTile(m_pos.x - 1, m_pos.y, m_layer);
+        if(left) {
+            if(!left->isExposedToSunlight()) {
+                left->sunlight_set(light);
+                left->sunlight_transferLeft(newLight);
+                left->sunlight_transferToNeighbour(newLight);
+            }
+        }
+    }
+}
+
+void Tile::sunlight_transferRight(float& light) {
+    float newLight = light - SUNLIGHT_MINUS;
+
+    if(newLight > 0.0f) {
+        Tile* right = m_parentChunk->getTile(m_pos.x + 1, m_pos.y, m_layer);
+        if(right) {
+            if(!right->isExposedToSunlight()) {
+                right->sunlight_set(light);
+                right->sunlight_transferRight(newLight);
+                right->sunlight_transferToNeighbour(newLight);
+            }
+        }
+    }
+}
+
+void Tile::sunlight_resetNeighbour() {
+    m_sunLight = 0.0f;
+
+    Tile* down = m_parentChunk->getTile(m_pos.x, m_pos.y-1, m_layer);
+    if(down && down->getSunLight() > 0.0f) down->sunlight_resetNeighbour();
+
+    Tile* left = m_parentChunk->getTile(m_pos.x - 1, m_pos.y, m_layer);
+    if(left) {
+        if(!left->isExposedToSunlight() && left->getSunLight() > 0.0f) {
+            left->sunlight_resetNeighbour();
+        }
+    }
+    Tile* right = m_parentChunk->getTile(m_pos.x + 1, m_pos.y, m_layer);
+    if(right) {
+        if(!right->isExposedToSunlight() && right->getSunLight() > 0.0f) {
+            right->sunlight_resetNeighbour();
+        }
     }
 }
 
@@ -415,17 +494,18 @@ void Tile::update(float time, bool updateLighting) {
     onUpdate(time);
 }
 
-void Tile::tick(float tickTime) {
+void Tile::tick(float tickTime, float& sunlight) {
     if(m_updateHeat && m_id != (unsigned int)Categories::BlockIDs::AIR) {
-        float heat = 0.0f;//getSurroundingHeat();
+        float heat = getSurroundingHeat();
         m_temperature = heat;
+        m_updateHeat = false;
     }
 
-    setSunlight(tickTime);
+    setSunlight(tickTime, sunlight);
     onTick(tickTime);
 }
 
-void Tile::draw(GLEngine::SpriteBatch& sb, int xOffset) {
+void Tile::draw(GLEngine::SpriteBatch& sb, int xOffset, int depthDifference) {
 
     if(m_draw) {
         if(m_textureId == (GLuint)-1) {
@@ -435,12 +515,21 @@ void Tile::draw(GLEngine::SpriteBatch& sb, int xOffset) {
         //GLint lightColourUniform = program.getUniformLocation("lightColour");
         //glUniform4fv(lightColourUniform, 3, &glm::vec3(0.0f, 1.0f, 0.0f)[0]);
 
+        GLEngine::ColourRGBA8 colour = m_colour;
+        if(depthDifference != 0) {
+            if(depthDifference > 0) // in front of the player
+                colour.a = 150; // 128
+            colour.r = 64;
+            colour.g = 64;
+            colour.b = 64;
+        }
+
         int r = m_colour.r, g = m_colour.g, b = m_colour.b;
         sb.draw(glm::vec4(m_pos.x + xOffset * CHUNK_SIZE, m_pos.y, m_size.x, m_size.y),
                 glm::vec4(0.0f, 0.0f, 1.0f, 1.0f),
                 m_textureId,
                 0.75f * (WORLD_DEPTH - m_layer),
-                GLEngine::ColourRGBA8(r, g, b, m_colour.a),
+                colour,
                 glm::vec3(getLight()));
     }
 }
@@ -481,11 +570,29 @@ void Tile::destroy() {
     if(m_lightSources.size() > 0) {
         m_parentChunk->getTile(m_pos.x, m_pos.y, m_layer)->light_set_reset();
     }
+    {
+        m_parentChunk->getTile(m_pos.x, m_pos.y, m_layer)->setNeedsSunCheck();
+        Tile* BR = m_parentChunk->getTile(m_pos.x+1, m_pos.y-1, m_layer);
+        if(BR) BR->setNeedsSunCheck();
+        Tile* BL = m_parentChunk->getTile(m_pos.x-1, m_pos.y-1, m_layer);
+        if(BL) BL->setNeedsSunCheck();
+    }
 }
 
 bool Tile::exposedToSun() {
-    for(int i = WORLD_HEIGHT-1; i > m_pos.y; i--) { /// TODO: make this more efficient: From the block up?
-        if(!m_parentChunk->getTile(m_pos.x, i, m_layer)->isTransparent()) {
+    if(!m_transparent) {
+        Tile* left = m_parentChunk->getTile(m_pos.x-1, m_pos.y, m_layer);
+        if(left) {
+            if(left->isExposedToSunlight() && left->isTransparent() && !left->needsSunCheck()) return true;
+        }
+
+        Tile* right = m_parentChunk->getTile(m_pos.x+1, m_pos.y, m_layer);
+        if(right) {
+            if(right->isExposedToSunlight() && right->isTransparent() && !right->needsSunCheck()) return true;
+        }
+    }
+    for(int i = m_pos.y+1; i < WORLD_HEIGHT; i++) {
+        if(!(m_parentChunk->getTile(m_pos.x, i, m_layer)->isTransparent())) {
             return false;
         }
     }
@@ -499,6 +606,39 @@ TileData Tile::getSaveData() {
     d.ambientLight = m_ambientLight;
     delete d.metaData;
     d.metaData = getMetaData();
-    d.lowerLayer = new TileData(m_parentChunk->getTile(m_pos.x, m_pos.y, m_layer+1)->getSaveData());
+    if(m_layer < WORLD_DEPTH-1)
+        d.lowerLayer = new TileData(m_parentChunk->getTile(m_pos.x, m_pos.y, m_layer+1)->getSaveData());
     return d;
+}
+
+void Tile::setSunlight(float& tickTime, float& sunLight) {
+    if(m_needsSunCheck) { // check if this block is exposed to sunlight
+        bool before = m_exposedToSun;
+        m_exposedToSun = exposedToSun();
+        if(m_exposedToSun != before) {
+            Tile* down = m_parentChunk->getTile(m_pos.x, m_pos.y-1, m_layer);
+            if(down) {
+                down->setNeedsSunCheck();
+            }
+            if(!m_exposedToSun) {
+                sunlight_resetNeighbour();
+            }
+        }
+        m_needsSunCheck = false;
+    }
+    if(!m_exposedToSun) {
+        if(m_sunLight > 0.0f) {
+            setNeedsSunCheck();
+        }
+    } else {
+        m_sunLight = sunLight;
+        if(m_transparent) {
+            float l = m_sunLight - SUNLIGHT_MINUS;
+            sunlight_transferToNeighbour(l);
+        } else {
+            float l = m_sunLight - SUNLIGHT_MINUS;
+            sunlight_transferLeft(l);
+            sunlight_transferRight(l);
+        }
+    }
 }

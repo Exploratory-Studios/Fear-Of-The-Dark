@@ -134,10 +134,11 @@ void Chunk::update(float time, float timeStepVariable, Chunk** chunks, Player* p
 }
 
 void Chunk::tick(float tickTime, Player* p, WorldEra& era, bool updateEntities/* = true*/) {
-    for(int i = 0; i < WORLD_HEIGHT; i++) {
+    float sunLight = std::cos(tickTime / (DAY_LENGTH / 6.28318f)) / 2.0f + 0.5f;
+    for(int i = WORLD_HEIGHT-1; i >= 0; i--) {
         for(int j = 0; j < CHUNK_SIZE; j++) {
             for(int k = 0; k < m_tiles[i][j].size(); k++) {
-                m_tiles[i][j][k]->tick(tickTime);
+                m_tiles[i][j][k]->tick(tickTime, sunLight);
             }
         }
         /*for(int k = 0; k < m_extraTiles[i][0].size(); k++) {
@@ -151,13 +152,20 @@ void Chunk::tick(float tickTime, Player* p, WorldEra& era, bool updateEntities/*
         m_entityManager->tick(p, tickTime, era);
 }
 
-void Chunk::draw(GLEngine::SpriteBatch& sb, int xOffset, float time, GLEngine::Camera2D camera) {
+void Chunk::draw(GLEngine::SpriteBatch& sb, int xOffset, float time, GLEngine::Camera2D camera, Player* p) {
+
+    int playerLayer = p->getLayer();
+    int diff[WORLD_DEPTH];
+    for(int i = 0; i < WORLD_DEPTH; i++) {
+        diff[i] = playerLayer - i;
+    }
+
     for(int i = 0; i < WORLD_HEIGHT; i++) {
         for(int j = 0; j < CHUNK_SIZE; j++) {
             for(int k = 0; k < m_tiles[i][j].size(); k++) {
                 if(camera.isBoxInView(glm::vec2(j + CHUNK_SIZE * m_index + xOffset * CHUNK_SIZE, i), glm::vec2(1.0f, 1.0f))) {
-                    m_tiles[i][j][k]->draw(sb, xOffset);
-                    if(m_tiles[i][j][k]->doDraw() && !m_tiles[i][j][k]->isTransparent()) {
+                    m_tiles[i][j][k]->draw(sb, xOffset, diff[k]);
+                    if(diff[k] <= 0 && m_tiles[i][j][k]->doDraw() && !m_tiles[i][j][k]->isTransparent()) {
                         break;
                     }
                     if(k == WORLD_DEPTH-1) {

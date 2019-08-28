@@ -32,7 +32,7 @@ BlockDirt::BlockDirt(glm::vec2 pos, unsigned int layer, Chunk* parent, bool load
 }
 
 void BlockDirt::onTick(float& tickTime) {
-    if(m_sunLight >= 0.5f) {
+    if(m_sunLight >= 0.5f && m_exposedToSun) {
         int chance = std::rand() % 100;
         if(chance < 1) { // 1% chance every tick
             m_parentChunk->setTile(createBlock((unsigned int)Categories::BlockIDs::GRASS, m_pos, m_layer, m_parentChunk, MetaData(), tickTime));
@@ -56,7 +56,7 @@ BlockGrass::BlockGrass(glm::vec2 pos, unsigned int layer, Chunk* parent, bool lo
 }
 
 void BlockGrass::onTick(float& tickTime) {
-    if(m_sunLight >= 0.5f) {
+    if(m_sunLight >= 0.5f && m_exposedToSun) {
         int chance = std::rand() % 1000;
         if(chance < 2 && m_parentChunk->getTile(m_pos.x, m_pos.y + 1, m_layer)->getID() == (unsigned int)Categories::BlockIDs::AIR) { // 0.2% chance every tick
             //m_parentChunk->setTile(createBlock((unsigned int)Categories::BlockIDs::FOLIAGE, m_pos + glm::vec2(0.0f, 1.0f), m_parentChunk), m_pos.x, m_pos.y + 1);
@@ -176,17 +176,22 @@ BlockWater::BlockWater(glm::vec2 pos, unsigned int layer, Chunk* parent, float l
     }
 }
 
-void BlockWater::draw(GLEngine::SpriteBatch& sb, int xOffset) {
+void BlockWater::draw(GLEngine::SpriteBatch& sb, int xOffset, int depthDifference) {
     if(m_textureId == (GLuint)-1) {
         loadTexture();
     }
 
-    int r = m_colour.r, g = m_colour.g, b = m_colour.b;
+    GLEngine::ColourRGBA8 colour = m_colour;
+    if(depthDifference > 0) {
+        colour.a = 0;
+    }
+
+
     sb.draw(glm::vec4(m_pos.x + xOffset * CHUNK_SIZE, m_pos.y, m_size.x, m_waterLevel),
             glm::vec4(0.0f, 0.0f, 1.0f, m_waterLevel),
             m_textureId,
             2.0f,
-            GLEngine::ColourRGBA8(r, g, b, m_colour.a),
+            colour,
             glm::vec3(getLight()));
 }
 #include <iostream>

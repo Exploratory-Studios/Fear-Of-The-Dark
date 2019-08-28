@@ -20,7 +20,7 @@ GameplayScreen::~GameplayScreen()
 }
 
 int GameplayScreen::getNextScreenIndex() const {
-    return m_screenIndex;
+    return m_nextScreenIndex;
 }
 
 int GameplayScreen::getPreviousScreenIndex() const {
@@ -38,6 +38,8 @@ void GameplayScreen::destroy() {
 }
 
 void GameplayScreen::onEntry() {
+
+    std::srand(std::time(NULL));
 
     initShaders();
 
@@ -169,13 +171,13 @@ void GameplayScreen::update() {
 
         m_time++; /// Change the increment if time is slowed or quicker (potion effects?)
 
-    }
+        if((int)m_frame % (int)(60 / TICK_RATE) == 0) { // m_frame is equal to current frame
+            tick();
+        }
 
-    if((int)m_frame % (int)(60 / TICK_RATE) == 0) { // m_frame is equal to current frame
-        tick();
-    }
+        m_frame++;
 
-    m_frame++;
+    }
 
     m_gui.update();
 }
@@ -227,7 +229,7 @@ void GameplayScreen::draw() {
 
         for(unsigned int i = 0; i < m_drawnChunks.size(); i++) {
             int xOffset = std::abs(m_drawnChunks[i] + WORLD_SIZE) % WORLD_SIZE;
-            m_WorldIOManager->getWorld()->chunks[xOffset]->draw(m_spriteBatch, m_drawnChunks[i] - xOffset, m_time, m_camera);
+            m_WorldIOManager->getWorld()->chunks[xOffset]->draw(m_spriteBatch, m_drawnChunks[i] - xOffset, m_time, m_camera, m_player);
             #ifdef DEBUG
             m_WorldIOManager->getWorld()->chunks[xOffset]->drawDebug(m_dr, m_drawnChunks[i] - xOffset);
             m_dr.end();
@@ -324,6 +326,14 @@ void GameplayScreen::checkInput() {
         }
     }
 
+    if(m_game->inputManager.isKeyPressed(SDLK_ESCAPE)) {
+        if(m_gameState == GameState::PLAY) {
+            pauseGame();
+        } else if(m_gameState == GameState::PAUSE) {
+            continueGame();
+        }
+    }
+
     #ifdef DEV_CONTROLS
     if(m_game->inputManager.isKeyPressed(SDLK_BACKSLASH)) {
         m_console->show();
@@ -406,6 +416,29 @@ void GameplayScreen::initUI() {
         SDL_ShowCursor(0);
     }
 
+    { // Pause screen
+        CEGUI::PushButton* resumeButton = static_cast<CEGUI::PushButton*>(m_gui.createWidget("FOTDSkin/Button", glm::vec4(0.3f, 0.3f, 0.4f, 0.1f), glm::vec4(0.0f), "PAUSE_RESUME_BUTTON"));
+        resumeButton->subscribeEvent(CEGUI::PushButton::EventClicked, CEGUI::Event::Subscriber(&GameplayScreen::pause_resume_button_clicked, this));
+        resumeButton->setText("Resume Game");
+        resumeButton->disable();
+        resumeButton->hide();
+        m_pauseWidgets.push_back(static_cast<CEGUI::Window*>(resumeButton));
+
+        CEGUI::PushButton* saveButton = static_cast<CEGUI::PushButton*>(m_gui.createWidget("FOTDSkin/Button", glm::vec4(0.3f, 0.45f, 0.4f, 0.1f), glm::vec4(0.0f), "PAUSE_SAVE_BUTTON"));
+        saveButton->subscribeEvent(CEGUI::PushButton::EventClicked, CEGUI::Event::Subscriber(&GameplayScreen::pause_save_button_clicked, this));
+        saveButton->setText("Save Game");
+        saveButton->disable();
+        saveButton->hide();
+        m_pauseWidgets.push_back(static_cast<CEGUI::Window*>(saveButton));
+
+        CEGUI::PushButton* quitButton = static_cast<CEGUI::PushButton*>(m_gui.createWidget("FOTDSkin/Button", glm::vec4(0.3f, 0.6f, 0.4f, 0.1f), glm::vec4(0.0f), "PAUSE_QUIT_BUTTON"));
+        quitButton->subscribeEvent(CEGUI::PushButton::EventClicked, CEGUI::Event::Subscriber(&GameplayScreen::pause_quit_button_clicked, this));
+        quitButton->setText("Save & Quit Game");
+        quitButton->disable();
+        quitButton->hide();
+        m_pauseWidgets.push_back(static_cast<CEGUI::Window*>(quitButton));
+    }
+
     m_player->initGUI(&m_gui);
     m_questManager->initUI(&m_gui);
     m_console->init(m_gui, m_scripter);
@@ -426,7 +459,7 @@ void GameplayScreen::tick() {
     }
 
     if(!m_WorldIOManager->getAudioManager()->isMusicPlaying()) {
-        int hour = ((int)m_time % DAY_LENGTH) / DAY_LENGTH + 0.5f;//(int)((m_time / TICK_RATE) + 12) % DAY_LENGTH;
+        float hour = (float)((int)m_time % DAY_LENGTH) / (float)DAY_LENGTH + 0.5f;//(int)((m_time / TICK_RATE) + 12) % DAY_LENGTH;
 
         int randNum = std::rand() % 100;
 
@@ -484,6 +517,41 @@ void GameplayScreen::drawDebug() {
     m_fpsWidget->setText(fps);
 }
 #endif //DEV_CONTROLS
+
+void GameplayScreen::pauseGame() {
+    m_gameState = GameState::PAUSE;
+    for(unsigned int i = 0; i < m_pauseWidgets.size(); i++) {
+        m_pauseWidgets[i]->show();
+        m_pauseWidgets[i]->enable();
+        m_pauseWidgets[i]->activate();
+    }
+}
+
+void GameplayScreen::continueGame() {
+    m_gameState = GameState::PLAY;
+    for(unsigned int i = 0; i < m_pauseWidgets.size(); i++) {
+        m_pauseWidgets[i]->hide();
+        m_pauseWidgets[i]->disable();
+        m_pauseWidgets[i]->deactivate();
+    }
+}
+
+bool GameplayScreen::pause_resume_button_clicked(const CEGUI::EventArgs& e) {
+    continueGame();
+    return true;
+}
+
+bool GameplayScreen::pause_save_button_clicked(const CEGUI::EventArgs& e) {
+    m_WorldIOManager->saveWorld("Test");
+    return true;
+}
+
+bool GameplayScreen::pause_quit_button_clicked(const CEGUI::EventArgs& e) {
+    pause_save_button_clicked(e);
+    m_nextScreenIndex = SCREEN_INDEX_MAINMENU;
+    m_currentState = GLEngine::ScreenState::CHANGE_NEXT;
+    return true;
+}
 
 void GameplayScreen::activateChunks() {
     int chunkIndex = m_player->getChunkIndex();

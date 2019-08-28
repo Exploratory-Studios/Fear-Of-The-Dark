@@ -22,7 +22,7 @@ enum class ParticleIDs {
 #define SOUND_EFFECT_LENGTH 2 // How many sound effect files there are
 #define MORNING_MUSIC_LENGTH 1 // How many music files there are for 'morning'
 #define DAY_MUSIC_LENGTH 0 // How many music files there are for 'day'
-#define AFTERNOON_MUSIC_LENGTH 0 // How many music files there are for 'afternoon'
+#define AFTERNOON_MUSIC_LENGTH 2 // How many music files there are for 'afternoon'
 #define NIGHT_MUSIC_LENGTH 0 // How many music files there are for 'night'
 #define NIGHTMARE_MUSIC_LENGTH 0 // How many music files there are for 'nightmare hour'
 

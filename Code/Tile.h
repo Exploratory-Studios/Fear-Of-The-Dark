@@ -44,6 +44,7 @@ class Tile
             std::string ret;
             ret =  "Position: X=" + std::to_string(m_pos.x) + ", Y=" + std::to_string(m_pos.y) + "\n";
             ret += "ID=" + std::to_string(m_id) + ", Solid=" + std::to_string(m_solid) + ", " + "LightLevel: Amb=" + std::to_string(m_ambientLight) + ", Sun=" + std::to_string(m_sunLight) + ", Emit=" + std::to_string(m_emittedLight) + "\n";
+            ret += "ExposedToSun: " + std::to_string(m_exposedToSun) + "\n";
             ret += "Raw Temperature: " + std::to_string(m_temperature) + ", Real Temperature: " + std::to_string(getHeat()) + "\n";
             return ret;
         }
@@ -63,6 +64,7 @@ class Tile
         float           getSurroundingHeat();
         unsigned int    getWalkedOnSoundEffectID()      const { return (unsigned int)m_walkEffect;  }
         float           getSunLight()                   const { return m_sunLight;                  }
+        bool            isExposedToSunlight()           const { return m_exposedToSun;              }
         bool            isTransparent()                 const { return m_transparent;               }
         Chunk*          getParentChunk()                const { return m_parentChunk;               }
         float           getHeat();                      // Used when gameplay mechanics are in play (modifiers in use, not used when tiles are inheriting temperatures)
@@ -79,29 +81,20 @@ class Tile
         void light_addEffected(Tile* effected);
         void light_reset();
 
-        void sunlight_transferToNeighbour(float light);
-        void sunlight_set(float light) { m_sunLight = light; }
+        void sunlight_transferToNeighbour(float& light);
+        void sunlight_transferLeft(float& light);
+        void sunlight_transferRight(float& light);
+        void sunlight_resetNeighbour();
+        void sunlight_set(float& light) { m_sunLight = light; }
+
+        bool needsSunCheck() { return m_needsSunCheck; }
 
         /// TODO: Don't fuck with my formatting
 
         virtual TileData getSaveData();
 
         void            setAmbientLight(float light) { m_ambientLight = light; }
-        void            setSunlight(float& tickTime)
-        {
-            if(m_needsSunCheck) { // check if this block is exposed to sunlight
-                m_exposedToSun = exposedToSun();
-                m_needsSunCheck = false;
-            }
-            if(m_exposedToSun) {
-                m_sunLight = cos(tickTime / (DAY_LENGTH / 6.28318f)) / 2.0f + 0.5f;
-                if(!m_transparent) {
-                    sunlight_transferToNeighbour(m_sunLight - SUNLIGHT_MINUS);
-                }
-            } else {
-                m_sunLight = 0.0f;
-            }
-        }
+        void            setSunlight(float& tickTime, float& sunLight);
         void setNeedsSunCheck() { m_needsSunCheck = true; }
         void setPosition(glm::vec2 pos) { m_pos = pos; }
         void light_setToUpdate() { m_updateLight = true; } // Sends the signal to update lighting
@@ -109,8 +102,8 @@ class Tile
         void setToUpdate_heat() { m_updateHeat = true; } // Sends the signal to update heat
 
         virtual void update(float time, bool updateLighting);
-        virtual void tick(float tickTime);
-        virtual void draw(GLEngine::SpriteBatch& sb, int xOffset);
+        virtual void tick(float tickTime, float& sunlight);
+        virtual void draw(GLEngine::SpriteBatch& sb, int xOffset, int depthDifference);
         virtual void drawBackdrop(GLEngine::SpriteBatch& sb, int xOffset, int yOffset, float lightLevel);
 
         void destroy();

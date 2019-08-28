@@ -88,7 +88,7 @@ class ItemWeapon : public Item {
 		}
 
 	protected:
-		ItemWeapon(unsigned int quantity, GLEngine::GLTexture texture, float damage, float speed, float reach); // Abstract class, biotch
+		ItemWeapon(unsigned int quantity, GLEngine::GLTexture texture, std::string name, float damage, float speed, float reach); // Abstract class, biotch
 
 		float m_damage = 1.0f;
 		float m_speed = 1.0f;
@@ -135,7 +135,7 @@ static Item* createItem(unsigned int id, unsigned int quantity) {
         ret = new ItemBlockTorchBright(quantity);
         break;
     default:
-        ret = new Item(1, GLEngine::ResourceManager::getTexture(ASSETS_FOLDER_PATH + "/Textures/UNDEFINED.png"));
+        ret = new Item(1, GLEngine::ResourceManager::getTexture(ASSETS_FOLDER_PATH + "/Textures/UNDEFINED.png"), "UNDEFINED");
 	}
 
 	return ret;

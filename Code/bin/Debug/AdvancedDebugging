@@ -1,4 +1,0 @@
-p $pc
-disass $pc
-disass /m $pc
-x/i

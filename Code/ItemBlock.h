@@ -7,7 +7,7 @@
 class ItemBlock : public Item
 {
     public:
-        ItemBlock(unsigned short int quantity, GLEngine::GLTexture texture);
+        ItemBlock(unsigned short int quantity, GLEngine::GLTexture texture, std::string name);
 
         void onLeftClick(Tile* selectedBlock) override;
         void onRightClick(Tile* selectedBlock) override;

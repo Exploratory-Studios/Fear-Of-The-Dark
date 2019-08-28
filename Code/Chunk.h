@@ -28,7 +28,7 @@ class Chunk
 
         void update(float time, float timeStepVariable, Chunk** chunks, Player* p, bool updateEntities = true); // updateEntities is used for script pausing
         void tick(float tickTime, Player* p, WorldEra& era, bool updateEntities = true);
-        void draw(GLEngine::SpriteBatch& sb, int xOffset, float time, GLEngine::Camera2D camera); // xOffset is in chunks
+        void draw(GLEngine::SpriteBatch& sb, int xOffset, float time, GLEngine::Camera2D camera, Player* p); // xOffset is in chunks
 
         #ifdef DEBUG
         void drawDebug(GLEngine::DebugRenderer& dr, int xOffset);

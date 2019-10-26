@@ -44,6 +44,17 @@ ItemBlockTorchBright::ItemBlockTorchBright(unsigned int quantity) : ItemBlock(qu
 	m_canPlace = true;
 }
 
+ItemBlockTorchAnti::ItemBlockTorchAnti(unsigned int quantity) : ItemBlock(quantity, GLEngine::ResourceManager::getTexture(ASSETS_FOLDER_PATH + "Textures/Blocks/Torch.png"), "Anti-Torch") {
+    m_id = (unsigned int)Categories::ItemIDs::BLOCK_TORCH_ANTI;
+	m_type = ItemType::BLOCK;
+	m_weight = 0.0f; /// TODO
+
+	m_blockId = (unsigned int)Categories::BlockIDs::TORCH_ANTI;
+
+	m_canConsume = false;
+	m_canPlace = true;
+}
+
 ItemBlockWood::ItemBlockWood(unsigned int quantity) : ItemBlock(quantity, GLEngine::ResourceManager::getTexture(ASSETS_FOLDER_PATH + "Textures/Blocks/WoodBlock.png"), "Wood Block") {
 	m_id = (unsigned int)Categories::ItemIDs::BLOCK_WOOD;
 	m_type = ItemType::BLOCK;

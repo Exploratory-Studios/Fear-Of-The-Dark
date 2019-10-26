@@ -1556,3 +1556,790 @@ Flags loaded! (24 bytes)
 Loading trade tables. 180 bytes to read.
 Loaded trade tables! (24 bytes)
 Setting time to 0
+
+
+
+### LOG: Sat Oct 26 14:56:22 2019 ###
+
+CREATE: Starting world creation at time: 693.943970
+CREATE: Finished world creation at time: 4050.903076 (Elapsed: 67.758591ms)
+Loaded all 3 music files.
+Loaded all 2 sound files.
+Successfully Loaded Script File: ../Assets/Scripts/Script_player_makeHouse.txt, and given id of: 1
+Loading dialogue. 1297 bytes to read.
+Successfully Loaded Script File: ../Assets/Scripts/Script_selected_makeHouse.txt, and given id of: 2
+Successfully Loaded Script File: ../Assets/Scripts/Script_player_makeHouse.txt, and given id of: 1
+Dialogue loaded! (24 bytes)
+Loading flags. 125 bytes to read.
+Loaded flag with id of 0 and value of 0
+Loaded flag with id of 1 and value of 0
+Loaded flag with id of 2 and value of 0
+Loaded flag with id of 3 and value of 0
+Loaded flag with id of 4 and value of 0
+Loaded flag with id of 5 and value of 0
+Flags loaded! (24 bytes)
+Loading trade tables. 180 bytes to read.
+Loaded trade tables! (24 bytes)
+
+
+
+### LOG: Sat Oct 26 14:59:34 2019 ###
+
+CREATE: Starting world creation at time: 743.530029
+CREATE: Finished world creation at time: 5004.553223 (Elapsed: 111.925163ms)
+Loaded all 3 music files.
+Loaded all 2 sound files.
+Successfully Loaded Script File: ../Assets/Scripts/Script_player_makeHouse.txt, and given id of: 1
+Loading dialogue. 1297 bytes to read.
+Successfully Loaded Script File: ../Assets/Scripts/Script_selected_makeHouse.txt, and given id of: 2
+Successfully Loaded Script File: ../Assets/Scripts/Script_player_makeHouse.txt, and given id of: 1
+Dialogue loaded! (24 bytes)
+Loading flags. 125 bytes to read.
+Loaded flag with id of 0 and value of 0
+Loaded flag with id of 1 and value of 0
+Loaded flag with id of 2 and value of 0
+Loaded flag with id of 3 and value of 0
+Loaded flag with id of 4 and value of 0
+Loaded flag with id of 5 and value of 0
+Flags loaded! (24 bytes)
+Loading trade tables. 180 bytes to read.
+Loaded trade tables! (24 bytes)
+
+
+
+### LOG: Sat Oct 26 15:03:52 2019 ###
+
+CREATE: Starting world creation at time: 709.429993
+CREATE: Finished world creation at time: 5864.736816 (Elapsed: 139.514343ms)
+Loaded all 3 music files.
+Loaded all 2 sound files.
+Successfully Loaded Script File: ../Assets/Scripts/Script_player_makeHouse.txt, and given id of: 1
+Loading dialogue. 1297 bytes to read.
+Successfully Loaded Script File: ../Assets/Scripts/Script_selected_makeHouse.txt, and given id of: 2
+Successfully Loaded Script File: ../Assets/Scripts/Script_player_makeHouse.txt, and given id of: 1
+Dialogue loaded! (24 bytes)
+Loading flags. 125 bytes to read.
+Loaded flag with id of 0 and value of 0
+Loaded flag with id of 1 and value of 0
+Loaded flag with id of 2 and value of 0
+Loaded flag with id of 3 and value of 0
+Loaded flag with id of 4 and value of 0
+Loaded flag with id of 5 and value of 0
+Flags loaded! (24 bytes)
+Loading trade tables. 180 bytes to read.
+Loaded trade tables! (24 bytes)
+
+
+
+### LOG: Sat Oct 26 15:04:17 2019 ###
+
+CREATE: Starting world creation at time: 651.773010
+CREATE: Finished world creation at time: 4968.068848 (Elapsed: 113.405746ms)
+Loaded all 3 music files.
+Loaded all 2 sound files.
+Successfully Loaded Script File: ../Assets/Scripts/Script_player_makeHouse.txt, and given id of: 1
+Loading dialogue. 1297 bytes to read.
+Successfully Loaded Script File: ../Assets/Scripts/Script_selected_makeHouse.txt, and given id of: 2
+Successfully Loaded Script File: ../Assets/Scripts/Script_player_makeHouse.txt, and given id of: 1
+Dialogue loaded! (24 bytes)
+Loading flags. 125 bytes to read.
+Loaded flag with id of 0 and value of 0
+Loaded flag with id of 1 and value of 0
+Loaded flag with id of 2 and value of 0
+Loaded flag with id of 3 and value of 0
+Loaded flag with id of 4 and value of 0
+Loaded flag with id of 5 and value of 0
+Flags loaded! (24 bytes)
+Loading trade tables. 180 bytes to read.
+Loaded trade tables! (24 bytes)
+
+
+
+### LOG: Sat Oct 26 15:06:29 2019 ###
+
+CREATE: Starting world creation at time: 667.809998
+CREATE: Finished world creation at time: 5315.296875 (Elapsed: 123.241402ms)
+Loaded all 3 music files.
+Loaded all 2 sound files.
+Successfully Loaded Script File: ../Assets/Scripts/Script_player_makeHouse.txt, and given id of: 1
+Loading dialogue. 1297 bytes to read.
+Successfully Loaded Script File: ../Assets/Scripts/Script_selected_makeHouse.txt, and given id of: 2
+Successfully Loaded Script File: ../Assets/Scripts/Script_player_makeHouse.txt, and given id of: 1
+Dialogue loaded! (24 bytes)
+Loading flags. 125 bytes to read.
+Loaded flag with id of 0 and value of 0
+Loaded flag with id of 1 and value of 0
+Loaded flag with id of 2 and value of 0
+Loaded flag with id of 3 and value of 0
+Loaded flag with id of 4 and value of 0
+Loaded flag with id of 5 and value of 0
+Flags loaded! (24 bytes)
+Loading trade tables. 180 bytes to read.
+Loaded trade tables! (24 bytes)
+
+
+
+### LOG: Sat Oct 26 15:10:03 2019 ###
+
+CREATE: Starting world creation at time: 684.101013
+CREATE: Finished world creation at time: 4969.764160 (Elapsed: 112.965004ms)
+Loaded all 3 music files.
+Loaded all 2 sound files.
+Successfully Loaded Script File: ../Assets/Scripts/Script_player_makeHouse.txt, and given id of: 1
+Loading dialogue. 1297 bytes to read.
+Successfully Loaded Script File: ../Assets/Scripts/Script_selected_makeHouse.txt, and given id of: 2
+Successfully Loaded Script File: ../Assets/Scripts/Script_player_makeHouse.txt, and given id of: 1
+Dialogue loaded! (24 bytes)
+Loading flags. 125 bytes to read.
+Loaded flag with id of 0 and value of 0
+Loaded flag with id of 1 and value of 0
+Loaded flag with id of 2 and value of 0
+Loaded flag with id of 3 and value of 0
+Loaded flag with id of 4 and value of 0
+Loaded flag with id of 5 and value of 0
+Flags loaded! (24 bytes)
+Loading trade tables. 180 bytes to read.
+Loaded trade tables! (24 bytes)
+
+
+
+### LOG: Sat Oct 26 15:10:28 2019 ###
+
+CREATE: Starting world creation at time: 709.166016
+CREATE: Finished world creation at time: 5234.331055 (Elapsed: 120.101257ms)
+Loaded all 3 music files.
+Loaded all 2 sound files.
+Successfully Loaded Script File: ../Assets/Scripts/Script_player_makeHouse.txt, and given id of: 1
+Loading dialogue. 1297 bytes to read.
+Successfully Loaded Script File: ../Assets/Scripts/Script_selected_makeHouse.txt, and given id of: 2
+Successfully Loaded Script File: ../Assets/Scripts/Script_player_makeHouse.txt, and given id of: 1
+Dialogue loaded! (24 bytes)
+Loading flags. 125 bytes to read.
+Loaded flag with id of 0 and value of 0
+Loaded flag with id of 1 and value of 0
+Loaded flag with id of 2 and value of 0
+Loaded flag with id of 3 and value of 0
+Loaded flag with id of 4 and value of 0
+Loaded flag with id of 5 and value of 0
+Flags loaded! (24 bytes)
+Loading trade tables. 180 bytes to read.
+Loaded trade tables! (24 bytes)
+SAVE: Starting World Save to File: Test.bin
+SAVE: Starting Save Preparations
+SAVE: Player Data Prepared
+SAVE: Chunk Data Prepared
+
+### SAVE: ALL DATA PREPARED, STARTING SAVE ###
+
+SAVE: Started Saving with version: 1.2.1
+SAVE: Wrote Player POD
+SAVE: Wrote Player Inventory
+SAVE: Wrote World Chunks
+
+### SAVE: SAVE COMPLETED ###
+
+
+
+
+### LOG: Sat Oct 26 15:26:50 2019 ###
+
+CREATE: Starting world creation at time: 657.580017
+CREATE: Finished world creation at time: 5305.704102 (Elapsed: 124.198753ms)
+Loaded all 3 music files.
+Loaded all 2 sound files.
+Successfully Loaded Script File: ../Assets/Scripts/Script_player_makeHouse.txt, and given id of: 1
+Loading dialogue. 1297 bytes to read.
+Successfully Loaded Script File: ../Assets/Scripts/Script_selected_makeHouse.txt, and given id of: 2
+Successfully Loaded Script File: ../Assets/Scripts/Script_player_makeHouse.txt, and given id of: 1
+Dialogue loaded! (24 bytes)
+Loading flags. 125 bytes to read.
+Loaded flag with id of 0 and value of 0
+Loaded flag with id of 1 and value of 0
+Loaded flag with id of 2 and value of 0
+Loaded flag with id of 3 and value of 0
+Loaded flag with id of 4 and value of 0
+Loaded flag with id of 5 and value of 0
+Flags loaded! (24 bytes)
+Loading trade tables. 180 bytes to read.
+Loaded trade tables! (24 bytes)
+
+
+
+### LOG: Sat Oct 26 15:27:38 2019 ###
+
+CREATE: Starting world creation at time: 579.908020
+CREATE: Finished world creation at time: 4894.411133 (Elapsed: 113.621445ms)
+Loaded all 3 music files.
+Loaded all 2 sound files.
+Successfully Loaded Script File: ../Assets/Scripts/Script_player_makeHouse.txt, and given id of: 1
+Loading dialogue. 1297 bytes to read.
+Successfully Loaded Script File: ../Assets/Scripts/Script_selected_makeHouse.txt, and given id of: 2
+Successfully Loaded Script File: ../Assets/Scripts/Script_player_makeHouse.txt, and given id of: 1
+Dialogue loaded! (24 bytes)
+Loading flags. 125 bytes to read.
+Loaded flag with id of 0 and value of 0
+Loaded flag with id of 1 and value of 0
+Loaded flag with id of 2 and value of 0
+Loaded flag with id of 3 and value of 0
+Loaded flag with id of 4 and value of 0
+Loaded flag with id of 5 and value of 0
+Flags loaded! (24 bytes)
+Loading trade tables. 180 bytes to read.
+Loaded trade tables! (24 bytes)
+
+
+
+### LOG: Sat Oct 26 15:28:43 2019 ###
+
+CREATE: Starting world creation at time: 558.284973
+CREATE: Finished world creation at time: 5373.044922 (Elapsed: 129.192413ms)
+Loaded all 3 music files.
+Loaded all 2 sound files.
+Successfully Loaded Script File: ../Assets/Scripts/Script_player_makeHouse.txt, and given id of: 1
+Loading dialogue. 1297 bytes to read.
+Successfully Loaded Script File: ../Assets/Scripts/Script_selected_makeHouse.txt, and given id of: 2
+Successfully Loaded Script File: ../Assets/Scripts/Script_player_makeHouse.txt, and given id of: 1
+Dialogue loaded! (24 bytes)
+Loading flags. 125 bytes to read.
+Loaded flag with id of 0 and value of 0
+Loaded flag with id of 1 and value of 0
+Loaded flag with id of 2 and value of 0
+Loaded flag with id of 3 and value of 0
+Loaded flag with id of 4 and value of 0
+Loaded flag with id of 5 and value of 0
+Flags loaded! (24 bytes)
+Loading trade tables. 180 bytes to read.
+Loaded trade tables! (24 bytes)
+
+
+
+### LOG: Sat Oct 26 15:38:53 2019 ###
+
+CREATE: Starting world creation at time: 622.099976
+CREATE: Finished world creation at time: 5052.208008 (Elapsed: 119.318192ms)
+Loaded all 3 music files.
+Loaded all 2 sound files.
+Successfully Loaded Script File: ../Assets/Scripts/Script_player_makeHouse.txt, and given id of: 1
+Loading dialogue. 1297 bytes to read.
+Successfully Loaded Script File: ../Assets/Scripts/Script_selected_makeHouse.txt, and given id of: 2
+Successfully Loaded Script File: ../Assets/Scripts/Script_player_makeHouse.txt, and given id of: 1
+Dialogue loaded! (24 bytes)
+Loading flags. 125 bytes to read.
+Loaded flag with id of 0 and value of 0
+Loaded flag with id of 1 and value of 0
+Loaded flag with id of 2 and value of 0
+Loaded flag with id of 3 and value of 0
+Loaded flag with id of 4 and value of 0
+Loaded flag with id of 5 and value of 0
+Flags loaded! (24 bytes)
+Loading trade tables. 180 bytes to read.
+Loaded trade tables! (24 bytes)
+
+
+
+### LOG: Sat Oct 26 15:47:03 2019 ###
+
+CREATE: Starting world creation at time: 699.723022
+CREATE: Finished world creation at time: 5337.029785 (Elapsed: 125.679153ms)
+Loaded all 3 music files.
+Loaded all 2 sound files.
+Successfully Loaded Script File: ../Assets/Scripts/Script_player_makeHouse.txt, and given id of: 1
+Loading dialogue. 1297 bytes to read.
+Successfully Loaded Script File: ../Assets/Scripts/Script_selected_makeHouse.txt, and given id of: 2
+Successfully Loaded Script File: ../Assets/Scripts/Script_player_makeHouse.txt, and given id of: 1
+Dialogue loaded! (24 bytes)
+Loading flags. 125 bytes to read.
+Loaded flag with id of 0 and value of 0
+Loaded flag with id of 1 and value of 0
+Loaded flag with id of 2 and value of 0
+Loaded flag with id of 3 and value of 0
+Loaded flag with id of 4 and value of 0
+Loaded flag with id of 5 and value of 0
+Flags loaded! (24 bytes)
+Loading trade tables. 180 bytes to read.
+Loaded trade tables! (24 bytes)
+
+
+
+### LOG: Sat Oct 26 15:48:21 2019 ###
+
+CREATE: Starting world creation at time: 683.093018
+CREATE: Finished world creation at time: 5370.513184 (Elapsed: 126.392532ms)
+Loaded all 3 music files.
+Loaded all 2 sound files.
+Successfully Loaded Script File: ../Assets/Scripts/Script_player_makeHouse.txt, and given id of: 1
+Loading dialogue. 1297 bytes to read.
+Successfully Loaded Script File: ../Assets/Scripts/Script_selected_makeHouse.txt, and given id of: 2
+Successfully Loaded Script File: ../Assets/Scripts/Script_player_makeHouse.txt, and given id of: 1
+Dialogue loaded! (24 bytes)
+Loading flags. 125 bytes to read.
+Loaded flag with id of 0 and value of 0
+Loaded flag with id of 1 and value of 0
+Loaded flag with id of 2 and value of 0
+Loaded flag with id of 3 and value of 0
+Loaded flag with id of 4 and value of 0
+Loaded flag with id of 5 and value of 0
+Flags loaded! (24 bytes)
+Loading trade tables. 180 bytes to read.
+Loaded trade tables! (24 bytes)
+
+
+
+### LOG: Sat Oct 26 15:50:01 2019 ###
+
+CREATE: Starting world creation at time: 610.956970
+CREATE: Finished world creation at time: 4939.577148 (Elapsed: 116.254135ms)
+Loaded all 3 music files.
+Loaded all 2 sound files.
+Successfully Loaded Script File: ../Assets/Scripts/Script_player_makeHouse.txt, and given id of: 1
+Loading dialogue. 1297 bytes to read.
+Successfully Loaded Script File: ../Assets/Scripts/Script_selected_makeHouse.txt, and given id of: 2
+Successfully Loaded Script File: ../Assets/Scripts/Script_player_makeHouse.txt, and given id of: 1
+Dialogue loaded! (24 bytes)
+Loading flags. 125 bytes to read.
+Loaded flag with id of 0 and value of 0
+Loaded flag with id of 1 and value of 0
+Loaded flag with id of 2 and value of 0
+Loaded flag with id of 3 and value of 0
+Loaded flag with id of 4 and value of 0
+Loaded flag with id of 5 and value of 0
+Flags loaded! (24 bytes)
+Loading trade tables. 180 bytes to read.
+Loaded trade tables! (24 bytes)
+
+
+
+### LOG: Sat Oct 26 15:51:06 2019 ###
+
+CREATE: Starting world creation at time: 646.518005
+CREATE: Finished world creation at time: 5013.220215 (Elapsed: 116.681198ms)
+Loaded all 3 music files.
+Loaded all 2 sound files.
+Successfully Loaded Script File: ../Assets/Scripts/Script_player_makeHouse.txt, and given id of: 1
+Loading dialogue. 1297 bytes to read.
+Successfully Loaded Script File: ../Assets/Scripts/Script_selected_makeHouse.txt, and given id of: 2
+Successfully Loaded Script File: ../Assets/Scripts/Script_player_makeHouse.txt, and given id of: 1
+Dialogue loaded! (24 bytes)
+Loading flags. 125 bytes to read.
+Loaded flag with id of 0 and value of 0
+Loaded flag with id of 1 and value of 0
+Loaded flag with id of 2 and value of 0
+Loaded flag with id of 3 and value of 0
+Loaded flag with id of 4 and value of 0
+Loaded flag with id of 5 and value of 0
+Flags loaded! (24 bytes)
+Loading trade tables. 180 bytes to read.
+Loaded trade tables! (24 bytes)
+
+
+
+### LOG: Sat Oct 26 15:51:52 2019 ###
+
+CREATE: Starting world creation at time: 617.310974
+CREATE: Finished world creation at time: 4975.372070 (Elapsed: 117.192688ms)
+Loaded all 3 music files.
+Loaded all 2 sound files.
+Successfully Loaded Script File: ../Assets/Scripts/Script_player_makeHouse.txt, and given id of: 1
+Loading dialogue. 1297 bytes to read.
+Successfully Loaded Script File: ../Assets/Scripts/Script_selected_makeHouse.txt, and given id of: 2
+Successfully Loaded Script File: ../Assets/Scripts/Script_player_makeHouse.txt, and given id of: 1
+Dialogue loaded! (24 bytes)
+Loading flags. 125 bytes to read.
+Loaded flag with id of 0 and value of 0
+Loaded flag with id of 1 and value of 0
+Loaded flag with id of 2 and value of 0
+Loaded flag with id of 3 and value of 0
+Loaded flag with id of 4 and value of 0
+Loaded flag with id of 5 and value of 0
+Flags loaded! (24 bytes)
+Loading trade tables. 180 bytes to read.
+Loaded trade tables! (24 bytes)
+
+
+
+### LOG: Sat Oct 26 15:52:15 2019 ###
+
+CREATE: Starting world creation at time: 680.000000
+CREATE: Finished world creation at time: 4015.737061 (Elapsed: 69.324127ms)
+Loaded all 3 music files.
+Loaded all 2 sound files.
+Successfully Loaded Script File: ../Assets/Scripts/Script_player_makeHouse.txt, and given id of: 1
+Loading dialogue. 1297 bytes to read.
+Successfully Loaded Script File: ../Assets/Scripts/Script_selected_makeHouse.txt, and given id of: 2
+Successfully Loaded Script File: ../Assets/Scripts/Script_player_makeHouse.txt, and given id of: 1
+Dialogue loaded! (24 bytes)
+Loading flags. 125 bytes to read.
+Loaded flag with id of 0 and value of 0
+Loaded flag with id of 1 and value of 0
+Loaded flag with id of 2 and value of 0
+Loaded flag with id of 3 and value of 0
+Loaded flag with id of 4 and value of 0
+Loaded flag with id of 5 and value of 0
+Flags loaded! (24 bytes)
+Loading trade tables. 180 bytes to read.
+Loaded trade tables! (24 bytes)
+
+
+
+### LOG: Sat Oct 26 15:54:27 2019 ###
+
+CREATE: Starting world creation at time: 622.434998
+CREATE: Finished world creation at time: 5012.583984 (Elapsed: 116.761345ms)
+Loaded all 3 music files.
+Loaded all 2 sound files.
+Successfully Loaded Script File: ../Assets/Scripts/Script_player_makeHouse.txt, and given id of: 1
+Loading dialogue. 1297 bytes to read.
+Successfully Loaded Script File: ../Assets/Scripts/Script_selected_makeHouse.txt, and given id of: 2
+Successfully Loaded Script File: ../Assets/Scripts/Script_player_makeHouse.txt, and given id of: 1
+Dialogue loaded! (24 bytes)
+Loading flags. 125 bytes to read.
+Loaded flag with id of 0 and value of 0
+Loaded flag with id of 1 and value of 0
+Loaded flag with id of 2 and value of 0
+Loaded flag with id of 3 and value of 0
+Loaded flag with id of 4 and value of 0
+Loaded flag with id of 5 and value of 0
+Flags loaded! (24 bytes)
+Loading trade tables. 180 bytes to read.
+Loaded trade tables! (24 bytes)
+
+
+
+### LOG: Sat Oct 26 15:55:33 2019 ###
+
+CREATE: Starting world creation at time: 574.103027
+CREATE: Finished world creation at time: 4945.800781 (Elapsed: 117.603523ms)
+Loaded all 3 music files.
+Loaded all 2 sound files.
+Successfully Loaded Script File: ../Assets/Scripts/Script_player_makeHouse.txt, and given id of: 1
+Loading dialogue. 1297 bytes to read.
+Successfully Loaded Script File: ../Assets/Scripts/Script_selected_makeHouse.txt, and given id of: 2
+Successfully Loaded Script File: ../Assets/Scripts/Script_player_makeHouse.txt, and given id of: 1
+Dialogue loaded! (24 bytes)
+Loading flags. 125 bytes to read.
+Loaded flag with id of 0 and value of 0
+Loaded flag with id of 1 and value of 0
+Loaded flag with id of 2 and value of 0
+Loaded flag with id of 3 and value of 0
+Loaded flag with id of 4 and value of 0
+Loaded flag with id of 5 and value of 0
+Flags loaded! (24 bytes)
+Loading trade tables. 180 bytes to read.
+Loaded trade tables! (24 bytes)
+
+
+
+### LOG: Sat Oct 26 15:56:05 2019 ###
+
+CREATE: Starting world creation at time: 611.911011
+CREATE: Finished world creation at time: 4980.248047 (Elapsed: 117.610657ms)
+Loaded all 3 music files.
+Loaded all 2 sound files.
+Successfully Loaded Script File: ../Assets/Scripts/Script_player_makeHouse.txt, and given id of: 1
+Loading dialogue. 1297 bytes to read.
+Successfully Loaded Script File: ../Assets/Scripts/Script_selected_makeHouse.txt, and given id of: 2
+Successfully Loaded Script File: ../Assets/Scripts/Script_player_makeHouse.txt, and given id of: 1
+Dialogue loaded! (24 bytes)
+Loading flags. 125 bytes to read.
+Loaded flag with id of 0 and value of 0
+Loaded flag with id of 1 and value of 0
+Loaded flag with id of 2 and value of 0
+Loaded flag with id of 3 and value of 0
+Loaded flag with id of 4 and value of 0
+Loaded flag with id of 5 and value of 0
+Flags loaded! (24 bytes)
+Loading trade tables. 180 bytes to read.
+Loaded trade tables! (24 bytes)
+
+
+
+### LOG: Sat Oct 26 16:00:05 2019 ###
+
+CREATE: Starting world creation at time: 951.732971
+CREATE: Finished world creation at time: 5483.854004 (Elapsed: 119.653534ms)
+Loaded all 3 music files.
+Loaded all 2 sound files.
+Successfully Loaded Script File: ../Assets/Scripts/Script_player_makeHouse.txt, and given id of: 1
+Loading dialogue. 1297 bytes to read.
+Successfully Loaded Script File: ../Assets/Scripts/Script_selected_makeHouse.txt, and given id of: 2
+Successfully Loaded Script File: ../Assets/Scripts/Script_player_makeHouse.txt, and given id of: 1
+Dialogue loaded! (24 bytes)
+Loading flags. 125 bytes to read.
+Loaded flag with id of 0 and value of 0
+Loaded flag with id of 1 and value of 0
+Loaded flag with id of 2 and value of 0
+Loaded flag with id of 3 and value of 0
+Loaded flag with id of 4 and value of 0
+Loaded flag with id of 5 and value of 0
+Flags loaded! (24 bytes)
+Loading trade tables. 180 bytes to read.
+Loaded trade tables! (24 bytes)
+
+
+
+### LOG: Sat Oct 26 16:03:28 2019 ###
+
+CREATE: Starting world creation at time: 609.655029
+CREATE: Finished world creation at time: 5045.178223 (Elapsed: 119.266289ms)
+Loaded all 3 music files.
+Loaded all 2 sound files.
+Successfully Loaded Script File: ../Assets/Scripts/Script_player_makeHouse.txt, and given id of: 1
+Loading dialogue. 1297 bytes to read.
+Successfully Loaded Script File: ../Assets/Scripts/Script_selected_makeHouse.txt, and given id of: 2
+Successfully Loaded Script File: ../Assets/Scripts/Script_player_makeHouse.txt, and given id of: 1
+Dialogue loaded! (24 bytes)
+Loading flags. 125 bytes to read.
+Loaded flag with id of 0 and value of 0
+Loaded flag with id of 1 and value of 0
+Loaded flag with id of 2 and value of 0
+Loaded flag with id of 3 and value of 0
+Loaded flag with id of 4 and value of 0
+Loaded flag with id of 5 and value of 0
+Flags loaded! (24 bytes)
+Loading trade tables. 180 bytes to read.
+Loaded trade tables! (24 bytes)
+
+
+
+### LOG: Sat Oct 26 16:07:01 2019 ###
+
+CREATE: Starting world creation at time: 642.851013
+CREATE: Finished world creation at time: 4807.649902 (Elapsed: 110.994186ms)
+Loaded all 3 music files.
+Loaded all 2 sound files.
+Successfully Loaded Script File: ../Assets/Scripts/Script_player_makeHouse.txt, and given id of: 1
+Loading dialogue. 1297 bytes to read.
+Successfully Loaded Script File: ../Assets/Scripts/Script_selected_makeHouse.txt, and given id of: 2
+Successfully Loaded Script File: ../Assets/Scripts/Script_player_makeHouse.txt, and given id of: 1
+Dialogue loaded! (24 bytes)
+Loading flags. 125 bytes to read.
+Loaded flag with id of 0 and value of 0
+Loaded flag with id of 1 and value of 0
+Loaded flag with id of 2 and value of 0
+Loaded flag with id of 3 and value of 0
+Loaded flag with id of 4 and value of 0
+Loaded flag with id of 5 and value of 0
+Flags loaded! (24 bytes)
+Loading trade tables. 180 bytes to read.
+Loaded trade tables! (24 bytes)
+
+
+
+### LOG: Sat Oct 26 16:09:26 2019 ###
+
+CREATE: Starting world creation at time: 1817.723999
+CREATE: Finished world creation at time: 5978.479980 (Elapsed: 111.088593ms)
+Loaded all 3 music files.
+Loaded all 2 sound files.
+Successfully Loaded Script File: ../Assets/Scripts/Script_player_makeHouse.txt, and given id of: 1
+Loading dialogue. 1297 bytes to read.
+Successfully Loaded Script File: ../Assets/Scripts/Script_selected_makeHouse.txt, and given id of: 2
+Successfully Loaded Script File: ../Assets/Scripts/Script_player_makeHouse.txt, and given id of: 1
+Dialogue loaded! (24 bytes)
+Loading flags. 125 bytes to read.
+Loaded flag with id of 0 and value of 0
+Loaded flag with id of 1 and value of 0
+Loaded flag with id of 2 and value of 0
+Loaded flag with id of 3 and value of 0
+Loaded flag with id of 4 and value of 0
+Loaded flag with id of 5 and value of 0
+Flags loaded! (24 bytes)
+Loading trade tables. 180 bytes to read.
+Loaded trade tables! (24 bytes)
+
+
+
+### LOG: Sat Oct 26 16:11:03 2019 ###
+
+CREATE: Starting world creation at time: 709.366028
+CREATE: Finished world creation at time: 4877.565918 (Elapsed: 111.063560ms)
+Loaded all 3 music files.
+Loaded all 2 sound files.
+Successfully Loaded Script File: ../Assets/Scripts/Script_player_makeHouse.txt, and given id of: 1
+Loading dialogue. 1297 bytes to read.
+Successfully Loaded Script File: ../Assets/Scripts/Script_selected_makeHouse.txt, and given id of: 2
+Successfully Loaded Script File: ../Assets/Scripts/Script_player_makeHouse.txt, and given id of: 1
+Dialogue loaded! (24 bytes)
+Loading flags. 125 bytes to read.
+Loaded flag with id of 0 and value of 0
+Loaded flag with id of 1 and value of 0
+Loaded flag with id of 2 and value of 0
+Loaded flag with id of 3 and value of 0
+Loaded flag with id of 4 and value of 0
+Loaded flag with id of 5 and value of 0
+Flags loaded! (24 bytes)
+Loading trade tables. 180 bytes to read.
+Loaded trade tables! (24 bytes)
+
+
+
+### LOG: Sat Oct 26 16:13:47 2019 ###
+
+
+
+
+### LOG: Sat Oct 26 16:14:13 2019 ###
+
+CREATE: Starting world creation at time: 611.335022
+CREATE: Finished world creation at time: 4753.065918 (Elapsed: 110.285492ms)
+Loaded all 3 music files.
+Loaded all 2 sound files.
+Successfully Loaded Script File: ../Assets/Scripts/Script_player_makeHouse.txt, and given id of: 1
+Loading dialogue. 1297 bytes to read.
+Successfully Loaded Script File: ../Assets/Scripts/Script_selected_makeHouse.txt, and given id of: 2
+Successfully Loaded Script File: ../Assets/Scripts/Script_player_makeHouse.txt, and given id of: 1
+Dialogue loaded! (24 bytes)
+Loading flags. 125 bytes to read.
+Loaded flag with id of 0 and value of 0
+Loaded flag with id of 1 and value of 0
+Loaded flag with id of 2 and value of 0
+Loaded flag with id of 3 and value of 0
+Loaded flag with id of 4 and value of 0
+Loaded flag with id of 5 and value of 0
+Flags loaded! (24 bytes)
+Loading trade tables. 180 bytes to read.
+Loaded trade tables! (24 bytes)
+
+
+
+### LOG: Sat Oct 26 16:15:06 2019 ###
+
+CREATE: Starting world creation at time: 586.734009
+CREATE: Finished world creation at time: 5031.496094 (Elapsed: 119.512939ms)
+Loaded all 3 music files.
+Loaded all 2 sound files.
+Successfully Loaded Script File: ../Assets/Scripts/Script_player_makeHouse.txt, and given id of: 1
+Loading dialogue. 1297 bytes to read.
+Successfully Loaded Script File: ../Assets/Scripts/Script_selected_makeHouse.txt, and given id of: 2
+Successfully Loaded Script File: ../Assets/Scripts/Script_player_makeHouse.txt, and given id of: 1
+Dialogue loaded! (24 bytes)
+Loading flags. 125 bytes to read.
+Loaded flag with id of 0 and value of 0
+Loaded flag with id of 1 and value of 0
+Loaded flag with id of 2 and value of 0
+Loaded flag with id of 3 and value of 0
+Loaded flag with id of 4 and value of 0
+Loaded flag with id of 5 and value of 0
+Flags loaded! (24 bytes)
+Loading trade tables. 180 bytes to read.
+Loaded trade tables! (24 bytes)
+
+
+
+### LOG: Sat Oct 26 16:16:55 2019 ###
+
+CREATE: Starting world creation at time: 721.981995
+CREATE: Finished world creation at time: 5095.958008 (Elapsed: 115.988937ms)
+Loaded all 3 music files.
+Loaded all 2 sound files.
+Successfully Loaded Script File: ../Assets/Scripts/Script_player_makeHouse.txt, and given id of: 1
+Loading dialogue. 1297 bytes to read.
+Successfully Loaded Script File: ../Assets/Scripts/Script_selected_makeHouse.txt, and given id of: 2
+Successfully Loaded Script File: ../Assets/Scripts/Script_player_makeHouse.txt, and given id of: 1
+Dialogue loaded! (24 bytes)
+Loading flags. 125 bytes to read.
+Loaded flag with id of 0 and value of 0
+Loaded flag with id of 1 and value of 0
+Loaded flag with id of 2 and value of 0
+Loaded flag with id of 3 and value of 0
+Loaded flag with id of 4 and value of 0
+Loaded flag with id of 5 and value of 0
+Flags loaded! (24 bytes)
+Loading trade tables. 180 bytes to read.
+Loaded trade tables! (24 bytes)
+
+
+
+### LOG: Sat Oct 26 16:18:48 2019 ###
+
+CREATE: Starting world creation at time: 586.953003
+CREATE: Finished world creation at time: 4957.571777 (Elapsed: 114.778458ms)
+Loaded all 3 music files.
+Loaded all 2 sound files.
+Successfully Loaded Script File: ../Assets/Scripts/Script_player_makeHouse.txt, and given id of: 1
+Loading dialogue. 1297 bytes to read.
+Successfully Loaded Script File: ../Assets/Scripts/Script_selected_makeHouse.txt, and given id of: 2
+Successfully Loaded Script File: ../Assets/Scripts/Script_player_makeHouse.txt, and given id of: 1
+Dialogue loaded! (24 bytes)
+Loading flags. 125 bytes to read.
+Loaded flag with id of 0 and value of 0
+Loaded flag with id of 1 and value of 0
+Loaded flag with id of 2 and value of 0
+Loaded flag with id of 3 and value of 0
+Loaded flag with id of 4 and value of 0
+Loaded flag with id of 5 and value of 0
+Flags loaded! (24 bytes)
+Loading trade tables. 180 bytes to read.
+Loaded trade tables! (24 bytes)
+
+
+
+### LOG: Sat Oct 26 16:21:55 2019 ###
+
+CREATE: Starting world creation at time: 661.406982
+CREATE: Finished world creation at time: 5119.755859 (Elapsed: 120.089874ms)
+Loaded all 3 music files.
+Loaded all 2 sound files.
+Successfully Loaded Script File: ../Assets/Scripts/Script_player_makeHouse.txt, and given id of: 1
+Loading dialogue. 1297 bytes to read.
+Successfully Loaded Script File: ../Assets/Scripts/Script_selected_makeHouse.txt, and given id of: 2
+Successfully Loaded Script File: ../Assets/Scripts/Script_player_makeHouse.txt, and given id of: 1
+Dialogue loaded! (24 bytes)
+Loading flags. 125 bytes to read.
+Loaded flag with id of 0 and value of 0
+Loaded flag with id of 1 and value of 0
+Loaded flag with id of 2 and value of 0
+Loaded flag with id of 3 and value of 0
+Loaded flag with id of 4 and value of 0
+Loaded flag with id of 5 and value of 0
+Flags loaded! (24 bytes)
+Loading trade tables. 180 bytes to read.
+Loaded trade tables! (24 bytes)
+
+
+
+### LOG: Sat Oct 26 16:22:38 2019 ###
+
+CREATE: Starting world creation at time: 619.835999
+CREATE: Finished world creation at time: 5106.204102 (Elapsed: 119.571754ms)
+Loaded all 3 music files.
+Loaded all 2 sound files.
+Successfully Loaded Script File: ../Assets/Scripts/Script_player_makeHouse.txt, and given id of: 1
+Loading dialogue. 1297 bytes to read.
+Successfully Loaded Script File: ../Assets/Scripts/Script_selected_makeHouse.txt, and given id of: 2
+Successfully Loaded Script File: ../Assets/Scripts/Script_player_makeHouse.txt, and given id of: 1
+Dialogue loaded! (24 bytes)
+Loading flags. 125 bytes to read.
+Loaded flag with id of 0 and value of 0
+Loaded flag with id of 1 and value of 0
+Loaded flag with id of 2 and value of 0
+Loaded flag with id of 3 and value of 0
+Loaded flag with id of 4 and value of 0
+Loaded flag with id of 5 and value of 0
+Flags loaded! (24 bytes)
+Loading trade tables. 180 bytes to read.
+Loaded trade tables! (24 bytes)
+
+
+
+### LOG: Sat Oct 26 16:23:47 2019 ###
+
+CREATE: Starting world creation at time: 600.776001
+CREATE: Finished world creation at time: 5051.987793 (Elapsed: 119.860123ms)
+Loaded all 3 music files.
+Loaded all 2 sound files.
+Successfully Loaded Script File: ../Assets/Scripts/Script_player_makeHouse.txt, and given id of: 1
+Loading dialogue. 1297 bytes to read.
+Successfully Loaded Script File: ../Assets/Scripts/Script_selected_makeHouse.txt, and given id of: 2
+Successfully Loaded Script File: ../Assets/Scripts/Script_player_makeHouse.txt, and given id of: 1
+Dialogue loaded! (24 bytes)
+Loading flags. 125 bytes to read.
+Loaded flag with id of 0 and value of 0
+Loaded flag with id of 1 and value of 0
+Loaded flag with id of 2 and value of 0
+Loaded flag with id of 3 and value of 0
+Loaded flag with id of 4 and value of 0
+Loaded flag with id of 5 and value of 0
+Flags loaded! (24 bytes)
+Loading trade tables. 180 bytes to read.
+Loaded trade tables! (24 bytes)

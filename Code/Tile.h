@@ -94,11 +94,10 @@ class Tile
         virtual TileData getSaveData();
 
         void            setAmbientLight(float light) { m_ambientLight = light; }
+        void            addAmbientLight(float light) { m_ambientLight += light; if(m_ambientLight < 0.0f) m_ambientLight = 0.0f; }
         void            setSunlight(float& tickTime, float& sunLight);
         void setNeedsSunCheck() { m_needsSunCheck = true; }
         void setPosition(glm::vec2 pos) { m_pos = pos; }
-        void light_setToUpdate() { m_updateLight = true; } // Sends the signal to update lighting
-        void light_set_reset() { m_light_reset = true; }
         void setToUpdate_heat() { m_updateHeat = true; } // Sends the signal to update heat
 
         virtual void update(float time, bool updateLighting);
@@ -112,6 +111,9 @@ class Tile
         virtual void interact_LeftClicked() {}
         virtual void interact_RightClicked() {}
         // ... More interact functions
+
+        void resetNeighboursLight();
+        void setNeighboursLight();
 
     protected:
         virtual void handleMetaDataInit(MetaData& data) = 0;
@@ -144,12 +146,6 @@ class Tile
         float m_temperature = 0.0f; // This should be affected by the biome, sunlight, and nearby heat sources.
         float m_lastTemperature = 0.0f;
 
-        float m_lastLight; // This is used to make sure that we aren't giving other blocks light for no reason
-        std::vector<Tile*> m_lightSources; // This is to make sure we aren't giving blocks light multiple times for each source
-        std::vector<glm::vec3> m_lightEffected; // This is a vector that ONLY light sources have. It is to keep track of the tiles that use this light source. We use positions as the actual tiles could have been deleted/changed since adding to the vector
-
-        bool m_updateLight = true;
-        bool m_light_reset = false;
         bool m_updateHeat = true;
 
         bool m_solid = true; // Don't collide if true: Air, water, pillars, etc. -> This is the 'passable' aspect of blocks

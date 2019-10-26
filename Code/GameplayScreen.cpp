@@ -552,7 +552,7 @@ bool GameplayScreen::pause_quit_button_clicked(const CEGUI::EventArgs& e) {
     m_currentState = GLEngine::ScreenState::CHANGE_NEXT;
     return true;
 }
-
+#include <iostream>
 void GameplayScreen::activateChunks() {
     int chunkIndex = m_player->getChunkIndex();
 

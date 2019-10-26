@@ -66,6 +66,12 @@ class BlockTorchBright : public BlockTorch
         BlockTorchBright(glm::vec2 pos, unsigned int layer, Chunk* parent, bool loadTexture = true);
 };
 
+class BlockTorchAnti : public BlockTorch
+{
+    public:
+        BlockTorchAnti(glm::vec2 pos, unsigned int layer, Chunk* parent, bool loadTexture = true);
+};
+
 class BlockBush : public GenericBlock
 {
     public:
@@ -199,6 +205,10 @@ static Block* createBlock(unsigned int id, glm::vec2 pos, unsigned int layer, Ch
             ret = new BlockTorchBright(pos, layer, parent, loadTexture);
             break;
         }
+        case (unsigned int)Categories::BlockIDs::TORCH_ANTI: {
+            ret = new BlockTorchAnti(pos, layer, parent, loadTexture);
+            break;
+        }
         default: {
             GLEngine::fatalError("Tried to create block with improper id: " + id);
             break;
@@ -208,5 +218,7 @@ static Block* createBlock(unsigned int id, glm::vec2 pos, unsigned int layer, Ch
         float sunlight = std::cos(tickTime / (DAY_LENGTH / 6.28318f)) / 2.0f + 0.5f;
         ret->setSunlight(tickTime, sunlight);
     }
+
+    ret->setNeighboursLight();
     return ret;
 }

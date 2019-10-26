@@ -80,6 +80,10 @@ BlockTorchBright::BlockTorchBright(glm::vec2 pos, unsigned int layer, Chunk* par
     m_emittedLight = 2.0f;
 }
 
+BlockTorchAnti::BlockTorchAnti(glm::vec2 pos, unsigned int layer, Chunk* parent, bool loadTexture) : BlockTorch(pos, layer, parent, loadTexture) {
+    m_emittedLight = -1.0f;
+}
+
 BlockBush::BlockBush(glm::vec2 pos, unsigned int layer, Chunk* parent, bool loadTexture/* = true*/) : GenericBlock(pos, layer, parent, MetaData(), loadTexture) {
     m_id = (unsigned int)Categories::BlockIDs::BUSH;
 

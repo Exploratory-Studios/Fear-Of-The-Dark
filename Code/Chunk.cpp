@@ -160,15 +160,18 @@ void Chunk::draw(GLEngine::SpriteBatch& sb, int xOffset, float time, GLEngine::C
         diff[i] = playerLayer - i;
     }
 
+    int total = 0;
+
     for(int i = 0; i < WORLD_HEIGHT; i++) {
         for(int j = 0; j < CHUNK_SIZE; j++) {
             for(int k = 0; k < m_tiles[i][j].size(); k++) {
                 if(camera.isBoxInView(glm::vec2(j + CHUNK_SIZE * m_index + xOffset * CHUNK_SIZE, i), glm::vec2(1.0f, 1.0f))) {
                     m_tiles[i][j][k]->draw(sb, xOffset, diff[k]);
+                    total++;
                     if(diff[k] <= 0 && m_tiles[i][j][k]->doDraw() && !m_tiles[i][j][k]->isTransparent()) {
                         break;
                     }
-                    if(k == WORLD_DEPTH-1) {
+                    /*if(k == WORLD_DEPTH-1) {
                         int backdrop = -1;
                         while(i+backdrop > 0) {
                             if(m_tiles[i+backdrop][j][k]->isTransparent()) {
@@ -178,7 +181,7 @@ void Chunk::draw(GLEngine::SpriteBatch& sb, int xOffset, float time, GLEngine::C
                             }
                             backdrop--;
                         }
-                    }
+                    }*/
                 }
             }
         }

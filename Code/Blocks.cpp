@@ -1,5 +1,12 @@
 #include "Blocks.h"
 
+void LightBlock::onUpdate(float& time) {
+    if(m_updateLight) {
+        setNeighboursLight();
+        m_updateLight = false;
+    }
+}
+
 BlockAir::BlockAir(glm::vec2 pos, unsigned int layer, Chunk* parent, bool loadTexture/* = true*/) : GenericBlock(pos, layer, parent, MetaData(), loadTexture) {
     m_id = (unsigned int)Categories::BlockIDs::AIR;
 
@@ -64,13 +71,12 @@ void BlockGrass::onTick(float& tickTime) {
     }
 }
 
-BlockTorch::BlockTorch(glm::vec2 pos, unsigned int layer, Chunk* parent, bool loadTexture/* = true*/) : GenericBlock(pos, layer, parent, MetaData(), loadTexture) {
+BlockTorch::BlockTorch(glm::vec2 pos, unsigned int layer, Chunk* parent, bool loadTexture/* = true*/) : LightBlock(pos, layer, parent, MetaData(), 1.5f, loadTexture) {
     m_id = (unsigned int)Categories::BlockIDs::TORCH;
 
     m_transparent = true; // Does light travel through it?
     m_draw = true; // Is it drawn?
     m_solid = false; // Can we walk through it?
-    m_emittedLight = 1.5f; // Does it emit light?
     m_emittedHeat = 20.0f;
 
     if(loadTexture) { this->loadTexture(); } else { m_textureId = (GLuint)-1; }

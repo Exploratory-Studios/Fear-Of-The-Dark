@@ -2343,3 +2343,4897 @@ Loaded flag with id of 5 and value of 0
 Flags loaded! (24 bytes)
 Loading trade tables. 180 bytes to read.
 Loaded trade tables! (24 bytes)
+
+
+
+### LOG: Sun Oct 27 12:20:05 2019 ###
+
+
+
+
+### LOG: Sun Oct 27 12:21:36 2019 ###
+
+CREATE: Starting world creation at time: 1133.515991
+CREATE: Finished world creation at time: 5545.615234 (Elapsed: 118.468979ms)
+Loaded all 3 music files.
+Loaded all 2 sound files.
+Successfully Loaded Script File: ../Assets/Scripts/Script_player_makeHouse.txt, and given id of: 1
+Loading dialogue. 1297 bytes to read.
+Successfully Loaded Script File: ../Assets/Scripts/Script_selected_makeHouse.txt, and given id of: 2
+Successfully Loaded Script File: ../Assets/Scripts/Script_player_makeHouse.txt, and given id of: 1
+Dialogue loaded! (24 bytes)
+Loading flags. 125 bytes to read.
+Loaded flag with id of 0 and value of 0
+Loaded flag with id of 1 and value of 0
+Loaded flag with id of 2 and value of 0
+Loaded flag with id of 3 and value of 0
+Loaded flag with id of 4 and value of 0
+Loaded flag with id of 5 and value of 0
+Flags loaded! (24 bytes)
+Loading trade tables. 180 bytes to read.
+Loaded trade tables! (24 bytes)
+SAVE: Starting World Save to File: Test.bin
+SAVE: Starting Save Preparations
+SAVE: Player Data Prepared
+SAVE: Chunk Data Prepared
+
+### SAVE: ALL DATA PREPARED, STARTING SAVE ###
+
+SAVE: Started Saving with version: 1.2.1
+SAVE: Wrote Player POD
+SAVE: Wrote Player Inventory
+SAVE: Wrote World Chunks
+
+### SAVE: SAVE COMPLETED ###
+
+
+### LOAD: STARTING LOAD AT 12728.571289 ###
+
+
+
+
+### LOG: Sun Oct 27 12:22:24 2019 ###
+
+CREATE: Starting world creation at time: 1103.366943
+CREATE: Finished world creation at time: 4297.504883 (Elapsed: 65.092842ms)
+Loaded all 3 music files.
+Loaded all 2 sound files.
+Successfully Loaded Script File: ../Assets/Scripts/Script_player_makeHouse.txt, and given id of: 1
+Loading dialogue. 1297 bytes to read.
+Successfully Loaded Script File: ../Assets/Scripts/Script_selected_makeHouse.txt, and given id of: 2
+Successfully Loaded Script File: ../Assets/Scripts/Script_player_makeHouse.txt, and given id of: 1
+Dialogue loaded! (24 bytes)
+Loading flags. 125 bytes to read.
+Loaded flag with id of 0 and value of 0
+Loaded flag with id of 1 and value of 0
+Loaded flag with id of 2 and value of 0
+Loaded flag with id of 3 and value of 0
+Loaded flag with id of 4 and value of 0
+Loaded flag with id of 5 and value of 0
+Flags loaded! (24 bytes)
+Loading trade tables. 180 bytes to read.
+Loaded trade tables! (24 bytes)
+SAVE: Starting World Save to File: Test.bin
+SAVE: Starting Save Preparations
+SAVE: Player Data Prepared
+SAVE: Chunk Data Prepared
+
+### SAVE: ALL DATA PREPARED, STARTING SAVE ###
+
+SAVE: Started Saving with version: 1.2.1
+SAVE: Wrote Player POD
+SAVE: Wrote 1 of 1 Items
+SAVE: Wrote Player Inventory
+SAVE: Wrote World Chunks
+
+### SAVE: SAVE COMPLETED ###
+
+
+### LOAD: STARTING LOAD AT 15262.089844 ###
+
+
+### LOAD: Loaded Version: 1.2.1, Using Version: 1.2.1 ###
+
+Successfully Loaded Script File: ../Assets/Scripts/Script_player_makeHouse.txt, and given id of: 1
+LOAD: Loaded Player POD
+LOAD: Loaded 1 of 1 Items
+LOAD: Loaded Player Inventory
+LOAD: Loaded 1 of 32 Chunks
+LOAD: Loaded 2 of 32 Chunks
+LOAD: Loaded 3 of 32 Chunks
+LOAD: Loaded 4 of 32 Chunks
+LOAD: Loaded 5 of 32 Chunks
+LOAD: Loaded 6 of 32 Chunks
+LOAD: Loaded 7 of 32 Chunks
+LOAD: Loaded 8 of 32 Chunks
+LOAD: Loaded 9 of 32 Chunks
+LOAD: Loaded 10 of 32 Chunks
+LOAD: Loaded 11 of 32 Chunks
+LOAD: Loaded 12 of 32 Chunks
+LOAD: Loaded 13 of 32 Chunks
+LOAD: Loaded 14 of 32 Chunks
+LOAD: Loaded 15 of 32 Chunks
+LOAD: Loaded 16 of 32 Chunks
+LOAD: Loaded 17 of 32 Chunks
+LOAD: Loaded 18 of 32 Chunks
+LOAD: Loaded 19 of 32 Chunks
+LOAD: Loaded 20 of 32 Chunks
+LOAD: Loaded 21 of 32 Chunks
+LOAD: Loaded 22 of 32 Chunks
+LOAD: Loaded 23 of 32 Chunks
+LOAD: Loaded 24 of 32 Chunks
+LOAD: Loaded 25 of 32 Chunks
+LOAD: Loaded 26 of 32 Chunks
+LOAD: Loaded 27 of 32 Chunks
+LOAD: Loaded 28 of 32 Chunks
+LOAD: Loaded 29 of 32 Chunks
+LOAD: Loaded 30 of 32 Chunks
+LOAD: Loaded 31 of 32 Chunks
+LOAD: Loaded 32 of 32 Chunks
+LOAD: Loaded World Chunks
+
+### LOAD: LOAD COMPLETED. FINISHED AT 16270.487305 (1008.397461 milliseconds) ###
+
+
+
+
+### LOG: Sun Oct 27 12:25:37 2019 ###
+
+CREATE: Starting world creation at time: 7115.520996
+CREATE: Finished world creation at time: 10540.198242 (Elapsed: 71.894623ms)
+Loaded all 3 music files.
+Loaded all 2 sound files.
+Successfully Loaded Script File: ../Assets/Scripts/Script_player_makeHouse.txt, and given id of: 1
+Loading dialogue. 1297 bytes to read.
+Successfully Loaded Script File: ../Assets/Scripts/Script_selected_makeHouse.txt, and given id of: 2
+Successfully Loaded Script File: ../Assets/Scripts/Script_player_makeHouse.txt, and given id of: 1
+Dialogue loaded! (24 bytes)
+Loading flags. 125 bytes to read.
+Loaded flag with id of 0 and value of 0
+Loaded flag with id of 1 and value of 0
+Loaded flag with id of 2 and value of 0
+Loaded flag with id of 3 and value of 0
+Loaded flag with id of 4 and value of 0
+Loaded flag with id of 5 and value of 0
+Flags loaded! (24 bytes)
+Loading trade tables. 180 bytes to read.
+Loaded trade tables! (24 bytes)
+SAVE: Starting World Save to File: Test.bin
+SAVE: Starting Save Preparations
+SAVE: Player Data Prepared
+SAVE: Chunk Data Prepared
+
+### SAVE: ALL DATA PREPARED, STARTING SAVE ###
+
+SAVE: Started Saving with version: 1.2.1
+SAVE: Wrote Player POD
+SAVE: Wrote Player Inventory
+SAVE: Wrote World Chunks
+
+### SAVE: SAVE COMPLETED ###
+
+
+### LOAD: STARTING LOAD AT 19350.326172 ###
+
+
+### LOAD: Loaded Version: 1.2.1, Using Version: 1.2.1 ###
+
+Successfully Loaded Script File: ../Assets/Scripts/Script_player_makeHouse.txt, and given id of: 1
+LOAD: Loaded Player POD
+LOAD: Loaded Player Inventory
+LOAD: Loaded 1 of 32 Chunks
+LOAD: Loaded 2 of 32 Chunks
+LOAD: Loaded 3 of 32 Chunks
+LOAD: Loaded 4 of 32 Chunks
+LOAD: Loaded 5 of 32 Chunks
+LOAD: Loaded 6 of 32 Chunks
+LOAD: Loaded 7 of 32 Chunks
+LOAD: Loaded 8 of 32 Chunks
+LOAD: Loaded 9 of 32 Chunks
+LOAD: Loaded 10 of 32 Chunks
+LOAD: Loaded 11 of 32 Chunks
+LOAD: Loaded 12 of 32 Chunks
+LOAD: Loaded 13 of 32 Chunks
+LOAD: Loaded 14 of 32 Chunks
+LOAD: Loaded 15 of 32 Chunks
+LOAD: Loaded 16 of 32 Chunks
+LOAD: Loaded 17 of 32 Chunks
+LOAD: Loaded 18 of 32 Chunks
+LOAD: Loaded 19 of 32 Chunks
+LOAD: Loaded 20 of 32 Chunks
+LOAD: Loaded 21 of 32 Chunks
+LOAD: Loaded 22 of 32 Chunks
+LOAD: Loaded 23 of 32 Chunks
+LOAD: Loaded 24 of 32 Chunks
+LOAD: Loaded 25 of 32 Chunks
+LOAD: Loaded 26 of 32 Chunks
+LOAD: Loaded 27 of 32 Chunks
+LOAD: Loaded 28 of 32 Chunks
+LOAD: Loaded 29 of 32 Chunks
+LOAD: Loaded 30 of 32 Chunks
+LOAD: Loaded 31 of 32 Chunks
+LOAD: Loaded 32 of 32 Chunks
+LOAD: Loaded World Chunks
+
+### LOAD: LOAD COMPLETED. FINISHED AT 20373.271484 (1022.945312 milliseconds) ###
+
+Already inited audio manager. Skipping...
+Loading dialogue. 1297 bytes to read.
+Successfully Loaded Script File: ../Assets/Scripts/Script_selected_makeHouse.txt, and given id of: 2
+Successfully Loaded Script File: ../Assets/Scripts/Script_player_makeHouse.txt, and given id of: 1
+Dialogue loaded! (24 bytes)
+Loading flags. 125 bytes to read.
+Loaded flag with id of 0 and value of 0
+Loaded flag with id of 1 and value of 0
+Loaded flag with id of 2 and value of 0
+Loaded flag with id of 3 and value of 0
+Loaded flag with id of 4 and value of 0
+Loaded flag with id of 5 and value of 0
+Flags loaded! (24 bytes)
+Loading trade tables. 180 bytes to read.
+Loaded trade tables! (24 bytes)
+
+
+
+### LOG: Sun Oct 27 12:30:47 2019 ###
+
+CREATE: Starting world creation at time: 798.281982
+CREATE: Finished world creation at time: 4203.998047 (Elapsed: 71.474121ms)
+Loaded all 3 music files.
+Loaded all 2 sound files.
+Successfully Loaded Script File: ../Assets/Scripts/Script_player_makeHouse.txt, and given id of: 1
+Loading dialogue. 1297 bytes to read.
+Successfully Loaded Script File: ../Assets/Scripts/Script_selected_makeHouse.txt, and given id of: 2
+Successfully Loaded Script File: ../Assets/Scripts/Script_player_makeHouse.txt, and given id of: 1
+Dialogue loaded! (24 bytes)
+Loading flags. 125 bytes to read.
+Loaded flag with id of 0 and value of 0
+Loaded flag with id of 1 and value of 0
+Loaded flag with id of 2 and value of 0
+Loaded flag with id of 3 and value of 0
+Loaded flag with id of 4 and value of 0
+Loaded flag with id of 5 and value of 0
+Flags loaded! (24 bytes)
+Loading trade tables. 180 bytes to read.
+Loaded trade tables! (24 bytes)
+SAVE: Starting World Save to File: Test.bin
+SAVE: Starting Save Preparations
+SAVE: Player Data Prepared
+SAVE: Chunk Data Prepared
+
+### SAVE: ALL DATA PREPARED, STARTING SAVE ###
+
+SAVE: Started Saving with version: 1.2.1
+SAVE: Wrote Player POD
+SAVE: Wrote Player Inventory
+SAVE: Wrote World Chunks
+
+### SAVE: SAVE COMPLETED ###
+
+
+### LOAD: STARTING LOAD AT 13669.003906 ###
+
+
+### LOAD: Loaded Version: 1.2.1, Using Version: 1.2.1 ###
+
+Successfully Loaded Script File: ../Assets/Scripts/Script_player_makeHouse.txt, and given id of: 1
+LOAD: Loaded Player POD
+LOAD: Loaded Player Inventory
+LOAD: Loaded 1 of 32 Chunks
+LOAD: Loaded 2 of 32 Chunks
+LOAD: Loaded 3 of 32 Chunks
+LOAD: Loaded 4 of 32 Chunks
+LOAD: Loaded 5 of 32 Chunks
+LOAD: Loaded 6 of 32 Chunks
+LOAD: Loaded 7 of 32 Chunks
+LOAD: Loaded 8 of 32 Chunks
+LOAD: Loaded 9 of 32 Chunks
+LOAD: Loaded 10 of 32 Chunks
+LOAD: Loaded 11 of 32 Chunks
+LOAD: Loaded 12 of 32 Chunks
+LOAD: Loaded 13 of 32 Chunks
+LOAD: Loaded 14 of 32 Chunks
+LOAD: Loaded 15 of 32 Chunks
+LOAD: Loaded 16 of 32 Chunks
+LOAD: Loaded 17 of 32 Chunks
+LOAD: Loaded 18 of 32 Chunks
+LOAD: Loaded 19 of 32 Chunks
+LOAD: Loaded 20 of 32 Chunks
+LOAD: Loaded 21 of 32 Chunks
+LOAD: Loaded 22 of 32 Chunks
+LOAD: Loaded 23 of 32 Chunks
+LOAD: Loaded 24 of 32 Chunks
+LOAD: Loaded 25 of 32 Chunks
+LOAD: Loaded 26 of 32 Chunks
+LOAD: Loaded 27 of 32 Chunks
+LOAD: Loaded 28 of 32 Chunks
+LOAD: Loaded 29 of 32 Chunks
+LOAD: Loaded 30 of 32 Chunks
+LOAD: Loaded 31 of 32 Chunks
+LOAD: Loaded 32 of 32 Chunks
+LOAD: Loaded World Chunks
+
+### LOAD: LOAD COMPLETED. FINISHED AT 14680.457031 (1011.453125 milliseconds) ###
+
+
+
+
+### LOG: Sun Oct 27 12:31:28 2019 ###
+
+
+### LOAD: STARTING LOAD AT 767.338013 ###
+
+
+### LOAD: Loaded Version: 1.2.1, Using Version: 1.2.1 ###
+
+Successfully Loaded Script File: ../Assets/Scripts/Script_player_makeHouse.txt, and given id of: 1
+LOAD: Loaded Player POD
+LOAD: Loaded Player Inventory
+LOAD: Loaded 1 of 32 Chunks
+LOAD: Loaded 2 of 32 Chunks
+LOAD: Loaded 3 of 32 Chunks
+LOAD: Loaded 4 of 32 Chunks
+LOAD: Loaded 5 of 32 Chunks
+LOAD: Loaded 6 of 32 Chunks
+LOAD: Loaded 7 of 32 Chunks
+LOAD: Loaded 8 of 32 Chunks
+LOAD: Loaded 9 of 32 Chunks
+LOAD: Loaded 10 of 32 Chunks
+LOAD: Loaded 11 of 32 Chunks
+LOAD: Loaded 12 of 32 Chunks
+LOAD: Loaded 13 of 32 Chunks
+LOAD: Loaded 14 of 32 Chunks
+LOAD: Loaded 15 of 32 Chunks
+LOAD: Loaded 16 of 32 Chunks
+LOAD: Loaded 17 of 32 Chunks
+LOAD: Loaded 18 of 32 Chunks
+LOAD: Loaded 19 of 32 Chunks
+LOAD: Loaded 20 of 32 Chunks
+LOAD: Loaded 21 of 32 Chunks
+LOAD: Loaded 22 of 32 Chunks
+LOAD: Loaded 23 of 32 Chunks
+LOAD: Loaded 24 of 32 Chunks
+LOAD: Loaded 25 of 32 Chunks
+LOAD: Loaded 26 of 32 Chunks
+LOAD: Loaded 27 of 32 Chunks
+LOAD: Loaded 28 of 32 Chunks
+LOAD: Loaded 29 of 32 Chunks
+LOAD: Loaded 30 of 32 Chunks
+LOAD: Loaded 31 of 32 Chunks
+LOAD: Loaded 32 of 32 Chunks
+LOAD: Loaded World Chunks
+
+### LOAD: LOAD COMPLETED. FINISHED AT 1677.538940 (910.200928 milliseconds) ###
+
+Loaded all 3 music files.
+Loaded all 2 sound files.
+Loading dialogue. 1297 bytes to read.
+Successfully Loaded Script File: ../Assets/Scripts/Script_selected_makeHouse.txt, and given id of: 2
+Successfully Loaded Script File: ../Assets/Scripts/Script_player_makeHouse.txt, and given id of: 1
+Dialogue loaded! (24 bytes)
+Loading flags. 125 bytes to read.
+Loaded flag with id of 0 and value of 0
+Loaded flag with id of 1 and value of 0
+Loaded flag with id of 2 and value of 0
+Loaded flag with id of 3 and value of 0
+Loaded flag with id of 4 and value of 0
+Loaded flag with id of 5 and value of 0
+Flags loaded! (24 bytes)
+Loading trade tables. 180 bytes to read.
+Loaded trade tables! (24 bytes)
+
+
+
+### LOG: Sun Oct 27 12:33:04 2019 ###
+
+CREATE: Starting world creation at time: 770.804993
+CREATE: Finished world creation at time: 5260.875000 (Elapsed: 121.115692ms)
+Loaded all 3 music files.
+Loaded all 2 sound files.
+Successfully Loaded Script File: ../Assets/Scripts/Script_player_makeHouse.txt, and given id of: 1
+Loading dialogue. 1297 bytes to read.
+Successfully Loaded Script File: ../Assets/Scripts/Script_selected_makeHouse.txt, and given id of: 2
+Successfully Loaded Script File: ../Assets/Scripts/Script_player_makeHouse.txt, and given id of: 1
+Dialogue loaded! (24 bytes)
+Loading flags. 125 bytes to read.
+Loaded flag with id of 0 and value of 0
+Loaded flag with id of 1 and value of 0
+Loaded flag with id of 2 and value of 0
+Loaded flag with id of 3 and value of 0
+Loaded flag with id of 4 and value of 0
+Loaded flag with id of 5 and value of 0
+Flags loaded! (24 bytes)
+Loading trade tables. 180 bytes to read.
+Loaded trade tables! (24 bytes)
+SAVE: Starting World Save to File: Test.bin
+SAVE: Starting Save Preparations
+SAVE: Player Data Prepared
+SAVE: Chunk Data Prepared
+
+### SAVE: ALL DATA PREPARED, STARTING SAVE ###
+
+SAVE: Started Saving with version: 1.2.1
+SAVE: Wrote Player POD
+SAVE: Wrote Player Inventory
+SAVE: Wrote World Chunks
+
+### SAVE: SAVE COMPLETED ###
+
+
+### LOAD: STARTING LOAD AT 9485.872070 ###
+
+
+### LOAD: Loaded Version: 1.2.1, Using Version: 1.2.1 ###
+
+Successfully Loaded Script File: ../Assets/Scripts/Script_player_makeHouse.txt, and given id of: 1
+LOAD: Loaded Player POD
+LOAD: Loaded Player Inventory
+LOAD: Loaded 1 of 32 Chunks
+LOAD: Loaded 2 of 32 Chunks
+LOAD: Loaded 3 of 32 Chunks
+LOAD: Loaded 4 of 32 Chunks
+LOAD: Loaded 5 of 32 Chunks
+LOAD: Loaded 6 of 32 Chunks
+LOAD: Loaded 7 of 32 Chunks
+LOAD: Loaded 8 of 32 Chunks
+LOAD: Loaded 9 of 32 Chunks
+LOAD: Loaded 10 of 32 Chunks
+LOAD: Loaded 11 of 32 Chunks
+LOAD: Loaded 12 of 32 Chunks
+LOAD: Loaded 13 of 32 Chunks
+LOAD: Loaded 14 of 32 Chunks
+LOAD: Loaded 15 of 32 Chunks
+LOAD: Loaded 16 of 32 Chunks
+LOAD: Loaded 17 of 32 Chunks
+LOAD: Loaded 18 of 32 Chunks
+LOAD: Loaded 19 of 32 Chunks
+LOAD: Loaded 20 of 32 Chunks
+LOAD: Loaded 21 of 32 Chunks
+LOAD: Loaded 22 of 32 Chunks
+LOAD: Loaded 23 of 32 Chunks
+LOAD: Loaded 24 of 32 Chunks
+LOAD: Loaded 25 of 32 Chunks
+LOAD: Loaded 26 of 32 Chunks
+LOAD: Loaded 27 of 32 Chunks
+LOAD: Loaded 28 of 32 Chunks
+LOAD: Loaded 29 of 32 Chunks
+LOAD: Loaded 30 of 32 Chunks
+LOAD: Loaded 31 of 32 Chunks
+LOAD: Loaded 32 of 32 Chunks
+LOAD: Loaded World Chunks
+
+### LOAD: LOAD COMPLETED. FINISHED AT 10516.924805 (1031.052734 milliseconds) ###
+
+
+
+
+### LOG: Sun Oct 27 12:37:41 2019 ###
+
+CREATE: Starting world creation at time: 743.239014
+CREATE: Finished world creation at time: 4120.475098 (Elapsed: 70.759064ms)
+Loaded all 3 music files.
+Loaded all 2 sound files.
+Successfully Loaded Script File: ../Assets/Scripts/Script_player_makeHouse.txt, and given id of: 1
+Loading dialogue. 1297 bytes to read.
+Successfully Loaded Script File: ../Assets/Scripts/Script_selected_makeHouse.txt, and given id of: 2
+Successfully Loaded Script File: ../Assets/Scripts/Script_player_makeHouse.txt, and given id of: 1
+Dialogue loaded! (24 bytes)
+Loading flags. 125 bytes to read.
+Loaded flag with id of 0 and value of 0
+Loaded flag with id of 1 and value of 0
+Loaded flag with id of 2 and value of 0
+Loaded flag with id of 3 and value of 0
+Loaded flag with id of 4 and value of 0
+Loaded flag with id of 5 and value of 0
+Flags loaded! (24 bytes)
+Loading trade tables. 180 bytes to read.
+Loaded trade tables! (24 bytes)
+SAVE: Starting World Save to File: Test.bin
+SAVE: Starting Save Preparations
+SAVE: Player Data Prepared
+SAVE: Chunk Data Prepared
+
+### SAVE: ALL DATA PREPARED, STARTING SAVE ###
+
+SAVE: Started Saving with version: 1.2.1
+SAVE: Wrote Player POD
+SAVE: Wrote Player Inventory
+SAVE: Wrote World Chunks
+
+### SAVE: SAVE COMPLETED ###
+
+
+### LOAD: STARTING LOAD AT 13675.251953 ###
+
+
+### LOAD: Loaded Version: 1.2.1, Using Version: 1.2.1 ###
+
+Successfully Loaded Script File: ../Assets/Scripts/Script_player_makeHouse.txt, and given id of: 1
+LOAD: Loaded Player POD
+LOAD: Loaded Player Inventory
+LOAD: Loaded 1 of 32 Chunks
+LOAD: Loaded 2 of 32 Chunks
+LOAD: Loaded 3 of 32 Chunks
+LOAD: Loaded 4 of 32 Chunks
+LOAD: Loaded 5 of 32 Chunks
+LOAD: Loaded 6 of 32 Chunks
+LOAD: Loaded 7 of 32 Chunks
+LOAD: Loaded 8 of 32 Chunks
+LOAD: Loaded 9 of 32 Chunks
+LOAD: Loaded 10 of 32 Chunks
+LOAD: Loaded 11 of 32 Chunks
+LOAD: Loaded 12 of 32 Chunks
+LOAD: Loaded 13 of 32 Chunks
+LOAD: Loaded 14 of 32 Chunks
+LOAD: Loaded 15 of 32 Chunks
+LOAD: Loaded 16 of 32 Chunks
+LOAD: Loaded 17 of 32 Chunks
+LOAD: Loaded 18 of 32 Chunks
+LOAD: Loaded 19 of 32 Chunks
+LOAD: Loaded 20 of 32 Chunks
+LOAD: Loaded 21 of 32 Chunks
+LOAD: Loaded 22 of 32 Chunks
+LOAD: Loaded 23 of 32 Chunks
+LOAD: Loaded 24 of 32 Chunks
+LOAD: Loaded 25 of 32 Chunks
+LOAD: Loaded 26 of 32 Chunks
+LOAD: Loaded 27 of 32 Chunks
+LOAD: Loaded 28 of 32 Chunks
+LOAD: Loaded 29 of 32 Chunks
+LOAD: Loaded 30 of 32 Chunks
+LOAD: Loaded 31 of 32 Chunks
+LOAD: Loaded 32 of 32 Chunks
+LOAD: Loaded World Chunks
+
+### LOAD: LOAD COMPLETED. FINISHED AT 14738.370117 (1063.118164 milliseconds) ###
+
+
+
+
+### LOG: Sun Oct 27 12:38:30 2019 ###
+
+
+### LOAD: STARTING LOAD AT 659.982971 ###
+
+
+### LOAD: Loaded Version: 1.2.1, Using Version: 1.2.1 ###
+
+Successfully Loaded Script File: ../Assets/Scripts/Script_player_makeHouse.txt, and given id of: 1
+LOAD: Loaded Player POD
+LOAD: Loaded Player Inventory
+LOAD: Loaded 1 of 32 Chunks
+LOAD: Loaded 2 of 32 Chunks
+LOAD: Loaded 3 of 32 Chunks
+LOAD: Loaded 4 of 32 Chunks
+LOAD: Loaded 5 of 32 Chunks
+LOAD: Loaded 6 of 32 Chunks
+LOAD: Loaded 7 of 32 Chunks
+LOAD: Loaded 8 of 32 Chunks
+LOAD: Loaded 9 of 32 Chunks
+LOAD: Loaded 10 of 32 Chunks
+LOAD: Loaded 11 of 32 Chunks
+LOAD: Loaded 12 of 32 Chunks
+LOAD: Loaded 13 of 32 Chunks
+LOAD: Loaded 14 of 32 Chunks
+LOAD: Loaded 15 of 32 Chunks
+LOAD: Loaded 16 of 32 Chunks
+LOAD: Loaded 17 of 32 Chunks
+LOAD: Loaded 18 of 32 Chunks
+LOAD: Loaded 19 of 32 Chunks
+LOAD: Loaded 20 of 32 Chunks
+LOAD: Loaded 21 of 32 Chunks
+LOAD: Loaded 22 of 32 Chunks
+LOAD: Loaded 23 of 32 Chunks
+LOAD: Loaded 24 of 32 Chunks
+LOAD: Loaded 25 of 32 Chunks
+LOAD: Loaded 26 of 32 Chunks
+LOAD: Loaded 27 of 32 Chunks
+LOAD: Loaded 28 of 32 Chunks
+LOAD: Loaded 29 of 32 Chunks
+LOAD: Loaded 30 of 32 Chunks
+LOAD: Loaded 31 of 32 Chunks
+LOAD: Loaded 32 of 32 Chunks
+LOAD: Loaded World Chunks
+
+### LOAD: LOAD COMPLETED. FINISHED AT 1572.082031 (912.099060 milliseconds) ###
+
+Loaded all 3 music files.
+Loaded all 2 sound files.
+Loading dialogue. 1297 bytes to read.
+Successfully Loaded Script File: ../Assets/Scripts/Script_selected_makeHouse.txt, and given id of: 2
+Successfully Loaded Script File: ../Assets/Scripts/Script_player_makeHouse.txt, and given id of: 1
+Dialogue loaded! (24 bytes)
+Loading flags. 125 bytes to read.
+Loaded flag with id of 0 and value of 0
+Loaded flag with id of 1 and value of 0
+Loaded flag with id of 2 and value of 0
+Loaded flag with id of 3 and value of 0
+Loaded flag with id of 4 and value of 0
+Loaded flag with id of 5 and value of 0
+Flags loaded! (24 bytes)
+Loading trade tables. 180 bytes to read.
+Loaded trade tables! (24 bytes)
+
+
+
+### LOG: Sun Oct 27 12:44:27 2019 ###
+
+CREATE: Starting world creation at time: 749.793030
+CREATE: Finished world creation at time: 4096.923828 (Elapsed: 70.009491ms)
+Loaded all 3 music files.
+Loaded all 2 sound files.
+Successfully Loaded Script File: ../Assets/Scripts/Script_player_makeHouse.txt, and given id of: 1
+Loading dialogue. 1297 bytes to read.
+Successfully Loaded Script File: ../Assets/Scripts/Script_selected_makeHouse.txt, and given id of: 2
+Successfully Loaded Script File: ../Assets/Scripts/Script_player_makeHouse.txt, and given id of: 1
+Dialogue loaded! (24 bytes)
+Loading flags. 125 bytes to read.
+Loaded flag with id of 0 and value of 0
+Loaded flag with id of 1 and value of 0
+Loaded flag with id of 2 and value of 0
+Loaded flag with id of 3 and value of 0
+Loaded flag with id of 4 and value of 0
+Loaded flag with id of 5 and value of 0
+Flags loaded! (24 bytes)
+Loading trade tables. 180 bytes to read.
+Loaded trade tables! (24 bytes)
+
+
+
+### LOG: Sun Oct 27 12:51:02 2019 ###
+
+
+
+
+### LOG: Sun Oct 27 12:52:21 2019 ###
+
+CREATE: Starting world creation at time: 685.215027
+CREATE: Finished world creation at time: 5198.405762 (Elapsed: 120.099152ms)
+Loaded all 3 music files.
+Loaded all 2 sound files.
+Successfully Loaded Script File: ../Assets/Scripts/Script_player_makeHouse.txt, and given id of: 1
+Loading dialogue. 1297 bytes to read.
+Successfully Loaded Script File: ../Assets/Scripts/Script_selected_makeHouse.txt, and given id of: 2
+Successfully Loaded Script File: ../Assets/Scripts/Script_player_makeHouse.txt, and given id of: 1
+Dialogue loaded! (24 bytes)
+Loading flags. 125 bytes to read.
+Loaded flag with id of 0 and value of 0
+Loaded flag with id of 1 and value of 0
+Loaded flag with id of 2 and value of 0
+Loaded flag with id of 3 and value of 0
+Loaded flag with id of 4 and value of 0
+Loaded flag with id of 5 and value of 0
+Flags loaded! (24 bytes)
+Loading trade tables. 180 bytes to read.
+Loaded trade tables! (24 bytes)
+SAVE: Starting World Save to File: Test.bin
+SAVE: Starting Save Preparations
+SAVE: Player Data Prepared
+SAVE: Chunk Data Prepared
+
+### SAVE: ALL DATA PREPARED, STARTING SAVE ###
+
+SAVE: Started Saving with version: 1.2.1
+SAVE: Wrote Player POD
+SAVE: Wrote Player Inventory
+SAVE: Wrote World Chunks
+
+### SAVE: SAVE COMPLETED ###
+
+SAVE: Starting World Save to File: Test.bin
+SAVE: Starting Save Preparations
+SAVE: Player Data Prepared
+SAVE: Chunk Data Prepared
+
+### SAVE: ALL DATA PREPARED, STARTING SAVE ###
+
+SAVE: Started Saving with version: 1.2.1
+SAVE: Wrote Player POD
+SAVE: Wrote Player Inventory
+SAVE: Wrote World Chunks
+
+### SAVE: SAVE COMPLETED ###
+
+
+### LOAD: STARTING LOAD AT 9527.084961 ###
+
+
+### LOAD: Loaded Version: 1.2.1, Using Version: 1.2.1 ###
+
+Successfully Loaded Script File: ../Assets/Scripts/Script_player_makeHouse.txt, and given id of: 1
+LOAD: Loaded Player POD
+LOAD: Loaded Player Inventory
+LOAD: Loaded 1 of 32 Chunks
+LOAD: Loaded 2 of 32 Chunks
+LOAD: Loaded 3 of 32 Chunks
+LOAD: Loaded 4 of 32 Chunks
+LOAD: Loaded 5 of 32 Chunks
+LOAD: Loaded 6 of 32 Chunks
+LOAD: Loaded 7 of 32 Chunks
+LOAD: Loaded 8 of 32 Chunks
+LOAD: Loaded 9 of 32 Chunks
+LOAD: Loaded 10 of 32 Chunks
+LOAD: Loaded 11 of 32 Chunks
+LOAD: Loaded 12 of 32 Chunks
+LOAD: Loaded 13 of 32 Chunks
+LOAD: Loaded 14 of 32 Chunks
+LOAD: Loaded 15 of 32 Chunks
+LOAD: Loaded 16 of 32 Chunks
+LOAD: Loaded 17 of 32 Chunks
+LOAD: Loaded 18 of 32 Chunks
+LOAD: Loaded 19 of 32 Chunks
+LOAD: Loaded 20 of 32 Chunks
+LOAD: Loaded 21 of 32 Chunks
+LOAD: Loaded 22 of 32 Chunks
+LOAD: Loaded 23 of 32 Chunks
+LOAD: Loaded 24 of 32 Chunks
+LOAD: Loaded 25 of 32 Chunks
+LOAD: Loaded 26 of 32 Chunks
+LOAD: Loaded 27 of 32 Chunks
+LOAD: Loaded 28 of 32 Chunks
+LOAD: Loaded 29 of 32 Chunks
+LOAD: Loaded 30 of 32 Chunks
+LOAD: Loaded 31 of 32 Chunks
+LOAD: Loaded 32 of 32 Chunks
+LOAD: Loaded World Chunks
+
+### LOAD: LOAD COMPLETED. FINISHED AT 10516.733398 (989.648438 milliseconds) ###
+
+
+
+
+### LOG: Sun Oct 27 12:54:58 2019 ###
+
+CREATE: Starting world creation at time: 730.724976
+CREATE: Finished world creation at time: 5236.630859 (Elapsed: 4505.905762ms)
+Loaded all 3 music files.
+Loaded all 2 sound files.
+Successfully Loaded Script File: ../Assets/Scripts/Script_player_makeHouse.txt, and given id of: 1
+Loading dialogue. 1297 bytes to read.
+Successfully Loaded Script File: ../Assets/Scripts/Script_selected_makeHouse.txt, and given id of: 2
+Successfully Loaded Script File: ../Assets/Scripts/Script_player_makeHouse.txt, and given id of: 1
+Dialogue loaded! (24 bytes)
+Loading flags. 125 bytes to read.
+Loaded flag with id of 0 and value of 0
+Loaded flag with id of 1 and value of 0
+Loaded flag with id of 2 and value of 0
+Loaded flag with id of 3 and value of 0
+Loaded flag with id of 4 and value of 0
+Loaded flag with id of 5 and value of 0
+Flags loaded! (24 bytes)
+Loading trade tables. 180 bytes to read.
+Loaded trade tables! (24 bytes)
+SAVE: Starting World Save to File: Test.bin
+SAVE: Starting Save Preparations
+SAVE: Player Data Prepared
+SAVE: Chunk Data Prepared
+
+### SAVE: ALL DATA PREPARED, STARTING SAVE ###
+
+SAVE: Started Saving with version: 1.2.1
+SAVE: Wrote Player POD
+SAVE: Wrote Player Inventory
+SAVE: Wrote World Chunks
+
+### SAVE: SAVE COMPLETED ###
+
+
+### LOAD: STARTING LOAD AT 8587.059570 ###
+
+
+### LOAD: Loaded Version: 1.2.1, Using Version: 1.2.1 ###
+
+Successfully Loaded Script File: ../Assets/Scripts/Script_player_makeHouse.txt, and given id of: 1
+LOAD: Loaded Player POD
+LOAD: Loaded Player Inventory
+LOAD: Loaded 1 of 32 Chunks
+LOAD: Loaded 2 of 32 Chunks
+LOAD: Loaded 3 of 32 Chunks
+LOAD: Loaded 4 of 32 Chunks
+LOAD: Loaded 5 of 32 Chunks
+LOAD: Loaded 6 of 32 Chunks
+LOAD: Loaded 7 of 32 Chunks
+LOAD: Loaded 8 of 32 Chunks
+LOAD: Loaded 9 of 32 Chunks
+LOAD: Loaded 10 of 32 Chunks
+LOAD: Loaded 11 of 32 Chunks
+LOAD: Loaded 12 of 32 Chunks
+LOAD: Loaded 13 of 32 Chunks
+LOAD: Loaded 14 of 32 Chunks
+LOAD: Loaded 15 of 32 Chunks
+LOAD: Loaded 16 of 32 Chunks
+LOAD: Loaded 17 of 32 Chunks
+LOAD: Loaded 18 of 32 Chunks
+LOAD: Loaded 19 of 32 Chunks
+LOAD: Loaded 20 of 32 Chunks
+LOAD: Loaded 21 of 32 Chunks
+LOAD: Loaded 22 of 32 Chunks
+LOAD: Loaded 23 of 32 Chunks
+LOAD: Loaded 24 of 32 Chunks
+LOAD: Loaded 25 of 32 Chunks
+LOAD: Loaded 26 of 32 Chunks
+LOAD: Loaded 27 of 32 Chunks
+LOAD: Loaded 28 of 32 Chunks
+LOAD: Loaded 29 of 32 Chunks
+LOAD: Loaded 30 of 32 Chunks
+LOAD: Loaded 31 of 32 Chunks
+LOAD: Loaded 32 of 32 Chunks
+LOAD: Loaded World Chunks
+
+### LOAD: LOAD COMPLETED. FINISHED AT 17131.734375 (8544.674805 milliseconds) ###
+
+
+
+
+### LOG: Sun Oct 27 12:55:38 2019 ###
+
+
+### LOAD: STARTING LOAD AT 744.088989 ###
+
+
+### LOAD: Loaded Version: 1.2.1, Using Version: 1.2.1 ###
+
+Successfully Loaded Script File: ../Assets/Scripts/Script_player_makeHouse.txt, and given id of: 1
+LOAD: Loaded Player POD
+LOAD: Loaded Player Inventory
+LOAD: Loaded 1 of 32 Chunks
+LOAD: Loaded 2 of 32 Chunks
+LOAD: Loaded 3 of 32 Chunks
+LOAD: Loaded 4 of 32 Chunks
+LOAD: Loaded 5 of 32 Chunks
+LOAD: Loaded 6 of 32 Chunks
+LOAD: Loaded 7 of 32 Chunks
+LOAD: Loaded 8 of 32 Chunks
+LOAD: Loaded 9 of 32 Chunks
+LOAD: Loaded 10 of 32 Chunks
+LOAD: Loaded 11 of 32 Chunks
+LOAD: Loaded 12 of 32 Chunks
+LOAD: Loaded 13 of 32 Chunks
+LOAD: Loaded 14 of 32 Chunks
+LOAD: Loaded 15 of 32 Chunks
+LOAD: Loaded 16 of 32 Chunks
+LOAD: Loaded 17 of 32 Chunks
+LOAD: Loaded 18 of 32 Chunks
+LOAD: Loaded 19 of 32 Chunks
+LOAD: Loaded 20 of 32 Chunks
+LOAD: Loaded 21 of 32 Chunks
+LOAD: Loaded 22 of 32 Chunks
+LOAD: Loaded 23 of 32 Chunks
+LOAD: Loaded 24 of 32 Chunks
+LOAD: Loaded 25 of 32 Chunks
+LOAD: Loaded 26 of 32 Chunks
+LOAD: Loaded 27 of 32 Chunks
+LOAD: Loaded 28 of 32 Chunks
+LOAD: Loaded 29 of 32 Chunks
+LOAD: Loaded 30 of 32 Chunks
+LOAD: Loaded 31 of 32 Chunks
+LOAD: Loaded 32 of 32 Chunks
+LOAD: Loaded World Chunks
+
+
+
+### LOG: Sun Oct 27 12:55:50 2019 ###
+
+
+### LOAD: STARTING LOAD AT 661.617981 ###
+
+
+### LOAD: Loaded Version: 1.2.1, Using Version: 1.2.1 ###
+
+Successfully Loaded Script File: ../Assets/Scripts/Script_player_makeHouse.txt, and given id of: 1
+LOAD: Loaded Player POD
+LOAD: Loaded Player Inventory
+LOAD: Loaded 1 of 32 Chunks
+LOAD: Loaded 2 of 32 Chunks
+LOAD: Loaded 3 of 32 Chunks
+LOAD: Loaded 4 of 32 Chunks
+LOAD: Loaded 5 of 32 Chunks
+LOAD: Loaded 6 of 32 Chunks
+LOAD: Loaded 7 of 32 Chunks
+LOAD: Loaded 8 of 32 Chunks
+LOAD: Loaded 9 of 32 Chunks
+LOAD: Loaded 10 of 32 Chunks
+LOAD: Loaded 11 of 32 Chunks
+LOAD: Loaded 12 of 32 Chunks
+LOAD: Loaded 13 of 32 Chunks
+LOAD: Loaded 14 of 32 Chunks
+LOAD: Loaded 15 of 32 Chunks
+LOAD: Loaded 16 of 32 Chunks
+LOAD: Loaded 17 of 32 Chunks
+LOAD: Loaded 18 of 32 Chunks
+LOAD: Loaded 19 of 32 Chunks
+LOAD: Loaded 20 of 32 Chunks
+LOAD: Loaded 21 of 32 Chunks
+LOAD: Loaded 22 of 32 Chunks
+LOAD: Loaded 23 of 32 Chunks
+LOAD: Loaded 24 of 32 Chunks
+LOAD: Loaded 25 of 32 Chunks
+LOAD: Loaded 26 of 32 Chunks
+LOAD: Loaded 27 of 32 Chunks
+LOAD: Loaded 28 of 32 Chunks
+LOAD: Loaded 29 of 32 Chunks
+LOAD: Loaded 30 of 32 Chunks
+LOAD: Loaded 31 of 32 Chunks
+LOAD: Loaded 32 of 32 Chunks
+LOAD: Loaded World Chunks
+
+
+
+### LOG: Sun Oct 27 13:03:15 2019 ###
+
+CREATE: Starting world creation at time: 1054.400024
+CREATE: Finished world creation at time: 5595.235840 (Elapsed: 4540.835938ms)
+Loaded all 3 music files.
+Loaded all 2 sound files.
+Successfully Loaded Script File: ../Assets/Scripts/Script_player_makeHouse.txt, and given id of: 1
+Loading dialogue. 1297 bytes to read.
+Successfully Loaded Script File: ../Assets/Scripts/Script_selected_makeHouse.txt, and given id of: 2
+Successfully Loaded Script File: ../Assets/Scripts/Script_player_makeHouse.txt, and given id of: 1
+Dialogue loaded! (24 bytes)
+Loading flags. 125 bytes to read.
+Loaded flag with id of 0 and value of 0
+Loaded flag with id of 1 and value of 0
+Loaded flag with id of 2 and value of 0
+Loaded flag with id of 3 and value of 0
+Loaded flag with id of 4 and value of 0
+Loaded flag with id of 5 and value of 0
+Flags loaded! (24 bytes)
+Loading trade tables. 180 bytes to read.
+Loaded trade tables! (24 bytes)
+SAVE: Starting World Save to File: Test.bin
+SAVE: Starting Save Preparations
+SAVE: Player Data Prepared
+SAVE: Chunk Data Prepared
+
+### SAVE: ALL DATA PREPARED, STARTING SAVE ###
+
+SAVE: Started Saving with version: 1.2.1
+SAVE: Wrote Player POD
+SAVE: Wrote Player Inventory
+SAVE: Wrote World Chunks
+
+### SAVE: SAVE COMPLETED ###
+
+SAVE: Starting World Save to File: Test.bin
+SAVE: Starting Save Preparations
+SAVE: Player Data Prepared
+SAVE: Chunk Data Prepared
+
+### SAVE: ALL DATA PREPARED, STARTING SAVE ###
+
+SAVE: Started Saving with version: 1.2.1
+SAVE: Wrote Player POD
+SAVE: Wrote Player Inventory
+SAVE: Wrote World Chunks
+
+### SAVE: SAVE COMPLETED ###
+
+
+### LOAD: STARTING LOAD AT 12095.316406 ###
+
+
+### LOAD: Loaded Version: 1.2.1, Using Version: 1.2.1 ###
+
+Successfully Loaded Script File: ../Assets/Scripts/Script_player_makeHouse.txt, and given id of: 1
+LOAD: Loaded Player POD
+LOAD: Loaded Player Inventory
+LOAD: Loaded 1 of 32 Chunks
+LOAD: Loaded 2 of 32 Chunks
+LOAD: Loaded 3 of 32 Chunks
+LOAD: Loaded 4 of 32 Chunks
+LOAD: Loaded 5 of 32 Chunks
+LOAD: Loaded 6 of 32 Chunks
+LOAD: Loaded 7 of 32 Chunks
+LOAD: Loaded 8 of 32 Chunks
+LOAD: Loaded 9 of 32 Chunks
+LOAD: Loaded 10 of 32 Chunks
+LOAD: Loaded 11 of 32 Chunks
+LOAD: Loaded 12 of 32 Chunks
+LOAD: Loaded 13 of 32 Chunks
+LOAD: Loaded 14 of 32 Chunks
+LOAD: Loaded 15 of 32 Chunks
+LOAD: Loaded 16 of 32 Chunks
+LOAD: Loaded 17 of 32 Chunks
+LOAD: Loaded 18 of 32 Chunks
+LOAD: Loaded 19 of 32 Chunks
+LOAD: Loaded 20 of 32 Chunks
+LOAD: Loaded 21 of 32 Chunks
+LOAD: Loaded 22 of 32 Chunks
+LOAD: Loaded 23 of 32 Chunks
+LOAD: Loaded 24 of 32 Chunks
+LOAD: Loaded 25 of 32 Chunks
+LOAD: Loaded 26 of 32 Chunks
+LOAD: Loaded 27 of 32 Chunks
+LOAD: Loaded 28 of 32 Chunks
+LOAD: Loaded 29 of 32 Chunks
+LOAD: Loaded 30 of 32 Chunks
+LOAD: Loaded 31 of 32 Chunks
+LOAD: Loaded 32 of 32 Chunks
+LOAD: Loaded World Chunks
+
+### LOAD: LOAD COMPLETED. FINISHED AT 49055.015625 (36959.699219 milliseconds) ###
+
+
+
+
+### LOG: Sun Oct 27 13:05:21 2019 ###
+
+
+### LOAD: STARTING LOAD AT 680.458984 ###
+
+
+### LOAD: Loaded Version: 1.2.1, Using Version: 1.2.1 ###
+
+Successfully Loaded Script File: ../Assets/Scripts/Script_player_makeHouse.txt, and given id of: 1
+LOAD: Loaded Player POD
+LOAD: Loaded Player Inventory
+LOAD: Loaded 1 of 32 Chunks
+LOAD: Loaded 2 of 32 Chunks
+LOAD: Loaded 3 of 32 Chunks
+LOAD: Loaded 4 of 32 Chunks
+LOAD: Loaded 5 of 32 Chunks
+LOAD: Loaded 6 of 32 Chunks
+LOAD: Loaded 7 of 32 Chunks
+LOAD: Loaded 8 of 32 Chunks
+LOAD: Loaded 9 of 32 Chunks
+LOAD: Loaded 10 of 32 Chunks
+LOAD: Loaded 11 of 32 Chunks
+LOAD: Loaded 12 of 32 Chunks
+LOAD: Loaded 13 of 32 Chunks
+LOAD: Loaded 14 of 32 Chunks
+LOAD: Loaded 15 of 32 Chunks
+LOAD: Loaded 16 of 32 Chunks
+LOAD: Loaded 17 of 32 Chunks
+LOAD: Loaded 18 of 32 Chunks
+LOAD: Loaded 19 of 32 Chunks
+LOAD: Loaded 20 of 32 Chunks
+LOAD: Loaded 21 of 32 Chunks
+LOAD: Loaded 22 of 32 Chunks
+LOAD: Loaded 23 of 32 Chunks
+LOAD: Loaded 24 of 32 Chunks
+LOAD: Loaded 25 of 32 Chunks
+LOAD: Loaded 26 of 32 Chunks
+LOAD: Loaded 27 of 32 Chunks
+LOAD: Loaded 28 of 32 Chunks
+LOAD: Loaded 29 of 32 Chunks
+LOAD: Loaded 30 of 32 Chunks
+LOAD: Loaded 31 of 32 Chunks
+LOAD: Loaded 32 of 32 Chunks
+LOAD: Loaded World Chunks
+
+### LOAD: LOAD COMPLETED. FINISHED AT 2217.757080 (1537.298096 milliseconds) ###
+
+Loaded all 3 music files.
+Loaded all 2 sound files.
+Loading dialogue. 1297 bytes to read.
+Successfully Loaded Script File: ../Assets/Scripts/Script_selected_makeHouse.txt, and given id of: 2
+Successfully Loaded Script File: ../Assets/Scripts/Script_player_makeHouse.txt, and given id of: 1
+Dialogue loaded! (24 bytes)
+Loading flags. 125 bytes to read.
+Loaded flag with id of 0 and value of 0
+Loaded flag with id of 1 and value of 0
+Loaded flag with id of 2 and value of 0
+Loaded flag with id of 3 and value of 0
+Loaded flag with id of 4 and value of 0
+Loaded flag with id of 5 and value of 0
+Flags loaded! (24 bytes)
+Loading trade tables. 180 bytes to read.
+Loaded trade tables! (24 bytes)
+
+
+
+### LOG: Sun Oct 27 13:10:30 2019 ###
+
+CREATE: Starting world creation at time: 708.130005
+CREATE: Finished world creation at time: 4148.056152 (Elapsed: 3439.926270ms)
+Loaded all 3 music files.
+Loaded all 2 sound files.
+Successfully Loaded Script File: ../Assets/Scripts/Script_player_makeHouse.txt, and given id of: 1
+Loading dialogue. 1297 bytes to read.
+Successfully Loaded Script File: ../Assets/Scripts/Script_selected_makeHouse.txt, and given id of: 2
+Successfully Loaded Script File: ../Assets/Scripts/Script_player_makeHouse.txt, and given id of: 1
+Dialogue loaded! (24 bytes)
+Loading flags. 125 bytes to read.
+Loaded flag with id of 0 and value of 0
+Loaded flag with id of 1 and value of 0
+Loaded flag with id of 2 and value of 0
+Loaded flag with id of 3 and value of 0
+Loaded flag with id of 4 and value of 0
+Loaded flag with id of 5 and value of 0
+Flags loaded! (24 bytes)
+Loading trade tables. 180 bytes to read.
+Loaded trade tables! (24 bytes)
+SAVE: Starting World Save to File: Test.bin
+SAVE: Starting Save Preparations
+SAVE: Player Data Prepared
+SAVE: Chunk Data Prepared
+
+### SAVE: ALL DATA PREPARED, STARTING SAVE ###
+
+SAVE: Started Saving with version: 1.2.1
+SAVE: Wrote Player POD
+SAVE: Wrote Player Inventory
+SAVE: Wrote World Chunks
+
+### SAVE: SAVE COMPLETED ###
+
+
+### LOAD: STARTING LOAD AT 13473.307617 ###
+
+
+### LOAD: Loaded Version: 1.2.1, Using Version: 1.2.1 ###
+
+Successfully Loaded Script File: ../Assets/Scripts/Script_player_makeHouse.txt, and given id of: 1
+LOAD: Loaded Player POD
+LOAD: Loaded Player Inventory
+LOAD: Loaded 1 of 32 Chunks
+LOAD: Loaded 2 of 32 Chunks
+LOAD: Loaded 3 of 32 Chunks
+LOAD: Loaded 4 of 32 Chunks
+LOAD: Loaded 5 of 32 Chunks
+LOAD: Loaded 6 of 32 Chunks
+LOAD: Loaded 7 of 32 Chunks
+LOAD: Loaded 8 of 32 Chunks
+LOAD: Loaded 9 of 32 Chunks
+LOAD: Loaded 10 of 32 Chunks
+LOAD: Loaded 11 of 32 Chunks
+LOAD: Loaded 12 of 32 Chunks
+LOAD: Loaded 13 of 32 Chunks
+LOAD: Loaded 14 of 32 Chunks
+LOAD: Loaded 15 of 32 Chunks
+LOAD: Loaded 16 of 32 Chunks
+LOAD: Loaded 17 of 32 Chunks
+LOAD: Loaded 18 of 32 Chunks
+LOAD: Loaded 19 of 32 Chunks
+LOAD: Loaded 20 of 32 Chunks
+LOAD: Loaded 21 of 32 Chunks
+LOAD: Loaded 22 of 32 Chunks
+LOAD: Loaded 23 of 32 Chunks
+LOAD: Loaded 24 of 32 Chunks
+LOAD: Loaded 25 of 32 Chunks
+LOAD: Loaded 26 of 32 Chunks
+LOAD: Loaded 27 of 32 Chunks
+LOAD: Loaded 28 of 32 Chunks
+LOAD: Loaded 29 of 32 Chunks
+LOAD: Loaded 30 of 32 Chunks
+LOAD: Loaded 31 of 32 Chunks
+LOAD: Loaded 32 of 32 Chunks
+LOAD: Loaded World Chunks
+
+### LOAD: LOAD COMPLETED. FINISHED AT 15293.857422 (1820.549805 milliseconds) ###
+
+
+
+
+### LOG: Sun Oct 27 13:17:12 2019 ###
+
+CREATE: Starting world creation at time: 1187.182983
+CREATE: Finished world creation at time: 5759.950195 (Elapsed: 4572.767090ms)
+Loaded all 3 music files.
+Loaded all 2 sound files.
+Successfully Loaded Script File: ../Assets/Scripts/Script_player_makeHouse.txt, and given id of: 1
+Loading dialogue. 1297 bytes to read.
+Successfully Loaded Script File: ../Assets/Scripts/Script_selected_makeHouse.txt, and given id of: 2
+Successfully Loaded Script File: ../Assets/Scripts/Script_player_makeHouse.txt, and given id of: 1
+Dialogue loaded! (24 bytes)
+Loading flags. 125 bytes to read.
+Loaded flag with id of 0 and value of 0
+Loaded flag with id of 1 and value of 0
+Loaded flag with id of 2 and value of 0
+Loaded flag with id of 3 and value of 0
+Loaded flag with id of 4 and value of 0
+Loaded flag with id of 5 and value of 0
+Flags loaded! (24 bytes)
+Loading trade tables. 180 bytes to read.
+Loaded trade tables! (24 bytes)
+SAVE: Starting World Save to File: Test.bin
+SAVE: Starting Save Preparations
+SAVE: Player Data Prepared
+SAVE: Chunk Data Prepared
+
+### SAVE: ALL DATA PREPARED, STARTING SAVE ###
+
+SAVE: Started Saving with version: 1.2.1
+SAVE: Wrote Player POD
+SAVE: Wrote Player Inventory
+SAVE: Wrote World Chunks
+
+### SAVE: SAVE COMPLETED ###
+
+SAVE: Starting World Save to File: Test.bin
+SAVE: Starting Save Preparations
+SAVE: Player Data Prepared
+SAVE: Chunk Data Prepared
+
+### SAVE: ALL DATA PREPARED, STARTING SAVE ###
+
+SAVE: Started Saving with version: 1.2.1
+SAVE: Wrote Player POD
+SAVE: Wrote Player Inventory
+SAVE: Wrote World Chunks
+
+### SAVE: SAVE COMPLETED ###
+
+
+
+
+### LOG: Sun Oct 27 13:18:58 2019 ###
+
+CREATE: Starting world creation at time: 993.734985
+CREATE: Finished world creation at time: 5587.445801 (Elapsed: 4593.710938ms)
+Loaded all 3 music files.
+Loaded all 2 sound files.
+Successfully Loaded Script File: ../Assets/Scripts/Script_player_makeHouse.txt, and given id of: 1
+Loading dialogue. 1297 bytes to read.
+Successfully Loaded Script File: ../Assets/Scripts/Script_selected_makeHouse.txt, and given id of: 2
+Successfully Loaded Script File: ../Assets/Scripts/Script_player_makeHouse.txt, and given id of: 1
+Dialogue loaded! (24 bytes)
+Loading flags. 125 bytes to read.
+Loaded flag with id of 0 and value of 0
+Loaded flag with id of 1 and value of 0
+Loaded flag with id of 2 and value of 0
+Loaded flag with id of 3 and value of 0
+Loaded flag with id of 4 and value of 0
+Loaded flag with id of 5 and value of 0
+Flags loaded! (24 bytes)
+Loading trade tables. 180 bytes to read.
+Loaded trade tables! (24 bytes)
+SAVE: Starting World Save to File: Test.bin
+SAVE: Starting Save Preparations
+SAVE: Player Data Prepared
+SAVE: Chunk Data Prepared
+
+### SAVE: ALL DATA PREPARED, STARTING SAVE ###
+
+SAVE: Started Saving with version: 1.2.1
+SAVE: Wrote Player POD
+SAVE: Wrote Player Inventory
+SAVE: Wrote World Chunks
+
+### SAVE: SAVE COMPLETED ###
+
+
+
+
+### LOG: Sun Oct 27 13:19:20 2019 ###
+
+
+### LOAD: STARTING LOAD AT 1225.708008 ###
+
+
+### LOAD: Loaded Version: 1.2.1, Using Version: 1.2.1 ###
+
+Successfully Loaded Script File: ../Assets/Scripts/Script_player_makeHouse.txt, and given id of: 1
+LOAD: Loaded Player POD
+LOAD: Loaded Player Inventory
+LOAD: Loaded 1 of 32 Chunks
+LOAD: Loaded 2 of 32 Chunks
+LOAD: Loaded 3 of 32 Chunks
+LOAD: Loaded 4 of 32 Chunks
+LOAD: Loaded 5 of 32 Chunks
+LOAD: Loaded 6 of 32 Chunks
+LOAD: Loaded 7 of 32 Chunks
+LOAD: Loaded 8 of 32 Chunks
+LOAD: Loaded 9 of 32 Chunks
+LOAD: Loaded 10 of 32 Chunks
+LOAD: Loaded 11 of 32 Chunks
+LOAD: Loaded 12 of 32 Chunks
+LOAD: Loaded 13 of 32 Chunks
+LOAD: Loaded 14 of 32 Chunks
+LOAD: Loaded 15 of 32 Chunks
+LOAD: Loaded 16 of 32 Chunks
+LOAD: Loaded 17 of 32 Chunks
+LOAD: Loaded 18 of 32 Chunks
+LOAD: Loaded 19 of 32 Chunks
+LOAD: Loaded 20 of 32 Chunks
+LOAD: Loaded 21 of 32 Chunks
+LOAD: Loaded 22 of 32 Chunks
+LOAD: Loaded 23 of 32 Chunks
+LOAD: Loaded 24 of 32 Chunks
+LOAD: Loaded 25 of 32 Chunks
+LOAD: Loaded 26 of 32 Chunks
+LOAD: Loaded 27 of 32 Chunks
+LOAD: Loaded 28 of 32 Chunks
+LOAD: Loaded 29 of 32 Chunks
+LOAD: Loaded 30 of 32 Chunks
+LOAD: Loaded 31 of 32 Chunks
+LOAD: Loaded 32 of 32 Chunks
+LOAD: Loaded World Chunks
+
+### LOAD: LOAD COMPLETED. FINISHED AT 2658.327881 (1432.619873 milliseconds) ###
+
+Loaded all 3 music files.
+Loaded all 2 sound files.
+Loading dialogue. 1297 bytes to read.
+Successfully Loaded Script File: ../Assets/Scripts/Script_selected_makeHouse.txt, and given id of: 2
+Successfully Loaded Script File: ../Assets/Scripts/Script_player_makeHouse.txt, and given id of: 1
+Dialogue loaded! (24 bytes)
+Loading flags. 125 bytes to read.
+Loaded flag with id of 0 and value of 0
+Loaded flag with id of 1 and value of 0
+Loaded flag with id of 2 and value of 0
+Loaded flag with id of 3 and value of 0
+Loaded flag with id of 4 and value of 0
+Loaded flag with id of 5 and value of 0
+Flags loaded! (24 bytes)
+Loading trade tables. 180 bytes to read.
+Loaded trade tables! (24 bytes)
+
+
+
+### LOG: Sun Oct 27 13:21:36 2019 ###
+
+CREATE: Starting world creation at time: 1056.863037
+CREATE: Finished world creation at time: 4693.100098 (Elapsed: 3636.237061ms)
+Loaded all 3 music files.
+Loaded all 2 sound files.
+Successfully Loaded Script File: ../Assets/Scripts/Script_player_makeHouse.txt, and given id of: 1
+Loading dialogue. 1297 bytes to read.
+Successfully Loaded Script File: ../Assets/Scripts/Script_selected_makeHouse.txt, and given id of: 2
+Successfully Loaded Script File: ../Assets/Scripts/Script_player_makeHouse.txt, and given id of: 1
+Dialogue loaded! (24 bytes)
+Loading flags. 125 bytes to read.
+Loaded flag with id of 0 and value of 0
+Loaded flag with id of 1 and value of 0
+Loaded flag with id of 2 and value of 0
+Loaded flag with id of 3 and value of 0
+Loaded flag with id of 4 and value of 0
+Loaded flag with id of 5 and value of 0
+Flags loaded! (24 bytes)
+Loading trade tables. 180 bytes to read.
+Loaded trade tables! (24 bytes)
+
+### Invalid command: tp player 10 10 ###
+
+Teleporting entity to: X=10.000000, Y=10.000000
+SAVE: Starting World Save to File: Test.bin
+SAVE: Starting Save Preparations
+SAVE: Player Data Prepared
+SAVE: Chunk Data Prepared
+
+### SAVE: ALL DATA PREPARED, STARTING SAVE ###
+
+SAVE: Started Saving with version: 1.2.1
+SAVE: Wrote Player POD
+SAVE: Wrote Player Inventory
+SAVE: Wrote World Chunks
+
+### SAVE: SAVE COMPLETED ###
+
+SAVE: Starting World Save to File: Test.bin
+SAVE: Starting Save Preparations
+SAVE: Player Data Prepared
+SAVE: Chunk Data Prepared
+
+### SAVE: ALL DATA PREPARED, STARTING SAVE ###
+
+SAVE: Started Saving with version: 1.2.1
+SAVE: Wrote Player POD
+SAVE: Wrote Player Inventory
+SAVE: Wrote World Chunks
+
+### SAVE: SAVE COMPLETED ###
+
+
+### LOAD: STARTING LOAD AT 14564.311523 ###
+
+
+### LOAD: Loaded Version: 1.2.1, Using Version: 1.2.1 ###
+
+Successfully Loaded Script File: ../Assets/Scripts/Script_player_makeHouse.txt, and given id of: 1
+LOAD: Loaded Player POD
+LOAD: Loaded Player Inventory
+
+
+
+### LOG: Sun Oct 27 13:29:36 2019 ###
+
+CREATE: Starting world creation at time: 1200.020996
+CREATE: Finished world creation at time: 4837.665039 (Elapsed: 3637.644043ms)
+Loaded all 3 music files.
+Loaded all 2 sound files.
+Successfully Loaded Script File: ../Assets/Scripts/Script_player_makeHouse.txt, and given id of: 1
+Loading dialogue. 1297 bytes to read.
+Successfully Loaded Script File: ../Assets/Scripts/Script_selected_makeHouse.txt, and given id of: 2
+Successfully Loaded Script File: ../Assets/Scripts/Script_player_makeHouse.txt, and given id of: 1
+Dialogue loaded! (24 bytes)
+Loading flags. 125 bytes to read.
+Loaded flag with id of 0 and value of 0
+Loaded flag with id of 1 and value of 0
+Loaded flag with id of 2 and value of 0
+Loaded flag with id of 3 and value of 0
+Loaded flag with id of 4 and value of 0
+Loaded flag with id of 5 and value of 0
+Flags loaded! (24 bytes)
+Loading trade tables. 180 bytes to read.
+Loaded trade tables! (24 bytes)
+Teleporting entity to: X=10.000000, Y=10.000000
+SAVE: Starting World Save to File: Test.bin
+SAVE: Starting Save Preparations
+SAVE: Player Data Prepared
+SAVE: Chunk Data Prepared
+
+### SAVE: ALL DATA PREPARED, STARTING SAVE ###
+
+SAVE: Started Saving with version: 1.2.1
+SAVE: Wrote Player POD
+SAVE: Wrote Player Inventory
+SAVE: Wrote World Chunks
+
+### SAVE: SAVE COMPLETED ###
+
+SAVE: Starting World Save to File: Test.bin
+SAVE: Starting Save Preparations
+SAVE: Player Data Prepared
+SAVE: Chunk Data Prepared
+
+### SAVE: ALL DATA PREPARED, STARTING SAVE ###
+
+SAVE: Started Saving with version: 1.2.1
+SAVE: Wrote Player POD
+SAVE: Wrote Player Inventory
+SAVE: Wrote World Chunks
+
+### SAVE: SAVE COMPLETED ###
+
+
+### LOAD: STARTING LOAD AT 13282.879883 ###
+
+
+### LOAD: Loaded Version: 1.2.1, Using Version: 1.2.1 ###
+
+Successfully Loaded Script File: ../Assets/Scripts/Script_player_makeHouse.txt, and given id of: 1
+LOAD: Loaded Player POD
+LOAD: Loaded Player Inventory
+
+
+
+### LOG: Sun Oct 27 13:32:29 2019 ###
+
+
+### LOAD: STARTING LOAD AT 1026.569946 ###
+
+
+### LOAD: Loaded Version: 1.2.1, Using Version: 1.2.1 ###
+
+Successfully Loaded Script File: ../Assets/Scripts/Script_player_makeHouse.txt, and given id of: 1
+LOAD: Loaded Player POD
+LOAD: Loaded Player Inventory
+
+
+
+### LOG: Sun Oct 27 13:35:04 2019 ###
+
+
+### LOAD: STARTING LOAD AT 1086.990967 ###
+
+
+### LOAD: Loaded Version: 1.2.1, Using Version: 1.2.1 ###
+
+Successfully Loaded Script File: ../Assets/Scripts/Script_player_makeHouse.txt, and given id of: 1
+LOAD: Loaded Player POD
+LOAD: Loaded Player Inventory
+
+
+
+### LOG: Sun Oct 27 13:38:19 2019 ###
+
+CREATE: Starting world creation at time: 1084.401001
+CREATE: Finished world creation at time: 4114.311035 (Elapsed: 3029.910156ms)
+Loaded all 3 music files.
+Loaded all 2 sound files.
+Successfully Loaded Script File: ../Assets/Scripts/Script_player_makeHouse.txt, and given id of: 1
+Loading dialogue. 1297 bytes to read.
+Successfully Loaded Script File: ../Assets/Scripts/Script_selected_makeHouse.txt, and given id of: 2
+Successfully Loaded Script File: ../Assets/Scripts/Script_player_makeHouse.txt, and given id of: 1
+Dialogue loaded! (24 bytes)
+Loading flags. 125 bytes to read.
+Loaded flag with id of 0 and value of 0
+Loaded flag with id of 1 and value of 0
+Loaded flag with id of 2 and value of 0
+Loaded flag with id of 3 and value of 0
+Loaded flag with id of 4 and value of 0
+Loaded flag with id of 5 and value of 0
+Flags loaded! (24 bytes)
+Loading trade tables. 180 bytes to read.
+Loaded trade tables! (24 bytes)
+SAVE: Starting World Save to File: Test.bin
+SAVE: Starting Save Preparations
+SAVE: Player Data Prepared
+
+
+
+### LOG: Sun Oct 27 13:39:44 2019 ###
+
+CREATE: Starting world creation at time: 1019.927002
+CREATE: Finished world creation at time: 4905.318848 (Elapsed: 3885.391846ms)
+Loaded all 3 music files.
+Loaded all 2 sound files.
+Successfully Loaded Script File: ../Assets/Scripts/Script_player_makeHouse.txt, and given id of: 1
+Loading dialogue. 1297 bytes to read.
+Successfully Loaded Script File: ../Assets/Scripts/Script_selected_makeHouse.txt, and given id of: 2
+Successfully Loaded Script File: ../Assets/Scripts/Script_player_makeHouse.txt, and given id of: 1
+Dialogue loaded! (24 bytes)
+Loading flags. 125 bytes to read.
+Loaded flag with id of 0 and value of 0
+Loaded flag with id of 1 and value of 0
+Loaded flag with id of 2 and value of 0
+Loaded flag with id of 3 and value of 0
+Loaded flag with id of 4 and value of 0
+Loaded flag with id of 5 and value of 0
+Flags loaded! (24 bytes)
+Loading trade tables. 180 bytes to read.
+Loaded trade tables! (24 bytes)
+
+
+
+### LOG: Sun Oct 27 13:41:09 2019 ###
+
+CREATE: Starting world creation at time: 1068.206055
+CREATE: Finished world creation at time: 4572.168945 (Elapsed: 3503.962891ms)
+Loaded all 3 music files.
+Loaded all 2 sound files.
+Successfully Loaded Script File: ../Assets/Scripts/Script_player_makeHouse.txt, and given id of: 1
+Loading dialogue. 1297 bytes to read.
+Successfully Loaded Script File: ../Assets/Scripts/Script_selected_makeHouse.txt, and given id of: 2
+Successfully Loaded Script File: ../Assets/Scripts/Script_player_makeHouse.txt, and given id of: 1
+Dialogue loaded! (24 bytes)
+Loading flags. 125 bytes to read.
+Loaded flag with id of 0 and value of 0
+Loaded flag with id of 1 and value of 0
+Loaded flag with id of 2 and value of 0
+Loaded flag with id of 3 and value of 0
+Loaded flag with id of 4 and value of 0
+Loaded flag with id of 5 and value of 0
+Flags loaded! (24 bytes)
+Loading trade tables. 180 bytes to read.
+Loaded trade tables! (24 bytes)
+Teleporting entity to: X=10.000000, Y=10.000000
+SAVE: Starting World Save to File: Test.bin
+SAVE: Starting Save Preparations
+SAVE: Player Data Prepared
+SAVE: Chunk Data Prepared
+
+### SAVE: ALL DATA PREPARED, STARTING SAVE ###
+
+SAVE: Started Saving with version: 1.2.1
+SAVE: Wrote Player POD
+SAVE: Wrote Player Inventory
+SAVE: Wrote World Chunks
+
+### SAVE: SAVE COMPLETED ###
+
+
+
+
+### LOG: Sun Oct 27 13:41:53 2019 ###
+
+CREATE: Starting world creation at time: 1620.151978
+CREATE: Finished world creation at time: 5155.849121 (Elapsed: 3535.697266ms)
+Loaded all 3 music files.
+Loaded all 2 sound files.
+Successfully Loaded Script File: ../Assets/Scripts/Script_player_makeHouse.txt, and given id of: 1
+Loading dialogue. 1297 bytes to read.
+Successfully Loaded Script File: ../Assets/Scripts/Script_selected_makeHouse.txt, and given id of: 2
+Successfully Loaded Script File: ../Assets/Scripts/Script_player_makeHouse.txt, and given id of: 1
+Dialogue loaded! (24 bytes)
+Loading flags. 125 bytes to read.
+Loaded flag with id of 0 and value of 0
+Loaded flag with id of 1 and value of 0
+Loaded flag with id of 2 and value of 0
+Loaded flag with id of 3 and value of 0
+Loaded flag with id of 4 and value of 0
+Loaded flag with id of 5 and value of 0
+Flags loaded! (24 bytes)
+Loading trade tables. 180 bytes to read.
+Loaded trade tables! (24 bytes)
+Teleporting entity to: X=10.000000, Y=10.000000
+SAVE: Starting World Save to File: Test.bin
+SAVE: Starting Save Preparations
+SAVE: Player Data Prepared
+SAVE: Chunk Data Prepared
+
+### SAVE: ALL DATA PREPARED, STARTING SAVE ###
+
+SAVE: Started Saving with version: 1.2.1
+SAVE: Wrote Player POD
+SAVE: Wrote Player Inventory
+SAVE: Wrote World Chunks
+
+### SAVE: SAVE COMPLETED ###
+
+
+
+
+### LOG: Sun Oct 27 13:43:09 2019 ###
+
+
+### LOAD: STARTING LOAD AT 929.268982 ###
+
+
+### LOAD: Loaded Version: 1.2.1, Using Version: 1.2.1 ###
+
+Successfully Loaded Script File: ../Assets/Scripts/Script_player_makeHouse.txt, and given id of: 1
+LOAD: Loaded Player POD
+LOAD: Loaded Player Inventory
+LOAD: Loaded 1 of 32 Chunks
+LOAD: Loaded 2 of 32 Chunks
+LOAD: Loaded 3 of 32 Chunks
+LOAD: Loaded 4 of 32 Chunks
+LOAD: Loaded 5 of 32 Chunks
+LOAD: Loaded 6 of 32 Chunks
+LOAD: Loaded 7 of 32 Chunks
+LOAD: Loaded 8 of 32 Chunks
+LOAD: Loaded 9 of 32 Chunks
+LOAD: Loaded 10 of 32 Chunks
+LOAD: Loaded 11 of 32 Chunks
+LOAD: Loaded 12 of 32 Chunks
+LOAD: Loaded 13 of 32 Chunks
+LOAD: Loaded 14 of 32 Chunks
+LOAD: Loaded 15 of 32 Chunks
+LOAD: Loaded 16 of 32 Chunks
+LOAD: Loaded 17 of 32 Chunks
+LOAD: Loaded 18 of 32 Chunks
+LOAD: Loaded 19 of 32 Chunks
+LOAD: Loaded 20 of 32 Chunks
+LOAD: Loaded 21 of 32 Chunks
+LOAD: Loaded 22 of 32 Chunks
+LOAD: Loaded 23 of 32 Chunks
+LOAD: Loaded 24 of 32 Chunks
+LOAD: Loaded 25 of 32 Chunks
+LOAD: Loaded 26 of 32 Chunks
+LOAD: Loaded 27 of 32 Chunks
+LOAD: Loaded 28 of 32 Chunks
+LOAD: Loaded 29 of 32 Chunks
+LOAD: Loaded 30 of 32 Chunks
+LOAD: Loaded 31 of 32 Chunks
+LOAD: Loaded 32 of 32 Chunks
+LOAD: Loaded World Chunks
+
+### LOAD: LOAD COMPLETED. FINISHED AT 1764.310059 (835.041077 milliseconds) ###
+
+Loaded all 3 music files.
+Loaded all 2 sound files.
+Loading dialogue. 1297 bytes to read.
+Successfully Loaded Script File: ../Assets/Scripts/Script_selected_makeHouse.txt, and given id of: 2
+Successfully Loaded Script File: ../Assets/Scripts/Script_player_makeHouse.txt, and given id of: 1
+Dialogue loaded! (24 bytes)
+Loading flags. 125 bytes to read.
+Loaded flag with id of 0 and value of 0
+Loaded flag with id of 1 and value of 0
+Loaded flag with id of 2 and value of 0
+Loaded flag with id of 3 and value of 0
+Loaded flag with id of 4 and value of 0
+Loaded flag with id of 5 and value of 0
+Flags loaded! (24 bytes)
+Loading trade tables. 180 bytes to read.
+Loaded trade tables! (24 bytes)
+SAVE: Starting World Save to File: Test.bin
+SAVE: Starting Save Preparations
+SAVE: Player Data Prepared
+SAVE: Chunk Data Prepared
+
+### SAVE: ALL DATA PREPARED, STARTING SAVE ###
+
+SAVE: Started Saving with version: 1.2.1
+SAVE: Wrote Player POD
+SAVE: Wrote Player Inventory
+SAVE: Wrote World Chunks
+
+### SAVE: SAVE COMPLETED ###
+
+
+### LOAD: STARTING LOAD AT 13022.874023 ###
+
+
+### LOAD: Loaded Version: 1.2.1, Using Version: 1.2.1 ###
+
+Successfully Loaded Script File: ../Assets/Scripts/Script_player_makeHouse.txt, and given id of: 1
+LOAD: Loaded Player POD
+LOAD: Loaded Player Inventory
+
+
+
+### LOG: Sun Oct 27 13:56:40 2019 ###
+
+CREATE: Starting world creation at time: 976.380005
+CREATE: Finished world creation at time: 3736.545898 (Elapsed: 2760.166016ms)
+Loaded all 3 music files.
+Loaded all 2 sound files.
+Successfully Loaded Script File: ../Assets/Scripts/Script_player_makeHouse.txt, and given id of: 1
+Loading dialogue. 1297 bytes to read.
+Successfully Loaded Script File: ../Assets/Scripts/Script_selected_makeHouse.txt, and given id of: 2
+Successfully Loaded Script File: ../Assets/Scripts/Script_player_makeHouse.txt, and given id of: 1
+Dialogue loaded! (24 bytes)
+Loading flags. 125 bytes to read.
+Loaded flag with id of 0 and value of 0
+Loaded flag with id of 1 and value of 0
+Loaded flag with id of 2 and value of 0
+Loaded flag with id of 3 and value of 0
+Loaded flag with id of 4 and value of 0
+Loaded flag with id of 5 and value of 0
+Flags loaded! (24 bytes)
+Loading trade tables. 180 bytes to read.
+Loaded trade tables! (24 bytes)
+SAVE: Starting World Save to File: Test.bin
+SAVE: Starting Save Preparations
+SAVE: Player Data Prepared
+SAVE: Chunk Data Prepared
+
+### SAVE: ALL DATA PREPARED, STARTING SAVE ###
+
+SAVE: Started Saving with version: 1.2.1
+SAVE: Wrote Player POD
+SAVE: Wrote Player Inventory
+SAVE: Wrote World Chunks
+
+### SAVE: SAVE COMPLETED ###
+
+
+### LOAD: STARTING LOAD AT 10376.052734 ###
+
+
+### LOAD: Loaded Version: 1.2.1, Using Version: 1.2.1 ###
+
+Successfully Loaded Script File: ../Assets/Scripts/Script_player_makeHouse.txt, and given id of: 1
+LOAD: Loaded Player POD
+LOAD: Loaded Player Inventory
+LOAD: Loaded 1 of 32 Chunks
+LOAD: Loaded 2 of 32 Chunks
+LOAD: Loaded 3 of 32 Chunks
+LOAD: Loaded 4 of 32 Chunks
+LOAD: Loaded 5 of 32 Chunks
+LOAD: Loaded 6 of 32 Chunks
+LOAD: Loaded 7 of 32 Chunks
+LOAD: Loaded 8 of 32 Chunks
+LOAD: Loaded 9 of 32 Chunks
+LOAD: Loaded 10 of 32 Chunks
+LOAD: Loaded 11 of 32 Chunks
+LOAD: Loaded 12 of 32 Chunks
+LOAD: Loaded 13 of 32 Chunks
+LOAD: Loaded 14 of 32 Chunks
+LOAD: Loaded 15 of 32 Chunks
+LOAD: Loaded 16 of 32 Chunks
+LOAD: Loaded 17 of 32 Chunks
+LOAD: Loaded 18 of 32 Chunks
+LOAD: Loaded 19 of 32 Chunks
+LOAD: Loaded 20 of 32 Chunks
+LOAD: Loaded 21 of 32 Chunks
+LOAD: Loaded 22 of 32 Chunks
+LOAD: Loaded 23 of 32 Chunks
+LOAD: Loaded 24 of 32 Chunks
+LOAD: Loaded 25 of 32 Chunks
+LOAD: Loaded 26 of 32 Chunks
+LOAD: Loaded 27 of 32 Chunks
+LOAD: Loaded 28 of 32 Chunks
+LOAD: Loaded 29 of 32 Chunks
+LOAD: Loaded 30 of 32 Chunks
+LOAD: Loaded 31 of 32 Chunks
+LOAD: Loaded 32 of 32 Chunks
+LOAD: Loaded World Chunks
+
+### LOAD: LOAD COMPLETED. FINISHED AT 11106.285156 (730.232422 milliseconds) ###
+
+
+
+
+### LOG: Sun Oct 27 13:59:19 2019 ###
+
+CREATE: Starting world creation at time: 1041.110962
+CREATE: Finished world creation at time: 4394.903809 (Elapsed: 3353.792969ms)
+Loaded all 3 music files.
+Loaded all 2 sound files.
+Successfully Loaded Script File: ../Assets/Scripts/Script_player_makeHouse.txt, and given id of: 1
+Loading dialogue. 1297 bytes to read.
+Successfully Loaded Script File: ../Assets/Scripts/Script_selected_makeHouse.txt, and given id of: 2
+Successfully Loaded Script File: ../Assets/Scripts/Script_player_makeHouse.txt, and given id of: 1
+Dialogue loaded! (24 bytes)
+Loading flags. 125 bytes to read.
+Loaded flag with id of 0 and value of 0
+Loaded flag with id of 1 and value of 0
+Loaded flag with id of 2 and value of 0
+Loaded flag with id of 3 and value of 0
+Loaded flag with id of 4 and value of 0
+Loaded flag with id of 5 and value of 0
+Flags loaded! (24 bytes)
+Loading trade tables. 180 bytes to read.
+Loaded trade tables! (24 bytes)
+Teleporting entity to: X=10.000000, Y=10.000000
+Teleporting entity to: X=10.000000, Y=15.000000
+SAVE: Starting World Save to File: Test.bin
+SAVE: Starting Save Preparations
+SAVE: Player Data Prepared
+SAVE: Chunk Data Prepared
+
+### SAVE: ALL DATA PREPARED, STARTING SAVE ###
+
+SAVE: Started Saving with version: 1.2.1
+SAVE: Wrote Player POD
+SAVE: Wrote Player Inventory
+SAVE: Wrote World Chunks
+
+### SAVE: SAVE COMPLETED ###
+
+
+### LOAD: STARTING LOAD AT 12914.799805 ###
+
+
+### LOAD: Loaded Version: 1.2.1, Using Version: 1.2.1 ###
+
+Successfully Loaded Script File: ../Assets/Scripts/Script_player_makeHouse.txt, and given id of: 1
+LOAD: Loaded Player POD
+LOAD: Loaded Player Inventory
+LOAD: Loaded 1 of 32 Chunks
+LOAD: Loaded 2 of 32 Chunks
+LOAD: Loaded 3 of 32 Chunks
+LOAD: Loaded 4 of 32 Chunks
+LOAD: Loaded 5 of 32 Chunks
+LOAD: Loaded 6 of 32 Chunks
+LOAD: Loaded 7 of 32 Chunks
+LOAD: Loaded 8 of 32 Chunks
+LOAD: Loaded 9 of 32 Chunks
+LOAD: Loaded 10 of 32 Chunks
+LOAD: Loaded 11 of 32 Chunks
+LOAD: Loaded 12 of 32 Chunks
+LOAD: Loaded 13 of 32 Chunks
+LOAD: Loaded 14 of 32 Chunks
+LOAD: Loaded 15 of 32 Chunks
+LOAD: Loaded 16 of 32 Chunks
+LOAD: Loaded 17 of 32 Chunks
+LOAD: Loaded 18 of 32 Chunks
+LOAD: Loaded 19 of 32 Chunks
+LOAD: Loaded 20 of 32 Chunks
+LOAD: Loaded 21 of 32 Chunks
+LOAD: Loaded 22 of 32 Chunks
+LOAD: Loaded 23 of 32 Chunks
+LOAD: Loaded 24 of 32 Chunks
+LOAD: Loaded 25 of 32 Chunks
+LOAD: Loaded 26 of 32 Chunks
+LOAD: Loaded 27 of 32 Chunks
+LOAD: Loaded 28 of 32 Chunks
+LOAD: Loaded 29 of 32 Chunks
+LOAD: Loaded 30 of 32 Chunks
+LOAD: Loaded 31 of 32 Chunks
+LOAD: Loaded 32 of 32 Chunks
+LOAD: Loaded World Chunks
+
+### LOAD: LOAD COMPLETED. FINISHED AT 13659.926758 (745.126953 milliseconds) ###
+
+
+
+
+### LOG: Sun Oct 27 14:02:01 2019 ###
+
+
+### LOAD: STARTING LOAD AT 969.280029 ###
+
+
+### LOAD: Loaded Version: 1.2.1, Using Version: 1.2.1 ###
+
+Successfully Loaded Script File: ../Assets/Scripts/Script_player_makeHouse.txt, and given id of: 1
+LOAD: Loaded Player POD
+LOAD: Loaded Player Inventory
+LOAD: Loaded 1 of 32 Chunks
+LOAD: Loaded 2 of 32 Chunks
+LOAD: Loaded 3 of 32 Chunks
+LOAD: Loaded 4 of 32 Chunks
+LOAD: Loaded 5 of 32 Chunks
+LOAD: Loaded 6 of 32 Chunks
+LOAD: Loaded 7 of 32 Chunks
+LOAD: Loaded 8 of 32 Chunks
+LOAD: Loaded 9 of 32 Chunks
+LOAD: Loaded 10 of 32 Chunks
+LOAD: Loaded 11 of 32 Chunks
+LOAD: Loaded 12 of 32 Chunks
+LOAD: Loaded 13 of 32 Chunks
+LOAD: Loaded 14 of 32 Chunks
+LOAD: Loaded 15 of 32 Chunks
+LOAD: Loaded 16 of 32 Chunks
+LOAD: Loaded 17 of 32 Chunks
+LOAD: Loaded 18 of 32 Chunks
+LOAD: Loaded 19 of 32 Chunks
+LOAD: Loaded 20 of 32 Chunks
+LOAD: Loaded 21 of 32 Chunks
+LOAD: Loaded 22 of 32 Chunks
+LOAD: Loaded 23 of 32 Chunks
+LOAD: Loaded 24 of 32 Chunks
+LOAD: Loaded 25 of 32 Chunks
+LOAD: Loaded 26 of 32 Chunks
+LOAD: Loaded 27 of 32 Chunks
+LOAD: Loaded 28 of 32 Chunks
+LOAD: Loaded 29 of 32 Chunks
+LOAD: Loaded 30 of 32 Chunks
+LOAD: Loaded 31 of 32 Chunks
+LOAD: Loaded 32 of 32 Chunks
+LOAD: Loaded World Chunks
+
+### LOAD: LOAD COMPLETED. FINISHED AT 1761.676025 (792.395996 milliseconds) ###
+
+Loaded all 3 music files.
+Loaded all 2 sound files.
+Loading dialogue. 1297 bytes to read.
+Successfully Loaded Script File: ../Assets/Scripts/Script_selected_makeHouse.txt, and given id of: 2
+Successfully Loaded Script File: ../Assets/Scripts/Script_player_makeHouse.txt, and given id of: 1
+Dialogue loaded! (24 bytes)
+Loading flags. 125 bytes to read.
+Loaded flag with id of 0 and value of 0
+Loaded flag with id of 1 and value of 0
+Loaded flag with id of 2 and value of 0
+Loaded flag with id of 3 and value of 0
+Loaded flag with id of 4 and value of 0
+Loaded flag with id of 5 and value of 0
+Flags loaded! (24 bytes)
+Loading trade tables. 180 bytes to read.
+Loaded trade tables! (24 bytes)
+SAVE: Starting World Save to File: Test.bin
+SAVE: Starting Save Preparations
+SAVE: Player Data Prepared
+SAVE: Chunk Data Prepared
+
+### SAVE: ALL DATA PREPARED, STARTING SAVE ###
+
+SAVE: Started Saving with version: 1.2.1
+SAVE: Wrote Player POD
+SAVE: Wrote 1 of 1 Items
+SAVE: Wrote Player Inventory
+SAVE: Wrote World Chunks
+
+### SAVE: SAVE COMPLETED ###
+
+
+### LOAD: STARTING LOAD AT 7398.091797 ###
+
+
+### LOAD: Loaded Version: 1.2.1, Using Version: 1.2.1 ###
+
+Successfully Loaded Script File: ../Assets/Scripts/Script_player_makeHouse.txt, and given id of: 1
+LOAD: Loaded Player POD
+LOAD: Loaded 1 of 1 Items
+LOAD: Loaded Player Inventory
+LOAD: Loaded 1 of 32 Chunks
+LOAD: Loaded 2 of 32 Chunks
+LOAD: Loaded 3 of 32 Chunks
+LOAD: Loaded 4 of 32 Chunks
+LOAD: Loaded 5 of 32 Chunks
+LOAD: Loaded 6 of 32 Chunks
+LOAD: Loaded 7 of 32 Chunks
+LOAD: Loaded 8 of 32 Chunks
+LOAD: Loaded 9 of 32 Chunks
+LOAD: Loaded 10 of 32 Chunks
+LOAD: Loaded 11 of 32 Chunks
+LOAD: Loaded 12 of 32 Chunks
+LOAD: Loaded 13 of 32 Chunks
+LOAD: Loaded 14 of 32 Chunks
+LOAD: Loaded 15 of 32 Chunks
+LOAD: Loaded 16 of 32 Chunks
+LOAD: Loaded 17 of 32 Chunks
+LOAD: Loaded 18 of 32 Chunks
+LOAD: Loaded 19 of 32 Chunks
+LOAD: Loaded 20 of 32 Chunks
+LOAD: Loaded 21 of 32 Chunks
+LOAD: Loaded 22 of 32 Chunks
+LOAD: Loaded 23 of 32 Chunks
+LOAD: Loaded 24 of 32 Chunks
+LOAD: Loaded 25 of 32 Chunks
+LOAD: Loaded 26 of 32 Chunks
+LOAD: Loaded 27 of 32 Chunks
+LOAD: Loaded 28 of 32 Chunks
+LOAD: Loaded 29 of 32 Chunks
+LOAD: Loaded 30 of 32 Chunks
+LOAD: Loaded 31 of 32 Chunks
+LOAD: Loaded 32 of 32 Chunks
+LOAD: Loaded World Chunks
+
+### LOAD: LOAD COMPLETED. FINISHED AT 8160.606934 (762.515137 milliseconds) ###
+
+
+
+
+### LOG: Sun Oct 27 14:02:31 2019 ###
+
+
+### LOAD: STARTING LOAD AT 855.612000 ###
+
+
+### LOAD: Loaded Version: 1.2.1, Using Version: 1.2.1 ###
+
+Successfully Loaded Script File: ../Assets/Scripts/Script_player_makeHouse.txt, and given id of: 1
+LOAD: Loaded Player POD
+LOAD: Loaded 1 of 1 Items
+LOAD: Loaded Player Inventory
+LOAD: Loaded 1 of 32 Chunks
+LOAD: Loaded 2 of 32 Chunks
+LOAD: Loaded 3 of 32 Chunks
+LOAD: Loaded 4 of 32 Chunks
+LOAD: Loaded 5 of 32 Chunks
+LOAD: Loaded 6 of 32 Chunks
+LOAD: Loaded 7 of 32 Chunks
+LOAD: Loaded 8 of 32 Chunks
+LOAD: Loaded 9 of 32 Chunks
+LOAD: Loaded 10 of 32 Chunks
+LOAD: Loaded 11 of 32 Chunks
+LOAD: Loaded 12 of 32 Chunks
+LOAD: Loaded 13 of 32 Chunks
+LOAD: Loaded 14 of 32 Chunks
+LOAD: Loaded 15 of 32 Chunks
+LOAD: Loaded 16 of 32 Chunks
+LOAD: Loaded 17 of 32 Chunks
+LOAD: Loaded 18 of 32 Chunks
+LOAD: Loaded 19 of 32 Chunks
+LOAD: Loaded 20 of 32 Chunks
+LOAD: Loaded 21 of 32 Chunks
+LOAD: Loaded 22 of 32 Chunks
+LOAD: Loaded 23 of 32 Chunks
+LOAD: Loaded 24 of 32 Chunks
+LOAD: Loaded 25 of 32 Chunks
+LOAD: Loaded 26 of 32 Chunks
+LOAD: Loaded 27 of 32 Chunks
+LOAD: Loaded 28 of 32 Chunks
+LOAD: Loaded 29 of 32 Chunks
+LOAD: Loaded 30 of 32 Chunks
+LOAD: Loaded 31 of 32 Chunks
+LOAD: Loaded 32 of 32 Chunks
+LOAD: Loaded World Chunks
+
+### LOAD: LOAD COMPLETED. FINISHED AT 1649.406006 (793.794006 milliseconds) ###
+
+Loaded all 3 music files.
+Loaded all 2 sound files.
+Loading dialogue. 1297 bytes to read.
+Successfully Loaded Script File: ../Assets/Scripts/Script_selected_makeHouse.txt, and given id of: 2
+Successfully Loaded Script File: ../Assets/Scripts/Script_player_makeHouse.txt, and given id of: 1
+Dialogue loaded! (24 bytes)
+Loading flags. 125 bytes to read.
+Loaded flag with id of 0 and value of 0
+Loaded flag with id of 1 and value of 0
+Loaded flag with id of 2 and value of 0
+Loaded flag with id of 3 and value of 0
+Loaded flag with id of 4 and value of 0
+Loaded flag with id of 5 and value of 0
+Flags loaded! (24 bytes)
+Loading trade tables. 180 bytes to read.
+Loaded trade tables! (24 bytes)
+
+
+
+### LOG: Sun Oct 27 14:03:21 2019 ###
+
+CREATE: Starting world creation at time: 1182.088989
+CREATE: Finished world creation at time: 4548.057129 (Elapsed: 3365.968262ms)
+Loaded all 3 music files.
+Loaded all 2 sound files.
+Successfully Loaded Script File: ../Assets/Scripts/Script_player_makeHouse.txt, and given id of: 1
+Loading dialogue. 1297 bytes to read.
+Successfully Loaded Script File: ../Assets/Scripts/Script_selected_makeHouse.txt, and given id of: 2
+Successfully Loaded Script File: ../Assets/Scripts/Script_player_makeHouse.txt, and given id of: 1
+Dialogue loaded! (24 bytes)
+Loading flags. 125 bytes to read.
+Loaded flag with id of 0 and value of 0
+Loaded flag with id of 1 and value of 0
+Loaded flag with id of 2 and value of 0
+Loaded flag with id of 3 and value of 0
+Loaded flag with id of 4 and value of 0
+Loaded flag with id of 5 and value of 0
+Flags loaded! (24 bytes)
+Loading trade tables. 180 bytes to read.
+Loaded trade tables! (24 bytes)
+Teleporting entity to: X=10.000000, Y=15.000000
+SAVE: Starting World Save to File: Test.bin
+SAVE: Starting Save Preparations
+SAVE: Player Data Prepared
+SAVE: Chunk Data Prepared
+
+### SAVE: ALL DATA PREPARED, STARTING SAVE ###
+
+SAVE: Started Saving with version: 1.2.1
+SAVE: Wrote Player POD
+SAVE: Wrote Player Inventory
+SAVE: Wrote World Chunks
+
+### SAVE: SAVE COMPLETED ###
+
+
+### LOAD: STARTING LOAD AT 9316.954102 ###
+
+
+### LOAD: Loaded Version: 1.2.1, Using Version: 1.2.1 ###
+
+Successfully Loaded Script File: ../Assets/Scripts/Script_player_makeHouse.txt, and given id of: 1
+LOAD: Loaded Player POD
+LOAD: Loaded Player Inventory
+LOAD: Loaded 1 of 32 Chunks
+LOAD: Loaded 2 of 32 Chunks
+LOAD: Loaded 3 of 32 Chunks
+LOAD: Loaded 4 of 32 Chunks
+LOAD: Loaded 5 of 32 Chunks
+LOAD: Loaded 6 of 32 Chunks
+LOAD: Loaded 7 of 32 Chunks
+LOAD: Loaded 8 of 32 Chunks
+LOAD: Loaded 9 of 32 Chunks
+LOAD: Loaded 10 of 32 Chunks
+LOAD: Loaded 11 of 32 Chunks
+LOAD: Loaded 12 of 32 Chunks
+LOAD: Loaded 13 of 32 Chunks
+LOAD: Loaded 14 of 32 Chunks
+LOAD: Loaded 15 of 32 Chunks
+LOAD: Loaded 16 of 32 Chunks
+LOAD: Loaded 17 of 32 Chunks
+LOAD: Loaded 18 of 32 Chunks
+LOAD: Loaded 19 of 32 Chunks
+LOAD: Loaded 20 of 32 Chunks
+LOAD: Loaded 21 of 32 Chunks
+LOAD: Loaded 22 of 32 Chunks
+LOAD: Loaded 23 of 32 Chunks
+LOAD: Loaded 24 of 32 Chunks
+LOAD: Loaded 25 of 32 Chunks
+LOAD: Loaded 26 of 32 Chunks
+LOAD: Loaded 27 of 32 Chunks
+LOAD: Loaded 28 of 32 Chunks
+LOAD: Loaded 29 of 32 Chunks
+LOAD: Loaded 30 of 32 Chunks
+LOAD: Loaded 31 of 32 Chunks
+LOAD: Loaded 32 of 32 Chunks
+LOAD: Loaded World Chunks
+
+### LOAD: LOAD COMPLETED. FINISHED AT 10079.118164 (762.164062 milliseconds) ###
+
+
+
+
+### LOG: Sun Oct 27 14:06:19 2019 ###
+
+CREATE: Starting world creation at time: 2214.769043
+CREATE: Finished world creation at time: 5879.386230 (Elapsed: 3664.617188ms)
+Loaded all 3 music files.
+Loaded all 2 sound files.
+Successfully Loaded Script File: ../Assets/Scripts/Script_player_makeHouse.txt, and given id of: 1
+Loading dialogue. 1297 bytes to read.
+Successfully Loaded Script File: ../Assets/Scripts/Script_selected_makeHouse.txt, and given id of: 2
+Successfully Loaded Script File: ../Assets/Scripts/Script_player_makeHouse.txt, and given id of: 1
+Dialogue loaded! (24 bytes)
+Loading flags. 125 bytes to read.
+Loaded flag with id of 0 and value of 0
+Loaded flag with id of 1 and value of 0
+Loaded flag with id of 2 and value of 0
+Loaded flag with id of 3 and value of 0
+Loaded flag with id of 4 and value of 0
+Loaded flag with id of 5 and value of 0
+Flags loaded! (24 bytes)
+Loading trade tables. 180 bytes to read.
+Loaded trade tables! (24 bytes)
+Teleporting entity to: X=10.000000, Y=15.000000
+SAVE: Starting World Save to File: Test.bin
+SAVE: Starting Save Preparations
+SAVE: Player Data Prepared
+SAVE: Chunk Data Prepared
+
+### SAVE: ALL DATA PREPARED, STARTING SAVE ###
+
+SAVE: Started Saving with version: 1.2.1
+SAVE: Wrote Player POD
+SAVE: Wrote Player Inventory
+SAVE: Wrote World Chunks
+
+### SAVE: SAVE COMPLETED ###
+
+
+### LOAD: STARTING LOAD AT 12427.717773 ###
+
+
+### LOAD: Loaded Version: 1.2.1, Using Version: 1.2.1 ###
+
+Successfully Loaded Script File: ../Assets/Scripts/Script_player_makeHouse.txt, and given id of: 1
+LOAD: Loaded Player POD
+LOAD: Loaded Player Inventory
+LOAD: Loaded 1 of 32 Chunks
+LOAD: Loaded 2 of 32 Chunks
+LOAD: Loaded 3 of 32 Chunks
+LOAD: Loaded 4 of 32 Chunks
+LOAD: Loaded 5 of 32 Chunks
+LOAD: Loaded 6 of 32 Chunks
+LOAD: Loaded 7 of 32 Chunks
+LOAD: Loaded 8 of 32 Chunks
+LOAD: Loaded 9 of 32 Chunks
+LOAD: Loaded 10 of 32 Chunks
+LOAD: Loaded 11 of 32 Chunks
+LOAD: Loaded 12 of 32 Chunks
+LOAD: Loaded 13 of 32 Chunks
+LOAD: Loaded 14 of 32 Chunks
+LOAD: Loaded 15 of 32 Chunks
+LOAD: Loaded 16 of 32 Chunks
+LOAD: Loaded 17 of 32 Chunks
+LOAD: Loaded 18 of 32 Chunks
+LOAD: Loaded 19 of 32 Chunks
+LOAD: Loaded 20 of 32 Chunks
+LOAD: Loaded 21 of 32 Chunks
+LOAD: Loaded 22 of 32 Chunks
+LOAD: Loaded 23 of 32 Chunks
+LOAD: Loaded 24 of 32 Chunks
+LOAD: Loaded 25 of 32 Chunks
+LOAD: Loaded 26 of 32 Chunks
+LOAD: Loaded 27 of 32 Chunks
+LOAD: Loaded 28 of 32 Chunks
+LOAD: Loaded 29 of 32 Chunks
+LOAD: Loaded 30 of 32 Chunks
+LOAD: Loaded 31 of 32 Chunks
+LOAD: Loaded 32 of 32 Chunks
+LOAD: Loaded World Chunks
+
+### LOAD: LOAD COMPLETED. FINISHED AT 13180.515625 (752.797852 milliseconds) ###
+
+
+
+
+### LOG: Sun Oct 27 14:07:34 2019 ###
+
+CREATE: Starting world creation at time: 938.482971
+CREATE: Finished world creation at time: 4283.645020 (Elapsed: 3345.162109ms)
+Loaded all 3 music files.
+Loaded all 2 sound files.
+Successfully Loaded Script File: ../Assets/Scripts/Script_player_makeHouse.txt, and given id of: 1
+Loading dialogue. 1297 bytes to read.
+Successfully Loaded Script File: ../Assets/Scripts/Script_selected_makeHouse.txt, and given id of: 2
+Successfully Loaded Script File: ../Assets/Scripts/Script_player_makeHouse.txt, and given id of: 1
+Dialogue loaded! (24 bytes)
+Loading flags. 125 bytes to read.
+Loaded flag with id of 0 and value of 0
+Loaded flag with id of 1 and value of 0
+Loaded flag with id of 2 and value of 0
+Loaded flag with id of 3 and value of 0
+Loaded flag with id of 4 and value of 0
+Loaded flag with id of 5 and value of 0
+Flags loaded! (24 bytes)
+Loading trade tables. 180 bytes to read.
+Loaded trade tables! (24 bytes)
+SAVE: Starting World Save to File: Test.bin
+SAVE: Starting Save Preparations
+SAVE: Player Data Prepared
+SAVE: Chunk Data Prepared
+
+### SAVE: ALL DATA PREPARED, STARTING SAVE ###
+
+SAVE: Started Saving with version: 1.2.1
+SAVE: Wrote Player POD
+SAVE: Wrote Player Inventory
+SAVE: Wrote World Chunks
+
+### SAVE: SAVE COMPLETED ###
+
+
+### LOAD: STARTING LOAD AT 5806.137207 ###
+
+
+### LOAD: Loaded Version: 1.2.1, Using Version: 1.2.1 ###
+
+Successfully Loaded Script File: ../Assets/Scripts/Script_player_makeHouse.txt, and given id of: 1
+LOAD: Loaded Player POD
+LOAD: Loaded Player Inventory
+LOAD: Loaded 1 of 32 Chunks
+LOAD: Loaded 2 of 32 Chunks
+LOAD: Loaded 3 of 32 Chunks
+LOAD: Loaded 4 of 32 Chunks
+LOAD: Loaded 5 of 32 Chunks
+LOAD: Loaded 6 of 32 Chunks
+LOAD: Loaded 7 of 32 Chunks
+LOAD: Loaded 8 of 32 Chunks
+LOAD: Loaded 9 of 32 Chunks
+LOAD: Loaded 10 of 32 Chunks
+LOAD: Loaded 11 of 32 Chunks
+LOAD: Loaded 12 of 32 Chunks
+LOAD: Loaded 13 of 32 Chunks
+LOAD: Loaded 14 of 32 Chunks
+LOAD: Loaded 15 of 32 Chunks
+LOAD: Loaded 16 of 32 Chunks
+LOAD: Loaded 17 of 32 Chunks
+LOAD: Loaded 18 of 32 Chunks
+LOAD: Loaded 19 of 32 Chunks
+LOAD: Loaded 20 of 32 Chunks
+LOAD: Loaded 21 of 32 Chunks
+LOAD: Loaded 22 of 32 Chunks
+LOAD: Loaded 23 of 32 Chunks
+LOAD: Loaded 24 of 32 Chunks
+LOAD: Loaded 25 of 32 Chunks
+LOAD: Loaded 26 of 32 Chunks
+LOAD: Loaded 27 of 32 Chunks
+LOAD: Loaded 28 of 32 Chunks
+LOAD: Loaded 29 of 32 Chunks
+LOAD: Loaded 30 of 32 Chunks
+LOAD: Loaded 31 of 32 Chunks
+LOAD: Loaded 32 of 32 Chunks
+LOAD: Loaded World Chunks
+
+### LOAD: LOAD COMPLETED. FINISHED AT 6561.820801 (755.683594 milliseconds) ###
+
+
+
+
+### LOG: Sun Oct 27 14:07:55 2019 ###
+
+CREATE: Starting world creation at time: 983.630981
+CREATE: Finished world creation at time: 4369.506836 (Elapsed: 3385.875977ms)
+Loaded all 3 music files.
+Loaded all 2 sound files.
+Successfully Loaded Script File: ../Assets/Scripts/Script_player_makeHouse.txt, and given id of: 1
+Loading dialogue. 1297 bytes to read.
+Successfully Loaded Script File: ../Assets/Scripts/Script_selected_makeHouse.txt, and given id of: 2
+Successfully Loaded Script File: ../Assets/Scripts/Script_player_makeHouse.txt, and given id of: 1
+Dialogue loaded! (24 bytes)
+Loading flags. 125 bytes to read.
+Loaded flag with id of 0 and value of 0
+Loaded flag with id of 1 and value of 0
+Loaded flag with id of 2 and value of 0
+Loaded flag with id of 3 and value of 0
+Loaded flag with id of 4 and value of 0
+Loaded flag with id of 5 and value of 0
+Flags loaded! (24 bytes)
+Loading trade tables. 180 bytes to read.
+Loaded trade tables! (24 bytes)
+
+### Script failed on entityTarget with line: teleport1015. Quitting... ###
+
+
+
+
+### LOG: Sun Oct 27 14:08:19 2019 ###
+
+CREATE: Starting world creation at time: 1440.407959
+CREATE: Finished world creation at time: 4817.050781 (Elapsed: 3376.642822ms)
+Loaded all 3 music files.
+Loaded all 2 sound files.
+Successfully Loaded Script File: ../Assets/Scripts/Script_player_makeHouse.txt, and given id of: 1
+Loading dialogue. 1297 bytes to read.
+Successfully Loaded Script File: ../Assets/Scripts/Script_selected_makeHouse.txt, and given id of: 2
+Successfully Loaded Script File: ../Assets/Scripts/Script_player_makeHouse.txt, and given id of: 1
+Dialogue loaded! (24 bytes)
+Loading flags. 125 bytes to read.
+Loaded flag with id of 0 and value of 0
+Loaded flag with id of 1 and value of 0
+Loaded flag with id of 2 and value of 0
+Loaded flag with id of 3 and value of 0
+Loaded flag with id of 4 and value of 0
+Loaded flag with id of 5 and value of 0
+Flags loaded! (24 bytes)
+Loading trade tables. 180 bytes to read.
+Loaded trade tables! (24 bytes)
+Teleporting entity to: X=10.000000, Y=15.000000
+SAVE: Starting World Save to File: Test.bin
+SAVE: Starting Save Preparations
+SAVE: Player Data Prepared
+SAVE: Chunk Data Prepared
+
+### SAVE: ALL DATA PREPARED, STARTING SAVE ###
+
+SAVE: Started Saving with version: 1.2.1
+SAVE: Wrote Player POD
+SAVE: Wrote Player Inventory
+SAVE: Wrote World Chunks
+
+### SAVE: SAVE COMPLETED ###
+
+SAVE: Starting World Save to File: Test.bin
+SAVE: Starting Save Preparations
+SAVE: Player Data Prepared
+SAVE: Chunk Data Prepared
+
+### SAVE: ALL DATA PREPARED, STARTING SAVE ###
+
+SAVE: Started Saving with version: 1.2.1
+SAVE: Wrote Player POD
+SAVE: Wrote Player Inventory
+SAVE: Wrote World Chunks
+
+### SAVE: SAVE COMPLETED ###
+
+
+### LOAD: STARTING LOAD AT 9377.509766 ###
+
+
+### LOAD: Loaded Version: 1.2.1, Using Version: 1.2.1 ###
+
+Successfully Loaded Script File: ../Assets/Scripts/Script_player_makeHouse.txt, and given id of: 1
+LOAD: Loaded Player POD
+LOAD: Loaded Player Inventory
+LOAD: Loaded 1 of 32 Chunks
+LOAD: Loaded 2 of 32 Chunks
+LOAD: Loaded 3 of 32 Chunks
+LOAD: Loaded 4 of 32 Chunks
+LOAD: Loaded 5 of 32 Chunks
+LOAD: Loaded 6 of 32 Chunks
+LOAD: Loaded 7 of 32 Chunks
+LOAD: Loaded 8 of 32 Chunks
+LOAD: Loaded 9 of 32 Chunks
+LOAD: Loaded 10 of 32 Chunks
+LOAD: Loaded 11 of 32 Chunks
+LOAD: Loaded 12 of 32 Chunks
+LOAD: Loaded 13 of 32 Chunks
+LOAD: Loaded 14 of 32 Chunks
+LOAD: Loaded 15 of 32 Chunks
+LOAD: Loaded 16 of 32 Chunks
+LOAD: Loaded 17 of 32 Chunks
+LOAD: Loaded 18 of 32 Chunks
+LOAD: Loaded 19 of 32 Chunks
+LOAD: Loaded 20 of 32 Chunks
+LOAD: Loaded 21 of 32 Chunks
+LOAD: Loaded 22 of 32 Chunks
+LOAD: Loaded 23 of 32 Chunks
+LOAD: Loaded 24 of 32 Chunks
+LOAD: Loaded 25 of 32 Chunks
+LOAD: Loaded 26 of 32 Chunks
+LOAD: Loaded 27 of 32 Chunks
+LOAD: Loaded 28 of 32 Chunks
+LOAD: Loaded 29 of 32 Chunks
+LOAD: Loaded 30 of 32 Chunks
+LOAD: Loaded 31 of 32 Chunks
+LOAD: Loaded 32 of 32 Chunks
+LOAD: Loaded World Chunks
+
+### LOAD: LOAD COMPLETED. FINISHED AT 10123.133789 (745.624023 milliseconds) ###
+
+
+
+
+### LOG: Sun Oct 27 14:09:33 2019 ###
+
+
+
+
+### LOG: Sun Oct 27 14:13:07 2019 ###
+
+Loaded all 3 music files.
+Loaded all 2 sound files.
+Loading dialogue. 1297 bytes to read.
+Successfully Loaded Script File: ../Assets/Scripts/Script_selected_makeHouse.txt, and given id of: 0
+Successfully Loaded Script File: ../Assets/Scripts/Script_player_makeHouse.txt, and given id of: 1
+Dialogue loaded! (24 bytes)
+Loading flags. 125 bytes to read.
+Loaded flag with id of 0 and value of 0
+Loaded flag with id of 1 and value of 0
+Loaded flag with id of 2 and value of 0
+Loaded flag with id of 3 and value of 0
+Loaded flag with id of 4 and value of 0
+Loaded flag with id of 5 and value of 0
+Flags loaded! (24 bytes)
+Loading trade tables. 180 bytes to read.
+Loaded trade tables! (24 bytes)
+
+
+
+### LOG: Sun Oct 27 14:16:20 2019 ###
+
+Loaded all 3 music files.
+Loaded all 2 sound files.
+Loading dialogue. 1297 bytes to read.
+Successfully Loaded Script File: ../Assets/Scripts/Script_selected_makeHouse.txt, and given id of: 0
+Successfully Loaded Script File: ../Assets/Scripts/Script_player_makeHouse.txt, and given id of: 1
+Dialogue loaded! (24 bytes)
+Loading flags. 125 bytes to read.
+Loaded flag with id of 0 and value of 0
+Loaded flag with id of 1 and value of 0
+Loaded flag with id of 2 and value of 0
+Loaded flag with id of 3 and value of 0
+Loaded flag with id of 4 and value of 0
+Loaded flag with id of 5 and value of 0
+Flags loaded! (24 bytes)
+Loading trade tables. 180 bytes to read.
+Loaded trade tables! (24 bytes)
+CREATE: Starting world creation at time: 1061.019043
+CREATE: Finished world creation at time: 4772.628906 (Elapsed: 3711.609863ms)
+Successfully Loaded Script File: ../Assets/Scripts/Script_player_makeHouse.txt, and given id of: 1
+Teleporting entity to: X=10.000000, Y=15.000000
+SAVE: Starting World Save to File: Test.bin
+SAVE: Starting Save Preparations
+SAVE: Player Data Prepared
+SAVE: Chunk Data Prepared
+
+### SAVE: ALL DATA PREPARED, STARTING SAVE ###
+
+SAVE: Started Saving with version: 1.2.1
+SAVE: Wrote Player POD
+SAVE: Wrote Player Inventory
+SAVE: Wrote World Chunks
+
+### SAVE: SAVE COMPLETED ###
+
+
+### LOAD: STARTING LOAD AT 8551.477539 ###
+
+
+### LOAD: Loaded Version: 1.2.1, Using Version: 1.2.1 ###
+
+Successfully Loaded Script File: ../Assets/Scripts/Script_player_makeHouse.txt, and given id of: 1
+LOAD: Loaded Player POD
+LOAD: Loaded Player Inventory
+LOAD: Loaded 1 of 32 Chunks
+LOAD: Loaded 2 of 32 Chunks
+LOAD: Loaded 3 of 32 Chunks
+LOAD: Loaded 4 of 32 Chunks
+LOAD: Loaded 5 of 32 Chunks
+LOAD: Loaded 6 of 32 Chunks
+LOAD: Loaded 7 of 32 Chunks
+LOAD: Loaded 8 of 32 Chunks
+LOAD: Loaded 9 of 32 Chunks
+LOAD: Loaded 10 of 32 Chunks
+LOAD: Loaded 11 of 32 Chunks
+LOAD: Loaded 12 of 32 Chunks
+LOAD: Loaded 13 of 32 Chunks
+LOAD: Loaded 14 of 32 Chunks
+LOAD: Loaded 15 of 32 Chunks
+LOAD: Loaded 16 of 32 Chunks
+LOAD: Loaded 17 of 32 Chunks
+LOAD: Loaded 18 of 32 Chunks
+LOAD: Loaded 19 of 32 Chunks
+LOAD: Loaded 20 of 32 Chunks
+LOAD: Loaded 21 of 32 Chunks
+LOAD: Loaded 22 of 32 Chunks
+LOAD: Loaded 23 of 32 Chunks
+LOAD: Loaded 24 of 32 Chunks
+LOAD: Loaded 25 of 32 Chunks
+LOAD: Loaded 26 of 32 Chunks
+LOAD: Loaded 27 of 32 Chunks
+LOAD: Loaded 28 of 32 Chunks
+LOAD: Loaded 29 of 32 Chunks
+LOAD: Loaded 30 of 32 Chunks
+LOAD: Loaded 31 of 32 Chunks
+LOAD: Loaded 32 of 32 Chunks
+LOAD: Loaded World Chunks
+
+### LOAD: LOAD COMPLETED. FINISHED AT 9313.303711 (761.826172 milliseconds) ###
+
+
+
+
+### LOG: Sun Oct 27 14:17:48 2019 ###
+
+Loaded all 3 music files.
+Loaded all 2 sound files.
+Loading dialogue. 1297 bytes to read.
+Successfully Loaded Script File: ../Assets/Scripts/Script_selected_makeHouse.txt, and given id of: 0
+Successfully Loaded Script File: ../Assets/Scripts/Script_player_makeHouse.txt, and given id of: 1
+Dialogue loaded! (24 bytes)
+Loading flags. 125 bytes to read.
+Loaded flag with id of 0 and value of 0
+Loaded flag with id of 1 and value of 0
+Loaded flag with id of 2 and value of 0
+Loaded flag with id of 3 and value of 0
+Loaded flag with id of 4 and value of 0
+Loaded flag with id of 5 and value of 0
+Flags loaded! (24 bytes)
+Loading trade tables. 180 bytes to read.
+Loaded trade tables! (24 bytes)
+
+### LOAD: STARTING LOAD AT 1030.850952 ###
+
+
+### LOAD: Loaded Version: 1.2.1, Using Version: 1.2.1 ###
+
+Successfully Loaded Script File: ../Assets/Scripts/Script_player_makeHouse.txt, and given id of: 1
+LOAD: Loaded Player POD
+LOAD: Loaded Player Inventory
+LOAD: Loaded 1 of 32 Chunks
+LOAD: Loaded 2 of 32 Chunks
+LOAD: Loaded 3 of 32 Chunks
+LOAD: Loaded 4 of 32 Chunks
+LOAD: Loaded 5 of 32 Chunks
+LOAD: Loaded 6 of 32 Chunks
+LOAD: Loaded 7 of 32 Chunks
+LOAD: Loaded 8 of 32 Chunks
+LOAD: Loaded 9 of 32 Chunks
+LOAD: Loaded 10 of 32 Chunks
+LOAD: Loaded 11 of 32 Chunks
+LOAD: Loaded 12 of 32 Chunks
+LOAD: Loaded 13 of 32 Chunks
+LOAD: Loaded 14 of 32 Chunks
+LOAD: Loaded 15 of 32 Chunks
+LOAD: Loaded 16 of 32 Chunks
+LOAD: Loaded 17 of 32 Chunks
+LOAD: Loaded 18 of 32 Chunks
+LOAD: Loaded 19 of 32 Chunks
+LOAD: Loaded 20 of 32 Chunks
+LOAD: Loaded 21 of 32 Chunks
+LOAD: Loaded 22 of 32 Chunks
+LOAD: Loaded 23 of 32 Chunks
+LOAD: Loaded 24 of 32 Chunks
+LOAD: Loaded 25 of 32 Chunks
+LOAD: Loaded 26 of 32 Chunks
+LOAD: Loaded 27 of 32 Chunks
+LOAD: Loaded 28 of 32 Chunks
+LOAD: Loaded 29 of 32 Chunks
+LOAD: Loaded 30 of 32 Chunks
+LOAD: Loaded 31 of 32 Chunks
+LOAD: Loaded 32 of 32 Chunks
+LOAD: Loaded World Chunks
+
+### LOAD: LOAD COMPLETED. FINISHED AT 1839.344971 (808.494019 milliseconds) ###
+
+SAVE: Starting World Save to File: Test.bin
+SAVE: Starting Save Preparations
+SAVE: Player Data Prepared
+SAVE: Chunk Data Prepared
+
+### SAVE: ALL DATA PREPARED, STARTING SAVE ###
+
+SAVE: Started Saving with version: 1.2.1
+SAVE: Wrote Player POD
+SAVE: Wrote Player Inventory
+SAVE: Wrote World Chunks
+
+### SAVE: SAVE COMPLETED ###
+
+
+### LOAD: STARTING LOAD AT 5638.229004 ###
+
+
+### LOAD: Loaded Version: 1.2.1, Using Version: 1.2.1 ###
+
+Successfully Loaded Script File: ../Assets/Scripts/Script_player_makeHouse.txt, and given id of: 1
+LOAD: Loaded Player POD
+LOAD: Loaded Player Inventory
+LOAD: Loaded 1 of 32 Chunks
+LOAD: Loaded 2 of 32 Chunks
+LOAD: Loaded 3 of 32 Chunks
+LOAD: Loaded 4 of 32 Chunks
+LOAD: Loaded 5 of 32 Chunks
+LOAD: Loaded 6 of 32 Chunks
+LOAD: Loaded 7 of 32 Chunks
+LOAD: Loaded 8 of 32 Chunks
+LOAD: Loaded 9 of 32 Chunks
+LOAD: Loaded 10 of 32 Chunks
+LOAD: Loaded 11 of 32 Chunks
+LOAD: Loaded 12 of 32 Chunks
+LOAD: Loaded 13 of 32 Chunks
+LOAD: Loaded 14 of 32 Chunks
+LOAD: Loaded 15 of 32 Chunks
+LOAD: Loaded 16 of 32 Chunks
+LOAD: Loaded 17 of 32 Chunks
+LOAD: Loaded 18 of 32 Chunks
+LOAD: Loaded 19 of 32 Chunks
+LOAD: Loaded 20 of 32 Chunks
+LOAD: Loaded 21 of 32 Chunks
+LOAD: Loaded 22 of 32 Chunks
+LOAD: Loaded 23 of 32 Chunks
+LOAD: Loaded 24 of 32 Chunks
+LOAD: Loaded 25 of 32 Chunks
+LOAD: Loaded 26 of 32 Chunks
+LOAD: Loaded 27 of 32 Chunks
+LOAD: Loaded 28 of 32 Chunks
+LOAD: Loaded 29 of 32 Chunks
+LOAD: Loaded 30 of 32 Chunks
+LOAD: Loaded 31 of 32 Chunks
+LOAD: Loaded 32 of 32 Chunks
+LOAD: Loaded World Chunks
+
+### LOAD: LOAD COMPLETED. FINISHED AT 6401.285156 (763.056152 milliseconds) ###
+
+
+
+
+### LOG: Sun Oct 27 14:20:05 2019 ###
+
+Loaded all 3 music files.
+Loaded all 2 sound files.
+Loading dialogue. 1297 bytes to read.
+Successfully Loaded Script File: ../Assets/Scripts/Script_selected_makeHouse.txt, and given id of: 0
+Successfully Loaded Script File: ../Assets/Scripts/Script_player_makeHouse.txt, and given id of: 1
+Dialogue loaded! (24 bytes)
+Loading flags. 125 bytes to read.
+Loaded flag with id of 0 and value of 0
+Loaded flag with id of 1 and value of 0
+Loaded flag with id of 2 and value of 0
+Loaded flag with id of 3 and value of 0
+Loaded flag with id of 4 and value of 0
+Loaded flag with id of 5 and value of 0
+Flags loaded! (24 bytes)
+Loading trade tables. 180 bytes to read.
+Loaded trade tables! (24 bytes)
+
+
+
+### LOG: Sun Oct 27 14:20:15 2019 ###
+
+Loaded all 3 music files.
+Loaded all 2 sound files.
+Loading dialogue. 1297 bytes to read.
+Successfully Loaded Script File: ../Assets/Scripts/Script_selected_makeHouse.txt, and given id of: 0
+Successfully Loaded Script File: ../Assets/Scripts/Script_player_makeHouse.txt, and given id of: 1
+Dialogue loaded! (24 bytes)
+Loading flags. 125 bytes to read.
+Loaded flag with id of 0 and value of 0
+Loaded flag with id of 1 and value of 0
+Loaded flag with id of 2 and value of 0
+Loaded flag with id of 3 and value of 0
+Loaded flag with id of 4 and value of 0
+Loaded flag with id of 5 and value of 0
+Flags loaded! (24 bytes)
+Loading trade tables. 180 bytes to read.
+Loaded trade tables! (24 bytes)
+
+### LOAD: STARTING LOAD AT 997.684998 ###
+
+
+### LOAD: Loaded Version: 1.2.1, Using Version: 1.2.1 ###
+
+Successfully Loaded Script File: ../Assets/Scripts/Script_player_makeHouse.txt, and given id of: 1
+LOAD: Loaded Player POD
+LOAD: Loaded Player Inventory
+LOAD: Loaded 1 of 32 Chunks
+LOAD: Loaded 2 of 32 Chunks
+LOAD: Loaded 3 of 32 Chunks
+LOAD: Loaded 4 of 32 Chunks
+LOAD: Loaded 5 of 32 Chunks
+LOAD: Loaded 6 of 32 Chunks
+LOAD: Loaded 7 of 32 Chunks
+LOAD: Loaded 8 of 32 Chunks
+LOAD: Loaded 9 of 32 Chunks
+LOAD: Loaded 10 of 32 Chunks
+LOAD: Loaded 11 of 32 Chunks
+LOAD: Loaded 12 of 32 Chunks
+LOAD: Loaded 13 of 32 Chunks
+LOAD: Loaded 14 of 32 Chunks
+LOAD: Loaded 15 of 32 Chunks
+LOAD: Loaded 16 of 32 Chunks
+LOAD: Loaded 17 of 32 Chunks
+LOAD: Loaded 18 of 32 Chunks
+LOAD: Loaded 19 of 32 Chunks
+LOAD: Loaded 20 of 32 Chunks
+LOAD: Loaded 21 of 32 Chunks
+LOAD: Loaded 22 of 32 Chunks
+LOAD: Loaded 23 of 32 Chunks
+LOAD: Loaded 24 of 32 Chunks
+LOAD: Loaded 25 of 32 Chunks
+LOAD: Loaded 26 of 32 Chunks
+LOAD: Loaded 27 of 32 Chunks
+LOAD: Loaded 28 of 32 Chunks
+LOAD: Loaded 29 of 32 Chunks
+LOAD: Loaded 30 of 32 Chunks
+LOAD: Loaded 31 of 32 Chunks
+LOAD: Loaded 32 of 32 Chunks
+LOAD: Loaded World Chunks
+
+### LOAD: LOAD COMPLETED. FINISHED AT 1812.444946 (814.759949 milliseconds) ###
+
+SAVE: Starting World Save to File: Test.bin
+SAVE: Starting Save Preparations
+SAVE: Player Data Prepared
+SAVE: Chunk Data Prepared
+
+### SAVE: ALL DATA PREPARED, STARTING SAVE ###
+
+SAVE: Started Saving with version: 1.2.1
+SAVE: Wrote Player POD
+SAVE: Wrote Player Inventory
+SAVE: Wrote World Chunks
+
+### SAVE: SAVE COMPLETED ###
+
+
+### LOAD: STARTING LOAD AT 5115.904785 ###
+
+
+### LOAD: Loaded Version: 1.2.1, Using Version: 1.2.1 ###
+
+Successfully Loaded Script File: ../Assets/Scripts/Script_player_makeHouse.txt, and given id of: 1
+LOAD: Loaded Player POD
+LOAD: Loaded Player Inventory
+LOAD: Loaded 1 of 32 Chunks
+LOAD: Loaded 2 of 32 Chunks
+LOAD: Loaded 3 of 32 Chunks
+LOAD: Loaded 4 of 32 Chunks
+LOAD: Loaded 5 of 32 Chunks
+LOAD: Loaded 6 of 32 Chunks
+LOAD: Loaded 7 of 32 Chunks
+LOAD: Loaded 8 of 32 Chunks
+LOAD: Loaded 9 of 32 Chunks
+LOAD: Loaded 10 of 32 Chunks
+LOAD: Loaded 11 of 32 Chunks
+LOAD: Loaded 12 of 32 Chunks
+LOAD: Loaded 13 of 32 Chunks
+LOAD: Loaded 14 of 32 Chunks
+LOAD: Loaded 15 of 32 Chunks
+LOAD: Loaded 16 of 32 Chunks
+LOAD: Loaded 17 of 32 Chunks
+LOAD: Loaded 18 of 32 Chunks
+LOAD: Loaded 19 of 32 Chunks
+LOAD: Loaded 20 of 32 Chunks
+LOAD: Loaded 21 of 32 Chunks
+LOAD: Loaded 22 of 32 Chunks
+LOAD: Loaded 23 of 32 Chunks
+LOAD: Loaded 24 of 32 Chunks
+LOAD: Loaded 25 of 32 Chunks
+LOAD: Loaded 26 of 32 Chunks
+LOAD: Loaded 27 of 32 Chunks
+LOAD: Loaded 28 of 32 Chunks
+LOAD: Loaded 29 of 32 Chunks
+LOAD: Loaded 30 of 32 Chunks
+LOAD: Loaded 31 of 32 Chunks
+LOAD: Loaded 32 of 32 Chunks
+LOAD: Loaded World Chunks
+
+### LOAD: LOAD COMPLETED. FINISHED AT 5875.547852 (759.643066 milliseconds) ###
+
+
+
+
+### LOG: Sun Oct 27 14:21:31 2019 ###
+
+Loaded all 3 music files.
+Loaded all 2 sound files.
+Loading dialogue. 1297 bytes to read.
+Successfully Loaded Script File: ../Assets/Scripts/Script_selected_makeHouse.txt, and given id of: 0
+Successfully Loaded Script File: ../Assets/Scripts/Script_player_makeHouse.txt, and given id of: 1
+Dialogue loaded! (24 bytes)
+Loading flags. 125 bytes to read.
+Loaded flag with id of 0 and value of 0
+Loaded flag with id of 1 and value of 0
+Loaded flag with id of 2 and value of 0
+Loaded flag with id of 3 and value of 0
+Loaded flag with id of 4 and value of 0
+Loaded flag with id of 5 and value of 0
+Flags loaded! (24 bytes)
+Loading trade tables. 180 bytes to read.
+Loaded trade tables! (24 bytes)
+
+### LOAD: STARTING LOAD AT 1085.802002 ###
+
+
+### LOAD: Loaded Version: 1.2.1, Using Version: 1.2.1 ###
+
+Successfully Loaded Script File: ../Assets/Scripts/Script_player_makeHouse.txt, and given id of: 1
+LOAD: Loaded Player POD
+LOAD: Loaded Player Inventory
+LOAD: Loaded 1 of 32 Chunks
+LOAD: Loaded 2 of 32 Chunks
+LOAD: Loaded 3 of 32 Chunks
+LOAD: Loaded 4 of 32 Chunks
+LOAD: Loaded 5 of 32 Chunks
+LOAD: Loaded 6 of 32 Chunks
+LOAD: Loaded 7 of 32 Chunks
+LOAD: Loaded 8 of 32 Chunks
+LOAD: Loaded 9 of 32 Chunks
+LOAD: Loaded 10 of 32 Chunks
+LOAD: Loaded 11 of 32 Chunks
+LOAD: Loaded 12 of 32 Chunks
+LOAD: Loaded 13 of 32 Chunks
+LOAD: Loaded 14 of 32 Chunks
+LOAD: Loaded 15 of 32 Chunks
+LOAD: Loaded 16 of 32 Chunks
+LOAD: Loaded 17 of 32 Chunks
+LOAD: Loaded 18 of 32 Chunks
+LOAD: Loaded 19 of 32 Chunks
+LOAD: Loaded 20 of 32 Chunks
+LOAD: Loaded 21 of 32 Chunks
+LOAD: Loaded 22 of 32 Chunks
+LOAD: Loaded 23 of 32 Chunks
+LOAD: Loaded 24 of 32 Chunks
+LOAD: Loaded 25 of 32 Chunks
+LOAD: Loaded 26 of 32 Chunks
+LOAD: Loaded 27 of 32 Chunks
+LOAD: Loaded 28 of 32 Chunks
+LOAD: Loaded 29 of 32 Chunks
+LOAD: Loaded 30 of 32 Chunks
+LOAD: Loaded 31 of 32 Chunks
+LOAD: Loaded 32 of 32 Chunks
+LOAD: Loaded World Chunks
+
+### LOAD: LOAD COMPLETED. FINISHED AT 1879.796997 (793.994995 milliseconds) ###
+
+SAVE: Starting World Save to File: Test.bin
+SAVE: Starting Save Preparations
+SAVE: Player Data Prepared
+SAVE: Chunk Data Prepared
+
+### SAVE: ALL DATA PREPARED, STARTING SAVE ###
+
+SAVE: Started Saving with version: 1.2.1
+SAVE: Wrote Player POD
+SAVE: Wrote Player Inventory
+SAVE: Wrote World Chunks
+
+### SAVE: SAVE COMPLETED ###
+
+
+### LOAD: STARTING LOAD AT 4286.762207 ###
+
+
+### LOAD: Loaded Version: 1.2.1, Using Version: 1.2.1 ###
+
+Successfully Loaded Script File: ../Assets/Scripts/Script_player_makeHouse.txt, and given id of: 1
+LOAD: Loaded Player POD
+LOAD: Loaded Player Inventory
+LOAD: Loaded 1 of 32 Chunks
+LOAD: Loaded 2 of 32 Chunks
+LOAD: Loaded 3 of 32 Chunks
+LOAD: Loaded 4 of 32 Chunks
+LOAD: Loaded 5 of 32 Chunks
+LOAD: Loaded 6 of 32 Chunks
+LOAD: Loaded 7 of 32 Chunks
+LOAD: Loaded 8 of 32 Chunks
+LOAD: Loaded 9 of 32 Chunks
+LOAD: Loaded 10 of 32 Chunks
+LOAD: Loaded 11 of 32 Chunks
+LOAD: Loaded 12 of 32 Chunks
+LOAD: Loaded 13 of 32 Chunks
+LOAD: Loaded 14 of 32 Chunks
+LOAD: Loaded 15 of 32 Chunks
+LOAD: Loaded 16 of 32 Chunks
+LOAD: Loaded 17 of 32 Chunks
+LOAD: Loaded 18 of 32 Chunks
+LOAD: Loaded 19 of 32 Chunks
+LOAD: Loaded 20 of 32 Chunks
+LOAD: Loaded 21 of 32 Chunks
+LOAD: Loaded 22 of 32 Chunks
+LOAD: Loaded 23 of 32 Chunks
+LOAD: Loaded 24 of 32 Chunks
+LOAD: Loaded 25 of 32 Chunks
+LOAD: Loaded 26 of 32 Chunks
+LOAD: Loaded 27 of 32 Chunks
+LOAD: Loaded 28 of 32 Chunks
+LOAD: Loaded 29 of 32 Chunks
+LOAD: Loaded 30 of 32 Chunks
+LOAD: Loaded 31 of 32 Chunks
+LOAD: Loaded 32 of 32 Chunks
+LOAD: Loaded World Chunks
+
+### LOAD: LOAD COMPLETED. FINISHED AT 5041.173828 (754.411621 milliseconds) ###
+
+
+
+
+### LOG: Sun Oct 27 14:22:33 2019 ###
+
+Loaded all 3 music files.
+Loaded all 2 sound files.
+Loading dialogue. 1297 bytes to read.
+Successfully Loaded Script File: ../Assets/Scripts/Script_selected_makeHouse.txt, and given id of: 0
+Successfully Loaded Script File: ../Assets/Scripts/Script_player_makeHouse.txt, and given id of: 1
+Dialogue loaded! (24 bytes)
+Loading flags. 125 bytes to read.
+Loaded flag with id of 0 and value of 0
+Loaded flag with id of 1 and value of 0
+Loaded flag with id of 2 and value of 0
+Loaded flag with id of 3 and value of 0
+Loaded flag with id of 4 and value of 0
+Loaded flag with id of 5 and value of 0
+Flags loaded! (24 bytes)
+Loading trade tables. 180 bytes to read.
+Loaded trade tables! (24 bytes)
+
+### LOAD: STARTING LOAD AT 1162.272949 ###
+
+
+### LOAD: Loaded Version: 1.2.1, Using Version: 1.2.1 ###
+
+Successfully Loaded Script File: ../Assets/Scripts/Script_player_makeHouse.txt, and given id of: 1
+LOAD: Loaded Player POD
+LOAD: Loaded Player Inventory
+LOAD: Loaded 1 of 32 Chunks
+LOAD: Loaded 2 of 32 Chunks
+LOAD: Loaded 3 of 32 Chunks
+LOAD: Loaded 4 of 32 Chunks
+LOAD: Loaded 5 of 32 Chunks
+LOAD: Loaded 6 of 32 Chunks
+LOAD: Loaded 7 of 32 Chunks
+LOAD: Loaded 8 of 32 Chunks
+LOAD: Loaded 9 of 32 Chunks
+LOAD: Loaded 10 of 32 Chunks
+LOAD: Loaded 11 of 32 Chunks
+LOAD: Loaded 12 of 32 Chunks
+LOAD: Loaded 13 of 32 Chunks
+LOAD: Loaded 14 of 32 Chunks
+LOAD: Loaded 15 of 32 Chunks
+LOAD: Loaded 16 of 32 Chunks
+LOAD: Loaded 17 of 32 Chunks
+LOAD: Loaded 18 of 32 Chunks
+LOAD: Loaded 19 of 32 Chunks
+LOAD: Loaded 20 of 32 Chunks
+LOAD: Loaded 21 of 32 Chunks
+LOAD: Loaded 22 of 32 Chunks
+LOAD: Loaded 23 of 32 Chunks
+LOAD: Loaded 24 of 32 Chunks
+LOAD: Loaded 25 of 32 Chunks
+LOAD: Loaded 26 of 32 Chunks
+LOAD: Loaded 27 of 32 Chunks
+LOAD: Loaded 28 of 32 Chunks
+LOAD: Loaded 29 of 32 Chunks
+LOAD: Loaded 30 of 32 Chunks
+LOAD: Loaded 31 of 32 Chunks
+LOAD: Loaded 32 of 32 Chunks
+LOAD: Loaded World Chunks
+
+### LOAD: LOAD COMPLETED. FINISHED AT 1962.114990 (799.842041 milliseconds) ###
+
+
+
+
+### LOG: Sun Oct 27 14:23:41 2019 ###
+
+Loaded all 3 music files.
+Loaded all 2 sound files.
+Loading dialogue. 1297 bytes to read.
+Successfully Loaded Script File: ../Assets/Scripts/Script_selected_makeHouse.txt, and given id of: 0
+Successfully Loaded Script File: ../Assets/Scripts/Script_player_makeHouse.txt, and given id of: 1
+Dialogue loaded! (24 bytes)
+Loading flags. 125 bytes to read.
+Loaded flag with id of 0 and value of 0
+Loaded flag with id of 1 and value of 0
+Loaded flag with id of 2 and value of 0
+Loaded flag with id of 3 and value of 0
+Loaded flag with id of 4 and value of 0
+Loaded flag with id of 5 and value of 0
+Flags loaded! (24 bytes)
+Loading trade tables. 180 bytes to read.
+Loaded trade tables! (24 bytes)
+
+### LOAD: STARTING LOAD AT 1090.542969 ###
+
+
+### LOAD: Loaded Version: 1.2.1, Using Version: 1.2.1 ###
+
+Successfully Loaded Script File: ../Assets/Scripts/Script_player_makeHouse.txt, and given id of: 1
+LOAD: Loaded Player POD
+LOAD: Loaded Player Inventory
+LOAD: Loaded 1 of 32 Chunks
+LOAD: Loaded 2 of 32 Chunks
+LOAD: Loaded 3 of 32 Chunks
+LOAD: Loaded 4 of 32 Chunks
+LOAD: Loaded 5 of 32 Chunks
+LOAD: Loaded 6 of 32 Chunks
+LOAD: Loaded 7 of 32 Chunks
+LOAD: Loaded 8 of 32 Chunks
+LOAD: Loaded 9 of 32 Chunks
+LOAD: Loaded 10 of 32 Chunks
+LOAD: Loaded 11 of 32 Chunks
+LOAD: Loaded 12 of 32 Chunks
+LOAD: Loaded 13 of 32 Chunks
+LOAD: Loaded 14 of 32 Chunks
+LOAD: Loaded 15 of 32 Chunks
+LOAD: Loaded 16 of 32 Chunks
+LOAD: Loaded 17 of 32 Chunks
+LOAD: Loaded 18 of 32 Chunks
+LOAD: Loaded 19 of 32 Chunks
+LOAD: Loaded 20 of 32 Chunks
+LOAD: Loaded 21 of 32 Chunks
+LOAD: Loaded 22 of 32 Chunks
+LOAD: Loaded 23 of 32 Chunks
+LOAD: Loaded 24 of 32 Chunks
+LOAD: Loaded 25 of 32 Chunks
+LOAD: Loaded 26 of 32 Chunks
+LOAD: Loaded 27 of 32 Chunks
+LOAD: Loaded 28 of 32 Chunks
+LOAD: Loaded 29 of 32 Chunks
+LOAD: Loaded 30 of 32 Chunks
+LOAD: Loaded 31 of 32 Chunks
+LOAD: Loaded 32 of 32 Chunks
+LOAD: Loaded World Chunks
+
+### LOAD: LOAD COMPLETED. FINISHED AT 1887.723999 (797.181030 milliseconds) ###
+
+Loading dialogue. 1297 bytes to read.
+Successfully Loaded Script File: ../Assets/Scripts/Script_selected_makeHouse.txt, and given id of: 0
+Successfully Loaded Script File: ../Assets/Scripts/Script_player_makeHouse.txt, and given id of: 1
+Dialogue loaded! (24 bytes)
+Loading flags. 125 bytes to read.
+Loaded flag with id of 0 and value of 0
+Loaded flag with id of 1 and value of 0
+Loaded flag with id of 2 and value of 0
+Loaded flag with id of 3 and value of 0
+Loaded flag with id of 4 and value of 0
+Loaded flag with id of 5 and value of 0
+Flags loaded! (24 bytes)
+Loading trade tables. 180 bytes to read.
+Loaded trade tables! (24 bytes)
+
+
+
+### LOG: Sun Oct 27 14:27:28 2019 ###
+
+
+### LOAD: STARTING LOAD AT 1071.640991 ###
+
+
+### LOAD: Loaded Version: 1.2.1, Using Version: 1.2.1 ###
+
+Successfully Loaded Script File: ../Assets/Scripts/Script_player_makeHouse.txt, and given id of: 1
+LOAD: Loaded Player POD
+LOAD: Loaded Player Inventory
+LOAD: Loaded 1 of 32 Chunks
+LOAD: Loaded 2 of 32 Chunks
+LOAD: Loaded 3 of 32 Chunks
+LOAD: Loaded 4 of 32 Chunks
+LOAD: Loaded 5 of 32 Chunks
+LOAD: Loaded 6 of 32 Chunks
+LOAD: Loaded 7 of 32 Chunks
+LOAD: Loaded 8 of 32 Chunks
+LOAD: Loaded 9 of 32 Chunks
+LOAD: Loaded 10 of 32 Chunks
+LOAD: Loaded 11 of 32 Chunks
+LOAD: Loaded 12 of 32 Chunks
+LOAD: Loaded 13 of 32 Chunks
+LOAD: Loaded 14 of 32 Chunks
+LOAD: Loaded 15 of 32 Chunks
+LOAD: Loaded 16 of 32 Chunks
+LOAD: Loaded 17 of 32 Chunks
+LOAD: Loaded 18 of 32 Chunks
+LOAD: Loaded 19 of 32 Chunks
+LOAD: Loaded 20 of 32 Chunks
+LOAD: Loaded 21 of 32 Chunks
+LOAD: Loaded 22 of 32 Chunks
+LOAD: Loaded 23 of 32 Chunks
+LOAD: Loaded 24 of 32 Chunks
+LOAD: Loaded 25 of 32 Chunks
+LOAD: Loaded 26 of 32 Chunks
+LOAD: Loaded 27 of 32 Chunks
+LOAD: Loaded 28 of 32 Chunks
+LOAD: Loaded 29 of 32 Chunks
+LOAD: Loaded 30 of 32 Chunks
+LOAD: Loaded 31 of 32 Chunks
+LOAD: Loaded 32 of 32 Chunks
+LOAD: Loaded World Chunks
+
+### LOAD: LOAD COMPLETED. FINISHED AT 1853.420044 (781.779053 milliseconds) ###
+
+Loaded all 3 music files.
+Loaded all 2 sound files.
+Loading dialogue. 1297 bytes to read.
+Successfully Loaded Script File: ../Assets/Scripts/Script_selected_makeHouse.txt, and given id of: 2
+Successfully Loaded Script File: ../Assets/Scripts/Script_player_makeHouse.txt, and given id of: 1
+Dialogue loaded! (24 bytes)
+Loading flags. 125 bytes to read.
+Loaded flag with id of 0 and value of 0
+Loaded flag with id of 1 and value of 0
+Loaded flag with id of 2 and value of 0
+Loaded flag with id of 3 and value of 0
+Loaded flag with id of 4 and value of 0
+Loaded flag with id of 5 and value of 0
+Flags loaded! (24 bytes)
+Loading trade tables. 180 bytes to read.
+Loaded trade tables! (24 bytes)
+
+
+
+### LOG: Sun Oct 27 14:28:06 2019 ###
+
+
+### LOAD: STARTING LOAD AT 979.755005 ###
+
+
+### LOAD: Loaded Version: 1.2.1, Using Version: 1.2.1 ###
+
+Successfully Loaded Script File: ../Assets/Scripts/Script_player_makeHouse.txt, and given id of: 1
+LOAD: Loaded Player POD
+LOAD: Loaded Player Inventory
+LOAD: Loaded 1 of 32 Chunks
+LOAD: Loaded 2 of 32 Chunks
+LOAD: Loaded 3 of 32 Chunks
+LOAD: Loaded 4 of 32 Chunks
+LOAD: Loaded 5 of 32 Chunks
+LOAD: Loaded 6 of 32 Chunks
+LOAD: Loaded 7 of 32 Chunks
+LOAD: Loaded 8 of 32 Chunks
+LOAD: Loaded 9 of 32 Chunks
+LOAD: Loaded 10 of 32 Chunks
+LOAD: Loaded 11 of 32 Chunks
+LOAD: Loaded 12 of 32 Chunks
+LOAD: Loaded 13 of 32 Chunks
+LOAD: Loaded 14 of 32 Chunks
+LOAD: Loaded 15 of 32 Chunks
+LOAD: Loaded 16 of 32 Chunks
+LOAD: Loaded 17 of 32 Chunks
+LOAD: Loaded 18 of 32 Chunks
+LOAD: Loaded 19 of 32 Chunks
+LOAD: Loaded 20 of 32 Chunks
+LOAD: Loaded 21 of 32 Chunks
+LOAD: Loaded 22 of 32 Chunks
+LOAD: Loaded 23 of 32 Chunks
+LOAD: Loaded 24 of 32 Chunks
+LOAD: Loaded 25 of 32 Chunks
+LOAD: Loaded 26 of 32 Chunks
+LOAD: Loaded 27 of 32 Chunks
+LOAD: Loaded 28 of 32 Chunks
+LOAD: Loaded 29 of 32 Chunks
+LOAD: Loaded 30 of 32 Chunks
+LOAD: Loaded 31 of 32 Chunks
+LOAD: Loaded 32 of 32 Chunks
+LOAD: Loaded World Chunks
+
+### LOAD: LOAD COMPLETED. FINISHED AT 1765.891968 (786.136963 milliseconds) ###
+
+Loaded all 3 music files.
+Loaded all 2 sound files.
+Loading dialogue. 1297 bytes to read.
+Successfully Loaded Script File: ../Assets/Scripts/Script_selected_makeHouse.txt, and given id of: 2
+Successfully Loaded Script File: ../Assets/Scripts/Script_player_makeHouse.txt, and given id of: 1
+Dialogue loaded! (24 bytes)
+Loading flags. 125 bytes to read.
+Loaded flag with id of 0 and value of 0
+Loaded flag with id of 1 and value of 0
+Loaded flag with id of 2 and value of 0
+Loaded flag with id of 3 and value of 0
+Loaded flag with id of 4 and value of 0
+Loaded flag with id of 5 and value of 0
+Flags loaded! (24 bytes)
+Loading trade tables. 180 bytes to read.
+Loaded trade tables! (24 bytes)
+
+
+
+### LOG: Sun Oct 27 14:32:23 2019 ###
+
+CREATE: Starting world creation at time: 915.909973
+CREATE: Finished world creation at time: 4551.147949 (Elapsed: 3635.238037ms)
+Loaded all 3 music files.
+Loaded all 2 sound files.
+Successfully Loaded Script File: ../Assets/Scripts/Script_player_makeHouse.txt, and given id of: 1
+Loading dialogue. 1297 bytes to read.
+Successfully Loaded Script File: ../Assets/Scripts/Script_selected_makeHouse.txt, and given id of: 2
+Successfully Loaded Script File: ../Assets/Scripts/Script_player_makeHouse.txt, and given id of: 1
+Dialogue loaded! (24 bytes)
+Loading flags. 125 bytes to read.
+Loaded flag with id of 0 and value of 0
+Loaded flag with id of 1 and value of 0
+Loaded flag with id of 2 and value of 0
+Loaded flag with id of 3 and value of 0
+Loaded flag with id of 4 and value of 0
+Loaded flag with id of 5 and value of 0
+Flags loaded! (24 bytes)
+Loading trade tables. 180 bytes to read.
+Loaded trade tables! (24 bytes)
+
+
+
+### LOG: Sun Oct 27 14:33:19 2019 ###
+
+CREATE: Starting world creation at time: 1198.946045
+CREATE: Finished world creation at time: 4568.720215 (Elapsed: 3369.774170ms)
+Loaded all 3 music files.
+Loaded all 2 sound files.
+Successfully Loaded Script File: ../Assets/Scripts/Script_player_makeHouse.txt, and given id of: 1
+Loading dialogue. 1297 bytes to read.
+Successfully Loaded Script File: ../Assets/Scripts/Script_selected_makeHouse.txt, and given id of: 2
+Successfully Loaded Script File: ../Assets/Scripts/Script_player_makeHouse.txt, and given id of: 1
+Dialogue loaded! (24 bytes)
+Loading flags. 125 bytes to read.
+Loaded flag with id of 0 and value of 0
+Loaded flag with id of 1 and value of 0
+Loaded flag with id of 2 and value of 0
+Loaded flag with id of 3 and value of 0
+Loaded flag with id of 4 and value of 0
+Loaded flag with id of 5 and value of 0
+Flags loaded! (24 bytes)
+Loading trade tables. 180 bytes to read.
+Loaded trade tables! (24 bytes)
+
+
+
+### LOG: Sun Oct 27 14:34:36 2019 ###
+
+CREATE: Starting world creation at time: 907.927979
+CREATE: Finished world creation at time: 3637.174072 (Elapsed: 2729.246094ms)
+Loaded all 3 music files.
+Loaded all 2 sound files.
+Successfully Loaded Script File: ../Assets/Scripts/Script_player_makeHouse.txt, and given id of: 1
+Loading dialogue. 1297 bytes to read.
+Successfully Loaded Script File: ../Assets/Scripts/Script_selected_makeHouse.txt, and given id of: 2
+Successfully Loaded Script File: ../Assets/Scripts/Script_player_makeHouse.txt, and given id of: 1
+Dialogue loaded! (24 bytes)
+Loading flags. 125 bytes to read.
+Loaded flag with id of 0 and value of 0
+Loaded flag with id of 1 and value of 0
+Loaded flag with id of 2 and value of 0
+Loaded flag with id of 3 and value of 0
+Loaded flag with id of 4 and value of 0
+Loaded flag with id of 5 and value of 0
+Flags loaded! (24 bytes)
+Loading trade tables. 180 bytes to read.
+Loaded trade tables! (24 bytes)
+
+
+
+### LOG: Sun Oct 27 14:36:02 2019 ###
+
+CREATE: Starting world creation at time: 920.046997
+CREATE: Finished world creation at time: 4281.622070 (Elapsed: 3361.575195ms)
+Loaded all 3 music files.
+Loaded all 2 sound files.
+Successfully Loaded Script File: ../Assets/Scripts/Script_player_makeHouse.txt, and given id of: 1
+Loading dialogue. 1297 bytes to read.
+Successfully Loaded Script File: ../Assets/Scripts/Script_selected_makeHouse.txt, and given id of: 2
+Successfully Loaded Script File: ../Assets/Scripts/Script_player_makeHouse.txt, and given id of: 1
+Dialogue loaded! (24 bytes)
+Loading flags. 125 bytes to read.
+Loaded flag with id of 0 and value of 0
+Loaded flag with id of 1 and value of 0
+Loaded flag with id of 2 and value of 0
+Loaded flag with id of 3 and value of 0
+Loaded flag with id of 4 and value of 0
+Loaded flag with id of 5 and value of 0
+Flags loaded! (24 bytes)
+Loading trade tables. 180 bytes to read.
+Loaded trade tables! (24 bytes)
+
+
+
+### LOG: Sun Oct 27 14:36:44 2019 ###
+
+CREATE: Starting world creation at time: 905.590027
+CREATE: Finished world creation at time: 4242.780762 (Elapsed: 3337.190674ms)
+Loaded all 3 music files.
+Loaded all 2 sound files.
+Successfully Loaded Script File: ../Assets/Scripts/Script_player_makeHouse.txt, and given id of: 1
+Loading dialogue. 1297 bytes to read.
+Successfully Loaded Script File: ../Assets/Scripts/Script_selected_makeHouse.txt, and given id of: 2
+Successfully Loaded Script File: ../Assets/Scripts/Script_player_makeHouse.txt, and given id of: 1
+Dialogue loaded! (24 bytes)
+Loading flags. 125 bytes to read.
+Loaded flag with id of 0 and value of 0
+Loaded flag with id of 1 and value of 0
+Loaded flag with id of 2 and value of 0
+Loaded flag with id of 3 and value of 0
+Loaded flag with id of 4 and value of 0
+Loaded flag with id of 5 and value of 0
+Flags loaded! (24 bytes)
+Loading trade tables. 180 bytes to read.
+Loaded trade tables! (24 bytes)
+Teleporting entity to: X=10.000000, Y=15.000000
+SAVE: Starting World Save to File: Test.bin
+SAVE: Starting Save Preparations
+SAVE: Player Data Prepared
+SAVE: Chunk Data Prepared
+
+### SAVE: ALL DATA PREPARED, STARTING SAVE ###
+
+SAVE: Started Saving with version: 1.2.1
+SAVE: Wrote Player POD
+SAVE: Wrote Player Inventory
+SAVE: Wrote World Chunks
+
+### SAVE: SAVE COMPLETED ###
+
+
+
+
+### LOG: Sun Oct 27 14:37:11 2019 ###
+
+
+### LOAD: STARTING LOAD AT 933.015015 ###
+
+
+### LOAD: Loaded Version: 1.2.1, Using Version: 1.2.1 ###
+
+Successfully Loaded Script File: ../Assets/Scripts/Script_player_makeHouse.txt, and given id of: 1
+LOAD: Loaded Player POD
+LOAD: Loaded Player Inventory
+LOAD: Loaded 1 of 32 Chunks
+LOAD: Loaded 2 of 32 Chunks
+LOAD: Loaded 3 of 32 Chunks
+LOAD: Loaded 4 of 32 Chunks
+LOAD: Loaded 5 of 32 Chunks
+LOAD: Loaded 6 of 32 Chunks
+LOAD: Loaded 7 of 32 Chunks
+LOAD: Loaded 8 of 32 Chunks
+LOAD: Loaded 9 of 32 Chunks
+LOAD: Loaded 10 of 32 Chunks
+LOAD: Loaded 11 of 32 Chunks
+LOAD: Loaded 12 of 32 Chunks
+LOAD: Loaded 13 of 32 Chunks
+LOAD: Loaded 14 of 32 Chunks
+LOAD: Loaded 15 of 32 Chunks
+LOAD: Loaded 16 of 32 Chunks
+LOAD: Loaded 17 of 32 Chunks
+LOAD: Loaded 18 of 32 Chunks
+LOAD: Loaded 19 of 32 Chunks
+LOAD: Loaded 20 of 32 Chunks
+LOAD: Loaded 21 of 32 Chunks
+LOAD: Loaded 22 of 32 Chunks
+LOAD: Loaded 23 of 32 Chunks
+LOAD: Loaded 24 of 32 Chunks
+LOAD: Loaded 25 of 32 Chunks
+LOAD: Loaded 26 of 32 Chunks
+LOAD: Loaded 27 of 32 Chunks
+LOAD: Loaded 28 of 32 Chunks
+LOAD: Loaded 29 of 32 Chunks
+LOAD: Loaded 30 of 32 Chunks
+LOAD: Loaded 31 of 32 Chunks
+LOAD: Loaded 32 of 32 Chunks
+LOAD: Loaded World Chunks
+
+### LOAD: LOAD COMPLETED. FINISHED AT 1718.649048 (785.634033 milliseconds) ###
+
+Loaded all 3 music files.
+Loaded all 2 sound files.
+Loading dialogue. 1297 bytes to read.
+Successfully Loaded Script File: ../Assets/Scripts/Script_selected_makeHouse.txt, and given id of: 2
+Successfully Loaded Script File: ../Assets/Scripts/Script_player_makeHouse.txt, and given id of: 1
+Dialogue loaded! (24 bytes)
+Loading flags. 125 bytes to read.
+Loaded flag with id of 0 and value of 0
+Loaded flag with id of 1 and value of 0
+Loaded flag with id of 2 and value of 0
+Loaded flag with id of 3 and value of 0
+Loaded flag with id of 4 and value of 0
+Loaded flag with id of 5 and value of 0
+Flags loaded! (24 bytes)
+Loading trade tables. 180 bytes to read.
+Loaded trade tables! (24 bytes)
+SAVE: Starting World Save to File: Test.bin
+SAVE: Starting Save Preparations
+SAVE: Player Data Prepared
+SAVE: Chunk Data Prepared
+
+### SAVE: ALL DATA PREPARED, STARTING SAVE ###
+
+SAVE: Started Saving with version: 1.2.1
+SAVE: Wrote Player POD
+SAVE: Wrote Player Inventory
+SAVE: Wrote World Chunks
+
+### SAVE: SAVE COMPLETED ###
+
+
+
+
+### LOG: Sun Oct 27 14:37:26 2019 ###
+
+
+### LOAD: STARTING LOAD AT 871.684021 ###
+
+
+### LOAD: Loaded Version: 1.2.1, Using Version: 1.2.1 ###
+
+Successfully Loaded Script File: ../Assets/Scripts/Script_player_makeHouse.txt, and given id of: 1
+LOAD: Loaded Player POD
+LOAD: Loaded Player Inventory
+LOAD: Loaded 1 of 32 Chunks
+LOAD: Loaded 2 of 32 Chunks
+LOAD: Loaded 3 of 32 Chunks
+LOAD: Loaded 4 of 32 Chunks
+LOAD: Loaded 5 of 32 Chunks
+LOAD: Loaded 6 of 32 Chunks
+LOAD: Loaded 7 of 32 Chunks
+LOAD: Loaded 8 of 32 Chunks
+LOAD: Loaded 9 of 32 Chunks
+LOAD: Loaded 10 of 32 Chunks
+LOAD: Loaded 11 of 32 Chunks
+LOAD: Loaded 12 of 32 Chunks
+LOAD: Loaded 13 of 32 Chunks
+LOAD: Loaded 14 of 32 Chunks
+LOAD: Loaded 15 of 32 Chunks
+LOAD: Loaded 16 of 32 Chunks
+LOAD: Loaded 17 of 32 Chunks
+LOAD: Loaded 18 of 32 Chunks
+LOAD: Loaded 19 of 32 Chunks
+LOAD: Loaded 20 of 32 Chunks
+LOAD: Loaded 21 of 32 Chunks
+LOAD: Loaded 22 of 32 Chunks
+LOAD: Loaded 23 of 32 Chunks
+LOAD: Loaded 24 of 32 Chunks
+LOAD: Loaded 25 of 32 Chunks
+LOAD: Loaded 26 of 32 Chunks
+LOAD: Loaded 27 of 32 Chunks
+LOAD: Loaded 28 of 32 Chunks
+LOAD: Loaded 29 of 32 Chunks
+LOAD: Loaded 30 of 32 Chunks
+LOAD: Loaded 31 of 32 Chunks
+LOAD: Loaded 32 of 32 Chunks
+LOAD: Loaded World Chunks
+
+### LOAD: LOAD COMPLETED. FINISHED AT 1657.931030 (786.247009 milliseconds) ###
+
+Loaded all 3 music files.
+Loaded all 2 sound files.
+Loading dialogue. 1297 bytes to read.
+Successfully Loaded Script File: ../Assets/Scripts/Script_selected_makeHouse.txt, and given id of: 2
+Successfully Loaded Script File: ../Assets/Scripts/Script_player_makeHouse.txt, and given id of: 1
+Dialogue loaded! (24 bytes)
+Loading flags. 125 bytes to read.
+Loaded flag with id of 0 and value of 0
+Loaded flag with id of 1 and value of 0
+Loaded flag with id of 2 and value of 0
+Loaded flag with id of 3 and value of 0
+Loaded flag with id of 4 and value of 0
+Loaded flag with id of 5 and value of 0
+Flags loaded! (24 bytes)
+Loading trade tables. 180 bytes to read.
+Loaded trade tables! (24 bytes)
+SAVE: Starting World Save to File: Test.bin
+SAVE: Starting Save Preparations
+SAVE: Player Data Prepared
+SAVE: Chunk Data Prepared
+
+### SAVE: ALL DATA PREPARED, STARTING SAVE ###
+
+SAVE: Started Saving with version: 1.2.1
+SAVE: Wrote Player POD
+SAVE: Wrote Player Inventory
+SAVE: Wrote World Chunks
+
+### SAVE: SAVE COMPLETED ###
+
+
+
+
+### LOG: Sun Oct 27 14:41:38 2019 ###
+
+
+### LOAD: STARTING LOAD AT 989.989990 ###
+
+
+### LOAD: Loaded Version: 1.2.1, Using Version: 1.2.1 ###
+
+Successfully Loaded Script File: ../Assets/Scripts/Script_player_makeHouse.txt, and given id of: 1
+LOAD: Loaded Player POD
+LOAD: Loaded Player Inventory
+LOAD: Loaded 1 of 32 Chunks
+LOAD: Loaded 2 of 32 Chunks
+LOAD: Loaded 3 of 32 Chunks
+LOAD: Loaded 4 of 32 Chunks
+LOAD: Loaded 5 of 32 Chunks
+LOAD: Loaded 6 of 32 Chunks
+LOAD: Loaded 7 of 32 Chunks
+LOAD: Loaded 8 of 32 Chunks
+LOAD: Loaded 9 of 32 Chunks
+LOAD: Loaded 10 of 32 Chunks
+LOAD: Loaded 11 of 32 Chunks
+LOAD: Loaded 12 of 32 Chunks
+LOAD: Loaded 13 of 32 Chunks
+LOAD: Loaded 14 of 32 Chunks
+LOAD: Loaded 15 of 32 Chunks
+LOAD: Loaded 16 of 32 Chunks
+LOAD: Loaded 17 of 32 Chunks
+LOAD: Loaded 18 of 32 Chunks
+LOAD: Loaded 19 of 32 Chunks
+LOAD: Loaded 20 of 32 Chunks
+LOAD: Loaded 21 of 32 Chunks
+LOAD: Loaded 22 of 32 Chunks
+LOAD: Loaded 23 of 32 Chunks
+LOAD: Loaded 24 of 32 Chunks
+LOAD: Loaded 25 of 32 Chunks
+LOAD: Loaded 26 of 32 Chunks
+LOAD: Loaded 27 of 32 Chunks
+LOAD: Loaded 28 of 32 Chunks
+LOAD: Loaded 29 of 32 Chunks
+LOAD: Loaded 30 of 32 Chunks
+LOAD: Loaded 31 of 32 Chunks
+LOAD: Loaded 32 of 32 Chunks
+LOAD: Loaded World Chunks
+
+### LOAD: LOAD COMPLETED. FINISHED AT 1787.288940 (797.298950 milliseconds) ###
+
+Loaded all 3 music files.
+Loaded all 2 sound files.
+Loading dialogue. 1297 bytes to read.
+Successfully Loaded Script File: ../Assets/Scripts/Script_selected_makeHouse.txt, and given id of: 2
+Successfully Loaded Script File: ../Assets/Scripts/Script_player_makeHouse.txt, and given id of: 1
+Dialogue loaded! (24 bytes)
+Loading flags. 125 bytes to read.
+Loaded flag with id of 0 and value of 0
+Loaded flag with id of 1 and value of 0
+Loaded flag with id of 2 and value of 0
+Loaded flag with id of 3 and value of 0
+Loaded flag with id of 4 and value of 0
+Loaded flag with id of 5 and value of 0
+Flags loaded! (24 bytes)
+Loading trade tables. 180 bytes to read.
+Loaded trade tables! (24 bytes)
+SAVE: Starting World Save to File: Test.bin
+SAVE: Starting Save Preparations
+SAVE: Player Data Prepared
+SAVE: Chunk Data Prepared
+
+### SAVE: ALL DATA PREPARED, STARTING SAVE ###
+
+SAVE: Started Saving with version: 1.2.1
+SAVE: Wrote Player POD
+SAVE: Wrote Player Inventory
+SAVE: Wrote World Chunks
+
+### SAVE: SAVE COMPLETED ###
+
+
+
+
+### LOG: Sun Oct 27 14:41:54 2019 ###
+
+
+### LOAD: STARTING LOAD AT 870.140991 ###
+
+
+### LOAD: Loaded Version: 1.2.1, Using Version: 1.2.1 ###
+
+Successfully Loaded Script File: ../Assets/Scripts/Script_player_makeHouse.txt, and given id of: 1
+LOAD: Loaded Player POD
+LOAD: Loaded Player Inventory
+LOAD: Loaded 1 of 32 Chunks
+LOAD: Loaded 2 of 32 Chunks
+LOAD: Loaded 3 of 32 Chunks
+LOAD: Loaded 4 of 32 Chunks
+LOAD: Loaded 5 of 32 Chunks
+LOAD: Loaded 6 of 32 Chunks
+LOAD: Loaded 7 of 32 Chunks
+LOAD: Loaded 8 of 32 Chunks
+LOAD: Loaded 9 of 32 Chunks
+LOAD: Loaded 10 of 32 Chunks
+LOAD: Loaded 11 of 32 Chunks
+LOAD: Loaded 12 of 32 Chunks
+LOAD: Loaded 13 of 32 Chunks
+LOAD: Loaded 14 of 32 Chunks
+LOAD: Loaded 15 of 32 Chunks
+LOAD: Loaded 16 of 32 Chunks
+LOAD: Loaded 17 of 32 Chunks
+LOAD: Loaded 18 of 32 Chunks
+LOAD: Loaded 19 of 32 Chunks
+LOAD: Loaded 20 of 32 Chunks
+LOAD: Loaded 21 of 32 Chunks
+LOAD: Loaded 22 of 32 Chunks
+LOAD: Loaded 23 of 32 Chunks
+LOAD: Loaded 24 of 32 Chunks
+LOAD: Loaded 25 of 32 Chunks
+LOAD: Loaded 26 of 32 Chunks
+LOAD: Loaded 27 of 32 Chunks
+LOAD: Loaded 28 of 32 Chunks
+LOAD: Loaded 29 of 32 Chunks
+LOAD: Loaded 30 of 32 Chunks
+LOAD: Loaded 31 of 32 Chunks
+LOAD: Loaded 32 of 32 Chunks
+LOAD: Loaded World Chunks
+
+### LOAD: LOAD COMPLETED. FINISHED AT 1666.336060 (796.195068 milliseconds) ###
+
+Loaded all 3 music files.
+Loaded all 2 sound files.
+Loading dialogue. 1297 bytes to read.
+Successfully Loaded Script File: ../Assets/Scripts/Script_selected_makeHouse.txt, and given id of: 2
+Successfully Loaded Script File: ../Assets/Scripts/Script_player_makeHouse.txt, and given id of: 1
+Dialogue loaded! (24 bytes)
+Loading flags. 125 bytes to read.
+Loaded flag with id of 0 and value of 0
+Loaded flag with id of 1 and value of 0
+Loaded flag with id of 2 and value of 0
+Loaded flag with id of 3 and value of 0
+Loaded flag with id of 4 and value of 0
+Loaded flag with id of 5 and value of 0
+Flags loaded! (24 bytes)
+Loading trade tables. 180 bytes to read.
+Loaded trade tables! (24 bytes)
+SAVE: Starting World Save to File: Test.bin
+SAVE: Starting Save Preparations
+SAVE: Player Data Prepared
+SAVE: Chunk Data Prepared
+
+### SAVE: ALL DATA PREPARED, STARTING SAVE ###
+
+SAVE: Started Saving with version: 1.2.1
+SAVE: Wrote Player POD
+SAVE: Wrote Player Inventory
+SAVE: Wrote World Chunks
+
+### SAVE: SAVE COMPLETED ###
+
+
+
+
+### LOG: Sun Oct 27 14:43:00 2019 ###
+
+
+### LOAD: STARTING LOAD AT 656.620972 ###
+
+
+### LOAD: Loaded Version: 1.2.1, Using Version: 1.2.1 ###
+
+Successfully Loaded Script File: ../Assets/Scripts/Script_player_makeHouse.txt, and given id of: 1
+LOAD: Loaded Player POD
+LOAD: Loaded Player Inventory
+LOAD: Loaded 1 of 32 Chunks
+LOAD: Loaded 2 of 32 Chunks
+LOAD: Loaded 3 of 32 Chunks
+LOAD: Loaded 4 of 32 Chunks
+LOAD: Loaded 5 of 32 Chunks
+LOAD: Loaded 6 of 32 Chunks
+LOAD: Loaded 7 of 32 Chunks
+LOAD: Loaded 8 of 32 Chunks
+LOAD: Loaded 9 of 32 Chunks
+LOAD: Loaded 10 of 32 Chunks
+LOAD: Loaded 11 of 32 Chunks
+LOAD: Loaded 12 of 32 Chunks
+LOAD: Loaded 13 of 32 Chunks
+LOAD: Loaded 14 of 32 Chunks
+LOAD: Loaded 15 of 32 Chunks
+LOAD: Loaded 16 of 32 Chunks
+LOAD: Loaded 17 of 32 Chunks
+LOAD: Loaded 18 of 32 Chunks
+LOAD: Loaded 19 of 32 Chunks
+LOAD: Loaded 20 of 32 Chunks
+LOAD: Loaded 21 of 32 Chunks
+LOAD: Loaded 22 of 32 Chunks
+LOAD: Loaded 23 of 32 Chunks
+LOAD: Loaded 24 of 32 Chunks
+LOAD: Loaded 25 of 32 Chunks
+LOAD: Loaded 26 of 32 Chunks
+LOAD: Loaded 27 of 32 Chunks
+LOAD: Loaded 28 of 32 Chunks
+LOAD: Loaded 29 of 32 Chunks
+LOAD: Loaded 30 of 32 Chunks
+LOAD: Loaded 31 of 32 Chunks
+LOAD: Loaded 32 of 32 Chunks
+LOAD: Loaded World Chunks
+
+### LOAD: LOAD COMPLETED. FINISHED AT 1460.317017 (803.696045 milliseconds) ###
+
+Loaded all 3 music files.
+Loaded all 2 sound files.
+Loading dialogue. 1297 bytes to read.
+Successfully Loaded Script File: ../Assets/Scripts/Script_selected_makeHouse.txt, and given id of: 2
+Successfully Loaded Script File: ../Assets/Scripts/Script_player_makeHouse.txt, and given id of: 1
+Dialogue loaded! (24 bytes)
+Loading flags. 125 bytes to read.
+Loaded flag with id of 0 and value of 0
+Loaded flag with id of 1 and value of 0
+Loaded flag with id of 2 and value of 0
+Loaded flag with id of 3 and value of 0
+Loaded flag with id of 4 and value of 0
+Loaded flag with id of 5 and value of 0
+Flags loaded! (24 bytes)
+Loading trade tables. 180 bytes to read.
+Loaded trade tables! (24 bytes)
+SAVE: Starting World Save to File: Test.bin
+SAVE: Starting Save Preparations
+SAVE: Player Data Prepared
+SAVE: Chunk Data Prepared
+
+### SAVE: ALL DATA PREPARED, STARTING SAVE ###
+
+SAVE: Started Saving with version: 1.2.1
+SAVE: Wrote Player POD
+SAVE: Wrote Player Inventory
+SAVE: Wrote World Chunks
+
+### SAVE: SAVE COMPLETED ###
+
+
+
+
+### LOG: Sun Oct 27 14:45:00 2019 ###
+
+
+
+
+### LOG: Sun Oct 27 14:45:38 2019 ###
+
+
+### LOAD: STARTING LOAD AT 1056.272949 ###
+
+
+### LOAD: Loaded Version: 1.2.1, Using Version: 1.2.1 ###
+
+Successfully Loaded Script File: ../Assets/Scripts/Script_player_makeHouse.txt, and given id of: 1
+LOAD: Loaded Player POD
+LOAD: Loaded Player Inventory
+LOAD: Loaded 1 of 32 Chunks
+LOAD: Loaded 2 of 32 Chunks
+LOAD: Loaded 3 of 32 Chunks
+LOAD: Loaded 4 of 32 Chunks
+LOAD: Loaded 5 of 32 Chunks
+LOAD: Loaded 6 of 32 Chunks
+LOAD: Loaded 7 of 32 Chunks
+LOAD: Loaded 8 of 32 Chunks
+LOAD: Loaded 9 of 32 Chunks
+LOAD: Loaded 10 of 32 Chunks
+LOAD: Loaded 11 of 32 Chunks
+LOAD: Loaded 12 of 32 Chunks
+LOAD: Loaded 13 of 32 Chunks
+LOAD: Loaded 14 of 32 Chunks
+LOAD: Loaded 15 of 32 Chunks
+LOAD: Loaded 16 of 32 Chunks
+LOAD: Loaded 17 of 32 Chunks
+LOAD: Loaded 18 of 32 Chunks
+LOAD: Loaded 19 of 32 Chunks
+LOAD: Loaded 20 of 32 Chunks
+LOAD: Loaded 21 of 32 Chunks
+LOAD: Loaded 22 of 32 Chunks
+LOAD: Loaded 23 of 32 Chunks
+LOAD: Loaded 24 of 32 Chunks
+LOAD: Loaded 25 of 32 Chunks
+LOAD: Loaded 26 of 32 Chunks
+LOAD: Loaded 27 of 32 Chunks
+LOAD: Loaded 28 of 32 Chunks
+LOAD: Loaded 29 of 32 Chunks
+LOAD: Loaded 30 of 32 Chunks
+LOAD: Loaded 31 of 32 Chunks
+LOAD: Loaded 32 of 32 Chunks
+LOAD: Loaded World Chunks
+
+### LOAD: LOAD COMPLETED. FINISHED AT 1842.303955 (786.031006 milliseconds) ###
+
+Loaded all 3 music files.
+Loaded all 2 sound files.
+Loading dialogue. 1297 bytes to read.
+Successfully Loaded Script File: ../Assets/Scripts/Script_selected_makeHouse.txt, and given id of: 2
+Successfully Loaded Script File: ../Assets/Scripts/Script_player_makeHouse.txt, and given id of: 1
+Dialogue loaded! (24 bytes)
+Loading flags. 125 bytes to read.
+Loaded flag with id of 0 and value of 0
+Loaded flag with id of 1 and value of 0
+Loaded flag with id of 2 and value of 0
+Loaded flag with id of 3 and value of 0
+Loaded flag with id of 4 and value of 0
+Loaded flag with id of 5 and value of 0
+Flags loaded! (24 bytes)
+Loading trade tables. 180 bytes to read.
+Loaded trade tables! (24 bytes)
+SAVE: Starting World Save to File: Test.bin
+SAVE: Starting Save Preparations
+SAVE: Player Data Prepared
+SAVE: Chunk Data Prepared
+
+### SAVE: ALL DATA PREPARED, STARTING SAVE ###
+
+SAVE: Started Saving with version: 1.2.1
+SAVE: Wrote Player POD
+SAVE: Wrote Player Inventory
+SAVE: Wrote World Chunks
+
+### SAVE: SAVE COMPLETED ###
+
+
+### LOAD: STARTING LOAD AT 4042.101074 ###
+
+
+### LOAD: Loaded Version: 1.2.1, Using Version: 1.2.1 ###
+
+Successfully Loaded Script File: ../Assets/Scripts/Script_player_makeHouse.txt, and given id of: 1
+LOAD: Loaded Player POD
+LOAD: Loaded Player Inventory
+LOAD: Loaded 1 of 32 Chunks
+LOAD: Loaded 2 of 32 Chunks
+LOAD: Loaded 3 of 32 Chunks
+LOAD: Loaded 4 of 32 Chunks
+LOAD: Loaded 5 of 32 Chunks
+LOAD: Loaded 6 of 32 Chunks
+LOAD: Loaded 7 of 32 Chunks
+LOAD: Loaded 8 of 32 Chunks
+LOAD: Loaded 9 of 32 Chunks
+LOAD: Loaded 10 of 32 Chunks
+LOAD: Loaded 11 of 32 Chunks
+LOAD: Loaded 12 of 32 Chunks
+LOAD: Loaded 13 of 32 Chunks
+LOAD: Loaded 14 of 32 Chunks
+LOAD: Loaded 15 of 32 Chunks
+LOAD: Loaded 16 of 32 Chunks
+LOAD: Loaded 17 of 32 Chunks
+LOAD: Loaded 18 of 32 Chunks
+LOAD: Loaded 19 of 32 Chunks
+LOAD: Loaded 20 of 32 Chunks
+LOAD: Loaded 21 of 32 Chunks
+LOAD: Loaded 22 of 32 Chunks
+LOAD: Loaded 23 of 32 Chunks
+LOAD: Loaded 24 of 32 Chunks
+LOAD: Loaded 25 of 32 Chunks
+LOAD: Loaded 26 of 32 Chunks
+LOAD: Loaded 27 of 32 Chunks
+LOAD: Loaded 28 of 32 Chunks
+LOAD: Loaded 29 of 32 Chunks
+LOAD: Loaded 30 of 32 Chunks
+LOAD: Loaded 31 of 32 Chunks
+LOAD: Loaded 32 of 32 Chunks
+LOAD: Loaded World Chunks
+
+### LOAD: LOAD COMPLETED. FINISHED AT 4800.707031 (758.605957 milliseconds) ###
+
+Already inited audio manager. Skipping...
+Loading dialogue. 1297 bytes to read.
+Successfully Loaded Script File: ../Assets/Scripts/Script_selected_makeHouse.txt, and given id of: 2
+Successfully Loaded Script File: ../Assets/Scripts/Script_player_makeHouse.txt, and given id of: 1
+Dialogue loaded! (24 bytes)
+Loading flags. 125 bytes to read.
+Loaded flag with id of 0 and value of 0
+Loaded flag with id of 1 and value of 0
+Loaded flag with id of 2 and value of 0
+Loaded flag with id of 3 and value of 0
+Loaded flag with id of 4 and value of 0
+Loaded flag with id of 5 and value of 0
+Flags loaded! (24 bytes)
+Loading trade tables. 180 bytes to read.
+Loaded trade tables! (24 bytes)
+
+
+
+### LOG: Sun Oct 27 14:48:36 2019 ###
+
+
+### LOAD: STARTING LOAD AT 927.158020 ###
+
+
+### LOAD: Loaded Version: 1.2.1, Using Version: 1.2.1 ###
+
+Successfully Loaded Script File: ../Assets/Scripts/Script_player_makeHouse.txt, and given id of: 1
+LOAD: Loaded Player POD
+LOAD: Loaded Player Inventory
+LOAD: Loaded 1 of 32 Chunks
+LOAD: Loaded 2 of 32 Chunks
+LOAD: Loaded 3 of 32 Chunks
+LOAD: Loaded 4 of 32 Chunks
+LOAD: Loaded 5 of 32 Chunks
+LOAD: Loaded 6 of 32 Chunks
+LOAD: Loaded 7 of 32 Chunks
+LOAD: Loaded 8 of 32 Chunks
+LOAD: Loaded 9 of 32 Chunks
+LOAD: Loaded 10 of 32 Chunks
+LOAD: Loaded 11 of 32 Chunks
+LOAD: Loaded 12 of 32 Chunks
+LOAD: Loaded 13 of 32 Chunks
+LOAD: Loaded 14 of 32 Chunks
+LOAD: Loaded 15 of 32 Chunks
+LOAD: Loaded 16 of 32 Chunks
+LOAD: Loaded 17 of 32 Chunks
+LOAD: Loaded 18 of 32 Chunks
+LOAD: Loaded 19 of 32 Chunks
+LOAD: Loaded 20 of 32 Chunks
+LOAD: Loaded 21 of 32 Chunks
+LOAD: Loaded 22 of 32 Chunks
+LOAD: Loaded 23 of 32 Chunks
+LOAD: Loaded 24 of 32 Chunks
+LOAD: Loaded 25 of 32 Chunks
+LOAD: Loaded 26 of 32 Chunks
+LOAD: Loaded 27 of 32 Chunks
+LOAD: Loaded 28 of 32 Chunks
+LOAD: Loaded 29 of 32 Chunks
+LOAD: Loaded 30 of 32 Chunks
+LOAD: Loaded 31 of 32 Chunks
+LOAD: Loaded 32 of 32 Chunks
+LOAD: Loaded World Chunks
+
+### LOAD: LOAD COMPLETED. FINISHED AT 1717.831055 (790.673035 milliseconds) ###
+
+Loaded all 3 music files.
+Loaded all 2 sound files.
+Loading dialogue. 1297 bytes to read.
+Successfully Loaded Script File: ../Assets/Scripts/Script_selected_makeHouse.txt, and given id of: 2
+Successfully Loaded Script File: ../Assets/Scripts/Script_player_makeHouse.txt, and given id of: 1
+Dialogue loaded! (24 bytes)
+Loading flags. 125 bytes to read.
+Loaded flag with id of 0 and value of 0
+Loaded flag with id of 1 and value of 0
+Loaded flag with id of 2 and value of 0
+Loaded flag with id of 3 and value of 0
+Loaded flag with id of 4 and value of 0
+Loaded flag with id of 5 and value of 0
+Flags loaded! (24 bytes)
+Loading trade tables. 180 bytes to read.
+Loaded trade tables! (24 bytes)
+SAVE: Starting World Save to File: Test.bin
+SAVE: Starting Save Preparations
+SAVE: Player Data Prepared
+SAVE: Chunk Data Prepared
+
+### SAVE: ALL DATA PREPARED, STARTING SAVE ###
+
+SAVE: Started Saving with version: 1.2.1
+SAVE: Wrote Player POD
+SAVE: Wrote Player Inventory
+SAVE: Wrote World Chunks
+
+### SAVE: SAVE COMPLETED ###
+
+
+### LOAD: STARTING LOAD AT 4971.852051 ###
+
+
+### LOAD: Loaded Version: 1.2.1, Using Version: 1.2.1 ###
+
+Successfully Loaded Script File: ../Assets/Scripts/Script_player_makeHouse.txt, and given id of: 1
+LOAD: Loaded Player POD
+LOAD: Loaded Player Inventory
+LOAD: Loaded 1 of 32 Chunks
+LOAD: Loaded 2 of 32 Chunks
+LOAD: Loaded 3 of 32 Chunks
+LOAD: Loaded 4 of 32 Chunks
+LOAD: Loaded 5 of 32 Chunks
+LOAD: Loaded 6 of 32 Chunks
+LOAD: Loaded 7 of 32 Chunks
+LOAD: Loaded 8 of 32 Chunks
+LOAD: Loaded 9 of 32 Chunks
+LOAD: Loaded 10 of 32 Chunks
+LOAD: Loaded 11 of 32 Chunks
+LOAD: Loaded 12 of 32 Chunks
+LOAD: Loaded 13 of 32 Chunks
+LOAD: Loaded 14 of 32 Chunks
+LOAD: Loaded 15 of 32 Chunks
+LOAD: Loaded 16 of 32 Chunks
+LOAD: Loaded 17 of 32 Chunks
+LOAD: Loaded 18 of 32 Chunks
+LOAD: Loaded 19 of 32 Chunks
+LOAD: Loaded 20 of 32 Chunks
+LOAD: Loaded 21 of 32 Chunks
+LOAD: Loaded 22 of 32 Chunks
+LOAD: Loaded 23 of 32 Chunks
+LOAD: Loaded 24 of 32 Chunks
+LOAD: Loaded 25 of 32 Chunks
+LOAD: Loaded 26 of 32 Chunks
+LOAD: Loaded 27 of 32 Chunks
+LOAD: Loaded 28 of 32 Chunks
+LOAD: Loaded 29 of 32 Chunks
+LOAD: Loaded 30 of 32 Chunks
+LOAD: Loaded 31 of 32 Chunks
+LOAD: Loaded 32 of 32 Chunks
+LOAD: Loaded World Chunks
+
+### LOAD: LOAD COMPLETED. FINISHED AT 5727.827148 (755.975098 milliseconds) ###
+
+Already inited audio manager. Skipping...
+Loading dialogue. 1297 bytes to read.
+Successfully Loaded Script File: ../Assets/Scripts/Script_selected_makeHouse.txt, and given id of: 2
+Successfully Loaded Script File: ../Assets/Scripts/Script_player_makeHouse.txt, and given id of: 1
+Dialogue loaded! (24 bytes)
+Loading flags. 125 bytes to read.
+Loaded flag with id of 0 and value of 0
+Loaded flag with id of 1 and value of 0
+Loaded flag with id of 2 and value of 0
+Loaded flag with id of 3 and value of 0
+Loaded flag with id of 4 and value of 0
+Loaded flag with id of 5 and value of 0
+Flags loaded! (24 bytes)
+Loading trade tables. 180 bytes to read.
+Loaded trade tables! (24 bytes)
+SAVE: Starting World Save to File: Test.bin
+SAVE: Starting Save Preparations
+SAVE: Player Data Prepared
+SAVE: Chunk Data Prepared
+
+### SAVE: ALL DATA PREPARED, STARTING SAVE ###
+
+SAVE: Started Saving with version: 1.2.1
+SAVE: Wrote Player POD
+SAVE: Wrote Player Inventory
+SAVE: Wrote World Chunks
+
+### SAVE: SAVE COMPLETED ###
+
+
+
+
+### LOG: Sun Oct 27 14:50:29 2019 ###
+
+
+### LOAD: STARTING LOAD AT 1014.033020 ###
+
+
+### LOAD: Loaded Version: 1.2.1, Using Version: 1.2.1 ###
+
+Successfully Loaded Script File: ../Assets/Scripts/Script_player_makeHouse.txt, and given id of: 1
+LOAD: Loaded Player POD
+LOAD: Loaded Player Inventory
+LOAD: Loaded 1 of 32 Chunks
+LOAD: Loaded 2 of 32 Chunks
+LOAD: Loaded 3 of 32 Chunks
+LOAD: Loaded 4 of 32 Chunks
+LOAD: Loaded 5 of 32 Chunks
+LOAD: Loaded 6 of 32 Chunks
+LOAD: Loaded 7 of 32 Chunks
+LOAD: Loaded 8 of 32 Chunks
+LOAD: Loaded 9 of 32 Chunks
+LOAD: Loaded 10 of 32 Chunks
+LOAD: Loaded 11 of 32 Chunks
+LOAD: Loaded 12 of 32 Chunks
+LOAD: Loaded 13 of 32 Chunks
+LOAD: Loaded 14 of 32 Chunks
+LOAD: Loaded 15 of 32 Chunks
+LOAD: Loaded 16 of 32 Chunks
+LOAD: Loaded 17 of 32 Chunks
+LOAD: Loaded 18 of 32 Chunks
+LOAD: Loaded 19 of 32 Chunks
+LOAD: Loaded 20 of 32 Chunks
+LOAD: Loaded 21 of 32 Chunks
+LOAD: Loaded 22 of 32 Chunks
+LOAD: Loaded 23 of 32 Chunks
+LOAD: Loaded 24 of 32 Chunks
+LOAD: Loaded 25 of 32 Chunks
+LOAD: Loaded 26 of 32 Chunks
+LOAD: Loaded 27 of 32 Chunks
+LOAD: Loaded 28 of 32 Chunks
+LOAD: Loaded 29 of 32 Chunks
+LOAD: Loaded 30 of 32 Chunks
+LOAD: Loaded 31 of 32 Chunks
+LOAD: Loaded 32 of 32 Chunks
+LOAD: Loaded World Chunks
+
+### LOAD: LOAD COMPLETED. FINISHED AT 1799.302979 (785.269958 milliseconds) ###
+
+Loaded all 3 music files.
+Loaded all 2 sound files.
+Loading dialogue. 1297 bytes to read.
+Successfully Loaded Script File: ../Assets/Scripts/Script_selected_makeHouse.txt, and given id of: 2
+Successfully Loaded Script File: ../Assets/Scripts/Script_player_makeHouse.txt, and given id of: 1
+Dialogue loaded! (24 bytes)
+Loading flags. 125 bytes to read.
+Loaded flag with id of 0 and value of 0
+Loaded flag with id of 1 and value of 0
+Loaded flag with id of 2 and value of 0
+Loaded flag with id of 3 and value of 0
+Loaded flag with id of 4 and value of 0
+Loaded flag with id of 5 and value of 0
+Flags loaded! (24 bytes)
+Loading trade tables. 180 bytes to read.
+Loaded trade tables! (24 bytes)
+Setting time to 0
+SAVE: Starting World Save to File: Test.bin
+SAVE: Starting Save Preparations
+SAVE: Player Data Prepared
+SAVE: Chunk Data Prepared
+
+### SAVE: ALL DATA PREPARED, STARTING SAVE ###
+
+SAVE: Started Saving with version: 1.2.1
+SAVE: Wrote Player POD
+SAVE: Wrote Player Inventory
+SAVE: Wrote World Chunks
+
+### SAVE: SAVE COMPLETED ###
+
+
+### LOAD: STARTING LOAD AT 8195.705078 ###
+
+
+### LOAD: Loaded Version: 1.2.1, Using Version: 1.2.1 ###
+
+Successfully Loaded Script File: ../Assets/Scripts/Script_player_makeHouse.txt, and given id of: 1
+LOAD: Loaded Player POD
+LOAD: Loaded Player Inventory
+LOAD: Loaded 1 of 32 Chunks
+LOAD: Loaded 2 of 32 Chunks
+LOAD: Loaded 3 of 32 Chunks
+LOAD: Loaded 4 of 32 Chunks
+LOAD: Loaded 5 of 32 Chunks
+LOAD: Loaded 6 of 32 Chunks
+LOAD: Loaded 7 of 32 Chunks
+LOAD: Loaded 8 of 32 Chunks
+LOAD: Loaded 9 of 32 Chunks
+LOAD: Loaded 10 of 32 Chunks
+LOAD: Loaded 11 of 32 Chunks
+LOAD: Loaded 12 of 32 Chunks
+LOAD: Loaded 13 of 32 Chunks
+LOAD: Loaded 14 of 32 Chunks
+LOAD: Loaded 15 of 32 Chunks
+LOAD: Loaded 16 of 32 Chunks
+LOAD: Loaded 17 of 32 Chunks
+LOAD: Loaded 18 of 32 Chunks
+LOAD: Loaded 19 of 32 Chunks
+LOAD: Loaded 20 of 32 Chunks
+LOAD: Loaded 21 of 32 Chunks
+LOAD: Loaded 22 of 32 Chunks
+LOAD: Loaded 23 of 32 Chunks
+LOAD: Loaded 24 of 32 Chunks
+LOAD: Loaded 25 of 32 Chunks
+LOAD: Loaded 26 of 32 Chunks
+LOAD: Loaded 27 of 32 Chunks
+LOAD: Loaded 28 of 32 Chunks
+LOAD: Loaded 29 of 32 Chunks
+LOAD: Loaded 30 of 32 Chunks
+LOAD: Loaded 31 of 32 Chunks
+LOAD: Loaded 32 of 32 Chunks
+LOAD: Loaded World Chunks
+
+### LOAD: LOAD COMPLETED. FINISHED AT 8950.439453 (754.734375 milliseconds) ###
+
+Already inited audio manager. Skipping...
+Loading dialogue. 1297 bytes to read.
+Successfully Loaded Script File: ../Assets/Scripts/Script_selected_makeHouse.txt, and given id of: 2
+Successfully Loaded Script File: ../Assets/Scripts/Script_player_makeHouse.txt, and given id of: 1
+Dialogue loaded! (24 bytes)
+Loading flags. 125 bytes to read.
+Loaded flag with id of 0 and value of 0
+Loaded flag with id of 1 and value of 0
+Loaded flag with id of 2 and value of 0
+Loaded flag with id of 3 and value of 0
+Loaded flag with id of 4 and value of 0
+Loaded flag with id of 5 and value of 0
+Flags loaded! (24 bytes)
+Loading trade tables. 180 bytes to read.
+Loaded trade tables! (24 bytes)
+Setting time to 0
+
+
+
+### LOG: Sun Oct 27 14:57:09 2019 ###
+
+
+### LOAD: STARTING LOAD AT 1120.098999 ###
+
+
+### LOAD: Loaded Version: 1.2.1, Using Version: 1.2.1 ###
+
+Successfully Loaded Script File: ../Assets/Scripts/Script_player_makeHouse.txt, and given id of: 1
+LOAD: Loaded Player POD
+LOAD: Loaded Player Inventory
+LOAD: Loaded 1 of 32 Chunks
+LOAD: Loaded 2 of 32 Chunks
+LOAD: Loaded 3 of 32 Chunks
+LOAD: Loaded 4 of 32 Chunks
+LOAD: Loaded 5 of 32 Chunks
+LOAD: Loaded 6 of 32 Chunks
+LOAD: Loaded 7 of 32 Chunks
+LOAD: Loaded 8 of 32 Chunks
+LOAD: Loaded 9 of 32 Chunks
+LOAD: Loaded 10 of 32 Chunks
+LOAD: Loaded 11 of 32 Chunks
+LOAD: Loaded 12 of 32 Chunks
+LOAD: Loaded 13 of 32 Chunks
+LOAD: Loaded 14 of 32 Chunks
+LOAD: Loaded 15 of 32 Chunks
+LOAD: Loaded 16 of 32 Chunks
+LOAD: Loaded 17 of 32 Chunks
+LOAD: Loaded 18 of 32 Chunks
+LOAD: Loaded 19 of 32 Chunks
+LOAD: Loaded 20 of 32 Chunks
+LOAD: Loaded 21 of 32 Chunks
+LOAD: Loaded 22 of 32 Chunks
+LOAD: Loaded 23 of 32 Chunks
+LOAD: Loaded 24 of 32 Chunks
+LOAD: Loaded 25 of 32 Chunks
+LOAD: Loaded 26 of 32 Chunks
+LOAD: Loaded 27 of 32 Chunks
+LOAD: Loaded 28 of 32 Chunks
+LOAD: Loaded 29 of 32 Chunks
+LOAD: Loaded 30 of 32 Chunks
+LOAD: Loaded 31 of 32 Chunks
+LOAD: Loaded 32 of 32 Chunks
+LOAD: Loaded World Chunks
+
+### LOAD: LOAD COMPLETED. FINISHED AT 1912.775024 (792.676025 milliseconds) ###
+
+Loaded all 3 music files.
+Loaded all 2 sound files.
+Loading dialogue. 1297 bytes to read.
+Successfully Loaded Script File: ../Assets/Scripts/Script_selected_makeHouse.txt, and given id of: 2
+Successfully Loaded Script File: ../Assets/Scripts/Script_player_makeHouse.txt, and given id of: 1
+Dialogue loaded! (24 bytes)
+Loading flags. 125 bytes to read.
+Loaded flag with id of 0 and value of 0
+Loaded flag with id of 1 and value of 0
+Loaded flag with id of 2 and value of 0
+Loaded flag with id of 3 and value of 0
+Loaded flag with id of 4 and value of 0
+Loaded flag with id of 5 and value of 0
+Flags loaded! (24 bytes)
+Loading trade tables. 180 bytes to read.
+Loaded trade tables! (24 bytes)
+SAVE: Starting World Save to File: Test.bin
+SAVE: Starting Save Preparations
+SAVE: Player Data Prepared
+SAVE: Chunk Data Prepared
+
+### SAVE: ALL DATA PREPARED, STARTING SAVE ###
+
+SAVE: Started Saving with version: 1.2.1
+SAVE: Wrote Player POD
+SAVE: Wrote Player Inventory
+SAVE: Wrote World Chunks
+
+### SAVE: SAVE COMPLETED ###
+
+
+
+
+### LOG: Sun Oct 27 14:57:57 2019 ###
+
+
+
+
+### LOG: Sun Oct 27 15:04:18 2019 ###
+
+CREATE: Starting world creation at time: 915.598022
+
+
+
+### LOG: Sun Oct 27 15:04:27 2019 ###
+
+
+
+
+### LOG: Sun Oct 27 15:04:51 2019 ###
+
+
+
+
+### LOG: Sun Oct 27 15:11:03 2019 ###
+
+
+
+
+### LOG: Sun Oct 27 15:12:19 2019 ###
+
+
+
+
+### LOG: Sun Oct 27 15:14:26 2019 ###
+
+
+
+
+### LOG: Sun Oct 27 15:15:05 2019 ###
+
+
+
+
+### LOG: Sun Oct 27 15:16:02 2019 ###
+
+
+
+
+### LOG: Sun Oct 27 15:18:38 2019 ###
+
+
+
+
+### LOG: Sun Oct 27 15:21:19 2019 ###
+
+
+
+
+### LOG: Sun Oct 27 15:23:51 2019 ###
+
+
+
+
+### LOG: Sun Oct 27 15:24:42 2019 ###
+
+
+### LOAD: STARTING LOAD AT 1158.390991 ###
+
+
+### LOAD: Loaded Version: 1.2.1, Using Version: 1.2.1 ###
+
+Successfully Loaded Script File: ../Assets/Scripts/Script_player_makeHouse.txt, and given id of: 1
+LOAD: Loaded Player POD
+LOAD: Loaded Player Inventory
+LOAD: Loaded 1 of 32 Chunks
+LOAD: Loaded 2 of 32 Chunks
+LOAD: Loaded 3 of 32 Chunks
+LOAD: Loaded 4 of 32 Chunks
+LOAD: Loaded 5 of 32 Chunks
+LOAD: Loaded 6 of 32 Chunks
+LOAD: Loaded 7 of 32 Chunks
+LOAD: Loaded 8 of 32 Chunks
+LOAD: Loaded 9 of 32 Chunks
+LOAD: Loaded 10 of 32 Chunks
+LOAD: Loaded 11 of 32 Chunks
+LOAD: Loaded 12 of 32 Chunks
+LOAD: Loaded 13 of 32 Chunks
+LOAD: Loaded 14 of 32 Chunks
+LOAD: Loaded 15 of 32 Chunks
+LOAD: Loaded 16 of 32 Chunks
+LOAD: Loaded 17 of 32 Chunks
+LOAD: Loaded 18 of 32 Chunks
+LOAD: Loaded 19 of 32 Chunks
+LOAD: Loaded 20 of 32 Chunks
+LOAD: Loaded 21 of 32 Chunks
+LOAD: Loaded 22 of 32 Chunks
+LOAD: Loaded 23 of 32 Chunks
+LOAD: Loaded 24 of 32 Chunks
+LOAD: Loaded 25 of 32 Chunks
+LOAD: Loaded 26 of 32 Chunks
+LOAD: Loaded 27 of 32 Chunks
+LOAD: Loaded 28 of 32 Chunks
+LOAD: Loaded 29 of 32 Chunks
+LOAD: Loaded 30 of 32 Chunks
+LOAD: Loaded 31 of 32 Chunks
+LOAD: Loaded 32 of 32 Chunks
+LOAD: Loaded World Chunks
+
+### LOAD: LOAD COMPLETED. FINISHED AT 1962.142944 (803.751953 milliseconds) ###
+
+Loaded all 3 music files.
+Loaded all 2 sound files.
+Loading dialogue. 1297 bytes to read.
+Successfully Loaded Script File: ../Assets/Scripts/Script_selected_makeHouse.txt, and given id of: 2
+Successfully Loaded Script File: ../Assets/Scripts/Script_player_makeHouse.txt, and given id of: 1
+Dialogue loaded! (24 bytes)
+Loading flags. 125 bytes to read.
+Loaded flag with id of 0 and value of 0
+Loaded flag with id of 1 and value of 0
+Loaded flag with id of 2 and value of 0
+Loaded flag with id of 3 and value of 0
+Loaded flag with id of 4 and value of 0
+Loaded flag with id of 5 and value of 0
+Flags loaded! (24 bytes)
+Loading trade tables. 180 bytes to read.
+Loaded trade tables! (24 bytes)
+SAVE: Starting World Save to File: Test.bin
+SAVE: Starting Save Preparations
+SAVE: Player Data Prepared
+SAVE: Chunk Data Prepared
+
+### SAVE: ALL DATA PREPARED, STARTING SAVE ###
+
+SAVE: Started Saving with version: 1.2.1
+SAVE: Wrote Player POD
+SAVE: Wrote Player Inventory
+SAVE: Wrote World Chunks
+
+### SAVE: SAVE COMPLETED ###
+
+
+### LOAD: STARTING LOAD AT 5305.481934 ###
+
+
+### LOAD: Loaded Version: 1.2.1, Using Version: 1.2.1 ###
+
+Successfully Loaded Script File: ../Assets/Scripts/Script_player_makeHouse.txt, and given id of: 1
+LOAD: Loaded Player POD
+LOAD: Loaded Player Inventory
+LOAD: Loaded 1 of 32 Chunks
+LOAD: Loaded 2 of 32 Chunks
+LOAD: Loaded 3 of 32 Chunks
+LOAD: Loaded 4 of 32 Chunks
+LOAD: Loaded 5 of 32 Chunks
+LOAD: Loaded 6 of 32 Chunks
+LOAD: Loaded 7 of 32 Chunks
+LOAD: Loaded 8 of 32 Chunks
+LOAD: Loaded 9 of 32 Chunks
+LOAD: Loaded 10 of 32 Chunks
+LOAD: Loaded 11 of 32 Chunks
+LOAD: Loaded 12 of 32 Chunks
+LOAD: Loaded 13 of 32 Chunks
+LOAD: Loaded 14 of 32 Chunks
+LOAD: Loaded 15 of 32 Chunks
+LOAD: Loaded 16 of 32 Chunks
+LOAD: Loaded 17 of 32 Chunks
+LOAD: Loaded 18 of 32 Chunks
+LOAD: Loaded 19 of 32 Chunks
+LOAD: Loaded 20 of 32 Chunks
+LOAD: Loaded 21 of 32 Chunks
+LOAD: Loaded 22 of 32 Chunks
+LOAD: Loaded 23 of 32 Chunks
+LOAD: Loaded 24 of 32 Chunks
+LOAD: Loaded 25 of 32 Chunks
+LOAD: Loaded 26 of 32 Chunks
+LOAD: Loaded 27 of 32 Chunks
+LOAD: Loaded 28 of 32 Chunks
+LOAD: Loaded 29 of 32 Chunks
+LOAD: Loaded 30 of 32 Chunks
+LOAD: Loaded 31 of 32 Chunks
+LOAD: Loaded 32 of 32 Chunks
+LOAD: Loaded World Chunks
+
+### LOAD: LOAD COMPLETED. FINISHED AT 6083.680176 (778.198242 milliseconds) ###
+
+Already inited audio manager. Skipping...
+Loading dialogue. 1297 bytes to read.
+Successfully Loaded Script File: ../Assets/Scripts/Script_selected_makeHouse.txt, and given id of: 2
+Successfully Loaded Script File: ../Assets/Scripts/Script_player_makeHouse.txt, and given id of: 1
+Dialogue loaded! (24 bytes)
+Loading flags. 125 bytes to read.
+Loaded flag with id of 0 and value of 0
+Loaded flag with id of 1 and value of 0
+Loaded flag with id of 2 and value of 0
+Loaded flag with id of 3 and value of 0
+Loaded flag with id of 4 and value of 0
+Loaded flag with id of 5 and value of 0
+Flags loaded! (24 bytes)
+Loading trade tables. 180 bytes to read.
+Loaded trade tables! (24 bytes)
+Teleporting entity to: X=10.000000, Y=15.000000
+
+
+
+### LOG: Sun Oct 27 15:26:06 2019 ###
+
+CREATE: Starting world creation at time: 1023.895996
+CREATE: Finished world creation at time: 3772.080078 (Elapsed: 2748.184082ms)
+Loaded all 3 music files.
+Loaded all 2 sound files.
+Successfully Loaded Script File: ../Assets/Scripts/Script_player_makeHouse.txt, and given id of: 1
+Loading dialogue. 1297 bytes to read.
+Successfully Loaded Script File: ../Assets/Scripts/Script_selected_makeHouse.txt, and given id of: 2
+Successfully Loaded Script File: ../Assets/Scripts/Script_player_makeHouse.txt, and given id of: 1
+Dialogue loaded! (24 bytes)
+Loading flags. 125 bytes to read.
+Loaded flag with id of 0 and value of 0
+Loaded flag with id of 1 and value of 0
+Loaded flag with id of 2 and value of 0
+Loaded flag with id of 3 and value of 0
+Loaded flag with id of 4 and value of 0
+Loaded flag with id of 5 and value of 0
+Flags loaded! (24 bytes)
+Loading trade tables. 180 bytes to read.
+Loaded trade tables! (24 bytes)
+SAVE: Starting World Save to File: Test.bin
+SAVE: Starting Save Preparations
+SAVE: Player Data Prepared
+SAVE: Chunk Data Prepared
+
+### SAVE: ALL DATA PREPARED, STARTING SAVE ###
+
+SAVE: Started Saving with version: 1.2.1
+SAVE: Wrote Player POD
+SAVE: Wrote Player Inventory
+SAVE: Wrote World Chunks
+
+### SAVE: SAVE COMPLETED ###
+
+
+### LOAD: STARTING LOAD AT 13255.936523 ###
+
+
+### LOAD: Loaded Version: 1.2.1, Using Version: 1.2.1 ###
+
+Successfully Loaded Script File: ../Assets/Scripts/Script_player_makeHouse.txt, and given id of: 1
+LOAD: Loaded Player POD
+LOAD: Loaded Player Inventory
+LOAD: Loaded 1 of 32 Chunks
+LOAD: Loaded 2 of 32 Chunks
+LOAD: Loaded 3 of 32 Chunks
+LOAD: Loaded 4 of 32 Chunks
+LOAD: Loaded 5 of 32 Chunks
+LOAD: Loaded 6 of 32 Chunks
+LOAD: Loaded 7 of 32 Chunks
+LOAD: Loaded 8 of 32 Chunks
+LOAD: Loaded 9 of 32 Chunks
+LOAD: Loaded 10 of 32 Chunks
+LOAD: Loaded 11 of 32 Chunks
+LOAD: Loaded 12 of 32 Chunks
+LOAD: Loaded 13 of 32 Chunks
+LOAD: Loaded 14 of 32 Chunks
+LOAD: Loaded 15 of 32 Chunks
+LOAD: Loaded 16 of 32 Chunks
+LOAD: Loaded 17 of 32 Chunks
+LOAD: Loaded 18 of 32 Chunks
+LOAD: Loaded 19 of 32 Chunks
+LOAD: Loaded 20 of 32 Chunks
+LOAD: Loaded 21 of 32 Chunks
+LOAD: Loaded 22 of 32 Chunks
+LOAD: Loaded 23 of 32 Chunks
+LOAD: Loaded 24 of 32 Chunks
+LOAD: Loaded 25 of 32 Chunks
+LOAD: Loaded 26 of 32 Chunks
+LOAD: Loaded 27 of 32 Chunks
+LOAD: Loaded 28 of 32 Chunks
+LOAD: Loaded 29 of 32 Chunks
+LOAD: Loaded 30 of 32 Chunks
+LOAD: Loaded 31 of 32 Chunks
+LOAD: Loaded 32 of 32 Chunks
+LOAD: Loaded World Chunks
+
+### LOAD: LOAD COMPLETED. FINISHED AT 14044.069336 (788.132812 milliseconds) ###
+
+Already inited audio manager. Skipping...
+Loading dialogue. 1297 bytes to read.
+Successfully Loaded Script File: ../Assets/Scripts/Script_selected_makeHouse.txt, and given id of: 2
+Successfully Loaded Script File: ../Assets/Scripts/Script_player_makeHouse.txt, and given id of: 1
+Dialogue loaded! (24 bytes)
+Loading flags. 125 bytes to read.
+Loaded flag with id of 0 and value of 0
+Loaded flag with id of 1 and value of 0
+Loaded flag with id of 2 and value of 0
+Loaded flag with id of 3 and value of 0
+Loaded flag with id of 4 and value of 0
+Loaded flag with id of 5 and value of 0
+Flags loaded! (24 bytes)
+Loading trade tables. 180 bytes to read.
+Loaded trade tables! (24 bytes)
+
+
+
+### LOG: Sun Oct 27 15:27:18 2019 ###
+
+
+### LOAD: STARTING LOAD AT 940.260986 ###
+
+
+### LOAD: Loaded Version: 1.2.1, Using Version: 1.2.1 ###
+
+Successfully Loaded Script File: ../Assets/Scripts/Script_player_makeHouse.txt, and given id of: 1
+LOAD: Loaded Player POD
+LOAD: Loaded Player Inventory
+LOAD: Loaded 1 of 32 Chunks
+LOAD: Loaded 2 of 32 Chunks
+LOAD: Loaded 3 of 32 Chunks
+LOAD: Loaded 4 of 32 Chunks
+LOAD: Loaded 5 of 32 Chunks
+LOAD: Loaded 6 of 32 Chunks
+LOAD: Loaded 7 of 32 Chunks
+LOAD: Loaded 8 of 32 Chunks
+LOAD: Loaded 9 of 32 Chunks
+LOAD: Loaded 10 of 32 Chunks
+LOAD: Loaded 11 of 32 Chunks
+LOAD: Loaded 12 of 32 Chunks
+LOAD: Loaded 13 of 32 Chunks
+LOAD: Loaded 14 of 32 Chunks
+LOAD: Loaded 15 of 32 Chunks
+LOAD: Loaded 16 of 32 Chunks
+LOAD: Loaded 17 of 32 Chunks
+LOAD: Loaded 18 of 32 Chunks
+LOAD: Loaded 19 of 32 Chunks
+LOAD: Loaded 20 of 32 Chunks
+LOAD: Loaded 21 of 32 Chunks
+LOAD: Loaded 22 of 32 Chunks
+LOAD: Loaded 23 of 32 Chunks
+LOAD: Loaded 24 of 32 Chunks
+LOAD: Loaded 25 of 32 Chunks
+LOAD: Loaded 26 of 32 Chunks
+LOAD: Loaded 27 of 32 Chunks
+LOAD: Loaded 28 of 32 Chunks
+LOAD: Loaded 29 of 32 Chunks
+LOAD: Loaded 30 of 32 Chunks
+LOAD: Loaded 31 of 32 Chunks
+LOAD: Loaded 32 of 32 Chunks
+LOAD: Loaded World Chunks
+
+### LOAD: LOAD COMPLETED. FINISHED AT 1753.568970 (813.307983 milliseconds) ###
+
+Loaded all 3 music files.
+Loaded all 2 sound files.
+Loading dialogue. 1297 bytes to read.
+Successfully Loaded Script File: ../Assets/Scripts/Script_selected_makeHouse.txt, and given id of: 2
+Successfully Loaded Script File: ../Assets/Scripts/Script_player_makeHouse.txt, and given id of: 1
+Dialogue loaded! (24 bytes)
+Loading flags. 125 bytes to read.
+Loaded flag with id of 0 and value of 0
+Loaded flag with id of 1 and value of 0
+Loaded flag with id of 2 and value of 0
+Loaded flag with id of 3 and value of 0
+Loaded flag with id of 4 and value of 0
+Loaded flag with id of 5 and value of 0
+Flags loaded! (24 bytes)
+Loading trade tables. 180 bytes to read.
+Loaded trade tables! (24 bytes)
+SAVE: Starting World Save to File: Test.bin
+SAVE: Starting Save Preparations
+SAVE: Player Data Prepared
+SAVE: Chunk Data Prepared
+
+### SAVE: ALL DATA PREPARED, STARTING SAVE ###
+
+SAVE: Started Saving with version: 1.2.1
+SAVE: Wrote Player POD
+SAVE: Wrote Player Inventory
+SAVE: Wrote World Chunks
+
+### SAVE: SAVE COMPLETED ###
+
+
+### LOAD: STARTING LOAD AT 5007.121094 ###
+
+
+### LOAD: Loaded Version: 1.2.1, Using Version: 1.2.1 ###
+
+Successfully Loaded Script File: ../Assets/Scripts/Script_player_makeHouse.txt, and given id of: 1
+LOAD: Loaded Player POD
+LOAD: Loaded Player Inventory
+LOAD: Loaded 1 of 32 Chunks
+LOAD: Loaded 2 of 32 Chunks
+LOAD: Loaded 3 of 32 Chunks
+LOAD: Loaded 4 of 32 Chunks
+LOAD: Loaded 5 of 32 Chunks
+LOAD: Loaded 6 of 32 Chunks
+LOAD: Loaded 7 of 32 Chunks
+LOAD: Loaded 8 of 32 Chunks
+LOAD: Loaded 9 of 32 Chunks
+LOAD: Loaded 10 of 32 Chunks
+LOAD: Loaded 11 of 32 Chunks
+LOAD: Loaded 12 of 32 Chunks
+LOAD: Loaded 13 of 32 Chunks
+LOAD: Loaded 14 of 32 Chunks
+LOAD: Loaded 15 of 32 Chunks
+LOAD: Loaded 16 of 32 Chunks
+LOAD: Loaded 17 of 32 Chunks
+LOAD: Loaded 18 of 32 Chunks
+LOAD: Loaded 19 of 32 Chunks
+LOAD: Loaded 20 of 32 Chunks
+LOAD: Loaded 21 of 32 Chunks
+LOAD: Loaded 22 of 32 Chunks
+LOAD: Loaded 23 of 32 Chunks
+LOAD: Loaded 24 of 32 Chunks
+LOAD: Loaded 25 of 32 Chunks
+LOAD: Loaded 26 of 32 Chunks
+LOAD: Loaded 27 of 32 Chunks
+LOAD: Loaded 28 of 32 Chunks
+LOAD: Loaded 29 of 32 Chunks
+LOAD: Loaded 30 of 32 Chunks
+LOAD: Loaded 31 of 32 Chunks
+LOAD: Loaded 32 of 32 Chunks
+LOAD: Loaded World Chunks
+
+### LOAD: LOAD COMPLETED. FINISHED AT 5791.621094 (784.500000 milliseconds) ###
+
+Already inited audio manager. Skipping...
+Loading dialogue. 1297 bytes to read.
+Successfully Loaded Script File: ../Assets/Scripts/Script_selected_makeHouse.txt, and given id of: 2
+Successfully Loaded Script File: ../Assets/Scripts/Script_player_makeHouse.txt, and given id of: 1
+Dialogue loaded! (24 bytes)
+Loading flags. 125 bytes to read.
+Loaded flag with id of 0 and value of 0
+Loaded flag with id of 1 and value of 0
+Loaded flag with id of 2 and value of 0
+Loaded flag with id of 3 and value of 0
+Loaded flag with id of 4 and value of 0
+Loaded flag with id of 5 and value of 0
+Flags loaded! (24 bytes)
+Loading trade tables. 180 bytes to read.
+Loaded trade tables! (24 bytes)
+
+
+
+### LOG: Sun Oct 27 15:28:29 2019 ###
+
+
+### LOAD: STARTING LOAD AT 1035.883057 ###
+
+
+### LOAD: Loaded Version: 1.2.1, Using Version: 1.2.1 ###
+
+Successfully Loaded Script File: ../Assets/Scripts/Script_player_makeHouse.txt, and given id of: 1
+LOAD: Loaded Player POD
+LOAD: Loaded Player Inventory
+
+
+
+### LOG: Sun Oct 27 15:28:38 2019 ###
+
+CREATE: Starting world creation at time: 1079.808960
+CREATE: Finished world creation at time: 3897.014893 (Elapsed: 2817.206055ms)
+Loaded all 3 music files.
+Loaded all 2 sound files.
+Successfully Loaded Script File: ../Assets/Scripts/Script_player_makeHouse.txt, and given id of: 1
+Loading dialogue. 1297 bytes to read.
+Successfully Loaded Script File: ../Assets/Scripts/Script_selected_makeHouse.txt, and given id of: 2
+Successfully Loaded Script File: ../Assets/Scripts/Script_player_makeHouse.txt, and given id of: 1
+Dialogue loaded! (24 bytes)
+Loading flags. 125 bytes to read.
+Loaded flag with id of 0 and value of 0
+Loaded flag with id of 1 and value of 0
+Loaded flag with id of 2 and value of 0
+Loaded flag with id of 3 and value of 0
+Loaded flag with id of 4 and value of 0
+Loaded flag with id of 5 and value of 0
+Flags loaded! (24 bytes)
+Loading trade tables. 180 bytes to read.
+Loaded trade tables! (24 bytes)
+SAVE: Starting World Save to File: Test.bin
+SAVE: Starting Save Preparations
+SAVE: Player Data Prepared
+SAVE: Chunk Data Prepared
+
+### SAVE: ALL DATA PREPARED, STARTING SAVE ###
+
+SAVE: Started Saving with version: 1.2.1
+SAVE: Wrote Player POD
+SAVE: Wrote 1 of 1 Items
+SAVE: Wrote Player Inventory
+SAVE: Wrote World Chunks
+
+### SAVE: SAVE COMPLETED ###
+
+
+### LOAD: STARTING LOAD AT 13595.941406 ###
+
+
+### LOAD: Loaded Version: 1.2.1, Using Version: 1.2.1 ###
+
+Successfully Loaded Script File: ../Assets/Scripts/Script_player_makeHouse.txt, and given id of: 1
+LOAD: Loaded Player POD
+LOAD: Loaded 1 of 1 Items
+LOAD: Loaded Player Inventory
+
+
+
+### LOG: Sun Oct 27 15:31:45 2019 ###
+
+CREATE: Starting world creation at time: 944.241028
+CREATE: Finished world creation at time: 3784.854980 (Elapsed: 2840.614014ms)
+Loaded all 3 music files.
+Loaded all 2 sound files.
+Successfully Loaded Script File: ../Assets/Scripts/Script_player_makeHouse.txt, and given id of: 1
+Loading dialogue. 1297 bytes to read.
+Successfully Loaded Script File: ../Assets/Scripts/Script_selected_makeHouse.txt, and given id of: 2
+Successfully Loaded Script File: ../Assets/Scripts/Script_player_makeHouse.txt, and given id of: 1
+Dialogue loaded! (24 bytes)
+Loading flags. 125 bytes to read.
+Loaded flag with id of 0 and value of 0
+Loaded flag with id of 1 and value of 0
+Loaded flag with id of 2 and value of 0
+Loaded flag with id of 3 and value of 0
+Loaded flag with id of 4 and value of 0
+Loaded flag with id of 5 and value of 0
+Flags loaded! (24 bytes)
+Loading trade tables. 180 bytes to read.
+Loaded trade tables! (24 bytes)
+SAVE: Starting World Save to File: Test.bin
+SAVE: Starting Save Preparations
+SAVE: Player Data Prepared
+
+
+
+### LOG: Sun Oct 27 15:33:21 2019 ###
+
+CREATE: Starting world creation at time: 1022.434998
+CREATE: Finished world creation at time: 3863.729004 (Elapsed: 2841.293945ms)
+Loaded all 3 music files.
+Loaded all 2 sound files.
+Successfully Loaded Script File: ../Assets/Scripts/Script_player_makeHouse.txt, and given id of: 1
+Loading dialogue. 1297 bytes to read.
+Successfully Loaded Script File: ../Assets/Scripts/Script_selected_makeHouse.txt, and given id of: 2
+Successfully Loaded Script File: ../Assets/Scripts/Script_player_makeHouse.txt, and given id of: 1
+Dialogue loaded! (24 bytes)
+Loading flags. 125 bytes to read.
+Loaded flag with id of 0 and value of 0
+Loaded flag with id of 1 and value of 0
+Loaded flag with id of 2 and value of 0
+Loaded flag with id of 3 and value of 0
+Loaded flag with id of 4 and value of 0
+Loaded flag with id of 5 and value of 0
+Flags loaded! (24 bytes)
+Loading trade tables. 180 bytes to read.
+Loaded trade tables! (24 bytes)
+SAVE: Starting World Save to File: Test.bin
+SAVE: Starting Save Preparations
+SAVE: Player Data Prepared
+SAVE: Chunk Data Prepared
+
+### SAVE: ALL DATA PREPARED, STARTING SAVE ###
+
+SAVE: Started Saving with version: 1.2.1
+SAVE: Wrote Player POD
+SAVE: Wrote Player Inventory
+SAVE: Wrote World Chunks
+
+### SAVE: SAVE COMPLETED ###
+
+
+### LOAD: STARTING LOAD AT 7277.033203 ###
+
+
+### LOAD: Loaded Version: 1.2.1, Using Version: 1.2.1 ###
+
+Successfully Loaded Script File: ../Assets/Scripts/Script_player_makeHouse.txt, and given id of: 1
+LOAD: Loaded Player POD
+LOAD: Loaded Player Inventory
+LOAD: Loaded 1 of 32 Chunks
+LOAD: Loaded 2 of 32 Chunks
+LOAD: Loaded 3 of 32 Chunks
+LOAD: Loaded 4 of 32 Chunks
+LOAD: Loaded 5 of 32 Chunks
+LOAD: Loaded 6 of 32 Chunks
+LOAD: Loaded 7 of 32 Chunks
+LOAD: Loaded 8 of 32 Chunks
+LOAD: Loaded 9 of 32 Chunks
+LOAD: Loaded 10 of 32 Chunks
+LOAD: Loaded 11 of 32 Chunks
+LOAD: Loaded 12 of 32 Chunks
+LOAD: Loaded 13 of 32 Chunks
+LOAD: Loaded 14 of 32 Chunks
+LOAD: Loaded 15 of 32 Chunks
+LOAD: Loaded 16 of 32 Chunks
+LOAD: Loaded 17 of 32 Chunks
+LOAD: Loaded 18 of 32 Chunks
+LOAD: Loaded 19 of 32 Chunks
+LOAD: Loaded 20 of 32 Chunks
+LOAD: Loaded 21 of 32 Chunks
+LOAD: Loaded 22 of 32 Chunks
+LOAD: Loaded 23 of 32 Chunks
+LOAD: Loaded 24 of 32 Chunks
+LOAD: Loaded 25 of 32 Chunks
+LOAD: Loaded 26 of 32 Chunks
+LOAD: Loaded 27 of 32 Chunks
+LOAD: Loaded 28 of 32 Chunks
+LOAD: Loaded 29 of 32 Chunks
+LOAD: Loaded 30 of 32 Chunks
+LOAD: Loaded 31 of 32 Chunks
+LOAD: Loaded 32 of 32 Chunks
+LOAD: Loaded World Chunks
+
+### LOAD: LOAD COMPLETED. FINISHED AT 8051.007812 (773.974609 milliseconds) ###
+
+Already inited audio manager. Skipping...
+Loading dialogue. 1297 bytes to read.
+Successfully Loaded Script File: ../Assets/Scripts/Script_selected_makeHouse.txt, and given id of: 2
+Successfully Loaded Script File: ../Assets/Scripts/Script_player_makeHouse.txt, and given id of: 1
+Dialogue loaded! (24 bytes)
+Loading flags. 125 bytes to read.
+Loaded flag with id of 0 and value of 0
+Loaded flag with id of 1 and value of 0
+Loaded flag with id of 2 and value of 0
+Loaded flag with id of 3 and value of 0
+Loaded flag with id of 4 and value of 0
+Loaded flag with id of 5 and value of 0
+Flags loaded! (24 bytes)
+Loading trade tables. 180 bytes to read.
+Loaded trade tables! (24 bytes)

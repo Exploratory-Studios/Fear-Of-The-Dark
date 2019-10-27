@@ -127,39 +127,23 @@ class TileData {
         void save(std::ofstream& file) {
             file.write(reinterpret_cast<char*>(&pos.x), sizeof(float));
             file.write(reinterpret_cast<char*>(&pos.y), sizeof(float));
+            file.write(reinterpret_cast<char*>(&layer), sizeof(float));
             file.write(reinterpret_cast<char*>(&id), sizeof(unsigned int));
-            file.write(reinterpret_cast<char*>(&ambientLight), sizeof(float));
             metaData->save(file);
-
-            bool hasChild = lowerLayer ? true : false;
-            file.write(reinterpret_cast<char*>(&hasChild), sizeof(bool));
-
-            if(lowerLayer) {
-                lowerLayer->save(file);
-            }
         }
 
         void read(std::ifstream& file) {
             file.read(reinterpret_cast<char*>(&pos.x), sizeof(float));
             file.read(reinterpret_cast<char*>(&pos.y), sizeof(float));
+            file.read(reinterpret_cast<char*>(&layer), sizeof(float));
             file.read(reinterpret_cast<char*>(&id), sizeof(unsigned int));
-            file.read(reinterpret_cast<char*>(&ambientLight), sizeof(float));
             metaData->read(file);
-
-            bool hasChild = false;
-            file.read(reinterpret_cast<char*>(&hasChild), sizeof(bool));
-
-            if(hasChild) {
-                lowerLayer = new TileData;
-                lowerLayer->read(file);
-            }
         }
 
         glm::vec2 pos;
+        float layer;
         unsigned int id;
-        float ambientLight;
         MetaData* metaData = new MetaData();
-        TileData* lowerLayer = nullptr;
 };
 
 struct ItemData {
@@ -187,20 +171,24 @@ class ChunkData {
         void save(std::ofstream& file) {
             for(int y = 0; y < WORLD_HEIGHT; y++) {
                 for(int x = 0; x < CHUNK_SIZE; x++) {
-                    tiles[y][x].save(file);
+                    for(int k = 0; k < WORLD_DEPTH; k++) {
+                        tiles[y][x][k].save(file);
+                    }
                 }
             }
         }
         void read(std::ifstream& file) {
             for(int y = 0; y < WORLD_HEIGHT; y++) {
                 for(int x = 0; x < CHUNK_SIZE; x++) {
-                    tiles[y][x].read(file);
+                    for(int k = 0; k < WORLD_DEPTH; k++) {
+                        tiles[y][x][k].read(file);
+                    }
                 }
             }
         }
         //std::vector<EntityData> entities;
         /// TODO: create entities the same way blocks and items are created (Blocks.h & Items.h)
-        TileData tiles[WORLD_HEIGHT][CHUNK_SIZE] {};
+        TileData tiles[WORLD_HEIGHT][CHUNK_SIZE][WORLD_DEPTH] {};
 };
 
 struct StructureData {

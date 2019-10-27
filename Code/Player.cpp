@@ -44,6 +44,7 @@ Player::~Player()
 {
     delete m_inventory;
     delete m_limbs[0];
+
 }
 
 void Player::initGUI(GLEngine::GUI* gui) {

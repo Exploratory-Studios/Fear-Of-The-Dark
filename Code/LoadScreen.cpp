@@ -44,7 +44,8 @@ void LoadScreen::onEntry() {
 }
 
 void LoadScreen::onExit() {
-
+    m_miniScreen = MiniScreen::MAIN;
+    for(auto e : m_miniScreenEntries) e.checkScreen(m_miniScreen);
 }
 
 void LoadScreen::update() {

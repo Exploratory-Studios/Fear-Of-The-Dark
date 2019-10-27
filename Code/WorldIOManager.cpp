@@ -5,25 +5,29 @@
 #include <ctime>
 
 void WorldIOManager::loadWorld(std::string worldName) {
-    boost::thread t( [=]() { P_loadWorld(worldName); } );
-    t.detach();
-    //P_loadWorld(worldName);
-    //P_createWorld(1, worldName, false); WORKS
+    //boost::thread t( [=]() { P_loadWorld(worldName); } );
+    //t.detach();
+    P_loadWorld(worldName);
+    //P_createWorld(1, worldName, false);
 }
 
 void WorldIOManager::saveWorld(std::string worldName) {
-    boost::thread t( [=]() { P_saveWorld(worldName); } );
-    t.detach();
-    //this->P_saveWorld(worldName);
+    //boost::thread t( [=]() { P_saveWorld(worldName); } );
+    //t.detach();
+    P_saveWorld(worldName);
 }
 
 void WorldIOManager::createWorld(unsigned int seed, std::string worldName, bool isFlat) {
-    boost::thread t( [=]() { P_createWorld(seed, worldName, isFlat); } );
-    t.detach();
-    //P_createWorld(seed, worldName, isFlat);
+    //boost::thread t( [=]() { P_createWorld(seed, worldName, isFlat); } );
+    //t.detach();
+    P_createWorld(seed, worldName, isFlat);
 }
 
 void WorldIOManager::P_loadWorld(std::string worldName) {
+    if(m_world) {
+        clearWorld();
+    }
+
     float startTime = (float)(std::clock()) / (float)(CLOCKS_PER_SEC / 1000);
 
     *m_progress = 0.0f;
@@ -117,18 +121,12 @@ void WorldIOManager::P_loadWorld(std::string worldName) {
         for(int i = 0; i < WORLD_SIZE; i++) {
             for(unsigned int y = 0; y < WORLD_HEIGHT; y++) {
                 for(unsigned int x = 0; x < CHUNK_SIZE; x++) {
-                    unsigned int layer = 0;
-                    TileData* temp = &chunkData[i].tiles[y][x];
-                    Tile* block = createBlock(temp->id, temp->pos, layer, m_world->chunks[i], *temp->metaData, false);
-                    do {
-                        temp = temp->lowerLayer;
-                        if(temp) {
-                            Tile* lower = createBlock(temp->id, temp->pos, layer+1, m_world->chunks[i], *temp->metaData, false);
-                        }
-                        layer++;
-                    } while(temp);
-                    m_world->chunks[i]->setTile(block);
-                    *m_progress += 1.0f / (CHUNK_SIZE * WORLD_HEIGHT * WORLD_SIZE) * 0.1f; // 0.3
+                    for(unsigned int k = 0; k < WORLD_DEPTH; k++) {
+                        TileData* temp = &chunkData[i].tiles[y][x][k];
+                        Tile* block = createBlock(temp->id, temp->pos, k, m_world->chunks[i], *temp->metaData, false);
+                        m_world->chunks[i]->setTile(block);
+                        *m_progress += 1.0f / (CHUNK_SIZE * WORLD_HEIGHT * WORLD_SIZE * WORLD_DEPTH) * 0.1f; // 0.3
+                    }
                 }
             }
         }
@@ -146,6 +144,9 @@ void WorldIOManager::P_loadWorld(std::string worldName) {
 
             m_world->chunks[i]->setSurroundingChunk(m_world->chunks[((i-1+WORLD_SIZE) % WORLD_SIZE)], 0);
             m_world->chunks[i]->setSurroundingChunk(m_world->chunks[((i+1+WORLD_SIZE) % WORLD_SIZE)], 1);
+            m_world->chunks[i]->m_index = i;
+
+            m_world->chunks[i]->update(0, 1, m_world->chunks, nullptr, false);
             logger->log("LOAD: Loaded " + std::to_string(i+1) + " of " + std::to_string(WORLD_SIZE) + " Chunks");
             *m_progress += 1.0f / (WORLD_SIZE) * 0.2f;
         }
@@ -217,7 +218,9 @@ void WorldIOManager::P_saveWorld(std::string worldName) {
     for(unsigned int i = 0; i < WORLD_SIZE; i++) {
         for(int y = 0; y < WORLD_HEIGHT; y++) {
             for(int x = 0; x < CHUNK_SIZE; x++) {
-                chunkData[i].tiles[y][x] = m_world->chunks[i]->getTile(x, y, 0)->getSaveData(); // This gives data for ALL layers (recursive)
+                for(int k = 0; k < WORLD_DEPTH; k++) {
+                    chunkData[i].tiles[y][x][k] = m_world->chunks[i]->getTile(x + (CHUNK_SIZE * i), y, k)->getSaveData(); // This gives data for ALL layers (recursive)
+                }
             }
         }
     }
@@ -290,6 +293,8 @@ void WorldIOManager::P_saveWorld(std::string worldName) {
 }
 #include <iostream>
 void WorldIOManager::P_createWorld(unsigned int seed, std::string worldName, bool isFlat) {
+
+    clearWorld();
 
     float startTime = (float)(std::clock()) / (float)(CLOCKS_PER_SEC / 1000);
     logger->log("CREATE: Starting world creation at time: " + std::to_string(startTime));
@@ -504,8 +509,6 @@ void WorldIOManager::P_createWorld(unsigned int seed, std::string worldName, boo
 
     *m_saveLoadMessage = "Making sure everything looks great!";
 
-    startTime = (float)(std::clock()) / (float)(CLOCKS_PER_SEC / 1000);
-
     for(int j = 0; j < 1; j++) {
         for(int i = 0; i < WORLD_SIZE; i++) {
             //m_world->chunks[i]->update(0, 1, m_world->chunks, nullptr, false);
@@ -519,7 +522,7 @@ void WorldIOManager::P_createWorld(unsigned int seed, std::string worldName, boo
     *m_progress = 1.0f;
 
     float endTime = (float)(std::clock()) / (float)(CLOCKS_PER_SEC / 1000);
-    logger->log("CREATE: Finished world creation at time: " + std::to_string(endTime) + " (Elapsed: " + std::to_string((endTime - startTime) / (32.0f)) + "ms)");
+    logger->log("CREATE: Finished world creation at time: " + std::to_string(endTime) + " (Elapsed: " + std::to_string(endTime - startTime) + "ms)");
 
     return;
 
@@ -885,7 +888,6 @@ void WorldIOManager::saveStructureToFile(std::string& filepath, glm::vec4 destRe
 
             data.tiles[(y - destRect.y) * data.width + (x - destRect.x)].id = m_world->chunks[chunkX]->getTile(realX, realY, 0)->getID();/// TODO: Cross-layer
             data.tiles[(y - destRect.y) * data.width + (x - destRect.x)].pos = glm::vec2(x - (destRect.x), y - (destRect.y));
-            data.tiles[(y - destRect.y) * data.width + (x - destRect.x)].ambientLight = 0.0f;
         }
     }
 
@@ -893,3 +895,8 @@ void WorldIOManager::saveStructureToFile(std::string& filepath, glm::vec4 destRe
 }
 
 #endif // DEV_CONTROLS
+
+void WorldIOManager::clearWorld() {
+    delete m_world;
+    m_world = new World();
+}

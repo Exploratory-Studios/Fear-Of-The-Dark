@@ -30,12 +30,12 @@ void MainMenuScreen::destroy() {
 
 void MainMenuScreen::onEntry() {
 
-    if(!m_inited) {
-        initShaders();
+    initShaders();
 
-        m_spriteBatch.init();
-        m_spriteFont.init((ASSETS_FOLDER_PATH + "GUI/fonts/QuietHorror.ttf").c_str(), 96);
+    m_spriteBatch.init();
+    m_spriteFont.init((ASSETS_FOLDER_PATH + "GUI/fonts/QuietHorror.ttf").c_str(), 96);
 
+    //if(!m_inited) {
         m_uiCamera.init(m_window->getScreenWidth(), m_window->getScreenHeight());
         m_uiCamera.setPosition(glm::vec2(m_window->getScreenWidth() / 2.0f, m_window->getScreenHeight() / 2.0f));
 
@@ -47,7 +47,7 @@ void MainMenuScreen::onEntry() {
         addBackgroundImage(m_backgroundImages, "Texture1.png");
         addBackgroundImage(m_backgroundImages, "Texture2.png");
         addBackgroundImage(m_backgroundImages, "Texture3.png");
-    }
+    //}
 
     m_time = 0.0f;
 }
@@ -57,7 +57,11 @@ void addBackgroundImage(std::vector<GLEngine::GLTexture>& backgroundImages, std:
 }
 
 void MainMenuScreen::onExit() {
+    m_spriteBatch.dispose();
+    m_uiTextureProgram.dispose();
+    m_spriteFont.dispose();
 
+    m_gui.destroy();
 }
 
 void MainMenuScreen::update() {

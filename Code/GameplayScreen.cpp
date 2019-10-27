@@ -32,12 +32,11 @@ void GameplayScreen::build() {
 }
 
 void GameplayScreen::destroy() {
-    delete m_scripter;
-    delete m_questManager;
-    delete m_console;
+
 }
 
 void GameplayScreen::onEntry() {
+    m_hasBeenInited = true;
 
     std::srand(std::time(NULL));
 
@@ -49,14 +48,14 @@ void GameplayScreen::onEntry() {
     m_scale = INITIAL_ZOOM;
     m_camera.setScale(m_scale);
     m_camera.init(m_window->getScreenWidth(), m_window->getScreenHeight());
-    m_camera.setPosition(m_camera.getPosition() + (glm::vec2(m_window->getScreenWidth() / 2, m_window->getScreenHeight() / 2)));
+    m_camera.setPosition((glm::vec2(m_window->getScreenWidth() / 2, m_window->getScreenHeight() / 2)));
 
     m_uiCamera.init(m_window->getScreenWidth(), m_window->getScreenHeight());
-    m_uiCamera.setPosition(m_uiCamera.getPosition() + (glm::vec2(m_window->getScreenWidth() / 2, m_window->getScreenHeight() / 2)));
+    m_uiCamera.setPosition((glm::vec2(m_window->getScreenWidth() / 2, m_window->getScreenHeight() / 2)));
 
     m_dr.init();
 
-    //m_WorldManager.init(m_WorldIOManager, &m_particle2d);
+    ///m_WorldManager.init(m_WorldIOManager, &m_particle2d);
     m_scripter = new Scripter(this);
     m_WorldIOManager->getAudioManager()->init();
 
@@ -66,7 +65,7 @@ void GameplayScreen::onEntry() {
         }
 
         if(!m_WorldIOManager->getWorld()->player) {
-            m_player = reinterpret_cast<Player*>(createEntity((unsigned int)Categories::EntityIDs::MOB_PLAYER, glm::vec2(5.0f, 10.0f), m_WorldIOManager->getWorld()->chunks[(int)(5.0f) / CHUNK_SIZE], m_WorldIOManager->getAudioManager(), nullptr, &m_game->inputManager, m_WorldIOManager->getScriptQueue()));
+            m_player = reinterpret_cast<Player*>(createEntity((unsigned int)Categories::EntityIDs::MOB_PLAYER, glm::vec2(5.0f, 100.0f), m_WorldIOManager->getWorld()->chunks[(int)(5.0f) / CHUNK_SIZE], m_WorldIOManager->getAudioManager(), nullptr, &m_game->inputManager, m_WorldIOManager->getScriptQueue()));
             m_WorldIOManager->setPlayer(m_player);
         } else {
             m_player = m_WorldIOManager->getWorld()->player;
@@ -96,15 +95,34 @@ void GameplayScreen::onEntry() {
     m_WorldIOManager->getWorld()->chunks[0]->addEntity(createEntity((unsigned int)Categories::EntityIDs::MOB_NEUTRAL_QUESTGIVER_A, glm::vec2(10.0f, (10.0f)), m_WorldIOManager->getWorld()->chunks[0], m_WorldIOManager->getAudioManager(), m_questManager));
 
     initUI();
+
     tick();
 
     if(m_player) {
         activateChunks();
     }
+
 }
 
 void GameplayScreen::onExit() {
 
+    delete m_scripter;
+
+    m_hasBeenInited = false;
+    m_gui.destroy();
+    delete m_questManager;
+    delete m_console;
+
+    m_textureProgram.dispose();
+    m_uiTextureProgram.dispose();
+    m_vignetteTextureProgram.dispose();
+    m_skyTextureProgram.dispose();
+
+    m_spriteBatch.dispose();
+    m_spriteFont.dispose();
+    m_dr.dispose();
+
+    m_gameState = GameState::PLAY;
 }
 
 void GameplayScreen::update() {
@@ -176,10 +194,8 @@ void GameplayScreen::update() {
         }
 
         m_frame++;
-
     }
-
-    m_gui.update();
+    if(m_currentState != GLEngine::ScreenState::EXIT_APPLICATION) m_gui.update();
 }
 #include <stdio.h>
 void GameplayScreen::draw() {

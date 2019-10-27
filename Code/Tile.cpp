@@ -353,11 +353,9 @@ TileData Tile::getSaveData() {
     TileData d;
     d.pos = m_pos;
     d.id = m_id;
-    d.ambientLight = m_ambientLight;
     delete d.metaData;
     d.metaData = getMetaData();
-    if(m_layer < WORLD_DEPTH-1)
-        d.lowerLayer = new TileData(m_parentChunk->getTile(m_pos.x, m_pos.y, m_layer+1)->getSaveData());
+    d.layer = m_layer;
     return d;
 }
 

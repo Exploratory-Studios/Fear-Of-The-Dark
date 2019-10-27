@@ -18,6 +18,20 @@ class GenericBlock : public Block {
         virtual void handleMetaDataInit(MetaData& data) override {}
 };
 
+class LightBlock : public GenericBlock {
+    public:
+        LightBlock(glm::vec2 pos, unsigned int layer, Chunk* parent, MetaData metaData, float emittedLight, bool loadTexture = true) : GenericBlock(pos, layer, parent, metaData, loadTexture) {
+            m_emittedLight = emittedLight;
+            setLightUpdate();
+        }
+
+        void setLightUpdate() { m_updateLight = true; }
+
+    protected:
+        virtual void onUpdate(float& time) override;
+        bool m_updateLight = false;
+};
+
 class BlockAir : public GenericBlock
 {
     public:
@@ -49,15 +63,13 @@ class BlockGrass : public GenericBlock
     private:
 };
 
-class BlockTorch : public GenericBlock
+class BlockTorch : public LightBlock
 {
     public:
         BlockTorch(glm::vec2 pos, unsigned int layer, Chunk* parent, bool loadTexture = true);
         void onInteract(ScriptQueue* sq) {}
     protected:
         void loadTexture() override { m_textureId = GLEngine::ResourceManager::getTexture(ASSETS_FOLDER_PATH + "/Textures/Blocks/Torch.png").id; }
-
-    private:
 };
 
 class BlockTorchBright : public BlockTorch
@@ -218,7 +230,5 @@ static Block* createBlock(unsigned int id, glm::vec2 pos, unsigned int layer, Ch
         float sunlight = std::cos(tickTime / (DAY_LENGTH / 6.28318f)) / 2.0f + 0.5f;
         ret->setSunlight(tickTime, sunlight);
     }
-
-    ret->setNeighboursLight();
     return ret;
 }

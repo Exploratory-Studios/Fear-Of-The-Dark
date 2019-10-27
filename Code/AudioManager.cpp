@@ -11,36 +11,42 @@ AudioManager::~AudioManager() {
 }
 
 void AudioManager::init() {
-    m_audio->init();
+    if(!m_audio->hasBeenInited()) {
 
-    for(int i = 0; i < MORNING_MUSIC_LENGTH; i++) {
-        m_music.push_back(m_audio->loadMusic(ASSETS_FOLDER_PATH + "Music/MorningMus" + std::to_string(i) + ".mus"));
-    }
-    for(int i = 0; i < DAY_MUSIC_LENGTH; i++) {
-        m_music.push_back(m_audio->loadMusic(ASSETS_FOLDER_PATH + "Music/DayMus" + std::to_string(i) + ".mus"));
-    }
-    for(int i = 0; i < AFTERNOON_MUSIC_LENGTH; i++) {
-        m_music.push_back(m_audio->loadMusic(ASSETS_FOLDER_PATH + "Music/AfternoonMus" + std::to_string(i) + ".mus"));
-    }
-    for(int i = 0; i < NIGHT_MUSIC_LENGTH; i++) {
-        m_music.push_back(m_audio->loadMusic(ASSETS_FOLDER_PATH + "Music/NightMus" + std::to_string(i) + ".mus"));
-    }
-    for(int i = 0; i < NIGHTMARE_MUSIC_LENGTH; i++) {
-        m_music.push_back(m_audio->loadMusic(ASSETS_FOLDER_PATH + "Music/NightmareMus" + std::to_string(i) + ".mus"));
-    } /// TODO: Interpret a file that tells what each file's music is
-    /* Ex: Music.txt
-    Music1_ThisIsAName:MORNING
-    Music2_ThisIsACreativeName:AFTERNOON
-    .
-    .
-    .
-    */
-    logger->log("Loaded all " + std::to_string(MORNING_MUSIC_LENGTH + DAY_MUSIC_LENGTH + AFTERNOON_MUSIC_LENGTH + NIGHT_MUSIC_LENGTH) + " music files.");
+        m_audio->init();
 
-    for(int i = 0; i < SOUND_EFFECT_LENGTH; i++) {
-        m_soundEffects.push_back(m_audio->loadSoundEffect(ASSETS_FOLDER_PATH + "Sounds/" + m_soundEffectFiles[i]));
+        for(int i = 0; i < MORNING_MUSIC_LENGTH; i++) {
+            m_music.push_back(m_audio->loadMusic(ASSETS_FOLDER_PATH + "Music/MorningMus" + std::to_string(i) + ".mus"));
+        }
+        for(int i = 0; i < DAY_MUSIC_LENGTH; i++) {
+            m_music.push_back(m_audio->loadMusic(ASSETS_FOLDER_PATH + "Music/DayMus" + std::to_string(i) + ".mus"));
+        }
+        for(int i = 0; i < AFTERNOON_MUSIC_LENGTH; i++) {
+            m_music.push_back(m_audio->loadMusic(ASSETS_FOLDER_PATH + "Music/AfternoonMus" + std::to_string(i) + ".mus"));
+        }
+        for(int i = 0; i < NIGHT_MUSIC_LENGTH; i++) {
+            m_music.push_back(m_audio->loadMusic(ASSETS_FOLDER_PATH + "Music/NightMus" + std::to_string(i) + ".mus"));
+        }
+        for(int i = 0; i < NIGHTMARE_MUSIC_LENGTH; i++) {
+            m_music.push_back(m_audio->loadMusic(ASSETS_FOLDER_PATH + "Music/NightmareMus" + std::to_string(i) + ".mus"));
+        } /// TODO: Interpret a file that tells what each file's music is
+        /* Ex: Music.txt
+        Music1_ThisIsAName:MORNING
+        Music2_ThisIsACreativeName:AFTERNOON
+        .
+        .
+        .
+        */
+        logger->log("Loaded all " + std::to_string(MORNING_MUSIC_LENGTH + DAY_MUSIC_LENGTH + AFTERNOON_MUSIC_LENGTH + NIGHT_MUSIC_LENGTH) + " music files.");
+
+        for(int i = 0; i < SOUND_EFFECT_LENGTH; i++) {
+            m_soundEffects.push_back(m_audio->loadSoundEffect(ASSETS_FOLDER_PATH + "Sounds/" + m_soundEffectFiles[i]));
+        }
+        logger->log("Loaded all " + std::to_string(SOUND_EFFECT_LENGTH) + " sound files.");
+
+    } else {
+        logger->log("Already inited audio manager. Skipping...");
     }
-    logger->log("Loaded all " + std::to_string(SOUND_EFFECT_LENGTH) + " sound files.");
 }
 
 bool AudioManager::isMusicPlaying() {

@@ -92,7 +92,6 @@ class Chunk
         }
 
         std::vector<Tile*>** m_tiles = new std::vector<Tile*>*[WORLD_HEIGHT];
-        //std::vector<Tile*>** m_extraTiles = new std::vector<Tile*>*[WORLD_HEIGHT]; // On each side, so that we don't have to activate 3 chunks at a time instead of one
 
         Logger* logger = Logger::getInstance();
 

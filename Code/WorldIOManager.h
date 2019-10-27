@@ -24,8 +24,11 @@
 class World {
 public:
     World() {
+        chunks = new Chunk*[WORLD_SIZE]();
+
         for(int i = 0; i < WORLD_SIZE; i++) {
             chunks[i] = new Chunk();
+            chunks[i]->setIndex(i);
         }
     }
     ~World() {
@@ -34,7 +37,7 @@ public:
         }
         delete[] chunks;
     }
-    Chunk** chunks = new Chunk*[WORLD_SIZE]();
+    Chunk** chunks = nullptr;
     Player* player = nullptr;
     float time = 0.0f;
     WorldEra worldEra = WorldEra::NEOLITHIC_ERA;
@@ -44,8 +47,28 @@ public:
 class WorldIOManager
 {
     public:
-        WorldIOManager(World* world, GLEngine::InputManager* input, GLEngine::Window* window) : m_world(world), m_input(input), m_window(window), m_sq(new ScriptQueue()) { }
-        WorldIOManager(GLEngine::InputManager* input, GLEngine::Window* window) : m_input(input), m_window(window), m_sq(new ScriptQueue()) { }
+        WorldIOManager(World* world, GLEngine::InputManager* input, GLEngine::Window* window) : m_world(world), m_input(input), m_window(window) { init(); }
+        WorldIOManager(GLEngine::InputManager* input, GLEngine::Window* window) : m_input(input), m_window(window) { init(); }
+
+        void init() {
+            m_progress = new float(0.0f);
+            m_saveLoadMessage = new std::string("");
+            m_sq = new ScriptQueue();
+
+            if(!m_world) {
+                m_world = new World();
+            }
+            m_audioManager = new AudioManager();
+            logger = Logger::getInstance();
+        }
+
+        ~WorldIOManager() {
+            delete m_world;
+            delete m_sq;
+            delete m_audioManager;
+            delete m_progress;
+            delete m_saveLoadMessage;
+        }
 
         void loadWorld(std::string worldName); // These public versions of the functions are multi-threading versions for anybody to use
         void saveWorld(std::string worldName);
@@ -74,6 +97,8 @@ class WorldIOManager
         void P_loadWorld(std::string worldName); /// TODO: Make multi-threaded so that we can view progress and load at the same time
         void P_saveWorld(std::string worldName); /// TODO: Make multi-threaded so that we can view progress and save at the same time
         void P_createWorld(unsigned int seed, std::string worldName, bool isFlat);
+
+        void clearWorld(); // Destroys all chunks and everything in m_world.
         /*
             Seed will govern where the biomes are (random engine #1) and it will also seed the random engine for
             all of the world (random engine #2)
@@ -81,15 +106,15 @@ class WorldIOManager
 
         std::string m_saveVersion = "1.2.1";
 
-        Logger* logger = Logger::getInstance();
+        Logger* logger = nullptr;
 
-        World* m_world = new World();
+        World* m_world = nullptr;
         GLEngine::InputManager* m_input = nullptr;
         ScriptQueue* m_sq = nullptr;
-        AudioManager* m_audioManager = new AudioManager();
+        AudioManager* m_audioManager = nullptr;
 
         GLEngine::Window* m_window = nullptr;
 
-        float* m_progress = new float(0.0f);
-        std::string* m_saveLoadMessage = new std::string("");
+        float* m_progress = nullptr;
+        std::string* m_saveLoadMessage = nullptr;
 };

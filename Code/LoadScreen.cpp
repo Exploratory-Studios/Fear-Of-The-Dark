@@ -41,11 +41,14 @@ void LoadScreen::onEntry() {
     m_uiCamera.setPosition(glm::vec2(m_window->getScreenWidth() / 2.0f, m_window->getScreenHeight() / 2.0f));
 
     initUI();
+
+    m_miniScreen = MiniScreen::MAIN;
+    m_time = 0;
 }
 
 void LoadScreen::onExit() {
-    m_miniScreen = MiniScreen::MAIN;
-    for(auto e : m_miniScreenEntries) e.checkScreen(m_miniScreen);
+    for(auto e : m_miniScreenEntries) e.dispose();
+    m_miniScreenEntries.clear();
 }
 
 void LoadScreen::update() {
@@ -123,11 +126,16 @@ void LoadScreen::initUI() {
     }
 
     {
-        m_createButton = static_cast<CEGUI::PushButton*> (m_gui.createWidget("FOTDSkin/Button", glm::vec4(0.1f, 0.1f, 0.25f, 0.15f), glm::vec4(0.0f), "CreatePushbutton"));
+        m_createButton = static_cast<CEGUI::PushButton*> (m_gui.createWidget("FOTDSkin/Button", glm::vec4(0.1f, 0.3f, 0.35f, 0.35f), glm::vec4(0.0f), "CreatePushbutton"));
         m_createButton->subscribeEvent(CEGUI::PushButton::EventClicked, CEGUI::Event::Subscriber(&LoadScreen::onCreateButtonClicked, this));
         m_createButton->setText("[padding='l:0 t:15 r:0 b:0']New World");
         m_createButton->setFont("QuietHorror-42");
         m_miniScreenEntries.emplace_back(m_createButton, MiniScreen::MAIN);
+
+        CEGUI::PushButton* temp = static_cast<CEGUI::PushButton*>(m_gui.createWidget("FOTDSkin/Label", glm::vec4(0.1f, 0.05f, 0.8f, 0.2f), glm::vec4(0.0f), "PlayMainLabel"));
+        temp->setText("[padding='l:0 t:30 r:0 b:0']Play");
+        temp->setFont("QuietHorror-118");
+        m_miniScreenEntries.emplace_back(temp, MiniScreen::MAIN);
     }
 
     {
@@ -145,13 +153,13 @@ void LoadScreen::initUI() {
         m_newWorldCreateNewButton->setFont("QuietHorror-42");
         m_miniScreenEntries.emplace_back(m_newWorldCreateNewButton, MiniScreen::CREATE);
 
-        m_newWorldFlatCheckbox = static_cast<CEGUI::ToggleButton*> (m_gui.createWidget("FOTDSkin/RadioButton", glm::vec4(0.1f, 0.4f, 0.12f, 0.1f), glm::vec4(0.0f), "WorldFlatToggleButton"));
+        m_newWorldFlatCheckbox = static_cast<CEGUI::ToggleButton*> (m_gui.createWidget("FOTDSkin/Checkbox", glm::vec4(0.1f, 0.4f, 0.12f, 0.1f), glm::vec4(0.0f), "WorldFlatToggleButton"));
         m_newWorldFlatCheckbox->setText("[padding='l:0 t:10 r:0 b:0']Flat World");
         m_miniScreenEntries.emplace_back(m_newWorldFlatCheckbox, MiniScreen::CREATE);
     }
 
     {
-        m_loadButton = static_cast<CEGUI::PushButton*> (m_gui.createWidget("FOTDSkin/Button", glm::vec4(0.1f, 0.3f, 0.25f, 0.15f), glm::vec4(0.0f), "LoadPushButton"));
+        m_loadButton = static_cast<CEGUI::PushButton*> (m_gui.createWidget("FOTDSkin/Button", glm::vec4(0.55f, 0.3f, 0.35f, 0.35f), glm::vec4(0.0f), "LoadPushButton"));
         m_loadButton->subscribeEvent(CEGUI::PushButton::EventClicked, CEGUI::Event::Subscriber(&LoadScreen::onLoadButtonClicked, this));
         m_loadButton->setText("[padding='l:0 t:15 r:0 b:0']Load World");
         m_loadButton->setFont("QuietHorror-42");
@@ -169,6 +177,11 @@ void LoadScreen::initUI() {
         m_loadWorldLoadButton->setFont("QuietHorror-42");
         m_miniScreenEntries.emplace_back(m_loadWorldLoadButton, MiniScreen::LOAD);
     }
+
+    m_backButton = static_cast<CEGUI::PushButton*>(m_gui.createWidget("FOTDSkin/Button", glm::vec4(0.1f, 0.8f, 0.2f, 0.1f), glm::vec4(0.0f), "BackPushButton"));
+    m_backButton->subscribeEvent(CEGUI::PushButton::EventClicked, CEGUI::Event::Subscriber(&LoadScreen::onBackButtonClicked, this));
+    m_backButton->setText("[padding='l:0 t:15 r:0 b:0']Back");
+    m_backButton->setFont("QuietHorror-42");
 }
 
 void LoadScreen::initShaders() {
@@ -218,4 +231,26 @@ bool LoadScreen::onCreateButtonClicked(const CEGUI::EventArgs& e) {
 bool LoadScreen::onLoadButtonClicked(const CEGUI::EventArgs& e) {
     m_miniScreen = MiniScreen::LOAD;
     return true;
+}
+
+bool LoadScreen::onBackButtonClicked(const CEGUI::EventArgs& e) {
+    if(m_miniScreen == MiniScreen::MAIN) {
+        m_nextScreenIndex = SCREEN_INDEX_MAINMENU;
+        m_currentState = GLEngine::ScreenState::CHANGE_NEXT;
+    } else if(m_miniScreen == MiniScreen::CREATE) {
+        m_miniScreen = MiniScreen::MAIN;
+        for(auto& m : m_miniScreenEntries) {
+            m.checkScreen(m_miniScreen);
+        }
+    } else if(m_miniScreen == MiniScreen::SETTINGS) {
+        m_miniScreen = MiniScreen::CREATE;
+        for(auto& m : m_miniScreenEntries) {
+            m.checkScreen(m_miniScreen);
+        }
+    } else if(m_miniScreen == MiniScreen::LOAD) {
+        m_miniScreen = MiniScreen::MAIN;
+        for(auto& m : m_miniScreenEntries) {
+            m.checkScreen(m_miniScreen);
+        }
+    }
 }

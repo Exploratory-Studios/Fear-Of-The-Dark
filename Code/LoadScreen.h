@@ -8,9 +8,12 @@
 #include <GLSLProgram.h>
 #include <SpriteFont.h>
 #include <boost/thread.hpp>
+#include <experimental/filesystem>
 
 #include "ScreenIndices.h"
 #include "WorldIOManager.h"
+
+namespace fs = std::experimental::filesystem;
 
 enum class MiniScreen {
     MAIN,
@@ -31,6 +34,7 @@ class MiniScreenEntry {
                                                             m_widget->setVisible(false);
                                                         }
                                                        }
+        void dispose() { delete m_widget; }
 
     private:
         CEGUI::Window* m_widget;
@@ -61,6 +65,7 @@ class LoadScreen : public GLEngine::IGameScreen
         bool onCreateButtonClicked(const CEGUI::EventArgs& e);
         bool onLoadButtonClicked(const CEGUI::EventArgs& e);
         bool onLoadWorldLoadButtonClicked(const CEGUI::EventArgs& e);
+        bool onBackButtonClicked(const CEGUI::EventArgs& e);
 
         int m_nextScreenIndex = SCREEN_INDEX_NO_SCREEN;
 
@@ -75,6 +80,8 @@ class LoadScreen : public GLEngine::IGameScreen
         CEGUI::Editbox* m_newWorldNameEditbox = nullptr;
         CEGUI::Editbox* m_newWorldSeedEditbox = nullptr;
         CEGUI::ToggleButton* m_newWorldFlatCheckbox = nullptr; // To create a flat world
+
+        CEGUI::PushButton* m_backButton = nullptr;
 
         CEGUI::PushButton* m_loadButton = nullptr;
         CEGUI::PushButton* m_loadWorldLoadButton = nullptr;

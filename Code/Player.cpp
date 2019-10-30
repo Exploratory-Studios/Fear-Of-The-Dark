@@ -8,11 +8,14 @@
 
 #include <Errors.h>
 
-Player::Player(glm::vec2 position, Chunk* parent, GLEngine::InputManager* input, ScriptQueue* sq, AudioManager* audio) : Entity(position, audio, sq, 12.0f/60.0f, Categories::LootTableIds::NONE, 0, 0), m_input(input)
+Player::Player(glm::vec2 position, Chunk* parent, GLEngine::InputManager* input, ScriptQueue* sq, AudioManager* audio, bool loadTexture) : Entity(position, audio, sq, 12.0f/60.0f, Categories::LootTableIds::NONE, 0, 0), m_input(input)
 {
     m_inventory = new Inventory();
 
-    m_texture = GLEngine::ResourceManager::getTexture(ASSETS_FOLDER_PATH + "/Textures/Mobs/Mob0.png");
+    if(loadTexture) {
+        m_texture = GLEngine::ResourceManager::getTexture(ASSETS_FOLDER_PATH + "Textures/Mobs/Mob0.png");
+        m_loadedTexture = true;
+    }
     m_size = glm::vec2(1.0f, 2.0f);
     m_faction = Categories::Faction::GOOD;
     m_jumpHeight = 0.4f;
@@ -94,6 +97,11 @@ void Player::initGUI(GLEngine::GUI* gui) {
 }
 
 void Player::draw(GLEngine::SpriteBatch& sb, float time, float xOffset) {
+    if(!m_loadedTexture) {
+        m_texture = GLEngine::ResourceManager::getTexture(ASSETS_FOLDER_PATH + "Textures/Mobs/Mob0.png");
+        m_loadedTexture = true;
+    }
+
     glm::vec4 destRect = glm::vec4(m_position.x + xOffset * CHUNK_SIZE, m_position.y, m_size.x, m_size.y);
 
     float x, y;

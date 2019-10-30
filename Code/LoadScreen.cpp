@@ -25,7 +25,7 @@ void LoadScreen::build() {
 }
 
 void LoadScreen::destroy() {
-
+    m_gui.destroy();
 }
 
 void LoadScreen::onEntry() {
@@ -49,6 +49,7 @@ void LoadScreen::onEntry() {
 void LoadScreen::onExit() {
     for(auto e : m_miniScreenEntries) e.dispose();
     m_miniScreenEntries.clear();
+    m_loadWorldNameListbox->resetList();
 }
 
 void LoadScreen::update() {
@@ -167,9 +168,9 @@ void LoadScreen::initUI() {
     }
 
     {
-        m_loadWorldNameEditbox = static_cast<CEGUI::Editbox*>(m_gui.createWidget("FOTDSkin/Editbox", glm::vec4(0.1f, 0.1, 0.25f, 0.15f), glm::vec4(0.0f), "LoadWorldNameEditbox"));
-        m_loadWorldNameEditbox->setText("Name");
-        m_miniScreenEntries.emplace_back(m_loadWorldNameEditbox, MiniScreen::LOAD);
+        m_loadWorldNameListbox = static_cast<CEGUI::Listbox*>(m_gui.createWidget("FOTDSkin/Listbox", glm::vec4(0.6f, 0.1f, 0.3f, 0.8f), glm::vec4(0.0f), "LoadWorldNameListbox"));
+        m_loadWorldNameListbox->setFont("Amatic-38");
+        m_miniScreenEntries.emplace_back(m_loadWorldNameListbox, MiniScreen::LOAD);
 
         m_loadWorldLoadButton = static_cast<CEGUI::PushButton*>(m_gui.createWidget("FOTDSkin/Button", glm::vec4(0.1f, 0.3f, 0.25f, 0.15f), glm::vec4(0.0f), "LoadWorldLoadPushButton"));
         m_loadWorldLoadButton->subscribeEvent(CEGUI::PushButton::EventClicked, CEGUI::Event::Subscriber(&LoadScreen::onLoadWorldLoadButtonClicked, this));
@@ -213,7 +214,7 @@ bool LoadScreen::onNewWorldCreateNewButtonClicked(const CEGUI::EventArgs& e) { /
 
 bool LoadScreen::onLoadWorldLoadButtonClicked(const CEGUI::EventArgs& e) { /// TODO: clean post-this lines up
 
-    std::string text = m_loadWorldNameEditbox->getText().c_str();
+    std::string text = m_loadWorldNameListbox->getFirstSelectedItem()->getText().c_str();
 
     m_worldIOManager->loadWorld(text);
 
@@ -230,6 +231,7 @@ bool LoadScreen::onCreateButtonClicked(const CEGUI::EventArgs& e) {
 
 bool LoadScreen::onLoadButtonClicked(const CEGUI::EventArgs& e) {
     m_miniScreen = MiniScreen::LOAD;
+    getDirectoryEntries();
     return true;
 }
 
@@ -254,3 +256,45 @@ bool LoadScreen::onBackButtonClicked(const CEGUI::EventArgs& e) {
         }
     }
 }
+
+void LoadScreen::getDirectoryEntries() {
+    m_loadWorldNameListbox->resetList();
+
+    fs::v1::path path(SAVES_PATH);
+
+    std::vector<std::string> entries;
+
+    if(fs::exists(path) && fs::is_directory(path)) {
+        for (const auto& entry : fs::directory_iterator(path))
+        {
+            auto filename = entry.path().filename();
+            if (fs::is_regular_file(entry.status())) {
+                if(std::string(entry.path().filename()).rfind(".bin") != std::string::npos) {
+                    entries.push_back(std::string(entry.path().filename()).erase(std::string(entry.path().filename()).rfind(".bin"), 4));
+                }
+            }
+        }
+    } else {
+        logger->log("Bad saves path: " + (std::string)path);
+    }
+
+    for(unsigned int i = 0; i < entries.size(); i++) {
+        CEGUI::ListboxTextItem* item = new CEGUI::ListboxTextItem(entries[i], i);
+        item->setSelectionColours(CEGUI::Colour(0.2f, 0.2f, 0.2f));
+        item->setSelectionBrushImage("FOTDSkin/GenericBrush");
+
+        item->setFont("Amatic-38");
+
+        m_loadWorldNameListbox->addItem(item);
+    }
+}
+
+
+
+
+
+
+
+
+
+

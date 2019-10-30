@@ -15,6 +15,7 @@
 					<Add option="-g" />
 					<Add option="-DDEV_CONTROLS" />
 					<Add option="-DDEBUG" />
+					<Add option="-DLINUX" />
 					<Add directory="Items" />
 					<Add directory="Code" />
 					<Add directory="Code/Entities" />
@@ -22,9 +23,30 @@
 					<Add directory="include" />
 				</Compiler>
 			</Target>
-			<Target title="Release">
-				<Option output="bin/Release/Fear Of The Dark" prefix_auto="1" extension_auto="1" />
-				<Option object_output="obj/Release/" />
+			<Target title="DebugVB">
+				<Option output="bin/DebugVB/Fear Of The Dark" prefix_auto="1" extension_auto="1" />
+				<Option object_output="obj/DebugVB/" />
+				<Option type="1" />
+				<Option compiler="gcc" />
+				<Compiler>
+					<Add option="-g" />
+					<Add option="-v" />
+					<Add option="-DDEV_CONTROLS" />
+					<Add option="-DDEBUG" />
+					<Add option="-DLINUX" />
+					<Add directory="Items" />
+					<Add directory="Code" />
+					<Add directory="Code/Entities" />
+					<Add directory="Code/QuestSystem" />
+					<Add directory="include" />
+				</Compiler>
+				<Linker>
+					<Add option="-O3" />
+				</Linker>
+			</Target>
+			<Target title="Release - Linux">
+				<Option output="bin/ReleaseLin/Fear Of The Dark" prefix_auto="1" extension_auto="1" />
+				<Option object_output="obj/ReleaseLin/" />
 				<Option type="1" />
 				<Option compiler="gcc" />
 				<Compiler>
@@ -32,26 +54,7 @@
 					<Add option="-flto" />
 					<Add option="-O3" />
 					<Add option="-fPIC" />
-					<Add directory="Items" />
-					<Add directory="Code" />
-					<Add directory="Code/Entities" />
-					<Add directory="Code/QuestSystem" />
-					<Add directory="include" />
-				</Compiler>
-				<Linker>
-					<Add option="-flto" />
-					<Add option="-s" />
-				</Linker>
-			</Target>
-			<Target title="DebugVB">
-				<Option output="bin/Debug/Fear Of The Dark" prefix_auto="1" extension_auto="1" />
-				<Option object_output="obj/Debug/" />
-				<Option type="1" />
-				<Option compiler="gcc" />
-				<Compiler>
-					<Add option="-g" />
-					<Add option="-v" />
-					<Add option="-DDEV_CONTROLS" />
+					<Add option="-DLINUX" />
 					<Add directory="Items" />
 					<Add directory="Code" />
 					<Add directory="Code/Entities" />
@@ -60,16 +63,21 @@
 				</Compiler>
 				<Linker>
 					<Add option="-O3" />
+					<Add option="-flto" />
+					<Add option="-s" />
 				</Linker>
 			</Target>
-			<Target title="ValgrindReady">
-				<Option output="bin/Debug/Fear Of The Dark" prefix_auto="1" extension_auto="1" />
-				<Option object_output="obj/Debug/" />
+			<Target title="Release - Windows">
+				<Option output="bin/ReleaseWin/Fear Of The Dark" prefix_auto="1" extension_auto="1" />
+				<Option object_output="obj/ReleaseWin/" />
 				<Option type="1" />
 				<Option compiler="gcc" />
 				<Compiler>
-					<Add option="-g" />
-					<Add option="-DDEV_CONTROLS" />
+					<Add option="-fexpensive-optimizations" />
+					<Add option="-flto" />
+					<Add option="-O3" />
+					<Add option="-fPIC" />
+					<Add option="-DWINDOWS" />
 					<Add directory="Items" />
 					<Add directory="Code" />
 					<Add directory="Code/Entities" />
@@ -77,13 +85,15 @@
 					<Add directory="include" />
 				</Compiler>
 				<Linker>
-					<Add option="-O1" />
+					<Add option="-O3" />
+					<Add option="-flto" />
+					<Add option="-s" />
 				</Linker>
 			</Target>
 		</Build>
 		<Compiler>
 			<Add option="-Wall" />
-			<Add option="-std=c++14" />
+			<Add option="-std=c++1z" />
 			<Add option="-fexceptions" />
 			<Add directory="../../GLEngine" />
 		</Compiler>

@@ -36,6 +36,7 @@ void GameplayScreen::destroy() {
 }
 
 void GameplayScreen::onEntry() {
+
     m_hasBeenInited = true;
 
     std::srand(std::time(NULL));
@@ -366,7 +367,7 @@ void GameplayScreen::checkInput() {
                 logger->log("Tried to create a structure badly, please try again, first coord is lower left corner, second is upper right.");
             } else {
 
-                std::string filepath = ASSETS_FOLDER_PATH + "/Structures/Test.bin";
+                std::string filepath = ASSETS_FOLDER_PATH + "/Structures/Test.bin"; /// TODO: Change path to be in AppData or ~/.exploratory
                 m_WorldIOManager->saveStructureToFile(filepath,
                                                       glm::vec4(m_lastSelectedPosition.x,
                                                       m_lastSelectedPosition.y,
@@ -385,10 +386,9 @@ void GameplayScreen::checkInput() {
 
     if(m_game->inputManager.isKeyPressed(SDLK_F4)) {
         //m_gameState = GameState::PAUSE;
-        m_WorldIOManager->saveWorld("TestSave");
+        m_WorldIOManager->saveWorld(m_WorldIOManager->getWorld()->name);
     } else if(m_game->inputManager.isKeyPressed(SDLK_F5)) {
-        m_WorldIOManager->loadWorld("TestSave");
-
+        m_WorldIOManager->loadWorld(m_WorldIOManager->getWorld()->name);
     }
 
 }
@@ -530,6 +530,8 @@ void GameplayScreen::drawDebug() {
 
     if(m_player->m_selectedBlock)
         fps += "\nSelected Block: Biome: " + placeString + ", " + m_player->m_selectedBlock->getPrintout();
+
+    fps += "\nPlayer Light Level: " + std::to_string(m_player->getLightLevel());
     m_fpsWidget->setText(fps);
 }
 #endif //DEV_CONTROLS
@@ -558,7 +560,7 @@ bool GameplayScreen::pause_resume_button_clicked(const CEGUI::EventArgs& e) {
 }
 
 bool GameplayScreen::pause_save_button_clicked(const CEGUI::EventArgs& e) {
-    m_WorldIOManager->saveWorld("Test");
+    m_WorldIOManager->saveWorld(m_WorldIOManager->getWorld()->name);
     return true;
 }
 

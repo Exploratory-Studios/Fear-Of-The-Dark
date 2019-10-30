@@ -8,6 +8,8 @@
 
 #include <Window.h>
 
+#include <mutex>
+
 #include "PerlinNoise/PerlinNoise.h"
 
 #include "Chunk.h"
@@ -91,7 +93,9 @@ class WorldIOManager
         #endif // DEV_CONTROLS
 
         float getProgress() const { return *m_progress; }
+        void setProgress(float p) { mtx_prog.lock(); *m_progress = p; mtx_prog.unlock(); }
         std::string getMessage() const { return *m_saveLoadMessage; }
+        void setMessage(std::string msg) { mtx_msg.lock(); *m_saveLoadMessage = msg; mtx_msg.unlock(); }
 
     private:
         void P_loadWorld(std::string worldName); /// TODO: Make multi-threaded so that we can view progress and load at the same time
@@ -117,4 +121,7 @@ class WorldIOManager
 
         float* m_progress = nullptr;
         std::string* m_saveLoadMessage = nullptr;
+
+        std::mutex mtx_msg;
+        std::mutex mtx_prog;
 };

@@ -67,6 +67,8 @@ class LoadScreen : public GLEngine::IGameScreen
         bool onLoadWorldLoadButtonClicked(const CEGUI::EventArgs& e);
         bool onBackButtonClicked(const CEGUI::EventArgs& e);
 
+        void getDirectoryEntries();
+
         int m_nextScreenIndex = SCREEN_INDEX_NO_SCREEN;
 
         std::vector<MiniScreenEntry> m_miniScreenEntries;
@@ -85,7 +87,7 @@ class LoadScreen : public GLEngine::IGameScreen
 
         CEGUI::PushButton* m_loadButton = nullptr;
         CEGUI::PushButton* m_loadWorldLoadButton = nullptr;
-        CEGUI::Editbox* m_loadWorldNameEditbox = nullptr;
+        CEGUI::Listbox* m_loadWorldNameListbox = nullptr;
 
         GLEngine::Camera2D m_camera;
         GLEngine::Camera2D m_uiCamera;
@@ -94,6 +96,8 @@ class LoadScreen : public GLEngine::IGameScreen
         GLEngine::SpriteBatch m_spriteBatch;
         GLEngine::GLSLProgram m_textureProgram;
         GLEngine::SpriteFont m_spriteFont;
+
+        Logger*logger = Logger::getInstance();
 
         WorldIOManager* m_worldIOManager = nullptr;
 };

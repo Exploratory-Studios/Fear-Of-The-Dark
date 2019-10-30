@@ -1,6 +1,7 @@
 <?xml version="1.0" ?>
 <GUIScheme version="5" name="FOTDSkin">
     <Font filename="DejaVuSans-12.font" />
+	<Font filename="Amatic-38.font" />
     <Font filename="QuietHorror-22.font" />
     <Font filename="QuietHorror-26.font" />
     <Font filename="QuietHorror-30.font" />
@@ -52,11 +53,11 @@
 	<FalagardMapping windowType="FOTDSkin/ComboDropList" targetType="CEGUI/ComboDropList" renderer="Core/Listbox" lookNFeel="FOTDSkin/ComboDropList" />
 	<FalagardMapping windowType="FOTDSkin/ComboEditbox" targetType="CEGUI/Editbox"	 renderer="Core/Editbox" lookNFeel="FOTDSkin/ComboEditbox" />
 	<FalagardMapping windowType="FOTDSkin/Combobox" targetType="CEGUI/Combobox"	 renderer="Core/Default" lookNFeel="FOTDSkin/Combobox" />
-
+-->
 	<FalagardMapping windowType="FOTDSkin/ListboxItem" targetType="CEGUI/ItemEntry" renderer="Core/ItemEntry" lookNFeel="FOTDSkin/ListboxItem" />
 	<FalagardMapping windowType="FOTDSkin/ItemListbox" targetType="CEGUI/ItemListbox" renderer="Core/ItemListbox" lookNFeel="FOTDSkin/ItemListbox" />
 	<FalagardMapping windowType="FOTDSkin/Listbox" targetType="CEGUI/Listbox" renderer="Core/Listbox" lookNFeel="FOTDSkin/Listbox" />
-
+<!--
 	<FalagardMapping windowType="FOTDSkin/ListHeaderSegment" targetType="CEGUI/ListHeaderSegment" renderer="Core/ListHeaderSegment" lookNFeel="FOTDSkin/ListHeaderSegment" />
 	<FalagardMapping windowType="FOTDSkin/ListHeader" targetType="CEGUI/ListHeader" renderer="Core/ListHeader" lookNFeel="FOTDSkin/ListHeader" />
 	<FalagardMapping windowType="FOTDSkin/MultiColumnList" targetType="CEGUI/MultiColumnList" renderer="Core/MultiColumnList" lookNFeel="FOTDSkin/MultiColumnList" />

@@ -7367,3 +7367,1722 @@ Loaded trade tables! (24 bytes)
 
 ### LOG: Tue Oct 29 20:19:34 2019 ###
 
+
+
+
+### LOG: Wed Oct 30 08:51:49 2019 ###
+
+
+
+
+### LOG: Wed Oct 30 09:04:29 2019 ###
+
+
+
+
+### LOG: Wed Oct 30 09:04:45 2019 ###
+
+
+
+
+### LOG: Wed Oct 30 09:06:28 2019 ###
+
+Bad path: ~/.exploratory/Fear Of The Dark/Saves/
+
+
+
+### LOG: Wed Oct 30 09:08:01 2019 ###
+
+Bad path: ~/.exploratory/Fear Of The Dark/Saves
+
+
+
+### LOG: Wed Oct 30 09:08:58 2019 ###
+
+Bad path: ~/
+
+
+
+### LOG: Wed Oct 30 09:10:25 2019 ###
+
+.Name_0.bin
+Entity.cpp
+Block.h
+Block.cpp
+ItemData.cpp
+OptionsMenuScreen.cpp
+Place.cpp
+Entities.cpp
+Logging.h
+Logging.cpp
+Chunk.cpp
+ItemBlock.h
+StartupScreen.h
+Fear Of The Dark.layout
+GameplayScreen.h
+Inventory.h
+App.cpp
+Blocks.cpp
+TestSave.bin
+Console.h
+App.h
+Items.h
+Main.h
+Console.cpp
+MainMenuScreen.cpp
+Test.bin
+Devlog FOTD Start Oct 9 2017
+WorldIOManager.h
+LoadScreen.cpp
+WaitScreen.h
+ExtraFunctions.h
+CEGUI.log
+QuestManager.cpp
+Fear Of The Dark.cscope_file_list
+ExtraFunctions.cpp
+uiShader.frag
+EntityManager.h
+Categories.h
+QuestManager.h
+Items.cpp
+Inventory.cpp
+WorldIOManager.cpp
+EntityManager.cpp
+Tile.cpp
+GameplayScreen.cpp
+BuffData.h
+Player.h
+SaveDataTypes.h
+Tile.h
+Item.cpp
+Chunk.h
+Fear Of The Dark.cbp
+QuestClasses.h
+Entity.h
+Readme.txt
+Fear Of The Dark.depend
+LoadScreen.h
+Entities.h
+valgrindlog.txt
+PresetValues.h
+ItemBlock.cpp
+OptionsMenuScreen.h
+Item.h
+Place.h
+StartupScreen.cpp
+AudioManager.cpp
+Blocks.h
+ItemData.h
+AudioManager.h
+WaitScreen.cpp
+GameLog.txt
+Main.cpp
+Player.cpp
+ScreenIndices.h
+MainMenuScreen.h
+
+
+
+### LOG: Wed Oct 30 09:11:19 2019 ###
+
+/home/davis-dev/Documents/Programming/C++/CodingGithub/Fear-Of-The-Dark/Code
+.Name_0.bin
+Entity.cpp
+Block.h
+Block.cpp
+ItemData.cpp
+OptionsMenuScreen.cpp
+Place.cpp
+Entities.cpp
+Logging.h
+Logging.cpp
+Chunk.cpp
+ItemBlock.h
+StartupScreen.h
+Fear Of The Dark.layout
+GameplayScreen.h
+Inventory.h
+App.cpp
+Blocks.cpp
+TestSave.bin
+Console.h
+App.h
+Items.h
+Main.h
+Console.cpp
+MainMenuScreen.cpp
+Test.bin
+Devlog FOTD Start Oct 9 2017
+WorldIOManager.h
+LoadScreen.cpp
+WaitScreen.h
+ExtraFunctions.h
+CEGUI.log
+QuestManager.cpp
+Fear Of The Dark.cscope_file_list
+ExtraFunctions.cpp
+uiShader.frag
+EntityManager.h
+Categories.h
+QuestManager.h
+Items.cpp
+Inventory.cpp
+WorldIOManager.cpp
+EntityManager.cpp
+Tile.cpp
+GameplayScreen.cpp
+BuffData.h
+Player.h
+SaveDataTypes.h
+Tile.h
+Item.cpp
+Chunk.h
+Fear Of The Dark.cbp
+QuestClasses.h
+Entity.h
+Readme.txt
+Fear Of The Dark.depend
+LoadScreen.h
+Entities.h
+valgrindlog.txt
+PresetValues.h
+ItemBlock.cpp
+OptionsMenuScreen.h
+Item.h
+Place.h
+StartupScreen.cpp
+AudioManager.cpp
+Blocks.h
+ItemData.h
+AudioManager.h
+WaitScreen.cpp
+GameLog.txt
+Main.cpp
+Player.cpp
+ScreenIndices.h
+MainMenuScreen.h
+
+
+
+### LOG: Wed Oct 30 09:14:07 2019 ###
+
+/home/davis-dev/Documents/Programming/C++/CodingGithub/Fear-Of-The-Dark/Code
+.Name_0.bin
+Entity.cpp
+Block.h
+Block.cpp
+ItemData.cpp
+OptionsMenuScreen.cpp
+Place.cpp
+Entities.cpp
+Logging.h
+Logging.cpp
+Chunk.cpp
+ItemBlock.h
+StartupScreen.h
+Fear Of The Dark.layout
+GameplayScreen.h
+Inventory.h
+App.cpp
+Blocks.cpp
+TestSave.bin
+Console.h
+App.h
+Items.h
+Main.h
+Console.cpp
+MainMenuScreen.cpp
+Test.bin
+Devlog FOTD Start Oct 9 2017
+WorldIOManager.h
+LoadScreen.cpp
+WaitScreen.h
+ExtraFunctions.h
+CEGUI.log
+QuestManager.cpp
+Fear Of The Dark.cscope_file_list
+ExtraFunctions.cpp
+uiShader.frag
+EntityManager.h
+Categories.h
+QuestManager.h
+Items.cpp
+Inventory.cpp
+WorldIOManager.cpp
+EntityManager.cpp
+Tile.cpp
+GameplayScreen.cpp
+BuffData.h
+Player.h
+SaveDataTypes.h
+Tile.h
+Item.cpp
+Chunk.h
+Fear Of The Dark.cbp
+QuestClasses.h
+Entity.h
+Readme.txt
+Fear Of The Dark.depend
+LoadScreen.h
+Entities.h
+valgrindlog.txt
+PresetValues.h
+ItemBlock.cpp
+OptionsMenuScreen.h
+Item.h
+Place.h
+StartupScreen.cpp
+AudioManager.cpp
+Blocks.h
+ItemData.h
+AudioManager.h
+WaitScreen.cpp
+GameLog.txt
+Main.cpp
+Player.cpp
+ScreenIndices.h
+MainMenuScreen.h
+
+
+
+### LOG: Wed Oct 30 09:14:40 2019 ###
+
+$HOME/.exploratory/Fear Of The Dark/Saves
+Bad path: $HOME/.exploratory/Fear Of The Dark/Saves
+
+
+
+### LOG: Wed Oct 30 09:16:12 2019 ###
+
+
+
+
+### LOG: Wed Oct 30 09:18:12 2019 ###
+
+/home/davis-dev/.exploratory/Fear Of The Dark/Saves
+Hello.txt
+Save.bin
+RegFile
+
+
+
+### LOG: Wed Oct 30 09:24:52 2019 ###
+
+Hello.txt
+Save.bin
+RegFile
+
+
+
+### LOG: Wed Oct 30 09:25:18 2019 ###
+
+Hello.txt
+Save.bin
+RegFile
+
+
+
+### LOG: Wed Oct 30 09:27:04 2019 ###
+
+Save.bin
+
+
+
+### LOG: Wed Oct 30 09:28:27 2019 ###
+
+CREATE: Starting world creation at time: 1329.844971
+CREATE: Finished world creation at time: 6057.182129 (Elapsed: 4727.336914ms)
+Loaded all 3 music files.
+Loaded all 2 sound files.
+Successfully Loaded Script File: ../Assets/Scripts/Script_player_makeHouse.txt, and given id of: 1
+Loading dialogue. 1297 bytes to read.
+Successfully Loaded Script File: ../Assets/Scripts/Script_selected_makeHouse.txt, and given id of: 2
+Successfully Loaded Script File: ../Assets/Scripts/Script_player_makeHouse.txt, and given id of: 1
+Dialogue loaded! (24 bytes)
+Loading flags. 125 bytes to read.
+Loaded flag with id of 0 and value of 0
+Loaded flag with id of 1 and value of 0
+Loaded flag with id of 2 and value of 0
+Loaded flag with id of 3 and value of 0
+Loaded flag with id of 4 and value of 0
+Loaded flag with id of 5 and value of 0
+Flags loaded! (24 bytes)
+Loading trade tables. 180 bytes to read.
+Loaded trade tables! (24 bytes)
+SAVE: Starting World Save to File: Test.bin
+SAVE: Starting Save Preparations
+SAVE: Player Data Prepared
+SAVE: Chunk Data Prepared
+
+### SAVE: ALL DATA PREPARED, STARTING SAVE ###
+
+
+
+
+### LOG: Wed Oct 30 16:12:21 2019 ###
+
+
+
+
+### LOG: Wed Oct 30 16:14:06 2019 ###
+
+
+
+
+### LOG: Wed Oct 30 16:14:39 2019 ###
+
+Bad saves path: /home/davis-dev/.exploratory/Fear Of The Dark/Saves
+
+
+
+### LOG: Wed Oct 30 16:14:48 2019 ###
+
+Bad saves path: /home/davis-dev/.exploratory/Fear Of The Dark/Saves
+
+
+
+### LOG: Wed Oct 30 16:23:11 2019 ###
+
+
+
+
+### LOG: Wed Oct 30 16:24:39 2019 ###
+
+CREATE: Starting world creation at time: 2056.885010
+CREATE: Finished world creation at time: 7213.908203 (Elapsed: 5157.023438ms)
+Loaded all 3 music files.
+Loaded all 2 sound files.
+Successfully Loaded Script File: /home/davis-dev/.exploratory/Fear Of The Dark/Assets/Scripts/Script_player_makeHouse.txt, and given id of: 1
+Loading dialogue. 1297 bytes to read.
+Successfully Loaded Script File: /home/davis-dev/.exploratory/Fear Of The Dark/Assets/Scripts/Script_selected_makeHouse.txt, and given id of: 2
+Successfully Loaded Script File: /home/davis-dev/.exploratory/Fear Of The Dark/Assets/Scripts/Script_player_makeHouse.txt, and given id of: 1
+Dialogue loaded! (24 bytes)
+Loading flags. 125 bytes to read.
+Loaded flag with id of 0 and value of 0
+Loaded flag with id of 1 and value of 0
+Loaded flag with id of 2 and value of 0
+Loaded flag with id of 3 and value of 0
+Loaded flag with id of 4 and value of 0
+Loaded flag with id of 5 and value of 0
+Flags loaded! (24 bytes)
+Loading trade tables. 180 bytes to read.
+Loaded trade tables! (24 bytes)
+Teleporting entity to: X=10.000000, Y=10.000000
+SAVE: Starting World Save to File: ThisIsATest.bin
+SAVE: Starting Save Preparations
+SAVE: Player Data Prepared
+SAVE: Chunk Data Prepared
+
+### SAVE: ALL DATA PREPARED, STARTING SAVE ###
+
+SAVE: Started Saving with version: 1.2.1
+SAVE: Wrote Player POD
+SAVE: Wrote Player Inventory
+SAVE: Wrote World Chunks
+
+### SAVE: SAVE COMPLETED ###
+
+ThisIsATest.bin
+
+
+
+### LOG: Wed Oct 30 16:35:19 2019 ###
+
+
+
+
+### LOG: Wed Oct 30 16:42:30 2019 ###
+
+
+
+
+### LOG: Wed Oct 30 16:43:26 2019 ###
+
+
+
+
+### LOG: Wed Oct 30 16:49:39 2019 ###
+
+ThisIsATest.bin
+
+
+
+### LOG: Wed Oct 30 16:55:03 2019 ###
+
+
+### LOAD: STARTING LOAD AT 1261.324951 ###
+
+
+
+
+### LOG: Wed Oct 30 16:58:57 2019 ###
+
+
+### LOAD: STARTING LOAD AT 1110.364014 ###
+
+
+### LOAD: Loaded Version: 1.2.1, Using Version: 1.2.1 ###
+
+Successfully Loaded Script File: /home/davis-dev/.exploratory/Fear Of The Dark/Assets/Scripts/Script_player_makeHouse.txt, and given id of: 1
+LOAD: Loaded Player POD
+LOAD: Loaded Player Inventory
+LOAD: Loaded 1 of 32 Chunks
+LOAD: Loaded 2 of 32 Chunks
+LOAD: Loaded 3 of 32 Chunks
+LOAD: Loaded 4 of 32 Chunks
+LOAD: Loaded 5 of 32 Chunks
+LOAD: Loaded 6 of 32 Chunks
+LOAD: Loaded 7 of 32 Chunks
+LOAD: Loaded 8 of 32 Chunks
+LOAD: Loaded 9 of 32 Chunks
+LOAD: Loaded 10 of 32 Chunks
+LOAD: Loaded 11 of 32 Chunks
+LOAD: Loaded 12 of 32 Chunks
+LOAD: Loaded 13 of 32 Chunks
+LOAD: Loaded 14 of 32 Chunks
+LOAD: Loaded 15 of 32 Chunks
+LOAD: Loaded 16 of 32 Chunks
+LOAD: Loaded 17 of 32 Chunks
+LOAD: Loaded 18 of 32 Chunks
+LOAD: Loaded 19 of 32 Chunks
+LOAD: Loaded 20 of 32 Chunks
+LOAD: Loaded 21 of 32 Chunks
+LOAD: Loaded 22 of 32 Chunks
+LOAD: Loaded 23 of 32 Chunks
+LOAD: Loaded 24 of 32 Chunks
+LOAD: Loaded 25 of 32 Chunks
+LOAD: Loaded 26 of 32 Chunks
+LOAD: Loaded 27 of 32 Chunks
+LOAD: Loaded 28 of 32 Chunks
+LOAD: Loaded 29 of 32 Chunks
+LOAD: Loaded 30 of 32 Chunks
+LOAD: Loaded 31 of 32 Chunks
+LOAD: Loaded 32 of 32 Chunks
+LOAD: Loaded World Chunks
+
+### LOAD: LOAD COMPLETED. FINISHED AT 3936.669922 (2826.305908 milliseconds) ###
+
+Loaded all 3 music files.
+Loaded all 2 sound files.
+Loading dialogue. 1297 bytes to read.
+Successfully Loaded Script File: /home/davis-dev/.exploratory/Fear Of The Dark/Assets/Scripts/Script_selected_makeHouse.txt, and given id of: 2
+Successfully Loaded Script File: /home/davis-dev/.exploratory/Fear Of The Dark/Assets/Scripts/Script_player_makeHouse.txt, and given id of: 1
+Dialogue loaded! (24 bytes)
+Loading flags. 125 bytes to read.
+Loaded flag with id of 0 and value of 0
+Loaded flag with id of 1 and value of 0
+Loaded flag with id of 2 and value of 0
+Loaded flag with id of 3 and value of 0
+Loaded flag with id of 4 and value of 0
+Loaded flag with id of 5 and value of 0
+Flags loaded! (24 bytes)
+Loading trade tables. 180 bytes to read.
+Loaded trade tables! (24 bytes)
+
+
+
+### LOG: Wed Oct 30 16:59:28 2019 ###
+
+CREATE: Starting world creation at time: 1267.000000
+CREATE: Finished world creation at time: 6381.469238 (Elapsed: 5114.469238ms)
+Loaded all 3 music files.
+Loaded all 2 sound files.
+Successfully Loaded Script File: /home/davis-dev/.exploratory/Fear Of The Dark/Assets/Scripts/Script_player_makeHouse.txt, and given id of: 1
+Loading dialogue. 1297 bytes to read.
+Successfully Loaded Script File: /home/davis-dev/.exploratory/Fear Of The Dark/Assets/Scripts/Script_selected_makeHouse.txt, and given id of: 2
+Successfully Loaded Script File: /home/davis-dev/.exploratory/Fear Of The Dark/Assets/Scripts/Script_player_makeHouse.txt, and given id of: 1
+Dialogue loaded! (24 bytes)
+Loading flags. 125 bytes to read.
+Loaded flag with id of 0 and value of 0
+Loaded flag with id of 1 and value of 0
+Loaded flag with id of 2 and value of 0
+Loaded flag with id of 3 and value of 0
+Loaded flag with id of 4 and value of 0
+Loaded flag with id of 5 and value of 0
+Flags loaded! (24 bytes)
+Loading trade tables. 180 bytes to read.
+Loaded trade tables! (24 bytes)
+Teleporting entity to: X=10.000000, Y=15.000000
+SAVE: Starting World Save to File: AnotherTest.bin
+SAVE: Starting Save Preparations
+SAVE: Player Data Prepared
+SAVE: Chunk Data Prepared
+
+### SAVE: ALL DATA PREPARED, STARTING SAVE ###
+
+SAVE: Started Saving with version: 1.2.1
+SAVE: Wrote Player POD
+SAVE: Wrote 1 of 1 Items
+SAVE: Wrote Player Inventory
+SAVE: Wrote World Chunks
+
+### SAVE: SAVE COMPLETED ###
+
+SAVE: Starting World Save to File: AnotherTest.bin
+SAVE: Starting Save Preparations
+SAVE: Player Data Prepared
+SAVE: Chunk Data Prepared
+
+### SAVE: ALL DATA PREPARED, STARTING SAVE ###
+
+SAVE: Started Saving with version: 1.2.1
+SAVE: Wrote Player POD
+SAVE: Wrote 1 of 1 Items
+SAVE: Wrote Player Inventory
+SAVE: Wrote World Chunks
+
+### SAVE: SAVE COMPLETED ###
+
+
+### LOAD: STARTING LOAD AT 15867.130859 ###
+
+
+### LOAD: Loaded Version: 1.2.1, Using Version: 1.2.1 ###
+
+Successfully Loaded Script File: /home/davis-dev/.exploratory/Fear Of The Dark/Assets/Scripts/Script_player_makeHouse.txt, and given id of: 1
+LOAD: Loaded Player POD
+LOAD: Loaded 1 of 1 Items
+LOAD: Loaded Player Inventory
+LOAD: Loaded 1 of 32 Chunks
+LOAD: Loaded 2 of 32 Chunks
+LOAD: Loaded 3 of 32 Chunks
+LOAD: Loaded 4 of 32 Chunks
+LOAD: Loaded 5 of 32 Chunks
+LOAD: Loaded 6 of 32 Chunks
+LOAD: Loaded 7 of 32 Chunks
+LOAD: Loaded 8 of 32 Chunks
+LOAD: Loaded 9 of 32 Chunks
+LOAD: Loaded 10 of 32 Chunks
+LOAD: Loaded 11 of 32 Chunks
+LOAD: Loaded 12 of 32 Chunks
+LOAD: Loaded 13 of 32 Chunks
+LOAD: Loaded 14 of 32 Chunks
+LOAD: Loaded 15 of 32 Chunks
+LOAD: Loaded 16 of 32 Chunks
+LOAD: Loaded 17 of 32 Chunks
+LOAD: Loaded 18 of 32 Chunks
+LOAD: Loaded 19 of 32 Chunks
+LOAD: Loaded 20 of 32 Chunks
+LOAD: Loaded 21 of 32 Chunks
+LOAD: Loaded 22 of 32 Chunks
+LOAD: Loaded 23 of 32 Chunks
+LOAD: Loaded 24 of 32 Chunks
+LOAD: Loaded 25 of 32 Chunks
+LOAD: Loaded 26 of 32 Chunks
+LOAD: Loaded 27 of 32 Chunks
+LOAD: Loaded 28 of 32 Chunks
+LOAD: Loaded 29 of 32 Chunks
+LOAD: Loaded 30 of 32 Chunks
+LOAD: Loaded 31 of 32 Chunks
+LOAD: Loaded 32 of 32 Chunks
+LOAD: Loaded World Chunks
+
+### LOAD: LOAD COMPLETED. FINISHED AT 18677.894531 (2810.763672 milliseconds) ###
+
+Already inited audio manager. Skipping...
+Loading dialogue. 1297 bytes to read.
+Successfully Loaded Script File: /home/davis-dev/.exploratory/Fear Of The Dark/Assets/Scripts/Script_selected_makeHouse.txt, and given id of: 2
+Successfully Loaded Script File: /home/davis-dev/.exploratory/Fear Of The Dark/Assets/Scripts/Script_player_makeHouse.txt, and given id of: 1
+Dialogue loaded! (24 bytes)
+Loading flags. 125 bytes to read.
+Loaded flag with id of 0 and value of 0
+Loaded flag with id of 1 and value of 0
+Loaded flag with id of 2 and value of 0
+Loaded flag with id of 3 and value of 0
+Loaded flag with id of 4 and value of 0
+Loaded flag with id of 5 and value of 0
+Flags loaded! (24 bytes)
+Loading trade tables. 180 bytes to read.
+Loaded trade tables! (24 bytes)
+SAVE: Starting World Save to File: .bin
+SAVE: Starting Save Preparations
+SAVE: Player Data Prepared
+SAVE: Chunk Data Prepared
+
+### SAVE: ALL DATA PREPARED, STARTING SAVE ###
+
+SAVE: Started Saving with version: 1.2.1
+SAVE: Wrote Player POD
+SAVE: Wrote 1 of 1 Items
+SAVE: Wrote Player Inventory
+SAVE: Wrote World Chunks
+
+### SAVE: SAVE COMPLETED ###
+
+
+### LOAD: STARTING LOAD AT 24365.912109 ###
+
+
+### LOAD: Loaded Version: 1.2.1, Using Version: 1.2.1 ###
+
+Successfully Loaded Script File: /home/davis-dev/.exploratory/Fear Of The Dark/Assets/Scripts/Script_player_makeHouse.txt, and given id of: 1
+LOAD: Loaded Player POD
+LOAD: Loaded Player Inventory
+LOAD: Loaded 1 of 32 Chunks
+LOAD: Loaded 2 of 32 Chunks
+LOAD: Loaded 3 of 32 Chunks
+LOAD: Loaded 4 of 32 Chunks
+LOAD: Loaded 5 of 32 Chunks
+LOAD: Loaded 6 of 32 Chunks
+LOAD: Loaded 7 of 32 Chunks
+LOAD: Loaded 8 of 32 Chunks
+LOAD: Loaded 9 of 32 Chunks
+LOAD: Loaded 10 of 32 Chunks
+LOAD: Loaded 11 of 32 Chunks
+LOAD: Loaded 12 of 32 Chunks
+LOAD: Loaded 13 of 32 Chunks
+LOAD: Loaded 14 of 32 Chunks
+LOAD: Loaded 15 of 32 Chunks
+LOAD: Loaded 16 of 32 Chunks
+LOAD: Loaded 17 of 32 Chunks
+LOAD: Loaded 18 of 32 Chunks
+LOAD: Loaded 19 of 32 Chunks
+LOAD: Loaded 20 of 32 Chunks
+LOAD: Loaded 21 of 32 Chunks
+LOAD: Loaded 22 of 32 Chunks
+LOAD: Loaded 23 of 32 Chunks
+LOAD: Loaded 24 of 32 Chunks
+LOAD: Loaded 25 of 32 Chunks
+LOAD: Loaded 26 of 32 Chunks
+LOAD: Loaded 27 of 32 Chunks
+LOAD: Loaded 28 of 32 Chunks
+LOAD: Loaded 29 of 32 Chunks
+LOAD: Loaded 30 of 32 Chunks
+LOAD: Loaded 31 of 32 Chunks
+LOAD: Loaded 32 of 32 Chunks
+LOAD: Loaded World Chunks
+
+### LOAD: LOAD COMPLETED. FINISHED AT 27185.519531 (2819.607422 milliseconds) ###
+
+Already inited audio manager. Skipping...
+Loading dialogue. 1297 bytes to read.
+Successfully Loaded Script File: /home/davis-dev/.exploratory/Fear Of The Dark/Assets/Scripts/Script_selected_makeHouse.txt, and given id of: 2
+Successfully Loaded Script File: /home/davis-dev/.exploratory/Fear Of The Dark/Assets/Scripts/Script_player_makeHouse.txt, and given id of: 1
+Dialogue loaded! (24 bytes)
+Loading flags. 125 bytes to read.
+Loaded flag with id of 0 and value of 0
+Loaded flag with id of 1 and value of 0
+Loaded flag with id of 2 and value of 0
+Loaded flag with id of 3 and value of 0
+Loaded flag with id of 4 and value of 0
+Loaded flag with id of 5 and value of 0
+Flags loaded! (24 bytes)
+Loading trade tables. 180 bytes to read.
+Loaded trade tables! (24 bytes)
+
+
+
+### LOG: Wed Oct 30 17:06:09 2019 ###
+
+
+
+
+### LOG: Wed Oct 30 17:07:01 2019 ###
+
+
+
+
+### LOG: Wed Oct 30 17:08:43 2019 ###
+
+
+
+
+### LOG: Wed Oct 30 17:11:16 2019 ###
+
+
+
+
+### LOG: Wed Oct 30 17:11:38 2019 ###
+
+
+
+
+### LOG: Wed Oct 30 17:13:20 2019 ###
+
+
+
+
+### LOG: Wed Oct 30 17:14:32 2019 ###
+
+
+
+
+### LOG: Wed Oct 30 17:16:30 2019 ###
+
+
+
+
+### LOG: Wed Oct 30 17:17:14 2019 ###
+
+
+
+
+### LOG: Wed Oct 30 17:18:22 2019 ###
+
+
+
+
+### LOG: Wed Oct 30 17:19:18 2019 ###
+
+
+
+
+### LOG: Wed Oct 30 17:22:07 2019 ###
+
+
+
+
+### LOG: Wed Oct 30 17:23:20 2019 ###
+
+CREATE: Starting world creation at time: 1629.681030
+CREATE: Finished world creation at time: 7714.477051 (Elapsed: 6084.795898ms)
+Loaded all 3 music files.
+Loaded all 2 sound files.
+Successfully Loaded Script File: /home/davis-dev/.exploratory/Fear Of The Dark/Assets/Scripts/Script_player_makeHouse.txt, and given id of: 1
+Loading dialogue. 1297 bytes to read.
+Successfully Loaded Script File: /home/davis-dev/.exploratory/Fear Of The Dark/Assets/Scripts/Script_selected_makeHouse.txt, and given id of: 2
+Successfully Loaded Script File: /home/davis-dev/.exploratory/Fear Of The Dark/Assets/Scripts/Script_player_makeHouse.txt, and given id of: 1
+Dialogue loaded! (24 bytes)
+Loading flags. 125 bytes to read.
+Loaded flag with id of 0 and value of 0
+Loaded flag with id of 1 and value of 0
+Loaded flag with id of 2 and value of 0
+Loaded flag with id of 3 and value of 0
+Loaded flag with id of 4 and value of 0
+Loaded flag with id of 5 and value of 0
+Flags loaded! (24 bytes)
+Loading trade tables. 180 bytes to read.
+Loaded trade tables! (24 bytes)
+
+
+
+### LOG: Wed Oct 30 17:24:28 2019 ###
+
+CREATE: Starting world creation at time: 1859.979980
+CREATE: Finished world creation at time: 8358.066406 (Elapsed: 6498.086426ms)
+Loaded all 3 music files.
+Loaded all 2 sound files.
+Successfully Loaded Script File: /home/davis-dev/.exploratory/Fear Of The Dark/Assets/Scripts/Script_player_makeHouse.txt, and given id of: 1
+Loading dialogue. 1297 bytes to read.
+Successfully Loaded Script File: /home/davis-dev/.exploratory/Fear Of The Dark/Assets/Scripts/Script_selected_makeHouse.txt, and given id of: 2
+Successfully Loaded Script File: /home/davis-dev/.exploratory/Fear Of The Dark/Assets/Scripts/Script_player_makeHouse.txt, and given id of: 1
+Dialogue loaded! (24 bytes)
+Loading flags. 125 bytes to read.
+Loaded flag with id of 0 and value of 0
+Loaded flag with id of 1 and value of 0
+Loaded flag with id of 2 and value of 0
+Loaded flag with id of 3 and value of 0
+Loaded flag with id of 4 and value of 0
+Loaded flag with id of 5 and value of 0
+Flags loaded! (24 bytes)
+Loading trade tables. 180 bytes to read.
+Loaded trade tables! (24 bytes)
+SAVE: Starting World Save to File: This is a really really long test string just to test some stuff that needs testing.bin
+SAVE: Starting Save Preparations
+SAVE: Player Data Prepared
+SAVE: Chunk Data Prepared
+
+### SAVE: ALL DATA PREPARED, STARTING SAVE ###
+
+SAVE: Started Saving with version: 1.2.1
+SAVE: Wrote Player POD
+SAVE: Wrote Player Inventory
+SAVE: Wrote World Chunks
+
+### SAVE: SAVE COMPLETED ###
+
+
+
+
+### LOG: Wed Oct 30 17:25:16 2019 ###
+
+
+### LOAD: STARTING LOAD AT 1075.930054 ###
+
+
+### LOAD: Loaded Version: 1.2.1, Using Version: 1.2.1 ###
+
+Successfully Loaded Script File: /home/davis-dev/.exploratory/Fear Of The Dark/Assets/Scripts/Script_player_makeHouse.txt, and given id of: 1
+LOAD: Loaded Player POD
+LOAD: Loaded Player Inventory
+LOAD: Loaded 1 of 32 Chunks
+LOAD: Loaded 2 of 32 Chunks
+LOAD: Loaded 3 of 32 Chunks
+LOAD: Loaded 4 of 32 Chunks
+LOAD: Loaded 5 of 32 Chunks
+LOAD: Loaded 6 of 32 Chunks
+LOAD: Loaded 7 of 32 Chunks
+LOAD: Loaded 8 of 32 Chunks
+LOAD: Loaded 9 of 32 Chunks
+LOAD: Loaded 10 of 32 Chunks
+LOAD: Loaded 11 of 32 Chunks
+LOAD: Loaded 12 of 32 Chunks
+LOAD: Loaded 13 of 32 Chunks
+LOAD: Loaded 14 of 32 Chunks
+LOAD: Loaded 15 of 32 Chunks
+LOAD: Loaded 16 of 32 Chunks
+LOAD: Loaded 17 of 32 Chunks
+LOAD: Loaded 18 of 32 Chunks
+LOAD: Loaded 19 of 32 Chunks
+LOAD: Loaded 20 of 32 Chunks
+LOAD: Loaded 21 of 32 Chunks
+LOAD: Loaded 22 of 32 Chunks
+LOAD: Loaded 23 of 32 Chunks
+LOAD: Loaded 24 of 32 Chunks
+LOAD: Loaded 25 of 32 Chunks
+LOAD: Loaded 26 of 32 Chunks
+LOAD: Loaded 27 of 32 Chunks
+LOAD: Loaded 28 of 32 Chunks
+LOAD: Loaded 29 of 32 Chunks
+LOAD: Loaded 30 of 32 Chunks
+LOAD: Loaded 31 of 32 Chunks
+LOAD: Loaded 32 of 32 Chunks
+LOAD: Loaded World Chunks
+
+### LOAD: LOAD COMPLETED. FINISHED AT 4209.283203 (3133.353027 milliseconds) ###
+
+Loaded all 3 music files.
+Loaded all 2 sound files.
+Loading dialogue. 1297 bytes to read.
+Successfully Loaded Script File: /home/davis-dev/.exploratory/Fear Of The Dark/Assets/Scripts/Script_selected_makeHouse.txt, and given id of: 2
+Successfully Loaded Script File: /home/davis-dev/.exploratory/Fear Of The Dark/Assets/Scripts/Script_player_makeHouse.txt, and given id of: 1
+Dialogue loaded! (24 bytes)
+Loading flags. 125 bytes to read.
+Loaded flag with id of 0 and value of 0
+Loaded flag with id of 1 and value of 0
+Loaded flag with id of 2 and value of 0
+Loaded flag with id of 3 and value of 0
+Loaded flag with id of 4 and value of 0
+Loaded flag with id of 5 and value of 0
+Flags loaded! (24 bytes)
+Loading trade tables. 180 bytes to read.
+Loaded trade tables! (24 bytes)
+
+
+
+### LOG: Wed Oct 30 17:26:34 2019 ###
+
+CREATE: Starting world creation at time: 1176.866943
+
+
+
+### LOG: Wed Oct 30 17:47:38 2019 ###
+
+
+### LOAD: STARTING LOAD AT 1323.401001 ###
+
+
+### LOAD: Loaded Version: 1.2.1, Using Version: 1.2.1 ###
+
+Successfully Loaded Script File: /home/davis-dev/.exploratory/Fear Of The Dark/Assets/Scripts/Script_player_makeHouse.txt, and given id of: 1
+LOAD: Loaded Player POD
+LOAD: Loaded Player Inventory
+LOAD: Loaded 1 of 32 Chunks
+LOAD: Loaded 2 of 32 Chunks
+LOAD: Loaded 3 of 32 Chunks
+LOAD: Loaded 4 of 32 Chunks
+LOAD: Loaded 5 of 32 Chunks
+LOAD: Loaded 6 of 32 Chunks
+LOAD: Loaded 7 of 32 Chunks
+LOAD: Loaded 8 of 32 Chunks
+LOAD: Loaded 9 of 32 Chunks
+LOAD: Loaded 10 of 32 Chunks
+LOAD: Loaded 11 of 32 Chunks
+LOAD: Loaded 12 of 32 Chunks
+LOAD: Loaded 13 of 32 Chunks
+LOAD: Loaded 14 of 32 Chunks
+LOAD: Loaded 15 of 32 Chunks
+LOAD: Loaded 16 of 32 Chunks
+LOAD: Loaded 17 of 32 Chunks
+LOAD: Loaded 18 of 32 Chunks
+LOAD: Loaded 19 of 32 Chunks
+LOAD: Loaded 20 of 32 Chunks
+LOAD: Loaded 21 of 32 Chunks
+LOAD: Loaded 22 of 32 Chunks
+LOAD: Loaded 23 of 32 Chunks
+LOAD: Loaded 24 of 32 Chunks
+LOAD: Loaded 25 of 32 Chunks
+LOAD: Loaded 26 of 32 Chunks
+LOAD: Loaded 27 of 32 Chunks
+LOAD: Loaded 28 of 32 Chunks
+LOAD: Loaded 29 of 32 Chunks
+LOAD: Loaded 30 of 32 Chunks
+LOAD: Loaded 31 of 32 Chunks
+LOAD: Loaded 32 of 32 Chunks
+LOAD: Loaded World Chunks
+
+### LOAD: LOAD COMPLETED. FINISHED AT 4465.912109 (3142.511230 milliseconds) ###
+
+Loaded all 3 music files.
+Loaded all 2 sound files.
+Loading dialogue. 1297 bytes to read.
+Successfully Loaded Script File: /home/davis-dev/.exploratory/Fear Of The Dark/Assets/Scripts/Script_selected_makeHouse.txt, and given id of: 2
+Successfully Loaded Script File: /home/davis-dev/.exploratory/Fear Of The Dark/Assets/Scripts/Script_player_makeHouse.txt, and given id of: 1
+Dialogue loaded! (24 bytes)
+Loading flags. 125 bytes to read.
+Loaded flag with id of 0 and value of 0
+Loaded flag with id of 1 and value of 0
+Loaded flag with id of 2 and value of 0
+Loaded flag with id of 3 and value of 0
+Loaded flag with id of 4 and value of 0
+Loaded flag with id of 5 and value of 0
+Flags loaded! (24 bytes)
+Loading trade tables. 180 bytes to read.
+Loaded trade tables! (24 bytes)
+
+
+
+### LOG: Wed Oct 30 17:48:08 2019 ###
+
+CREATE: Starting world creation at time: 1004.517029
+CREATE: Finished world creation at time: 7484.398926 (Elapsed: 6479.881836ms)
+Loaded all 3 music files.
+Loaded all 2 sound files.
+Successfully Loaded Script File: /home/davis-dev/.exploratory/Fear Of The Dark/Assets/Scripts/Script_player_makeHouse.txt, and given id of: 1
+Loading dialogue. 1297 bytes to read.
+Successfully Loaded Script File: /home/davis-dev/.exploratory/Fear Of The Dark/Assets/Scripts/Script_selected_makeHouse.txt, and given id of: 2
+Successfully Loaded Script File: /home/davis-dev/.exploratory/Fear Of The Dark/Assets/Scripts/Script_player_makeHouse.txt, and given id of: 1
+Dialogue loaded! (24 bytes)
+Loading flags. 125 bytes to read.
+Loaded flag with id of 0 and value of 0
+Loaded flag with id of 1 and value of 0
+Loaded flag with id of 2 and value of 0
+Loaded flag with id of 3 and value of 0
+Loaded flag with id of 4 and value of 0
+Loaded flag with id of 5 and value of 0
+Flags loaded! (24 bytes)
+Loading trade tables. 180 bytes to read.
+Loaded trade tables! (24 bytes)
+SAVE: Starting World Save to File: Name.bin
+SAVE: Starting Save Preparations
+SAVE: Player Data Prepared
+SAVE: Chunk Data Prepared
+
+### SAVE: ALL DATA PREPARED, STARTING SAVE ###
+
+SAVE: Started Saving with version: 1.2.1
+SAVE: Wrote Player POD
+SAVE: Wrote Player Inventory
+SAVE: Wrote World Chunks
+
+### SAVE: SAVE COMPLETED ###
+
+
+
+
+### LOG: Wed Oct 30 17:48:30 2019 ###
+
+CREATE: Starting world creation at time: 1013.846985
+CREATE: Finished world creation at time: 7567.259766 (Elapsed: 6553.412598ms)
+Loaded all 3 music files.
+Loaded all 2 sound files.
+Successfully Loaded Script File: /home/davis-dev/.exploratory/Fear Of The Dark/Assets/Scripts/Script_player_makeHouse.txt, and given id of: 1
+Loading dialogue. 1297 bytes to read.
+Successfully Loaded Script File: /home/davis-dev/.exploratory/Fear Of The Dark/Assets/Scripts/Script_selected_makeHouse.txt, and given id of: 2
+Successfully Loaded Script File: /home/davis-dev/.exploratory/Fear Of The Dark/Assets/Scripts/Script_player_makeHouse.txt, and given id of: 1
+Dialogue loaded! (24 bytes)
+Loading flags. 125 bytes to read.
+Loaded flag with id of 0 and value of 0
+Loaded flag with id of 1 and value of 0
+Loaded flag with id of 2 and value of 0
+Loaded flag with id of 3 and value of 0
+Loaded flag with id of 4 and value of 0
+Loaded flag with id of 5 and value of 0
+Flags loaded! (24 bytes)
+Loading trade tables. 180 bytes to read.
+Loaded trade tables! (24 bytes)
+SAVE: Starting World Save to File: Name1.bin
+SAVE: Starting Save Preparations
+SAVE: Player Data Prepared
+SAVE: Chunk Data Prepared
+
+### SAVE: ALL DATA PREPARED, STARTING SAVE ###
+
+SAVE: Started Saving with version: 1.2.1
+SAVE: Wrote Player POD
+SAVE: Wrote Player Inventory
+SAVE: Wrote World Chunks
+
+### SAVE: SAVE COMPLETED ###
+
+
+
+
+### LOG: Wed Oct 30 17:50:28 2019 ###
+
+CREATE: Starting world creation at time: 1147.348999
+CREATE: Finished world creation at time: 7973.769043 (Elapsed: 6826.419922ms)
+Loaded all 3 music files.
+Loaded all 2 sound files.
+Successfully Loaded Script File: /home/davis-dev/.exploratory/Fear Of The Dark/Assets/Scripts/Script_player_makeHouse.txt, and given id of: 1
+Loading dialogue. 1297 bytes to read.
+Successfully Loaded Script File: /home/davis-dev/.exploratory/Fear Of The Dark/Assets/Scripts/Script_selected_makeHouse.txt, and given id of: 2
+Successfully Loaded Script File: /home/davis-dev/.exploratory/Fear Of The Dark/Assets/Scripts/Script_player_makeHouse.txt, and given id of: 1
+Dialogue loaded! (24 bytes)
+Loading flags. 125 bytes to read.
+Loaded flag with id of 0 and value of 0
+Loaded flag with id of 1 and value of 0
+Loaded flag with id of 2 and value of 0
+Loaded flag with id of 3 and value of 0
+Loaded flag with id of 4 and value of 0
+Loaded flag with id of 5 and value of 0
+Flags loaded! (24 bytes)
+Loading trade tables. 180 bytes to read.
+Loaded trade tables! (24 bytes)
+SAVE: Starting World Save to File: Name2.bin
+SAVE: Starting Save Preparations
+SAVE: Player Data Prepared
+SAVE: Chunk Data Prepared
+
+### SAVE: ALL DATA PREPARED, STARTING SAVE ###
+
+SAVE: Started Saving with version: 1.2.1
+SAVE: Wrote Player POD
+SAVE: Wrote Player Inventory
+SAVE: Wrote World Chunks
+
+### SAVE: SAVE COMPLETED ###
+
+
+
+
+### LOG: Wed Oct 30 17:56:26 2019 ###
+
+
+### LOAD: STARTING LOAD AT 1047.847046 ###
+
+
+### LOAD: Loaded Version: 1.2.1, Using Version: 1.2.1 ###
+
+Successfully Loaded Script File: /home/davis-dev/.exploratory/Fear Of The Dark/Assets/Scripts/Script_player_makeHouse.txt, and given id of: 1
+LOAD: Loaded Player POD
+LOAD: Loaded Player Inventory
+LOAD: Loaded 1 of 32 Chunks
+LOAD: Loaded 2 of 32 Chunks
+LOAD: Loaded 3 of 32 Chunks
+LOAD: Loaded 4 of 32 Chunks
+LOAD: Loaded 5 of 32 Chunks
+LOAD: Loaded 6 of 32 Chunks
+LOAD: Loaded 7 of 32 Chunks
+LOAD: Loaded 8 of 32 Chunks
+LOAD: Loaded 9 of 32 Chunks
+LOAD: Loaded 10 of 32 Chunks
+LOAD: Loaded 11 of 32 Chunks
+LOAD: Loaded 12 of 32 Chunks
+LOAD: Loaded 13 of 32 Chunks
+LOAD: Loaded 14 of 32 Chunks
+LOAD: Loaded 15 of 32 Chunks
+LOAD: Loaded 16 of 32 Chunks
+LOAD: Loaded 17 of 32 Chunks
+LOAD: Loaded 18 of 32 Chunks
+LOAD: Loaded 19 of 32 Chunks
+LOAD: Loaded 20 of 32 Chunks
+LOAD: Loaded 21 of 32 Chunks
+LOAD: Loaded 22 of 32 Chunks
+LOAD: Loaded 23 of 32 Chunks
+LOAD: Loaded 24 of 32 Chunks
+LOAD: Loaded 25 of 32 Chunks
+LOAD: Loaded 26 of 32 Chunks
+LOAD: Loaded 27 of 32 Chunks
+LOAD: Loaded 28 of 32 Chunks
+LOAD: Loaded 29 of 32 Chunks
+LOAD: Loaded 30 of 32 Chunks
+LOAD: Loaded 31 of 32 Chunks
+LOAD: Loaded 32 of 32 Chunks
+LOAD: Loaded World Chunks
+
+### LOAD: LOAD COMPLETED. FINISHED AT 4224.214844 (3176.367676 milliseconds) ###
+
+Loaded all 3 music files.
+Loaded all 2 sound files.
+Loading dialogue. 1297 bytes to read.
+Successfully Loaded Script File: /home/davis-dev/.exploratory/Fear Of The Dark/Assets/Scripts/Script_selected_makeHouse.txt, and given id of: 2
+Successfully Loaded Script File: /home/davis-dev/.exploratory/Fear Of The Dark/Assets/Scripts/Script_player_makeHouse.txt, and given id of: 1
+Dialogue loaded! (24 bytes)
+Loading flags. 125 bytes to read.
+Loaded flag with id of 0 and value of 0
+Loaded flag with id of 1 and value of 0
+Loaded flag with id of 2 and value of 0
+Loaded flag with id of 3 and value of 0
+Loaded flag with id of 4 and value of 0
+Loaded flag with id of 5 and value of 0
+Flags loaded! (24 bytes)
+Loading trade tables. 180 bytes to read.
+Loaded trade tables! (24 bytes)
+Teleporting entity to: X=10.000000, Y=100.000000
+SAVE: Starting World Save to File: .bin
+SAVE: Starting Save Preparations
+SAVE: Player Data Prepared
+SAVE: Chunk Data Prepared
+
+### SAVE: ALL DATA PREPARED, STARTING SAVE ###
+
+SAVE: Started Saving with version: 1.2.1
+SAVE: Wrote Player POD
+SAVE: Wrote Player Inventory
+SAVE: Wrote World Chunks
+
+### SAVE: SAVE COMPLETED ###
+
+
+
+
+### LOG: Wed Oct 30 17:59:56 2019 ###
+
+
+### LOAD: STARTING LOAD AT 1219.078003 ###
+
+
+### LOAD: Loaded Version: 1.2.1, Using Version: 1.2.1 ###
+
+Successfully Loaded Script File: /home/davis-dev/.exploratory/Fear Of The Dark/Assets/Scripts/Script_player_makeHouse.txt, and given id of: 1
+LOAD: Loaded Player POD
+LOAD: Loaded Player Inventory
+LOAD: Loaded 1 of 32 Chunks
+LOAD: Loaded 2 of 32 Chunks
+LOAD: Loaded 3 of 32 Chunks
+LOAD: Loaded 4 of 32 Chunks
+LOAD: Loaded 5 of 32 Chunks
+LOAD: Loaded 6 of 32 Chunks
+LOAD: Loaded 7 of 32 Chunks
+LOAD: Loaded 8 of 32 Chunks
+LOAD: Loaded 9 of 32 Chunks
+LOAD: Loaded 10 of 32 Chunks
+LOAD: Loaded 11 of 32 Chunks
+LOAD: Loaded 12 of 32 Chunks
+LOAD: Loaded 13 of 32 Chunks
+LOAD: Loaded 14 of 32 Chunks
+LOAD: Loaded 15 of 32 Chunks
+LOAD: Loaded 16 of 32 Chunks
+LOAD: Loaded 17 of 32 Chunks
+LOAD: Loaded 18 of 32 Chunks
+LOAD: Loaded 19 of 32 Chunks
+LOAD: Loaded 20 of 32 Chunks
+LOAD: Loaded 21 of 32 Chunks
+LOAD: Loaded 22 of 32 Chunks
+LOAD: Loaded 23 of 32 Chunks
+LOAD: Loaded 24 of 32 Chunks
+LOAD: Loaded 25 of 32 Chunks
+LOAD: Loaded 26 of 32 Chunks
+LOAD: Loaded 27 of 32 Chunks
+LOAD: Loaded 28 of 32 Chunks
+LOAD: Loaded 29 of 32 Chunks
+LOAD: Loaded 30 of 32 Chunks
+LOAD: Loaded 31 of 32 Chunks
+LOAD: Loaded 32 of 32 Chunks
+LOAD: Loaded World Chunks
+
+### LOAD: LOAD COMPLETED. FINISHED AT 4551.125000 (3332.046875 milliseconds) ###
+
+Loaded all 3 music files.
+Loaded all 2 sound files.
+Loading dialogue. 1297 bytes to read.
+Successfully Loaded Script File: /home/davis-dev/.exploratory/Fear Of The Dark/Assets/Scripts/Script_selected_makeHouse.txt, and given id of: 2
+Successfully Loaded Script File: /home/davis-dev/.exploratory/Fear Of The Dark/Assets/Scripts/Script_player_makeHouse.txt, and given id of: 1
+Dialogue loaded! (24 bytes)
+Loading flags. 125 bytes to read.
+Loaded flag with id of 0 and value of 0
+Loaded flag with id of 1 and value of 0
+Loaded flag with id of 2 and value of 0
+Loaded flag with id of 3 and value of 0
+Loaded flag with id of 4 and value of 0
+Loaded flag with id of 5 and value of 0
+Flags loaded! (24 bytes)
+Loading trade tables. 180 bytes to read.
+Loaded trade tables! (24 bytes)
+SAVE: Starting World Save to File: .bin
+SAVE: Starting Save Preparations
+SAVE: Player Data Prepared
+SAVE: Chunk Data Prepared
+
+### SAVE: ALL DATA PREPARED, STARTING SAVE ###
+
+SAVE: Started Saving with version: 1.2.1
+SAVE: Wrote Player POD
+SAVE: Wrote Player Inventory
+SAVE: Wrote World Chunks
+
+### SAVE: SAVE COMPLETED ###
+
+
+
+
+### LOG: Wed Oct 30 18:02:17 2019 ###
+
+
+
+
+### LOG: Wed Oct 30 18:03:00 2019 ###
+
+
+### LOAD: STARTING LOAD AT 1178.998047 ###
+
+
+### LOAD: Loaded Version: 1.2.1, Using Version: 1.2.1 ###
+
+Successfully Loaded Script File: /home/davis-dev/.exploratory/Fear Of The Dark/Assets/Scripts/Script_player_makeHouse.txt, and given id of: 1
+LOAD: Loaded Player POD
+LOAD: Loaded Player Inventory
+LOAD: Loaded 1 of 32 Chunks
+LOAD: Loaded 2 of 32 Chunks
+LOAD: Loaded 3 of 32 Chunks
+LOAD: Loaded 4 of 32 Chunks
+LOAD: Loaded 5 of 32 Chunks
+LOAD: Loaded 6 of 32 Chunks
+LOAD: Loaded 7 of 32 Chunks
+LOAD: Loaded 8 of 32 Chunks
+LOAD: Loaded 9 of 32 Chunks
+LOAD: Loaded 10 of 32 Chunks
+LOAD: Loaded 11 of 32 Chunks
+LOAD: Loaded 12 of 32 Chunks
+LOAD: Loaded 13 of 32 Chunks
+LOAD: Loaded 14 of 32 Chunks
+LOAD: Loaded 15 of 32 Chunks
+LOAD: Loaded 16 of 32 Chunks
+LOAD: Loaded 17 of 32 Chunks
+LOAD: Loaded 18 of 32 Chunks
+LOAD: Loaded 19 of 32 Chunks
+LOAD: Loaded 20 of 32 Chunks
+LOAD: Loaded 21 of 32 Chunks
+LOAD: Loaded 22 of 32 Chunks
+LOAD: Loaded 23 of 32 Chunks
+LOAD: Loaded 24 of 32 Chunks
+LOAD: Loaded 25 of 32 Chunks
+LOAD: Loaded 26 of 32 Chunks
+LOAD: Loaded 27 of 32 Chunks
+LOAD: Loaded 28 of 32 Chunks
+LOAD: Loaded 29 of 32 Chunks
+LOAD: Loaded 30 of 32 Chunks
+LOAD: Loaded 31 of 32 Chunks
+LOAD: Loaded 32 of 32 Chunks
+LOAD: Loaded World Chunks
+
+### LOAD: LOAD COMPLETED. FINISHED AT 4344.559082 (3165.561035 milliseconds) ###
+
+Loaded all 3 music files.
+Loaded all 2 sound files.
+Loading dialogue. 1297 bytes to read.
+Successfully Loaded Script File: /home/davis-dev/.exploratory/Fear Of The Dark/Assets/Scripts/Script_selected_makeHouse.txt, and given id of: 2
+Successfully Loaded Script File: /home/davis-dev/.exploratory/Fear Of The Dark/Assets/Scripts/Script_player_makeHouse.txt, and given id of: 1
+Dialogue loaded! (24 bytes)
+Loading flags. 125 bytes to read.
+Loaded flag with id of 0 and value of 0
+Loaded flag with id of 1 and value of 0
+Loaded flag with id of 2 and value of 0
+Loaded flag with id of 3 and value of 0
+Loaded flag with id of 4 and value of 0
+Loaded flag with id of 5 and value of 0
+Flags loaded! (24 bytes)
+Loading trade tables. 180 bytes to read.
+Loaded trade tables! (24 bytes)
+SAVE: Starting World Save to File: .bin
+SAVE: Starting Save Preparations
+SAVE: Player Data Prepared
+SAVE: Chunk Data Prepared
+
+### SAVE: ALL DATA PREPARED, STARTING SAVE ###
+
+SAVE: Started Saving with version: 1.2.1
+SAVE: Wrote Player POD
+SAVE: Wrote Player Inventory
+SAVE: Wrote World Chunks
+
+### SAVE: SAVE COMPLETED ###
+
+
+### LOAD: STARTING LOAD AT 7033.481934 ###
+
+
+### LOAD: Loaded Version: 1.2.1, Using Version: 1.2.1 ###
+
+Successfully Loaded Script File: /home/davis-dev/.exploratory/Fear Of The Dark/Assets/Scripts/Script_player_makeHouse.txt, and given id of: 1
+LOAD: Loaded Player POD
+LOAD: Loaded Player Inventory
+LOAD: Loaded 1 of 32 Chunks
+LOAD: Loaded 2 of 32 Chunks
+LOAD: Loaded 3 of 32 Chunks
+LOAD: Loaded 4 of 32 Chunks
+LOAD: Loaded 5 of 32 Chunks
+LOAD: Loaded 6 of 32 Chunks
+LOAD: Loaded 7 of 32 Chunks
+LOAD: Loaded 8 of 32 Chunks
+LOAD: Loaded 9 of 32 Chunks
+LOAD: Loaded 10 of 32 Chunks
+LOAD: Loaded 11 of 32 Chunks
+LOAD: Loaded 12 of 32 Chunks
+LOAD: Loaded 13 of 32 Chunks
+LOAD: Loaded 14 of 32 Chunks
+LOAD: Loaded 15 of 32 Chunks
+LOAD: Loaded 16 of 32 Chunks
+LOAD: Loaded 17 of 32 Chunks
+LOAD: Loaded 18 of 32 Chunks
+LOAD: Loaded 19 of 32 Chunks
+LOAD: Loaded 20 of 32 Chunks
+LOAD: Loaded 21 of 32 Chunks
+LOAD: Loaded 22 of 32 Chunks
+LOAD: Loaded 23 of 32 Chunks
+LOAD: Loaded 24 of 32 Chunks
+LOAD: Loaded 25 of 32 Chunks
+LOAD: Loaded 26 of 32 Chunks
+LOAD: Loaded 27 of 32 Chunks
+LOAD: Loaded 28 of 32 Chunks
+LOAD: Loaded 29 of 32 Chunks
+LOAD: Loaded 30 of 32 Chunks
+LOAD: Loaded 31 of 32 Chunks
+LOAD: Loaded 32 of 32 Chunks
+LOAD: Loaded World Chunks
+
+### LOAD: LOAD COMPLETED. FINISHED AT 10248.049805 (3214.567871 milliseconds) ###
+
+Already inited audio manager. Skipping...
+Loading dialogue. 1297 bytes to read.
+Successfully Loaded Script File: /home/davis-dev/.exploratory/Fear Of The Dark/Assets/Scripts/Script_selected_makeHouse.txt, and given id of: 2
+Successfully Loaded Script File: /home/davis-dev/.exploratory/Fear Of The Dark/Assets/Scripts/Script_player_makeHouse.txt, and given id of: 1
+Dialogue loaded! (24 bytes)
+Loading flags. 125 bytes to read.
+Loaded flag with id of 0 and value of 0
+Loaded flag with id of 1 and value of 0
+Loaded flag with id of 2 and value of 0
+Loaded flag with id of 3 and value of 0
+Loaded flag with id of 4 and value of 0
+Loaded flag with id of 5 and value of 0
+Flags loaded! (24 bytes)
+Loading trade tables. 180 bytes to read.
+Loaded trade tables! (24 bytes)
+
+
+
+### LOG: Wed Oct 30 18:06:16 2019 ###
+
+
+### LOAD: STARTING LOAD AT 1174.006958 ###
+
+
+### LOAD: Loaded Version: 1.2.1, Using Version: 1.2.1 ###
+
+Successfully Loaded Script File: /home/davis-dev/.exploratory/Fear Of The Dark/Assets/Scripts/Script_player_makeHouse.txt, and given id of: 1
+LOAD: Loaded Player POD
+LOAD: Loaded Player Inventory
+LOAD: Loaded 1 of 32 Chunks
+LOAD: Loaded 2 of 32 Chunks
+LOAD: Loaded 3 of 32 Chunks
+LOAD: Loaded 4 of 32 Chunks
+LOAD: Loaded 5 of 32 Chunks
+LOAD: Loaded 6 of 32 Chunks
+LOAD: Loaded 7 of 32 Chunks
+LOAD: Loaded 8 of 32 Chunks
+LOAD: Loaded 9 of 32 Chunks
+LOAD: Loaded 10 of 32 Chunks
+LOAD: Loaded 11 of 32 Chunks
+LOAD: Loaded 12 of 32 Chunks
+LOAD: Loaded 13 of 32 Chunks
+LOAD: Loaded 14 of 32 Chunks
+LOAD: Loaded 15 of 32 Chunks
+LOAD: Loaded 16 of 32 Chunks
+LOAD: Loaded 17 of 32 Chunks
+LOAD: Loaded 18 of 32 Chunks
+LOAD: Loaded 19 of 32 Chunks
+LOAD: Loaded 20 of 32 Chunks
+LOAD: Loaded 21 of 32 Chunks
+LOAD: Loaded 22 of 32 Chunks
+LOAD: Loaded 23 of 32 Chunks
+LOAD: Loaded 24 of 32 Chunks
+LOAD: Loaded 25 of 32 Chunks
+LOAD: Loaded 26 of 32 Chunks
+LOAD: Loaded 27 of 32 Chunks
+LOAD: Loaded 28 of 32 Chunks
+LOAD: Loaded 29 of 32 Chunks
+LOAD: Loaded 30 of 32 Chunks
+LOAD: Loaded 31 of 32 Chunks
+LOAD: Loaded 32 of 32 Chunks
+LOAD: Loaded World Chunks
+
+### LOAD: LOAD COMPLETED. FINISHED AT 4296.236816 (3122.229980 milliseconds) ###
+
+Loaded all 3 music files.
+Loaded all 2 sound files.
+Loading dialogue. 1297 bytes to read.
+Successfully Loaded Script File: /home/davis-dev/.exploratory/Fear Of The Dark/Assets/Scripts/Script_selected_makeHouse.txt, and given id of: 2
+Successfully Loaded Script File: /home/davis-dev/.exploratory/Fear Of The Dark/Assets/Scripts/Script_player_makeHouse.txt, and given id of: 1
+Dialogue loaded! (24 bytes)
+Loading flags. 125 bytes to read.
+Loaded flag with id of 0 and value of 0
+Loaded flag with id of 1 and value of 0
+Loaded flag with id of 2 and value of 0
+Loaded flag with id of 3 and value of 0
+Loaded flag with id of 4 and value of 0
+Loaded flag with id of 5 and value of 0
+Flags loaded! (24 bytes)
+Loading trade tables. 180 bytes to read.
+Loaded trade tables! (24 bytes)
+
+
+
+### LOG: Wed Oct 30 18:10:12 2019 ###
+
+CREATE: Starting world creation at time: 1114.499023
+CREATE: Finished world creation at time: 7624.338867 (Elapsed: 6509.839844ms)
+Loaded all 3 music files.
+Loaded all 2 sound files.
+Successfully Loaded Script File: /home/davis-dev/.exploratory/Fear Of The Dark/Assets/Scripts/Script_player_makeHouse.txt, and given id of: 1
+Loading dialogue. 1297 bytes to read.
+Successfully Loaded Script File: /home/davis-dev/.exploratory/Fear Of The Dark/Assets/Scripts/Script_selected_makeHouse.txt, and given id of: 2
+Successfully Loaded Script File: /home/davis-dev/.exploratory/Fear Of The Dark/Assets/Scripts/Script_player_makeHouse.txt, and given id of: 1
+Dialogue loaded! (24 bytes)
+Loading flags. 125 bytes to read.
+Loaded flag with id of 0 and value of 0
+Loaded flag with id of 1 and value of 0
+Loaded flag with id of 2 and value of 0
+Loaded flag with id of 3 and value of 0
+Loaded flag with id of 4 and value of 0
+Loaded flag with id of 5 and value of 0
+Flags loaded! (24 bytes)
+Loading trade tables. 180 bytes to read.
+Loaded trade tables! (24 bytes)
+SAVE: Starting World Save to File: Name.bin
+SAVE: Starting Save Preparations
+SAVE: Player Data Prepared
+SAVE: Chunk Data Prepared
+
+### SAVE: ALL DATA PREPARED, STARTING SAVE ###
+
+SAVE: Started Saving with version: 1.2.1
+SAVE: Wrote Player POD
+SAVE: Wrote Player Inventory
+SAVE: Wrote World Chunks
+
+### SAVE: SAVE COMPLETED ###
+
+
+
+
+### LOG: Wed Oct 30 18:11:14 2019 ###
+
+
+### LOAD: STARTING LOAD AT 1087.008057 ###
+
+
+### LOAD: Loaded Version: 1.2.1, Using Version: 1.2.1 ###
+
+Successfully Loaded Script File: /home/davis-dev/.exploratory/Fear Of The Dark/Assets/Scripts/Script_player_makeHouse.txt, and given id of: 1
+LOAD: Loaded Player POD
+LOAD: Loaded Player Inventory
+LOAD: Loaded 1 of 32 Chunks
+LOAD: Loaded 2 of 32 Chunks
+LOAD: Loaded 3 of 32 Chunks
+LOAD: Loaded 4 of 32 Chunks
+LOAD: Loaded 5 of 32 Chunks
+LOAD: Loaded 6 of 32 Chunks
+LOAD: Loaded 7 of 32 Chunks
+LOAD: Loaded 8 of 32 Chunks
+LOAD: Loaded 9 of 32 Chunks
+LOAD: Loaded 10 of 32 Chunks
+LOAD: Loaded 11 of 32 Chunks
+LOAD: Loaded 12 of 32 Chunks
+LOAD: Loaded 13 of 32 Chunks
+LOAD: Loaded 14 of 32 Chunks
+LOAD: Loaded 15 of 32 Chunks
+LOAD: Loaded 16 of 32 Chunks
+LOAD: Loaded 17 of 32 Chunks
+LOAD: Loaded 18 of 32 Chunks
+LOAD: Loaded 19 of 32 Chunks
+LOAD: Loaded 20 of 32 Chunks
+LOAD: Loaded 21 of 32 Chunks
+LOAD: Loaded 22 of 32 Chunks
+LOAD: Loaded 23 of 32 Chunks
+LOAD: Loaded 24 of 32 Chunks
+LOAD: Loaded 25 of 32 Chunks
+LOAD: Loaded 26 of 32 Chunks
+LOAD: Loaded 27 of 32 Chunks
+LOAD: Loaded 28 of 32 Chunks
+LOAD: Loaded 29 of 32 Chunks
+LOAD: Loaded 30 of 32 Chunks
+LOAD: Loaded 31 of 32 Chunks
+LOAD: Loaded 32 of 32 Chunks
+LOAD: Loaded World Chunks
+
+### LOAD: LOAD COMPLETED. FINISHED AT 4227.256836 (3140.248779 milliseconds) ###
+
+Loaded all 3 music files.
+Loaded all 2 sound files.
+Loading dialogue. 1297 bytes to read.
+Successfully Loaded Script File: /home/davis-dev/.exploratory/Fear Of The Dark/Assets/Scripts/Script_selected_makeHouse.txt, and given id of: 2
+Successfully Loaded Script File: /home/davis-dev/.exploratory/Fear Of The Dark/Assets/Scripts/Script_player_makeHouse.txt, and given id of: 1
+Dialogue loaded! (24 bytes)
+Loading flags. 125 bytes to read.
+Loaded flag with id of 0 and value of 0
+Loaded flag with id of 1 and value of 0
+Loaded flag with id of 2 and value of 0
+Loaded flag with id of 3 and value of 0
+Loaded flag with id of 4 and value of 0
+Loaded flag with id of 5 and value of 0
+Flags loaded! (24 bytes)
+Loading trade tables. 180 bytes to read.
+Loaded trade tables! (24 bytes)
+Setting time to 0
+
+### Invalid command: player teleport 10 100 ###
+
+Teleporting entity to: X=10.000000, Y=100.000000
+SAVE: Starting World Save to File: .bin
+SAVE: Starting Save Preparations
+SAVE: Player Data Prepared
+SAVE: Chunk Data Prepared
+
+### SAVE: ALL DATA PREPARED, STARTING SAVE ###
+
+SAVE: Started Saving with version: 1.2.1
+SAVE: Wrote Player POD
+SAVE: Wrote Player Inventory
+
+
+
+### LOG: Wed Oct 30 18:13:23 2019 ###
+
+
+### LOAD: STARTING LOAD AT 1015.924988 ###
+
+
+### LOAD: Loaded Version: 1.2.1, Using Version: 1.2.1 ###
+
+Successfully Loaded Script File: /home/davis-dev/.exploratory/Fear Of The Dark/Assets/Scripts/Script_player_makeHouse.txt, and given id of: 1
+LOAD: Loaded Player POD
+LOAD: Loaded Player Inventory
+LOAD: Loaded 1 of 32 Chunks
+LOAD: Loaded 2 of 32 Chunks
+LOAD: Loaded 3 of 32 Chunks
+LOAD: Loaded 4 of 32 Chunks
+LOAD: Loaded 5 of 32 Chunks
+LOAD: Loaded 6 of 32 Chunks
+LOAD: Loaded 7 of 32 Chunks
+LOAD: Loaded 8 of 32 Chunks
+LOAD: Loaded 9 of 32 Chunks
+LOAD: Loaded 10 of 32 Chunks
+LOAD: Loaded 11 of 32 Chunks
+LOAD: Loaded 12 of 32 Chunks
+LOAD: Loaded 13 of 32 Chunks
+LOAD: Loaded 14 of 32 Chunks
+LOAD: Loaded 15 of 32 Chunks
+LOAD: Loaded 16 of 32 Chunks
+LOAD: Loaded 17 of 32 Chunks
+LOAD: Loaded 18 of 32 Chunks
+LOAD: Loaded 19 of 32 Chunks
+LOAD: Loaded 20 of 32 Chunks
+LOAD: Loaded 21 of 32 Chunks
+LOAD: Loaded 22 of 32 Chunks
+LOAD: Loaded 23 of 32 Chunks
+LOAD: Loaded 24 of 32 Chunks
+LOAD: Loaded 25 of 32 Chunks
+LOAD: Loaded 26 of 32 Chunks
+LOAD: Loaded 27 of 32 Chunks
+LOAD: Loaded 28 of 32 Chunks
+LOAD: Loaded 29 of 32 Chunks
+LOAD: Loaded 30 of 32 Chunks
+LOAD: Loaded 31 of 32 Chunks
+LOAD: Loaded 32 of 32 Chunks
+LOAD: Loaded World Chunks
+
+### LOAD: LOAD COMPLETED. FINISHED AT 4211.998047 (3196.072998 milliseconds) ###
+
+Loaded all 3 music files.
+Loaded all 2 sound files.
+Loading dialogue. 1297 bytes to read.
+Successfully Loaded Script File: /home/davis-dev/.exploratory/Fear Of The Dark/Assets/Scripts/Script_selected_makeHouse.txt, and given id of: 2
+Successfully Loaded Script File: /home/davis-dev/.exploratory/Fear Of The Dark/Assets/Scripts/Script_player_makeHouse.txt, and given id of: 1
+Dialogue loaded! (24 bytes)
+Loading flags. 125 bytes to read.
+Loaded flag with id of 0 and value of 0
+Loaded flag with id of 1 and value of 0
+Loaded flag with id of 2 and value of 0
+Loaded flag with id of 3 and value of 0
+Loaded flag with id of 4 and value of 0
+Loaded flag with id of 5 and value of 0
+Flags loaded! (24 bytes)
+Loading trade tables. 180 bytes to read.
+Loaded trade tables! (24 bytes)
+
+
+
+### LOG: Wed Oct 30 18:15:47 2019 ###
+
+
+### LOAD: STARTING LOAD AT 1048.941040 ###
+
+
+### LOAD: Loaded Version: 1.2.1, Using Version: 1.2.1 ###
+
+
+
+
+### LOG: Wed Oct 30 18:16:18 2019 ###
+
+CREATE: Starting world creation at time: 1055.089966
+CREATE: Finished world creation at time: 7591.011230 (Elapsed: 6535.921387ms)
+Loaded all 3 music files.
+Loaded all 2 sound files.
+
+
+
+### LOG: Wed Oct 30 18:24:14 2019 ###
+
+
+### LOAD: STARTING LOAD AT 1109.551025 ###
+
+
+### LOAD: Loaded Version: 1.2.1, Using Version: 1.2.1 ###
+
+Successfully Loaded Script File: /home/davis-dev/.exploratory/Fear Of The Dark/Assets/Scripts/Script_player_makeHouse.txt, and given id of: 1
+LOAD: Loaded Player POD
+LOAD: Loaded Player Inventory
+LOAD: Loaded 1 of 32 Chunks
+LOAD: Loaded 2 of 32 Chunks
+LOAD: Loaded 3 of 32 Chunks
+LOAD: Loaded 4 of 32 Chunks
+LOAD: Loaded 5 of 32 Chunks
+LOAD: Loaded 6 of 32 Chunks
+LOAD: Loaded 7 of 32 Chunks
+LOAD: Loaded 8 of 32 Chunks
+LOAD: Loaded 9 of 32 Chunks
+LOAD: Loaded 10 of 32 Chunks
+LOAD: Loaded 11 of 32 Chunks
+LOAD: Loaded 12 of 32 Chunks
+LOAD: Loaded 13 of 32 Chunks
+LOAD: Loaded 14 of 32 Chunks
+LOAD: Loaded 15 of 32 Chunks
+LOAD: Loaded 16 of 32 Chunks
+LOAD: Loaded 17 of 32 Chunks
+LOAD: Loaded 18 of 32 Chunks
+LOAD: Loaded 19 of 32 Chunks
+LOAD: Loaded 20 of 32 Chunks
+LOAD: Loaded 21 of 32 Chunks
+LOAD: Loaded 22 of 32 Chunks
+LOAD: Loaded 23 of 32 Chunks
+LOAD: Loaded 24 of 32 Chunks
+LOAD: Loaded 25 of 32 Chunks
+LOAD: Loaded 26 of 32 Chunks
+LOAD: Loaded 27 of 32 Chunks
+LOAD: Loaded 28 of 32 Chunks
+LOAD: Loaded 29 of 32 Chunks
+LOAD: Loaded 30 of 32 Chunks
+LOAD: Loaded 31 of 32 Chunks
+LOAD: Loaded 32 of 32 Chunks
+LOAD: Loaded World Chunks
+
+### LOAD: LOAD COMPLETED. FINISHED AT 4232.948242 (3123.397217 milliseconds) ###
+
+Loaded all 3 music files.
+Loaded all 2 sound files.
+Loading dialogue. 1297 bytes to read.
+Successfully Loaded Script File: /home/davis-dev/.exploratory/Fear Of The Dark/Assets/Scripts/Script_selected_makeHouse.txt, and given id of: 2
+Successfully Loaded Script File: /home/davis-dev/.exploratory/Fear Of The Dark/Assets/Scripts/Script_player_makeHouse.txt, and given id of: 1
+Dialogue loaded! (24 bytes)
+Loading flags. 125 bytes to read.
+Loaded flag with id of 0 and value of 0
+Loaded flag with id of 1 and value of 0
+Loaded flag with id of 2 and value of 0
+Loaded flag with id of 3 and value of 0
+Loaded flag with id of 4 and value of 0
+Loaded flag with id of 5 and value of 0
+Flags loaded! (24 bytes)
+Loading trade tables. 180 bytes to read.
+Loaded trade tables! (24 bytes)

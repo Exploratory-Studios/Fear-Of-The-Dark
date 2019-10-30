@@ -23,7 +23,7 @@ class Player : public Entity {
     friend class Scripter;
 
     public:
-        Player(glm::vec2 position, Chunk* parent, GLEngine::InputManager* input, ScriptQueue* sq, AudioManager* audio);
+        Player(glm::vec2 position, Chunk* parent, GLEngine::InputManager* input, ScriptQueue* sq, AudioManager* audio, bool loadTexture = true);
 
         void onInteract(ScriptQueue* sq) {}
         void onDeath(ScriptQueue* sq) {}
@@ -98,5 +98,7 @@ class Player : public Entity {
         std::vector<Buff*> m_buffs;
 
         bool m_godMode = false;
+
+        bool m_loadedTexture = false;
 
 };

@@ -66,6 +66,7 @@ void EntityManager::drawDebug(GLEngine::DebugRenderer& dr, int xOffset) {
 #endif // DEBUG
 
 void EntityManager::removeEntity(int index) {
+    delete m_entities[index];
     for(unsigned int i = index; i < m_entities.size()-1; i++) {
         m_entities[i] = m_entities[i+1];
     }

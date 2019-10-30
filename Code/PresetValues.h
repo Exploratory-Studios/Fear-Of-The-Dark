@@ -83,11 +83,19 @@
     #define STRX(x) std::string(#x)
     #define STR(x) STRX(x)
 
-    #define ASSETS_FOLDER_PATH std::string("../Assets/")
-    #ifdef CUSTOM_ASSETS_FOLDER_PATH
-        #undef ASSETS_FOLDER_PATH
-        #define ASSETS_FOLDER_PATH STR(CUSTOM_ASSETS_FOLDER_PATH) + "/"
-    #endif // CUSTOM_ASSETS_FOLDER_PATH
+    #define HOME_PATH UNDEFINED_HOME_ERROR
+
+    #ifdef WINDOWS
+    #undef HOME_PATH
+    #define HOME_PATH std::string((std::string)getenv("APPDATA") + "/Roaming/Exploratory Studios/Fear Of The Dark")
+    #endif // WINDOWS
+    #ifdef LINUX
+    #undef HOME_PATH
+    #define HOME_PATH std::string((std::string)getenv("HOME") + "/.exploratory/Fear Of The Dark")
+    #endif // LINUX
+
+    #define SAVES_PATH HOME_PATH + std::string("/Saves/")
+    #define ASSETS_FOLDER_PATH HOME_PATH + std::string("/Assets/")
 
     // How long it takes (in ms) to fade in and out music
     #define FADE_TIME 30 * 1000
@@ -102,6 +110,7 @@
     #define MAX_CHUNK_ENTITIES 15
     // How often should entities spawn in each chunk? x/1000 ticks
     #define SPAWN_RATE 10
+
 //}
 
 /// Category Datatypes

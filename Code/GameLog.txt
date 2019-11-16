@@ -9086,3 +9086,675 @@ Loaded flag with id of 5 and value of 0
 Flags loaded! (24 bytes)
 Loading trade tables. 180 bytes to read.
 Loaded trade tables! (24 bytes)
+
+
+
+### LOG: Sat Nov  2 11:14:15 2019 ###
+
+
+### LOAD: STARTING LOAD AT 1031.675049 ###
+
+
+### LOAD: Loaded Version: 1.2.1, Using Version: 1.2.1 ###
+
+Successfully Loaded Script File: /home/davis-dev/.exploratory/Fear Of The Dark/Assets/Scripts/Script_player_makeHouse.txt, and given id of: 1
+LOAD: Loaded Player POD
+LOAD: Loaded Player Inventory
+LOAD: Loaded 1 of 32 Chunks
+LOAD: Loaded 2 of 32 Chunks
+LOAD: Loaded 3 of 32 Chunks
+LOAD: Loaded 4 of 32 Chunks
+LOAD: Loaded 5 of 32 Chunks
+LOAD: Loaded 6 of 32 Chunks
+LOAD: Loaded 7 of 32 Chunks
+LOAD: Loaded 8 of 32 Chunks
+LOAD: Loaded 9 of 32 Chunks
+LOAD: Loaded 10 of 32 Chunks
+LOAD: Loaded 11 of 32 Chunks
+LOAD: Loaded 12 of 32 Chunks
+LOAD: Loaded 13 of 32 Chunks
+LOAD: Loaded 14 of 32 Chunks
+LOAD: Loaded 15 of 32 Chunks
+LOAD: Loaded 16 of 32 Chunks
+LOAD: Loaded 17 of 32 Chunks
+LOAD: Loaded 18 of 32 Chunks
+LOAD: Loaded 19 of 32 Chunks
+LOAD: Loaded 20 of 32 Chunks
+LOAD: Loaded 21 of 32 Chunks
+LOAD: Loaded 22 of 32 Chunks
+LOAD: Loaded 23 of 32 Chunks
+LOAD: Loaded 24 of 32 Chunks
+LOAD: Loaded 25 of 32 Chunks
+LOAD: Loaded 26 of 32 Chunks
+LOAD: Loaded 27 of 32 Chunks
+LOAD: Loaded 28 of 32 Chunks
+LOAD: Loaded 29 of 32 Chunks
+LOAD: Loaded 30 of 32 Chunks
+LOAD: Loaded 31 of 32 Chunks
+LOAD: Loaded 32 of 32 Chunks
+LOAD: Loaded World Chunks
+
+### LOAD: LOAD COMPLETED. FINISHED AT 4094.864014 (3063.188965 milliseconds) ###
+
+Loaded all 3 music files.
+Loaded all 2 sound files.
+Loading dialogue. 1297 bytes to read.
+Successfully Loaded Script File: /home/davis-dev/.exploratory/Fear Of The Dark/Assets/Scripts/Script_selected_makeHouse.txt, and given id of: 2
+Successfully Loaded Script File: /home/davis-dev/.exploratory/Fear Of The Dark/Assets/Scripts/Script_player_makeHouse.txt, and given id of: 1
+Dialogue loaded! (24 bytes)
+Loading flags. 125 bytes to read.
+Loaded flag with id of 0 and value of 0
+Loaded flag with id of 1 and value of 0
+Loaded flag with id of 2 and value of 0
+Loaded flag with id of 3 and value of 0
+Loaded flag with id of 4 and value of 0
+Loaded flag with id of 5 and value of 0
+Flags loaded! (24 bytes)
+Loading trade tables. 180 bytes to read.
+Loaded trade tables! (24 bytes)
+
+### Invalid command: setEra common_era ###
+
+
+### Invalid command: setEra ###
+
+
+### Invalid command: exit ###
+
+SAVE: Starting World Save to File: ._0.bin
+SAVE: Starting Save Preparations
+SAVE: Player Data Prepared
+SAVE: Chunk Data Prepared
+
+### SAVE: ALL DATA PREPARED, STARTING SAVE ###
+
+SAVE: Started Saving with version: 1.2.1
+SAVE: Wrote Player POD
+SAVE: Wrote Player Inventory
+SAVE: Wrote World Chunks
+
+### SAVE: SAVE COMPLETED ###
+
+No existing save for time period: 1, starting actual generation.
+Setting time period to COMMON ERA
+SAVE: Starting World Save to File: .bin
+SAVE: Starting Save Preparations
+SAVE: Player Data Prepared
+SAVE: Chunk Data Prepared
+
+### SAVE: ALL DATA PREPARED, STARTING SAVE ###
+
+SAVE: Started Saving with version: 1.2.1
+SAVE: Wrote Player POD
+SAVE: Wrote Player Inventory
+SAVE: Wrote World Chunks
+
+### SAVE: SAVE COMPLETED ###
+
+
+
+
+### LOG: Sat Nov  2 11:15:41 2019 ###
+
+
+
+
+### LOG: Sun Nov 10 14:07:48 2019 ###
+
+
+
+
+### LOG: Sun Nov 10 14:15:46 2019 ###
+
+CREATE: Starting world creation at time: 1106.713013
+CREATE: Finished world creation at time: 7312.220215 (Elapsed: 6205.507324ms)
+Loaded all 3 music files.
+Loaded all 2 sound files.
+Successfully Loaded Script File: /home/davis-dev/.exploratory/Fear Of The Dark/Assets/Scripts/Script_player_makeHouse.txt, and given id of: 1
+Loading dialogue. 1297 bytes to read.
+Successfully Loaded Script File: /home/davis-dev/.exploratory/Fear Of The Dark/Assets/Scripts/Script_selected_makeHouse.txt, and given id of: 2
+Successfully Loaded Script File: /home/davis-dev/.exploratory/Fear Of The Dark/Assets/Scripts/Script_player_makeHouse.txt, and given id of: 1
+Dialogue loaded! (24 bytes)
+Loading flags. 125 bytes to read.
+Loaded flag with id of 0 and value of 0
+Loaded flag with id of 1 and value of 0
+Loaded flag with id of 2 and value of 0
+Loaded flag with id of 3 and value of 0
+Loaded flag with id of 4 and value of 0
+Loaded flag with id of 5 and value of 0
+Flags loaded! (24 bytes)
+Loading trade tables. 180 bytes to read.
+Loaded trade tables! (24 bytes)
+
+
+
+### LOG: Sun Nov 10 14:18:45 2019 ###
+
+CREATE: Starting world creation at time: 1029.469971
+CREATE: Finished world creation at time: 7501.063965 (Elapsed: 6471.593750ms)
+Loaded all 3 music files.
+Loaded all 2 sound files.
+Successfully Loaded Script File: /home/davis-dev/.exploratory/Fear Of The Dark/Assets/Scripts/Script_player_makeHouse.txt, and given id of: 1
+Loading dialogue. 1297 bytes to read.
+Successfully Loaded Script File: /home/davis-dev/.exploratory/Fear Of The Dark/Assets/Scripts/Script_selected_makeHouse.txt, and given id of: 2
+Successfully Loaded Script File: /home/davis-dev/.exploratory/Fear Of The Dark/Assets/Scripts/Script_player_makeHouse.txt, and given id of: 1
+Dialogue loaded! (24 bytes)
+Loading flags. 125 bytes to read.
+Loaded flag with id of 0 and value of 0
+Loaded flag with id of 1 and value of 0
+Loaded flag with id of 2 and value of 0
+Loaded flag with id of 3 and value of 0
+Loaded flag with id of 4 and value of 0
+Loaded flag with id of 5 and value of 0
+Flags loaded! (24 bytes)
+Loading trade tables. 180 bytes to read.
+Loaded trade tables! (24 bytes)
+
+
+
+### LOG: Sun Nov 10 14:19:56 2019 ###
+
+
+### LOAD: STARTING LOAD AT 1002.655029 ###
+
+
+### LOAD: Loaded Version: 1.2.1, Using Version: 1.2.1 ###
+
+Successfully Loaded Script File: /home/davis-dev/.exploratory/Fear Of The Dark/Assets/Scripts/Script_player_makeHouse.txt, and given id of: 1
+LOAD: Loaded Player POD
+LOAD: Loaded Player Inventory
+LOAD: Loaded 1 of 32 Chunks
+LOAD: Loaded 2 of 32 Chunks
+LOAD: Loaded 3 of 32 Chunks
+LOAD: Loaded 4 of 32 Chunks
+LOAD: Loaded 5 of 32 Chunks
+LOAD: Loaded 6 of 32 Chunks
+LOAD: Loaded 7 of 32 Chunks
+LOAD: Loaded 8 of 32 Chunks
+LOAD: Loaded 9 of 32 Chunks
+LOAD: Loaded 10 of 32 Chunks
+LOAD: Loaded 11 of 32 Chunks
+LOAD: Loaded 12 of 32 Chunks
+LOAD: Loaded 13 of 32 Chunks
+LOAD: Loaded 14 of 32 Chunks
+LOAD: Loaded 15 of 32 Chunks
+LOAD: Loaded 16 of 32 Chunks
+LOAD: Loaded 17 of 32 Chunks
+LOAD: Loaded 18 of 32 Chunks
+LOAD: Loaded 19 of 32 Chunks
+LOAD: Loaded 20 of 32 Chunks
+LOAD: Loaded 21 of 32 Chunks
+LOAD: Loaded 22 of 32 Chunks
+LOAD: Loaded 23 of 32 Chunks
+LOAD: Loaded 24 of 32 Chunks
+LOAD: Loaded 25 of 32 Chunks
+LOAD: Loaded 26 of 32 Chunks
+LOAD: Loaded 27 of 32 Chunks
+LOAD: Loaded 28 of 32 Chunks
+LOAD: Loaded 29 of 32 Chunks
+LOAD: Loaded 30 of 32 Chunks
+LOAD: Loaded 31 of 32 Chunks
+LOAD: Loaded 32 of 32 Chunks
+LOAD: Loaded World Chunks
+
+### LOAD: LOAD COMPLETED. FINISHED AT 4235.672852 (3233.017822 milliseconds) ###
+
+Loaded all 3 music files.
+Loaded all 2 sound files.
+Loading dialogue. 1297 bytes to read.
+Successfully Loaded Script File: /home/davis-dev/.exploratory/Fear Of The Dark/Assets/Scripts/Script_selected_makeHouse.txt, and given id of: 2
+Successfully Loaded Script File: /home/davis-dev/.exploratory/Fear Of The Dark/Assets/Scripts/Script_player_makeHouse.txt, and given id of: 1
+Dialogue loaded! (24 bytes)
+Loading flags. 125 bytes to read.
+Loaded flag with id of 0 and value of 0
+Loaded flag with id of 1 and value of 0
+Loaded flag with id of 2 and value of 0
+Loaded flag with id of 3 and value of 0
+Loaded flag with id of 4 and value of 0
+Loaded flag with id of 5 and value of 0
+Flags loaded! (24 bytes)
+Loading trade tables. 180 bytes to read.
+Loaded trade tables! (24 bytes)
+
+### Couldn't open script file: /home/davis-dev/.exploratory/Fear Of The Dark/Assets/Scripts/showAlert "UNDEF". Quitting... ###
+
+
+
+
+### LOG: Sun Nov 10 14:21:40 2019 ###
+
+
+### LOAD: STARTING LOAD AT 1116.077026 ###
+
+
+### LOAD: Loaded Version: 1.2.1, Using Version: 1.2.1 ###
+
+Successfully Loaded Script File: /home/davis-dev/.exploratory/Fear Of The Dark/Assets/Scripts/Script_player_makeHouse.txt, and given id of: 1
+LOAD: Loaded Player POD
+LOAD: Loaded Player Inventory
+LOAD: Loaded 1 of 32 Chunks
+LOAD: Loaded 2 of 32 Chunks
+LOAD: Loaded 3 of 32 Chunks
+LOAD: Loaded 4 of 32 Chunks
+LOAD: Loaded 5 of 32 Chunks
+LOAD: Loaded 6 of 32 Chunks
+LOAD: Loaded 7 of 32 Chunks
+LOAD: Loaded 8 of 32 Chunks
+LOAD: Loaded 9 of 32 Chunks
+LOAD: Loaded 10 of 32 Chunks
+LOAD: Loaded 11 of 32 Chunks
+LOAD: Loaded 12 of 32 Chunks
+LOAD: Loaded 13 of 32 Chunks
+LOAD: Loaded 14 of 32 Chunks
+LOAD: Loaded 15 of 32 Chunks
+LOAD: Loaded 16 of 32 Chunks
+LOAD: Loaded 17 of 32 Chunks
+LOAD: Loaded 18 of 32 Chunks
+LOAD: Loaded 19 of 32 Chunks
+LOAD: Loaded 20 of 32 Chunks
+LOAD: Loaded 21 of 32 Chunks
+LOAD: Loaded 22 of 32 Chunks
+LOAD: Loaded 23 of 32 Chunks
+LOAD: Loaded 24 of 32 Chunks
+LOAD: Loaded 25 of 32 Chunks
+LOAD: Loaded 26 of 32 Chunks
+LOAD: Loaded 27 of 32 Chunks
+LOAD: Loaded 28 of 32 Chunks
+LOAD: Loaded 29 of 32 Chunks
+LOAD: Loaded 30 of 32 Chunks
+LOAD: Loaded 31 of 32 Chunks
+LOAD: Loaded 32 of 32 Chunks
+LOAD: Loaded World Chunks
+
+### LOAD: LOAD COMPLETED. FINISHED AT 4299.820801 (3183.743652 milliseconds) ###
+
+Loaded all 3 music files.
+Loaded all 2 sound files.
+Loading dialogue. 1297 bytes to read.
+Successfully Loaded Script File: /home/davis-dev/.exploratory/Fear Of The Dark/Assets/Scripts/Script_selected_makeHouse.txt, and given id of: 2
+Successfully Loaded Script File: /home/davis-dev/.exploratory/Fear Of The Dark/Assets/Scripts/Script_player_makeHouse.txt, and given id of: 1
+Dialogue loaded! (24 bytes)
+Loading flags. 125 bytes to read.
+Loaded flag with id of 0 and value of 0
+Loaded flag with id of 1 and value of 0
+Loaded flag with id of 2 and value of 0
+Loaded flag with id of 3 and value of 0
+Loaded flag with id of 4 and value of 0
+Loaded flag with id of 5 and value of 0
+Flags loaded! (24 bytes)
+Loading trade tables. 180 bytes to read.
+Loaded trade tables! (24 bytes)
+
+
+
+### LOG: Sun Nov 10 14:22:52 2019 ###
+
+CREATE: Starting world creation at time: 1036.869019
+CREATE: Finished world creation at time: 7542.212891 (Elapsed: 6505.343750ms)
+Loaded all 3 music files.
+Loaded all 2 sound files.
+Successfully Loaded Script File: /home/davis-dev/.exploratory/Fear Of The Dark/Assets/Scripts/Script_player_makeHouse.txt, and given id of: 1
+Loading dialogue. 1297 bytes to read.
+Successfully Loaded Script File: /home/davis-dev/.exploratory/Fear Of The Dark/Assets/Scripts/Script_selected_makeHouse.txt, and given id of: 2
+Successfully Loaded Script File: /home/davis-dev/.exploratory/Fear Of The Dark/Assets/Scripts/Script_player_makeHouse.txt, and given id of: 1
+Dialogue loaded! (24 bytes)
+Loading flags. 125 bytes to read.
+Loaded flag with id of 0 and value of 0
+Loaded flag with id of 1 and value of 0
+Loaded flag with id of 2 and value of 0
+Loaded flag with id of 3 and value of 0
+Loaded flag with id of 4 and value of 0
+Loaded flag with id of 5 and value of 0
+Flags loaded! (24 bytes)
+Loading trade tables. 180 bytes to read.
+Loaded trade tables! (24 bytes)
+Activated script with id of: 3
+
+
+
+### LOG: Sun Nov 10 14:23:17 2019 ###
+
+CREATE: Starting world creation at time: 1015.859009
+CREATE: Finished world creation at time: 7802.806152 (Elapsed: 6786.947266ms)
+Loaded all 3 music files.
+Loaded all 2 sound files.
+Successfully Loaded Script File: /home/davis-dev/.exploratory/Fear Of The Dark/Assets/Scripts/Script_player_makeHouse.txt, and given id of: 1
+Loading dialogue. 1297 bytes to read.
+Successfully Loaded Script File: /home/davis-dev/.exploratory/Fear Of The Dark/Assets/Scripts/Script_selected_makeHouse.txt, and given id of: 2
+Successfully Loaded Script File: /home/davis-dev/.exploratory/Fear Of The Dark/Assets/Scripts/Script_player_makeHouse.txt, and given id of: 1
+Dialogue loaded! (24 bytes)
+Loading flags. 125 bytes to read.
+Loaded flag with id of 0 and value of 0
+Loaded flag with id of 1 and value of 0
+Loaded flag with id of 2 and value of 0
+Loaded flag with id of 3 and value of 0
+Loaded flag with id of 4 and value of 0
+Loaded flag with id of 5 and value of 0
+Flags loaded! (24 bytes)
+Loading trade tables. 180 bytes to read.
+Loaded trade tables! (24 bytes)
+Activated script with id of: 3
+
+
+
+### LOG: Sun Nov 10 14:24:37 2019 ###
+
+CREATE: Starting world creation at time: 985.093018
+CREATE: Finished world creation at time: 7791.813965 (Elapsed: 6806.720703ms)
+Loaded all 3 music files.
+Loaded all 2 sound files.
+Successfully Loaded Script File: /home/davis-dev/.exploratory/Fear Of The Dark/Assets/Scripts/Script_player_makeHouse.txt, and given id of: 1
+Loading dialogue. 1297 bytes to read.
+Successfully Loaded Script File: /home/davis-dev/.exploratory/Fear Of The Dark/Assets/Scripts/Script_selected_makeHouse.txt, and given id of: 2
+Successfully Loaded Script File: /home/davis-dev/.exploratory/Fear Of The Dark/Assets/Scripts/Script_player_makeHouse.txt, and given id of: 1
+Dialogue loaded! (24 bytes)
+Loading flags. 125 bytes to read.
+Loaded flag with id of 0 and value of 0
+Loaded flag with id of 1 and value of 0
+Loaded flag with id of 2 and value of 0
+Loaded flag with id of 3 and value of 0
+Loaded flag with id of 4 and value of 0
+Loaded flag with id of 5 and value of 0
+Flags loaded! (24 bytes)
+Loading trade tables. 180 bytes to read.
+Loaded trade tables! (24 bytes)
+Activated script with id of: 3
+
+
+
+### LOG: Sun Nov 10 14:26:54 2019 ###
+
+CREATE: Starting world creation at time: 1054.350952
+CREATE: Finished world creation at time: 7560.377930 (Elapsed: 6506.026855ms)
+Loaded all 3 music files.
+Loaded all 2 sound files.
+Successfully Loaded Script File: /home/davis-dev/.exploratory/Fear Of The Dark/Assets/Scripts/Script_player_makeHouse.txt, and given id of: 1
+Loading dialogue. 1297 bytes to read.
+Successfully Loaded Script File: /home/davis-dev/.exploratory/Fear Of The Dark/Assets/Scripts/Script_selected_makeHouse.txt, and given id of: 2
+Successfully Loaded Script File: /home/davis-dev/.exploratory/Fear Of The Dark/Assets/Scripts/Script_player_makeHouse.txt, and given id of: 1
+Dialogue loaded! (24 bytes)
+Loading flags. 125 bytes to read.
+Loaded flag with id of 0 and value of 0
+Loaded flag with id of 1 and value of 0
+Loaded flag with id of 2 and value of 0
+Loaded flag with id of 3 and value of 0
+Loaded flag with id of 4 and value of 0
+Loaded flag with id of 5 and value of 0
+Flags loaded! (24 bytes)
+Loading trade tables. 180 bytes to read.
+Loaded trade tables! (24 bytes)
+
+### Script failed on entityTarget with line: giveplayer81. Quitting... ###
+
+
+
+
+### LOG: Sun Nov 10 14:27:14 2019 ###
+
+CREATE: Starting world creation at time: 1020.633972
+CREATE: Finished world creation at time: 7580.838867 (Elapsed: 6560.205078ms)
+Loaded all 3 music files.
+Loaded all 2 sound files.
+Successfully Loaded Script File: /home/davis-dev/.exploratory/Fear Of The Dark/Assets/Scripts/Script_player_makeHouse.txt, and given id of: 1
+Loading dialogue. 1297 bytes to read.
+Successfully Loaded Script File: /home/davis-dev/.exploratory/Fear Of The Dark/Assets/Scripts/Script_selected_makeHouse.txt, and given id of: 2
+Successfully Loaded Script File: /home/davis-dev/.exploratory/Fear Of The Dark/Assets/Scripts/Script_player_makeHouse.txt, and given id of: 1
+Dialogue loaded! (24 bytes)
+Loading flags. 125 bytes to read.
+Loaded flag with id of 0 and value of 0
+Loaded flag with id of 1 and value of 0
+Loaded flag with id of 2 and value of 0
+Loaded flag with id of 3 and value of 0
+Loaded flag with id of 4 and value of 0
+Loaded flag with id of 5 and value of 0
+Flags loaded! (24 bytes)
+Loading trade tables. 180 bytes to read.
+Loaded trade tables! (24 bytes)
+Activated script with id of: 3
+
+
+
+### LOG: Sun Nov 10 14:27:49 2019 ###
+
+CREATE: Starting world creation at time: 1105.368042
+CREATE: Finished world creation at time: 7921.112793 (Elapsed: 6815.744629ms)
+Loaded all 3 music files.
+Loaded all 2 sound files.
+Successfully Loaded Script File: /home/davis-dev/.exploratory/Fear Of The Dark/Assets/Scripts/Script_player_makeHouse.txt, and given id of: 1
+Loading dialogue. 1297 bytes to read.
+Successfully Loaded Script File: /home/davis-dev/.exploratory/Fear Of The Dark/Assets/Scripts/Script_selected_makeHouse.txt, and given id of: 2
+Successfully Loaded Script File: /home/davis-dev/.exploratory/Fear Of The Dark/Assets/Scripts/Script_player_makeHouse.txt, and given id of: 1
+Dialogue loaded! (24 bytes)
+Loading flags. 125 bytes to read.
+Loaded flag with id of 0 and value of 0
+Loaded flag with id of 1 and value of 0
+Loaded flag with id of 2 and value of 0
+Loaded flag with id of 3 and value of 0
+Loaded flag with id of 4 and value of 0
+Loaded flag with id of 5 and value of 0
+Flags loaded! (24 bytes)
+Loading trade tables. 180 bytes to read.
+Loaded trade tables! (24 bytes)
+Activated script with id of: 3
+
+
+
+### LOG: Sun Nov 10 14:31:48 2019 ###
+
+CREATE: Starting world creation at time: 2492.916992
+CREATE: Finished world creation at time: 9325.658203 (Elapsed: 6832.741211ms)
+Loaded all 3 music files.
+Loaded all 2 sound files.
+Successfully Loaded Script File: /home/davis-dev/.exploratory/Fear Of The Dark/Assets/Scripts/Script_player_makeHouse.txt, and given id of: 1
+Loading dialogue. 1297 bytes to read.
+Successfully Loaded Script File: /home/davis-dev/.exploratory/Fear Of The Dark/Assets/Scripts/Script_selected_makeHouse.txt, and given id of: 2
+Successfully Loaded Script File: /home/davis-dev/.exploratory/Fear Of The Dark/Assets/Scripts/Script_player_makeHouse.txt, and given id of: 1
+Dialogue loaded! (24 bytes)
+Loading flags. 125 bytes to read.
+Loaded flag with id of 0 and value of 0
+Loaded flag with id of 1 and value of 0
+Loaded flag with id of 2 and value of 0
+Loaded flag with id of 3 and value of 0
+Loaded flag with id of 4 and value of 0
+Loaded flag with id of 5 and value of 0
+Flags loaded! (24 bytes)
+Loading trade tables. 180 bytes to read.
+Loaded trade tables! (24 bytes)
+Activated script with id of: 3
+
+
+
+### LOG: Sun Nov 10 14:33:19 2019 ###
+
+
+
+
+### LOG: Sun Nov 10 14:49:55 2019 ###
+
+CREATE: Starting world creation at time: 1042.142944
+CREATE: Finished world creation at time: 7697.056152 (Elapsed: 6654.913086ms)
+Loaded all 3 music files.
+Loaded all 2 sound files.
+Successfully Loaded Script File: /home/davis-dev/.exploratory/Fear Of The Dark/Assets/Scripts/Script_player_makeHouse.txt, and given id of: 1
+Loading dialogue. 1297 bytes to read.
+Successfully Loaded Script File: /home/davis-dev/.exploratory/Fear Of The Dark/Assets/Scripts/Script_selected_makeHouse.txt, and given id of: 2
+Successfully Loaded Script File: /home/davis-dev/.exploratory/Fear Of The Dark/Assets/Scripts/Script_player_makeHouse.txt, and given id of: 1
+Dialogue loaded! (24 bytes)
+Loading flags. 125 bytes to read.
+Loaded flag with id of 0 and value of 0
+Loaded flag with id of 1 and value of 0
+Loaded flag with id of 2 and value of 0
+Loaded flag with id of 3 and value of 0
+Loaded flag with id of 4 and value of 0
+Loaded flag with id of 5 and value of 0
+Flags loaded! (24 bytes)
+Loading trade tables. 180 bytes to read.
+Loaded trade tables! (24 bytes)
+Activated script with id of: 3
+
+### Error in command syntax. Please check your script/command and retry.
+Error: showAlert "Sign:" "UNDEF"
+ ###
+
+
+
+
+### LOG: Sun Nov 10 14:50:32 2019 ###
+
+CREATE: Starting world creation at time: 959.530029
+CREATE: Finished world creation at time: 7909.378906 (Elapsed: 6949.848633ms)
+Loaded all 3 music files.
+Loaded all 2 sound files.
+Successfully Loaded Script File: /home/davis-dev/.exploratory/Fear Of The Dark/Assets/Scripts/Script_player_makeHouse.txt, and given id of: 1
+Loading dialogue. 1297 bytes to read.
+Successfully Loaded Script File: /home/davis-dev/.exploratory/Fear Of The Dark/Assets/Scripts/Script_selected_makeHouse.txt, and given id of: 2
+Successfully Loaded Script File: /home/davis-dev/.exploratory/Fear Of The Dark/Assets/Scripts/Script_player_makeHouse.txt, and given id of: 1
+Dialogue loaded! (24 bytes)
+Loading flags. 125 bytes to read.
+Loaded flag with id of 0 and value of 0
+Loaded flag with id of 1 and value of 0
+Loaded flag with id of 2 and value of 0
+Loaded flag with id of 3 and value of 0
+Loaded flag with id of 4 and value of 0
+Loaded flag with id of 5 and value of 0
+Flags loaded! (24 bytes)
+Loading trade tables. 180 bytes to read.
+Loaded trade tables! (24 bytes)
+Activated script with id of: 3
+
+### Error in command syntax. Please check your script/command and retry.
+Error: showAlert "Sign:" "UNDEF"
+ ###
+
+
+
+
+### LOG: Sun Nov 10 14:51:14 2019 ###
+
+CREATE: Starting world creation at time: 981.320984
+CREATE: Finished world creation at time: 7510.710938 (Elapsed: 6529.390137ms)
+Loaded all 3 music files.
+Loaded all 2 sound files.
+Successfully Loaded Script File: /home/davis-dev/.exploratory/Fear Of The Dark/Assets/Scripts/Script_player_makeHouse.txt, and given id of: 1
+Loading dialogue. 1297 bytes to read.
+Successfully Loaded Script File: /home/davis-dev/.exploratory/Fear Of The Dark/Assets/Scripts/Script_selected_makeHouse.txt, and given id of: 2
+Successfully Loaded Script File: /home/davis-dev/.exploratory/Fear Of The Dark/Assets/Scripts/Script_player_makeHouse.txt, and given id of: 1
+Dialogue loaded! (24 bytes)
+Loading flags. 125 bytes to read.
+Loaded flag with id of 0 and value of 0
+Loaded flag with id of 1 and value of 0
+Loaded flag with id of 2 and value of 0
+Loaded flag with id of 3 and value of 0
+Loaded flag with id of 4 and value of 0
+Loaded flag with id of 5 and value of 0
+Flags loaded! (24 bytes)
+Loading trade tables. 180 bytes to read.
+Loaded trade tables! (24 bytes)
+Activated script with id of: 3
+
+### Error in command syntax. Please check your script/command and retry.
+Error: showAlert "Sign:" "UNDEF"
+ ###
+
+
+
+
+### LOG: Sun Nov 10 14:52:25 2019 ###
+
+CREATE: Starting world creation at time: 1007.677002
+CREATE: Finished world creation at time: 7672.920898 (Elapsed: 6665.244141ms)
+Loaded all 3 music files.
+Loaded all 2 sound files.
+Successfully Loaded Script File: /home/davis-dev/.exploratory/Fear Of The Dark/Assets/Scripts/Script_player_makeHouse.txt, and given id of: 1
+Loading dialogue. 1297 bytes to read.
+Successfully Loaded Script File: /home/davis-dev/.exploratory/Fear Of The Dark/Assets/Scripts/Script_selected_makeHouse.txt, and given id of: 2
+Successfully Loaded Script File: /home/davis-dev/.exploratory/Fear Of The Dark/Assets/Scripts/Script_player_makeHouse.txt, and given id of: 1
+Dialogue loaded! (24 bytes)
+Loading flags. 125 bytes to read.
+Loaded flag with id of 0 and value of 0
+Loaded flag with id of 1 and value of 0
+Loaded flag with id of 2 and value of 0
+Loaded flag with id of 3 and value of 0
+Loaded flag with id of 4 and value of 0
+Loaded flag with id of 5 and value of 0
+Flags loaded! (24 bytes)
+Loading trade tables. 180 bytes to read.
+Loaded trade tables! (24 bytes)
+Activated script with id of: 3
+
+
+
+### LOG: Sun Nov 10 14:52:51 2019 ###
+
+CREATE: Starting world creation at time: 1009.106995
+CREATE: Finished world creation at time: 7858.278809 (Elapsed: 6849.171875ms)
+Loaded all 3 music files.
+Loaded all 2 sound files.
+Successfully Loaded Script File: /home/davis-dev/.exploratory/Fear Of The Dark/Assets/Scripts/Script_player_makeHouse.txt, and given id of: 1
+Loading dialogue. 1297 bytes to read.
+Successfully Loaded Script File: /home/davis-dev/.exploratory/Fear Of The Dark/Assets/Scripts/Script_selected_makeHouse.txt, and given id of: 2
+Successfully Loaded Script File: /home/davis-dev/.exploratory/Fear Of The Dark/Assets/Scripts/Script_player_makeHouse.txt, and given id of: 1
+Dialogue loaded! (24 bytes)
+Loading flags. 125 bytes to read.
+Loaded flag with id of 0 and value of 0
+Loaded flag with id of 1 and value of 0
+Loaded flag with id of 2 and value of 0
+Loaded flag with id of 3 and value of 0
+Loaded flag with id of 4 and value of 0
+Loaded flag with id of 5 and value of 0
+Flags loaded! (24 bytes)
+Loading trade tables. 180 bytes to read.
+Loaded trade tables! (24 bytes)
+Activated script with id of: 3
+
+
+
+### LOG: Sun Nov 10 14:54:53 2019 ###
+
+CREATE: Starting world creation at time: 929.513977
+CREATE: Finished world creation at time: 7734.954102 (Elapsed: 6805.439941ms)
+Loaded all 3 music files.
+Loaded all 2 sound files.
+Successfully Loaded Script File: /home/davis-dev/.exploratory/Fear Of The Dark/Assets/Scripts/Script_player_makeHouse.txt, and given id of: 1
+Loading dialogue. 1297 bytes to read.
+Successfully Loaded Script File: /home/davis-dev/.exploratory/Fear Of The Dark/Assets/Scripts/Script_selected_makeHouse.txt, and given id of: 2
+Successfully Loaded Script File: /home/davis-dev/.exploratory/Fear Of The Dark/Assets/Scripts/Script_player_makeHouse.txt, and given id of: 1
+Dialogue loaded! (24 bytes)
+Loading flags. 125 bytes to read.
+Loaded flag with id of 0 and value of 0
+Loaded flag with id of 1 and value of 0
+Loaded flag with id of 2 and value of 0
+Loaded flag with id of 3 and value of 0
+Loaded flag with id of 4 and value of 0
+Loaded flag with id of 5 and value of 0
+Flags loaded! (24 bytes)
+Loading trade tables. 180 bytes to read.
+Loaded trade tables! (24 bytes)
+
+### Script failed on entityTarget with line: giveplayer81. Quitting... ###
+
+
+
+
+### LOG: Sun Nov 10 14:55:10 2019 ###
+
+CREATE: Starting world creation at time: 957.724976
+CREATE: Finished world creation at time: 7466.150879 (Elapsed: 6508.425781ms)
+Loaded all 3 music files.
+Loaded all 2 sound files.
+Successfully Loaded Script File: /home/davis-dev/.exploratory/Fear Of The Dark/Assets/Scripts/Script_player_makeHouse.txt, and given id of: 1
+Loading dialogue. 1297 bytes to read.
+Successfully Loaded Script File: /home/davis-dev/.exploratory/Fear Of The Dark/Assets/Scripts/Script_selected_makeHouse.txt, and given id of: 2
+Successfully Loaded Script File: /home/davis-dev/.exploratory/Fear Of The Dark/Assets/Scripts/Script_player_makeHouse.txt, and given id of: 1
+Dialogue loaded! (24 bytes)
+Loading flags. 125 bytes to read.
+Loaded flag with id of 0 and value of 0
+Loaded flag with id of 1 and value of 0
+Loaded flag with id of 2 and value of 0
+Loaded flag with id of 3 and value of 0
+Loaded flag with id of 4 and value of 0
+Loaded flag with id of 5 and value of 0
+Flags loaded! (24 bytes)
+Loading trade tables. 180 bytes to read.
+Loaded trade tables! (24 bytes)
+Activated script with id of: 3

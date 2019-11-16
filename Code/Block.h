@@ -40,6 +40,7 @@ class Block : public Tile
     protected:
         virtual void onTick(float& tickTime) { }
         virtual void onUpdate(float& time) { }
+        virtual void onDraw(GLEngine::SpriteBatch& sb, GLEngine::SpriteFont& sf, glm::vec2& pos, float& depth) { }
         virtual void onDestruction() { }
 
         /// Protected, taken from "Tile" class

@@ -20,7 +20,9 @@ std::vector<Entity*> Chunk::getEntities() {
     return m_entityManager->getEntities();
 }
 
-Chunk::Chunk() {
+Chunk::Chunk(ScriptQueue* sq) {
+    m_sq = sq;
+
     m_entityManager = new EntityManager(this, nullptr);
 
     for(unsigned int i = 0; i < WORLD_HEIGHT; i++) {
@@ -40,7 +42,9 @@ Chunk::Chunk() {
     }*/
 }
 
-Chunk::Chunk(AudioManager* audio) {
+Chunk::Chunk(AudioManager* audio, ScriptQueue* sq) {
+    m_sq = sq;
+
     m_entityManager = new EntityManager(this, audio);
 
     for(unsigned int i = 0; i < WORLD_HEIGHT; i++) {
@@ -60,8 +64,8 @@ Chunk::Chunk(AudioManager* audio) {
     }*/
 }
 
-Chunk::Chunk(std::vector<Tile*> tileArray[WORLD_HEIGHT][CHUNK_SIZE], std::vector<Tile*> extraTileArray[WORLD_HEIGHT][2], int index, Chunk* surroundingChunks[2], EntityManager* entityManager, AudioManager* audio) {
-    init(tileArray, extraTileArray, surroundingChunks, entityManager, audio);
+Chunk::Chunk(std::vector<Tile*> tileArray[WORLD_HEIGHT][CHUNK_SIZE], std::vector<Tile*> extraTileArray[WORLD_HEIGHT][2], int index, Chunk* surroundingChunks[2], EntityManager* entityManager, AudioManager* audio, ScriptQueue* sq) {
+    init(tileArray, extraTileArray, surroundingChunks, entityManager, audio, sq);
     m_index = index;
     m_entityManager = new EntityManager(this, audio);
 }
@@ -80,7 +84,9 @@ Chunk::~Chunk() {
     delete[] m_tiles;
 }
 
-void Chunk::init(std::vector<Tile*> tileArray[WORLD_HEIGHT][CHUNK_SIZE], std::vector<Tile*> extraTileArray[WORLD_HEIGHT][2], Chunk* surroundingChunks[2], EntityManager* entityManager, AudioManager* audio) {
+void Chunk::init(std::vector<Tile*> tileArray[WORLD_HEIGHT][CHUNK_SIZE], std::vector<Tile*> extraTileArray[WORLD_HEIGHT][2], Chunk* surroundingChunks[2], EntityManager* entityManager, AudioManager* audio, ScriptQueue* sq) {
+    m_sq = sq;
+
     for(unsigned int i = 0; i < WORLD_HEIGHT; i++) {
         m_tiles[i] = new std::vector<Tile*>[CHUNK_SIZE];
         for(int j = 0; j < CHUNK_SIZE; j++) {
@@ -152,7 +158,7 @@ void Chunk::tick(float tickTime, Player* p, WorldEra& era, bool updateEntities/*
         m_entityManager->tick(p, tickTime, era);
 }
 
-void Chunk::draw(GLEngine::SpriteBatch& sb, int xOffset, float time, GLEngine::Camera2D camera, Player* p) {
+void Chunk::draw(GLEngine::SpriteBatch& sb, GLEngine::SpriteFont& sf, int xOffset, float time, GLEngine::Camera2D camera, Player* p) {
 
     int playerLayer = p->getLayer();
     int diff[WORLD_DEPTH];
@@ -166,7 +172,7 @@ void Chunk::draw(GLEngine::SpriteBatch& sb, int xOffset, float time, GLEngine::C
         for(int j = 0; j < CHUNK_SIZE; j++) {
             for(int k = 0; k < m_tiles[i][j].size(); k++) {
                 if(camera.isBoxInView(glm::vec2(j + CHUNK_SIZE * m_index + xOffset * CHUNK_SIZE, i), glm::vec2(1.0f, 1.0f))) {
-                    m_tiles[i][j][k]->draw(sb, xOffset, diff[k]);
+                    m_tiles[i][j][k]->draw(sb, sf, xOffset, diff[k]);
                     total++;
                     if(diff[k] <= 0 && m_tiles[i][j][k]->doDraw() && !m_tiles[i][j][k]->isTransparent()) {
                         break;

@@ -1,5 +1,33 @@
 #include "Blocks.h"
 
+#include "Inventory.h"
+
+InventoryBlock::InventoryBlock(glm::vec2 pos, unsigned int layer, Chunk* parent, MetaData metaData, bool loadTexture) : InteractableBlock(pos, layer, parent, metaData) {
+    m_inventory = new Inventory();
+}
+
+void InventoryBlock::onDraw(GLEngine::SpriteBatch& sb, GLEngine::SpriteFont& sf, glm::vec4& pos, float& depth) {
+    if(m_showInventory) {
+        m_inventory->draw(pos.x, pos.y, sb, sf);
+    }
+}
+
+void InventoryBlock::showInventory(bool show) {
+    m_showInventory = show;
+}
+
+BlockSign::BlockSign(glm::vec2 pos, unsigned int layer, Chunk* parent, MetaData metaData, bool loadTexture) : InteractableBlock(pos, layer, parent, metaData) {
+    metaData.getAspect("text", m_text);
+
+    std::string script = "showAlert \"Sign:\" \"" + m_text + "\"";
+
+    Script s;
+    s.commands.push_back(script);
+
+    m_interactScriptId = parent->getScriptQueue()->addScript(s);
+    parent->getScriptQueue()->activateScript(m_interactScriptId);
+}
+
 void LightBlock::onUpdate(float& time) {
     if(m_updateLight) {
         setNeighboursLight();
@@ -186,7 +214,7 @@ BlockWater::BlockWater(glm::vec2 pos, unsigned int layer, Chunk* parent, float l
     }
 }
 
-void BlockWater::draw(GLEngine::SpriteBatch& sb, int xOffset, int depthDifference) {
+void BlockWater::draw(GLEngine::SpriteBatch& sb, GLEngine::SpriteFont& sf, int xOffset, int depthDifference) {
     if(m_textureId == (GLuint)-1) {
         loadTexture();
     }

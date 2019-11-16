@@ -38,6 +38,11 @@ class ItemBlockWood_Pole : public ItemBlock {
         ItemBlockWood_Pole(unsigned int quantity);
 };
 
+class ItemBlockSign_Wood : public ItemBlock {
+    public:
+        ItemBlockSign_Wood(unsigned int quantity);
+};
+
 class ItemMiscBucket : public Item {
 	public:
 		ItemMiscBucket(unsigned int quantity);
@@ -109,41 +114,45 @@ static Item* createItem(unsigned int id, unsigned int quantity) {
 	Item* ret = nullptr;
 
 	switch(id) {
-	case (unsigned int)Categories::ItemIDs::BLOCK_GRASS:
-		ret = new ItemBlockGrass(quantity);
-		break;
-	case (unsigned int)Categories::ItemIDs::BLOCK_DIRT:
-		ret = new ItemBlockDirt(quantity);
-		break;
-	case (unsigned int)Categories::ItemIDs::BLOCK_TORCH:
-		ret = new ItemBlockTorch(quantity);
-		break;
-	case (unsigned int)Categories::ItemIDs::BLOCK_WOOD:
-		ret = new ItemBlockWood(quantity);
-		break;
-	case (unsigned int)Categories::ItemIDs::MISC_BUCKET:
-		ret = new ItemMiscBucket(quantity);
-		break;
-	case (unsigned int)Categories::ItemIDs::MISC_MEAT_RAW:
-		ret = new ItemMiscMeat_Raw(quantity);
-		break;
-	case (unsigned int)Categories::ItemIDs::MISC_LEATHER:
-		ret = new ItemMiscLeather(quantity);
-		break;
-	case (unsigned int)Categories::ItemIDs::WEAPON_SWORD:
-		ret = new ItemWeaponSword(quantity);
-		break;
-    case (unsigned int)Categories::ItemIDs::BLOCK_WOOD_POLE:
-        ret = new ItemBlockWood_Pole(quantity);
-        break;
-    case (unsigned int)Categories::ItemIDs::BLOCK_TORCH_BRIGHT:
-        ret = new ItemBlockTorchBright(quantity);
-        break;
-    case (unsigned int)Categories::ItemIDs::BLOCK_TORCH_ANTI:
-        ret = new ItemBlockTorchAnti(quantity);
-        break;
-    default:
-        ret = new Item(1, GLEngine::ResourceManager::getTexture(ASSETS_FOLDER_PATH + "/Textures/UNDEFINED.png"), "UNDEFINED");
+        case (unsigned int)Categories::ItemIDs::BLOCK_GRASS:
+            ret = new ItemBlockGrass(quantity);
+            break;
+        case (unsigned int)Categories::ItemIDs::BLOCK_DIRT:
+            ret = new ItemBlockDirt(quantity);
+            break;
+        case (unsigned int)Categories::ItemIDs::BLOCK_TORCH:
+            ret = new ItemBlockTorch(quantity);
+            break;
+        case (unsigned int)Categories::ItemIDs::BLOCK_WOOD:
+            ret = new ItemBlockWood(quantity);
+            break;
+        case (unsigned int)Categories::ItemIDs::BLOCK_SIGN_WOOD:
+            ret = new ItemBlockSign_Wood(quantity);
+            break;
+        case (unsigned int)Categories::ItemIDs::MISC_BUCKET:
+            ret = new ItemMiscBucket(quantity);
+            break;
+        case (unsigned int)Categories::ItemIDs::MISC_MEAT_RAW:
+            ret = new ItemMiscMeat_Raw(quantity);
+            break;
+        case (unsigned int)Categories::ItemIDs::MISC_LEATHER:
+            ret = new ItemMiscLeather(quantity);
+            break;
+        case (unsigned int)Categories::ItemIDs::WEAPON_SWORD:
+            ret = new ItemWeaponSword(quantity);
+            break;
+        case (unsigned int)Categories::ItemIDs::BLOCK_WOOD_POLE:
+            ret = new ItemBlockWood_Pole(quantity);
+            break;
+        case (unsigned int)Categories::ItemIDs::BLOCK_TORCH_BRIGHT:
+            ret = new ItemBlockTorchBright(quantity);
+            break;
+        case (unsigned int)Categories::ItemIDs::BLOCK_TORCH_ANTI:
+            ret = new ItemBlockTorchAnti(quantity);
+            break;
+        default:
+            ret = new Item(1, GLEngine::ResourceManager::getTexture(ASSETS_FOLDER_PATH + "/Textures/UNDEFINED.png"), "UNDEFINED");
+            Logger::getInstance()->log("UNKNOWN ITEM ID: " + std::to_string(id), true);
 	}
 
 	return ret;

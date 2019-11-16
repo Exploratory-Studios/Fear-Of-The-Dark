@@ -97,7 +97,7 @@ class LoadScreen : public GLEngine::IGameScreen
         GLEngine::GLSLProgram m_textureProgram;
         GLEngine::SpriteFont m_spriteFont;
 
-        Logger*logger = Logger::getInstance();
+        Logger* logger = Logger::getInstance();
 
         WorldIOManager* m_worldIOManager = nullptr;
 };

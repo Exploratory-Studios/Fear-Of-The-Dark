@@ -46,6 +46,8 @@ class GameplayScreen : public GLEngine::IGameScreen
         void pauseForCutscene() { m_cutscenePause = true; } // Sets the world to not update stuff, but still display
         void unpauseCutscene() { m_cutscenePause = false; } // Sets the world back to normal
 
+        GLEngine::GUI* getGUI() { return &m_gui; }
+
     private:
         void checkInput();
         void initShaders();

@@ -67,6 +67,22 @@ void Scripter::hideEntity(unsigned int index) {
     m_entities[index]->m_transparent = true;
 }
 
+void Scripter::showAlert(std::string& title, std::string& text) { // Shows an alert window, with custom text, courtesy of CEGUI
+    if(!m_alertWindow) {
+        m_alertWindow = static_cast<CEGUI::FrameWindow*>(m_gameplayScreen->getGUI()->createWidget("FOTDSkin/FrameWindow", glm::vec4(0.2f, 0.2f, 0.6f, 0.6f), glm::vec4(0.0f), "Scripter_AlertWindow"));
+    }
+    m_alertWindow->setText(title);
+    m_alertWindow->setCloseButtonEnabled(true);
+}
+
+void Scripter::showPlayerInventory(bool show) { // Opens/closes player inventory on screen.
+    m_gameplayScreen->m_player->showInventory(show);
+}
+
+void Scripter::showBlockInventory(bool show, Block* block) { // Shows/hides a block's inventory on screen in same style as player's.
+    static_cast<InventoryBlock*>(block)->showInventory(show);
+}
+
 void Scripter::update() {
     // Get active script from ScriptQueue
     // Execute script
@@ -122,12 +138,17 @@ std::string Scripter::executeCommand(std::string& command, Script* script) {
     std::string strippedCommand = extras::removeWhitespace(command);
 
     std::string temp;
+    bool readingString = false;
     for(unsigned int i = 0; i < strippedCommand.length(); i++) {
-        if(strippedCommand[i] == ' ') {
+        if(strippedCommand[i] == ' ' && !readingString) {
             parameters.push_back(temp);
             temp = "";
         } else {
-            temp += strippedCommand[i];
+            if(strippedCommand[i] == '\"') {
+                readingString = true;
+            } else {
+                temp += strippedCommand[i];
+            }
         }
     }
     parameters.push_back(temp);
@@ -337,6 +358,8 @@ std::string Scripter::executeCommand(std::string& command, Script* script) {
                 unsigned int keywordIndex = 2;
                 m_gameplayScreen->m_player->m_sanity = float_interpretParameter(parameters, keywordIndex);
             }
+        } else if(parameters[0] == "showAlert") {
+            showAlert(parameters[1], parameters[2]);
         } else {
             logger->log("Invalid command: " + command, true);
             returnMessage += "Invalid command: " + command + "\n";

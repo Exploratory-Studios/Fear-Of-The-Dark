@@ -36,6 +36,10 @@ class Scripter {
         void showEntity(unsigned int index); // Index is reference to place in vector
         void hideEntity(unsigned int index);
 
+        void showAlert(std::string& title, std::string& text); // Shows an alert window, with custom text, courtesy of CEGUI
+        void showPlayerInventory(bool show); // Opens/closes player inventory on screen.
+        void showBlockInventory(bool show, Block* block); // Shows/hides a block's inventory on screen in same style as player's.
+
         void update();
 
         std::string executeScript(Script* script); /// TODO: For the love of all things unholy, do NOT pass scripts by reference. They do not like that very much
@@ -57,6 +61,8 @@ class Scripter {
 
         std::vector<Entity*> m_entities;
         Chunk* m_chunks[WORLD_SIZE] = {};
+
+        CEGUI::FrameWindow* m_alertWindow = nullptr;
 
         /*GLEngine::Camera2D* m_camera = nullptr;*/
 };

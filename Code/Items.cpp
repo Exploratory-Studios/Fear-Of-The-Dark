@@ -74,7 +74,18 @@ ItemBlockWood_Pole::ItemBlockWood_Pole(unsigned int quantity) : ItemBlock(quanti
     m_blockId = (unsigned int)Categories::BlockIDs::WOOD_POLE;
 
     m_canConsume = false;
-    m_canPlace = false;
+    m_canPlace = true;
+}
+
+ItemBlockSign_Wood::ItemBlockSign_Wood(unsigned int quantity) : ItemBlock(quantity, GLEngine::ResourceManager::getTexture(ASSETS_FOLDER_PATH + "Textures/Blocks/Wood_Sign.png"), "Wood Sign") {
+    m_id = (unsigned int)Categories::ItemIDs::BLOCK_SIGN_WOOD;
+    m_type = ItemType::BLOCK;
+    m_weight = 0.0f;
+
+    m_blockId = (unsigned int)Categories::BlockIDs::SIGN_WOOD;
+
+    m_canConsume = false;
+    m_canPlace = true;
 }
 
 ItemMiscBucket::ItemMiscBucket(unsigned int quantity) : Item(quantity, GLEngine::ResourceManager::getTexture(ASSETS_FOLDER_PATH + "Textures/Items/Bucket.png"), "Bucket") {

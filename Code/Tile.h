@@ -3,6 +3,7 @@
 #include <Vertex.h>
 #include <GLTexture.h>
 #include <SpriteBatch.h>
+#include <SpriteFont.h>
 #include <glm/glm.hpp>
 
 #include "AudioManager.h"
@@ -102,7 +103,7 @@ class Tile
 
         virtual void update(float time, bool updateLighting);
         virtual void tick(float tickTime, float& sunlight);
-        virtual void draw(GLEngine::SpriteBatch& sb, int xOffset, int depthDifference);
+        virtual void draw(GLEngine::SpriteBatch& sb, GLEngine::SpriteFont& sf, int xOffset, int depthDifference);
         virtual void drawBackdrop(GLEngine::SpriteBatch& sb, int xOffset, int yOffset, float lightLevel);
 
         void destroy();
@@ -120,6 +121,7 @@ class Tile
         virtual MetaData* getMetaData() { return new MetaData(); }
 
         virtual void onUpdate(float& time) = 0;
+        virtual void onDraw(GLEngine::SpriteBatch& sb, GLEngine::SpriteFont& sf, glm::vec4& pos, float& depth) {}
         virtual void onTick(float& tickTime) = 0;
 
         virtual void loadTexture() = 0; // Fill this out with your own texture

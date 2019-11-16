@@ -246,7 +246,7 @@ void GameplayScreen::draw() {
 
         for(unsigned int i = 0; i < m_drawnChunks.size(); i++) {
             int xOffset = std::abs(m_drawnChunks[i] + WORLD_SIZE) % WORLD_SIZE;
-            m_WorldIOManager->getWorld()->chunks[xOffset]->draw(m_spriteBatch, m_drawnChunks[i] - xOffset, m_time, m_camera, m_player);
+            m_WorldIOManager->getWorld()->chunks[xOffset]->draw(m_spriteBatch, m_spriteFont, m_drawnChunks[i] - xOffset, m_time, m_camera, m_player);
             #ifdef DEBUG
             m_WorldIOManager->getWorld()->chunks[xOffset]->drawDebug(m_dr, m_drawnChunks[i] - xOffset);
             m_dr.end();

@@ -5,6 +5,8 @@
 #include <Camera2D.h>
 #include <DebugRenderer.h>
 
+#include "Scripting/ScriptQueue.h"
+
 #include "PresetValues.h"
 #include "Tile.h"
 #include "Logging.h"
@@ -18,17 +20,17 @@ class Chunk
     friend class WorldIOManager;
 
     public:
-        Chunk();
-        Chunk(AudioManager* audio);
-        Chunk(std::vector<Tile*> tileArray[WORLD_HEIGHT][CHUNK_SIZE], std::vector<Tile*> extraTileArray[WORLD_HEIGHT][2], int index, Chunk* surroundingChunks[2], EntityManager* entityManager, AudioManager* audio);
+        Chunk(ScriptQueue* sq);
+        Chunk(AudioManager* audio, ScriptQueue* sq);
+        Chunk(std::vector<Tile*> tileArray[WORLD_HEIGHT][CHUNK_SIZE], std::vector<Tile*> extraTileArray[WORLD_HEIGHT][2], int index, Chunk* surroundingChunks[2], EntityManager* entityManager, AudioManager* audio, ScriptQueue* sq);
 
         ~Chunk();
 
-        void init(std::vector<Tile*> tileArray[WORLD_HEIGHT][CHUNK_SIZE], std::vector<Tile*> extraTileArray[WORLD_HEIGHT][2], Chunk* surroundingChunks[2], EntityManager* entityManager, AudioManager* audio);
+        void init(std::vector<Tile*> tileArray[WORLD_HEIGHT][CHUNK_SIZE], std::vector<Tile*> extraTileArray[WORLD_HEIGHT][2], Chunk* surroundingChunks[2], EntityManager* entityManager, AudioManager* audio, ScriptQueue* sq);
 
         void update(float time, float timeStepVariable, Chunk** chunks, Player* p, bool updateEntities = true); // updateEntities is used for script pausing
         void tick(float tickTime, Player* p, WorldEra& era, bool updateEntities = true);
-        void draw(GLEngine::SpriteBatch& sb, int xOffset, float time, GLEngine::Camera2D camera, Player* p); // xOffset is in chunks
+        void draw(GLEngine::SpriteBatch& sb, GLEngine::SpriteFont& sf, int xOffset, float time, GLEngine::Camera2D camera, Player* p); // xOffset is in chunks
 
         #ifdef DEBUG
         void drawDebug(GLEngine::DebugRenderer& dr, int xOffset);
@@ -57,10 +59,11 @@ class Chunk
         bool                        isDialogueActive()                                          { return m_dialogueActive; }
         bool                        isDialogueStarted()                                         { return m_dialogueStarted; }
         std::vector<Entity*>        getEntities();
+        ScriptQueue*                getScriptQueue()                                            { return m_sq; }
 
         void setAudioManager(AudioManager* audio);
 
-        Tile* getTile(int x, int y, unsigned int layer) { // Takes x between (0) and (CHUNK_SIZE-1), inclusive
+        Tile* getTile(int x, int y, unsigned int layer) {
             if(y < WORLD_HEIGHT && y >= 0) {
                 return ySafe_getTile(x, y, layer);
             }
@@ -96,6 +99,7 @@ class Chunk
         Logger* logger = Logger::getInstance();
 
         EntityManager* m_entityManager = nullptr;
+        ScriptQueue* m_sq = nullptr;
 
 		Chunk* m_surroundingChunks[2] = { nullptr };
 

@@ -38,6 +38,8 @@ class Player : public Entity {
         void updateStats(float timeStep, Chunk* worldChunks[WORLD_SIZE]);
         void updateMouse(GLEngine::Camera2D* worldCamera);
 
+        void showInventory(bool open) { m_inventoryOpen = open; }
+
         float getSanity() { return m_sanity; }
 
         float getTemperature() { return 1; }

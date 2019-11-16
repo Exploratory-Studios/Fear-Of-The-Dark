@@ -83,7 +83,7 @@ class ScriptQueue {
         void deactivateScript(unsigned int index)
         {
             if(m_activeScripts.size() > 1) {
-                for(unsigned int i = index; i < m_activeScripts.size()-1; i++) { // I would think that this should break, but apparently I don't know how to program
+                for(unsigned int i = index; i < m_activeScripts.size()-1; i++) {
                     m_activeScripts[i] = m_activeScripts[i+1];
                 }
             }

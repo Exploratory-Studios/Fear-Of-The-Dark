@@ -143,7 +143,7 @@ void WorldIOManager::P_loadWorld(std::string worldName) {
                 int indexM = (i - 1 + WORLD_SIZE) % WORLD_SIZE;
                 m_world->chunks[index]->extraTiles[y][0] = m_world->chunks[indexM]->tiles[y][CHUNK_SIZE-1];
                 m_world->chunks[index]->extraTiles[y][1] = m_world->chunks[indexP]->tiles[y][0];
-            }*/ // Deprecated?
+            }*/ // Deprecated? Yes.
 
             m_world->chunks[i]->setSurroundingChunk(m_world->chunks[((i-1+WORLD_SIZE) % WORLD_SIZE)], 0);
             m_world->chunks[i]->setSurroundingChunk(m_world->chunks[((i+1+WORLD_SIZE) % WORLD_SIZE)], 1);
@@ -901,5 +901,5 @@ void WorldIOManager::saveStructureToFile(std::string& filepath, glm::vec4 destRe
 
 void WorldIOManager::clearWorld() {
     delete m_world;
-    m_world = new World();
+    m_world = new World(m_sq);
 }

@@ -270,6 +270,7 @@ void LoadScreen::getDirectoryEntries() {
             auto filename = entry.path().filename();
             if (fs::is_regular_file(entry.status())) {
                 if(std::string(entry.path().filename()).rfind(".bin") != std::string::npos) {
+                    if(std::string(entry.path().filename())[0] != '.')
                     entries.push_back(std::string(entry.path().filename()).erase(std::string(entry.path().filename()).rfind(".bin"), 4));
                 }
             }

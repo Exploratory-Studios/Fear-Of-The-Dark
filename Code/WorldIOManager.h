@@ -25,11 +25,11 @@
 
 class World {
 public:
-    World() {
+    World(ScriptQueue* sq) {
         chunks = new Chunk*[WORLD_SIZE]();
 
         for(int i = 0; i < WORLD_SIZE; i++) {
-            chunks[i] = new Chunk();
+            chunks[i] = new Chunk(sq);
             chunks[i]->setIndex(i);
         }
     }
@@ -58,7 +58,7 @@ class WorldIOManager
             m_sq = new ScriptQueue();
 
             if(!m_world) {
-                m_world = new World();
+                m_world = new World(m_sq);
             }
             m_audioManager = new AudioManager();
             logger = Logger::getInstance();

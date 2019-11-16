@@ -272,7 +272,7 @@ void Tile::tick(float tickTime, float& sunlight) {
     onTick(tickTime);
 }
 
-void Tile::draw(GLEngine::SpriteBatch& sb, int xOffset, int depthDifference) {
+void Tile::draw(GLEngine::SpriteBatch& sb, GLEngine::SpriteFont& sf, int xOffset, int depthDifference) {
 
     if(m_draw) {
         if(m_textureId == (GLuint)-1) {
@@ -292,12 +292,17 @@ void Tile::draw(GLEngine::SpriteBatch& sb, int xOffset, int depthDifference) {
         }
 
         int r = m_colour.r, g = m_colour.g, b = m_colour.b;
-        sb.draw(glm::vec4(m_pos.x + xOffset * CHUNK_SIZE, m_pos.y, m_size.x, m_size.y),
+        glm::vec4 pos = glm::vec4(m_pos.x + xOffset * CHUNK_SIZE, m_pos.y, m_size.x, m_size.y);
+        float depth = 0.75f * (WORLD_DEPTH - m_layer);
+
+        sb.draw(pos,
                 glm::vec4(0.0f, 0.0f, 1.0f, 1.0f),
                 m_textureId,
-                0.75f * (WORLD_DEPTH - m_layer),
+                depth,
                 colour,
                 glm::vec3(getLight()));
+
+        onDraw(sb, sf, pos, depth);
     }
 }
 

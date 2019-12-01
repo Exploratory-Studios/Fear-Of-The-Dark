@@ -3,6 +3,7 @@
 #include <glm/glm.hpp>
 
 #include "Block.h"
+#include "World.h"
 
 /// Item class is basically abstract.
 /// Create new classes for different items
@@ -23,12 +24,12 @@ class Item
         Item(short unsigned int quantity, GLEngine::GLTexture texture, std::string name) : m_quantity(quantity), m_texture(texture), m_name(name) {}
         virtual ~Item() {}
 
-        virtual void onLeftClick(Tile* selectedBlock) {
-            Block* b = createBlock((unsigned int)Categories::BlockIDs::AIR, selectedBlock->getPosition(), selectedBlock->getLayer(), selectedBlock->getParentChunk());
+        virtual void onLeftClick(Tile* selectedBlock, World* world) {
+            Block* b = createBlock((unsigned int)Categories::BlockIDs::AIR, selectedBlock->getPosition(), selectedBlock->getLayer());
             b->setAmbientLight(selectedBlock->getLight());
-            selectedBlock->getParentChunk()->setTile(b);
+            world->setTile(b);
         }
-        virtual void onRightClick(Tile* selectedBlock) {} /// TODO variadic stuff for character pos, mouse pos, etc.  also: make virtual
+        virtual void onRightClick(Tile* selectedBlock, World* world) {}
 
         bool operator==(Item* other) {
             if(other->getID() == m_id) {
@@ -53,11 +54,11 @@ class Item
         bool m_canPlace = false; // Blocks, etc.
         bool m_canConsume = false; // Potions, food, etc.
 
-        unsigned int m_id = (unsigned int)(-1); // Block/Non-block id
-        GLEngine::GLTexture m_texture; // So we can have animated items!
-
         float m_weight = 0.0f; // How much it weighs in the inventory (kgs)
         short unsigned int m_quantity = 0; // How much you have
+
+        unsigned int m_id = (unsigned int)(-1); // Block/Non-block id
+        GLEngine::GLTexture m_texture; // So we can have animated items!
 
         std::string m_name = "UNDEFINED";
 

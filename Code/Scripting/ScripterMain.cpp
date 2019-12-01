@@ -1,73 +1,62 @@
 #include "ScripterMain.h"
 
+#include "ScriptQueue.h"
+#include "../Entity.h"
+#include "../Entities.h"
+#include "../QuestManager.h"
+
 #include <Camera2D.h>
 
-Scripter::Scripter(GameplayScreen* gameplayScreen) {
-    init(gameplayScreen);
+Scripter::Scripter() {
+    init();
 }
 
-void Scripter::init(GameplayScreen* gameplayScreen) {
-
-    m_gameplayScreen = gameplayScreen;
-
-    for(int i = 0; i < WORLD_SIZE; i++) {
-        m_chunks[i] = m_gameplayScreen->m_WorldIOManager->getWorld()->chunks[i];
-    }
-
-    for(unsigned int i = 0; i < WORLD_SIZE; i++) {
-        for(unsigned int j = 0; j < m_chunks[i]->getEntities().size(); j++) {
-            m_entities.push_back(m_chunks[i]->getEntities()[j]);
-        }
-    }
+void Scripter::init() {
 
 }
 
-void Scripter::changeBlock(Block* newBlock) {
+void Scripter::changeBlock(World* world, Block* newBlock) {
     int chunk = std::floor(newBlock->getPosition().x / CHUNK_SIZE); // What chunk index it belongs to
 
-    m_chunks[chunk]->setTile(newBlock); // Set the block, of course
+    world->setTile(newBlock); // Set the block, of course
     /// TODO: compile array of chunks in init()
 }
 
-void Scripter::removeBlock(int x, int y, unsigned int layer) {
+void Scripter::removeBlock(World* world, int x, int y, unsigned int layer) {
     int chunk = std::floor(x / CHUNK_SIZE); // What chunk index it belongs to
 
-    m_chunks[chunk]->setTile(new BlockAir(m_chunks[chunk]->getTile(x, y, layer)->getPosition(), layer, m_chunks[chunk]->getTile(x, y, layer)->getParentChunk()));
+    world->setTile(new BlockAir(glm::vec2(x, y), layer));
 }
 
-void Scripter::showBlock(int x, int y, unsigned int layer) {
+void Scripter::showBlock(World* world, int x, int y, unsigned int layer) {
     int chunk = std::floor(x / CHUNK_SIZE); // What chunk index it belongs to
 
-    m_chunks[chunk]->getTile(x, y, layer)->m_draw = true; // Make it not-transparent
+    world->getTile(x, y, layer)->m_draw = true; // Make it not-transparent
 }
 
-void Scripter::hideBlock(int x, int y, unsigned int layer) {
+void Scripter::hideBlock(World* world, int x, int y, unsigned int layer) {
     int chunk = std::floor(x / CHUNK_SIZE); // What chunk index it belongs to
 
-    m_chunks[chunk]->getTile(x, y, layer)->m_draw = false; // Make it not-transparent
+    world->getTile(x, y, layer)->m_draw = false; // Make it not-transparent
 }
 
-unsigned int Scripter::addEntity(Entity* newEntity) {
-    m_entities.push_back(newEntity);
-    return m_entities.size();
+unsigned int Scripter::addEntity(World* world, Entity* newEntity) {
+    world->addEntity(newEntity);
 }
 
-void Scripter::removeEntity(unsigned int index) {
-    for(unsigned int i = index; i < m_entities.size()-1; i++) {
-        m_entities[i] = m_entities[i+1];
-    }
-    m_entities.pop_back();
+void Scripter::removeEntity(World* world, unsigned int index) {
+    world->removeEntity(index);
 }
 
-void Scripter::showEntity(unsigned int index) {
-    m_entities[index]->m_transparent = false;
+void Scripter::showEntity(World* world, unsigned int index) {
+    world->getEntities()[index]->m_transparent = false;
 }
 
-void Scripter::hideEntity(unsigned int index) {
-    m_entities[index]->m_transparent = true;
+void Scripter::hideEntity(World* world, unsigned int index) {
+    world->getEntities()[index]->m_transparent = true;
 }
 
-void Scripter::showAlert(std::string& title, std::string& text) { // Shows an alert window, with custom text, courtesy of CEGUI
+/*void Scripter::showAlert(std::string& title, std::string& text) { // Shows an alert window, with custom text, courtesy of CEGUI
     if(!m_alertWindow) {
         m_alertWindow = static_cast<CEGUI::FrameWindow*>(m_gameplayScreen->getGUI()->createWidget("FOTDSkin/FrameWindow", glm::vec4(0.2f, 0.2f, 0.6f, 0.6f), glm::vec4(0.0f), "Scripter_AlertWindow"));
     }
@@ -81,9 +70,9 @@ void Scripter::showPlayerInventory(bool show) { // Opens/closes player inventory
 
 void Scripter::showBlockInventory(bool show, Block* block) { // Shows/hides a block's inventory on screen in same style as player's.
     static_cast<InventoryBlock*>(block)->showInventory(show);
-}
+}*/
 
-void Scripter::update() {
+void Scripter::update(World* world, ScriptQueue* sq, QuestManager* qm, GameplayScreen* gs) {
     // Get active script from ScriptQueue
     // Execute script
     // Take script off active list
@@ -93,15 +82,15 @@ void Scripter::update() {
 
     scripts.clear();
 
-    for(unsigned int i = 0; i < m_gameplayScreen->m_WorldIOManager->getScriptQueue()->m_activeScripts.size(); i++) {
-        scripts.push_back(&(m_gameplayScreen->m_WorldIOManager->getScriptQueue()->m_activeScripts[i]));
+    for(unsigned int i = 0; i < sq->m_activeScripts.size(); i++) {
+        scripts.push_back(&(sq->m_activeScripts[i]));
     }
 
     if(scripts.size() > 0) {
         for(unsigned int i = scripts.size(); i > 0; i--) { // We have to go backwards through the queue so that we deactivate them in the right order (because of the whole popping back thing)
-            executeScript((scripts[i-1]));
+            executeScript(world, qm, gs, (scripts[i-1]));
             if(scripts[i-1]->paused == false) {
-                m_gameplayScreen->m_WorldIOManager->getScriptQueue()->deactivateScript(i-1);
+                sq->deactivateScript(i-1);
             }
         }
     }
@@ -109,15 +98,15 @@ void Scripter::update() {
 
 /// PRIVATE FUNCTIONS
 
-std::string Scripter::executeScript(Script* script) {
+std::string Scripter::executeScript(World* world, QuestManager* qm, GameplayScreen* gs, Script* script) {
     std::string returnMessage;
 
     for(unsigned int i = script->place; i < script->commands.size(); i++) {
-        returnMessage = executeCommand(script->commands[i], script);
+        returnMessage = executeCommand(world, qm, gs, script->commands[i], script);
         if(script->paused == false) {
             script->place++;
         } else {
-            if(m_gameplayScreen->m_time - script->startTime >= script->timerTime) {
+            if(world->getTime() - script->startTime >= script->timerTime) {
                 script->paused = false;
                 script->startTime = 0;
                 script->timerTime = 0;
@@ -131,7 +120,7 @@ std::string Scripter::executeScript(Script* script) {
     return returnMessage;
 }
 
-std::string Scripter::executeCommand(std::string& command, Script* script) {
+std::string Scripter::executeCommand(World* world, QuestManager* qm, GameplayScreen* gs, std::string& command, Script* script) {
     std::string returnMessage;
     std::vector<std::string> parameters;
 
@@ -172,11 +161,11 @@ std::string Scripter::executeCommand(std::string& command, Script* script) {
                 logger->log("Setting time to " + parameters[2]);
                 returnMessage += "Setting time to " + parameters[2] + "\n";
 
-                m_gameplayScreen->m_WorldIOManager->getWorld()->time = std::stoi(parameters[2]);
+                world->setTime(std::stoi(parameters[2]));
             }
         } else if(parameters[0] == "removeBlock") {
             unsigned int keywordIndex = 1;
-            std::vector<glm::vec2> positions = positionTarget(parameters, keywordIndex);
+            std::vector<glm::vec2> positions = positionTarget(world, parameters, keywordIndex);
             for(unsigned int i = 0; i < positions.size(); i++) {
                 int x = positions[i].x;
                 int y = positions[i].y;
@@ -184,11 +173,11 @@ std::string Scripter::executeCommand(std::string& command, Script* script) {
                 logger->log("Removing block at: X=" + std::to_string(x) + ", Y=" + std::to_string(y));
                 returnMessage += "Removing block at: X=" + std::to_string(x) + ", Y=" + std::to_string(y) + "\n";
 
-                removeBlock(x, y, 0); /// TODO: Incorporate Layers
+                removeBlock(world, x, y, 0); /// TODO: Incorporate Layers
             }
         } else if(parameters[0] == "changeBlock") {
             unsigned int keywordIndex = 1;
-            std::vector<glm::vec2> positions = positionTarget(parameters, keywordIndex);
+            std::vector<glm::vec2> positions = positionTarget(world, parameters, keywordIndex);
             for(unsigned int i = 0; i < positions.size(); i++) {
                 int x = positions[i].x;
                 int y = positions[i].y;
@@ -196,40 +185,36 @@ std::string Scripter::executeCommand(std::string& command, Script* script) {
                 logger->log("Changing block at: X=" + std::to_string(x) + ", Y=" + std::to_string(y) + " to one with the id of: " + parameters[keywordIndex]);
                 returnMessage += "Changing block at: X=" + std::to_string(x) + ", Y=" + std::to_string(y) + " to one with the id of: " + parameters[keywordIndex] + "\n";
 
-                int chunkIndex = std::floor(x / CHUNK_SIZE);
-                Chunk* parent = m_chunks[chunkIndex];
+                Block* block = createBlock(std::stoi(parameters[keywordIndex]), glm::vec2(x, y), 0);
 
-                Block* block = createBlock(std::stoi(parameters[keywordIndex]), glm::vec2(x, y), 0, parent);
-
-                changeBlock(block);
+                changeBlock(world, block);
             }
         } else if(parameters[0] == "teleport") {
             unsigned int keywordIndex = 1;
-            std::vector<Entity*> entities = entityTarget(parameters, keywordIndex);
-            std::vector<glm::vec2> positions = positionTarget(parameters, keywordIndex);
+            std::vector<Entity*> entities = entityTarget(world, parameters, keywordIndex);
+            std::vector<glm::vec2> positions = positionTarget(world, parameters, keywordIndex);
 
             for(unsigned int i = 0; i < entities.size(); i++) {
                 for(unsigned int j = 0; j < positions.size(); j++) {
                     logger->log("Teleporting entity to: X=" + std::to_string(positions[j].x) + ", Y=" + std::to_string(positions[j].y));
                     returnMessage += "Teleporting entity to: X=" + std::to_string(positions[j].x) + ", Y=" + std::to_string(positions[j].y) + "\n";
 
-                    entities[i]->setPosition(positions[j]);
-                    entities[i]->setParentChunk(m_chunks);
+                    world->getEntities()[i]->setPosition(positions[j]);
                 }
             }
         } else if(parameters[0] == "give") {
             unsigned int keywordIndex = 1;
-            std::vector<Entity*> entities = entityTarget(parameters, keywordIndex);
+            std::vector<Entity*> entities = entityTarget(world, parameters, keywordIndex);
 
             unsigned int id = int_interpretParameter(parameters, keywordIndex);
             unsigned int quantity = int_interpretParameter(parameters, keywordIndex);
 
             for(unsigned int i = 0; i < entities.size(); i++) {
-                entities[i]->giveItem(createItem(id, quantity));
+                world->getEntities()[i]->giveItem(createItem(id, quantity));
                 /// TODO:
             }
         } else if(parameters[0] == "setCanInteract") {
-            m_gameplayScreen->m_player->setCanInteract((bool)std::stoi(parameters[1]));
+            world->getPlayer()->setCanInteract((bool)std::stoi(parameters[1]));
             returnMessage = "Set player ";
             if((bool)std::stoi(parameters[1])) {
                 logger->log("Set player able to interact");
@@ -241,12 +226,13 @@ std::string Scripter::executeCommand(std::string& command, Script* script) {
 
         } else if(parameters[0] == "createEntity") { // position, id, parameters
             unsigned int keywordIndex = 1;
-            std::vector<glm::vec2> positions = positionTarget(parameters, keywordIndex);
-            Categories::EntityIDs entityId = (Categories::EntityIDs)(std::stoi(parameters[keywordIndex]));
+            std::vector<glm::vec2> positions = positionTarget(world, parameters, keywordIndex);
+            unsigned int layer = int_interpretParameter(parameters, keywordIndex);
+            Categories::EntityIDs entityId = (Categories::EntityIDs)(int_interpretParameter(parameters, keywordIndex));
             keywordIndex++;
 
             for(unsigned int i = 0; i < positions.size(); i++) {
-                m_chunks[(unsigned int)(positions[i].x / CHUNK_SIZE)]->addEntity(createEntity((unsigned int)entityId, positions[i], m_chunks[(unsigned int)(positions[i].x / CHUNK_SIZE)], m_gameplayScreen->m_WorldIOManager->getAudioManager(), m_gameplayScreen->m_questManager, &m_gameplayScreen->m_game->inputManager, m_gameplayScreen->m_WorldIOManager->getScriptQueue()));
+                world->addEntity(createEntity((unsigned int)entityId, positions[i], layer));
 
                 std::string logString = "Added Entity " + std::to_string(i+1) + " of " + std::to_string(positions.size()) + " at X=" + std::to_string(positions[i].x) + ", Y=" + std::to_string(positions[i].y) + ", with and ID of " + std::to_string((unsigned int)entityId) + " (Chunk " + std::to_string((unsigned int)(positions[i].x / CHUNK_SIZE)) + ")" ;
                 logger->log(logString);
@@ -259,7 +245,7 @@ std::string Scripter::executeCommand(std::string& command, Script* script) {
             int id = static_cast<int>(int_interpretParameter(parameters, keywordIndex));
             bool val = static_cast<bool>(int_interpretParameter(parameters, keywordIndex));
 
-            m_gameplayScreen->m_questManager->setFlag(id, val);
+            qm->setFlag(id, val);
             std::string logString = "Setting flag with id: " + std::to_string(id) + " to " + (val ? "true" : "false");
 
             logger->log(logString);
@@ -276,13 +262,13 @@ std::string Scripter::executeCommand(std::string& command, Script* script) {
             std::string ret;
             if(parameters[keywordIndex] == "neothilic") {
                 ret = "Setting time period to NEOLITHIC";
-                m_gameplayScreen->m_WorldIOManager->setWorldEra(WorldEra::NEOLITHIC_ERA);
+                world->setWorldEra(WorldEra::NEOLITHIC_ERA);
             } else if(parameters[keywordIndex] == "common_era") {
                 ret = "Setting time period to COMMON ERA";
-                m_gameplayScreen->m_WorldIOManager->setWorldEra(WorldEra::COMMON_ERA);
+                world->setWorldEra(WorldEra::COMMON_ERA);
             } else if(parameters[keywordIndex] == "future_era") {
                 ret = "Setting time period to FUTURE ERA";
-                m_gameplayScreen->m_WorldIOManager->setWorldEra(WorldEra::FUTURE_ERA);
+                world->setWorldEra(WorldEra::FUTURE_ERA);
             } else {
                 ret = "Time period \"" + parameters[keywordIndex] + "\" does not exist.";
             }
@@ -290,47 +276,47 @@ std::string Scripter::executeCommand(std::string& command, Script* script) {
             logger->log(ret);
             returnMessage += ret + "\n";
         } else if(parameters[0] == "god") {
-            m_gameplayScreen->m_player->m_godMode = !m_gameplayScreen->m_player->m_godMode;
+            world->getPlayer()->m_godMode = !world->getPlayer()->m_godMode;
         } else if(parameters[0] == "camera") {
             unsigned int keywordIndex = 1;
             if(parameters[keywordIndex] == "set") {
-                m_gameplayScreen->m_cameraLocked = true;
+                gs->setCameraLocked(true);
                 returnMessage += "Locked camera in place, it will no longer move with the player. (Run \"camera unlock\" to unlock)";
 
                 keywordIndex++;
-                glm::vec2 newPos = positionTarget(parameters, keywordIndex)[0];
-                m_gameplayScreen->m_camera.setPosition(newPos);
+                glm::vec2 newPos = positionTarget(world, parameters, keywordIndex)[0];
+                gs->getCamera()->setPosition(newPos);
                 returnMessage += "Moved camera to position: X=" + std::to_string(newPos.x) + ", Y=" + std::to_string(newPos.y);
 
                 logger->log(returnMessage);
             } else if(parameters[keywordIndex] == "lock") {
-                m_gameplayScreen->m_cameraLocked = true;
+                gs->setCameraLocked(true);
                 returnMessage += "Locked camera in place, it will no longer move with the player. (Run \"camera unlock\" to unlock)";
                 logger->log(returnMessage);
             } else if(parameters[keywordIndex] == "unlock") {
-                m_gameplayScreen->m_cameraLocked = false;
+                gs->setCameraLocked(false);
                 returnMessage += "Unlocked camera, it will now follow the player.\n";
                 logger->log(returnMessage);
             } else if(parameters[keywordIndex] == "move") {
-                m_gameplayScreen->m_cameraLocked = true;
+                gs->setCameraLocked(true);
                 returnMessage += "Locked camera in place, it will no longer move with the player. (Run \"camera unlock\" to unlock)";
 
                 keywordIndex++;
-                glm::vec2 newPos = positionTarget(parameters, keywordIndex)[0] + m_gameplayScreen->m_camera.getPosition();
-                m_gameplayScreen->m_camera.setPosition(newPos);
+                glm::vec2 newPos = positionTarget(world, parameters, keywordIndex)[0] + gs->getCamera()->getPosition();
+                gs->getCamera()->setPosition(newPos);
                 returnMessage += "\nShifted camera to position: X=" + std::to_string(newPos.x) + ", Y=" + std::to_string(newPos.y);
 
                 logger->log(returnMessage);
             } else if(parameters[keywordIndex] == "smoothMove") {
-                m_gameplayScreen->m_cameraLocked = true;
+                gs->setCameraLocked(true);
                 returnMessage += "Locked camera in place, it will no longer move with the player. (Run \"camera unlock\" to unlock)";
 
                 keywordIndex++;
-                glm::vec2 newPos = positionTarget(parameters, keywordIndex)[0] + m_gameplayScreen->m_camera.getPosition();
-                m_gameplayScreen->m_smoothMoveTarget = newPos;
+                glm::vec2 newPos = positionTarget(world, parameters, keywordIndex)[0] + gs->getCamera()->getPosition();
+                gs->setSmoothMoveTarget(newPos);
 
                 float speed = float_interpretParameter(parameters, keywordIndex);
-                m_gameplayScreen->m_smoothMoveSpeed = speed;
+                gs->setSmoothMoveSpeed(speed);
                 returnMessage += "\nStarted smoothly moving camera to position: X=" + std::to_string(newPos.x) + ", Y=" + std::to_string(newPos.y) + ", at " + std::to_string((int)(speed * 100.0f)) + "% speed";
 
                 logger->log(returnMessage);
@@ -341,7 +327,7 @@ std::string Scripter::executeCommand(std::string& command, Script* script) {
                     unsigned int keywordIndex = 1;
                     script->paused = true;
                     script->timerTime = int_interpretParameter(parameters, keywordIndex);
-                    script->startTime = m_gameplayScreen->m_time;
+                    script->startTime = world->getTime();
                     returnMessage += "Set timer for " + std::to_string(script->timerTime) + " frames.";
                     logger->log(returnMessage);
                 }
@@ -350,16 +336,16 @@ std::string Scripter::executeCommand(std::string& command, Script* script) {
                 logger->log(returnMessage, true);
             }
         } else if(parameters[0] == "pause") {
-            m_gameplayScreen->pauseForCutscene();
+            gs->pauseForCutscene();
         } else if(parameters[0] == "continue") {
-            m_gameplayScreen->unpauseCutscene();
+            gs->unpauseCutscene();
         } else if(parameters[0] == "setPlayerStat") {
             if(parameters[1] == "sanity") {
                 unsigned int keywordIndex = 2;
-                m_gameplayScreen->m_player->m_sanity = float_interpretParameter(parameters, keywordIndex);
+                world->getPlayer()->m_sanity = float_interpretParameter(parameters, keywordIndex);
             }
         } else if(parameters[0] == "showAlert") {
-            showAlert(parameters[1], parameters[2]);
+            //showAlert(parameters[1], parameters[2]);
         } else {
             logger->log("Invalid command: " + command, true);
             returnMessage += "Invalid command: " + command + "\n";
@@ -375,11 +361,11 @@ std::string Scripter::executeCommand(std::string& command, Script* script) {
 
 /// PRIVATE, DON'T TOUCH!!!!!!!
 
-std::vector<Entity*> Scripter::entityTarget(std::vector<std::string> parameters, unsigned int& keywordIndex) { // gets entities
+std::vector<Entity*> Scripter::entityTarget(World* world, std::vector<std::string> parameters, unsigned int& keywordIndex) { // gets entities
     if(parameters[keywordIndex] == "near") {
         glm::vec2 position;
         keywordIndex += 1;
-        position = positionTarget(parameters, keywordIndex)[0]; // for this specific command, we will never need to use multiple points (in a reasonable world)
+        position = positionTarget(world, parameters, keywordIndex)[0]; // for this specific command, we will never need to use multiple points (in a reasonable world)
 
         unsigned int chunkIndex = std::floor(position.x / CHUNK_SIZE);
 
@@ -389,8 +375,8 @@ std::vector<Entity*> Scripter::entityTarget(std::vector<std::string> parameters,
 
         bool found = false;
 
-        for(unsigned int i = 0; i < m_chunks[chunkIndex]->getEntities().size(); i++) {
-            float dist = std::sqrt(std::abs(position.x - m_chunks[chunkIndex]->getEntities()[i]->getPosition().x) + std::abs(position.y - m_chunks[chunkIndex]->getEntities()[i]->getPosition().y));
+        for(unsigned int i = 0; i < world->getEntities().size(); i++) { /// TODO: Optimize this
+            float dist = std::sqrt(std::abs(position.x - world->getEntities()[i]->getPosition().x) + std::abs(position.y - world->getEntities()[i]->getPosition().y));
             if(dist < nearestDistance || !found) {
                 nearestDistance = dist;
                 nearestId = i;
@@ -399,37 +385,14 @@ std::vector<Entity*> Scripter::entityTarget(std::vector<std::string> parameters,
             }
         }
 
-        while(!found) {
-            for(unsigned int j = 0; j < WORLD_SIZE / 2 - 1; j++) {
-                for(unsigned int i = 0; i < m_chunks[(chunkIndex-i + WORLD_SIZE) % WORLD_SIZE]->getEntities().size(); i++) {
-                    float dist = std::sqrt(std::abs(position.x - m_chunks[chunkIndex]->getEntities()[i]->getPosition().x) + std::abs(position.y - m_chunks[chunkIndex]->getEntities()[i]->getPosition().y));
-                    if(dist < nearestDistance || !found) {
-                        nearestDistance = dist;
-                        nearestId = i;
-                        nearestChunkId = chunkIndex;
-                        found = true;
-                    }
-                }
-                for(unsigned int i = 0; i < m_chunks[(chunkIndex+i + WORLD_SIZE) % WORLD_SIZE]->getEntities().size(); i++) {
-                    float dist = std::sqrt(std::abs(position.x - m_chunks[chunkIndex]->getEntities()[i]->getPosition().x) + std::abs(position.y - m_chunks[chunkIndex]->getEntities()[i]->getPosition().y));
-                    if(dist < nearestDistance || !found) {
-                        nearestDistance = dist;
-                        nearestId = i;
-                        nearestChunkId = chunkIndex;
-                        found = true;
-                    }
-                }
-            }
-        }
-
         std::vector<Entity*> ret;
-        ret.push_back(m_chunks[nearestChunkId]->getEntity(nearestId));
+        ret.push_back(world->getEntities()[nearestId]);
 
         return ret;
     } else if(parameters[keywordIndex] == "area") { /// Not tested
         keywordIndex += 1;
-        glm::vec2 position1 = positionTarget(parameters, keywordIndex)[0]; // Again, same as near, we'll only ever need the first value (I hope)
-        glm::vec2 position2 = positionTarget(parameters, keywordIndex)[0];
+        glm::vec2 position1 = positionTarget(world, parameters, keywordIndex)[0]; // Again, same as near, we'll only ever need the first value (I sure hope)
+        glm::vec2 position2 = positionTarget(world, parameters, keywordIndex)[0];
 
         unsigned int chunk1 = std::floor(position1.x / CHUNK_SIZE) + WORLD_SIZE;
         unsigned int chunk2 = std::floor(position2.x / CHUNK_SIZE) + WORLD_SIZE;
@@ -437,10 +400,10 @@ std::vector<Entity*> Scripter::entityTarget(std::vector<std::string> parameters,
         std::vector<Entity*> ret;
 
         for(unsigned int i = 0; i <= chunk1-chunk2; i++) {
-            for(unsigned int j = 0; j < m_chunks[(chunk1+i)%WORLD_SIZE]->getEntities().size(); j++) {
-                if(m_chunks[(chunk1+i)%WORLD_SIZE]->getEntities()[j]->getPosition().x >= position1.x && m_chunks[(chunk1+i)%WORLD_SIZE]->getEntities()[j]->getPosition().x <= position2.x) {
-                    if(m_chunks[(chunk1+i)%WORLD_SIZE]->getEntities()[j]->getPosition().y >= position1.y && m_chunks[(chunk1+i)%WORLD_SIZE]->getEntities()[j]->getPosition().y <= position2.y) {
-                        ret.push_back(m_chunks[(chunk1+i)%WORLD_SIZE]->getEntities()[j]);
+            for(unsigned int j = 0; j < world->getEntities().size(); j++) {
+                if(world->getEntities()[j]->getPosition().x >= position1.x && world->getEntities()[j]->getPosition().x <= position2.x) {
+                    if(world->getEntities()[j]->getPosition().y >= position1.y && world->getEntities()[j]->getPosition().y <= position2.y) {
+                        ret.push_back(world->getEntities()[j]);
                     }
                 }
             }
@@ -450,13 +413,13 @@ std::vector<Entity*> Scripter::entityTarget(std::vector<std::string> parameters,
     } else if(parameters[keywordIndex] == "player") {
         keywordIndex += 1;
         std::vector<Entity*> ret;
-        ret.push_back(m_gameplayScreen->m_player);
+        ret.push_back(world->getPlayer());
 
         return ret;
     } else if(parameters[keywordIndex] == "speaker") {
         keywordIndex += 1;
         std::vector<Entity*> ret;
-        if(m_gameplayScreen->m_player->getSelectedEntity()) ret.push_back(m_gameplayScreen->m_player->getSelectedEntity());
+        if(world->getPlayer()->getSelectedEntity()) ret.push_back(world->getPlayer()->getSelectedEntity());
 
         return ret;
     }
@@ -474,12 +437,12 @@ std::vector<Entity*> Scripter::entityTarget(std::vector<std::string> parameters,
     return ret;
 }
 
-std::vector<glm::vec2> Scripter::positionTarget(std::vector<std::string> parameters, unsigned int& keywordIndex) { // gets position
+std::vector<glm::vec2> Scripter::positionTarget(World* world, std::vector<std::string> parameters, unsigned int& keywordIndex) { // gets position
     if(parameters[keywordIndex] == "relative") {
         std::vector<glm::vec2> ret;
         keywordIndex += 1;
-        std::vector<Entity*> entities = entityTarget(parameters, keywordIndex);
-        std::vector<glm::vec2> positions = positionTarget(parameters, keywordIndex);
+        std::vector<Entity*> entities = entityTarget(world, parameters, keywordIndex);
+        std::vector<glm::vec2> positions = positionTarget(world, parameters, keywordIndex);
         for(unsigned int i = 0; i < entities.size(); i++) {
             for(unsigned int j = 0; j < positions.size(); j++) {
                 ret.push_back(entities[i]->getPosition() + positions[j]);
@@ -489,8 +452,8 @@ std::vector<glm::vec2> Scripter::positionTarget(std::vector<std::string> paramet
         return ret;
     } else if(parameters[keywordIndex] == "area") {
         keywordIndex += 1;
-        glm::vec2 pos1 = positionTarget(parameters, keywordIndex)[0];
-        glm::vec2 pos2 = positionTarget(parameters, keywordIndex)[0];
+        glm::vec2 pos1 = positionTarget(world, parameters, keywordIndex)[0];
+        glm::vec2 pos2 = positionTarget(world, parameters, keywordIndex)[0];
 
         std::vector<glm::vec2> ret;
 
@@ -507,19 +470,6 @@ std::vector<glm::vec2> Scripter::positionTarget(std::vector<std::string> paramet
         keywordIndex += 2;
         return ret;
     }
-}
-
-void* Scripter::pntr_interpretParameter(std::vector<std::string> parameters, unsigned int& keywordIndex) {
-    void* p;
-    if(parameters[keywordIndex] == "inputManager") {
-        p = &m_gameplayScreen->m_game->inputManager;
-    } else if(parameters[keywordIndex] == "scriptQueue") {
-        p = m_gameplayScreen->m_player->m_sq;
-    } else if(parameters[keywordIndex] == "questManager") {
-        p = m_gameplayScreen->m_questManager;
-    }
-    keywordIndex++;
-    return p;
 }
 
 int Scripter::int_interpretParameter(std::vector<std::string> parameters, unsigned int& keywordIndex) {

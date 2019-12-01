@@ -23,7 +23,7 @@ class Player : public Entity {
     friend class Scripter;
 
     public:
-        Player(glm::vec2 position, Chunk* parent, GLEngine::InputManager* input, ScriptQueue* sq, AudioManager* audio, bool loadTexture = true);
+        Player(glm::vec2 position, unsigned int layer, bool loadTexture = true);
 
         void onInteract(ScriptQueue* sq) {}
         void onDeath(ScriptQueue* sq) {}
@@ -32,11 +32,12 @@ class Player : public Entity {
 
         virtual ~Player();
 
-        void draw(GLEngine::SpriteBatch& sb, float time, float xOffset) override;
+        void draw(GLEngine::SpriteBatch& sb, float time, int layerDifference, float xOffset) override;
         void drawGUI(GLEngine::SpriteBatch& sb, GLEngine::SpriteFont& sf);
-        void update(float timeStep, Chunk* worldChunks[WORLD_SIZE]) override;
-        void updateStats(float timeStep, Chunk* worldChunks[WORLD_SIZE]);
-        void updateMouse(GLEngine::Camera2D* worldCamera);
+        void update(World* world, AudioManager* audio, float timeStep) override;
+        void updateStats(World* world, float timeStep);
+        void updateMouse(World* world, glm::vec2 mouseCoords);
+        void updateInput(GLEngine::InputManager* input, World* world, ScriptQueue* sq);
 
         void showInventory(bool open) { m_inventoryOpen = open; }
 
@@ -71,7 +72,6 @@ class Player : public Entity {
 
         CEGUI::DefaultWindow* m_statusBoxLabel = nullptr;
 
-        glm::vec2 m_mousePos;
         Tile* m_selectedBlock = nullptr;
         Entity* m_selectedEntity = nullptr;
 
@@ -83,8 +83,6 @@ class Player : public Entity {
 
         bool m_debuggingInfo = false; // FPS, selectedBlock, etc.
         bool m_canInteract = true; // Sets if the player can't interact with objects, people, etc. Used when player is in cutscenes, talking, etc.
-
-        void updateInput();
 
         float m_sanity = 1.0f; // Fear level will be displayed as a heartbeat sound (fear is how fast your sanity drops)
         float m_health = 1.0f;

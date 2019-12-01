@@ -13,7 +13,7 @@ class Inventory;
 
 class GenericBlock : public Block {
     public:
-        GenericBlock(glm::vec2 pos, unsigned int layer, Chunk* parent, MetaData metaData, bool loadTexture = true) : Block(pos, layer, parent, metaData) { }
+        GenericBlock(glm::vec2 pos, unsigned int layer, MetaData metaData = MetaData(), bool loadTexture = true) : Block(pos, layer, metaData) { }
         void onInteract(ScriptQueue* sq) {}
 
     protected:
@@ -22,8 +22,8 @@ class GenericBlock : public Block {
 
 class InteractableBlock : public Block {
     public:
-        InteractableBlock(glm::vec2 pos, unsigned int layer, Chunk* parent, MetaData metaData, bool loadTexture = true) : Block(pos, layer, parent, metaData) {}
-        void onInteract(ScriptQueue* sq) { if(m_interactScriptId != -1) sq->activateScript(m_interactScriptId); }
+        InteractableBlock(glm::vec2 pos, unsigned int layer, MetaData metaData = MetaData(), bool loadTexture = true) : Block(pos, layer, metaData) {}
+        void onInteract(ScriptQueue* sq) { if(m_interactScriptId != (unsigned int)-1) sq->activateScript(m_interactScriptId); }
 
     protected:
         virtual void handleMetaDataInit(MetaData& data) override {}
@@ -33,20 +33,20 @@ class InteractableBlock : public Block {
  /// Interactable Blocks ################################################
     class InventoryBlock : public InteractableBlock {
         public:
-            InventoryBlock(glm::vec2 pos, unsigned int layer, Chunk* parent, MetaData metaData, bool loadTexture = true);
+            InventoryBlock(glm::vec2 pos, unsigned int layer, MetaData metaData = MetaData(), bool loadTexture = true);
             ~InventoryBlock() { delete m_inventory; }
 
             void onDraw(GLEngine::SpriteBatch& sb, GLEngine::SpriteFont& sf, glm::vec4& pos, float& depth) override;
 
             void showInventory(bool show);
         protected:
-            Inventory* m_inventory;
+            Inventory* m_inventory = nullptr;
             bool m_showInventory = false;
     };
 
     class BlockSign : public InteractableBlock {
         public:
-            BlockSign(glm::vec2 pos, unsigned int layer, Chunk* parent, MetaData metaData, bool loadTexture = true);
+            BlockSign(glm::vec2 pos, unsigned int layer, MetaData metaData = MetaData(), bool loadTexture = true);
 
 
 
@@ -64,7 +64,7 @@ class InteractableBlock : public Block {
 
     class LightBlock : public GenericBlock {
         public:
-            LightBlock(glm::vec2 pos, unsigned int layer, Chunk* parent, MetaData metaData, float emittedLight, bool loadTexture = true) : GenericBlock(pos, layer, parent, metaData, loadTexture) {
+            LightBlock(glm::vec2 pos, unsigned int layer, MetaData metaData, float emittedLight, bool loadTexture = true) : GenericBlock(pos, layer, metaData, loadTexture) {
                 m_emittedLight = emittedLight;
                 setLightUpdate();
             }
@@ -72,14 +72,14 @@ class InteractableBlock : public Block {
             void setLightUpdate() { m_updateLight = true; }
 
         protected:
-            virtual void onUpdate(float& time) override;
+            virtual void onUpdate(World* world, float& time) override;
             bool m_updateLight = false;
     };
 
     class BlockAir : public GenericBlock
     {
         public:
-            BlockAir(glm::vec2 pos, unsigned int layer, Chunk* parent, bool loadTexture = true);
+            BlockAir(glm::vec2 pos, unsigned int layer, MetaData metaData = MetaData(), bool loadTexture = true);
 
         protected:
             void loadTexture() override { m_textureId = GLEngine::ResourceManager::getTexture(ASSETS_FOLDER_PATH + "/Textures/UNDEFINED.png").id; }
@@ -88,29 +88,29 @@ class InteractableBlock : public Block {
     class BlockDirt : public GenericBlock
     {
         public:
-            BlockDirt(glm::vec2 pos, unsigned int layer, Chunk* parent, bool loadTexture = true);
+            BlockDirt(glm::vec2 pos, unsigned int layer, MetaData metaData = MetaData(), bool loadTexture = true);
             void onInteract(ScriptQueue* sq) {}
         protected:
             void loadTexture() override { m_textureId = GLEngine::ResourceManager::getTexture(ASSETS_FOLDER_PATH + "/Textures/Blocks/Dirt.png").id; m_backdropTextureId = GLEngine::ResourceManager::getTexture(ASSETS_FOLDER_PATH + "/Textures/Blocks/Dirt.png").id; }
-            virtual void onTick(float& tickTime);
+            virtual void onTick(World* world, float& tickTime);
         private:
     };
 
     class BlockGrass : public GenericBlock
     {
         public:
-            BlockGrass(glm::vec2 pos, unsigned int layer, Chunk* parent, bool loadTexture = true);
+            BlockGrass(glm::vec2 pos, unsigned int layer, MetaData metaData = MetaData(), bool loadTexture = true);
             void onInteract(ScriptQueue* sq) {}
         protected:
             void loadTexture() override { m_textureId = GLEngine::ResourceManager::getTexture(ASSETS_FOLDER_PATH + "/Textures/Blocks/Grass.png").id; m_backdropTextureId = GLEngine::ResourceManager::getTexture(ASSETS_FOLDER_PATH + "/Textures/Blocks/Dirt.png").id; }
-            virtual void onTick(float& tickTime);
+            virtual void onTick(World* world, float& tickTime);
         private:
     };
 
     class BlockTorch : public LightBlock
     {
         public:
-            BlockTorch(glm::vec2 pos, unsigned int layer, Chunk* parent, bool loadTexture = true);
+            BlockTorch(glm::vec2 pos, unsigned int layer, MetaData metaData = MetaData(), bool loadTexture = true);
             void onInteract(ScriptQueue* sq) {}
         protected:
             void loadTexture() override { m_textureId = GLEngine::ResourceManager::getTexture(ASSETS_FOLDER_PATH + "/Textures/Blocks/Torch.png").id; }
@@ -119,19 +119,19 @@ class InteractableBlock : public Block {
     class BlockTorchBright : public BlockTorch
     {
         public:
-            BlockTorchBright(glm::vec2 pos, unsigned int layer, Chunk* parent, bool loadTexture = true);
+            BlockTorchBright(glm::vec2 pos, unsigned int layer, MetaData metaData = MetaData(), bool loadTexture = true);
     };
 
     class BlockTorchAnti : public BlockTorch
     {
         public:
-            BlockTorchAnti(glm::vec2 pos, unsigned int layer, Chunk* parent, bool loadTexture = true);
+            BlockTorchAnti(glm::vec2 pos, unsigned int layer, MetaData metaData = MetaData(), bool loadTexture = true);
     };
 
     class BlockBush : public GenericBlock
     {
         public:
-            BlockBush(glm::vec2 pos, unsigned int layer, Chunk* parent, bool loadTexture = true);
+            BlockBush(glm::vec2 pos, unsigned int layer, MetaData metaData = MetaData(), bool loadTexture = true);
             void onInteract(ScriptQueue* sq) {}
         protected:
             void loadTexture() override {
@@ -149,10 +149,13 @@ class InteractableBlock : public Block {
     class BlockStone : public GenericBlock
     {
         public:
-            BlockStone(glm::vec2 pos, unsigned int layer, Chunk* parent, bool loadTexture = true);
+            BlockStone(glm::vec2 pos, unsigned int layer, MetaData metaData = MetaData(), bool loadTexture = true);
             void onInteract(ScriptQueue* sq) {}
         protected:
-            void loadTexture() override { m_textureId = GLEngine::ResourceManager::getTexture(ASSETS_FOLDER_PATH + "/Textures/Blocks/Stone.png").id; m_backdropTextureId = m_textureId; }
+            void loadTexture() override {
+             m_textureId = GLEngine::ResourceManager::getTexture(ASSETS_FOLDER_PATH + "/Textures/Blocks/Stone.png").id;
+             m_backdropTextureId = m_textureId;
+              }
 
         private:
     };
@@ -160,18 +163,18 @@ class InteractableBlock : public Block {
     class BlockFoliage : public GenericBlock
     {
         public:
-            BlockFoliage(glm::vec2 pos, unsigned int layer, Chunk* parent, bool loadTexture = true);
+            BlockFoliage(glm::vec2 pos, unsigned int layer, MetaData metaData = MetaData(), bool loadTexture = true);
             void onInteract(ScriptQueue* sq) {}
         protected:
             void loadTexture() override { m_textureId = GLEngine::ResourceManager::getTexture(ASSETS_FOLDER_PATH + "Textures/Blocks/BushGreen.png").id; }
-            void onUpdate(float& time);
+            void onUpdate(World* world, float& time);
         private:
     };
 
     class BlockWood : public GenericBlock
     {
         public:
-            BlockWood(glm::vec2 pos, unsigned int layer, Chunk* parent, bool loadTexture = true);
+            BlockWood(glm::vec2 pos, unsigned int layer, MetaData metaData = MetaData(), bool loadTexture = true);
             void onInteract(ScriptQueue* sq) {}
         protected:
             void loadTexture() override { m_textureId = GLEngine::ResourceManager::getTexture(ASSETS_FOLDER_PATH + "Textures/Blocks/WoodBlock.png").id; m_backdropTextureId = m_textureId; }
@@ -182,7 +185,7 @@ class InteractableBlock : public Block {
     class BlockWater : public GenericBlock
     {
         public:
-            BlockWater(glm::vec2 pos, unsigned int layer, Chunk* parent, float level, MetaData metaData = MetaData(), bool loadTexture = true);
+            BlockWater(glm::vec2 pos, unsigned int layer, float level, MetaData metaData = MetaData(), bool loadTexture = true);
             void onInteract(ScriptQueue* sq) {}
 
             virtual void draw(GLEngine::SpriteBatch& sb, GLEngine::SpriteFont& sf, int xOffset, int depthDifference) override;
@@ -200,7 +203,7 @@ class InteractableBlock : public Block {
             }
 
             void loadTexture() override { m_textureId = GLEngine::ResourceManager::getTexture(ASSETS_FOLDER_PATH + "/Textures/Blocks/Water.png").id; }
-            void onUpdate(float& time) override;
+            void onUpdate(World* world, float& time) override;
         private:
             float m_waterLevel = 1.0f; // ranges from 1.0f (top of the block) to 0.0f (literally no water present)
     };
@@ -208,7 +211,7 @@ class InteractableBlock : public Block {
     class BlockPole : public GenericBlock
     {
         public:
-            BlockPole(glm::vec2 pos, unsigned int layer, Chunk* parent, MetaData metaData = MetaData(), bool loadTexture = true);
+            BlockPole(glm::vec2 pos, unsigned int layer, MetaData metaData = MetaData(), bool loadTexture = true);
             void onInteract(ScriptQueue* sq) {}
 
             void loadTexture() override { m_textureId = GLEngine::ResourceManager::getTexture(ASSETS_FOLDER_PATH + "/Textures/Blocks/Wood_Pole.png").id; }
@@ -216,69 +219,65 @@ class InteractableBlock : public Block {
 
 
 
-static Block* createBlock(unsigned int id, glm::vec2 pos, unsigned int layer, Chunk* parent, MetaData metaData = MetaData{}, bool loadTexture = true, float tickTime = -1.0f) {
+static Block* createBlock(unsigned int id, glm::vec2 pos, unsigned int layer, MetaData metaData = MetaData{}, bool loadTexture = true, float tickTime = -1.0f) {
     Block* ret = nullptr;
     switch(id) {
         case (unsigned int)Categories::BlockIDs::AIR: {
-            ret = new BlockAir(pos, layer, parent, loadTexture);
+            ret = new BlockAir(pos, layer, metaData, loadTexture);
             break;
         }
         case (unsigned int)Categories::BlockIDs::DIRT: {
-            ret = new BlockDirt(pos, layer, parent, loadTexture);
+            ret = new BlockDirt(pos, layer, metaData, loadTexture);
             break;
         }
         case (unsigned int)Categories::BlockIDs::GRASS: {
-            ret = new BlockGrass(pos, layer, parent, loadTexture);
+            ret = new BlockGrass(pos, layer, metaData, loadTexture);
             break;
         }
         case (unsigned int)Categories::BlockIDs::BUSH: {
-            ret = new BlockBush(pos, layer, parent, loadTexture);
+            ret = new BlockBush(pos, layer, metaData, loadTexture);
             break;
         }
         case (unsigned int)Categories::BlockIDs::TORCH: {
-            ret = new BlockTorch(pos, layer, parent, loadTexture);
+            ret = new BlockTorch(pos, layer, metaData, loadTexture);
             break;
         }
         case (unsigned int)Categories::BlockIDs::FOLIAGE: {
-            ret = new BlockFoliage(pos, layer, parent, loadTexture);
+            ret = new BlockFoliage(pos, layer, metaData, loadTexture);
             break;
         }
         case (unsigned int)Categories::BlockIDs::STONE: {
-            ret = new BlockStone(pos, layer, parent, loadTexture);
+            ret = new BlockStone(pos, layer, metaData, loadTexture);
             break;
         }
         case (unsigned int)Categories::BlockIDs::WOOD: {
-            ret = new BlockWood(pos, layer, parent, loadTexture);
+            ret = new BlockWood(pos, layer, metaData, loadTexture);
             break;
         }
         case (unsigned int)Categories::BlockIDs::WATER: {
-            ret = new BlockWater(pos, layer, parent, 1.0f, metaData, loadTexture);
+            ret = new BlockWater(pos, layer, 1.0f, metaData, loadTexture);
             break;
         }
         case (unsigned int)Categories::BlockIDs::WOOD_POLE: {
-            ret = new BlockPole(pos, layer, parent, metaData, loadTexture);
+            ret = new BlockPole(pos, layer, metaData, loadTexture);
             break;
         }
         case (unsigned int)Categories::BlockIDs::TORCH_BRIGHT: {
-            ret = new BlockTorchBright(pos, layer, parent, loadTexture);
+            ret = new BlockTorchBright(pos, layer, metaData, loadTexture);
             break;
         }
         case (unsigned int)Categories::BlockIDs::TORCH_ANTI: {
-            ret = new BlockTorchAnti(pos, layer, parent, loadTexture);
+            ret = new BlockTorchAnti(pos, layer, metaData, loadTexture);
             break;
         }
         case (unsigned int)Categories::BlockIDs::SIGN_WOOD: {
-            ret = new BlockSign(pos, layer, parent, metaData, loadTexture);
+            ret = new BlockSign(pos, layer, metaData, loadTexture);
             break;
         }
         default: {
             GLEngine::fatalError("Tried to create block with improper id: " + id);
             break;
         }
-    }
-    if(tickTime != -1.0f) {
-        float sunlight = std::cos(tickTime / (DAY_LENGTH / 6.28318f)) / 2.0f + 0.5f;
-        ret->setSunlight(tickTime, sunlight);
     }
     return ret;
 }

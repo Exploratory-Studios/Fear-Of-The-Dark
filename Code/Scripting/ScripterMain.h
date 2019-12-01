@@ -1,6 +1,5 @@
 #pragma once
 
-#include "../EntityManager.h"
 #include "ScriptQueue.h"
 #include "../GameplayScreen.h"
 
@@ -20,49 +19,42 @@ const bool
     SCRIPT_INIT_FLAG_ALL = 0xFF;             // 1111 1111
 
 class GameplayScreen;
+class ScriptQueue;
 
 class Scripter {
     public:
-        Scripter(GameplayScreen* gameplayScreen);
-        void init(GameplayScreen* gameplayScreen);
+        Scripter();
+        void init();
 
-        void changeBlock(Block* newBlock);
-        void removeBlock(int x, int y, unsigned int layer); // doesn't actually 'remove' per say, but changes it to air.
-        void showBlock(int x, int y, unsigned int layer);
-        void hideBlock(int x, int y, unsigned int layer);
+        void changeBlock(World* world, Block* newBlock);
+        void removeBlock(World* world, int x, int y, unsigned int layer); // doesn't actually 'remove' per say, but changes it to air.
+        void showBlock(World* world, int x, int y, unsigned int layer);
+        void hideBlock(World* world, int x, int y, unsigned int layer);
 
-        unsigned int addEntity(Entity* newEntity); // Returns new entity's index
-        void removeEntity(unsigned int index); // This doesn't change the size of the vector, just sets the index to NULL values
-        void showEntity(unsigned int index); // Index is reference to place in vector
-        void hideEntity(unsigned int index);
+        unsigned int addEntity(World* world, Entity* newEntity); // Returns new entity's index
+        void removeEntity(World* world, unsigned int index); // This doesn't change the size of the vector, just sets the index to NULL values
+        void showEntity(World* world, unsigned int index); // Index is reference to place in vector
+        void hideEntity(World* world, unsigned int index);
 
-        void showAlert(std::string& title, std::string& text); // Shows an alert window, with custom text, courtesy of CEGUI
+        /*void showAlert(std::string& title, std::string& text); // Shows an alert window, with custom text, courtesy of CEGUI
         void showPlayerInventory(bool show); // Opens/closes player inventory on screen.
         void showBlockInventory(bool show, Block* block); // Shows/hides a block's inventory on screen in same style as player's.
+        */
+        void update(World* world, ScriptQueue* sq, QuestManager* qm, GameplayScreen* gs);
 
-        void update();
-
-        std::string executeScript(Script* script); /// TODO: For the love of all things unholy, do NOT pass scripts by reference. They do not like that very much
-        std::string executeCommand(std::string& command, Script* script = nullptr);
+        std::string executeScript(World* world, QuestManager* qm, GameplayScreen* gs, Script* script); /// TODO: For the love of all things unholy, do NOT pass scripts by reference. They do not like that very much
+        std::string executeCommand(World* world, QuestManager* qm, GameplayScreen* gs, std::string& command, Script* script = nullptr);
 
     private:
 
         Logger* logger = Logger::getInstance();
 
-        std::vector<Entity*> entityTarget(std::vector<std::string> parameters, unsigned int& keywordIndex);
-        std::vector<glm::vec2> positionTarget(std::vector<std::string> parameters, unsigned int& keywordIndex);
-        void* pntr_interpretParameter(std::vector<std::string> parameters, unsigned int& keywordIndex);
+        std::vector<Entity*> entityTarget(World* world, std::vector<std::string> parameters, unsigned int& keywordIndex);
+        std::vector<glm::vec2> positionTarget(World* world, std::vector<std::string> parameters, unsigned int& keywordIndex);
         int int_interpretParameter(std::vector<std::string> parameters, unsigned int& keywordIndex);
         float float_interpretParameter(std::vector<std::string> parameters, unsigned int& keywordIndex);
 
         unsigned int stringToFlagId(std::string str);
-
-        GameplayScreen* m_gameplayScreen = nullptr;
-
-        std::vector<Entity*> m_entities;
-        Chunk* m_chunks[WORLD_SIZE] = {};
-
-        CEGUI::FrameWindow* m_alertWindow = nullptr;
 
         /*GLEngine::Camera2D* m_camera = nullptr;*/
 };

@@ -31,5 +31,5 @@ class App : public GLEngine::IMainGame
         std::unique_ptr<WaitScreen> m_waitScreen;
         std::unique_ptr<GameplayScreen> m_gameplayScreen;
 
-        WorldIOManager* m_WorldIOManager = new WorldIOManager(&inputManager, &m_window);
+        WorldIOManager* m_WorldIOManager = new WorldIOManager();
 };

@@ -4,6 +4,7 @@
 #include <GUI.h>
 
 class Scripter;
+class World;
 
 class Console
 {
@@ -11,14 +12,14 @@ class Console
         Console();
         virtual ~Console();
 
-        void init(GLEngine::GUI& gui, Scripter* scripter);
+        void init(GLEngine::GUI& gui, Scripter* scripter, World* world, QuestManager* qm); /// TODO: Make this not have a world member or qm variable
 
         void show();
         void hide();
 
         bool isShown() { return m_showing; }
 
-        void processCommand(std::string& command);
+        void processCommand(World* world, QuestManager* qm, std::string& command);
 
     private:
         bool onEditboxInput(const CEGUI::EventArgs& e);
@@ -32,6 +33,9 @@ class Console
         unsigned int m_historySelection = (unsigned int)-1;
 
         CEGUI::Editbox* m_editbox = nullptr;
+
+        World* m_world = nullptr;
+        QuestManager* m_qm = nullptr;
 
         bool m_showing = false;
 

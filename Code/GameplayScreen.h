@@ -5,6 +5,7 @@
 #include <Camera2D.h>
 #include <GUI.h>
 #include <SpriteBatch.h>
+#include <DebugRenderer.h>
 #include <GLSLProgram.h>
 #include <SpriteFont.h>
 #include <ParticleEngine2D.h>
@@ -12,7 +13,7 @@
 #include <cstdio>
 
 #include "WorldIOManager.h"
-//#include "WorldManager.h"
+#include "QuestManager.h"
 
 #include "ScreenIndices.h"
 #include "Logging.h"
@@ -28,10 +29,8 @@ class Console;
 
 class GameplayScreen : public GLEngine::IGameScreen
 {
-    friend class Scripter;
-
     public:
-        GameplayScreen(GLEngine::Window* window, WorldIOManager* WorldIOManager);
+        GameplayScreen(GLEngine::Window* window, WorldIOManager* WorldIOManager, World* world);
         virtual ~GameplayScreen();
 
         virtual int getNextScreenIndex() const override;
@@ -43,10 +42,14 @@ class GameplayScreen : public GLEngine::IGameScreen
         virtual void update() override;
         virtual void draw() override;
 
+        void setCameraLocked(bool setting) { m_cameraLocked = setting; }
+        GLEngine::Camera2D* getCamera() { return &m_camera; }
+
+        void setSmoothMoveTarget(glm::vec2 target) { m_smoothMoveTarget = target; }
+        void setSmoothMoveSpeed(float speed) { m_smoothMoveSpeed = speed; }
+
         void pauseForCutscene() { m_cutscenePause = true; } // Sets the world to not update stuff, but still display
         void unpauseCutscene() { m_cutscenePause = false; } // Sets the world back to normal
-
-        GLEngine::GUI* getGUI() { return &m_gui; }
 
     private:
         void checkInput();
@@ -59,6 +62,8 @@ class GameplayScreen : public GLEngine::IGameScreen
         void drawWorld();
         void drawDebug();
 
+        glm::vec4 getScreenBox();
+
         void pauseGame(); // Inits pause UI and sets GameState
         void continueGame(); // Hides pause UI and sets GameState
 
@@ -68,12 +73,11 @@ class GameplayScreen : public GLEngine::IGameScreen
         bool pause_quit_button_clicked(const CEGUI::EventArgs& e);
 
         void updateScale();
-        void activateChunks();
 
         GLEngine::Camera2D m_camera;
         GLEngine::Camera2D m_uiCamera;
         GLEngine::Window* m_window;
-        GLEngine::GUI m_gui;
+        GLEngine::GUI* m_gui = nullptr;
         GLEngine::SpriteBatch m_spriteBatch;
         GLEngine::GLSLProgram m_textureProgram;
         GLEngine::GLSLProgram m_uiTextureProgram;
@@ -85,11 +89,10 @@ class GameplayScreen : public GLEngine::IGameScreen
 
         Scripter* m_scripter = nullptr;
         QuestManager* m_questManager = nullptr;
-
+        ScriptQueue* m_sq = nullptr;
         WorldIOManager* m_WorldIOManager = nullptr;
-        //WorldManager m_worldManager;
-
-        Player* m_player = nullptr;
+        World* m_world = nullptr;
+        AudioManager* m_audio = nullptr;
 
         GameState m_gameState = GameState::PLAY;
 
@@ -131,6 +134,3 @@ class GameplayScreen : public GLEngine::IGameScreen
 
         bool m_hasBeenInited = false;
 };
-
-#include "Scripting/ScripterMain.h"
-#include "Console.h"

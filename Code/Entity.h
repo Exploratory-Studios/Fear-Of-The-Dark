@@ -18,6 +18,16 @@ class Chunk;
 
 class Entity;
 
+struct NavTile { // Pretty much the same thing as a navmesh
+    NavTile() {}
+    NavTile* parent = nullptr;
+    std::vector<glm::vec3> nextNodes;
+    glm::vec3 pos;
+    float h = 0; // Heuristic (h(n))   ->   absolute distance from end goal.
+    bool visited = false;
+};
+
+
 enum class LimbSection {
     HEAD, // High section (head(s), etc.)
     BODY, // Middle section (arms, torso, etc.)
@@ -86,16 +96,14 @@ class Entity
 
     public:
         Entity(glm::vec2 position,
-               AudioManager* audioManager,
-               ScriptQueue* sq,
+               unsigned int layer,
                float maxRunningSpeed,
                Categories::LootTableIds lootTable,
                unsigned int lootBeginLevel, unsigned int lootBeginIndex) :
                                                                            m_position(position),
-                                                                           m_audioManager(audioManager),
-                                                                           m_sq(sq),
-                                                                           m_maxSpeed(maxRunningSpeed),
-                                                                           m_inventory(new Inventory()) {
+                                                                           m_layer(layer),
+                                                                           m_inventory(new Inventory()),
+                                                                           m_maxSpeed(maxRunningSpeed) {
                                                                                if(lootTable != Categories::LootTableIds::NONE) m_lootTableStart = Category_Data::lootTables[(unsigned int)lootTable].getNode(lootBeginLevel, lootBeginIndex);
                                                                            }
 
@@ -106,31 +114,26 @@ class Entity
         virtual void onTrade(ScriptQueue* sq) {}
         virtual void onDeath(ScriptQueue* sq) {}
 
-        virtual void update(float timeStep, Chunk* worldChunks[WORLD_SIZE]);
-        virtual void tick(Player* p);
-        virtual void draw(GLEngine::SpriteBatch& sb, float time, float xOffset);
+        virtual void update(World* world, AudioManager* audio, float timeStep);
+        virtual void tick(World* world, AudioManager* audio);
+        virtual void draw(GLEngine::SpriteBatch& sb, float time, int layerDifference, float xOffset);
+        virtual void debugDraw(GLEngine::DebugRenderer& dr, float xOffset);
         void move(float timeStepVariable);
 
-        void collide();
+        void collide(World* world, unsigned int entityIndex);
 
         const Categories::Faction&     getFaction()      const { return m_faction; }
         const glm::vec2&               getPosition()     const { return m_position; }
         const glm::vec2&               getSize()         const { return m_size; }
               glm::vec2                getVelocity()     const { return m_velocity; }
-              std::vector<glm::vec2>   getTargets()      const { return m_targets; }
+              std::vector<glm::vec3>   getTargets()      const { return m_targets; }
               float                    getJumpHeight()   const { return m_jumpHeight; }
               float                    getLightLevel()   const { return m_light; }
               bool                     isDead()          const { return m_isDead; }
-
-        void                           setPosition(glm::vec2 pos)   { m_position = pos; }
-        void                           setTargets(std::vector<glm::vec2> targets)  { m_targets = targets; }
-        Categories::Entity_Type        getType()         const { return m_type; }
-        unsigned int                   getLayer()        const { return m_layer; }
-
-        void setParentChunk(Chunk* chunk);
-        void setAudioManager(AudioManager* audio) { m_audioManager = audio; }
-        int setParentChunk(Chunk* worldChunks[WORLD_SIZE]);
-        unsigned int getChunkIndex();
+              void                     setPosition(glm::vec2 pos)   { m_position = pos; }
+              void                     setTargets(std::vector<glm::vec3> targets)  { m_targets = targets; }
+              Categories::Entity_Type  getType()         const { return m_type; }
+     unsigned int                      getLayer()        const { return m_layer; }
 
         void giveItem(Item* item) { if(m_inventory) { m_inventory->addItem(item); } else { Logger::getInstance()->log("ERROR: Entity inventory not initialized, could not give item", true); } }
         Inventory* getInventory() { return m_inventory; }
@@ -141,21 +144,34 @@ class Entity
         virtual void attack(Entity* enemy); /// TODO: make swinging swords etc. by making a new Entity (SwordBlade), and attaching it to this Entity, with a customized collide function
         virtual void defend(Entity* attacker, float damage, LimbSection section, Item* weapon);
 
+        void setAITarget(World* world, unsigned int selfIndex); /// TODO: Make this work with certain quests, etc.
+
     protected:
-        bool checkTilePosition(std::vector<glm::vec2>& collideTilePositions, float xPos, float yPos);
+        bool checkTilePosition(World* world, std::vector<glm::vec2>& collideTilePositions, float xPos, float yPos);
         void collideWithTile(glm::vec2 tilePos, bool ground = false);
-        void updateLightLevel();
+        void updateLightLevel(World* world);
         virtual void updateAI() {};
         virtual void updateLimbs() {
             for(unsigned int i = 0; i < m_limbs.size(); i++) {
-                m_limbs[i]->setSpeed(std::abs(m_velocity.x * 2.0f));
-                m_limbs[i]->animate();
+                //m_limbs[i]->setSpeed(std::abs(m_velocity.x * 2.0f));
+                //m_limbs[i]->animate();
             }
         }
-        void updateMovement();
-        virtual void updateSounds();
+        void updateMovement(World* world);
+        virtual void updateSounds(World* world, AudioManager* audio);
 
-        virtual void die();
+        void pathfindToTarget(World* world, glm::vec3 target, bool goLeft);
+
+        void moveUpLayer(World* world);
+        void moveDownLayer(World* world);
+
+        virtual void die(World* world);
+
+        // PATHFINDING FUNCTIONS
+        bool     fitsOnTile(World* world, Tile* t, bool needsFloor = false);
+        NavTile* expandTile(World* world, glm::vec3 pos, int jumpHeight, glm::vec2 size, NavTile* parent, glm::vec3 target);
+        void     calculateCost(World* world, NavTile* tile, glm::vec3 target); // Calculates a cost of a single path from an endnode
+        void     addToFrontier(NavTile* tile, std::vector<NavTile*>& frontier); // Makes sure there are no copies, and handles them if there are.
 
         Inventory* m_inventory = nullptr;
         std::vector<unsigned int> m_equippedItems; // For armour, weapons, etc.
@@ -174,26 +190,11 @@ class Entity
         unsigned int m_animation_jumpFrames = 3;
         unsigned int m_animation_runFrames = 3;
 
-        bool m_controls[4]; // Up, down (crouching while on ground), left, right
+        bool m_controls[6]; // Up, down (crouching while on ground), left, right, backwards (layer++), forwards (layer--)
         float m_speed = 0.02;
-        float m_jumpHeight = 0.767f * 10.0f; // Jumpheight == y = (2.736t+(-0.098t^2))/8
-                                            /*
-                                                Calculate:
-                                                y = (-.1(x-5j)^2 + 2.5j^2) / 4
-                                                Where y is the jumpheight (in blocks), x is the time (in frames), and j is the jumpheight
+        float m_jumpHeight = 0.767f * 10.0f; // Maximum height = (m_jumpHeight^2)/1.225
 
-                                                or
-
-                                                2.5j^2 = 8y
-                                                Where y is the highest height in the jump, in blocks
-
-                                                and
-
-                                                y = (h * 4) / x + .1x
-                                                Where h is the desired height (in blocks), y is the jumpheight, and x is time (in frames)
-
-                                            */
-        std::vector<glm::vec2> m_targets;
+        std::vector<glm::vec3> m_targets;
         unsigned int m_curTarget = 0;
 
         GLEngine::GLTexture m_texture;
@@ -201,11 +202,11 @@ class Entity
 
         Categories::Faction m_faction;
 
-        glm::vec2 m_position;
-        glm::vec2 m_size;
+        glm::vec2 m_position = glm::vec2(0.0f);
         unsigned int m_layer = 0;
+        glm::vec2 m_size = glm::vec2(1.0f);
 
-        glm::vec2 m_velocity;
+        glm::vec2 m_velocity = glm::vec2(0.0f);
 
         bool m_transparent = false; // Unimplemented
 
@@ -217,10 +218,6 @@ class Entity
         Categories::Disability_Type m_disabilities = Categories::Disability_Type::NONE;
         Categories::Attack_Type m_attackType = Categories::Attack_Type::MELEE_ONLY;
         Categories::Entity_Type m_type = Categories::Entity_Type::MOB;
-
-        Chunk* m_parentChunk = nullptr;
-        AudioManager* m_audioManager = nullptr;
-        ScriptQueue* m_sq = nullptr;
 
         float m_maxSpeed;
 
@@ -247,5 +244,11 @@ class Entity
         - Attack Types
         - Max Health
         */
-
 };
+
+
+
+
+
+
+

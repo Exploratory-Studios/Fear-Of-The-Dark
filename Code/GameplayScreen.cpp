@@ -1,6 +1,7 @@
 #include "GameplayScreen.h"
 
-#include "Entity.h"
+#include "Entities.h"
+#include "Scripting/ScripterMain.h"
 
 #include <SDL2/SDL_timer.h>
 
@@ -9,7 +10,7 @@
 #include <regex>
 #endif //DEV_CONTROLS
 
-GameplayScreen::GameplayScreen(GLEngine::Window* window, WorldIOManager* WorldIOManager) : m_window(window), m_WorldIOManager(WorldIOManager)
+GameplayScreen::GameplayScreen(GLEngine::Window* window, WorldIOManager* WorldIOManager, World* world) : m_window(window), m_WorldIOManager(WorldIOManager), m_world(world)
 {
 
 }
@@ -56,53 +57,28 @@ void GameplayScreen::onEntry() {
 
     m_dr.init();
 
+    m_audio = new AudioManager();
+    m_audio->init();
+
     ///m_WorldManager.init(m_WorldIOManager, &m_particle2d);
-    m_scripter = new Scripter(this);
-    m_WorldIOManager->getAudioManager()->init();
+    m_scripter = new Scripter();
+    m_sq = new ScriptQueue();
 
-    if(m_WorldIOManager->getWorld()) {
-        for(unsigned int j = 0; j < WORLD_SIZE; j++) {
-            m_WorldIOManager->getWorld()->chunks[j]->setAudioManager(m_WorldIOManager->getAudioManager());
-        }
-
-        if(!m_WorldIOManager->getWorld()->player) {
-            m_player = reinterpret_cast<Player*>(createEntity((unsigned int)Categories::EntityIDs::MOB_PLAYER, glm::vec2(5.0f, 100.0f), m_WorldIOManager->getWorld()->chunks[(int)(5.0f) / CHUNK_SIZE], m_WorldIOManager->getAudioManager(), nullptr, &m_game->inputManager, m_WorldIOManager->getScriptQueue()));
-            m_WorldIOManager->setPlayer(m_player);
-        } else {
-            m_player = m_WorldIOManager->getWorld()->player;
-        }
-
-        {
-            int index = (m_player->getPosition().x) / CHUNK_SIZE / WORLD_SIZE;
-            m_player->setParentChunk(&m_WorldIOManager->getWorld()->chunks[index%WORLD_SIZE]);
-        }
-
-        {
-            for(unsigned int j = 0; j < WORLD_SIZE; j++) {
-                std::vector<Entity*> entities;
-                entities = m_WorldIOManager->getWorld()->chunks[j]->getEntities();
-                for(unsigned int i = 0; i < entities.size(); i++) {
-                    int index = (m_WorldIOManager->getWorld()->chunks[j]->getEntities()[i]->getPosition().x) / CHUNK_SIZE;
-                    m_WorldIOManager->getWorld()->chunks[j]->getEntities()[i]->setParentChunk(m_WorldIOManager->getWorld()->chunks[index]);
-                    m_WorldIOManager->getWorld()->chunks[index]->addEntity(m_WorldIOManager->getWorld()->chunks[j]->getEntities()[i]);
-                }
-            }
-        }
-    }
-
-    m_questManager = new QuestManager(ASSETS_FOLDER_PATH + "Questing/DialogueList.txt", ASSETS_FOLDER_PATH + "Questing/FlagList.txt", ASSETS_FOLDER_PATH + "Questing/TradeList.txt", m_WorldIOManager->getScriptQueue());
+    m_questManager = new QuestManager(ASSETS_FOLDER_PATH + "Questing/DialogueList.txt", ASSETS_FOLDER_PATH + "Questing/FlagList.txt", ASSETS_FOLDER_PATH + "Questing/TradeList.txt", m_sq);
     m_console = new Console();
 
-    m_WorldIOManager->getWorld()->chunks[0]->addEntity(createEntity((unsigned int)Categories::EntityIDs::MOB_NEUTRAL_QUESTGIVER_A, glm::vec2(10.0f, (10.0f)), m_WorldIOManager->getWorld()->chunks[0], m_WorldIOManager->getAudioManager(), m_questManager));
+    m_gui = new GLEngine::GUI();
+
+    if(!m_world->getPlayer()) {
+        Player p(glm::vec2(5.0f, 100.0f), true);
+        m_world->setPlayer(p);
+    }
+
+    m_camera.setPosition(m_world->getPlayer()->getPosition());
 
     initUI();
 
     tick();
-
-    if(m_player) {
-        activateChunks();
-    }
-
 }
 
 void GameplayScreen::onExit() {
@@ -110,7 +86,7 @@ void GameplayScreen::onExit() {
     delete m_scripter;
 
     m_hasBeenInited = false;
-    m_gui.destroy();
+    m_gui->destroy();
     delete m_questManager;
     delete m_console;
 
@@ -130,60 +106,49 @@ void GameplayScreen::update() {
     m_deltaTime = std::abs((60 / m_game->getFps()) + -1);
     m_deltaTime++;
 
-    if(m_frame == 0.0f) {
-        if(m_player) {
-            activateChunks();
-            //tick();
-        } else {
-            logger->log("Could not initialize world (Full update when frames == 0). Some things may not be as expected.", true);
-        }
-    }
-
     checkInput();
 
+    if(m_world->getNextEra() != m_world->getEra()) {
+        m_WorldIOManager->setWorldEra(m_world, m_world->getNextEra());
+        /// TODO: Move to loading screen for this.
+    }
+
     if(m_gameState != GameState::PAUSE && m_currentState != GLEngine::ScreenState::EXIT_APPLICATION) {
-        m_questManager->update(m_game->inputManager, m_player);
-        m_scripter->update();
+        m_questManager->update(m_game->inputManager, m_world->getPlayer());
+        m_scripter->update(m_world, m_sq, m_questManager, this);
 
         // Set player caninteract
 
-        if(m_player && !m_cutscenePause) {
-            m_player->update(m_deltaTime, m_WorldIOManager->getWorld()->chunks);
-            m_player->updateMouse(&m_camera);
-            m_player->collide();
-            m_player->setCanInteract(!m_questManager->isDialogueActive());
+        if(m_world->getPlayer() && !m_cutscenePause) {
+            m_world->getPlayer()->updateMouse(m_world, m_camera.convertScreenToWorld(m_game->inputManager.getMouseCoords()));
+            m_world->getPlayer()->updateInput(&m_game->inputManager, m_world, m_sq);
+            m_world->getPlayer()->setCanInteract(!m_questManager->isDialogueActive());
         }
 
+        m_world->updateTiles(getScreenBox() + glm::vec4(-10.0f, -10.0f, 20.0f, 20.0f));
+        m_world->updateEntities(m_audio, 1.0f); /// TODO: Use timestep
+
         if(!m_cameraLocked) {
-            if(std::abs((m_player->getPosition().x + m_player->getSize().x / 2.0f) - m_lastPlayerPos.x) >= (float)(CHUNK_SIZE) * (WORLD_SIZE/2)) {
-                int sign = ((m_player->getPosition().x + m_player->getSize().x / 2.0f) - m_lastPlayerPos.x) / std::abs((m_player->getPosition().x + m_player->getSize().x / 2.0f) - m_lastPlayerPos.x);
-                m_lastPlayerPos.x += (float)(WORLD_SIZE * CHUNK_SIZE) * sign;
-                m_camera.setPosition(m_camera.getPosition() + glm::vec2((float)(WORLD_SIZE * CHUNK_SIZE) * sign, 0.0f));
+            if(std::abs((m_world->getPlayer()->getPosition().x) - m_lastPlayerPos.x) >= (WORLD_SIZE/2)) {
+                int sign = ((m_world->getPlayer()->getPosition().x + m_world->getPlayer()->getSize().x / 2.0f) - m_lastPlayerPos.x) / std::abs((m_world->getPlayer()->getPosition().x + m_world->getPlayer()->getSize().x / 2.0f) - m_lastPlayerPos.x);
+                m_lastPlayerPos.x += (float)(WORLD_SIZE) * sign;
+                m_camera.setPosition(m_camera.getPosition() + glm::vec2((float)(WORLD_SIZE) * sign, 0.0f));
             }
-            m_lastPlayerPos = (m_lastPlayerPos + ((m_player->getPosition() + m_player->getSize() / glm::vec2(2.0f)) - m_lastPlayerPos) / glm::vec2(4.0f));
+            m_lastPlayerPos = (m_lastPlayerPos + ((m_world->getPlayer()->getPosition() + m_world->getPlayer()->getSize() / glm::vec2(2.0f)) - m_lastPlayerPos) / glm::vec2(4.0f));
             m_camera.setPosition(m_lastPlayerPos); // If lastplayerpos is never updated, the camera is still 'locked' per say, but we can actually change the lastPlayerPos on purpose to get a smooth movement somewhere.
         } else {
             m_lastPlayerPos = (m_lastPlayerPos + (m_smoothMoveTarget - m_lastPlayerPos) * m_smoothMoveSpeed);
             m_camera.setPosition(m_lastPlayerPos);
         }
 
-        for(unsigned int i = 0; i < m_activatedChunks.size(); i++) {
-            int xOffset = std::abs(m_activatedChunks[i] + WORLD_SIZE) % WORLD_SIZE;
-            m_WorldIOManager->getWorld()->chunks[xOffset]->update(m_time, m_deltaTime, m_WorldIOManager->getWorld()->chunks, m_player, !m_cutscenePause);
-        }
-
-        if(m_camera.getPosition().x > (float)(WORLD_SIZE * CHUNK_SIZE)) {
-            m_camera.setPosition(m_camera.getPosition() - glm::vec2((float)(WORLD_SIZE * CHUNK_SIZE), 0.0f));
-        } else if(m_camera.getPosition().x < 0.0000000f) {
-            m_camera.setPosition(m_camera.getPosition() + glm::vec2((float)(WORLD_SIZE * CHUNK_SIZE), 0.0f));
+        if((int)m_camera.getPosition().x > WORLD_SIZE) {
+            m_camera.setPosition(m_camera.getPosition() - glm::vec2((float)(WORLD_SIZE), 0.0f));
+        } else if((int)m_camera.getPosition().x < 0) {
+            m_camera.setPosition(m_camera.getPosition() + glm::vec2((float)(WORLD_SIZE), 0.0f));
         }
 
         if(m_scale > MIN_ZOOM && m_scale < MAX_ZOOM)
             m_camera.setScale(m_scale);
-
-        if(m_player) {
-            activateChunks();
-        }
 
         m_camera.update();
         m_uiCamera.update();
@@ -196,13 +161,13 @@ void GameplayScreen::update() {
 
         m_frame++;
     }
-    if(m_currentState != GLEngine::ScreenState::EXIT_APPLICATION) m_gui.update();
+    if(m_currentState != GLEngine::ScreenState::EXIT_APPLICATION) m_gui->update();
 }
 #include <stdio.h>
 void GameplayScreen::draw() {
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-    float dayLight = cos((float)m_WorldIOManager->getWorld()->time / (DAY_LENGTH / 6.28318f)) / 2.0f + 0.5f;
+    float dayLight = cos((float)m_world->getTime() / (DAY_LENGTH / 6.28318f)) / 2.0f + 0.5f;
 
     //glClearColor(0.3f * dayLight, 0.4f * dayLight, 1.0f * dayLight, 1.0f);
 
@@ -242,21 +207,16 @@ void GameplayScreen::draw() {
         GLint pUniform = m_textureProgram.getUniformLocation("P");
         glUniformMatrix4fv(pUniform, 1, GL_FALSE, &projectionMatrix[0][0]);
 
-        m_spriteBatch.begin(GLEngine::GlyphSortType::FRONT_TO_BACK); // lower numbers in back
+        m_spriteBatch.begin(GLEngine::GlyphSortType::FRONT_TO_BACK);
 
-        for(unsigned int i = 0; i < m_drawnChunks.size(); i++) {
-            int xOffset = std::abs(m_drawnChunks[i] + WORLD_SIZE) % WORLD_SIZE;
-            m_WorldIOManager->getWorld()->chunks[xOffset]->draw(m_spriteBatch, m_spriteFont, m_drawnChunks[i] - xOffset, m_time, m_camera, m_player);
-            #ifdef DEBUG
-            m_WorldIOManager->getWorld()->chunks[xOffset]->drawDebug(m_dr, m_drawnChunks[i] - xOffset);
-            m_dr.end();
-            #endif // DEBUG
-        }
-
-        m_player->draw(m_spriteBatch, m_time, 0);
+        m_world->drawTiles(m_spriteBatch, m_spriteFont, m_dr, getScreenBox() + glm::vec4(0.0f, 0.0f, 1.0f, 1.0f));
+        m_world->drawEntities(m_spriteBatch, m_spriteFont, m_dr, getScreenBox() + glm::vec4(0.0f, 0.0f, 1.0f, 1.0f));
 
         m_spriteBatch.end();
+
         m_spriteBatch.renderBatch();
+
+        m_world->drawDebug(m_dr, 0.0f);
 
         m_dr.render(projectionMatrix, 2);
 
@@ -276,9 +236,9 @@ void GameplayScreen::draw() {
         glUniformMatrix4fv(pUniform, 1, GL_FALSE, &projectionMatrix[0][0]);
 
         m_questManager->draw();
-        m_player->drawGUI(m_spriteBatch, m_spriteFont);
+        m_world->getPlayer()->drawGUI(m_spriteBatch, m_spriteFont);
 
-        m_gui.draw();
+        m_gui->draw();
 
         m_dr.end();
         m_dr.render(projectionMatrix, 3);
@@ -308,7 +268,7 @@ void GameplayScreen::draw() {
         glUniform2f(sizeUniform, m_window->getScreenWidth(), m_window->getScreenHeight());
 
         GLint sanityUniform = m_vignetteTextureProgram.getUniformLocation("sanity");
-        glUniform1f(sanityUniform, m_player->getSanity());
+        glUniform1f(sanityUniform, m_world->getPlayer()->getSanity());
 
         GLint timeUniform = m_vignetteTextureProgram.getUniformLocation("time");
         glUniform1f(timeUniform, m_time);
@@ -330,7 +290,7 @@ void GameplayScreen::checkInput() {
     SDL_Event evnt;
     while (SDL_PollEvent(&evnt)) {
         if(!m_console->isShown()) m_game->onSDLEvent(evnt);
-        m_gui.onSDLEvent(evnt);
+        m_gui->onSDLEvent(evnt);
         switch(evnt.type) {
             case SDL_QUIT:
                 m_currentState = GLEngine::ScreenState::EXIT_APPLICATION;
@@ -361,18 +321,19 @@ void GameplayScreen::checkInput() {
     }
     if(m_game->inputManager.isKeyPressed(SDLK_F2)) {
         if(!m_selecting) {
-            m_lastSelectedPosition = m_player->getSelectedBlock()->getPosition();
+            m_lastSelectedPosition = m_world->getPlayer()->getSelectedBlock()->getPosition();
         } else {
-            if(m_lastSelectedPosition.x > m_player->getSelectedBlock()->getPosition().x || m_lastSelectedPosition.y > m_player->getSelectedBlock()->getPosition().y) {
+            if(m_lastSelectedPosition.x > m_world->getPlayer()->getSelectedBlock()->getPosition().x || m_lastSelectedPosition.y > m_world->getPlayer()->getSelectedBlock()->getPosition().y) {
                 logger->log("Tried to create a structure badly, please try again, first coord is lower left corner, second is upper right.");
             } else {
 
-                std::string filepath = ASSETS_FOLDER_PATH + "/Structures/Test.bin"; /// TODO: Change path to be in AppData or ~/.exploratory
-                m_WorldIOManager->saveStructureToFile(filepath,
+                std::string filepath = ASSETS_FOLDER_PATH + "/Structures/Test.bin";
+                m_WorldIOManager->saveStructureToFile(m_world,
+                                                      filepath,
                                                       glm::vec4(m_lastSelectedPosition.x,
                                                       m_lastSelectedPosition.y,
-                                                      m_player->getSelectedBlock()->getPosition().x - m_lastSelectedPosition.x,
-                                                      m_player->getSelectedBlock()->getPosition().y - m_lastSelectedPosition.y)); // Long-ass line of code, or long ass-line of code? Only god knows, and there is no god.
+                                                      m_world->getPlayer()->getSelectedBlock()->getPosition().x - m_lastSelectedPosition.x,
+                                                      m_world->getPlayer()->getSelectedBlock()->getPosition().y - m_lastSelectedPosition.y)); // Long-ass line of code, or long ass-line of code? Only god knows, and there is no god.
             }
         }
         m_selecting = !m_selecting;
@@ -380,15 +341,15 @@ void GameplayScreen::checkInput() {
     if(m_game->inputManager.isKeyPressed(SDLK_F3)) {
         std::string filepath = ASSETS_FOLDER_PATH + "/Structures/Test.bin";
         StructureData data = m_WorldIOManager->loadStructureFromFile(filepath);
-        m_WorldIOManager->placeStructure(data, m_player->getSelectedBlock()->getPosition());
+        m_WorldIOManager->placeStructure(m_world, data, m_world->getPlayer()->getSelectedBlock()->getPosition());
     }
     #endif // DEV_CONTROLS
 
     if(m_game->inputManager.isKeyPressed(SDLK_F4)) {
         //m_gameState = GameState::PAUSE;
-        m_WorldIOManager->saveWorld(m_WorldIOManager->getWorld()->name);
+        m_WorldIOManager->saveWorld(m_world);
     } else if(m_game->inputManager.isKeyPressed(SDLK_F5)) {
-        m_WorldIOManager->loadWorld(m_WorldIOManager->getWorld()->name);
+        m_WorldIOManager->loadWorld(m_world->getName(), m_world);
     }
 
 }
@@ -422,32 +383,32 @@ void GameplayScreen::initShaders() {
 
 void GameplayScreen::initUI() {
     {
-        m_gui.init(ASSETS_FOLDER_PATH + "GUI");
-        m_gui.loadScheme("FOTDSkin.scheme");
+        m_gui->init(ASSETS_FOLDER_PATH + "GUI");
+        m_gui->loadScheme("FOTDSkin.scheme");
 
-        m_gui.setFont("Amatic-26");
+        m_gui->setFont("Amatic-26");
 
-        m_gui.setMouseCursor("FOTDSkin/MouseArrow");
-        m_gui.showMouseCursor();
+        m_gui->setMouseCursor("FOTDSkin/MouseArrow");
+        m_gui->showMouseCursor();
         SDL_ShowCursor(0);
     }
 
     { // Pause screen
-        CEGUI::PushButton* resumeButton = static_cast<CEGUI::PushButton*>(m_gui.createWidget("FOTDSkin/Button", glm::vec4(0.3f, 0.3f, 0.4f, 0.1f), glm::vec4(0.0f), "PAUSE_RESUME_BUTTON"));
+        CEGUI::PushButton* resumeButton = static_cast<CEGUI::PushButton*>(m_gui->createWidget("FOTDSkin/Button", glm::vec4(0.3f, 0.3f, 0.4f, 0.1f), glm::vec4(0.0f), "PAUSE_RESUME_BUTTON"));
         resumeButton->subscribeEvent(CEGUI::PushButton::EventClicked, CEGUI::Event::Subscriber(&GameplayScreen::pause_resume_button_clicked, this));
         resumeButton->setText("Resume Game");
         resumeButton->disable();
         resumeButton->hide();
         m_pauseWidgets.push_back(static_cast<CEGUI::Window*>(resumeButton));
 
-        CEGUI::PushButton* saveButton = static_cast<CEGUI::PushButton*>(m_gui.createWidget("FOTDSkin/Button", glm::vec4(0.3f, 0.45f, 0.4f, 0.1f), glm::vec4(0.0f), "PAUSE_SAVE_BUTTON"));
+        CEGUI::PushButton* saveButton = static_cast<CEGUI::PushButton*>(m_gui->createWidget("FOTDSkin/Button", glm::vec4(0.3f, 0.45f, 0.4f, 0.1f), glm::vec4(0.0f), "PAUSE_SAVE_BUTTON"));
         saveButton->subscribeEvent(CEGUI::PushButton::EventClicked, CEGUI::Event::Subscriber(&GameplayScreen::pause_save_button_clicked, this));
         saveButton->setText("Save Game");
         saveButton->disable();
         saveButton->hide();
         m_pauseWidgets.push_back(static_cast<CEGUI::Window*>(saveButton));
 
-        CEGUI::PushButton* quitButton = static_cast<CEGUI::PushButton*>(m_gui.createWidget("FOTDSkin/Button", glm::vec4(0.3f, 0.6f, 0.4f, 0.1f), glm::vec4(0.0f), "PAUSE_QUIT_BUTTON"));
+        CEGUI::PushButton* quitButton = static_cast<CEGUI::PushButton*>(m_gui->createWidget("FOTDSkin/Button", glm::vec4(0.3f, 0.6f, 0.4f, 0.1f), glm::vec4(0.0f), "PAUSE_QUIT_BUTTON"));
         quitButton->subscribeEvent(CEGUI::PushButton::EventClicked, CEGUI::Event::Subscriber(&GameplayScreen::pause_quit_button_clicked, this));
         quitButton->setText("Save & Quit Game");
         quitButton->disable();
@@ -455,13 +416,13 @@ void GameplayScreen::initUI() {
         m_pauseWidgets.push_back(static_cast<CEGUI::Window*>(quitButton));
     }
 
-    m_player->initGUI(&m_gui);
-    m_questManager->initUI(&m_gui);
-    m_console->init(m_gui, m_scripter);
+    m_world->getPlayer()->initGUI(m_gui);
+    m_questManager->initUI(m_gui);
+    m_console->init(*m_gui, m_scripter, m_world, m_questManager);
 
     #ifdef DEV_CONTROLS
     {
-        m_fpsWidget = static_cast<CEGUI::DefaultWindow*>(m_gui.createWidget("FOTDSkin/Label", glm::vec4(0.05f, 0.05f, 0.9f, 0.9f), glm::vec4(0.0f), "FPS_STRING_WIDGET"));
+        m_fpsWidget = static_cast<CEGUI::DefaultWindow*>(m_gui->createWidget("FOTDSkin/Label", glm::vec4(0.05f, 0.05f, 0.9f, 0.9f), glm::vec4(0.0f), "FPS_STRING_WIDGET"));
         m_fpsWidget->setHorizontalAlignment(CEGUI::HorizontalAlignment::HA_LEFT);
         m_fpsWidget->setVerticalAlignment(CEGUI::VerticalAlignment::VA_TOP);
     }
@@ -469,37 +430,35 @@ void GameplayScreen::initUI() {
 }
 
 void GameplayScreen::tick() {
-    for(unsigned int i = 0; i < m_activatedChunks.size(); i++) {
-        int xOffset = std::abs(m_activatedChunks[i] + WORLD_SIZE) % WORLD_SIZE;
-        m_WorldIOManager->getWorld()->chunks[xOffset]->tick(m_WorldIOManager->getWorld()->time, m_player, m_WorldIOManager->getWorld()->worldEra, !m_cutscenePause);
-    }
+    m_world->tickTiles(getScreenBox() + glm::vec4(-20.0f, -20.0f, 40.0f, 40.0f));
+    m_world->tickEntities(m_audio);
 
-    if(!m_WorldIOManager->getAudioManager()->isMusicPlaying()) {
+    if(!m_audio->isMusicPlaying()) {
         float hour = (float)((int)m_time % DAY_LENGTH) / (float)DAY_LENGTH + 0.5f;//(int)((m_time / TICK_RATE) + 12) % DAY_LENGTH;
 
         int randNum = std::rand() % 100;
 
         if(hour > 4.0f/24.0f && hour < 9.0f/24.0f) { // Morning (4am-9am)
             if(MORNING_MUSIC_LENGTH > 0)
-                m_WorldIOManager->getAudioManager()->playMorningSong(randNum % MORNING_MUSIC_LENGTH);
+                m_audio->playMorningSong(randNum % MORNING_MUSIC_LENGTH);
         } else if(hour > 9.0f/24.0f && hour < 16.0f/24.0f) { // Day (9am-4pm)
             if(DAY_MUSIC_LENGTH > 0)
-                m_WorldIOManager->getAudioManager()->playDaySong(randNum % DAY_MUSIC_LENGTH);
+                m_audio->playDaySong(randNum % DAY_MUSIC_LENGTH);
         } else if(hour > 16.0f/24.0f && hour < 21.0f/24.0f) { // Afternoon (4pm-9pm)
             if(AFTERNOON_MUSIC_LENGTH > 0)
-                m_WorldIOManager->getAudioManager()->playAfternoonSong(randNum % AFTERNOON_MUSIC_LENGTH);
+                m_audio->playAfternoonSong(randNum % AFTERNOON_MUSIC_LENGTH);
         } else if(hour > 21.0f/24.0f || hour < 4.0f/24.0f) { // Night (9pm-4am) (Overlap requires OR logic)
             if(hour >= 0.0f && hour <= 1.0f/24.0f) { // Nightmare hour (Midnight-1am)
                 if(NIGHT_MUSIC_LENGTH > 0)
-                    m_WorldIOManager->getAudioManager()->playNightmareSong(randNum % NIGHTMARE_MUSIC_LENGTH);
+                    m_audio->playNightmareSong(randNum % NIGHTMARE_MUSIC_LENGTH);
             } else {
                 if(NIGHTMARE_MUSIC_LENGTH > 0)
-                    m_WorldIOManager->getAudioManager()->playNightSong(randNum % NIGHT_MUSIC_LENGTH);
+                    m_audio->playNightSong(randNum % NIGHT_MUSIC_LENGTH);
             }
         }
     }
 
-    m_WorldIOManager->setWorldTime(m_WorldIOManager->getWorld()->time + 1);
+    m_world->incrementTime();
 }
 
 void GameplayScreen::updateScale() {
@@ -515,24 +474,26 @@ void GameplayScreen::updateScale() {
 
 #ifdef DEV_CONTROLS
 void GameplayScreen::drawDebug() {
-    std::string fps = "FPS: " + std::to_string((int)m_game->getFps()) + "\nMouse x,y: " + std::to_string(m_player->m_selectedBlock->getPosition().x) + "," + std::to_string(m_player->m_selectedBlock->getPosition().y);
-    std::string placeString;
-    switch((unsigned int)m_player->m_selectedBlock->getParentChunk()->getPlace()) {
-        case (unsigned int)Categories::Places::ARCTIC: { placeString = "Arctic"; break; }
-        case (unsigned int)Categories::Places::ASIA: { placeString = "Asia"; break; }
-        case (unsigned int)Categories::Places::AUSTRALIA: { placeString = "Australia"; break; }
-        case (unsigned int)Categories::Places::CANADA: { placeString = "Canada"; break; }
-        case (unsigned int)Categories::Places::NORTH_AFRICA: { placeString = "North Africa"; break; }
-        case (unsigned int)Categories::Places::RUSSIA: { placeString = "Russia"; break; }
-        case (unsigned int)Categories::Places::SOUTH_AFRICA: { placeString = "South Africa"; break; }
-        case (unsigned int)Categories::Places::USA: { placeString = "Excited States of America"; break; }
+    if(m_world->getPlayer()->m_selectedBlock) {
+        std::string fps = "FPS: " + std::to_string((int)m_game->getFps()) + "\nMouse x,y: " + std::to_string(m_world->getPlayer()->m_selectedBlock->getPosition().x) + "," + std::to_string(m_world->getPlayer()->m_selectedBlock->getPosition().y);
+        std::string placeString;
+
+        switch((unsigned int)m_world->getPlace(m_world->getPlayer()->m_selectedBlock->getPosition().x)) {
+            case (unsigned int)Categories::Places::ARCTIC: { placeString = "Arctic"; break; }
+            case (unsigned int)Categories::Places::ASIA: { placeString = "Asia"; break; }
+            case (unsigned int)Categories::Places::AUSTRALIA: { placeString = "Australia"; break; }
+            case (unsigned int)Categories::Places::CANADA: { placeString = "Canada"; break; }
+            case (unsigned int)Categories::Places::NORTH_AFRICA: { placeString = "North Africa"; break; }
+            case (unsigned int)Categories::Places::RUSSIA: { placeString = "Russia"; break; }
+            case (unsigned int)Categories::Places::SOUTH_AFRICA: { placeString = "South Africa"; break; }
+            case (unsigned int)Categories::Places::USA: { placeString = "Excited States of America"; break; }
+        }
+
+        fps += "\nSelected Block: Biome: " + placeString + ", " + m_world->getPlayer()->m_selectedBlock->getPrintout(m_world);
+
+        fps += "\nPlayer Light Level: " + std::to_string(m_world->getPlayer()->getLightLevel());
+        m_fpsWidget->setText(fps);
     }
-
-    if(m_player->m_selectedBlock)
-        fps += "\nSelected Block: Biome: " + placeString + ", " + m_player->m_selectedBlock->getPrintout();
-
-    fps += "\nPlayer Light Level: " + std::to_string(m_player->getLightLevel());
-    m_fpsWidget->setText(fps);
 }
 #endif //DEV_CONTROLS
 
@@ -560,7 +521,7 @@ bool GameplayScreen::pause_resume_button_clicked(const CEGUI::EventArgs& e) {
 }
 
 bool GameplayScreen::pause_save_button_clicked(const CEGUI::EventArgs& e) {
-    m_WorldIOManager->saveWorld(m_WorldIOManager->getWorld()->name);
+    m_WorldIOManager->saveWorld(m_world);
     return true;
 }
 
@@ -570,49 +531,14 @@ bool GameplayScreen::pause_quit_button_clicked(const CEGUI::EventArgs& e) {
     m_currentState = GLEngine::ScreenState::CHANGE_NEXT;
     return true;
 }
-#include <iostream>
-void GameplayScreen::activateChunks() {
-    int chunkIndex = m_player->getChunkIndex();
 
-    /*if(chunkIndex != m_lastActivated && chunkIndex >= 0) { // Make sure that we changed chunks
-        m_activatedChunks.clear();
+glm::vec4 GameplayScreen::getScreenBox() {
+    // Window coordinates
+    glm::vec2 topLeft(0.0f, 0.0f);
+    glm::vec2 bottomRight(m_window->getScreenWidth(), m_window->getScreenHeight());
 
-        const signed int each = std::ceil((VIEW_DIST - 1) / 2); // How many chunks on each side of the centre of the selection
+    glm::vec2 gameplayCoordsTL = m_camera.convertScreenToWorld(topLeft);
+    glm::vec2 gameplayCoordsBR = m_camera.convertScreenToWorld(bottomRight);
 
-        for(signed int i = -each; i <= each; i++) {
-            m_activatedChunks.push_back(chunkIndex + i);
-
-            int realIndex = (chunkIndex + i + WORLD_SIZE) % WORLD_SIZE;
-
-            m_WorldIOManager->getWorld()->chunks[realIndex]->activateChunk();
-        }
-
-        m_lastActivated = chunkIndex;
-    }*/
-
-    bool m_playerChunkCovered = false;
-
-    chunkIndex = (((int)m_camera.getPosition().x + WORLD_SIZE * CHUNK_SIZE) / CHUNK_SIZE) % WORLD_SIZE;
-
-    m_drawnChunks.clear();
-    m_activatedChunks.clear();
-    for(signed int i = -MAX_VIEW_DIST; i <= MAX_VIEW_DIST; i++) {
-        int x, y;
-        x = m_WorldIOManager->getWorld()->chunks[chunkIndex]->getTile(CHUNK_SIZE * chunkIndex, 0, 0)->getPosition().x + (i * CHUNK_SIZE);
-        y = m_WorldIOManager->getWorld()->chunks[chunkIndex]->getTile(CHUNK_SIZE * chunkIndex, 0, 0)->getPosition().y;
-
-        if(m_camera.isBoxInView(glm::vec2(x, y), glm::vec2(CHUNK_SIZE, WORLD_HEIGHT)) || m_camera.isBoxInView(glm::vec2(x + CHUNK_SIZE * 0.5f, y), glm::vec2(CHUNK_SIZE, WORLD_HEIGHT)) || m_camera.isBoxInView(glm::vec2(x - CHUNK_SIZE * 0.5f, y), glm::vec2(CHUNK_SIZE, WORLD_HEIGHT))) {
-            if(chunkIndex + i == m_player->getChunkIndex()) m_playerChunkCovered = true;
-            m_drawnChunks.push_back(chunkIndex + i);
-            m_activatedChunks.push_back(chunkIndex + i);
-            int realIndex = (chunkIndex + i + WORLD_SIZE) % WORLD_SIZE;
-            m_WorldIOManager->getWorld()->chunks[realIndex]->drawChunk();
-            m_WorldIOManager->getWorld()->chunks[realIndex]->activateChunk();
-        }
-    }
-    if(!m_playerChunkCovered) {
-        int realIndex = (m_player->getChunkIndex() + WORLD_SIZE) % WORLD_SIZE;
-        m_WorldIOManager->getWorld()->chunks[realIndex]->drawChunk();
-        m_WorldIOManager->getWorld()->chunks[realIndex]->activateChunk();
-    }
+    return glm::vec4(gameplayCoordsTL.x, gameplayCoordsBR.y, gameplayCoordsBR.x - gameplayCoordsTL.x, gameplayCoordsTL.y - gameplayCoordsBR.y) + glm::vec4(-1.5f, -1.5f, 1.0f, 1.0f);
 }

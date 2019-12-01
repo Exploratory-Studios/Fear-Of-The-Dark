@@ -44,7 +44,7 @@ class MiniScreenEntry {
 class LoadScreen : public GLEngine::IGameScreen
 {
     public:
-        LoadScreen(GLEngine::Window* window, WorldIOManager* WorldIOManager);
+        LoadScreen(GLEngine::Window* window, WorldIOManager* WorldIOManager, World* world);
         virtual ~LoadScreen();
 
         virtual int getNextScreenIndex() const override;
@@ -100,4 +100,5 @@ class LoadScreen : public GLEngine::IGameScreen
         Logger* logger = Logger::getInstance();
 
         WorldIOManager* m_worldIOManager = nullptr;
+        World* m_world = nullptr;
 };

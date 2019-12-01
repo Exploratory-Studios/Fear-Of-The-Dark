@@ -293,8 +293,6 @@
 		<Unit filename="Blocks.h" />
 		<Unit filename="BuffData.h" />
 		<Unit filename="Categories.h" />
-		<Unit filename="Chunk.cpp" />
-		<Unit filename="Chunk.h" />
 		<Unit filename="Console.cpp" />
 		<Unit filename="Console.h" />
 		<Unit filename="Devlog FOTD Start Oct 9 2017" />
@@ -306,8 +304,6 @@
 		<Unit filename="Entities/TalkingNPC.h" />
 		<Unit filename="Entity.cpp" />
 		<Unit filename="Entity.h" />
-		<Unit filename="EntityManager.cpp" />
-		<Unit filename="EntityManager.h" />
 		<Unit filename="ExtraFunctions.h" />
 		<Unit filename="GameplayScreen.cpp" />
 		<Unit filename="GameplayScreen.h" />
@@ -350,6 +346,8 @@
 		<Unit filename="Tile.h" />
 		<Unit filename="WaitScreen.cpp" />
 		<Unit filename="WaitScreen.h" />
+		<Unit filename="World.cpp" />
+		<Unit filename="World.h" />
 		<Unit filename="WorldIOManager.cpp" />
 		<Unit filename="WorldIOManager.h" />
 		<Extensions>

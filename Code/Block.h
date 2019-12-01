@@ -9,13 +9,15 @@
 #include "Categories.h"
 #include "Scripting/ScriptQueue.h"
 
+#include "World.h"
+
 class Block : public Tile
 {
     public:
-        Block(glm::vec2 pos, unsigned int layer, Chunk* parent, MetaData metaData);
+        Block(glm::vec2 pos, unsigned int layer, MetaData metaData);
         virtual ~Block() { }
 
-        virtual void onInteract(ScriptQueue* sq) { }; // Class already has parent chunk
+        virtual void onInteract(World* world, ScriptQueue* sq) { };
 
         void operator=(const Block& other) {
             m_pos = other.getPosition();
@@ -32,14 +34,13 @@ class Block : public Tile
             m_backdrop = other.doDrawBackdrop();
             m_natural = other.isNatural();
             m_id = other.getID();
-            m_parentChunk = other.getParentChunk();
             m_walkEffect = (SoundEffectIDs)other.getWalkedOnSoundEffectID();
             m_walkParticle = (ParticleIDs)other.getWalkedOnParticleID();
         }
 
     protected:
-        virtual void onTick(float& tickTime) { }
-        virtual void onUpdate(float& time) { }
+        virtual void onTick(World* world, float& tickTime) { }
+        virtual void onUpdate(World* world, float& time) { }
         virtual void onDraw(GLEngine::SpriteBatch& sb, GLEngine::SpriteFont& sf, glm::vec2& pos, float& depth) { }
         virtual void onDestruction() { }
 
@@ -72,8 +73,6 @@ class Block : public Tile
         bool m_natural = false; // Is it a natural block? Does it get changed to stone when eras pass?
 
         unsigned int m_id;
-
-        Chunk* m_parentChunk = nullptr;
 
         SoundEffectIDs m_walkEffect = SoundEffectIDs::WALK_DIRT;
         ParticleIDs m_walkParticle = ParticleIDs::DIRT_PARTICLE;

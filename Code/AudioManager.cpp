@@ -3,7 +3,7 @@
 #include <AudioEngine.h>
 
 AudioManager::AudioManager() {
-
+    m_audio = new GLEngine::AudioEngine();
 }
 
 AudioManager::~AudioManager() {

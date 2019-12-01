@@ -10,8 +10,10 @@ Console::~Console()
     //dtor
 }
 
-void Console::init(GLEngine::GUI& gui, Scripter* scripter) {
+void Console::init(GLEngine::GUI& gui, Scripter* scripter, World* world, QuestManager* qm) {
     m_scripter = scripter;
+    m_world = world;
+    m_qm = qm;
 
     m_frame = static_cast<CEGUI::FrameWindow*>(gui.createWidget("FOTDSkin/FrameWindow", glm::vec4(0.03f, 0.67f, 0.94f, 0.3f), glm::vec4(0.0f), "ConsoleFrameWindowMaster"));
     m_frame->setDragMovingEnabled(false);
@@ -46,8 +48,8 @@ void Console::hide() {
     m_showing = false;
 }
 
-void Console::processCommand(std::string& command) {
-    std::string ret = m_scripter->executeCommand(command);
+void Console::processCommand(World* world, QuestManager* qm, std::string& command) {
+    std::string ret = m_scripter->executeCommand(world, qm, nullptr, command);
 
     std::vector<std::string> returnVector;
 
@@ -86,7 +88,7 @@ bool Console::onEditboxInput(const CEGUI::EventArgs& e) {
     const CEGUI::KeyEventArgs& newArgs = static_cast<const CEGUI::KeyEventArgs&>(e);
     if(newArgs.scancode == CEGUI::Key::Return) {
         std::string command = m_editbox->getText().c_str();
-        processCommand(command);
+        processCommand(m_world, m_qm, command);
         m_editbox->setText("");
         m_scrollable->setVerticalScrollPosition(1.0f);
         return true;

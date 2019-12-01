@@ -12,7 +12,7 @@ enum class BuffTypes {
 
 class Buff { // Abstract type, make other child classes to actually use Buffs
     public:
-        Buff(BuffTypes type, std::string name, GLuint textureId, float lingerTime = 2.0f) : m_type(type), m_name(name), m_textureId(textureId), m_lingerTime(lingerTime) { }
+        Buff(BuffTypes type, std::string name, GLuint textureId, float lingerTime = 2.0f) : m_type(type), m_name(name), m_lingerTime(lingerTime), m_textureId(textureId) { }
         virtual void update() { if(m_lingerTime <= 0.0f) m_active = false; if(m_active) { m_lingerTime--; customUpdate(); } }
         virtual void customUpdate() = 0;
 

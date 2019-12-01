@@ -2,7 +2,7 @@
 
 #include "Inventory.h"
 
-InventoryBlock::InventoryBlock(glm::vec2 pos, unsigned int layer, Chunk* parent, MetaData metaData, bool loadTexture) : InteractableBlock(pos, layer, parent, metaData) {
+InventoryBlock::InventoryBlock(glm::vec2 pos, unsigned int layer, MetaData metaData, bool loadTexture) : InteractableBlock(pos, layer, metaData) {
     m_inventory = new Inventory();
 }
 
@@ -16,7 +16,7 @@ void InventoryBlock::showInventory(bool show) {
     m_showInventory = show;
 }
 
-BlockSign::BlockSign(glm::vec2 pos, unsigned int layer, Chunk* parent, MetaData metaData, bool loadTexture) : InteractableBlock(pos, layer, parent, metaData) {
+BlockSign::BlockSign(glm::vec2 pos, unsigned int layer, MetaData metaData, bool loadTexture) : InteractableBlock(pos, layer, metaData, loadTexture) {
     metaData.getAspect("text", m_text);
 
     std::string script = "showAlert \"Sign:\" \"" + m_text + "\"";
@@ -24,18 +24,18 @@ BlockSign::BlockSign(glm::vec2 pos, unsigned int layer, Chunk* parent, MetaData 
     Script s;
     s.commands.push_back(script);
 
-    m_interactScriptId = parent->getScriptQueue()->addScript(s);
-    parent->getScriptQueue()->activateScript(m_interactScriptId);
+    //m_interactScriptId = parent->getScriptQueue()->addScript(s);
+    //parent->getScriptQueue()->activateScript(m_interactScriptId);
 }
 
-void LightBlock::onUpdate(float& time) {
+void LightBlock::onUpdate(World* world, float& time) {
     if(m_updateLight) {
-        setNeighboursLight();
+        setNeighboursLight(world);
         m_updateLight = false;
     }
 }
 
-BlockAir::BlockAir(glm::vec2 pos, unsigned int layer, Chunk* parent, bool loadTexture/* = true*/) : GenericBlock(pos, layer, parent, MetaData(), loadTexture) {
+BlockAir::BlockAir(glm::vec2 pos, unsigned int layer, MetaData metaData, bool loadTexture/* = true*/) : GenericBlock(pos, layer, metaData, loadTexture) {
     m_id = (unsigned int)Categories::BlockIDs::AIR;
 
     m_transparent = true; // Does light travel through it?
@@ -49,7 +49,7 @@ BlockAir::BlockAir(glm::vec2 pos, unsigned int layer, Chunk* parent, bool loadTe
         //m_ambientLight = parent->getTile(pos.x, (int)pos.y, 0)->getLight();
 }
 
-BlockDirt::BlockDirt(glm::vec2 pos, unsigned int layer, Chunk* parent, bool loadTexture/* = true*/) : GenericBlock(pos, layer, parent, MetaData(), loadTexture) {
+BlockDirt::BlockDirt(glm::vec2 pos, unsigned int layer, MetaData metaData, bool loadTexture/* = true*/) : GenericBlock(pos, layer, metaData, loadTexture) {
     m_id = (unsigned int)Categories::BlockIDs::DIRT;
 
     m_transparent = false; // Does light travel through it?
@@ -66,16 +66,16 @@ BlockDirt::BlockDirt(glm::vec2 pos, unsigned int layer, Chunk* parent, bool load
     m_walkEffect = SoundEffectIDs::WALK_DIRT;
 }
 
-void BlockDirt::onTick(float& tickTime) {
+void BlockDirt::onTick(World* world, float& tickTime) {
     if(m_sunLight >= 0.5f && m_exposedToSun) {
         int chance = std::rand() % 100;
         if(chance < 1) { // 1% chance every tick
-            m_parentChunk->setTile(createBlock((unsigned int)Categories::BlockIDs::GRASS, m_pos, m_layer, m_parentChunk, MetaData(), tickTime));
+            world->setTile(createBlock((unsigned int)Categories::BlockIDs::GRASS, m_pos, m_layer, MetaData(), tickTime));
         }
     }
 }
 
-BlockGrass::BlockGrass(glm::vec2 pos, unsigned int layer, Chunk* parent, bool loadTexture/* = true*/) : GenericBlock(pos, layer, parent, MetaData(), loadTexture) {
+BlockGrass::BlockGrass(glm::vec2 pos, unsigned int layer, MetaData metaData, bool loadTexture/* = true*/) : GenericBlock(pos, layer, metaData, loadTexture) {
     m_id = (unsigned int)Categories::BlockIDs::GRASS;
 
     m_transparent = false; // Does light travel through it?
@@ -90,16 +90,16 @@ BlockGrass::BlockGrass(glm::vec2 pos, unsigned int layer, Chunk* parent, bool lo
     m_natural = true;
 }
 
-void BlockGrass::onTick(float& tickTime) {
+void BlockGrass::onTick(World* world, float& tickTime) {
     if(m_sunLight >= 0.5f && m_exposedToSun) {
         int chance = std::rand() % 1000;
-        if(chance < 2 && m_parentChunk->getTile(m_pos.x, m_pos.y + 1, m_layer)->getID() == (unsigned int)Categories::BlockIDs::AIR) { // 0.2% chance every tick
-            //m_parentChunk->setTile(createBlock((unsigned int)Categories::BlockIDs::FOLIAGE, m_pos + glm::vec2(0.0f, 1.0f), m_parentChunk), m_pos.x, m_pos.y + 1);
+        if(chance < 2 && world->getTile(m_pos.x, m_pos.y + 1, m_layer)->getID() == (unsigned int)Categories::BlockIDs::AIR) { // 0.2% chance every tick
+            world->setTile(createBlock((unsigned int)Categories::BlockIDs::FOLIAGE, m_pos + glm::vec2(0.0f, 1.0f), m_layer));
         }
     }
 }
 
-BlockTorch::BlockTorch(glm::vec2 pos, unsigned int layer, Chunk* parent, bool loadTexture/* = true*/) : LightBlock(pos, layer, parent, MetaData(), 1.5f, loadTexture) {
+BlockTorch::BlockTorch(glm::vec2 pos, unsigned int layer, MetaData metaData, bool loadTexture/* = true*/) : LightBlock(pos, layer, metaData, 1.5f, loadTexture) {
     m_id = (unsigned int)Categories::BlockIDs::TORCH;
 
     m_transparent = true; // Does light travel through it?
@@ -110,15 +110,15 @@ BlockTorch::BlockTorch(glm::vec2 pos, unsigned int layer, Chunk* parent, bool lo
     if(loadTexture) { this->loadTexture(); } else { m_textureId = (GLuint)-1; }
 }
 
-BlockTorchBright::BlockTorchBright(glm::vec2 pos, unsigned int layer, Chunk* parent, bool loadTexture) : BlockTorch(pos, layer, parent, loadTexture) {
+BlockTorchBright::BlockTorchBright(glm::vec2 pos, unsigned int layer, MetaData metaData, bool loadTexture) : BlockTorch(pos, layer, metaData, loadTexture) {
     m_emittedLight = 2.0f;
 }
 
-BlockTorchAnti::BlockTorchAnti(glm::vec2 pos, unsigned int layer, Chunk* parent, bool loadTexture) : BlockTorch(pos, layer, parent, loadTexture) {
+BlockTorchAnti::BlockTorchAnti(glm::vec2 pos, unsigned int layer, MetaData metaData, bool loadTexture) : BlockTorch(pos, layer, metaData, loadTexture) {
     m_emittedLight = -1.0f;
 }
 
-BlockBush::BlockBush(glm::vec2 pos, unsigned int layer, Chunk* parent, bool loadTexture/* = true*/) : GenericBlock(pos, layer, parent, MetaData(), loadTexture) {
+BlockBush::BlockBush(glm::vec2 pos, unsigned int layer, MetaData metaData, bool loadTexture/* = true*/) : GenericBlock(pos, layer, metaData, loadTexture) {
     m_id = (unsigned int)Categories::BlockIDs::BUSH;
 
     m_transparent = true; // Does light travel through it?
@@ -130,7 +130,7 @@ BlockBush::BlockBush(glm::vec2 pos, unsigned int layer, Chunk* parent, bool load
 }
 
 
-BlockStone::BlockStone(glm::vec2 pos, unsigned int layer, Chunk* parent, bool loadTexture/* = true*/) : GenericBlock(pos, layer, parent, MetaData(), loadTexture) {
+BlockStone::BlockStone(glm::vec2 pos, unsigned int layer, MetaData metaData, bool loadTexture/* = true*/) : GenericBlock(pos, layer, metaData, loadTexture) {
     m_id = (unsigned int)Categories::BlockIDs::STONE;
 
     m_transparent = false; // Does light travel through it?
@@ -143,7 +143,7 @@ BlockStone::BlockStone(glm::vec2 pos, unsigned int layer, Chunk* parent, bool lo
     if(loadTexture) { this->loadTexture(); } else { m_textureId = (GLuint)-1; }
 }
 
-BlockFoliage::BlockFoliage(glm::vec2 pos, unsigned int layer, Chunk* parent, bool loadTexture/* = true*/) : GenericBlock(pos, layer, parent, MetaData(), loadTexture) {
+BlockFoliage::BlockFoliage(glm::vec2 pos, unsigned int layer, MetaData metaData, bool loadTexture/* = true*/) : GenericBlock(pos, layer, metaData, loadTexture) {
     m_id = (unsigned int)Categories::BlockIDs::FOLIAGE;
 
     m_transparent = true;
@@ -153,38 +153,41 @@ BlockFoliage::BlockFoliage(glm::vec2 pos, unsigned int layer, Chunk* parent, boo
 
     if(loadTexture) { this->loadTexture(); } else { m_textureId = (GLuint)-1; }
 
-    switch((unsigned int)parent->getPlace()) {
-        case (unsigned int)Categories::Places::CANADA: {
-            //m_texture = GLEngine::ResourceManager::getTexture(ASSETS_FOLDER_PATH + "Textures/Blocks/BushBlue.png");
-            m_colour.b = 255;
-            m_colour.r = 128;
-            m_colour.g = 128;
-            break;
-        }
-        case (unsigned int)Categories::Places::USA: {
-            //m_texture = GLEngine::ResourceManager::getTexture(ASSETS_FOLDER_PATH + "Textures/Blocks/BushGreen.png");
-            m_colour.b = 128;
-            m_colour.r = 128;
-            m_colour.g = 255;
-            break;
-        }
-        default: {
-            //m_texture = GLEngine::ResourceManager::getTexture(ASSETS_FOLDER_PATH + "Textures/Blocks/BushPink.png");
-            m_colour.b = 128;
-            m_colour.r = 255;
-            m_colour.g = 128;
-            break;
+    int place = 0;
+    if(metaData.getAspect("place", place)) {
+        switch(place) {
+            case (unsigned int)Categories::Places::CANADA: {
+                //m_texture = GLEngine::ResourceManager::getTexture(ASSETS_FOLDER_PATH + "Textures/Blocks/BushBlue.png");
+                m_colour.b = 255;
+                m_colour.r = 128;
+                m_colour.g = 128;
+                break;
+            }
+            case (unsigned int)Categories::Places::USA: {
+                //m_texture = GLEngine::ResourceManager::getTexture(ASSETS_FOLDER_PATH + "Textures/Blocks/BushGreen.png");
+                m_colour.b = 128;
+                m_colour.r = 128;
+                m_colour.g = 255;
+                break;
+            }
+            default: {
+                //m_texture = GLEngine::ResourceManager::getTexture(ASSETS_FOLDER_PATH + "Textures/Blocks/BushPink.png");
+                m_colour.b = 128;
+                m_colour.r = 255;
+                m_colour.g = 128;
+                break;
+            }
         }
     }
 }
 
-void BlockFoliage::onUpdate(float& time) {
-    if(m_parentChunk->getTile(m_pos.x, m_pos.y - 1, m_layer)->getID() != (unsigned int)Categories::BlockIDs::GRASS) {
-        m_parentChunk->setTile(createBlock((unsigned int)Categories::BlockIDs::AIR, m_pos, m_layer, m_parentChunk));
+void BlockFoliage::onUpdate(World* world, float& time) {
+    if(world->getTile(m_pos.x, m_pos.y - 1, m_layer)->getID() != (unsigned int)Categories::BlockIDs::GRASS) {
+        world->setTile(createBlock((unsigned int)Categories::BlockIDs::AIR, m_pos, m_layer));
     }
 }
 
-BlockWood::BlockWood(glm::vec2 pos, unsigned int layer, Chunk* parent, bool loadTexture/* = true*/) : GenericBlock(pos, layer, parent, MetaData(), loadTexture) {
+BlockWood::BlockWood(glm::vec2 pos, unsigned int layer, MetaData metaData, bool loadTexture/* = true*/) : GenericBlock(pos, layer, metaData, loadTexture) {
     m_id = (unsigned int)Categories::BlockIDs::WOOD;
 
     m_transparent = false; // Does light travel through it?
@@ -197,7 +200,7 @@ BlockWood::BlockWood(glm::vec2 pos, unsigned int layer, Chunk* parent, bool load
     if(loadTexture) { this->loadTexture(); } else { m_textureId = (GLuint)-1; }
 }
 
-BlockWater::BlockWater(glm::vec2 pos, unsigned int layer, Chunk* parent, float level, MetaData metaData,/* = MetaData*/ bool loadTexture/* = true*/) : GenericBlock(pos, layer, parent, metaData, loadTexture) {
+BlockWater::BlockWater(glm::vec2 pos, unsigned int layer, float level, MetaData metaData,/* = MetaData*/ bool loadTexture/* = true*/) : GenericBlock(pos, layer, metaData, loadTexture) {
     m_id = (unsigned int)Categories::BlockIDs::WATER;
 
     m_transparent = false; // Does light travel through it?
@@ -233,7 +236,7 @@ void BlockWater::draw(GLEngine::SpriteBatch& sb, GLEngine::SpriteFont& sf, int x
             glm::vec3(getLight()));
 }
 #include <iostream>
-void BlockWater::onUpdate(float& time) {
+void BlockWater::onUpdate(World* world, float& time) {
     // 'Spread' water to other blocks, if they are passable blocks
 
 
@@ -242,11 +245,11 @@ void BlockWater::onUpdate(float& time) {
         Tile* right = nullptr;
         Tile* down = nullptr;
 
-        left = m_parentChunk->getTile(m_pos.x - 1, m_pos.y, m_layer); /// TODO: Cross-layer water movement
+        left = world->getTile(m_pos.x - 1, m_pos.y, m_layer); /// TODO: Cross-layer water movement
 
-        right = m_parentChunk->getTile(m_pos.x + 1, m_pos.y, m_layer);
+        right = world->getTile(m_pos.x + 1, m_pos.y, m_layer);
 
-        down = m_parentChunk->getTile(m_pos.x, m_pos.y - 1, m_layer);
+        down = world->getTile(m_pos.x, m_pos.y - 1, m_layer);
 
         // First, get levels of surrounding water blocks, set each to average
         {
@@ -338,24 +341,24 @@ void BlockWater::onUpdate(float& time) {
             m_waterLevel = newLevel;
             if(goDown) {
                 glm::vec2 pos = glm::vec2(m_pos.x, m_pos.y - 1);
-                down->getParentChunk()->setTile(createBlock((unsigned int)Categories::BlockIDs::WATER, pos, m_layer, down->getParentChunk())); /// TODO: Cross-layer water movement
+                world->setTile(createBlock((unsigned int)Categories::BlockIDs::WATER, pos, m_layer)); /// TODO: Cross-layer water movement
 
                 reinterpret_cast<BlockWater*>(down)->setLevel(m_waterLevel); // All of the water should fall
                 m_waterLevel = 0.0f;
             } else {
                 if(goLeft) {
                     glm::vec2 pos = glm::vec2(m_pos.x - 1, m_pos.y);
-                    left->getParentChunk()->setTile(createBlock((unsigned int)Categories::BlockIDs::WATER, pos, m_layer, left->getParentChunk())); /// TODO: Cross-layer water movement
+                    world->setTile(createBlock((unsigned int)Categories::BlockIDs::WATER, pos, m_layer)); /// TODO: Cross-layer water movement
 
-                    left = m_parentChunk->getTile(m_pos.x - 1, m_pos.y, m_layer);
+                    //left = world->getTile(m_pos.x - 1, m_pos.y, m_layer);
 
                     reinterpret_cast<BlockWater*>(left)->setLevel(newLevel);
                 }
                 if(goRight) {
                     glm::vec2 pos = glm::vec2(m_pos.x + 1, m_pos.y);
-                    right->getParentChunk()->setTile(createBlock((unsigned int)Categories::BlockIDs::WATER, pos, m_layer, right->getParentChunk())); /// TODO: Cross-layer water movement
+                    world->setTile(createBlock((unsigned int)Categories::BlockIDs::WATER, pos, m_layer)); /// TODO: Cross-layer water movement
 
-                    right = m_parentChunk->getTile(m_pos.x + 1, m_pos.y, m_layer);
+                    //right = world->getTile(m_pos.x + 1, m_pos.y, m_layer);
 
                     reinterpret_cast<BlockWater*>(right)->setLevel(newLevel);
                 }
@@ -368,7 +371,7 @@ void BlockWater::onUpdate(float& time) {
     }
 }
 
-BlockPole::BlockPole(glm::vec2 pos, unsigned int layer, Chunk* parent, MetaData metaData/* = MetaData()*/, bool loadTexture/* = true*/) : GenericBlock(pos, layer, parent, metaData, loadTexture) {
+BlockPole::BlockPole(glm::vec2 pos, unsigned int layer, MetaData metaData/* = MetaData()*/, bool loadTexture/* = true*/) : GenericBlock(pos, layer, metaData, loadTexture) {
     m_id = (unsigned int)Categories::BlockIDs::WOOD_POLE;
 
     m_transparent = true; // Does light travel through it?

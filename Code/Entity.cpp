@@ -5,7 +5,6 @@
 #include <DebugRenderer.h>
 #include <math.h>
 
-#include "Chunk.h"
 #include "Player.h"
 
 #include "Entities.h"
@@ -19,17 +18,6 @@ void Limb::draw(GLEngine::SpriteBatch& sb) {
     GLEngine::ColourRGBA8 fullColour(255, 255, 255, 255);
 
     sb.draw(destRect, uvRect, m_textureId, 0.51f, fullColour, m_angle, glm::vec3(m_parentEntity->getLightLevel()), m_por);
-}
-
-unsigned int Entity::getChunkIndex() {
-    if(!m_parentChunk) {
-        return -10;
-    }
-    return m_parentChunk ? m_parentChunk->getIndex() : 0;
-}
-
-void Entity::setParentChunk(Chunk* chunk) {
-    m_parentChunk = chunk;
 }
 
 Entity::~Entity()
@@ -78,37 +66,42 @@ Entity::~Entity()
     }
 }*/
 
-void Entity::update(float timeStep, Chunk* worldChunks[WORLD_SIZE]) {
-    for(int i = 0; i < timeStep; i++) {
+void Entity::update(World* world, AudioManager* audio, float timeStep) {
+    //for(int i = 0; i < timeStep; i++) {
         updateAI();
         updateLimbs();
-        move(1);
-        updateSounds();
-        updateMovement();
-        updateLightLevel();
+        move(1); /// Fix timestepping, make sure that each step, the entity collides :facepalm:
+        updateSounds(world, audio);
+        updateMovement(world);
+        updateLightLevel(world);
 
         if(m_health <= 0.0f) {
-            die();
+            die(world);
         }
-    }
+    //}
 }
 #include <iostream>
-void Entity::tick(Player* p) {
+void Entity::tick(World* world, AudioManager* audio) {
     if(m_makesNoise) {
-        if(std::rand() % 100 <= m_noiseFrequency/* && m_currentNoise == -1 Must create some way to check if the sound is finished sounding (TODO: )*/) {
+        if(std::rand() % 100 <= m_noiseFrequency/* && m_currentNoise == -1 Must create some way to check if the sound is finished sounding (TODO: <-- This)*/) {
+            Player* p = world->getPlayer();
+
             unsigned int dist;
-            int crossDist = p->getChunkIndex() > getChunkIndex() ? (getChunkIndex() + WORLD_SIZE - p->getChunkIndex()) : (p->getChunkIndex() + WORLD_SIZE - getChunkIndex()); // This is the combined chunk distances to the end of the world, or the 'crossover'
-            int pureDist = std::abs((int)(p->getChunkIndex() - getChunkIndex())); // This is the 'normal' way of calculating distance through the world, doesn't account for crossover
+            unsigned int crossDist;
+            unsigned int pureDist;
 
-            int playerPlace = 0;
+            if(p->getPosition().x < m_position.x) { // Crossover is on right
+                crossDist = (WORLD_SIZE - m_position.x) + (p->getPosition().x);
+            } else { // Crossover on left
+                crossDist = (m_position.x) + (WORLD_SIZE - p->getPosition().x);
+            }
 
-            if(crossDist < pureDist) playerPlace += crossDist * CHUNK_SIZE;
-            if(crossDist >= pureDist) playerPlace += pureDist * CHUNK_SIZE;
+            pureDist = std::abs(m_position.x - p->getPosition().x);
 
-            glm::vec2 d = glm::vec2((int)p->getPosition().x % CHUNK_SIZE + playerPlace, p->getPosition().y) - glm::vec2((int)m_position.x % CHUNK_SIZE, m_position.y);
-            d.x = std::abs(d.x);
-            d.y = std::abs(d.y);
-            dist = (std::sqrt(d.x * d.x + d.y * d.y)); //  Good 'ol pythagoreas
+            unsigned int xDist = crossDist > pureDist ? pureDist : crossDist;
+            unsigned int yDist = std::abs(p->getPosition().y - m_position.y);
+
+            dist = (std::sqrt(xDist * xDist + yDist * yDist)); //  Good 'ol pythagoras
 
             unsigned int vol = ((dist)*(-MIX_MAX_VOLUME)/(MAX_DIST_HEARD) + MIX_MAX_VOLUME); // Mapping 0-max_dist_heard -> mix_max_volume-0
 
@@ -117,22 +110,27 @@ void Entity::tick(Player* p) {
             }
 
             m_currentNoise = std::rand() % m_ambientNoiseSound.size();
-            m_audioManager->playSoundEffect((unsigned int)m_ambientNoiseSound[m_currentNoise], vol);
+            audio->playSoundEffect((unsigned int)m_ambientNoiseSound[m_currentNoise], vol);
         }
         if(m_currentNoise != -1) {
+            Player* p = world->getPlayer();
+
             unsigned int dist;
-            int crossDist = p->getChunkIndex() > getChunkIndex() ? (getChunkIndex() + WORLD_SIZE - p->getChunkIndex()) : (p->getChunkIndex() + WORLD_SIZE - getChunkIndex()); // This is the combined chunk distances to the end of the world, or the 'crossover'
-            int pureDist = std::abs((int)(p->getChunkIndex() - getChunkIndex())); // This is the 'normal' way of calculating distance through the world, doesn't account for crossover
+            unsigned int crossDist;
+            unsigned int pureDist;
 
-            int playerPlace = 0;
+            if(p->getPosition().x < m_position.x) { // Crossover is on right
+                crossDist = (WORLD_SIZE - m_position.x) + (p->getPosition().x);
+            } else { // Crossover on left
+                crossDist = (m_position.x) + (WORLD_SIZE - p->getPosition().x);
+            }
 
-            if(crossDist < pureDist) playerPlace += crossDist * CHUNK_SIZE;
-            if(crossDist >= pureDist) playerPlace += pureDist * CHUNK_SIZE;
+            pureDist = std::abs(m_position.x - p->getPosition().x);
 
-            glm::vec2 d = glm::vec2((int)p->getPosition().x % CHUNK_SIZE + playerPlace, p->getPosition().y) - glm::vec2((int)m_position.x % CHUNK_SIZE, m_position.y);
-            d.x = std::abs(d.x);
-            d.y = std::abs(d.y);
-            dist = (std::sqrt(d.x * d.x + d.y * d.y)); //  Good 'ol pythagoreas
+            unsigned int xDist = crossDist > pureDist ? pureDist : crossDist;
+            unsigned int yDist = std::abs(p->getPosition().y - m_position.y);
+
+            dist = (std::sqrt(xDist * xDist + yDist * yDist)); //  Good 'ol pythagoras
 
             unsigned int vol = ((dist)*(-MIX_MAX_VOLUME)/(MAX_DIST_HEARD) + MIX_MAX_VOLUME); // Mapping 0-max_dist_heard -> mix_max_volume-0
 
@@ -140,12 +138,12 @@ void Entity::tick(Player* p) {
                 vol = 0;
             }
 
-            m_audioManager->updateSoundEffect((unsigned int)m_ambientNoiseSound[m_currentNoise], vol);
+            audio->updateSoundEffect((unsigned int)m_ambientNoiseSound[m_currentNoise], vol);
         }
     }
 }
 
-void Entity::draw(GLEngine::SpriteBatch& sb, float time, float xOffset) {
+void Entity::draw(GLEngine::SpriteBatch& sb, float time, int layerDifference, float xOffset) {
 
     //GLint lightUniform = program->getUniformLocation("lightColour");
     //glUniform3fv(lightUniform, 3, &glm::vec3(1.0f, 1.0f, 1.0f)[0]);
@@ -188,16 +186,37 @@ void Entity::draw(GLEngine::SpriteBatch& sb, float time, float xOffset) {
     }
 
     GLEngine::ColourRGBA8 colour(255, 255, 255, 255);
+    if(layerDifference != 0) {
+        if(layerDifference > 0) {// in front of the player
+            colour.a = 150;
+            colour.r = 64;
+            colour.g = 64;
+            colour.b = 64;
+        } else {
+            float c = 100 / -layerDifference; // Same layer will be (255, 255, 255), 1 layer back (64, 64, 64), 2 layers (32, 32, 32), etc.
+            colour.r = c;
+            colour.g = c;
+            colour.b = c;
+        }
+    }
 
-    float depth = 0.5f;
+    float depth = 0.5f * (WORLD_DEPTH - m_layer);
     if(m_type == Categories::Entity_Type::ITEM) {
-        depth = 1.0f;
+        depth = (WORLD_DEPTH - m_layer);
     }
 
     sb.draw(destRect, uvRect, m_texture.id, depth * (WORLD_DEPTH - m_layer), colour, glm::vec3(m_light));
 
     for(unsigned int i = 0; i < m_limbs.size(); i++) {
         m_limbs[i]->draw(sb); // no sb.begin() or end()
+    }
+}
+
+void Entity::debugDraw(GLEngine::DebugRenderer& dr, float xOffset) {
+    for(unsigned int i = 0; i < m_targets.size(); i++) {
+        GLEngine::ColourRGBA8 c(255, 255, 255, 255);
+        if(i == m_curTarget) c.r = 0;
+        dr.drawCircle(glm::vec2(m_targets[i].x + 0.5f, m_targets[i].y + 0.5f), c, 0.2f);
     }
 }
 
@@ -220,204 +239,181 @@ void Entity::move(float timeStepVariable) {
         }
     }
 
+    if((int)m_position.x > WORLD_SIZE) {
+        m_position.x -= WORLD_SIZE;
+    } else if((int)m_position.x < 0) {
+        m_position.x += WORLD_SIZE;
+    }
+
     m_velocity.y -= 1.225f / 60.0f * timeStepVariable; // Earth gravity is far too harsh for games. We use about 1/8th
 }
 
-void Entity::collide() {
-
-    std::vector<Entity*> entities = m_parentChunk->getEntities();
-
-    if(getChunkIndex() >= 0) {
-        /// ENTITY COLLISION STARTS HERE
-        for(unsigned int i = 0; i < entities.size(); i++) {
-            if(entities[i] != this) {
-                if(entities[i]->getType() != Categories::Entity_Type::ITEM) {
-                    float xDist = (m_position.x / 1.0f + m_size.x / 2.0f) - (entities[i]->getPosition().x / 1.0f + entities[i]->getSize().x / 2.0f);
-                    float yDist = (m_position.y / 1.0f + m_size.y / 2.0f) - (entities[i]->getPosition().y / 1.0f + entities[i]->getSize().y / 2.0f);
-                    if(abs(xDist) < abs(m_size.x / 2.0f + entities[i]->getSize().x / 2.0f)) {
-                        if(abs(yDist) < abs(m_size.y / 2.0f + entities[i]->getSize().y / 2.0f)) {
-
-                            float depth = xDist - (m_size.x / 2.0f + entities[i]->getSize().x / 2.0f);
-                            float force = (depth / 2.0f) * (depth / 2.0f) / ((m_size.x / 2.0f + entities[i]->getSize().x / 2.0f) * 512.0f);
+void Entity::collide(World* world, unsigned int entityIndex) {
+    /*
+        World's entities are in a vector, sorted from closest to farthest from x=0. When colliding with other entities, entities can use their own index as a sort of reference point to who they should collide with.
+    */
 
 
-                            m_position.x -= force;
-                            entities[i]->setPosition(glm::vec2(entities[i]->getPosition().x + force, entities[i]->getPosition().y));
-                        }
-                    }
+    std::vector<Entity*> entities = world->getEntities();
+
+    /// ENTITY COLLISION STARTS HERE
+    for(unsigned int i = entityIndex+1; i < entities.size(); i++) { /// To the right
+        if(entities[i]->getType() != Categories::Entity_Type::ITEM) {
+            float xDist = (m_position.x + m_size.x / 2.0f) - (entities[i]->getPosition().x + entities[i]->getSize().x / 2.0f);
+            float yDist = (m_position.y + m_size.y / 2.0f) - (entities[i]->getPosition().y + entities[i]->getSize().y / 2.0f);
+            if(abs(xDist) < abs(m_size.x / 2.0f + entities[i]->getSize().x / 2.0f)) {
+                if(abs(yDist) < abs(m_size.y / 2.0f + entities[i]->getSize().y / 2.0f)) {
+
+                    float depth = xDist - (m_size.x / 2.0f + entities[i]->getSize().x / 2.0f);
+                    float force = (depth / 2.0f) * (depth / 2.0f) / ((m_size.x / 2.0f + entities[i]->getSize().x / 2.0f) * 512.0f);
+
+
+                    m_position.x -= force;
+                    entities[i]->setPosition(glm::vec2(entities[i]->getPosition().x + force, entities[i]->getPosition().y));
+                    continue;
+                }
+            }
+        } else if(entities[i]->getType() == Categories::Entity_Type::ITEM) {
+            float xDist = std::abs(entities[i]->getPosition().x - m_position.x);
+            float yDist = std::abs(entities[i]->getPosition().y - m_position.y);
+            float dist = std::sqrt(xDist * xDist + yDist * yDist);
+
+            if(dist <= 3.0f) {
+                m_inventory->addItem((static_cast<EntityNeutralItem*>(entities[i])->getItem()));
+                world->removeEntity(i);
+            }
+            continue;
+        }
+        break;
+    }
+
+    for(int i = entityIndex-1; i >= 0; i--) { /// To the left
+        if(entities[i]->getType() != Categories::Entity_Type::ITEM) {
+            float xDist = (m_position.x + m_size.x / 2.0f) - (entities[i]->getPosition().x + entities[i]->getSize().x / 2.0f);
+            float yDist = (m_position.y + m_size.y / 2.0f) - (entities[i]->getPosition().y + entities[i]->getSize().y / 2.0f);
+            if(abs(xDist) < abs(m_size.x / 2.0f + entities[i]->getSize().x / 2.0f)) {
+                if(abs(yDist) < abs(m_size.y / 2.0f + entities[i]->getSize().y / 2.0f)) {
+
+                    float depth = xDist - (m_size.x / 2.0f + entities[i]->getSize().x / 2.0f);
+                    float force = (depth / 2.0f) * (depth / 2.0f) / ((m_size.x / 2.0f + entities[i]->getSize().x / 2.0f) * 512.0f);
+
+
+                    m_position.x -= force;
+                    entities[i]->setPosition(glm::vec2(entities[i]->getPosition().x + force, entities[i]->getPosition().y));
+                    continue;
                 }
             }
         }
-        /// ENTITY COLLISION ENDS HERE
-
-        /// TILE COLLISION STARTS HERE
-        {
-            /// Many thanks to Ben Arnold. He taught me almost everything I know about programming through his Youtube channel, "Makinggameswithben"
-            /// This is just a small piece of code that handles and reacts to dynamic rectangle and tile collisions
-            std::vector<glm::vec2> collideTilePositions;
-            std::vector<glm::vec2> groundTilePositions;
-
-            float x = m_position.x, y = m_position.y, width = m_size.x, height = m_size.y;
-
-            glm::vec2 posBL(x, y);
-            glm::vec2 posBR(x + width, y);
-            glm::vec2 posTL(x, y + height);
-            glm::vec2 posTR(x + width, y + height);
-
-            const float testVar = 1.0f/16.0f;
-
-            // Check for ground/ceiling
-            checkTilePosition(groundTilePositions,
-                              posBR.x - testVar,
-                              posBR.y);
-
-            checkTilePosition(groundTilePositions,
-                              posBL.x + testVar,
-                              posBL.y);
-
-            checkTilePosition(groundTilePositions,
-                              posTR.x - testVar,
-                              posTR.y);
-
-            checkTilePosition(groundTilePositions,
-                              posTL.x + testVar,
-                              posTL.y);
-
-
-            // Check the corners
-            checkTilePosition(collideTilePositions,
-                              posBR.x,
-                              posBR.y + testVar);
-
-            checkTilePosition(collideTilePositions,
-                              posBL.x,
-                              posBL.y + testVar);
-
-            checkTilePosition(collideTilePositions,
-                              posTL.x,
-                              posTL.y - testVar);
-
-            checkTilePosition(collideTilePositions,
-                              posTR.x,
-                              posTR.y - testVar);
-
-            /// Collision prediction time!
-
-            float increment = 0.1f;
-            int signX = (m_velocity.x > 0.0f) ? 1 : -1;
-            int signY = (m_velocity.y > 0.0f) ? 1 : -1;
-
-            std::vector<glm::vec2> predictiveTiles;
-
-            for(int i = 0; i < std::abs(m_velocity.x) / (increment * width) + increment; i++) {
-                for(int j = 0; j < std::abs(m_velocity.y) / (increment * height) + increment; j++) {
-                    glm::vec2 p_posBL(x+(i*increment*width)*signX, y+(j*increment*height)*signY);
-                    glm::vec2 p_posBR(x+(i*increment*width)*signX + width, y+(j*increment*height)*signY);
-                    glm::vec2 p_posTL(x+(i*increment*width)*signX, y+(j*increment*height)*signY + height);
-                    glm::vec2 p_posTR(x+(i*increment*width)*signX + width, y+(j*increment*height)*signY + height);
-
-                    checkTilePosition(predictiveTiles,
-                                      p_posBR.x,
-                                      p_posBR.y);
-
-                    checkTilePosition(predictiveTiles,
-                                      p_posBL.x,
-                                      p_posBL.y);
-
-                    checkTilePosition(predictiveTiles,
-                                      p_posTL.x,
-                                      p_posTL.y);
-
-                    checkTilePosition(predictiveTiles,
-                                      p_posTR.x,
-                                      p_posTR.y);
-                    }
-            }
-
-            for (unsigned int i = 0; i < collideTilePositions.size(); i++) {
-                collideWithTile(collideTilePositions[i], false);
-            }
-
-            if(predictiveTiles.size() > 0) collideWithTile(predictiveTiles[0], false);
-
-            for (unsigned int i = 0; i < groundTilePositions.size(); i++) {
-                collideWithTile(groundTilePositions[i], true);
-            }
-        }
-        /// TILE COLLISION ENDS HERE
+        break;
     }
+    /// ENTITY COLLISION ENDS HERE
+
+    /// TILE COLLISION STARTS HERE
+    {
+        /// Many thanks to Ben Arnold. He taught me almost everything I know about programming through his Youtube channel, "Makinggameswithben"
+        /// This is just a small piece of code that handles and reacts to dynamic rectangle and tile collisions
+        std::vector<glm::vec2> collideTilePositions;
+        std::vector<glm::vec2> groundTilePositions;
+
+        float x = m_position.x, y = m_position.y, width = m_size.x, height = m_size.y;
+
+        glm::vec2 posBL(x, y);
+        glm::vec2 posBR(x + width, y);
+        glm::vec2 posTL(x, y + height);
+        glm::vec2 posTR(x + width, y + height);
+
+        const float testVar = 1.0f/16.0f;
+
+        // Check for ground/ceiling
+        checkTilePosition(world, groundTilePositions,
+                          posBR.x - testVar,
+                          posBR.y);
+
+        checkTilePosition(world, groundTilePositions,
+                          posBL.x + testVar,
+                          posBL.y);
+
+        checkTilePosition(world, groundTilePositions,
+                          posTR.x - testVar,
+                          posTR.y);
+
+        checkTilePosition(world, groundTilePositions,
+                          posTL.x + testVar,
+                          posTL.y);
+
+
+        // Check the corners
+        checkTilePosition(world, collideTilePositions,
+                          posBR.x,
+                          posBR.y + testVar);
+
+        checkTilePosition(world, collideTilePositions,
+                          posBL.x,
+                          posBL.y + testVar);
+
+        checkTilePosition(world, collideTilePositions,
+                          posTL.x,
+                          posTL.y - testVar);
+
+        checkTilePosition(world, collideTilePositions,
+                          posTR.x,
+                          posTR.y - testVar);
+
+        /// Collision prediction time!
+
+        float increment = 0.1f;
+        int signX = (m_velocity.x > 0.0f) ? 1 : -1;
+        int signY = (m_velocity.y > 0.0f) ? 1 : -1;
+
+        std::vector<glm::vec2> predictiveTiles;
+
+        for(int i = 0; i < std::abs(m_velocity.x) / (increment * width) + increment; i++) {
+            for(int j = 0; j < std::abs(m_velocity.y) / (increment * height) + increment; j++) {
+                glm::vec2 p_posBL(x+(i*increment*width)*signX, y+(j*increment*height)*signY);
+                glm::vec2 p_posBR(x+(i*increment*width)*signX + width, y+(j*increment*height)*signY);
+                glm::vec2 p_posTL(x+(i*increment*width)*signX, y+(j*increment*height)*signY + height);
+                glm::vec2 p_posTR(x+(i*increment*width)*signX + width, y+(j*increment*height)*signY + height);
+
+                checkTilePosition(world, predictiveTiles,
+                                  p_posBR.x,
+                                  p_posBR.y);
+
+                checkTilePosition(world, predictiveTiles,
+                                  p_posBL.x,
+                                  p_posBL.y);
+
+                checkTilePosition(world, predictiveTiles,
+                                  p_posTL.x,
+                                  p_posTL.y);
+
+                checkTilePosition(world, predictiveTiles,
+                                  p_posTR.x,
+                                  p_posTR.y);
+                }
+        }
+
+        for (unsigned int i = 0; i < collideTilePositions.size(); i++) {
+            collideWithTile(collideTilePositions[i], false);
+        }
+
+        if(predictiveTiles.size() > 0) collideWithTile(predictiveTiles[0], false);
+
+        for (unsigned int i = 0; i < groundTilePositions.size(); i++) {
+            collideWithTile(groundTilePositions[i], true);
+        }
+    }
+    /// TILE COLLISION ENDS HERE
 }
 
 /// PRIVATE FUNCTIONS
-int Entity::setParentChunk(Chunk* worldChunks[WORLD_SIZE]) {
 
-    /*short int indexBegin = (int)(std::floor((m_position.x) / (float)CHUNK_SIZE) + WORLD_SIZE) % WORLD_SIZE;
-    short int indexEnd = (int)(std::floor((m_position.x + m_size.x) / (float)CHUNK_SIZE) + WORLD_SIZE) % WORLD_SIZE;
-    short int index = 0;
-
-    short int r = -1;
-
-    if(indexBegin != indexEnd) {
-        if(m_velocity.x > 0.0f) { // Entity is heading towards right chunk
-            index = indexEnd;
-            r = 1;
-        } else { // Entity is heading towards left chunk
-            index = indexBegin;
-            r = 0;
-        }
-    } else {
-        index = indexBegin;
-    }
-
-    if(m_velocity.x > 0.0f && m_position.x > WORLD_SIZE * CHUNK_SIZE) {
-        m_position.x = std::abs(m_position.x - WORLD_SIZE * CHUNK_SIZE);
-    } else if(m_velocity.x < 0.0f && m_position.x + m_size.x < 0.0f) {
-        m_position.x = (m_position.x + WORLD_SIZE * CHUNK_SIZE);
-    }
-
-    m_parentChunk = worldChunks[index];
-
-    return r;*/
-
-    int index = std::floor((m_position.x + m_size.x / 2.0f) / CHUNK_SIZE);
-
-    /*int posBase = ((int)(m_position.x) + WORLD_SIZE*CHUNK_SIZE) % (WORLD_SIZE*CHUNK_SIZE);
-    float extra = m_position.x - (float)(posBase);
-
-    m_position.x = (float)(posBase) + extra;*/
-
-    int ret = 0;
-
-    if(index != m_parentChunk->getIndex()) {
-        if(index < 0) {
-            m_position.x += (WORLD_SIZE * CHUNK_SIZE);
-            index = WORLD_SIZE - 1;
-            ret = -1;
-        } else if(index >= WORLD_SIZE) {
-            m_position.x -= (WORLD_SIZE * CHUNK_SIZE);
-            index = 0;
-            ret = 1;
-        }
-        if(index >= 0 && index < WORLD_SIZE) {
-            if(index > m_parentChunk->getIndex() && ret == 0) {
-                ret = 1;
-            } else if(index < m_parentChunk->getIndex() && ret == 0) {
-                ret = -1;
-            }
-            m_parentChunk = worldChunks[index];
-        }
-    }
-
-    return ret;
-}
-
-bool Entity::checkTilePosition(std::vector<glm::vec2>& collideTilePositions, float x, float y) {
+bool Entity::checkTilePosition(World* world, std::vector<glm::vec2>& collideTilePositions, float x, float y) {
     // Get the position of this corner in grid-space
     glm::vec2 gridPos = glm::vec2(floor(x), floor(y)); // grid-space coords
 
     if(gridPos.y >= 0) {
         // If this is not an air tile, we should collide with it
-        if (m_parentChunk->getTile(gridPos.x, gridPos.y, m_layer)->isSolid()) {
+        if (world->getTile(gridPos.x, gridPos.y, m_layer)->isSolid()) {
             collideTilePositions.push_back(glm::vec2((float)gridPos.x + 0.500f, (float)gridPos.y + 0.500f)); // CollideTilePositions are put in as gridspace coords
             return true;
         }
@@ -478,24 +474,20 @@ void Entity::collideWithTile(glm::vec2 tilePos, bool ground) {
     }
 }
 
-void Entity::updateLightLevel() {
-    if(m_parentChunk) {
-        m_exposedToSun = false;
+void Entity::updateLightLevel(World* world) {
+    m_exposedToSun = false;
 
-        if(m_position.y >= 0) {
-            m_light = m_parentChunk->getTile(m_position.x, m_position.y + m_size.y / 2.0f, m_layer)->getLight();
-            if(m_parentChunk->getTile(m_position.x, m_position.y + m_size.y / 2.0f, m_layer)->getSunLight() != 0.0f) m_exposedToSun = true;
+    if(m_position.y >= 0) {
+        m_light = world->getTile(m_position.x, m_position.y + m_size.y / 2.0f, m_layer)->getLight();
+        if(world->getTile(m_position.x, m_position.y + m_size.y / 2.0f, m_layer)->getSunLight() != 0.0f) m_exposedToSun = true;
 
-            m_light += m_parentChunk->getTile(m_position.x + m_size.x, m_position.y + m_size.y / 2.0f, m_layer)->getLight();
-            if(m_parentChunk->getTile(m_position.x + m_size.x, m_position.y + m_size.y / 2.0f, m_layer)->getSunLight() != 0.0f) m_exposedToSun = true;
-            m_light /= 2.0f;
-        }
-    } else {
-        m_light = 0.0f;
+        m_light += world->getTile(m_position.x + m_size.x, m_position.y + m_size.y / 2.0f, m_layer)->getLight();
+        if(world->getTile(m_position.x + m_size.x, m_position.y + m_size.y / 2.0f, m_layer)->getSunLight() != 0.0f) m_exposedToSun = true;
+        m_light /= 2.0f;
     }
 }
 
-void Entity::updateMovement() {
+void Entity::updateMovement(World* world) {
     if(m_controls[0]) { // UP
         if(m_onGround) {
             m_velocity.y = m_jumpHeight;
@@ -516,6 +508,11 @@ void Entity::updateMovement() {
     } else {
         m_velocity.x /= 5.0f;
     }
+    if(m_controls[4]) { // Backwards (layer++)
+        moveDownLayer(world);
+    } else if(m_controls[5]) { // Forwards (layer--)
+        moveUpLayer(world);
+    }
 
     if(m_velocity.x > MAX_SPEED) {
         m_velocity.x = MAX_SPEED;
@@ -523,36 +520,368 @@ void Entity::updateMovement() {
         m_velocity.x = -MAX_SPEED;
     }
 
-    m_controls[0] = false;
-    m_controls[1] = false;
-    m_controls[2] = false;
-    m_controls[3] = false;
+    for(int i = 0; i < 6; i++) {
+        m_controls[i] = false;
+    }
 }
 
-void Entity::updateSounds() {
+void Entity::updateSounds(World* world, AudioManager* audio) {
     if(m_onGround && std::abs(m_velocity.x) > 0.01f) {
         m_soundTimer += std::abs(m_velocity.x * 3) + 1;
     } else if(std::abs(m_velocity.x) <= 0.01f || !m_onGround) {
         m_soundTimer = 0;
     }
-    if(m_onGround && m_soundTimer > 10) { // 10 is arbitrary, should probably add a variable to each type of entity (for longer strides, etc.)
+    if(m_onGround && m_soundTimer > 20) { // 20 is arbitrary, should probably add a variable to each type of entity (for longer strides, etc.)
         glm::vec2 tileCoordsFloor = glm::vec2((int)(m_position.x + 0.5f), (int)(m_position.y - 0.5f));
 
-        unsigned int chunkIndex = tileCoordsFloor.x / CHUNK_SIZE;
-
-        tileCoordsFloor.x -= chunkIndex * CHUNK_SIZE;
-
-        m_audioManager->playSoundEffect(m_parentChunk->getTile(tileCoordsFloor.x, tileCoordsFloor.y, m_layer)->getWalkedOnSoundEffectID(), MIX_MAX_VOLUME);
+        audio->playSoundEffect(world->getTile(tileCoordsFloor.x, tileCoordsFloor.y, m_layer)->getWalkedOnSoundEffectID(), MIX_MAX_VOLUME);
         m_soundTimer = 0;
     }
 }
 
-void Entity::die() {
+void Entity::setAITarget(World* world, unsigned int selfIndex) {
+    unsigned int entCount = world->getEntities().size();
+
+    Entity* targetL = nullptr;
+    Entity* targetR = nullptr;
+
+    for(int i = selfIndex-1; i > -entCount - selfIndex; i--) {
+        // This loop will run negatively, for length of world->getEntities().size() MAX. Often breaks out of loop early
+        unsigned int normalized = (i + entCount*2) % entCount; // index from 0-size
+
+        if(normalized == selfIndex) continue;
+
+        Entity* target = world->getEntities()[normalized];
+
+        if((int)getFaction() > (int)Categories::Faction::NEUTRAL &&
+           (int)target->getFaction() <= (int)Categories::Faction::NEUTRAL) {
+            targetL = target;
+            break;
+        }
+    }
+
+    for(int i = selfIndex+1; i < entCount + selfIndex; i++) { // Runs at most once through every entity.
+        unsigned int normalized = i % entCount; // index from 0-size;
+
+        if(normalized == selfIndex) continue;
+
+        Entity* target = world->getEntities()[normalized];
+
+        if((int)getFaction() > (int)Categories::Faction::NEUTRAL &&
+           (int)target->getFaction() <= (int)Categories::Faction::NEUTRAL) {
+            targetR = target;
+            break; /// TODO: Accoutn for items lol
+        }
+    }
+
+    float distToTargetL = targetL ? world->getDistance(m_position, targetL->getPosition()) : (unsigned int)-1;
+    float distToTargetR = targetR ? world->getDistance(m_position, targetR->getPosition()) : (unsigned int)-1;
+
+    if(distToTargetL < distToTargetR) {
+        if(targetL) {
+            pathfindToTarget(world, glm::vec3((int)targetL->getPosition().x, (int)targetL->getPosition().y, targetL->getLayer()), true);
+        }
+    } else {
+        if(targetR) {
+            pathfindToTarget(world, glm::vec3((int)targetR->getPosition().x, (int)targetR->getPosition().y, targetR->getLayer()), false);
+        }
+    }
+}
+
+#include <iostream>
+
+void Entity::pathfindToTarget(World* world, glm::vec3 target, bool goLeft) {
+    /**
+        1. Set outer bounds (how far away the algorithm will expand before deciding there's no path)
+        2. 'Link' all accessible tiles as "NavTile"s, effectively creating a system of nodes
+        3. Calculate costs of each path to target coords
+        4. Use the shortest route, adding each NavTile's coords to AI targets
+        5. Return!
+    */
+
+    m_targets.clear();
+
+    /// TODO: Implement jumping over gaps!
+
+    // 1. Set outer bounds
+    int outerBoundXMin = m_position.x < target.x ? m_position.x : target.x; // The lesser of the two
+    int outerBoundXMax = m_position.x > target.x ? m_position.x : target.x; // The greater of the two
+
+
+    // 2. Link accessible tiles from start
+    NavTile* start = nullptr;
+
+    int jumpHeight = std::floor((60.0f*m_jumpHeight*m_jumpHeight) / 2.45f + 0.1f);
+
+    start = expandTile(world, glm::vec3((int)m_position.x, (int)m_position.y, m_layer), jumpHeight, m_size, nullptr, target);
+
+    // Check to make sure if there's a path:
+    if(!start) {
+        /// TODO: Implement wandering.
+        return;
+    }
+
+
+    // 4. Use shortest route, adding each NavTile coords to targets
+
+    /**
+        Construct 'frontier' (just the child tiles of start)
+
+        Repeat until a path is found (Just one):
+            Choose smallest h value on frontier, remove from frontier and add children to frontier (expand node)
+            if tile with smallest h value is target, go backwards. Start with the tile with smallest h, and add each parent to targets.
+
+    */
+    std::vector<NavTile*> frontier;
+    frontier.push_back(start);
+
+    bool pathFound = false;
+    NavTile* targetNavTile = nullptr;
+
+    // Expand start tile, add em to frontier, then expand nextTile with lowest h, add em to frontier, repeat.
+
+
+    unsigned int searchIteration = 0;
+    unsigned int highestH = 0;
+
+    while(!pathFound && highestH < 100 && searchIteration < 50 && frontier.size() > 0) {
+
+        // Choose lowest h value
+        int lowestIndex = 0;
+        for(unsigned int i = 0; i < frontier.size(); i++) {
+            if(frontier[lowestIndex]->h > frontier[i]->h) lowestIndex = i;
+            if(frontier[i]->h > highestH) highestH = frontier[i]->h;
+        }
+
+        if(frontier[lowestIndex]->pos == target) {
+            // We found a path!
+            targetNavTile = frontier[lowestIndex];
+            pathFound = true;
+        }
+
+        // Expand and remove (if there are no nextNodes, it will simply be removed)
+        for(int i = 0; i < frontier[lowestIndex]->nextNodes.size(); i++) {
+            addToFrontier(expandTile(world, frontier[lowestIndex]->nextNodes[i], jumpHeight, m_size, frontier[lowestIndex], target), frontier);
+        }
+        for(int i = lowestIndex; i < frontier.size()-1; i++) {
+            frontier[i] = frontier[i+1];
+        }
+        frontier.pop_back();
+
+        searchIteration++;
+    }
+
+
+    if(pathFound) {
+        std::vector<glm::vec3> targetsReversed; // Targets to go to, reversed :)
+
+        while(targetNavTile) {
+            glm::vec3 p(targetNavTile->pos);
+            targetsReversed.push_back(p);
+            targetNavTile = targetNavTile->parent;
+        }
+
+        for(unsigned int i = 1; i < targetsReversed.size(); i++) { // We don't need the very last one, that's just on top of the entity
+            m_targets.push_back(targetsReversed[targetsReversed.size()-1 - i]);
+        }
+    }
+
+    return;
+}
+
+NavTile* Entity::expandTile(World* world, glm::vec3 pos, int jumpHeight, glm::vec2 size, NavTile* parent, glm::vec3 target) {
+
+    NavTile* ret = new NavTile;
+    ret->parent = parent;
+    ret->pos = pos;
+
+    // Check Left
+    Tile* left = world->getTile(pos.x-1, pos.y, pos.z);
+    if(fitsOnTile(world, left, true)) {
+        glm::vec3 p(left->getPosition().x, left->getPosition().y, left->getLayer());
+        if(!parent || p != parent->pos) {
+            ret->nextNodes.push_back(p);
+        }
+    } else {
+        for(int i = 0; i < jumpHeight; i++) { /// TODO: Implement some sort of 'safe' fall distance
+            Tile* leftDown = world->getTile(pos.x-1, pos.y-i, pos.z);// Check tiles below so that we can fall distances.
+            if(leftDown) {
+                if(fitsOnTile(world, leftDown)) {
+                    glm::vec3 p(leftDown->getPosition().x, leftDown->getPosition().y, leftDown->getLayer());
+                    if(!parent || p != parent->pos) {
+                        ret->nextNodes.push_back(p);
+                    }
+                }
+            }
+        }
+    }
+
+    Tile* right = world->getTile(pos.x+1, pos.y, pos.z);
+    if(fitsOnTile(world, right, true)) {
+        glm::vec3 p(right->getPosition().x, right->getPosition().y, right->getLayer());
+        if(!parent || p != parent->pos) {
+            ret->nextNodes.push_back(p);
+        }
+    } else {
+        for(int i = 0; i < jumpHeight; i++) { /// TODO: Implement some sort of 'safe' fall distance
+            Tile* rightDown = world->getTile(pos.x+1, pos.y-i, pos.z);// Check tiles below so that we can fall distances.
+            if(rightDown) {
+                if(fitsOnTile(world, rightDown)) {
+                    glm::vec3 p(rightDown->getPosition().x, rightDown->getPosition().y, rightDown->getLayer());
+                    if(!parent || p != parent->pos) {
+                        ret->nextNodes.push_back(p);
+                    }
+                }
+            }
+        }
+    }
+
+
+    if(pos.z < WORLD_DEPTH-1) {
+        // Check Behind
+        Tile* back = world->getTile(pos.x, pos.y, pos.z+1);
+        if(fitsOnTile(world, back, true)) {
+            glm::vec3 p(back->getPosition().x, back->getPosition().y, back->getLayer());
+            if(!parent || p != parent->pos) {
+                ret->nextNodes.push_back(p);
+            }
+        } else {
+            for(int i = 0; i < jumpHeight; i++) { /// TODO: Implement some sort of 'safe' fall distance
+                Tile* backDown = world->getTile(pos.x, pos.y-i, pos.z+1);// Check tiles below so that we can fall distances.
+                if(backDown) {
+                    if(fitsOnTile(world, backDown)) {
+                        glm::vec3 p(backDown->getPosition().x, backDown->getPosition().y, backDown->getLayer());
+                        if(!parent || p != parent->pos) {
+                            ret->nextNodes.push_back(p);
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+
+    if(pos.z > 0) {
+        // Check In Front
+        Tile* front = world->getTile(pos.x, pos.y, pos.z-1);
+        if(fitsOnTile(world, front, true)) {
+            glm::vec3 p(front->getPosition().x, front->getPosition().y, front->getLayer());
+            if(!parent || p != parent->pos) {
+                ret->nextNodes.push_back(p);
+            }
+        } else {
+            for(int i = 0; i < jumpHeight; i++) { /// TODO: Implement some sort of 'safe' fall distance
+                Tile* frontDown = world->getTile(pos.x, pos.y-i, pos.z-1);// Check tiles below so that we can fall distances.
+                if(frontDown) {
+                    if(fitsOnTile(world, frontDown)) {
+                        glm::vec3 p(frontDown->getPosition().x, frontDown->getPosition().y, frontDown->getLayer());
+                        if(!parent || p != parent->pos) {
+                            ret->nextNodes.push_back(p);
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    // Check up!
+    for(int i = 0; i < jumpHeight; i++) {
+        Tile* up = world->getTile(pos.x, pos.y+i, pos.z);
+        if(up) {
+            if(fitsOnTile(world, up, false)) {
+                glm::vec3 p(up->getPosition().x, up->getPosition().y, up->getLayer());
+                if(!parent || p != parent->pos) {
+                    ret->nextNodes.push_back(p);
+                }
+            } else {
+                break; // Something is blocking our jump
+            }
+        }
+    }
+
+    calculateCost(world, ret, target);
+
+    return ret;
+}
+
+bool Entity::fitsOnTile(World* world, Tile* t, bool needsFloor) {
+    bool fits = true;
+    int start = needsFloor ? -1 : 0;
+
+    for(int y = start; fits && y < m_size.y; y++) {
+        for(int x = 0; fits && x < m_size.x; x++) {
+            Tile* tmp = world->getTile(t->getPosition().x + x, t->getPosition().y + y, t->getLayer());
+            if(tmp) {
+                if(y >= 0) {
+                    if(tmp->isSolid()) fits = false;
+                } else {
+                    if(!tmp->isSolid()) fits = false;
+                }
+            }
+        }
+    }
+    return fits;
+}
+
+void Entity::calculateCost(World* world, NavTile* tile, glm::vec3 target) {
+    tile->h = world->getDistance(glm::vec2(tile->pos.x, tile->pos.y), glm::vec2(target.x, target.y)) + std::abs(tile->pos.z - target.z); /// TODO: Implement crossover
+    if(tile->parent) tile->h += tile->parent->h/2.0f; // The distance to the entity is more important than the path. Plus, this improves performance.
+}
+
+void Entity::addToFrontier(NavTile* tile, std::vector<NavTile*>& frontier) {
+    bool clone = false;
+
+    for(int i = 0; i < frontier.size(); i++) {
+        if(frontier[i]->pos == tile->pos) {
+            if(frontier[i]->h > tile->h) { // Tile is a better route to get to frontier[i]
+                frontier[i] = tile;
+            }
+            clone = true;
+        }
+    }
+
+    if(clone) return;
+    frontier.push_back(tile);
+}
+
+void Entity::moveUpLayer(World* world) {
+    if(m_layer > 0) {
+        m_layer--;
+        std::vector<glm::vec2> tiles;
+
+        for(int i = 0; i < m_size.x; i++) {
+            for(int j = 0; j < m_size.y; j++) {
+                if(checkTilePosition(world, tiles, m_position.x + i, m_position.y + j)) {
+                    m_layer++;
+                    return;
+                }
+            }
+        }
+    }
+}
+
+void Entity::moveDownLayer(World* world) {
+    if(m_layer < WORLD_DEPTH-1) {
+        m_layer++;
+        std::vector<glm::vec2> tiles;
+
+        for(int i = 0; i < m_size.x; i++) {
+            for(int j = 0; j < m_size.y; j++) {
+                if(checkTilePosition(world, tiles, m_position.x + i, m_position.y + j)) {
+                    m_layer--;
+                    return;
+                }
+            }
+        }
+    }
+}
+
+void Entity::die(World* world) {
     if(m_canDie) {
         if(m_lootTableStart.getRarity() != -1.0f) {
             for(int i = 0; i < m_lootRolls; i++) {
-                EntityNeutralItem* item = new EntityNeutralItem(m_position + glm::vec2(0.0f, 2.0f), m_parentChunk, m_audioManager, createItem((unsigned int)m_lootTableStart.roll(), 1));
-                m_parentChunk->addEntity(item);
+                EntityNeutralItem* item = new EntityNeutralItem(m_position + glm::vec2(0.0f, 2.0f), m_layer, createItem((unsigned int)m_lootTableStart.roll(), 1));
+                world->addEntity(item);
             }
         }
         m_isDead = true;

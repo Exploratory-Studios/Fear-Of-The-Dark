@@ -2,35 +2,67 @@
 
 namespace EntityFunctions {
 
-        void WalkingAI(bool (&controls)[4], std::vector<glm::vec2>& targets, unsigned int& currentTarget, glm::vec2& velocity, glm::vec2& size, glm::vec2& position) {
+        void WalkingAI(bool (&controls)[6], std::vector<glm::vec3>& targets, unsigned int& currentTarget, glm::vec2& velocity, glm::vec2& size, glm::vec3 position) {
 
             if(targets.size() > currentTarget) {
                 float targetXPos = targets[currentTarget].x;
-                float xPos = position.x + size.x / 2.0f;
+                float xPos = position.x;
 
-                unsigned int dist1 = std::abs(xPos - targetXPos);
-                unsigned int dist2 = (xPos < targetXPos ? xPos : targetXPos) + WORLD_SIZE * CHUNK_SIZE - (xPos >= targetXPos ? xPos : targetXPos);
+                float xDist;
 
-                unsigned int leftDist = xPos > targetXPos ? dist1 : dist2; // Distance if we go left
-                unsigned int rightDist = xPos <= targetXPos ? dist1 : dist2; // Distance if we go right
+                if(xPos < targetXPos) {
+                    float xDist0 = targetXPos - xPos; // Regular dist not accounting for crossover.
+                    float xDist1 = (xPos) + (WORLD_SIZE - targetXPos); // Distance accounting for crossover.
 
-                /// TODO: 'Tis but a dream, really
-                //float distToDecelerate = velocity.x / std::pow(5.0f, std::log(0.1f * velocity.x) / std::log(5));
+                    if(xDist0 < xDist1) {
+                        // Go right
+                        controls[3] = true;
+                        controls[2] = false;
 
-                if(leftDist >= rightDist) {
-                    controls[3] = true; // RIGHT
-                    controls[2] = false;
+                        xDist = xDist0;
+                    } else {
+                        // Go left
+                        controls[2] = true;
+                        controls[3] = false;
+
+                        xDist = xDist1;
+                    }
+                } else if(xPos > targetXPos) {
+                    float xDist0 = xPos - targetXPos; // Regular dist not accounting for crossover.
+                    float xDist1 = (targetXPos) + (WORLD_SIZE - xPos); // Distance accounting for crossover.
+
+                    if(xDist0 < xDist1) {
+                        // Go left
+                        controls[2] = true;
+                        controls[3] = false;
+
+                        xDist = xDist0;
+                    } else {
+                        // Go right
+                        controls[3] = true;
+                        controls[2] = false;
+
+                        xDist = xDist1;
+                    }
                 }
-                if(leftDist < rightDist) {
-                    controls[2] = true; // LEFT
-                    controls[3] = false;
-                }
+
+                float yDist = std::abs(position.y - targets[currentTarget].y);
+                float zDist = std::abs(position.z - targets[currentTarget].z);
+
+                float totalDist = std::sqrt(xDist*xDist + yDist*yDist + zDist*zDist);
+
                 if((int)targets[currentTarget].y - (int)position.y >= 1.0f/2.0f) {
-                    controls[0] = true;
+                    controls[0] = true; // UP
+                }
+                if(position.z > targets[currentTarget].z) {
+                    controls[5] = true; // FORWARDS
+                } else if(position.z < targets[currentTarget].z) {
+                    controls[4] = true; // BACKWARDS
                 }
 
-                if(std::abs(xPos + 0.5f - targetXPos) <= 0.5f) {
+                if(totalDist <= 0.75f) {
                     currentTarget++;
+
                     if(currentTarget >= targets.size()) {
                         targets.clear();
                         currentTarget = 0;

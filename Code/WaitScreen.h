@@ -1,6 +1,8 @@
 #pragma once
 
 #include <IGameScreen.h>
+#include <Camera2D.h>
+#include <GUI.h>
 
 #include "WorldIOManager.h"
 #include "ScreenIndices.h"

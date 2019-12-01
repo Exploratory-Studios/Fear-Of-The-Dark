@@ -48,7 +48,7 @@ class AudioManager
     private:
         Logger* logger = Logger::getInstance();
 
-        GLEngine::AudioEngine* m_audio = new GLEngine::AudioEngine();
+        GLEngine::AudioEngine* m_audio;
 
         bool m_playingMusic = false;
 

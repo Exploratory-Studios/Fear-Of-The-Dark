@@ -12,14 +12,12 @@
 //namespace Settings {
     /// World size variables
     // How many tiles in a chunk?
-    #define CHUNK_SIZE 32 // 24
+    #define CHUNK_SIZE 32 // only used in world creation.
     // How many tiles high is the world?
     #define WORLD_HEIGHT 300
-    // How many chunks does the world have?
-    #define WORLD_SIZE 32
+    // How many tiles does the world have horizontal?
+    #define WORLD_SIZE (10*32)
     #define WORLD_DEPTH 4
-
-    //static unsigned int WORLD_SIZE = 32;
 
     // How high does water spawn naturally?
     #define WATER_LEVEL 50
@@ -64,7 +62,7 @@
     #define MAX_WEIGHT 100.0f
 
     // How long a day is (frames at the moment)
-    #define DAY_LENGTH 240  // Should be 10 minutes per CYCLE (Full day and night) 600*4
+    #define DAY_LENGTH 2400  // Should be 10 minutes per CYCLE (Full day and night) 10 minutes * 60 seconds/min. * 4 ticks/sec.
     // How much the light level is multiplied by when going through transparent tiles
     #define TRANSPARENT_LIGHT_MULTIPLIER 0.75f
     // How much the light level is multiplied by when going through blocks
@@ -77,6 +75,11 @@
 
     // How many chunks can we see in either direction (multiply by two and add 1 for total chunks)
     #define MAX_VIEW_DIST 4
+
+    // How many entities are we going to attempt to spawn per tick?
+    #define ENTITY_SPAWN_ROLLS 50
+    // How far away from the player should entities spawn?
+    #define ENTITY_SPAWN_RANGE 50
 
 
     // The path to the assets folder
@@ -195,13 +198,13 @@ class DropTable {
             }
 
             m_nodes.resize(deepestLevel+1);
-            for(int i = 0; i < data.size(); i++) {
+            for(unsigned int i = 0; i < data.size(); i++) {
                 if(data[i].m_rowId + 1 > m_nodes[data[i].m_level].size()) m_nodes[data[i].m_level].resize(data[i].m_rowId + 1, DropDatum(-1, (Categories::ItemIDs)-1, -1, -1, -1.0f));
                 m_nodes[data[i].m_level][data[i].m_rowId] = data[i];
             }
 
-            for(int i = 1; i < m_nodes.size(); i++) { // Don't want to give the base level nodes parents, since they're simply nullptrs
-                for(int j = 0; j < m_nodes[i].size(); j++) {
+            for(unsigned int i = 1; i < m_nodes.size(); i++) { // Don't want to give the base level nodes parents, since they're simply nullptrs
+                for(unsigned int j = 0; j < m_nodes[i].size(); j++) {
                     m_nodes[i][j].m_parent = &m_nodes[i-1][m_nodes[i][j].m_parentId];
                 }
             }

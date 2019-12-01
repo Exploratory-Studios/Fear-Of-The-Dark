@@ -8,46 +8,28 @@
 
 #include <Errors.h>
 
-Player::Player(glm::vec2 position, Chunk* parent, GLEngine::InputManager* input, ScriptQueue* sq, AudioManager* audio, bool loadTexture) : Entity(position, audio, sq, 12.0f/60.0f, Categories::LootTableIds::NONE, 0, 0), m_input(input)
+Player::Player(glm::vec2 position, unsigned int layer, bool loadTexture) : Entity(position, layer, 12.0f/60.0f, Categories::LootTableIds::NONE, 0, 0)
 {
-    m_inventory = new Inventory();
-
     if(loadTexture) {
         m_texture = GLEngine::ResourceManager::getTexture(ASSETS_FOLDER_PATH + "Textures/Mobs/Mob0.png");
         m_loadedTexture = true;
     }
     m_size = glm::vec2(1.0f, 2.0f);
     m_faction = Categories::Faction::GOOD;
-    m_jumpHeight = 0.4f;
+    m_jumpHeight = 0.399f;
     m_speed = 2.5f/60.0f;
-    //m_ai = Categories::AI_Type::;
-    //m_disabilities = Categories::Disability_Type::NONE;
-    //m_attackType = Categories::Attack_Type::;
-
-    m_parentChunk = parent;
-
-    Script s;
-    s.commands.push_back("changeBlock relative near relative player 0 0 0 0 2");
-    s.commands.push_back("changeBlock relative near relative player 0 0 0 1 6"); // changeblock [position] [id]
-    s.commands.push_back("teleport near relative player 0 0 relative near relative player 0 0 0 3"); // teleport [entity] [position] -> [entity] is near [relative player 0 0], [position] is relative [near [relative player 0 0]] 0 3
-    s.commands.push_back("time set 120");
-
-    std::string path = "Script_player_makeHouse.txt";
-
-    m_scriptID_dayTime = m_sq->addScript(s);
-    m_scriptID_makeHouse = m_sq->addScript(path);
 
     Leg* leg0 = new Leg(this, m_texture.id, glm::vec2(-1.0f, 0.0f), glm::vec2(0.4f, 1.0f), 0.0f, 1.57f); // 3.14 = 2(1.57
     m_limbs.push_back(leg0);
 
     m_type = Categories::Entity_Type::PLAYER;
+
+    m_gui = nullptr;
 }
 
 Player::~Player()
 {
-    delete m_inventory;
     delete m_limbs[0];
-
 }
 
 void Player::initGUI(GLEngine::GUI* gui) {
@@ -96,7 +78,7 @@ void Player::initGUI(GLEngine::GUI* gui) {
 
 }
 
-void Player::draw(GLEngine::SpriteBatch& sb, float time, float xOffset) {
+void Player::draw(GLEngine::SpriteBatch& sb, float time, int layerDifference, float xOffset) {
     if(!m_loadedTexture) {
         m_texture = GLEngine::ResourceManager::getTexture(ASSETS_FOLDER_PATH + "Textures/Mobs/Mob0.png");
         m_loadedTexture = true;
@@ -143,24 +125,21 @@ void Player::draw(GLEngine::SpriteBatch& sb, float time, float xOffset) {
 
     sb.draw(destRect, uvRect, m_texture.id, 0.8f * (WORLD_DEPTH - m_layer), colour, glm::vec3(m_light));
 
-    for(int i = 0; i < m_limbs.size(); i++) {
+    /*for(int i = 0; i < m_limbs.size(); i++) {
         m_limbs[i]->draw(sb);
-    }
+    }*/
 
     if(m_selectedEntity) {
         glm::vec4 fullUV(0.0f, 0.0f, 1.0f, 1.0f);
         int cursorImgId = GLEngine::ResourceManager::getTexture(ASSETS_FOLDER_PATH + "GUI/Player/Cursor.png").id;
 
-        glm::vec4 cursorDestRect(m_selectedEntity->getPosition().x + xOffset * CHUNK_SIZE, m_selectedEntity->getPosition().y, m_selectedEntity->getSize().x, m_selectedEntity->getSize().y);
+        glm::vec4 cursorDestRect(m_selectedEntity->getPosition().x + xOffset, m_selectedEntity->getPosition().y, m_selectedEntity->getSize().x, m_selectedEntity->getSize().y);
         sb.draw(cursorDestRect, fullUV, cursorImgId, 0.9f * (WORLD_DEPTH - m_layer), GLEngine::ColourRGBA8(255, 255, 255, 255));
     } else if(m_selectedBlock) { // Cursor box selection
         glm::vec4 fullUV(0.0f, 0.0f, 1.0f, 1.0f);
         int cursorImgId = GLEngine::ResourceManager::getTexture(ASSETS_FOLDER_PATH + "GUI/Player/Cursor.png").id;
 
-        int chunkIndex = (int)floor(m_mousePos.x / CHUNK_SIZE);
-        int x = (int)(m_mousePos.x + CHUNK_SIZE) % CHUNK_SIZE;
-
-        glm::vec4 cursorDestRect(x + chunkIndex * CHUNK_SIZE + xOffset * CHUNK_SIZE, m_selectedBlock->getPosition().y, m_selectedBlock->getSize().x, m_selectedBlock->getSize().y);
+        glm::vec4 cursorDestRect(m_selectedBlock->getPosition().x + xOffset, m_selectedBlock->getPosition().y, m_selectedBlock->getSize().x, m_selectedBlock->getSize().y);
         sb.draw(cursorDestRect, fullUV, cursorImgId, 0.9f * (WORLD_DEPTH - m_layer), GLEngine::ColourRGBA8(255, 255, 255, 255));
     }
 }
@@ -232,14 +211,13 @@ void Player::drawGUI(GLEngine::SpriteBatch& sb, GLEngine::SpriteFont& sf) {
     }
 }
 
-void Player::update(float timeStep, Chunk* worldChunks[WORLD_SIZE]) {
+void Player::update(World* world, AudioManager* audio, float timeStep) {
 
-    updateLightLevel();
+    updateLightLevel(world);
 
-    updateInput();
     updateLimbs();
-    updateStats(timeStep, worldChunks);
-    updateSounds();
+    updateStats(world, timeStep);
+    updateSounds(world, audio);
     if(!m_godMode) {
         move(timeStep);
     } else {
@@ -252,27 +230,11 @@ void Player::update(float timeStep, Chunk* worldChunks[WORLD_SIZE]) {
     } else if(m_velocity.x < -MAX_SPEED * m_inventory->getSpeedMultiplier() * std::pow(m_stamina, 0.4f) && !m_godMode) {
         m_velocity.x = -MAX_SPEED * m_inventory->getSpeedMultiplier() * std::pow(m_stamina, 0.4f);
     }
-    setParentChunk(worldChunks);
-
-    for(int i = 0; i < m_parentChunk->getEntities().size(); i++) {
-        Entity* e = m_parentChunk->getEntities()[i];
-        if(e->getType() == Categories::Entity_Type::ITEM) {
-            float xDist = std::abs(e->getPosition().x - m_position.x);
-            float yDist = std::abs(e->getPosition().y - m_position.y);
-            float dist = std::sqrt(xDist * xDist + yDist * yDist);
-
-            if(dist <= 3.0f) {
-                m_inventory->addItem((static_cast<EntityNeutralItem*>(e)->getItem()));
-                delete e;
-                m_parentChunk->removeEntity(i);
-            }
-        }
-    }
 }
 
 #define cap(x) if(x > 1) x = 1; if(x < 0) x = 0;
 
-void Player::updateStats(float timeStep, Chunk* worldChunks[WORLD_SIZE]) {
+void Player::updateStats(World* world, float timeStep) {
     m_sanityBar->setProgress(m_sanity);
     m_healthBar->setProgress(m_health);
     m_thirstBar->setProgress(m_thirst);
@@ -331,86 +293,63 @@ void Player::updateStats(float timeStep, Chunk* worldChunks[WORLD_SIZE]) {
     }
 }
 
-void Player::updateMouse(GLEngine::Camera2D* worldCamera) {
-    glm::vec2 mousePos = worldCamera->convertScreenToWorld(m_input->getMouseCoords());
-
-    mousePos = glm::vec2(floor(mousePos.x), floor(mousePos.y)); // Changes it to grid-space
-
-    m_mousePos = mousePos;
+void Player::updateMouse(World* world, glm::vec2 mouseCoords) {
 
     if(m_canInteract) {
+        m_selectedBlock = nullptr;
 
-        int chunkIndex = std::floor(mousePos.x / CHUNK_SIZE) - getChunkIndex();
+        if(world->getTile((int)mouseCoords.x, mouseCoords.y, m_layer)) {
+            m_selectedBlock = world->getTile((int)mouseCoords.x, mouseCoords.y, m_layer);
+        }
 
-        if(/*mousePos.x >= 0 &&
-           mousePos.x + (chunkIndex * CHUNK_SIZE) < WORLD_SIZE * CHUNK_SIZE &&*/
-           mousePos.y >= 0 &&
-           mousePos.y < WORLD_HEIGHT) {
-                Chunk* chunk = nullptr;
+        //Logger::getInstance()->log("Clicked: " + std::to_string(m_selectedBlock->getPosition().x));
 
-                if(chunkIndex < 0) {
-                    chunk = m_parentChunk->getSurroundingChunks()[0];
-                } else
-                if(chunkIndex > 0) {
-                    chunk = m_parentChunk->getSurroundingChunks()[1];
-                } else
-                if(chunkIndex == 0) {
-                    chunk = m_parentChunk;
+        m_selectedEntity = nullptr;
+
+        for(int i = 0; i < world->getEntities().size(); i++) {
+            float sizeX = (world->getEntities()[i]->getSize().x) / 4;
+            float midX = world->getEntities()[i]->getPosition().x + sizeX;
+
+            float sizeY = (world->getEntities()[i]->getSize().y) / 4;
+            float midY = world->getEntities()[i]->getPosition().y + sizeY;
+
+            if(std::abs(midX - mouseCoords.x) <= sizeX) {
+                if(std::abs(midY - mouseCoords.y) <= sizeY) {
+                    m_selectedEntity = world->getEntities()[i];
                 }
-
-                m_selectedBlock = nullptr;
-
-                if(chunk->getTile((int)mousePos.x, mousePos.y, m_layer)->getParentChunk()) m_selectedBlock = chunk->getTile((int)mousePos.x, mousePos.y, m_layer);
-                //Logger::getInstance()->log("Clicked: " + std::to_string(m_selectedBlock->getPosition().x));
-
-                m_selectedEntity = nullptr;
-
-                for(int i = 0; i < chunk->getEntities().size(); i++) {
-                    float sizeX = (chunk->getEntities()[i]->getSize().x) / 4;
-                    float midX = chunk->getEntities()[i]->getPosition().x + sizeX;
-
-                    float sizeY = (chunk->getEntities()[i]->getSize().y) / 4;
-                    float midY = chunk->getEntities()[i]->getPosition().y + sizeY;
-
-                    if(std::abs(midX - mousePos.x) <= sizeX) {
-                        if(std::abs(midY - mousePos.y) <= sizeY) {
-                            m_selectedEntity = chunk->getEntities()[i];
-                        }
-                    }
-                }
-
             }
+        }
     }
 
 }
 
-void Player::updateInput() {
-    if(m_input->isKeyDown(SDLK_w) && m_stamina > 0.0f) {
+void Player::updateInput(GLEngine::InputManager* input, World* world, ScriptQueue* sq) {
+    if(input->isKeyDown(SDLK_w) && m_stamina > 0.0f) {
         if(m_onGround || m_godMode) {
             m_velocity.y = m_jumpHeight; // y=(jumpHeight*TILE_SIZE+3/4*TILE_SIZE+-5.88*x^2)  initial jump power is the absolute of the x when y=0. jumpheight is in eights of tiles and you must add 4
             m_onGround = false;
             m_stamina -= 0.005f;
         }
     }
-    if(m_input->isKeyDown(SDLK_s) && m_godMode) {
+    if(input->isKeyDown(SDLK_s) && m_godMode) {
         m_velocity.y -= 0.1f;
     }
 
-    if(m_input->isKeyPressed(SDLK_e)) {
-        m_layer++;
+    if(input->isKeyPressed(SDLK_e)) {
+        moveDownLayer(world);
     }
-    if(m_input->isKeyPressed(SDLK_q)) {
-        m_layer--;
+    if(input->isKeyPressed(SDLK_q)) {
+        moveUpLayer(world);
     }
     m_layer = (m_layer < 0) ? 0 : (m_layer >= WORLD_DEPTH) ? WORLD_DEPTH-1 : m_layer;
 
-    if(m_input->isKeyDown(SDLK_d) && ((m_stamina > 0.0f && m_onGround) || m_godMode)) {
+    if(input->isKeyDown(SDLK_d) && (m_stamina > 0.0f || m_godMode)) {
         if(m_velocity.x < 0.0f) m_velocity.x /= 5.0f;
         if(m_velocity.x < m_maxSpeed) {
             m_velocity.x += m_speed * m_inventory->getSpeedMultiplier() * std::pow(m_stamina, 0.4f);
         }
         m_stamina *= 0.999f;
-    } else if(m_input->isKeyDown(SDLK_a) && ((m_stamina > 0.0f && m_onGround) || m_godMode)) {
+    } else if(input->isKeyDown(SDLK_a) && (m_stamina > 0.0f || m_godMode)) {
         if(m_velocity.x > 0.0f) m_velocity.x /= 5.0f;
         if(m_velocity.x > -m_maxSpeed)
             m_velocity.x -= m_speed * m_inventory->getSpeedMultiplier() * std::pow(m_stamina, 0.4f);
@@ -423,45 +362,45 @@ void Player::updateInput() {
     if(m_velocity.x < 0.001f && m_velocity.x > -0.001f && m_onGround && m_stamina * 1.003f <= 1.000000f) m_stamina *= 1.003f;
 
     if(m_canInteract) {
-        if(m_input->isKeyPressed(SDLK_e)) {
+        if(input->isKeyPressed(SDLK_e)) {
             if(m_selectedEntity) { // must hover mouse over entity and press 'e'
-                m_selectedEntity->onTalk(m_sq);
+                m_selectedEntity->onTalk(sq);
             }
-        } else if(m_input->isKeyPressed(SDLK_t)) {
+        } else if(input->isKeyPressed(SDLK_t)) {
             if(m_selectedEntity) {
-                m_selectedEntity->onTrade(m_sq);
+                m_selectedEntity->onTrade(sq);
             }
         }
 
-        if(m_input->isKeyDown(SDLK_p)) {
+        if(input->isKeyDown(SDLK_p)) {
             m_inventory->addItem(createItem((unsigned int)Categories::ItemIDs::BLOCK_WOOD, 1));
         }
-        if(m_input->isKeyPressed(SDLK_o)) {
+        if(input->isKeyPressed(SDLK_o)) {
             m_inventory->addItem(createItem((unsigned int)Categories::ItemIDs::MISC_BUCKET, 1));
         }
 
-        if(m_input->isKeyDown(SDL_BUTTON_LEFT) && m_selectedBlock) {
-            if(m_favouriteItems[m_selectedHotbox]) m_favouriteItems[m_selectedHotbox]->onLeftClick(m_selectedBlock);
+        if(input->isKeyDown(SDL_BUTTON_LEFT) && m_selectedBlock) {
+            if(m_favouriteItems[m_selectedHotbox]) m_favouriteItems[m_selectedHotbox]->onLeftClick(m_selectedBlock, world);
             if(!m_favouriteItems[m_selectedHotbox]) {
-                BlockAir* b = new BlockAir(m_selectedBlock->getPosition(), m_selectedBlock->getLayer(), m_selectedBlock->getParentChunk());//createBlock((unsigned int)Categories::BlockIDs::WATER, m_selectedBlock->getPosition(), m_selectedBlock->getParentChunk());
-                m_selectedBlock->getParentChunk()->setTile(b);
+                BlockAir* b = new BlockAir(m_selectedBlock->getPosition(), m_selectedBlock->getLayer());
+                world->setTile(b);
             }
             m_inventory->updateWeight();
         }
-        if(m_input->isKeyPressed(SDL_BUTTON_RIGHT) && m_selectedBlock) {
-            if(m_favouriteItems[m_selectedHotbox]) m_favouriteItems[m_selectedHotbox]->onRightClick(m_selectedBlock);
+        if(input->isKeyPressed(SDL_BUTTON_RIGHT) && m_selectedBlock) {
+            if(m_favouriteItems[m_selectedHotbox]) m_favouriteItems[m_selectedHotbox]->onRightClick(m_selectedBlock, world);
             m_inventory->updateWeight();
         }
-        if(m_input->isKeyPressed(SDLK_r)) {
+        if(input->isKeyPressed(SDLK_r)) {
             Item* newItem = createItem((unsigned int)Categories::ItemIDs::BLOCK_DIRT, 1);
             m_inventory->addItem(newItem);
             //m_sq->activateScript(m_scriptID_makeHouse);
         }
-        if(m_input->isKeyPressed(SDLK_t)) {
-            if(m_input->isKeyDown(SDLK_RSHIFT)) {
+        if(input->isKeyPressed(SDLK_t)) {
+            if(input->isKeyDown(SDLK_RSHIFT)) {
                 Item* newItem = createItem((unsigned int)Categories::ItemIDs::BLOCK_TORCH_ANTI, 1);
                 m_inventory->addItem(newItem);
-            } else if(m_input->isKeyDown(SDLK_LSHIFT)) {
+            } else if(input->isKeyDown(SDLK_LSHIFT)) {
                 Item* newItem = createItem((unsigned int)Categories::ItemIDs::BLOCK_TORCH_BRIGHT, 1);
                 m_inventory->addItem(newItem);
             } else {
@@ -469,41 +408,41 @@ void Player::updateInput() {
                 m_inventory->addItem(newItem);
             }
         }
-        if(m_input->isKeyPressed(SDLK_i)) {
+        if(input->isKeyPressed(SDLK_i)) {
             m_inventoryOpen = !m_inventoryOpen;
         }
     }
 
-    if(m_input->isKeyPressed(SDLK_1)) {
+    if(input->isKeyPressed(SDLK_1)) {
         m_selectedHotbox = 0;
         m_favouriteItems[0] = m_inventory->getItem(0);
     } else
-    if(m_input->isKeyPressed(SDLK_2)) {
+    if(input->isKeyPressed(SDLK_2)) {
         m_selectedHotbox = 1;
         m_favouriteItems[1] = m_inventory->getItem(1);
     } else
-    if(m_input->isKeyPressed(SDLK_3)) {
+    if(input->isKeyPressed(SDLK_3)) {
         m_selectedHotbox = 2;
     } else
-    if(m_input->isKeyPressed(SDLK_4)) {
+    if(input->isKeyPressed(SDLK_4)) {
         m_selectedHotbox = 3;
     } else
-    if(m_input->isKeyPressed(SDLK_5)) {
+    if(input->isKeyPressed(SDLK_5)) {
         m_selectedHotbox = 4;
     } else
-    if(m_input->isKeyPressed(SDLK_6)) {
+    if(input->isKeyPressed(SDLK_6)) {
         m_selectedHotbox = 5;
     } else
-    if(m_input->isKeyPressed(SDLK_7)) {
+    if(input->isKeyPressed(SDLK_7)) {
         m_selectedHotbox = 6;
     } else
-    if(m_input->isKeyPressed(SDLK_8)) {
+    if(input->isKeyPressed(SDLK_8)) {
         m_selectedHotbox = 7;
     } else
-    if(m_input->isKeyPressed(SDLK_9)) {
+    if(input->isKeyPressed(SDLK_9)) {
         m_selectedHotbox = 8;
     } else
-    if(m_input->isKeyPressed(SDLK_0)) {
+    if(input->isKeyPressed(SDLK_0)) {
         m_selectedHotbox = 9;
     }
 }

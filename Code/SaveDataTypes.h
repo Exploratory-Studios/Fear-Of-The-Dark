@@ -1,7 +1,7 @@
 #pragma once
 
 struct MetaData_Aspect {
-    MetaData_Aspect(std::string nameP, int valP) : name(name), val(std::to_string(valP)) {}
+    MetaData_Aspect(std::string nameP, int valP) : name(nameP), val(std::to_string(valP)) {}
     MetaData_Aspect(std::string nameP, float valP) : name(nameP), val(std::to_string(valP)) {}
     MetaData_Aspect(std::string nameP, std::string valP) : name(nameP), val(valP) {}
 
@@ -176,6 +176,7 @@ class ChunkData {
                     }
                 }
             }
+            file.write(reinterpret_cast<char*>(&(place)), sizeof(unsigned int));
         }
         void read(std::ifstream& file) {
             for(int y = 0; y < WORLD_HEIGHT; y++) {
@@ -185,10 +186,12 @@ class ChunkData {
                     }
                 }
             }
+            file.read(reinterpret_cast<char*>(&(place)), sizeof(unsigned int));
         }
         //std::vector<EntityData> entities;
         /// TODO: create entities the same way blocks and items are created (Blocks.h & Items.h)
         TileData tiles[WORLD_HEIGHT][CHUNK_SIZE][WORLD_DEPTH] {};
+        Categories::Places place;
 };
 
 struct StructureData {

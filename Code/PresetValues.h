@@ -235,13 +235,13 @@ namespace Category_Data {
 
     static const PlaceDatum placeData[Category_Data::TOTAL_PLACES] = {
                                                                  PlaceDatum(20, -14, 25, 10, 7.5, {2}), // temperature averages in late fall-ish, as that's the kind of feel the game should have. Fall-ish...
-                                                                 PlaceDatum(30, -45, -10, 20, 4.3, {2}),
-                                                                 PlaceDatum(55, 10, 35, 45, 1.5, {2}),
-                                                                 PlaceDatum(80, 10, 20, 70, 6.2, {2}),
-                                                                 PlaceDatum(110, -15, 10, 100, 1.75, {2}),
-                                                                 PlaceDatum(90, 10, 30, 80, 8.5, {2}),
-                                                                 PlaceDatum(70, 10, 40, 60, 0.5, {2}),
-                                                                 PlaceDatum(50, 10, 25, 40, 7.6, {2})
+                                                                 PlaceDatum(30, -45, -10, 15, 4.3, {2}),
+                                                                 PlaceDatum(55, 10, 35, 25, 1.5, {2}),
+                                                                 PlaceDatum(80, 10, 20, 30, 6.2, {2}),
+                                                                 PlaceDatum(110, -15, 10, 50, 1.75, {2}),
+                                                                 PlaceDatum(90, 10, 30, 40, 8.5, {2}),
+                                                                 PlaceDatum(70, 10, 40, 30, 0.5, {2}),
+                                                                 PlaceDatum(40, 10, 25, 2, 7.6, {2})
                                                                 };
                                                               /*CANADA,
                                                                 ARCTIC,

@@ -338,6 +338,9 @@ void WorldIOManager::P_createWorld(unsigned int seed, std::string worldName, boo
     std::vector<int> blockHeights;
     blockHeights.resize(WORLD_SIZE * WORLD_DEPTH);
 
+    std::vector<int> tempHeights;
+    tempHeights.resize(WORLD_SIZE * WORLD_DEPTH);
+
     if(!isFlat) {
         // Set the block heights in each chunk
         setMessage("Setting block heights...");
@@ -355,9 +358,9 @@ void WorldIOManager::P_createWorld(unsigned int seed, std::string worldName, boo
                     extra *= Category_Data::placeData[(int)w->m_placesMap[i]].maxHeightDiff;
                     //extra /= Category_Data::placeData[(int)w->chunks[i]->getPlace()].flatness;
 
-                    float height = std::floor(Category_Data::placeData[(int)w->m_placesMap[i]].baseHeight + extra);
+                    float height = std::floor(extra);
 
-                    blockHeights[layer * WORLD_SIZE + i * CHUNK_SIZE + j] = height;
+                    tempHeights[layer * WORLD_SIZE + i * CHUNK_SIZE + j] = height;
 
                     setMessage("Setting block heights... \n(" + std::to_string(layer * WORLD_SIZE + i * CHUNK_SIZE + j) + "/" + std::to_string(WORLD_SIZE * WORLD_DEPTH) + ")");
                 }
@@ -367,7 +370,7 @@ void WorldIOManager::P_createWorld(unsigned int seed, std::string worldName, boo
         // m_progress at 0.3f
         setMessage("Smoothing terrain... ");
 
-        {
+        /*{
             const float SMOOTHED_PORTION_D = 3; // 2/3
             const float SMOOTHED_PORTION = (SMOOTHED_PORTION_D - 1.0f) / SMOOTHED_PORTION_D;
 
@@ -407,6 +410,45 @@ void WorldIOManager::P_createWorld(unsigned int seed, std::string worldName, boo
                     }
                 }
             }
+        }*/
+
+        {
+            setMessage("Smoothing terrain... ");
+            for(int layer = 0; layer < WORLD_DEPTH; layer++) {
+                for(int x = 0; x < WORLD_SIZE; x++) {
+                    // blockHeights[layer * WORLD_SIZE + x]
+                    /// 1. Figure out how 'deep' this x value is in its biome
+                    int centreIndex = (int)(x / CHUNK_SIZE) * CHUNK_SIZE + (CHUNK_SIZE / 2); // Find the centre x value of this biome
+                    unsigned int chunkDepthInv = std::abs(x - centreIndex); // How far it is from the centre. Centre is 0, very outsides are CHUNK_SIZE/2.
+                    unsigned int chunkDepth = (CHUNK_SIZE / 2) - chunkDepthInv; // How far in it is. Centre is CHUNK_SIZE/2, very outsides are 0.
+
+                    unsigned int chunkIndex = ((x / CHUNK_SIZE) + (WORLD_SIZE / CHUNK_SIZE)) % (WORLD_SIZE / CHUNK_SIZE); // Chunk index of current x value
+                    unsigned int previousBase = Category_Data::placeData[(int)w->m_placesMap[(chunkIndex-1 + WORLD_SIZE/CHUNK_SIZE) % (WORLD_SIZE/CHUNK_SIZE)]].baseHeight;
+                    unsigned int nextBase = Category_Data::placeData[(int)w->m_placesMap[(chunkIndex+1 + WORLD_SIZE/CHUNK_SIZE) % (WORLD_SIZE/CHUNK_SIZE)]].baseHeight;
+                    unsigned int baseHeight = Category_Data::placeData[(int)w->m_placesMap[chunkIndex]].baseHeight; // Base height values of current, next, and previous chunks
+
+                    blockHeights[layer * WORLD_SIZE + x] = tempHeights[layer * WORLD_SIZE + x];
+
+                    if(chunkDepth / (float)CHUNK_SIZE <= 2.0f/3.0f) {
+                        blockHeights[layer * WORLD_SIZE + x] *= (chunkDepth / (float)CHUNK_SIZE) * 3.0f; // I promise this makes sense. *3.0f to account for the 1/3
+                    } // Each third of a chunk should be flattened
+
+                    if(x > centreIndex) { // current and next chunks smoothen
+                        blockHeights[layer * WORLD_SIZE + x] += nextBase * (chunkDepthInv / (float)CHUNK_SIZE); // ChunkDepthInv/CHUNK_SIZE -> edges=1/2, centre=0
+                        blockHeights[layer * WORLD_SIZE + x] += baseHeight * ((chunkDepth / (float)CHUNK_SIZE) + 0.5f); // ChunkDepth/CHUNK_SIZE -> edges=0, centre=1/2
+                    } else if(x < centreIndex) {
+                        blockHeights[layer * WORLD_SIZE + x] += previousBase * (chunkDepthInv / (float)CHUNK_SIZE); // ChunkDepthInv/CHUNK_SIZE -> edges=1/2, centre=0
+                        blockHeights[layer * WORLD_SIZE + x] += baseHeight * ((chunkDepth / (float)CHUNK_SIZE) + 0.5f); // ChunkDepth/CHUNK_SIZE -> edges=0, centre=1/2
+                    } else {
+                        blockHeights[layer * WORLD_SIZE + x] += baseHeight;
+                    }
+                }
+            }
+        }
+
+        tempHeights.clear();
+
+        {
 
             // m_progress at 0.4f
 

@@ -17108,3 +17108,327 @@ Loading trade tables. 180 bytes to read.
 Loaded trade tables! (24 bytes)
 Setting time to 1200
 Setting time to 600
+
+
+
+### LOG: Thu Dec 26 13:05:01 2019 ###
+
+CREATE: Starting world creation at time: 793.862000
+CREATE: Finished world creation at time: 2876.917969 (Elapsed: 2083.055908ms)
+Loaded all 3 music files.
+Loaded all 2 sound files.
+Loading dialogue. 1297 bytes to read.
+Successfully Loaded Script File: /home/davis-dev/.exploratory/Fear Of The Dark/Assets/Scripts/Script_selected_makeHouse.txt, and given id of: 0
+Successfully Loaded Script File: /home/davis-dev/.exploratory/Fear Of The Dark/Assets/Scripts/Script_player_makeHouse.txt, and given id of: 1
+Dialogue loaded! (24 bytes)
+Loading flags. 125 bytes to read.
+Loaded flag with id of 0 and value of 0
+Loaded flag with id of 1 and value of 0
+Loaded flag with id of 2 and value of 0
+Loaded flag with id of 3 and value of 0
+Loaded flag with id of 4 and value of 0
+Loaded flag with id of 5 and value of 0
+Flags loaded! (24 bytes)
+Loading trade tables. 180 bytes to read.
+Loaded trade tables! (24 bytes)
+
+
+
+### LOG: Thu Dec 26 13:07:56 2019 ###
+
+CREATE: Starting world creation at time: 800.918030
+CREATE: Finished world creation at time: 815.716003 (Elapsed: 14.797974ms)
+Loaded all 3 music files.
+Loaded all 2 sound files.
+Loading dialogue. 1297 bytes to read.
+Successfully Loaded Script File: /home/davis-dev/.exploratory/Fear Of The Dark/Assets/Scripts/Script_selected_makeHouse.txt, and given id of: 0
+Successfully Loaded Script File: /home/davis-dev/.exploratory/Fear Of The Dark/Assets/Scripts/Script_player_makeHouse.txt, and given id of: 1
+Dialogue loaded! (24 bytes)
+Loading flags. 125 bytes to read.
+Loaded flag with id of 0 and value of 0
+Loaded flag with id of 1 and value of 0
+Loaded flag with id of 2 and value of 0
+Loaded flag with id of 3 and value of 0
+Loaded flag with id of 4 and value of 0
+Loaded flag with id of 5 and value of 0
+Flags loaded! (24 bytes)
+Loading trade tables. 180 bytes to read.
+Loaded trade tables! (24 bytes)
+
+
+
+### LOG: Thu Dec 26 13:08:47 2019 ###
+
+CREATE: Starting world creation at time: 756.362976
+CREATE: Finished world creation at time: 2816.614014 (Elapsed: 2060.250977ms)
+Loaded all 3 music files.
+Loaded all 2 sound files.
+Loading dialogue. 1297 bytes to read.
+Successfully Loaded Script File: /home/davis-dev/.exploratory/Fear Of The Dark/Assets/Scripts/Script_selected_makeHouse.txt, and given id of: 0
+Successfully Loaded Script File: /home/davis-dev/.exploratory/Fear Of The Dark/Assets/Scripts/Script_player_makeHouse.txt, and given id of: 1
+Dialogue loaded! (24 bytes)
+Loading flags. 125 bytes to read.
+Loaded flag with id of 0 and value of 0
+Loaded flag with id of 1 and value of 0
+Loaded flag with id of 2 and value of 0
+Loaded flag with id of 3 and value of 0
+Loaded flag with id of 4 and value of 0
+Loaded flag with id of 5 and value of 0
+Flags loaded! (24 bytes)
+Loading trade tables. 180 bytes to read.
+Loaded trade tables! (24 bytes)
+
+
+
+### LOG: Thu Dec 26 18:33:11 2019 ###
+
+CREATE: Starting world creation at time: 896.705994
+
+
+
+### LOG: Thu Dec 26 18:33:44 2019 ###
+
+CREATE: Starting world creation at time: 732.302002
+
+
+
+### LOG: Thu Dec 26 18:34:55 2019 ###
+
+CREATE: Starting world creation at time: 749.684021
+
+
+
+### LOG: Thu Dec 26 18:36:19 2019 ###
+
+CREATE: Starting world creation at time: 824.403992
+
+
+
+### LOG: Thu Dec 26 18:37:11 2019 ###
+
+CREATE: Starting world creation at time: 754.460022
+
+
+
+### LOG: Thu Dec 26 18:38:12 2019 ###
+
+CREATE: Starting world creation at time: 875.008972
+
+
+
+### LOG: Thu Dec 26 18:40:29 2019 ###
+
+CREATE: Starting world creation at time: 733.716003
+
+
+
+### LOG: Thu Dec 26 18:45:14 2019 ###
+
+CREATE: Starting world creation at time: 777.929993
+
+
+
+### LOG: Thu Dec 26 18:46:42 2019 ###
+
+CREATE: Starting world creation at time: 721.330994
+CREATE: Finished world creation at time: 2848.184082 (Elapsed: 2126.853027ms)
+Loaded all 3 music files.
+Loaded all 2 sound files.
+Loading dialogue. 1297 bytes to read.
+Successfully Loaded Script File: /home/davis-dev/.exploratory/Fear Of The Dark/Assets/Scripts/Script_selected_makeHouse.txt, and given id of: 0
+Successfully Loaded Script File: /home/davis-dev/.exploratory/Fear Of The Dark/Assets/Scripts/Script_player_makeHouse.txt, and given id of: 1
+Dialogue loaded! (24 bytes)
+Loading flags. 125 bytes to read.
+Loaded flag with id of 0 and value of 0
+Loaded flag with id of 1 and value of 0
+Loaded flag with id of 2 and value of 0
+Loaded flag with id of 3 and value of 0
+Loaded flag with id of 4 and value of 0
+Loaded flag with id of 5 and value of 0
+Flags loaded! (24 bytes)
+Loading trade tables. 180 bytes to read.
+Loaded trade tables! (24 bytes)
+
+
+
+### LOG: Thu Dec 26 18:48:50 2019 ###
+
+CREATE: Starting world creation at time: 790.578003
+CREATE: Finished world creation at time: 2921.028076 (Elapsed: 2130.450195ms)
+Loaded all 3 music files.
+Loaded all 2 sound files.
+Loading dialogue. 1297 bytes to read.
+Successfully Loaded Script File: /home/davis-dev/.exploratory/Fear Of The Dark/Assets/Scripts/Script_selected_makeHouse.txt, and given id of: 0
+Successfully Loaded Script File: /home/davis-dev/.exploratory/Fear Of The Dark/Assets/Scripts/Script_player_makeHouse.txt, and given id of: 1
+Dialogue loaded! (24 bytes)
+Loading flags. 125 bytes to read.
+Loaded flag with id of 0 and value of 0
+Loaded flag with id of 1 and value of 0
+Loaded flag with id of 2 and value of 0
+Loaded flag with id of 3 and value of 0
+Loaded flag with id of 4 and value of 0
+Loaded flag with id of 5 and value of 0
+Flags loaded! (24 bytes)
+Loading trade tables. 180 bytes to read.
+Loaded trade tables! (24 bytes)
+
+
+
+### LOG: Thu Dec 26 18:51:39 2019 ###
+
+CREATE: Starting world creation at time: 705.166016
+CREATE: Finished world creation at time: 2832.610107 (Elapsed: 2127.444092ms)
+Loaded all 3 music files.
+Loaded all 2 sound files.
+Loading dialogue. 1297 bytes to read.
+Successfully Loaded Script File: /home/davis-dev/.exploratory/Fear Of The Dark/Assets/Scripts/Script_selected_makeHouse.txt, and given id of: 0
+Successfully Loaded Script File: /home/davis-dev/.exploratory/Fear Of The Dark/Assets/Scripts/Script_player_makeHouse.txt, and given id of: 1
+Dialogue loaded! (24 bytes)
+Loading flags. 125 bytes to read.
+Loaded flag with id of 0 and value of 0
+Loaded flag with id of 1 and value of 0
+Loaded flag with id of 2 and value of 0
+Loaded flag with id of 3 and value of 0
+Loaded flag with id of 4 and value of 0
+Loaded flag with id of 5 and value of 0
+Flags loaded! (24 bytes)
+Loading trade tables. 180 bytes to read.
+Loaded trade tables! (24 bytes)
+
+
+
+### LOG: Thu Dec 26 18:59:33 2019 ###
+
+CREATE: Starting world creation at time: 767.627991
+CREATE: Finished world creation at time: 2884.371094 (Elapsed: 2116.743164ms)
+Loaded all 3 music files.
+Loaded all 2 sound files.
+Loading dialogue. 1297 bytes to read.
+Successfully Loaded Script File: /home/davis-dev/.exploratory/Fear Of The Dark/Assets/Scripts/Script_selected_makeHouse.txt, and given id of: 0
+Successfully Loaded Script File: /home/davis-dev/.exploratory/Fear Of The Dark/Assets/Scripts/Script_player_makeHouse.txt, and given id of: 1
+Dialogue loaded! (24 bytes)
+Loading flags. 125 bytes to read.
+Loaded flag with id of 0 and value of 0
+Loaded flag with id of 1 and value of 0
+Loaded flag with id of 2 and value of 0
+Loaded flag with id of 3 and value of 0
+Loaded flag with id of 4 and value of 0
+Loaded flag with id of 5 and value of 0
+Flags loaded! (24 bytes)
+Loading trade tables. 180 bytes to read.
+Loaded trade tables! (24 bytes)
+
+
+
+### LOG: Thu Dec 26 19:01:38 2019 ###
+
+CREATE: Starting world creation at time: 713.038025
+CREATE: Finished world creation at time: 2858.081055 (Elapsed: 2145.042969ms)
+Loaded all 3 music files.
+Loaded all 2 sound files.
+Loading dialogue. 1297 bytes to read.
+Successfully Loaded Script File: /home/davis-dev/.exploratory/Fear Of The Dark/Assets/Scripts/Script_selected_makeHouse.txt, and given id of: 0
+Successfully Loaded Script File: /home/davis-dev/.exploratory/Fear Of The Dark/Assets/Scripts/Script_player_makeHouse.txt, and given id of: 1
+Dialogue loaded! (24 bytes)
+Loading flags. 125 bytes to read.
+Loaded flag with id of 0 and value of 0
+Loaded flag with id of 1 and value of 0
+Loaded flag with id of 2 and value of 0
+Loaded flag with id of 3 and value of 0
+Loaded flag with id of 4 and value of 0
+Loaded flag with id of 5 and value of 0
+Flags loaded! (24 bytes)
+Loading trade tables. 180 bytes to read.
+Loaded trade tables! (24 bytes)
+
+
+
+### LOG: Thu Dec 26 19:02:55 2019 ###
+
+CREATE: Starting world creation at time: 756.364014
+CREATE: Finished world creation at time: 2870.642090 (Elapsed: 2114.278076ms)
+Loaded all 3 music files.
+Loaded all 2 sound files.
+Loading dialogue. 1297 bytes to read.
+Successfully Loaded Script File: /home/davis-dev/.exploratory/Fear Of The Dark/Assets/Scripts/Script_selected_makeHouse.txt, and given id of: 0
+Successfully Loaded Script File: /home/davis-dev/.exploratory/Fear Of The Dark/Assets/Scripts/Script_player_makeHouse.txt, and given id of: 1
+Dialogue loaded! (24 bytes)
+Loading flags. 125 bytes to read.
+Loaded flag with id of 0 and value of 0
+Loaded flag with id of 1 and value of 0
+Loaded flag with id of 2 and value of 0
+Loaded flag with id of 3 and value of 0
+Loaded flag with id of 4 and value of 0
+Loaded flag with id of 5 and value of 0
+Flags loaded! (24 bytes)
+Loading trade tables. 180 bytes to read.
+Loaded trade tables! (24 bytes)
+
+
+
+### LOG: Thu Dec 26 19:06:43 2019 ###
+
+CREATE: Starting world creation at time: 959.726013
+CREATE: Finished world creation at time: 3187.481934 (Elapsed: 2227.755859ms)
+Loaded all 3 music files.
+Loaded all 2 sound files.
+Loading dialogue. 1297 bytes to read.
+Successfully Loaded Script File: /home/davis-dev/.exploratory/Fear Of The Dark/Assets/Scripts/Script_selected_makeHouse.txt, and given id of: 0
+Successfully Loaded Script File: /home/davis-dev/.exploratory/Fear Of The Dark/Assets/Scripts/Script_player_makeHouse.txt, and given id of: 1
+Dialogue loaded! (24 bytes)
+Loading flags. 125 bytes to read.
+Loaded flag with id of 0 and value of 0
+Loaded flag with id of 1 and value of 0
+Loaded flag with id of 2 and value of 0
+Loaded flag with id of 3 and value of 0
+Loaded flag with id of 4 and value of 0
+Loaded flag with id of 5 and value of 0
+Flags loaded! (24 bytes)
+Loading trade tables. 180 bytes to read.
+Loaded trade tables! (24 bytes)
+
+
+
+### LOG: Thu Dec 26 19:08:17 2019 ###
+
+CREATE: Starting world creation at time: 841.681030
+CREATE: Finished world creation at time: 3021.979980 (Elapsed: 2180.298828ms)
+Loaded all 3 music files.
+Loaded all 2 sound files.
+Loading dialogue. 1297 bytes to read.
+Successfully Loaded Script File: /home/davis-dev/.exploratory/Fear Of The Dark/Assets/Scripts/Script_selected_makeHouse.txt, and given id of: 0
+Successfully Loaded Script File: /home/davis-dev/.exploratory/Fear Of The Dark/Assets/Scripts/Script_player_makeHouse.txt, and given id of: 1
+Dialogue loaded! (24 bytes)
+Loading flags. 125 bytes to read.
+Loaded flag with id of 0 and value of 0
+Loaded flag with id of 1 and value of 0
+Loaded flag with id of 2 and value of 0
+Loaded flag with id of 3 and value of 0
+Loaded flag with id of 4 and value of 0
+Loaded flag with id of 5 and value of 0
+Flags loaded! (24 bytes)
+Loading trade tables. 180 bytes to read.
+Loaded trade tables! (24 bytes)
+
+
+
+### LOG: Thu Dec 26 19:09:07 2019 ###
+
+CREATE: Starting world creation at time: 740.629028
+CREATE: Finished world creation at time: 2853.435059 (Elapsed: 2112.806152ms)
+Loaded all 3 music files.
+Loaded all 2 sound files.
+Loading dialogue. 1297 bytes to read.
+Successfully Loaded Script File: /home/davis-dev/.exploratory/Fear Of The Dark/Assets/Scripts/Script_selected_makeHouse.txt, and given id of: 0
+Successfully Loaded Script File: /home/davis-dev/.exploratory/Fear Of The Dark/Assets/Scripts/Script_player_makeHouse.txt, and given id of: 1
+Dialogue loaded! (24 bytes)
+Loading flags. 125 bytes to read.
+Loaded flag with id of 0 and value of 0
+Loaded flag with id of 1 and value of 0
+Loaded flag with id of 2 and value of 0
+Loaded flag with id of 3 and value of 0
+Loaded flag with id of 4 and value of 0
+Loaded flag with id of 5 and value of 0
+Flags loaded! (24 bytes)
+Loading trade tables. 180 bytes to read.
+Loaded trade tables! (24 bytes)

@@ -4,6 +4,7 @@
 in vec2 fragmentPosition;
 in vec4 fragmentColour;
 in vec2 fragmentUV;
+in float fragmentLight;
 
 //This is the 3 component float vector that gets outputted to the screen
 //for each pixel.
@@ -18,6 +19,6 @@ void main() {
 
 	float mod = (pow(abs(0.5 - fragmentUV.x), 2) + pow(abs(0.5 - fragmentUV.y), 2)) / 2.0;
 
-	color = textureColour * fragmentColour * vec4(vec3(1.0-mod), 1);
+	color = textureColour * fragmentColour * vec4(vec3(1.0-mod), 1) * fragmentLight;
 }
 

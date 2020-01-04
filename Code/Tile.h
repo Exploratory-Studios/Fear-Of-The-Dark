@@ -81,16 +81,58 @@ class Tile
 
         bool needsSunCheck() { return m_needsSunCheck; }
 
-        /// TODO: Don't fuck with my formatting
+        // Don't fuck with my formatting
 
         virtual TileData getSaveData();
 
         void setAmbientLight(float light) { m_ambientLight = light; }
         void addAmbientLight(float light) { m_ambientLight += light; if(m_ambientLight < 0.0f) m_ambientLight = 0.0f; }
+
+        void addCornerLight(float TL, float TR, float BR, float BL) {
+            if(TL > 0) m_cornerLight.x += TL;
+            if(TR > 0) m_cornerLight.y += TR;
+            if(BR > 0) m_cornerLight.z += BR;
+            if(BL > 0) m_cornerLight.w += BL;
+
+            m_ambientLight = m_cornerLight.z; // Bottom right corner.
+        }
+        void subtractCornerLight(float TL, float TR, float BR, float BL) {
+            if(TL > 0) m_cornerLight.x -= TL;
+            if(TR > 0) m_cornerLight.y -= TR;
+            if(BR > 0) m_cornerLight.z -= BR;
+            if(BL > 0) m_cornerLight.w -= BL;
+
+            m_ambientLight = m_cornerLight.z; // Bottom right corner.
+        }
+
         void setNeedsSunCheck() { m_needsSunCheck = true; }
         void setPosition(glm::vec2 pos) { m_pos = pos; }
         void setToUpdate_heat() { m_updateHeat = true; } // Sends the signal to update heat
-        void setSunLight(float sunlight) { m_sunLight = sunlight; }
+        void setSunLight(float light, bool left, bool right, bool top, bool bottom) {
+            m_sunLight = light;
+
+            if(top) {
+                m_cornerSunlight.x = m_sunLight;
+                m_cornerSunlight.y = m_sunLight;
+            }
+            if(right) {
+                if(!top) {
+                    m_cornerSunlight.y = m_sunLight;
+                }
+                if(bottom) {
+                    m_cornerSunlight.z = m_sunLight;
+                }
+            }
+            if(left) {
+                if(!top) {
+                    m_cornerSunlight.x = m_sunLight;
+                }
+                if(bottom) {
+                    m_cornerSunlight.w = m_sunLight;
+                }
+            }
+
+        }
 
         virtual void update(World* world, float time, bool updateLighting);
         virtual void tick(World* world, float tickTime, const float& sunlight);
@@ -129,7 +171,9 @@ class Tile
 
         float m_ambientLight = 0.0f; // Really should be inherited light or something, as this light is inherited from surrounding blocks
         float m_emittedLight = 0.0f;
-        float m_sunLight = 0.0f;
+        float m_sunLight;
+        glm::vec4 m_cornerSunlight;
+        glm::vec4 m_cornerLight; // Clockwise, 0 is top left
 
         bool m_exposedToSun = false;
         bool m_needsSunCheck = true; // Was there a block just placed in this column?

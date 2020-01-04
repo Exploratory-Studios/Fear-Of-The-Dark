@@ -17,7 +17,7 @@ void Limb::draw(GLEngine::SpriteBatch& sb) {
 
     GLEngine::ColourRGBA8 fullColour(255, 255, 255, 255);
 
-    sb.draw(destRect, uvRect, m_textureId, 0.51f, fullColour, m_angle, glm::vec3(m_parentEntity->getLightLevel()), m_por);
+    sb.draw(destRect, uvRect, m_textureId, 0.51f, fullColour, m_angle, glm::vec4(m_parentEntity->getLightLevel()), m_por);
 }
 
 Entity::~Entity()
@@ -205,7 +205,7 @@ void Entity::draw(GLEngine::SpriteBatch& sb, float time, int layerDifference, fl
         depth = (WORLD_DEPTH - m_layer);
     }
 
-    sb.draw(destRect, uvRect, m_texture.id, depth * (WORLD_DEPTH - m_layer), colour, glm::vec3(m_light));
+    sb.draw(destRect, uvRect, m_texture.id, depth * (WORLD_DEPTH - m_layer), colour, glm::vec4(m_light));
 
     for(unsigned int i = 0; i < m_limbs.size(); i++) {
         m_limbs[i]->draw(sb); // no sb.begin() or end()
@@ -483,7 +483,7 @@ void Entity::updateLightLevel(World* world) {
 
         m_light += world->getTile(m_position.x + m_size.x, m_position.y + m_size.y / 2.0f, m_layer)->getLight();
         if(world->getTile(m_position.x + m_size.x, m_position.y + m_size.y / 2.0f, m_layer)->getSunLight() != 0.0f) m_exposedToSun = true;
-        m_light /= 2.0f;
+        m_light /= 2.0f; /// TODO: Fix entity lighting
     }
 }
 

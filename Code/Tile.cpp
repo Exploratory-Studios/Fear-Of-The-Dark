@@ -113,13 +113,34 @@ void Tile::tick(World* world, float tickTime, const float& sunlight) {
     }
 
     if(m_exposedToSun) {
-        m_sunLight = sunlight;
-        Tile* below = world->getTile(m_pos.x, m_pos.y-1, m_layer);
-        if(below) {
-            if(!below->isExposedToSunlight()) {
-                below->setSunLight(sunlight / 2.0f);
+        bool left = true, right = true;
+        if(!m_transparent) {
+            Tile* leftT = world->getTile(m_pos.x-1, m_pos.y, m_layer);
+            if(leftT) {
+                if(!(leftT->isTransparent() && leftT->isExposedToSunlight())) {
+                    left = false;
+                }
+            }
+            Tile* rightT = world->getTile(m_pos.x+1, m_pos.y, m_layer);
+            if(rightT) {
+                if(!(rightT->isTransparent() && rightT->isExposedToSunlight())) {
+                    right = false;
+                }
             }
         }
+        Tile* leftT = world->getTile(m_pos.x-1, m_pos.y, m_layer);
+        if(leftT) {
+            if(!(leftT->isTransparent() || leftT->isExposedToSunlight())) {
+                leftT->setSunLight(sunlight, false, true, false, m_transparent);
+            }
+        }
+        Tile* rightT = world->getTile(m_pos.x+1, m_pos.y, m_layer);
+        if(rightT) {
+            if(!(rightT->isTransparent() || rightT->isExposedToSunlight())) {
+                rightT->setSunLight(sunlight, true, false, false, m_transparent);
+            }
+        }
+        setSunLight(sunlight, left, right, true, true);
     }
 
     onTick(world, tickTime);
@@ -159,7 +180,7 @@ void Tile::draw(GLEngine::SpriteBatch& sb, GLEngine::SpriteFont& sf, int xOffset
                 m_textureId,
                 depth,
                 colour,
-                glm::vec3(getLight()));
+                m_cornerLight + m_cornerSunlight);
 
         onDraw(sb, sf, pos, depth);
     }
@@ -176,7 +197,7 @@ void Tile::drawBackdrop(GLEngine::SpriteBatch& sb, int xOffset, int yOffset, flo
                 m_backdropTextureId,
                 0.1f * (WORLD_DEPTH - m_layer),
                 GLEngine::ColourRGBA8(r, g, b, m_colour.a),
-                glm::vec3(lightLevel));
+                m_cornerLight);
     }
 }
 
@@ -199,7 +220,7 @@ void Tile::destroy(World* world) {
 
 bool Tile::exposedToSun(World* world) {
     if(!m_transparent) {
-        Tile* left = world->getTile(m_pos.x-1, m_pos.y, m_layer);
+        /*Tile* left = world->getTile(m_pos.x-1, m_pos.y, m_layer);
         if(left) {
             if(left->isTransparent()) {
                 if(left->needsSunCheck()) {
@@ -243,7 +264,7 @@ bool Tile::exposedToSun(World* world) {
                     return true;
                 }
             }
-        }
+        }*/
     }
     for(int i = m_pos.y+1; i < WORLD_HEIGHT; i++) {
         if(!(world->getTile(m_pos.x, i, m_layer)->isTransparent())) {
@@ -264,16 +285,41 @@ TileData Tile::getSaveData() {
 }
 
 void Tile::resetNeighboursLight(World* world) {
-    int range = std::floor(std::sqrt(m_emittedLight) * 4.0f);
+    float range = std::sqrt(std::abs(m_emittedLight)) * 4.0f;
 
-    for(int y = -range; y < range; y++) {
-        for(int x = -range; x < range; x++) {
-            for(int layer = -range; layer < range; layer++) {
+    float TL, TR, BL, BR;
+
+    for(int y = -std::ceil(range); y <= std::ceil(range); y++) {
+        for(int x = -std::ceil(range); x <= std::ceil(range); x++) {
+            for(int layer = -std::ceil(range); layer <= std::ceil(range); layer++) {
                 Tile* t = world->getTile(m_pos.x + x, m_pos.y + y, m_layer + layer);
                 if(t) {
-                    float dist = std::sqrt((x*x) + (y*y) + (layer*layer));
+                    float dist = std::sqrt((x)*(x) + (y)*(y) + (layer*layer));
                     float light = (1.0f - dist/(float)range) * m_emittedLight;
-                    if(light > 0.0f) t->addAmbientLight(-light);
+
+                    if(light > 0.0f) {
+                        t->addAmbientLight(-light);
+                    }
+                    { // Bottom left corner (x, y)
+                        float d = std::sqrt((x-0.5f)*(x-0.5f) + (y-0.5f)*(y-0.5f) + (layer*layer));
+                        BL = ((1.0f - d/(float)(range)) * m_emittedLight); // x + 0, y + 0
+                    }
+                    { // Bottom right corner (x+1, y)
+                        float d = std::sqrt((x+0.5f)*(x+0.5f) + (y-0.5f)*(y-0.5f) + (layer*layer));
+                        BR = ((1.0f - d/(float)(range)) * m_emittedLight); // x + 0, y + 0
+                    }
+                    { // top left corner (x, y+1)
+                        float d = std::sqrt((x-0.5f)*(x-0.5f) + (y+0.5f)*(y+0.5f) + (layer*layer));
+                        TL = ((1.0f - d/(float)(range)) * m_emittedLight); // x + 0, y + 0
+                    }
+                    { // top right corner (x+1, y+1)
+                        float d = std::sqrt((x+0.5f)*(x+0.5f) + (y+0.5f)*(y+0.5f) + (layer*layer));
+                        TR = ((1.0f - d/(float)(range)) * m_emittedLight); // x + 0, y + 0
+                    }
+
+                    if(BL > 0 || BR > 0 || TR > 0 || TL > 0) {
+                        t->subtractCornerLight(TL, TR, BR, BL);
+                    }
                 }
             }
         }
@@ -281,16 +327,41 @@ void Tile::resetNeighboursLight(World* world) {
 }
 #include <iostream>
 void Tile::setNeighboursLight(World* world) {
-    int range = std::floor(std::sqrt(std::abs(m_emittedLight)) * 4.0f);
+    float range = std::sqrt(std::abs(m_emittedLight)) * 4.0f;
 
-    for(int y = -range; y < range; y++) {
-        for(int x = -range; x < range; x++) {
-            for(int layer = -range; layer < range; layer++) {
+    float TL, TR, BL, BR;
+
+    for(int y = -std::ceil(range); y <= std::ceil(range); y++) {
+        for(int x = -std::ceil(range); x <= std::ceil(range); x++) {
+            for(int layer = -std::ceil(range); layer <= std::ceil(range); layer++) {
                 Tile* t = world->getTile(m_pos.x + x, m_pos.y + y, m_layer + layer);
                 if(t) {
-                    float dist = std::sqrt((x*x) + (y*y) + (layer*layer));
+                    float dist = std::sqrt((x)*(x) + (y)*(y) + (layer*layer));
                     float light = (1.0f - dist/(float)range) * m_emittedLight;
-                    if(light > 0.0f) t->addAmbientLight(light);
+
+                    if(light > 0.0f) {
+                        t->addAmbientLight(light);
+                    }
+                    { // Bottom left corner (x, y)
+                        float d = std::sqrt((x-0.5f)*(x-0.5f) + (y-0.5f)*(y-0.5f) + (layer*layer));
+                        BL = ((1.0f - d/(float)(range)) * m_emittedLight); // x + 0, y + 0
+                    }
+                    { // Bottom right corner (x+1, y)
+                        float d = std::sqrt((x+0.5f)*(x+0.5f) + (y-0.5f)*(y-0.5f) + (layer*layer));
+                        BR = ((1.0f - d/(float)(range)) * m_emittedLight); // x + 0, y + 0
+                    }
+                    { // top left corner (x, y+1)
+                        float d = std::sqrt((x-0.5f)*(x-0.5f) + (y+0.5f)*(y+0.5f) + (layer*layer));
+                        TL = ((1.0f - d/(float)(range)) * m_emittedLight); // x + 0, y + 0
+                    }
+                    { // top right corner (x+1, y+1)
+                        float d = std::sqrt((x+0.5f)*(x+0.5f) + (y+0.5f)*(y+0.5f) + (layer*layer));
+                        TR = ((1.0f - d/(float)(range)) * m_emittedLight); // x + 0, y + 0
+                    }
+
+                    if(BL > 0 || BR > 0 || TR > 0 || TL > 0) {
+                        t->addCornerLight(TL, TR, BR, BL);
+                    }
                 }
             }
         }

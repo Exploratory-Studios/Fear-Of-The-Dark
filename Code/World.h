@@ -75,11 +75,3 @@ private:
 
     std::string m_name;
 };
-
-// Tile* is a pointer
-// Tile** is a pointer to a pointer (array of pointers)
-// Tile* a[] is an array of pointers
-// Tile** a[] is an array of pointers to pointers (array of arrays of pointers)
-// new Tile is a pointer
-// new Tile* is a pointer-array
-// new Tile*[] is a pointer-array

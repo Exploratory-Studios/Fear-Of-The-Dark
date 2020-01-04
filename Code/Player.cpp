@@ -123,7 +123,7 @@ void Player::draw(GLEngine::SpriteBatch& sb, float time, int layerDifference, fl
 
     GLEngine::ColourRGBA8 colour(255, 255, 255, 255);
 
-    sb.draw(destRect, uvRect, m_texture.id, 0.8f * (WORLD_DEPTH - m_layer), colour, glm::vec3(m_light));
+    sb.draw(destRect, uvRect, m_texture.id, 0.8f * (WORLD_DEPTH - m_layer), colour, glm::vec4(m_light));
 
     /*for(int i = 0; i < m_limbs.size(); i++) {
         m_limbs[i]->draw(sb);

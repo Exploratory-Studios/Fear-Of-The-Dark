@@ -71,6 +71,7 @@ void BlockDirt::onTick(World* world, float& tickTime) {
         int chance = std::rand() % 100;
         if(chance < 1) { // 1% chance every tick
             world->setTile(createBlock((unsigned int)Categories::BlockIDs::GRASS, m_pos, m_layer, MetaData(), tickTime));
+            world->getTile(m_pos.x, m_pos.y, m_layer)->setNeedsSunCheck();
         }
     }
 }
@@ -233,7 +234,7 @@ void BlockWater::draw(GLEngine::SpriteBatch& sb, GLEngine::SpriteFont& sf, int x
             m_textureId,
             2.0f,
             colour,
-            glm::vec3(getLight()));
+            m_cornerLight);
 }
 #include <iostream>
 void BlockWater::onUpdate(World* world, float& time) {

@@ -22161,3 +22161,8855 @@ Loaded flag with id of 5 and value of 0
 Flags loaded! (24 bytes)
 Loading trade tables. 180 bytes to read.
 Loaded trade tables! (24 bytes)
+
+
+
+### LOG: Fri Jan  3 21:54:43 2020 ###
+
+CREATE: Starting world creation at time: 942.114014
+CREATE: Finished world creation at time: 3197.731934 (Elapsed: 2255.617920ms)
+Loaded all 3 music files.
+Loaded all 2 sound files.
+Loading dialogue. 1297 bytes to read.
+Successfully Loaded Script File: /home/davis-dev/.exploratory/Fear Of The Dark/Assets/Scripts/Script_selected_makeHouse.txt, and given id of: 0
+Successfully Loaded Script File: /home/davis-dev/.exploratory/Fear Of The Dark/Assets/Scripts/Script_player_makeHouse.txt, and given id of: 1
+Dialogue loaded! (24 bytes)
+Loading flags. 125 bytes to read.
+Loaded flag with id of 0 and value of 0
+Loaded flag with id of 1 and value of 0
+Loaded flag with id of 2 and value of 0
+Loaded flag with id of 3 and value of 0
+Loaded flag with id of 4 and value of 0
+Loaded flag with id of 5 and value of 0
+Flags loaded! (24 bytes)
+Loading trade tables. 180 bytes to read.
+Loaded trade tables! (24 bytes)
+
+
+
+### LOG: Sat Jan  4 13:34:26 2020 ###
+
+CREATE: Starting world creation at time: 817.859985
+CREATE: Finished world creation at time: 3039.261963 (Elapsed: 2221.401855ms)
+Loaded all 3 music files.
+Loaded all 2 sound files.
+Loading dialogue. 1297 bytes to read.
+Successfully Loaded Script File: /home/davis-dev/.exploratory/Fear Of The Dark/Assets/Scripts/Script_selected_makeHouse.txt, and given id of: 0
+Successfully Loaded Script File: /home/davis-dev/.exploratory/Fear Of The Dark/Assets/Scripts/Script_player_makeHouse.txt, and given id of: 1
+Dialogue loaded! (24 bytes)
+Loading flags. 125 bytes to read.
+Loaded flag with id of 0 and value of 0
+Loaded flag with id of 1 and value of 0
+Loaded flag with id of 2 and value of 0
+Loaded flag with id of 3 and value of 0
+Loaded flag with id of 4 and value of 0
+Loaded flag with id of 5 and value of 0
+Flags loaded! (24 bytes)
+Loading trade tables. 180 bytes to read.
+Loaded trade tables! (24 bytes)
+Setting time to 0
+
+
+
+### LOG: Sat Jan  4 13:39:12 2020 ###
+
+CREATE: Starting world creation at time: 689.278015
+CREATE: Finished world creation at time: 3170.516113 (Elapsed: 2481.238037ms)
+Loaded all 3 music files.
+Loaded all 2 sound files.
+Loading dialogue. 1297 bytes to read.
+Successfully Loaded Script File: /home/davis-dev/.exploratory/Fear Of The Dark/Assets/Scripts/Script_selected_makeHouse.txt, and given id of: 0
+Successfully Loaded Script File: /home/davis-dev/.exploratory/Fear Of The Dark/Assets/Scripts/Script_player_makeHouse.txt, and given id of: 1
+Dialogue loaded! (24 bytes)
+Loading flags. 125 bytes to read.
+Loaded flag with id of 0 and value of 0
+Loaded flag with id of 1 and value of 0
+Loaded flag with id of 2 and value of 0
+Loaded flag with id of 3 and value of 0
+Loaded flag with id of 4 and value of 0
+Loaded flag with id of 5 and value of 0
+Flags loaded! (24 bytes)
+Loading trade tables. 180 bytes to read.
+Loaded trade tables! (24 bytes)
+
+
+
+### LOG: Sat Jan  4 13:40:04 2020 ###
+
+CREATE: Starting world creation at time: 751.682983
+CREATE: Finished world creation at time: 1539.310059 (Elapsed: 787.627075ms)
+Loaded all 3 music files.
+Loaded all 2 sound files.
+Loading dialogue. 1297 bytes to read.
+Successfully Loaded Script File: /home/davis-dev/.exploratory/Fear Of The Dark/Assets/Scripts/Script_selected_makeHouse.txt, and given id of: 0
+Successfully Loaded Script File: /home/davis-dev/.exploratory/Fear Of The Dark/Assets/Scripts/Script_player_makeHouse.txt, and given id of: 1
+Dialogue loaded! (24 bytes)
+Loading flags. 125 bytes to read.
+Loaded flag with id of 0 and value of 0
+Loaded flag with id of 1 and value of 0
+Loaded flag with id of 2 and value of 0
+Loaded flag with id of 3 and value of 0
+Loaded flag with id of 4 and value of 0
+Loaded flag with id of 5 and value of 0
+Flags loaded! (24 bytes)
+Loading trade tables. 180 bytes to read.
+Loaded trade tables! (24 bytes)
+
+
+
+### LOG: Sat Jan  4 13:41:30 2020 ###
+
+CREATE: Starting world creation at time: 730.176025
+CREATE: Finished world creation at time: 1511.342041 (Elapsed: 781.166016ms)
+Loaded all 3 music files.
+Loaded all 2 sound files.
+Loading dialogue. 1297 bytes to read.
+Successfully Loaded Script File: /home/davis-dev/.exploratory/Fear Of The Dark/Assets/Scripts/Script_selected_makeHouse.txt, and given id of: 0
+Successfully Loaded Script File: /home/davis-dev/.exploratory/Fear Of The Dark/Assets/Scripts/Script_player_makeHouse.txt, and given id of: 1
+Dialogue loaded! (24 bytes)
+Loading flags. 125 bytes to read.
+Loaded flag with id of 0 and value of 0
+Loaded flag with id of 1 and value of 0
+Loaded flag with id of 2 and value of 0
+Loaded flag with id of 3 and value of 0
+Loaded flag with id of 4 and value of 0
+Loaded flag with id of 5 and value of 0
+Flags loaded! (24 bytes)
+Loading trade tables. 180 bytes to read.
+Loaded trade tables! (24 bytes)
+
+
+
+### LOG: Sat Jan  4 13:42:25 2020 ###
+
+CREATE: Starting world creation at time: 680.541992
+CREATE: Finished world creation at time: 1478.255005 (Elapsed: 797.713013ms)
+Loaded all 3 music files.
+Loaded all 2 sound files.
+Loading dialogue. 1297 bytes to read.
+Successfully Loaded Script File: /home/davis-dev/.exploratory/Fear Of The Dark/Assets/Scripts/Script_selected_makeHouse.txt, and given id of: 0
+Successfully Loaded Script File: /home/davis-dev/.exploratory/Fear Of The Dark/Assets/Scripts/Script_player_makeHouse.txt, and given id of: 1
+Dialogue loaded! (24 bytes)
+Loading flags. 125 bytes to read.
+Loaded flag with id of 0 and value of 0
+Loaded flag with id of 1 and value of 0
+Loaded flag with id of 2 and value of 0
+Loaded flag with id of 3 and value of 0
+Loaded flag with id of 4 and value of 0
+Loaded flag with id of 5 and value of 0
+Flags loaded! (24 bytes)
+Loading trade tables. 180 bytes to read.
+Loaded trade tables! (24 bytes)
+
+
+
+### LOG: Sat Jan  4 13:44:01 2020 ###
+
+CREATE: Starting world creation at time: 711.138977
+CREATE: Finished world creation at time: 1543.838013 (Elapsed: 832.699036ms)
+Loaded all 3 music files.
+Loaded all 2 sound files.
+Loading dialogue. 1297 bytes to read.
+Successfully Loaded Script File: /home/davis-dev/.exploratory/Fear Of The Dark/Assets/Scripts/Script_selected_makeHouse.txt, and given id of: 0
+Successfully Loaded Script File: /home/davis-dev/.exploratory/Fear Of The Dark/Assets/Scripts/Script_player_makeHouse.txt, and given id of: 1
+Dialogue loaded! (24 bytes)
+Loading flags. 125 bytes to read.
+Loaded flag with id of 0 and value of 0
+Loaded flag with id of 1 and value of 0
+Loaded flag with id of 2 and value of 0
+Loaded flag with id of 3 and value of 0
+Loaded flag with id of 4 and value of 0
+Loaded flag with id of 5 and value of 0
+Flags loaded! (24 bytes)
+Loading trade tables. 180 bytes to read.
+Loaded trade tables! (24 bytes)
+
+
+
+### LOG: Sat Jan  4 13:45:39 2020 ###
+
+CREATE: Starting world creation at time: 714.395020
+CREATE: Finished world creation at time: 2229.314941 (Elapsed: 1514.919922ms)
+Loaded all 3 music files.
+Loaded all 2 sound files.
+Loading dialogue. 1297 bytes to read.
+Successfully Loaded Script File: /home/davis-dev/.exploratory/Fear Of The Dark/Assets/Scripts/Script_selected_makeHouse.txt, and given id of: 0
+Successfully Loaded Script File: /home/davis-dev/.exploratory/Fear Of The Dark/Assets/Scripts/Script_player_makeHouse.txt, and given id of: 1
+Dialogue loaded! (24 bytes)
+Loading flags. 125 bytes to read.
+Loaded flag with id of 0 and value of 0
+Loaded flag with id of 1 and value of 0
+Loaded flag with id of 2 and value of 0
+Loaded flag with id of 3 and value of 0
+Loaded flag with id of 4 and value of 0
+Loaded flag with id of 5 and value of 0
+Flags loaded! (24 bytes)
+Loading trade tables. 180 bytes to read.
+Loaded trade tables! (24 bytes)
+
+
+
+### LOG: Sat Jan  4 13:46:29 2020 ###
+
+CREATE: Starting world creation at time: 682.866028
+CREATE: Finished world creation at time: 2131.871094 (Elapsed: 1449.005127ms)
+Loaded all 3 music files.
+Loaded all 2 sound files.
+Loading dialogue. 1297 bytes to read.
+Successfully Loaded Script File: /home/davis-dev/.exploratory/Fear Of The Dark/Assets/Scripts/Script_selected_makeHouse.txt, and given id of: 0
+Successfully Loaded Script File: /home/davis-dev/.exploratory/Fear Of The Dark/Assets/Scripts/Script_player_makeHouse.txt, and given id of: 1
+Dialogue loaded! (24 bytes)
+Loading flags. 125 bytes to read.
+Loaded flag with id of 0 and value of 0
+Loaded flag with id of 1 and value of 0
+Loaded flag with id of 2 and value of 0
+Loaded flag with id of 3 and value of 0
+Loaded flag with id of 4 and value of 0
+Loaded flag with id of 5 and value of 0
+Flags loaded! (24 bytes)
+Loading trade tables. 180 bytes to read.
+Loaded trade tables! (24 bytes)
+
+
+
+### LOG: Sat Jan  4 13:52:48 2020 ###
+
+CREATE: Starting world creation at time: 721.862976
+CREATE: Finished world creation at time: 2322.738037 (Elapsed: 1600.875000ms)
+Loaded all 3 music files.
+Loaded all 2 sound files.
+Loading dialogue. 1297 bytes to read.
+Successfully Loaded Script File: /home/davis-dev/.exploratory/Fear Of The Dark/Assets/Scripts/Script_selected_makeHouse.txt, and given id of: 0
+Successfully Loaded Script File: /home/davis-dev/.exploratory/Fear Of The Dark/Assets/Scripts/Script_player_makeHouse.txt, and given id of: 1
+Dialogue loaded! (24 bytes)
+Loading flags. 125 bytes to read.
+Loaded flag with id of 0 and value of 0
+Loaded flag with id of 1 and value of 0
+Loaded flag with id of 2 and value of 0
+Loaded flag with id of 3 and value of 0
+Loaded flag with id of 4 and value of 0
+Loaded flag with id of 5 and value of 0
+Flags loaded! (24 bytes)
+Loading trade tables. 180 bytes to read.
+Loaded trade tables! (24 bytes)
+
+
+
+### LOG: Sat Jan  4 13:54:55 2020 ###
+
+CREATE: Starting world creation at time: 683.637024
+CREATE: Finished world creation at time: 2090.909912 (Elapsed: 1407.272949ms)
+Loaded all 3 music files.
+Loaded all 2 sound files.
+Loading dialogue. 1297 bytes to read.
+Successfully Loaded Script File: /home/davis-dev/.exploratory/Fear Of The Dark/Assets/Scripts/Script_selected_makeHouse.txt, and given id of: 0
+Successfully Loaded Script File: /home/davis-dev/.exploratory/Fear Of The Dark/Assets/Scripts/Script_player_makeHouse.txt, and given id of: 1
+Dialogue loaded! (24 bytes)
+Loading flags. 125 bytes to read.
+Loaded flag with id of 0 and value of 0
+Loaded flag with id of 1 and value of 0
+Loaded flag with id of 2 and value of 0
+Loaded flag with id of 3 and value of 0
+Loaded flag with id of 4 and value of 0
+Loaded flag with id of 5 and value of 0
+Flags loaded! (24 bytes)
+Loading trade tables. 180 bytes to read.
+Loaded trade tables! (24 bytes)
+
+
+
+### LOG: Sat Jan  4 13:56:05 2020 ###
+
+
+
+
+### LOG: Sat Jan  4 13:56:45 2020 ###
+
+CREATE: Starting world creation at time: 727.133972
+CREATE: Finished world creation at time: 2155.038086 (Elapsed: 1427.904053ms)
+Loaded all 3 music files.
+Loaded all 2 sound files.
+Loading dialogue. 1297 bytes to read.
+Successfully Loaded Script File: /home/davis-dev/.exploratory/Fear Of The Dark/Assets/Scripts/Script_selected_makeHouse.txt, and given id of: 0
+Successfully Loaded Script File: /home/davis-dev/.exploratory/Fear Of The Dark/Assets/Scripts/Script_player_makeHouse.txt, and given id of: 1
+Dialogue loaded! (24 bytes)
+Loading flags. 125 bytes to read.
+Loaded flag with id of 0 and value of 0
+Loaded flag with id of 1 and value of 0
+Loaded flag with id of 2 and value of 0
+Loaded flag with id of 3 and value of 0
+Loaded flag with id of 4 and value of 0
+Loaded flag with id of 5 and value of 0
+Flags loaded! (24 bytes)
+Loading trade tables. 180 bytes to read.
+Loaded trade tables! (24 bytes)
+
+
+
+### LOG: Sat Jan  4 13:57:46 2020 ###
+
+CREATE: Starting world creation at time: 708.723999
+CREATE: Finished world creation at time: 2536.431885 (Elapsed: 1827.707886ms)
+Loaded all 3 music files.
+Loaded all 2 sound files.
+Loading dialogue. 1297 bytes to read.
+Successfully Loaded Script File: /home/davis-dev/.exploratory/Fear Of The Dark/Assets/Scripts/Script_selected_makeHouse.txt, and given id of: 0
+Successfully Loaded Script File: /home/davis-dev/.exploratory/Fear Of The Dark/Assets/Scripts/Script_player_makeHouse.txt, and given id of: 1
+Dialogue loaded! (24 bytes)
+Loading flags. 125 bytes to read.
+Loaded flag with id of 0 and value of 0
+Loaded flag with id of 1 and value of 0
+Loaded flag with id of 2 and value of 0
+Loaded flag with id of 3 and value of 0
+Loaded flag with id of 4 and value of 0
+Loaded flag with id of 5 and value of 0
+Flags loaded! (24 bytes)
+Loading trade tables. 180 bytes to read.
+Loaded trade tables! (24 bytes)
+
+
+
+### LOG: Sat Jan  4 13:59:06 2020 ###
+
+CREATE: Starting world creation at time: 742.914978
+CREATE: Finished world creation at time: 3485.606934 (Elapsed: 2742.691895ms)
+Loaded all 3 music files.
+Loaded all 2 sound files.
+Loading dialogue. 1297 bytes to read.
+Successfully Loaded Script File: /home/davis-dev/.exploratory/Fear Of The Dark/Assets/Scripts/Script_selected_makeHouse.txt, and given id of: 0
+Successfully Loaded Script File: /home/davis-dev/.exploratory/Fear Of The Dark/Assets/Scripts/Script_player_makeHouse.txt, and given id of: 1
+Dialogue loaded! (24 bytes)
+Loading flags. 125 bytes to read.
+Loaded flag with id of 0 and value of 0
+Loaded flag with id of 1 and value of 0
+Loaded flag with id of 2 and value of 0
+Loaded flag with id of 3 and value of 0
+Loaded flag with id of 4 and value of 0
+Loaded flag with id of 5 and value of 0
+Flags loaded! (24 bytes)
+Loading trade tables. 180 bytes to read.
+Loaded trade tables! (24 bytes)
+
+
+
+### LOG: Sat Jan  4 14:02:04 2020 ###
+
+CREATE: Starting world creation at time: 736.427979
+CREATE: Finished world creation at time: 2147.551025 (Elapsed: 1411.123047ms)
+Loaded all 3 music files.
+Loaded all 2 sound files.
+Loading dialogue. 1297 bytes to read.
+Successfully Loaded Script File: /home/davis-dev/.exploratory/Fear Of The Dark/Assets/Scripts/Script_selected_makeHouse.txt, and given id of: 0
+Successfully Loaded Script File: /home/davis-dev/.exploratory/Fear Of The Dark/Assets/Scripts/Script_player_makeHouse.txt, and given id of: 1
+Dialogue loaded! (24 bytes)
+Loading flags. 125 bytes to read.
+Loaded flag with id of 0 and value of 0
+Loaded flag with id of 1 and value of 0
+Loaded flag with id of 2 and value of 0
+Loaded flag with id of 3 and value of 0
+Loaded flag with id of 4 and value of 0
+Loaded flag with id of 5 and value of 0
+Flags loaded! (24 bytes)
+Loading trade tables. 180 bytes to read.
+Loaded trade tables! (24 bytes)
+
+
+
+### LOG: Sat Jan  4 14:02:41 2020 ###
+
+CREATE: Starting world creation at time: 721.687012
+CREATE: Finished world creation at time: 2173.924072 (Elapsed: 1452.237061ms)
+Loaded all 3 music files.
+Loaded all 2 sound files.
+Loading dialogue. 1297 bytes to read.
+Successfully Loaded Script File: /home/davis-dev/.exploratory/Fear Of The Dark/Assets/Scripts/Script_selected_makeHouse.txt, and given id of: 0
+Successfully Loaded Script File: /home/davis-dev/.exploratory/Fear Of The Dark/Assets/Scripts/Script_player_makeHouse.txt, and given id of: 1
+Dialogue loaded! (24 bytes)
+Loading flags. 125 bytes to read.
+Loaded flag with id of 0 and value of 0
+Loaded flag with id of 1 and value of 0
+Loaded flag with id of 2 and value of 0
+Loaded flag with id of 3 and value of 0
+Loaded flag with id of 4 and value of 0
+Loaded flag with id of 5 and value of 0
+Flags loaded! (24 bytes)
+Loading trade tables. 180 bytes to read.
+Loaded trade tables! (24 bytes)
+
+
+
+### LOG: Sat Jan  4 14:04:12 2020 ###
+
+CREATE: Starting world creation at time: 721.797974
+CREATE: Finished world creation at time: 2220.135986 (Elapsed: 1498.338013ms)
+Loaded all 3 music files.
+Loaded all 2 sound files.
+Loading dialogue. 1297 bytes to read.
+Successfully Loaded Script File: /home/davis-dev/.exploratory/Fear Of The Dark/Assets/Scripts/Script_selected_makeHouse.txt, and given id of: 0
+Successfully Loaded Script File: /home/davis-dev/.exploratory/Fear Of The Dark/Assets/Scripts/Script_player_makeHouse.txt, and given id of: 1
+Dialogue loaded! (24 bytes)
+Loading flags. 125 bytes to read.
+Loaded flag with id of 0 and value of 0
+Loaded flag with id of 1 and value of 0
+Loaded flag with id of 2 and value of 0
+Loaded flag with id of 3 and value of 0
+Loaded flag with id of 4 and value of 0
+Loaded flag with id of 5 and value of 0
+Flags loaded! (24 bytes)
+Loading trade tables. 180 bytes to read.
+Loaded trade tables! (24 bytes)
+
+
+
+### LOG: Sat Jan  4 14:06:30 2020 ###
+
+CREATE: Starting world creation at time: 698.367004
+CREATE: Finished world creation at time: 2218.701904 (Elapsed: 1520.334961ms)
+Loaded all 3 music files.
+Loaded all 2 sound files.
+Loading dialogue. 1297 bytes to read.
+Successfully Loaded Script File: /home/davis-dev/.exploratory/Fear Of The Dark/Assets/Scripts/Script_selected_makeHouse.txt, and given id of: 0
+Successfully Loaded Script File: /home/davis-dev/.exploratory/Fear Of The Dark/Assets/Scripts/Script_player_makeHouse.txt, and given id of: 1
+Dialogue loaded! (24 bytes)
+Loading flags. 125 bytes to read.
+Loaded flag with id of 0 and value of 0
+Loaded flag with id of 1 and value of 0
+Loaded flag with id of 2 and value of 0
+Loaded flag with id of 3 and value of 0
+Loaded flag with id of 4 and value of 0
+Loaded flag with id of 5 and value of 0
+Flags loaded! (24 bytes)
+Loading trade tables. 180 bytes to read.
+Loaded trade tables! (24 bytes)
+
+
+
+### LOG: Sun Feb 23 12:58:35 2020 ###
+
+CREATE: Starting world creation at time: 2927.752930
+CREATE: Finished world creation at time: 4441.412109 (Elapsed: 1513.659180ms)
+Loaded all 3 music files.
+Loaded all 2 sound files.
+Loading dialogue. 1297 bytes to read.
+Successfully Loaded Script File: /home/davis-dev/.exploratory/Fear Of The Dark/Assets/Scripts/Script_selected_makeHouse.txt, and given id of: 0
+Successfully Loaded Script File: /home/davis-dev/.exploratory/Fear Of The Dark/Assets/Scripts/Script_player_makeHouse.txt, and given id of: 1
+Dialogue loaded! (24 bytes)
+Loading flags. 125 bytes to read.
+Loaded flag with id of 0 and value of 0
+Loaded flag with id of 1 and value of 0
+Loaded flag with id of 2 and value of 0
+Loaded flag with id of 3 and value of 0
+Loaded flag with id of 4 and value of 0
+Loaded flag with id of 5 and value of 0
+Flags loaded! (24 bytes)
+Loading trade tables. 180 bytes to read.
+Loaded trade tables! (24 bytes)
+
+### Invalid command: help ###
+
+Setting time to 0
+
+
+
+### LOG: Sun Feb 23 13:03:21 2020 ###
+
+CREATE: Starting world creation at time: 771.468994
+CREATE: Finished world creation at time: 2264.187012 (Elapsed: 1492.718018ms)
+Loaded all 3 music files.
+Loaded all 2 sound files.
+Loading dialogue. 1297 bytes to read.
+Successfully Loaded Script File: /home/davis-dev/.exploratory/Fear Of The Dark/Assets/Scripts/Script_selected_makeHouse.txt, and given id of: 0
+Successfully Loaded Script File: /home/davis-dev/.exploratory/Fear Of The Dark/Assets/Scripts/Script_player_makeHouse.txt, and given id of: 1
+Dialogue loaded! (24 bytes)
+Loading flags. 125 bytes to read.
+Loaded flag with id of 0 and value of 0
+Loaded flag with id of 1 and value of 0
+Loaded flag with id of 2 and value of 0
+Loaded flag with id of 3 and value of 0
+Loaded flag with id of 4 and value of 0
+Loaded flag with id of 5 and value of 0
+Flags loaded! (24 bytes)
+Loading trade tables. 180 bytes to read.
+Loaded trade tables! (24 bytes)
+
+
+
+### LOG: Sun Feb 23 13:06:56 2020 ###
+
+
+### LOAD: STARTING LOAD AT 1650.673950 ###
+
+
+### LOAD: Loaded Version: 1.2.1, Using Version: 1.3.1 ###
+
+
+### LOAD: Loaded Version Doesn't Match Current Loader Version. Quitting... ###
+
+
+
+
+### LOG: Sun Feb 23 13:07:40 2020 ###
+
+CREATE: Starting world creation at time: 910.142029
+CREATE: Finished world creation at time: 2397.982910 (Elapsed: 1487.840820ms)
+Loaded all 3 music files.
+Loaded all 2 sound files.
+Loading dialogue. 1297 bytes to read.
+Successfully Loaded Script File: /home/davis-dev/.exploratory/Fear Of The Dark/Assets/Scripts/Script_selected_makeHouse.txt, and given id of: 0
+Successfully Loaded Script File: /home/davis-dev/.exploratory/Fear Of The Dark/Assets/Scripts/Script_player_makeHouse.txt, and given id of: 1
+Dialogue loaded! (24 bytes)
+Loading flags. 125 bytes to read.
+Loaded flag with id of 0 and value of 0
+Loaded flag with id of 1 and value of 0
+Loaded flag with id of 2 and value of 0
+Loaded flag with id of 3 and value of 0
+Loaded flag with id of 4 and value of 0
+Loaded flag with id of 5 and value of 0
+Flags loaded! (24 bytes)
+Loading trade tables. 180 bytes to read.
+Loaded trade tables! (24 bytes)
+SAVE: Starting World Save to File: jyhgtdjyfdjytuf.bin
+SAVE: Starting Save Preparations
+SAVE: Player Data Prepared
+
+
+
+### LOG: Mon Mar 16 10:52:17 2020 ###
+
+CREATE: Starting world creation at time: 856.033997
+CREATE: Finished world creation at time: 2335.601074 (Elapsed: 1479.567139ms)
+Loaded all 3 music files.
+Loaded all 2 sound files.
+Loading dialogue. 1297 bytes to read.
+Successfully Loaded Script File: /home/davis-dev/.exploratory/Fear Of The Dark/Assets/Scripts/Script_selected_makeHouse.txt, and given id of: 0
+Successfully Loaded Script File: /home/davis-dev/.exploratory/Fear Of The Dark/Assets/Scripts/Script_player_makeHouse.txt, and given id of: 1
+Dialogue loaded! (24 bytes)
+Loading flags. 125 bytes to read.
+Loaded flag with id of 0 and value of 0
+Loaded flag with id of 1 and value of 0
+Loaded flag with id of 2 and value of 0
+Loaded flag with id of 3 and value of 0
+Loaded flag with id of 4 and value of 0
+Loaded flag with id of 5 and value of 0
+Flags loaded! (24 bytes)
+Loading trade tables. 180 bytes to read.
+Loaded trade tables! (24 bytes)
+
+
+
+### LOG: Mon Mar 16 10:53:16 2020 ###
+
+CREATE: Starting world creation at time: 804.310974
+CREATE: Finished world creation at time: 2979.804932 (Elapsed: 2175.493896ms)
+Loaded all 3 music files.
+Loaded all 2 sound files.
+Loading dialogue. 1297 bytes to read.
+Successfully Loaded Script File: /home/davis-dev/.exploratory/Fear Of The Dark/Assets/Scripts/Script_selected_makeHouse.txt, and given id of: 0
+Successfully Loaded Script File: /home/davis-dev/.exploratory/Fear Of The Dark/Assets/Scripts/Script_player_makeHouse.txt, and given id of: 1
+Dialogue loaded! (24 bytes)
+Loading flags. 125 bytes to read.
+Loaded flag with id of 0 and value of 0
+Loaded flag with id of 1 and value of 0
+Loaded flag with id of 2 and value of 0
+Loaded flag with id of 3 and value of 0
+Loaded flag with id of 4 and value of 0
+Loaded flag with id of 5 and value of 0
+Flags loaded! (24 bytes)
+Loading trade tables. 180 bytes to read.
+Loaded trade tables! (24 bytes)
+
+
+
+### LOG: Mon Mar 16 10:53:58 2020 ###
+
+CREATE: Starting world creation at time: 792.215027
+CREATE: Finished world creation at time: 3027.497070 (Elapsed: 2235.281982ms)
+Loaded all 3 music files.
+Loaded all 2 sound files.
+Loading dialogue. 1297 bytes to read.
+Successfully Loaded Script File: /home/davis-dev/.exploratory/Fear Of The Dark/Assets/Scripts/Script_selected_makeHouse.txt, and given id of: 0
+Successfully Loaded Script File: /home/davis-dev/.exploratory/Fear Of The Dark/Assets/Scripts/Script_player_makeHouse.txt, and given id of: 1
+Dialogue loaded! (24 bytes)
+Loading flags. 125 bytes to read.
+Loaded flag with id of 0 and value of 0
+Loaded flag with id of 1 and value of 0
+Loaded flag with id of 2 and value of 0
+Loaded flag with id of 3 and value of 0
+Loaded flag with id of 4 and value of 0
+Loaded flag with id of 5 and value of 0
+Flags loaded! (24 bytes)
+Loading trade tables. 180 bytes to read.
+Loaded trade tables! (24 bytes)
+
+
+
+### LOG: Mon Mar 16 10:54:31 2020 ###
+
+CREATE: Starting world creation at time: 895.940979
+CREATE: Finished world creation at time: 2995.600098 (Elapsed: 2099.659180ms)
+Loaded all 3 music files.
+Loaded all 2 sound files.
+Loading dialogue. 1297 bytes to read.
+Successfully Loaded Script File: /home/davis-dev/.exploratory/Fear Of The Dark/Assets/Scripts/Script_selected_makeHouse.txt, and given id of: 0
+Successfully Loaded Script File: /home/davis-dev/.exploratory/Fear Of The Dark/Assets/Scripts/Script_player_makeHouse.txt, and given id of: 1
+Dialogue loaded! (24 bytes)
+Loading flags. 125 bytes to read.
+Loaded flag with id of 0 and value of 0
+Loaded flag with id of 1 and value of 0
+Loaded flag with id of 2 and value of 0
+Loaded flag with id of 3 and value of 0
+Loaded flag with id of 4 and value of 0
+Loaded flag with id of 5 and value of 0
+Flags loaded! (24 bytes)
+Loading trade tables. 180 bytes to read.
+Loaded trade tables! (24 bytes)
+
+
+
+### LOG: Mon Mar 16 10:55:20 2020 ###
+
+CREATE: Starting world creation at time: 1011.317993
+CREATE: Finished world creation at time: 3144.424072 (Elapsed: 2133.105957ms)
+Loaded all 3 music files.
+Loaded all 2 sound files.
+Loading dialogue. 1297 bytes to read.
+Successfully Loaded Script File: /home/davis-dev/.exploratory/Fear Of The Dark/Assets/Scripts/Script_selected_makeHouse.txt, and given id of: 0
+Successfully Loaded Script File: /home/davis-dev/.exploratory/Fear Of The Dark/Assets/Scripts/Script_player_makeHouse.txt, and given id of: 1
+Dialogue loaded! (24 bytes)
+Loading flags. 125 bytes to read.
+Loaded flag with id of 0 and value of 0
+Loaded flag with id of 1 and value of 0
+Loaded flag with id of 2 and value of 0
+Loaded flag with id of 3 and value of 0
+Loaded flag with id of 4 and value of 0
+Loaded flag with id of 5 and value of 0
+Flags loaded! (24 bytes)
+Loading trade tables. 180 bytes to read.
+Loaded trade tables! (24 bytes)
+Added Entity 1 of 1 at X=9.000000, Y=14.000000, with and ID of 1 (Chunk 0)
+Activated script with id of: 2
+
+### Invalid command: startTrade 0 ###
+
+Activated script with id of: 2
+
+### Invalid command: startTrade 0 ###
+
+Activated script with id of: 2
+
+### Invalid command: startTrade 0 ###
+
+
+
+
+### LOG: Mon Mar 16 10:59:50 2020 ###
+
+CREATE: Starting world creation at time: 801.419006
+CREATE: Finished world creation at time: 2887.885986 (Elapsed: 2086.467041ms)
+Loaded all 3 music files.
+Loaded all 2 sound files.
+Loading dialogue. 1297 bytes to read.
+Successfully Loaded Script File: /home/davis-dev/.exploratory/Fear Of The Dark/Assets/Scripts/Script_selected_makeHouse.txt, and given id of: 0
+Successfully Loaded Script File: /home/davis-dev/.exploratory/Fear Of The Dark/Assets/Scripts/Script_player_makeHouse.txt, and given id of: 1
+Dialogue loaded! (24 bytes)
+Loading flags. 125 bytes to read.
+Loaded flag with id of 0 and value of 0
+Loaded flag with id of 1 and value of 0
+Loaded flag with id of 2 and value of 0
+Loaded flag with id of 3 and value of 0
+Loaded flag with id of 4 and value of 0
+Loaded flag with id of 5 and value of 0
+Flags loaded! (24 bytes)
+Loading trade tables. 180 bytes to read.
+Loaded trade tables! (24 bytes)
+
+
+
+### LOG: Mon Mar 16 11:00:07 2020 ###
+
+CREATE: Starting world creation at time: 704.427979
+CREATE: Finished world creation at time: 2799.945068 (Elapsed: 2095.517090ms)
+Loaded all 3 music files.
+Loaded all 2 sound files.
+Loading dialogue. 1297 bytes to read.
+Successfully Loaded Script File: /home/davis-dev/.exploratory/Fear Of The Dark/Assets/Scripts/Script_selected_makeHouse.txt, and given id of: 0
+Successfully Loaded Script File: /home/davis-dev/.exploratory/Fear Of The Dark/Assets/Scripts/Script_player_makeHouse.txt, and given id of: 1
+Dialogue loaded! (24 bytes)
+Loading flags. 125 bytes to read.
+Loaded flag with id of 0 and value of 0
+Loaded flag with id of 1 and value of 0
+Loaded flag with id of 2 and value of 0
+Loaded flag with id of 3 and value of 0
+Loaded flag with id of 4 and value of 0
+Loaded flag with id of 5 and value of 0
+Flags loaded! (24 bytes)
+Loading trade tables. 180 bytes to read.
+Loaded trade tables! (24 bytes)
+Added Entity 1 of 1 at X=9.000000, Y=14.000000, with and ID of 0 (Chunk 0)
+
+
+
+### LOG: Mon Mar 16 11:00:25 2020 ###
+
+CREATE: Starting world creation at time: 798.151978
+CREATE: Finished world creation at time: 2881.572021 (Elapsed: 2083.419922ms)
+Loaded all 3 music files.
+Loaded all 2 sound files.
+Loading dialogue. 1297 bytes to read.
+Successfully Loaded Script File: /home/davis-dev/.exploratory/Fear Of The Dark/Assets/Scripts/Script_selected_makeHouse.txt, and given id of: 0
+Successfully Loaded Script File: /home/davis-dev/.exploratory/Fear Of The Dark/Assets/Scripts/Script_player_makeHouse.txt, and given id of: 1
+Dialogue loaded! (24 bytes)
+Loading flags. 125 bytes to read.
+Loaded flag with id of 0 and value of 0
+Loaded flag with id of 1 and value of 0
+Loaded flag with id of 2 and value of 0
+Loaded flag with id of 3 and value of 0
+Loaded flag with id of 4 and value of 0
+Loaded flag with id of 5 and value of 0
+Flags loaded! (24 bytes)
+Loading trade tables. 180 bytes to read.
+Loaded trade tables! (24 bytes)
+Added Entity 1 of 1 at X=9.000000, Y=14.000000, with and ID of 1 (Chunk 0)
+
+
+
+### LOG: Mon Mar 16 11:02:16 2020 ###
+
+CREATE: Starting world creation at time: 763.556030
+CREATE: Finished world creation at time: 2983.445068 (Elapsed: 2219.889160ms)
+Loaded all 3 music files.
+Loaded all 2 sound files.
+Loading dialogue. 1297 bytes to read.
+Successfully Loaded Script File: /home/davis-dev/.exploratory/Fear Of The Dark/Assets/Scripts/Script_selected_makeHouse.txt, and given id of: 0
+Successfully Loaded Script File: /home/davis-dev/.exploratory/Fear Of The Dark/Assets/Scripts/Script_player_makeHouse.txt, and given id of: 1
+Dialogue loaded! (24 bytes)
+Loading flags. 125 bytes to read.
+Loaded flag with id of 0 and value of 0
+Loaded flag with id of 1 and value of 0
+Loaded flag with id of 2 and value of 0
+Loaded flag with id of 3 and value of 0
+Loaded flag with id of 4 and value of 0
+Loaded flag with id of 5 and value of 0
+Flags loaded! (24 bytes)
+Loading trade tables. 180 bytes to read.
+Loaded trade tables! (24 bytes)
+Added Entity 1 of 1 at X=9.000000, Y=14.000000, with and ID of 1 (Chunk 0)
+
+
+
+### LOG: Mon Mar 16 11:03:12 2020 ###
+
+CREATE: Starting world creation at time: 801.489990
+CREATE: Finished world creation at time: 3023.230957 (Elapsed: 2221.740967ms)
+Loaded all 3 music files.
+Loaded all 2 sound files.
+Loading dialogue. 1297 bytes to read.
+Successfully Loaded Script File: /home/davis-dev/.exploratory/Fear Of The Dark/Assets/Scripts/Script_selected_makeHouse.txt, and given id of: 0
+Successfully Loaded Script File: /home/davis-dev/.exploratory/Fear Of The Dark/Assets/Scripts/Script_player_makeHouse.txt, and given id of: 1
+Dialogue loaded! (24 bytes)
+Loading flags. 125 bytes to read.
+Loaded flag with id of 0 and value of 0
+Loaded flag with id of 1 and value of 0
+Loaded flag with id of 2 and value of 0
+Loaded flag with id of 3 and value of 0
+Loaded flag with id of 4 and value of 0
+Loaded flag with id of 5 and value of 0
+Flags loaded! (24 bytes)
+Loading trade tables. 180 bytes to read.
+Loaded trade tables! (24 bytes)
+
+
+
+### LOG: Mon Mar 16 11:05:21 2020 ###
+
+CREATE: Starting world creation at time: 733.231995
+CREATE: Finished world creation at time: 2808.771973 (Elapsed: 2075.540039ms)
+Loaded all 3 music files.
+Loaded all 2 sound files.
+Loading dialogue. 1297 bytes to read.
+Successfully Loaded Script File: /home/davis-dev/.exploratory/Fear Of The Dark/Assets/Scripts/Script_selected_makeHouse.txt, and given id of: 0
+Successfully Loaded Script File: /home/davis-dev/.exploratory/Fear Of The Dark/Assets/Scripts/Script_player_makeHouse.txt, and given id of: 1
+Dialogue loaded! (24 bytes)
+Loading flags. 125 bytes to read.
+Loaded flag with id of 0 and value of 0
+Loaded flag with id of 1 and value of 0
+Loaded flag with id of 2 and value of 0
+Loaded flag with id of 3 and value of 0
+Loaded flag with id of 4 and value of 0
+Loaded flag with id of 5 and value of 0
+Flags loaded! (24 bytes)
+Loading trade tables. 180 bytes to read.
+Loaded trade tables! (24 bytes)
+Added Entity 1 of 1 at X=9.000000, Y=14.000000, with and ID of 1 (Chunk 0)
+Activated script with id of: 2
+
+### Invalid command: startDialogue 2 ###
+
+Activated script with id of: 2
+
+### Invalid command: startDialogue 2 ###
+
+
+
+
+### LOG: Mon Mar 16 11:08:44 2020 ###
+
+CREATE: Starting world creation at time: 841.731018
+CREATE: Finished world creation at time: 2914.418945 (Elapsed: 2072.687988ms)
+Loaded all 3 music files.
+Loaded all 2 sound files.
+Loading dialogue. 1297 bytes to read.
+Successfully Loaded Script File: /home/davis-dev/.exploratory/Fear Of The Dark/Assets/Scripts/Script_selected_makeHouse.txt, and given id of: 0
+Successfully Loaded Script File: /home/davis-dev/.exploratory/Fear Of The Dark/Assets/Scripts/Script_player_makeHouse.txt, and given id of: 1
+Dialogue loaded! (24 bytes)
+Loading flags. 125 bytes to read.
+Loaded flag with id of 0 and value of 0
+Loaded flag with id of 1 and value of 0
+Loaded flag with id of 2 and value of 0
+Loaded flag with id of 3 and value of 0
+Loaded flag with id of 4 and value of 0
+Loaded flag with id of 5 and value of 0
+Flags loaded! (24 bytes)
+Loading trade tables. 180 bytes to read.
+Loaded trade tables! (24 bytes)
+Added Entity 1 of 1 at X=9.000000, Y=14.000000, with and ID of 1 (Chunk 0)
+
+
+
+### LOG: Mon Mar 16 11:10:19 2020 ###
+
+CREATE: Starting world creation at time: 1038.108032
+CREATE: Finished world creation at time: 3305.770996 (Elapsed: 2267.663086ms)
+Loaded all 3 music files.
+Loaded all 2 sound files.
+Loading dialogue. 1297 bytes to read.
+Successfully Loaded Script File: /home/davis-dev/.exploratory/Fear Of The Dark/Assets/Scripts/Script_selected_makeHouse.txt, and given id of: 0
+Successfully Loaded Script File: /home/davis-dev/.exploratory/Fear Of The Dark/Assets/Scripts/Script_player_makeHouse.txt, and given id of: 1
+Dialogue loaded! (24 bytes)
+Loading flags. 125 bytes to read.
+Loaded flag with id of 0 and value of 0
+Loaded flag with id of 1 and value of 0
+Loaded flag with id of 2 and value of 0
+Loaded flag with id of 3 and value of 0
+Loaded flag with id of 4 and value of 0
+Loaded flag with id of 5 and value of 0
+Flags loaded! (24 bytes)
+Loading trade tables. 180 bytes to read.
+Loaded trade tables! (24 bytes)
+Added Entity 1 of 1 at X=9.000000, Y=14.000000, with and ID of 1 (Chunk 0)
+
+
+
+### LOG: Mon Mar 16 11:16:28 2020 ###
+
+CREATE: Starting world creation at time: 711.252991
+CREATE: Finished world creation at time: 2888.788086 (Elapsed: 2177.535156ms)
+Loaded all 3 music files.
+Loaded all 2 sound files.
+Loading dialogue. 1297 bytes to read.
+Successfully Loaded Script File: /home/davis-dev/.exploratory/Fear Of The Dark/Assets/Scripts/Script_selected_makeHouse.txt, and given id of: 0
+Successfully Loaded Script File: /home/davis-dev/.exploratory/Fear Of The Dark/Assets/Scripts/Script_player_makeHouse.txt, and given id of: 1
+Dialogue loaded! (24 bytes)
+Loading flags. 125 bytes to read.
+Loaded flag with id of 0 and value of 0
+Loaded flag with id of 1 and value of 0
+Loaded flag with id of 2 and value of 0
+Loaded flag with id of 3 and value of 0
+Loaded flag with id of 4 and value of 0
+Loaded flag with id of 5 and value of 0
+Flags loaded! (24 bytes)
+Loading trade tables. 180 bytes to read.
+Loaded trade tables! (24 bytes)
+Added Entity 1 of 1 at X=15.000000, Y=14.000000, with and ID of 1 (Chunk 0)
+Activated script with id of: 2
+
+### Invalid command: startDialogue 2 ###
+
+Activated script with id of: 2
+
+### Invalid command: startDialogue 2 ###
+
+Activated script with id of: 2
+
+### Invalid command: startDialogue 2 ###
+
+Activated script with id of: 2
+
+### Invalid command: startDialogue 2 ###
+
+Activated script with id of: 2
+
+### Invalid command: startDialogue 2 ###
+
+Activated script with id of: 3
+
+### Invalid command: startTrade 0 ###
+
+Activated script with id of: 3
+
+### Invalid command: startTrade 0 ###
+
+Activated script with id of: 3
+
+### Invalid command: startTrade 0 ###
+
+Activated script with id of: 3
+
+### Invalid command: startTrade 0 ###
+
+Activated script with id of: 3
+
+### Invalid command: startTrade 0 ###
+
+Activated script with id of: 3
+
+### Invalid command: startTrade 0 ###
+
+Activated script with id of: 3
+
+### Invalid command: startTrade 0 ###
+
+Activated script with id of: 3
+
+### Invalid command: startTrade 0 ###
+
+Activated script with id of: 3
+
+### Invalid command: startTrade 0 ###
+
+Activated script with id of: 3
+
+### Invalid command: startTrade 0 ###
+
+Activated script with id of: 3
+
+### Invalid command: startTrade 0 ###
+
+Activated script with id of: 3
+
+### Invalid command: startTrade 0 ###
+
+
+
+
+### LOG: Mon Mar 16 11:38:18 2020 ###
+
+
+
+
+### LOG: Mon Mar 16 11:38:26 2020 ###
+
+CREATE: Starting world creation at time: 729.929993
+CREATE: Finished world creation at time: 2806.010986 (Elapsed: 2076.081055ms)
+Loaded all 3 music files.
+Loaded all 2 sound files.
+Loading dialogue. 1297 bytes to read.
+Successfully Loaded Script File: /home/davis-dev/.exploratory/Fear Of The Dark/Assets/Scripts/Script_selected_makeHouse.txt, and given id of: 0
+Successfully Loaded Script File: /home/davis-dev/.exploratory/Fear Of The Dark/Assets/Scripts/Script_player_makeHouse.txt, and given id of: 1
+Dialogue loaded! (24 bytes)
+Loading flags. 125 bytes to read.
+Loaded flag with id of 0 and value of 0
+Loaded flag with id of 1 and value of 0
+Loaded flag with id of 2 and value of 0
+Loaded flag with id of 3 and value of 0
+Loaded flag with id of 4 and value of 0
+Loaded flag with id of 5 and value of 0
+Flags loaded! (24 bytes)
+Loading trade tables. 180 bytes to read.
+Loaded trade tables! (24 bytes)
+Added Entity 1 of 1 at X=9.000000, Y=14.000000, with and ID of 1 (Chunk 0)
+
+Activated script with id of: 2
+Started trade using trade table: 0
+
+Activated script with id of: 3
+Started dialogue using question ID: 2
+
+Activated script with id of: 3
+Started dialogue using question ID: 2
+
+Activated script with id of: 1
+
+Changing block at: X=11, Y=9 to one with the id of: 0
+Changing block at: X=12, Y=9 to one with the id of: 0
+Changing block at: X=13, Y=9 to one with the id of: 0
+Changing block at: X=14, Y=9 to one with the id of: 0
+Changing block at: X=15, Y=9 to one with the id of: 0
+Changing block at: X=16, Y=9 to one with the id of: 0
+Changing block at: X=11, Y=10 to one with the id of: 0
+Changing block at: X=12, Y=10 to one with the id of: 0
+Changing block at: X=13, Y=10 to one with the id of: 0
+Changing block at: X=14, Y=10 to one with the id of: 0
+Changing block at: X=15, Y=10 to one with the id of: 0
+Changing block at: X=16, Y=10 to one with the id of: 0
+Changing block at: X=11, Y=11 to one with the id of: 0
+Changing block at: X=12, Y=11 to one with the id of: 0
+Changing block at: X=13, Y=11 to one with the id of: 0
+Changing block at: X=14, Y=11 to one with the id of: 0
+Changing block at: X=15, Y=11 to one with the id of: 0
+Changing block at: X=16, Y=11 to one with the id of: 0
+Changing block at: X=11, Y=12 to one with the id of: 0
+Changing block at: X=12, Y=12 to one with the id of: 0
+Changing block at: X=13, Y=12 to one with the id of: 0
+Changing block at: X=14, Y=12 to one with the id of: 0
+Changing block at: X=15, Y=12 to one with the id of: 0
+Changing block at: X=16, Y=12 to one with the id of: 0
+
+Changing block at: X=11, Y=12 to one with the id of: 2
+Changing block at: X=12, Y=12 to one with the id of: 2
+Changing block at: X=13, Y=12 to one with the id of: 2
+Changing block at: X=14, Y=12 to one with the id of: 2
+Changing block at: X=15, Y=12 to one with the id of: 2
+Changing block at: X=16, Y=12 to one with the id of: 2
+
+Changing block at: X=11, Y=9 to one with the id of: 2
+Changing block at: X=12, Y=9 to one with the id of: 2
+Changing block at: X=13, Y=9 to one with the id of: 2
+Changing block at: X=14, Y=9 to one with the id of: 2
+Changing block at: X=15, Y=9 to one with the id of: 2
+Changing block at: X=16, Y=9 to one with the id of: 2
+
+Changing block at: X=16, Y=9 to one with the id of: 2
+Changing block at: X=16, Y=10 to one with the id of: 2
+Changing block at: X=16, Y=11 to one with the id of: 2
+Changing block at: X=16, Y=12 to one with the id of: 2
+
+Changing block at: X=13, Y=11 to one with the id of: 6
+
+
+Set timer for 120.000000 frames.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Locked camera in place, it will no longer move with the player. (Run "camera unlock" to unlock)
+
+Started smoothly moving camera to position: X=112.370041, Y=11.000002, at 10% speed
+
+Set timer for 60.000000 frames.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Changing block at: X=111, Y=11 to one with the id of: 6
+
+Set timer for 10.000000 frames.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Changing block at: X=112, Y=11 to one with the id of: 6
+
+Set timer for 10.000000 frames.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Changing block at: X=113, Y=11 to one with the id of: 6
+
+Set timer for 10.000000 frames.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Changing block at: X=114, Y=11 to one with the id of: 6
+
+Set timer for 10.000000 frames.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Changing block at: X=115, Y=11 to one with the id of: 6
+
+Set timer for 30.000000 frames.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Changing block at: X=111, Y=11 to one with the id of: 0
+
+Set timer for 10.000000 frames.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Changing block at: X=112, Y=11 to one with the id of: 0
+
+Set timer for 10.000000 frames.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Changing block at: X=113, Y=11 to one with the id of: 0
+
+Set timer for 10.000000 frames.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Changing block at: X=114, Y=11 to one with the id of: 0
+
+Set timer for 10.000000 frames.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Changing block at: X=115, Y=11 to one with the id of: 0
+
+Set timer for 60.000000 frames.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Locked camera in place, it will no longer move with the player. (Run "camera unlock" to unlock)
+
+Started smoothly moving camera to position: X=12.370010, Y=11.000002, at 10% speed
+
+Set timer for 120.000000 frames.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Setting flag with id: 2 to true
+
+
+Unlocked camera, it will now follow the player.
+
+
+
+
+### LOG: Mon Mar 16 11:41:55 2020 ###
+
+CREATE: Starting world creation at time: 792.874023
+CREATE: Finished world creation at time: 2866.853027 (Elapsed: 2073.979004ms)
+Loaded all 3 music files.
+Loaded all 2 sound files.
+Loading dialogue. 1297 bytes to read.
+Successfully Loaded Script File: /home/davis-dev/.exploratory/Fear Of The Dark/Assets/Scripts/Script_selected_makeHouse.txt, and given id of: 0
+Successfully Loaded Script File: /home/davis-dev/.exploratory/Fear Of The Dark/Assets/Scripts/Script_player_makeHouse.txt, and given id of: 1
+Dialogue loaded! (24 bytes)
+Loading flags. 125 bytes to read.
+Loaded flag with id of 0 and value of 0
+Loaded flag with id of 1 and value of 0
+Loaded flag with id of 2 and value of 0
+Loaded flag with id of 3 and value of 0
+Loaded flag with id of 4 and value of 0
+Loaded flag with id of 5 and value of 0
+Flags loaded! (24 bytes)
+Loading trade tables. 180 bytes to read.
+Loaded trade tables! (24 bytes)
+Added Entity 1 of 1 at X=9.000000, Y=14.000000, with and ID of 1 (Chunk 0)
+
+Activated script with id of: 2
+Started dialogue using question ID: 2
+
+Activated script with id of: 1
+
+Changing block at: X=7, Y=9 to one with the id of: 0
+Changing block at: X=8, Y=9 to one with the id of: 0
+Changing block at: X=9, Y=9 to one with the id of: 0
+Changing block at: X=10, Y=9 to one with the id of: 0
+Changing block at: X=11, Y=9 to one with the id of: 0
+Changing block at: X=12, Y=9 to one with the id of: 0
+Changing block at: X=7, Y=10 to one with the id of: 0
+Changing block at: X=8, Y=10 to one with the id of: 0
+Changing block at: X=9, Y=10 to one with the id of: 0
+Changing block at: X=10, Y=10 to one with the id of: 0
+Changing block at: X=11, Y=10 to one with the id of: 0
+Changing block at: X=12, Y=10 to one with the id of: 0
+Changing block at: X=7, Y=11 to one with the id of: 0
+Changing block at: X=8, Y=11 to one with the id of: 0
+Changing block at: X=9, Y=11 to one with the id of: 0
+Changing block at: X=10, Y=11 to one with the id of: 0
+Changing block at: X=11, Y=11 to one with the id of: 0
+Changing block at: X=12, Y=11 to one with the id of: 0
+Changing block at: X=7, Y=12 to one with the id of: 0
+Changing block at: X=8, Y=12 to one with the id of: 0
+Changing block at: X=9, Y=12 to one with the id of: 0
+Changing block at: X=10, Y=12 to one with the id of: 0
+Changing block at: X=11, Y=12 to one with the id of: 0
+Changing block at: X=12, Y=12 to one with the id of: 0
+
+Changing block at: X=7, Y=12 to one with the id of: 2
+Changing block at: X=8, Y=12 to one with the id of: 2
+Changing block at: X=9, Y=12 to one with the id of: 2
+Changing block at: X=10, Y=12 to one with the id of: 2
+Changing block at: X=11, Y=12 to one with the id of: 2
+Changing block at: X=12, Y=12 to one with the id of: 2
+
+Changing block at: X=7, Y=9 to one with the id of: 2
+Changing block at: X=8, Y=9 to one with the id of: 2
+Changing block at: X=9, Y=9 to one with the id of: 2
+Changing block at: X=10, Y=9 to one with the id of: 2
+Changing block at: X=11, Y=9 to one with the id of: 2
+Changing block at: X=12, Y=9 to one with the id of: 2
+
+Changing block at: X=12, Y=9 to one with the id of: 2
+Changing block at: X=12, Y=10 to one with the id of: 2
+Changing block at: X=12, Y=11 to one with the id of: 2
+Changing block at: X=12, Y=12 to one with the id of: 2
+
+Changing block at: X=9, Y=11 to one with the id of: 6
+
+
+Set timer for 8.000000 frames.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Locked camera in place, it will no longer move with the player. (Run "camera unlock" to unlock)
+
+Started smoothly moving camera to position: X=108.422485, Y=11.000002, at 10% speed
+
+Set timer for 4.000000 frames.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Changing block at: X=107, Y=11 to one with the id of: 6
+
+Set timer for 1.000000 frames.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Changing block at: X=108, Y=11 to one with the id of: 6
+
+Set timer for 1.000000 frames.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Changing block at: X=109, Y=11 to one with the id of: 6
+
+Set timer for 1.000000 frames.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Changing block at: X=110, Y=11 to one with the id of: 6
+
+Set timer for 1.000000 frames.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Changing block at: X=111, Y=11 to one with the id of: 6
+
+Set timer for 2.000000 frames.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Changing block at: X=107, Y=11 to one with the id of: 0
+
+Set timer for 1.000000 frames.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Changing block at: X=108, Y=11 to one with the id of: 0
+
+Set timer for 1.000000 frames.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Changing block at: X=109, Y=11 to one with the id of: 0
+
+Set timer for 1.000000 frames.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Changing block at: X=110, Y=11 to one with the id of: 0
+
+Set timer for 1.000000 frames.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Changing block at: X=111, Y=11 to one with the id of: 0
+
+Set timer for 4.000000 frames.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Locked camera in place, it will no longer move with the player. (Run "camera unlock" to unlock)
+
+Started smoothly moving camera to position: X=8.422455, Y=11.000002, at 10% speed
+
+Set timer for 8.000000 frames.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Setting flag with id: 2 to true
+
+
+Unlocked camera, it will now follow the player.
+
+
+
+
+### LOG: Mon Mar 16 11:43:12 2020 ###
+
+CREATE: Starting world creation at time: 714.632996
+CREATE: Finished world creation at time: 2866.561035 (Elapsed: 2151.927979ms)
+Loaded all 3 music files.
+Loaded all 2 sound files.
+Loading dialogue. 1297 bytes to read.
+Successfully Loaded Script File: /home/davis-dev/.exploratory/Fear Of The Dark/Assets/Scripts/Script_selected_makeHouse.txt, and given id of: 0
+Successfully Loaded Script File: /home/davis-dev/.exploratory/Fear Of The Dark/Assets/Scripts/Script_player_makeHouse.txt, and given id of: 1
+Dialogue loaded! (24 bytes)
+Loading flags. 125 bytes to read.
+Loaded flag with id of 0 and value of 0
+Loaded flag with id of 1 and value of 0
+Loaded flag with id of 2 and value of 0
+Loaded flag with id of 3 and value of 0
+Loaded flag with id of 4 and value of 0
+Loaded flag with id of 5 and value of 0
+Flags loaded! (24 bytes)
+Loading trade tables. 180 bytes to read.
+Loaded trade tables! (24 bytes)
+Added Entity 1 of 1 at X=9.000000, Y=14.000000, with and ID of 1 (Chunk 0)
+
+
+
+
+### LOG: Mon Mar 16 11:45:28 2020 ###
+
+CREATE: Starting world creation at time: 743.642029
+CREATE: Finished world creation at time: 2394.194092 (Elapsed: 1650.552002ms)
+Loaded all 3 music files.
+Loaded all 2 sound files.
+Loading dialogue. 1297 bytes to read.
+Successfully Loaded Script File: /home/davis-dev/.exploratory/Fear Of The Dark/Assets/Scripts/Script_selected_makeHouse.txt, and given id of: 0
+Successfully Loaded Script File: /home/davis-dev/.exploratory/Fear Of The Dark/Assets/Scripts/Script_player_makeHouse.txt, and given id of: 1
+Dialogue loaded! (24 bytes)
+Loading flags. 125 bytes to read.
+Loaded flag with id of 0 and value of 0
+Loaded flag with id of 1 and value of 0
+Loaded flag with id of 2 and value of 0
+Loaded flag with id of 3 and value of 0
+Loaded flag with id of 4 and value of 0
+Loaded flag with id of 5 and value of 0
+Flags loaded! (24 bytes)
+Loading trade tables. 180 bytes to read.
+Loaded trade tables! (24 bytes)
+Added Entity 1 of 1 at X=7.000000, Y=68.000000, with and ID of 1 (Chunk 0)
+
+
+
+
+### LOG: Mon Mar 16 11:47:14 2020 ###
+
+CREATE: Starting world creation at time: 804.797974
+CREATE: Finished world creation at time: 3021.502930 (Elapsed: 2216.705078ms)
+Loaded all 3 music files.
+Loaded all 2 sound files.
+Loading dialogue. 1297 bytes to read.
+Successfully Loaded Script File: /home/davis-dev/.exploratory/Fear Of The Dark/Assets/Scripts/Script_selected_makeHouse.txt, and given id of: 0
+Successfully Loaded Script File: /home/davis-dev/.exploratory/Fear Of The Dark/Assets/Scripts/Script_player_makeHouse.txt, and given id of: 1
+Dialogue loaded! (24 bytes)
+Loading flags. 125 bytes to read.
+Loaded flag with id of 0 and value of 0
+Loaded flag with id of 1 and value of 0
+Loaded flag with id of 2 and value of 0
+Loaded flag with id of 3 and value of 0
+Loaded flag with id of 4 and value of 0
+Loaded flag with id of 5 and value of 0
+Flags loaded! (24 bytes)
+Loading trade tables. 180 bytes to read.
+Loaded trade tables! (24 bytes)
+Added Entity 1 of 1 at X=9.000000, Y=14.000000, with and ID of 1 (Chunk 0)
+
+Activated script with id of: 2
+Started dialogue using question ID: 2
+
+Activated script with id of: 3
+Started trade using trade table: 0
+
+Activated script with id of: 2
+Started dialogue using question ID: 2
+
+Activated script with id of: 3
+Started trade using trade table: 0
+
+Activated script with id of: 3
+Started trade using trade table: 0
+
+Activated script with id of: 3
+Started trade using trade table: 0
+

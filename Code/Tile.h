@@ -133,8 +133,11 @@ class Tile
             }
 
         }
+        void resetSunlightCorners() {
+            m_cornerSunlight = glm::vec4(0.0f);
+        }
 
-        virtual void update(World* world, float time, bool updateLighting);
+        virtual void update(World* world, float time, bool updateLighting, const float& sunlight);
         virtual void tick(World* world, float tickTime, const float& sunlight);
         virtual void draw(GLEngine::SpriteBatch& sb, GLEngine::SpriteFont& sf, int xOffset, int depthDifference);
         virtual void drawBackdrop(GLEngine::SpriteBatch& sb, int xOffset, int yOffset, float lightLevel);
@@ -148,6 +151,8 @@ class Tile
 
         void resetNeighboursLight(World* world);
         void setNeighboursLight(World* world);
+
+        void calculateSunlight(World* world, float sunlight); // Determines and sets the sunlight corner values for this tile and surrounding tiles.
 
     protected:
         virtual void handleMetaDataInit(MetaData& data) = 0;

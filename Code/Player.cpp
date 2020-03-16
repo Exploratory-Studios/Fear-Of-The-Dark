@@ -134,13 +134,13 @@ void Player::draw(GLEngine::SpriteBatch& sb, float time, int layerDifference, fl
         int cursorImgId = GLEngine::ResourceManager::getTexture(ASSETS_FOLDER_PATH + "GUI/Player/Cursor.png").id;
 
         glm::vec4 cursorDestRect(m_selectedEntity->getPosition().x + xOffset, m_selectedEntity->getPosition().y, m_selectedEntity->getSize().x, m_selectedEntity->getSize().y);
-        sb.draw(cursorDestRect, fullUV, cursorImgId, 0.9f * (WORLD_DEPTH - m_layer), GLEngine::ColourRGBA8(255, 255, 255, 255));
+        sb.draw(cursorDestRect, fullUV, cursorImgId, 1.5f * (WORLD_DEPTH - m_layer), GLEngine::ColourRGBA8(255, 255, 255, 255));
     } else if(m_selectedBlock) { // Cursor box selection
         glm::vec4 fullUV(0.0f, 0.0f, 1.0f, 1.0f);
         int cursorImgId = GLEngine::ResourceManager::getTexture(ASSETS_FOLDER_PATH + "GUI/Player/Cursor.png").id;
 
         glm::vec4 cursorDestRect(m_selectedBlock->getPosition().x + xOffset, m_selectedBlock->getPosition().y, m_selectedBlock->getSize().x, m_selectedBlock->getSize().y);
-        sb.draw(cursorDestRect, fullUV, cursorImgId, 0.9f * (WORLD_DEPTH - m_layer), GLEngine::ColourRGBA8(255, 255, 255, 255));
+        sb.draw(cursorDestRect, fullUV, cursorImgId, 1.5f * (WORLD_DEPTH - m_layer), GLEngine::ColourRGBA8(255, 255, 255, 255));
     }
 }
 
@@ -197,9 +197,7 @@ void Player::drawGUI(GLEngine::SpriteBatch& sb, GLEngine::SpriteFont& sf) {
 
         {
             if(m_inventoryOpen) {
-
                 m_inventory->draw(HOTBAR_BOX_SIZE / 4, HOTBAR_BOX_SIZE * 1.5, sb, sf);
-
             }
         }
 
@@ -306,15 +304,15 @@ void Player::updateMouse(World* world, glm::vec2 mouseCoords) {
 
         m_selectedEntity = nullptr;
 
-        for(int i = 0; i < world->getEntities().size(); i++) {
-            float sizeX = (world->getEntities()[i]->getSize().x) / 4;
+        for(int i = 0; i < world->getEntities().size() && !m_selectedEntity; i++) {
+            float sizeX = (world->getEntities()[i]->getSize().x) / 2.0f;
             float midX = world->getEntities()[i]->getPosition().x + sizeX;
 
-            float sizeY = (world->getEntities()[i]->getSize().y) / 4;
+            float sizeY = (world->getEntities()[i]->getSize().y) / 2.0f;
             float midY = world->getEntities()[i]->getPosition().y + sizeY;
 
-            if(std::abs(midX - mouseCoords.x) <= sizeX) {
-                if(std::abs(midY - mouseCoords.y) <= sizeY) {
+            if(std::abs(midX - mouseCoords.x) <= sizeX/2.0f) {
+                if(std::abs(midY - mouseCoords.y) <= sizeY/2.0f) {
                     m_selectedEntity = world->getEntities()[i];
                 }
             }
@@ -362,7 +360,7 @@ void Player::updateInput(GLEngine::InputManager* input, World* world, ScriptQueu
     if(m_velocity.x < 0.001f && m_velocity.x > -0.001f && m_onGround && m_stamina * 1.003f <= 1.000000f) m_stamina *= 1.003f;
 
     if(m_canInteract) {
-        if(input->isKeyPressed(SDLK_e)) {
+        if(input->isKeyPressed(SDLK_r)) {
             if(m_selectedEntity) { // must hover mouse over entity and press 'e'
                 m_selectedEntity->onTalk(sq);
             }

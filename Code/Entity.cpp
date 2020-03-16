@@ -205,7 +205,7 @@ void Entity::draw(GLEngine::SpriteBatch& sb, float time, int layerDifference, fl
         depth = (WORLD_DEPTH - m_layer);
     }
 
-    sb.draw(destRect, uvRect, m_texture.id, depth * (WORLD_DEPTH - m_layer), colour, glm::vec4(m_light));
+    sb.draw(destRect, uvRect, m_texture.id, depth, colour, glm::vec4(m_light));
 
     for(unsigned int i = 0; i < m_limbs.size(); i++) {
         m_limbs[i]->draw(sb); // no sb.begin() or end()

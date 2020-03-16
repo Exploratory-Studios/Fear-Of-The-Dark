@@ -67,9 +67,6 @@ void EntityBaseSpeaker::onTalk(ScriptQueue* sq) {
 
 void EntityBaseSpeaker::onTrade(ScriptQueue* sq) {
     if(/*m_qm && */m_tradeTableId != (unsigned int) -1) {
-        //m_qm->setTradeTableId(m_tradeTableId);
-        //m_qm->setTradingStarted(true);
-
         Script s;
         s.commands.push_back("startTrade " + std::to_string(m_tradeTableId));
         int a = sq->addScript(s);

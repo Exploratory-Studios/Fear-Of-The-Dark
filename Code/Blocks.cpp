@@ -69,7 +69,7 @@ BlockDirt::BlockDirt(glm::vec2 pos, unsigned int layer, MetaData metaData, bool 
 void BlockDirt::onTick(World* world, float& tickTime) {
     if(m_sunLight >= 0.5f && m_exposedToSun) {
         int chance = std::rand() % 100;
-        if(chance < 1) { // 1% chance every tick
+        if(chance < 1) { // 1% chance every tick, 4% chance each second
             world->setTile(createBlock((unsigned int)Categories::BlockIDs::GRASS, m_pos, m_layer, MetaData(), tickTime));
             world->getTile(m_pos.x, m_pos.y, m_layer)->setNeedsSunCheck();
         }

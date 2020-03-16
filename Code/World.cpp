@@ -38,19 +38,22 @@ void World::setTile(Tile* tile) {
     for(int i = y-1; i >= 0; i--) {
         Tile* t = m_tiles[i][x][layer];
         t->setNeedsSunCheck();
+        Tile* l = getTile(x-1, i, layer);
+        if(l) l->setNeedsSunCheck();
+        Tile* r = getTile(x+1, i, layer);
+        if(r) r->setNeedsSunCheck();
         if(!t->isTransparent()) {
             break;
-        } else {
-            Tile* l = getTile(x-1, i, layer);
-            if(l) l->setNeedsSunCheck();
-            Tile* r = getTile(x+1, i, layer);
-            if(r) r->setNeedsSunCheck();
-            Tile* b = getTile(x, i, layer+1);
-            if(b) b->setNeedsSunCheck();
-            Tile* f = getTile(x, i, layer-1);
-            if(f) f->setNeedsSunCheck();
         }
     }
+    Tile* l = getTile(x-1, y, layer);
+    if(l) l->setNeedsSunCheck();
+    Tile* r = getTile(x+1, y, layer);
+    if(r) r->setNeedsSunCheck();
+    /*Tile* b = getTile(x, y, layer+1);
+    if(b) b->setNeedsSunCheck();
+    Tile* f = getTile(x, y, layer-1);
+    if(f) f->setNeedsSunCheck();*/
 }
 
 Tile* World::getTile(int x, int y, int layer) {
@@ -171,11 +174,13 @@ void World::updateTiles(glm::vec4 destRect) {
     }
     m_deadTiles.clear();*/ // This breaks stuff apparently
 
+    const float s = m_sunlight;
+
     for(int y = destRect.y; y < destRect.w + destRect.y; y++) {
         for(int x = destRect.x; x < destRect.z + destRect.x; x++) {
             for(unsigned int layer = 0; layer < WORLD_DEPTH; layer++) {
                 if(y >= 0 && y < WORLD_HEIGHT) {
-                    (m_tiles[y][(x + WORLD_SIZE) % WORLD_SIZE][layer])->update(this, m_time, true);
+                    (m_tiles[y][(x + WORLD_SIZE) % WORLD_SIZE][layer])->update(this, m_time, true, s);
                 }
             }
         }
@@ -190,6 +195,7 @@ void World::tickTiles(glm::vec4 destRect) {
     */
 
     const float sunlight = std::cos(m_time / (DAY_LENGTH / 6.28318f)) / 2.0f + 0.5f;
+    m_sunlight = sunlight;
 
     for(int y = destRect.y; y < destRect.w + destRect.y; y++) {
         for(int x = destRect.x; x < destRect.z + destRect.x; x++) {

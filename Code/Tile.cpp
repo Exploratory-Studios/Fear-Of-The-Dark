@@ -94,11 +94,15 @@ float Tile::getRawHeat() {
     return (m_emittedHeat > m_temperature ? m_emittedHeat : m_temperature);
 }
 
-void Tile::update(World* world, float time, bool updateLighting) {
+void Tile::update(World* world, float time, bool updateLighting, const float& sunlight) {
     if(updateLighting) {
         if(m_needsSunCheck) {
+            resetSunlightCorners();
+
             m_needsSunCheck = false;
             m_exposedToSun = exposedToSun(world);
+
+            calculateSunlight(world, sunlight);
         }
     }
 
@@ -112,36 +116,7 @@ void Tile::tick(World* world, float tickTime, const float& sunlight) {
         m_updateHeat = false;
     }
 
-    if(m_exposedToSun) {
-        bool left = true, right = true;
-        if(!m_transparent) {
-            Tile* leftT = world->getTile(m_pos.x-1, m_pos.y, m_layer);
-            if(leftT) {
-                if(!(leftT->isTransparent() && leftT->isExposedToSunlight())) {
-                    left = false;
-                }
-            }
-            Tile* rightT = world->getTile(m_pos.x+1, m_pos.y, m_layer);
-            if(rightT) {
-                if(!(rightT->isTransparent() && rightT->isExposedToSunlight())) {
-                    right = false;
-                }
-            }
-        }
-        Tile* leftT = world->getTile(m_pos.x-1, m_pos.y, m_layer);
-        if(leftT) {
-            if(!(leftT->isTransparent() || leftT->isExposedToSunlight())) {
-                leftT->setSunLight(sunlight, false, true, false, m_transparent);
-            }
-        }
-        Tile* rightT = world->getTile(m_pos.x+1, m_pos.y, m_layer);
-        if(rightT) {
-            if(!(rightT->isTransparent() || rightT->isExposedToSunlight())) {
-                rightT->setSunLight(sunlight, true, false, false, m_transparent);
-            }
-        }
-        setSunLight(sunlight, left, right, true, true);
-    }
+    calculateSunlight(world, sunlight);
 
     onTick(world, tickTime);
 }
@@ -272,6 +247,39 @@ bool Tile::exposedToSun(World* world) {
         }
     }
     return true;
+}
+
+void Tile::calculateSunlight(World* world, float sunlight) {
+    if(m_exposedToSun) {
+        bool left = true, right = true;
+        if(!m_transparent) {
+            Tile* leftT = world->getTile(m_pos.x-1, m_pos.y, m_layer);
+            if(leftT) {
+                if(!(leftT->isTransparent() && leftT->isExposedToSunlight())) {
+                    left = false;
+                }
+            }
+            Tile* rightT = world->getTile(m_pos.x+1, m_pos.y, m_layer);
+            if(rightT) {
+                if(!(rightT->isTransparent() && rightT->isExposedToSunlight())) {
+                    right = false;
+                }
+            }
+        }
+        Tile* leftT = world->getTile(m_pos.x-1, m_pos.y, m_layer);
+        if(leftT) {
+            if(!(leftT->isTransparent() || leftT->isExposedToSunlight())) {
+                leftT->setSunLight(sunlight, false, true, false, m_transparent);
+            }
+        }
+        Tile* rightT = world->getTile(m_pos.x+1, m_pos.y, m_layer);
+        if(rightT) {
+            if(!(rightT->isTransparent() || rightT->isExposedToSunlight())) {
+                rightT->setSunLight(sunlight, true, false, false, m_transparent);
+            }
+        }
+        setSunLight(sunlight, left, right, true, true);
+    }
 }
 
 TileData Tile::getSaveData() {

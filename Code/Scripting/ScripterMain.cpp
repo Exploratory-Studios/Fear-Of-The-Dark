@@ -154,11 +154,12 @@ std::string Scripter::executeCommand(World* world, QuestManager* qm, GameplayScr
     // setFlag [integer(id)] [integer[1 or 0](value)]                       Sets the id'th flag's value to value
     // getFlag [string(name)]                                               Returns an integer, which coincides with the id of the flag which has the same name (enum) as name
     // echo [string]                                                        Logs a string
+    // startTrade (integer)                                                 Opens the trade dialogue with trade table id of 1st parameter
+    // startDialogue (integer)                                              Opens the dialogue menu with conversation id of 1st parameter
 
     try {
         if(parameters[0] == "time") {
             if(parameters[1] == "set") {
-                logger->log("Setting time to " + parameters[2]);
                 returnMessage += "Setting time to " + parameters[2] + "\n";
 
                 world->setTime(std::stoi(parameters[2]));
@@ -170,7 +171,6 @@ std::string Scripter::executeCommand(World* world, QuestManager* qm, GameplayScr
                 int x = positions[i].x;
                 int y = positions[i].y;
 
-                logger->log("Removing block at: X=" + std::to_string(x) + ", Y=" + std::to_string(y));
                 returnMessage += "Removing block at: X=" + std::to_string(x) + ", Y=" + std::to_string(y) + "\n";
 
                 removeBlock(world, x, y, 0); /// TODO: Incorporate Layers
@@ -182,7 +182,6 @@ std::string Scripter::executeCommand(World* world, QuestManager* qm, GameplayScr
                 int x = positions[i].x;
                 int y = positions[i].y;
 
-                logger->log("Changing block at: X=" + std::to_string(x) + ", Y=" + std::to_string(y) + " to one with the id of: " + parameters[keywordIndex]);
                 returnMessage += "Changing block at: X=" + std::to_string(x) + ", Y=" + std::to_string(y) + " to one with the id of: " + parameters[keywordIndex] + "\n";
 
                 Block* block = createBlock(std::stoi(parameters[keywordIndex]), glm::vec2(x, y), 0);
@@ -217,10 +216,8 @@ std::string Scripter::executeCommand(World* world, QuestManager* qm, GameplayScr
             world->getPlayer()->setCanInteract((bool)std::stoi(parameters[1]));
             returnMessage = "Set player ";
             if((bool)std::stoi(parameters[1])) {
-                logger->log("Set player able to interact");
                 returnMessage += "able to interact\n";
             } else {
-                logger->log("Set player unable to interact");
                 returnMessage += "unable to interact\n";
             }
 
@@ -234,9 +231,7 @@ std::string Scripter::executeCommand(World* world, QuestManager* qm, GameplayScr
             for(unsigned int i = 0; i < positions.size(); i++) {
                 world->addEntity(createEntity((unsigned int)entityId, positions[i], layer));
 
-                std::string logString = "Added Entity " + std::to_string(i+1) + " of " + std::to_string(positions.size()) + " at X=" + std::to_string(positions[i].x) + ", Y=" + std::to_string(positions[i].y) + ", with and ID of " + std::to_string((unsigned int)entityId) + " (Chunk " + std::to_string((unsigned int)(positions[i].x / CHUNK_SIZE)) + ")" ;
-                logger->log(logString);
-                returnMessage += logString + "\n";
+                returnMessage += "Added Entity " + std::to_string(i+1) + " of " + std::to_string(positions.size()) + " at X=" + std::to_string(positions[i].x) + ", Y=" + std::to_string(positions[i].y) + ", with and ID of " + std::to_string((unsigned int)entityId) + " (Chunk " + std::to_string((unsigned int)(positions[i].x / CHUNK_SIZE)) + ")\n";
             }
 
             /// TODO: Have a function in Entities.h return a vector of parameter types that we will need to fill out, based on a given ID.
@@ -246,70 +241,56 @@ std::string Scripter::executeCommand(World* world, QuestManager* qm, GameplayScr
             bool val = static_cast<bool>(int_interpretParameter(parameters, keywordIndex));
 
             qm->setFlag(id, val);
-            std::string logString = "Setting flag with id: " + std::to_string(id) + " to " + (val ? "true" : "false");
-
-            logger->log(logString);
-            returnMessage += logString;
+            returnMessage += "Setting flag with id: " + std::to_string(id) + " to " + (val ? "true" : "false") + "\n";
         } else if(parameters[0] == "echo") {
-            std::string ret = "ECHO: ";
+            std::string returnMessage = "ECHO: ";
             for(unsigned int i = 1; i < parameters.size(); i++) {
-                ret += parameters[i] + " ";
+                returnMessage += parameters[i] + " ";
             }
-            logger->log(ret, true);
-            returnMessage += ret + "\n";
+            returnMessage += "\n";
         } else if(parameters[0] == "setPeriod") {
             unsigned int keywordIndex = 1;
-            std::string ret;
             if(parameters[keywordIndex] == "neothilic") {
-                ret = "Setting time period to NEOLITHIC";
+                returnMessage = "Setting time period to NEOLITHIC\n";
                 world->setWorldEra(WorldEra::NEOLITHIC_ERA);
             } else if(parameters[keywordIndex] == "common_era") {
-                ret = "Setting time period to COMMON ERA";
+                returnMessage = "Setting time period to COMMON ERA\n";
                 world->setWorldEra(WorldEra::COMMON_ERA);
             } else if(parameters[keywordIndex] == "future_era") {
-                ret = "Setting time period to FUTURE ERA";
+                returnMessage = "Setting time period to FUTURE ERA\n";
                 world->setWorldEra(WorldEra::FUTURE_ERA);
             } else {
-                ret = "Time period \"" + parameters[keywordIndex] + "\" does not exist.";
+                returnMessage = "Time period \"" + parameters[keywordIndex] + "\" does not exist.\n";
             }
-
-            logger->log(ret);
-            returnMessage += ret + "\n";
         } else if(parameters[0] == "god") {
             world->getPlayer()->m_godMode = !world->getPlayer()->m_godMode;
         } else if(parameters[0] == "camera") {
             unsigned int keywordIndex = 1;
             if(parameters[keywordIndex] == "set") {
                 gs->setCameraLocked(true);
-                returnMessage += "Locked camera in place, it will no longer move with the player. (Run \"camera unlock\" to unlock)";
+                returnMessage += "Locked camera in place, it will no longer move with the player. (Run \"camera unlock\" to unlock)\n";
 
                 keywordIndex++;
                 glm::vec2 newPos = positionTarget(world, parameters, keywordIndex)[0];
                 gs->getCamera()->setPosition(newPos);
-                returnMessage += "Moved camera to position: X=" + std::to_string(newPos.x) + ", Y=" + std::to_string(newPos.y);
-
-                logger->log(returnMessage);
+                returnMessage += "Moved camera to position: X=" + std::to_string(newPos.x) + ", Y=" + std::to_string(newPos.y) + "\n";
             } else if(parameters[keywordIndex] == "lock") {
                 gs->setCameraLocked(true);
-                returnMessage += "Locked camera in place, it will no longer move with the player. (Run \"camera unlock\" to unlock)";
-                logger->log(returnMessage);
+                returnMessage += "Locked camera in place, it will no longer move with the player. (Run \"camera unlock\" to unlock)\n";
             } else if(parameters[keywordIndex] == "unlock") {
                 gs->setCameraLocked(false);
                 returnMessage += "Unlocked camera, it will now follow the player.\n";
-                logger->log(returnMessage);
             } else if(parameters[keywordIndex] == "move") {
                 gs->setCameraLocked(true);
-                returnMessage += "Locked camera in place, it will no longer move with the player. (Run \"camera unlock\" to unlock)";
+                returnMessage += "Locked camera in place, it will no longer move with the player. (Run \"camera unlock\" to unlock)\n";
 
                 keywordIndex++;
                 glm::vec2 newPos = positionTarget(world, parameters, keywordIndex)[0] + gs->getCamera()->getPosition();
                 gs->getCamera()->setPosition(newPos);
-                returnMessage += "\nShifted camera to position: X=" + std::to_string(newPos.x) + ", Y=" + std::to_string(newPos.y);
-
-                logger->log(returnMessage);
+                returnMessage += "\nShifted camera to position: X=" + std::to_string(newPos.x) + ", Y=" + std::to_string(newPos.y) + "\n";
             } else if(parameters[keywordIndex] == "smoothMove") {
                 gs->setCameraLocked(true);
-                returnMessage += "Locked camera in place, it will no longer move with the player. (Run \"camera unlock\" to unlock)";
+                returnMessage += "Locked camera in place, it will no longer move with the player. (Run \"camera unlock\" to unlock)\n";
 
                 keywordIndex++;
                 glm::vec2 newPos = positionTarget(world, parameters, keywordIndex)[0] + gs->getCamera()->getPosition();
@@ -317,9 +298,7 @@ std::string Scripter::executeCommand(World* world, QuestManager* qm, GameplayScr
 
                 float speed = float_interpretParameter(parameters, keywordIndex);
                 gs->setSmoothMoveSpeed(speed);
-                returnMessage += "\nStarted smoothly moving camera to position: X=" + std::to_string(newPos.x) + ", Y=" + std::to_string(newPos.y) + ", at " + std::to_string((int)(speed * 100.0f)) + "% speed";
-
-                logger->log(returnMessage);
+                returnMessage += "\nStarted smoothly moving camera to position: X=" + std::to_string(newPos.x) + ", Y=" + std::to_string(newPos.y) + ", at " + std::to_string((int)(speed * 100.0f)) + "% speed\n";
             }
         } else if(parameters[0] == "timer") {
             if(script) {
@@ -328,12 +307,10 @@ std::string Scripter::executeCommand(World* world, QuestManager* qm, GameplayScr
                     script->paused = true;
                     script->timerTime = int_interpretParameter(parameters, keywordIndex);
                     script->startTime = world->getTime();
-                    returnMessage += "Set timer for " + std::to_string(script->timerTime) + " frames.";
-                    logger->log(returnMessage);
+                    returnMessage += "Set timer for " + std::to_string(script->timerTime) + " frames.\n";
                 }
             } else {
-                returnMessage += "Sorry. That command can only be used in pre-written scripts.";
-                logger->log(returnMessage, true);
+                returnMessage += "Sorry. That command can only be used in pre-written scripts.\n";
             }
         } else if(parameters[0] == "pause") {
             gs->pauseForCutscene();
@@ -346,6 +323,22 @@ std::string Scripter::executeCommand(World* world, QuestManager* qm, GameplayScr
             }
         } else if(parameters[0] == "showAlert") {
             //showAlert(parameters[1], parameters[2]);
+        } else if(parameters[0] == "startTrade") {
+            unsigned int keywordIndex = 1;
+            unsigned int tableID = int_interpretParameter(parameters, keywordIndex);
+
+            qm->setTradeTableId(tableID);
+            qm->setTradingStarted(true);
+
+            returnMessage += "Started trade using trade table: " + std::to_string(tableID) + "\n";
+        } else if(parameters[0] == "startDialogue") {
+            unsigned int keywordIndex = 1;
+            unsigned int questionId = int_interpretParameter(parameters, keywordIndex);
+
+            qm->setQuestionId(questionId);
+            qm->setDialogueStarted(true);
+
+            returnMessage += "Started dialogue using question ID: " + std::to_string(questionId) + "\n";
         } else {
             logger->log("Invalid command: " + command, true);
             returnMessage += "Invalid command: " + command + "\n";
@@ -355,6 +348,8 @@ std::string Scripter::executeCommand(World* world, QuestManager* qm, GameplayScr
         returnMessage += "Error: " + strippedCommand + "\n";;
         logger->log(returnMessage, true);
     }
+
+    logger->log(returnMessage);
 
     return returnMessage;
 }

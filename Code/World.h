@@ -69,6 +69,7 @@ private:
     Categories::Places m_placesMap[(WORLD_SIZE / CHUNK_SIZE)]; // Simply a 1d vector of biome IDs, which can be mapped onto the world by referencing each "chunk"'s size
 
     float m_time = 0.0f; // Tick time, really
+    float m_sunlight = 0.0f;
 
     WorldEra m_worldEra = WorldEra::NEOLITHIC_ERA;
     WorldEra m_nextWorldEra = WorldEra::NEOLITHIC_ERA; // If this is different than m_worldEra, trigger WorldIOManager to advance time.

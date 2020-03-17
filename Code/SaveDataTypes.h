@@ -20,6 +20,9 @@ class MetaData {
                 if(m_data.size() > 0) m_data.pop_back();
             }
         }
+        MetaData(std::string data) {
+            m_data = data;
+        }
         MetaData() {
             m_data = "";
         }

@@ -49,7 +49,7 @@ void Console::hide() {
 }
 
 void Console::processCommand(World* world, QuestManager* qm, std::string& command) {
-    std::string ret = m_scripter->executeCommand(world, qm, nullptr, command);
+    /*std::string ret = m_scripter->executeCommand(world, qm, nullptr, command);
 
     std::vector<std::string> returnVector;
 
@@ -79,7 +79,7 @@ void Console::processCommand(World* world, QuestManager* qm, std::string& comman
         }
         m_commandHistory.pop_back();
     }
-    m_historySelection = m_commandHistory.size();
+    m_historySelection = m_commandHistory.size();*/
 }
 
 /// PRIVATE FUNCTIONS

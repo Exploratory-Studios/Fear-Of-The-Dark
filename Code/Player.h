@@ -43,6 +43,8 @@ class Player : public Entity {
 
         float getSanity() { return m_sanity; }
 
+        void setSanity(float sanity) { m_sanity = sanity; } // I'm running low on this
+
         float getTemperature() { return 1; }
 
         Entity* getSelectedEntity() { return m_selectedEntity; }
@@ -50,6 +52,8 @@ class Player : public Entity {
 
         void setCanInteract(bool setting) { m_canInteract = setting; }
         bool canInteract() const { return m_canInteract; }
+
+        void setGodMode(bool mode) { m_godMode = mode; }
 
     protected:
         virtual void updateAI() {}

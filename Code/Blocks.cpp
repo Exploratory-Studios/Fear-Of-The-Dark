@@ -21,8 +21,7 @@ BlockSign::BlockSign(glm::vec2 pos, unsigned int layer, MetaData metaData, bool 
 
     std::string script = "showAlert \"Sign:\" \"" + m_text + "\"";
 
-    Script s;
-    s.commands.push_back(script);
+    Script s(script, false);
 
     //m_interactScriptId = parent->getScriptQueue()->addScript(s);
     //parent->getScriptQueue()->activateScript(m_interactScriptId);

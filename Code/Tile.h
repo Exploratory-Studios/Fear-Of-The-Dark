@@ -87,6 +87,7 @@ class Tile
 
         void setAmbientLight(float light) { m_ambientLight = light; }
         void addAmbientLight(float light) { m_ambientLight += light; if(m_ambientLight < 0.0f) m_ambientLight = 0.0f; }
+        void setToDraw(bool draw) { m_draw = draw; }
 
         void addCornerLight(float TL, float TR, float BR, float BL) {
             if(TL > 0) m_cornerLight.x += TL;

@@ -145,6 +145,7 @@ class Entity
         virtual void defend(Entity* attacker, float damage, LimbSection section, Item* weapon);
 
         void setAITarget(World* world, unsigned int selfIndex); /// TODO: Make this work with certain quests, etc.
+        void setToDraw(bool draw) { m_transparent = !draw; } /// TODO: Fix it up. Seriously.
 
     protected:
         bool checkTilePosition(World* world, std::vector<glm::vec2>& collideTilePositions, float xPos, float yPos);

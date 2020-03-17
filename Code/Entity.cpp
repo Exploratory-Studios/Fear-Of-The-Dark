@@ -325,24 +325,42 @@ void Entity::collide(World* world, unsigned int entityIndex) {
         const float testVar = 1.0f/16.0f;
 
         // Check for ground/ceiling
+
+        // Bottom right corner
         checkTilePosition(world, groundTilePositions,
                           posBR.x - testVar,
                           posBR.y);
 
+
+        // Bottom left corner
         checkTilePosition(world, groundTilePositions,
                           posBL.x + testVar,
                           posBL.y);
 
+
+        // Top right corner
         checkTilePosition(world, groundTilePositions,
                           posTR.x - testVar,
                           posTR.y);
 
+
+        // Top left corner
         checkTilePosition(world, groundTilePositions,
                           posTL.x + testVar,
                           posTL.y);
 
+        // Top/Bottom sides
+        for(float yMod = 0; yMod < height; yMod += height) {
+            for(float xMod = 0; xMod < width - (2*testVar); xMod += 1.0f) {
+                checkTilePosition(world, groundTilePositions,
+                                  posBL.x + xMod + testVar,
+                                  posBL.y + yMod);
+            }
+        }
 
-        // Check the corners
+
+
+        // Check the sides (not ground)
         checkTilePosition(world, collideTilePositions,
                           posBR.x,
                           posBR.y + testVar);
@@ -358,6 +376,15 @@ void Entity::collide(World* world, unsigned int entityIndex) {
         checkTilePosition(world, collideTilePositions,
                           posTR.x,
                           posTR.y - testVar);
+
+        // Sides
+        for(float xMod = 0; xMod <= width; xMod += width) {
+            for(float yMod = 0; yMod < height - (2*testVar); yMod += 1.0f) {
+                checkTilePosition(world, collideTilePositions,
+                                  posBL.x + xMod,
+                                  posBL.y + yMod + testVar);
+            }
+        }
 
         /// Collision prediction time!
 

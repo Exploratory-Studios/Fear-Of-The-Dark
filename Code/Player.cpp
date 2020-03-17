@@ -14,7 +14,7 @@ Player::Player(glm::vec2 position, unsigned int layer, bool loadTexture) : Entit
         m_texture = GLEngine::ResourceManager::getTexture(ASSETS_FOLDER_PATH + "Textures/Mobs/Mob0.png");
         m_loadedTexture = true;
     }
-    m_size = glm::vec2(1.0f, 2.0f);
+    m_size = glm::vec2(1.5f, 4.0f);
     m_faction = Categories::Faction::GOOD;
     m_jumpHeight = 0.399f;
     m_speed = 2.5f/60.0f;
@@ -322,6 +322,10 @@ void Player::updateMouse(World* world, glm::vec2 mouseCoords) {
 }
 
 void Player::updateInput(GLEngine::InputManager* input, World* world, ScriptQueue* sq) {
+    if(m_scriptID_dayTime == 0) {
+        m_scriptID_dayTime = sq->addScript("TEST_SCRIPT.txt");
+    }
+
     if(input->isKeyDown(SDLK_w) && m_stamina > 0.0f) {
         if(m_onGround || m_godMode) {
             m_velocity.y = m_jumpHeight; // y=(jumpHeight*TILE_SIZE+3/4*TILE_SIZE+-5.88*x^2)  initial jump power is the absolute of the x when y=0. jumpheight is in eights of tiles and you must add 4
@@ -374,7 +378,8 @@ void Player::updateInput(GLEngine::InputManager* input, World* world, ScriptQueu
             m_inventory->addItem(createItem((unsigned int)Categories::ItemIDs::BLOCK_WOOD, 1));
         }
         if(input->isKeyPressed(SDLK_o)) {
-            m_inventory->addItem(createItem((unsigned int)Categories::ItemIDs::MISC_BUCKET, 1));
+            //m_inventory->addItem(createItem((unsigned int)Categories::ItemIDs::MISC_BUCKET, 1));
+            sq->activateScript(m_scriptID_dayTime);
         }
 
         if(input->isKeyDown(SDL_BUTTON_LEFT) && m_selectedBlock) {

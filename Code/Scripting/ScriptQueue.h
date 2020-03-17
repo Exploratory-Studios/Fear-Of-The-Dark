@@ -10,22 +10,36 @@
 
 class Script {
     public:
-        Script() { commands.clear(); }
-        std::vector<std::string> commands = {};
-        unsigned int place = 0; // The current command, used when script is paused
-        bool paused = false;
-        float startTime = 0;
-        float timerTime = 0;
-        void operator = (Script& s) {
-            commands.clear();
-            for(unsigned int i = 0; i < s.commands.size(); i++) {
-                commands.emplace_back(s.commands[i]);
+        Script(std::string filename_text, bool isFile) {
+            m_isFile = isFile;
+            if(isFile) {
+                m_fileName = filename_text;
+            } else {
+                m_text = filename_text;
             }
-            place = s.place;
-            paused = s.paused;
-            startTime = s.startTime;
-            timerTime = s.timerTime;
         }
+
+        bool isFile() { return m_isFile; }
+        std::string getFileName() { return m_fileName; }
+        std::string getText() { return m_text; }
+
+        bool operator==(Script r) {
+            if(isFile() != r.isFile()) {
+                return false;
+            }
+            if(getFileName() != r.getFileName()) {
+                return false;
+            }
+            if(getText() != r.getText()) {
+                return false;
+            }
+            return true;
+        }
+
+    private:
+        bool m_isFile = false;
+        std::string m_text;
+        std::string m_fileName;
 };
 
 class ScriptQueue {
@@ -35,7 +49,7 @@ class ScriptQueue {
         {
             if(!m_scriptCache.empty()) {
                 for(unsigned int i = 0; i < m_scriptCache.size(); i++) {
-                    if(m_scriptCache[i].commands == script.commands) {
+                    if(m_scriptCache[i] == script) {
                         return i;
                     }
                 }
@@ -43,23 +57,11 @@ class ScriptQueue {
             m_scriptCache.push_back(script);
             return m_scriptCache.size() - 1;
         }
-        unsigned int addScript(std::string& filePath) // same here
+        unsigned int addScript(std::string filePath) // same here
         {
             filePath = ASSETS_FOLDER_PATH + "Scripts/" + filePath;
-            std::ifstream file(filePath);
 
-            if(file.fail()) {
-                logger->log("Couldn't open script file: " + filePath + ". Quitting...", true);
-                GLEngine::fatalError("Couldn't open script file: " + filePath);
-            }
-
-            Script s;
-
-            std::string line;
-
-            while(std::getline(file, line)) {
-                s.commands.push_back(line);
-            }
+            Script s(filePath, true);
 
             unsigned int id = addScript(s);
 
@@ -77,7 +79,6 @@ class ScriptQueue {
         void deactivateScripts() // Clears active scripts
         {
             m_activeScripts.clear();
-            m_activeScripts.resize(0);
         }
 
         void deactivateScript(unsigned int index)

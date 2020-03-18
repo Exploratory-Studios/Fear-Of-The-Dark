@@ -251,7 +251,7 @@ void camera_smoothMove(GameplayScreen* gs, glm::vec2 relPos, float speed) {
 }
 
 void delay(unsigned int delayMS) {
-    std::this_thread::sleep_for(std::chrono::milliseconds(delayMS));
+    boost::this_thread::sleep_for(boost::chrono::milliseconds(delayMS));
 }
 
 void pause(GameplayScreen* gs) {

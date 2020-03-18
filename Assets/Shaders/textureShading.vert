@@ -11,26 +11,14 @@ in vec4 vertexLight; // 0th is top left, moves clockwise
 out vec2 fragmentPosition;
 out vec4 fragmentColour;
 out vec2 fragmentUV;
-out float fragmentLight;
+out vec4 fragmentLight;
+
+out vec3 lightSource; // normalized, pointing TO light source
 
 uniform mat4 P;
 
-float linearInterpolate(float min, float max, float percentage) {
-	return (min*(1-percentage)+max*percentage);
-}
-
-float cosineInterpolate(float min, float max, float percentage) { // cosine interpolation
-	float mu2;
-
-   	mu2 = (1.0 - sin(mu * 3.141592)) / 2.0;
-   	return (min * (1.0 - mu2) + max * mu2);
-}
-
-float interpolateCornersforCoords(vec2 coords, vec4 corners) {
-	float topX = linearInterpolate(corners.x, corners.y, coords.x);
-	float bottomX = linearInterpolate(corners.z, corners.w, coords.x);
-
-	return cosineInterpolate(bottomX, topX, coords.y);// * (0.25 - clamp(distance(coords, vec2(0.5, 0.5)), 0.0, 0.25)));
+vec3 vectorize(vec3 initial, vec3 terminal) {
+	return vec3(terminal.x - initial.x, terminal.y - initial.y, terminal.z - initial.z);
 }
 
 void main() {
@@ -45,9 +33,17 @@ void main() {
     fragmentPosition = vertexPosition;
 
     fragmentColour = vertexColour;
-	fragmentColour.xyz *= vertexLighting.xyz;
 
     fragmentUV = vec2(vertexUV.x, 1.0 - vertexUV.y);
 
-	fragmentLight = interpolateCornersforCoords(fragmentPosition, vertexLight);
+	fragmentLight = vertexLight;
+
+	// Find normal of plane, where x and y are the corners', and the z is their light value
+	// set both vectors for the plane (crossing each other)
+	vec3 A = vectorize(vec3(1.0, 1.0, vertexLight.y), vec3(0.0, 1.0, vertexLight.x)); // i2 - i1 = vector
+	vec3 B = vectorize(vec3(0.0, 0.0, vertexLight.w), vec3(0.0, 1.0, vertexLight.x)); // i4 - ii = vector
+	
+	// Find cross product to get a vector orthogonal to both (the normal)
+	vec3 normal = cross(A, B);
+	lightSource = normalize(normal);
 }

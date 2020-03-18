@@ -231,6 +231,7 @@ void BlockWater::draw(GLEngine::SpriteBatch& sb, GLEngine::SpriteFont& sf, int x
     sb.draw(glm::vec4(m_pos.x + xOffset * CHUNK_SIZE, m_pos.y, m_size.x, m_waterLevel),
             glm::vec4(0.0f, 0.0f, 1.0f, m_waterLevel),
             m_textureId,
+            m_bumpMapId,
             2.0f,
             colour,
             m_cornerLight);

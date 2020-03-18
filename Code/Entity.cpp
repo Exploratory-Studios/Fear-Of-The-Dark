@@ -17,7 +17,7 @@ void Limb::draw(GLEngine::SpriteBatch& sb) {
 
     GLEngine::ColourRGBA8 fullColour(255, 255, 255, 255);
 
-    sb.draw(destRect, uvRect, m_textureId, 0.51f, fullColour, m_angle, glm::vec4(m_parentEntity->getLightLevel()), m_por);
+    sb.draw(destRect, uvRect, m_textureId, 0, 0.51f, fullColour, m_angle, glm::vec4(m_parentEntity->getLightLevel()), m_por);
 }
 
 Entity::~Entity()
@@ -205,7 +205,7 @@ void Entity::draw(GLEngine::SpriteBatch& sb, float time, int layerDifference, fl
         depth = (WORLD_DEPTH - m_layer);
     }
 
-    sb.draw(destRect, uvRect, m_texture.id, depth, colour, glm::vec4(m_light));
+    sb.draw(destRect, uvRect, m_texture.id, m_bumpMap.id, depth, colour, m_cornerLight);
 
     for(unsigned int i = 0; i < m_limbs.size(); i++) {
         m_limbs[i]->draw(sb); // no sb.begin() or end()
@@ -504,14 +504,40 @@ void Entity::collideWithTile(glm::vec2 tilePos, bool ground) {
 void Entity::updateLightLevel(World* world) {
     m_exposedToSun = false;
 
-    if(m_position.y >= 0) {
-        m_light = world->getTile(m_position.x, m_position.y + m_size.y / 2.0f, m_layer)->getLight();
-        if(world->getTile(m_position.x, m_position.y + m_size.y / 2.0f, m_layer)->getSunLight() != 0.0f) m_exposedToSun = true;
 
-        m_light += world->getTile(m_position.x + m_size.x, m_position.y + m_size.y / 2.0f, m_layer)->getLight();
+    // Lighting
+    // Find tiles on each corner of the entity
+    // Find actual value at the point the entity's corner is at within the block (interpolate from corners)
+    // Set corner values.
+
+    glm::vec2 Pos_TL, Pos_TR, Pos_BL, Pos_BR;
+    Pos_TL = glm::vec2(m_position.x           , m_position.y + m_size.y);
+    Pos_TR = glm::vec2(m_position.x + m_size.x, m_position.y + m_size.y);
+    Pos_BR = glm::vec2(m_position.x + m_size.x, m_position.y           );
+    Pos_BL = glm::vec2(m_position.x           , m_position.y           );
+
+    // Find tiles
+    Tile *Tile_TR, *Tile_TL, *Tile_BR, *Tile_BL;
+    Tile_TR = world->getTile(Pos_TR.x, Pos_TR.y, m_layer);
+    Tile_TL = world->getTile(Pos_TL.x, Pos_TL.y, m_layer);
+    Tile_BR = world->getTile(Pos_BR.x, Pos_BR.y, m_layer);
+    Tile_BL = world->getTile(Pos_BL.x, Pos_BL.y, m_layer);
+
+    // Find actual values at each of the tiles
+    float Light_TR, Light_TL, Light_BR, Light_BL;
+
+    Light_TR = Tile_TR->getLightAtPoint(Pos_TR - Tile_TR->getPosition());
+    Light_TL = Tile_TL->getLightAtPoint(Pos_TL - Tile_TL->getPosition());
+    Light_BR = Tile_BR->getLightAtPoint(Pos_BR - Tile_BR->getPosition());
+    Light_BL = Tile_BL->getLightAtPoint(Pos_BL - Tile_BL->getPosition());
+
+    m_cornerLight = glm::vec4(Light_TL, Light_TR, Light_BR, Light_BL);
+
+    /*if(m_position.y >= 0) {
+        if(world->getTile(m_position.x, m_position.y + m_size.y / 2.0f, m_layer)->getSunLight() != 0.0f) m_exposedToSun = true;
         if(world->getTile(m_position.x + m_size.x, m_position.y + m_size.y / 2.0f, m_layer)->getSunLight() != 0.0f) m_exposedToSun = true;
         m_light /= 2.0f; /// TODO: Fix entity lighting
-    }
+    }*/
 }
 
 void Entity::updateMovement(World* world) {

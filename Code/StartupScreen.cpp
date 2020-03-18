@@ -31,7 +31,7 @@ void Image::draw(GLEngine::SpriteBatch& sb, float time, int activeSplashScreen) 
     if(m_splashScreen == activeSplashScreen) {
         update(time);
 
-        sb.draw(glm::vec4(m_pos.x - m_size.x * 0.5f, m_pos.y - m_size.y * 0.5f, m_size.x, m_size.y), glm::vec4(0.0f, 0.0f, 1.0f, 1.0f), GLEngine::ResourceManager::getTexture(m_filepath).id, 0.0f, m_colour);
+        sb.draw(glm::vec4(m_pos.x - m_size.x * 0.5f, m_pos.y - m_size.y * 0.5f, m_size.x, m_size.y), glm::vec4(0.0f, 0.0f, 1.0f, 1.0f), GLEngine::ResourceManager::getTexture(m_filepath).id, 0, 0.0f, m_colour);
     }
 }
 

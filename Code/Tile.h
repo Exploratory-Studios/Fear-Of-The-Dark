@@ -23,7 +23,7 @@ class Tile
         Tile(glm::vec2 pos,
              unsigned int layer,
              GLuint textureId,
-             GLuint backdropTextureId,
+             GLuint bumpMapId,
              GLEngine::ColourRGBA8 colour,
              bool isSolid,
              unsigned int id,
@@ -31,7 +31,7 @@ class Tile
                 m_pos(pos),
                 m_layer(layer),
                 m_textureId(textureId),
-                m_backdropTextureId(backdropTextureId),
+                m_bumpMapId(bumpMapId),
                 m_colour(colour),
                 m_solid(isSolid),
                 m_id(id),
@@ -52,7 +52,7 @@ class Tile
         glm::vec2       getPosition()                   const { return m_pos;                       }
         glm::vec2       getSize()                       const { return m_size;                      }
         GLuint          getTextureID()                  const { return m_textureId;                 }
-        GLuint          getBackdropTextureID()          const { return m_backdropTextureId;         }
+        GLuint          getBumpMapID()                  const { return m_bumpMapId;         }
         unsigned int    getID()                         const { return m_id;                        }
         bool            isSolid()                       const { return m_solid;                     }
         bool            isNatural()                     const { return m_natural;                   }
@@ -72,6 +72,7 @@ class Tile
         bool            doDrawBackdrop()                const { return m_backdrop;                  }
         ParticleIDs     getWalkedOnParticleID()         const { return m_walkParticle;              }
         unsigned int    getLayer()                      const { return m_layer;                     }
+        float           getLightAtPoint(glm::vec2 posFromBL);
 
         void light_update(float light, Tile* source);
         void light_transferToNeighbours(float light, Tile* source);
@@ -163,7 +164,7 @@ class Tile
         virtual void onDraw(GLEngine::SpriteBatch& sb, GLEngine::SpriteFont& sf, glm::vec4& pos, float& depth) {}
         virtual void onTick(World* world, float& tickTime) = 0;
 
-        virtual void loadTexture() = 0; // Fill this out with your own texture
+        virtual void loadTexture() = 0; // Fill this out with your own texture and bumpmap
 
         bool exposedToSun(World* world);
 
@@ -172,7 +173,7 @@ class Tile
         glm::vec2 m_size = glm::vec2(1, 1);
 
         GLuint m_textureId = (GLuint)-1;
-        GLuint m_backdropTextureId;
+        GLuint m_bumpMapId = (GLuint)-1;
         GLEngine::ColourRGBA8 m_colour = GLEngine::ColourRGBA8(255.0f, 255.0f, 255.0f, 255.0f);
 
         float m_ambientLight = 0.0f; // Really should be inherited light or something, as this light is inherited from surrounding blocks

@@ -113,6 +113,7 @@ void MainMenuScreen::draw() {
                                      m_window->getScreenHeight()),
                                      glm::vec4(0.0f, 0.0f, 1.0f, 1.0f),
                                      m_backgroundImages[m_currentBackgroundImage].id,
+                                     0,
                                      0.0f,
                                      m_backgroundImageColour);
 

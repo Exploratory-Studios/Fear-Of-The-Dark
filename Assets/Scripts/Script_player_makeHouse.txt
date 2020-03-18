@@ -5,31 +5,31 @@ changeBlock area relative player 0 -1 relative player 5 -1 2
 changeBlock area relative player 5 -1 relative player 5 2 2
 changeBlock relative player 2 1 6
 echo Done
-timer 120
+timer 8
 camera smoothMove 100 0 0.1
-timer 60
+timer 4
 changeBlock relative player 100 1 6
-timer 10
+timer 1
 changeBlock relative player 101 1 6
-timer 10
+timer 1
 changeBlock relative player 102 1 6
-timer 10
+timer 1
 changeBlock relative player 103 1 6
-timer 10
+timer 1
 changeBlock relative player 104 1 6
-timer 30
+timer 2
 changeBlock relative player 100 1 0
-timer 10
+timer 1
 changeBlock relative player 101 1 0
-timer 10
+timer 1
 changeBlock relative player 102 1 0
-timer 10
+timer 1
 changeBlock relative player 103 1 0
-timer 10
+timer 1
 changeBlock relative player 104 1 0
-timer 60
+timer 4
 camera smoothMove -100 0 0.1
-timer 120
+timer 8
 setFlag 2 1
 continue
 camera unlock

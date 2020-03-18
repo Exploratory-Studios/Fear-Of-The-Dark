@@ -190,7 +190,7 @@ void GameplayScreen::draw() {
 
         m_spriteBatch.begin(GLEngine::GlyphSortType::FRONT_TO_BACK);
 
-        m_spriteBatch.draw(glm::vec4(0.0f, 0.0f, m_window->getScreenWidth(), m_window->getScreenHeight()), glm::vec4(0.0f, 0.0f, 1.0f, 1.0f), 0, 1.0f, GLEngine::ColourRGBA8(0, 0, 0, 0));
+        m_spriteBatch.draw(glm::vec4(0.0f, 0.0f, m_window->getScreenWidth(), m_window->getScreenHeight()), glm::vec4(0.0f, 0.0f, 1.0f, 1.0f), 0, 0, 1.0f, GLEngine::ColourRGBA8(0, 0, 0, 0));
 
         m_spriteBatch.end();
         m_spriteBatch.renderBatch();
@@ -206,6 +206,12 @@ void GameplayScreen::draw() {
         glm::mat4 projectionMatrix = m_camera.getCameraMatrix();
         GLint pUniform = m_textureProgram.getUniformLocation("P");
         glUniformMatrix4fv(pUniform, 1, GL_FALSE, &projectionMatrix[0][0]);
+
+        GLint textureUniform = m_textureProgram.getUniformLocation("textureSampler");
+        glUniform1i(textureUniform, 0);
+
+        textureUniform = m_textureProgram.getUniformLocation("bumpSampler");
+        glUniform1i(textureUniform, 1);
 
         m_spriteBatch.begin(GLEngine::GlyphSortType::FRONT_TO_BACK);
 
@@ -275,7 +281,7 @@ void GameplayScreen::draw() {
 
         m_spriteBatch.begin(GLEngine::GlyphSortType::FRONT_TO_BACK);
 
-        m_spriteBatch.draw(glm::vec4(0.0f, 0.0f, m_window->getScreenWidth(), m_window->getScreenHeight()), glm::vec4(0.0f, 0.0f, 1.0f, 1.0f), 0, 0.0f, GLEngine::ColourRGBA8(0, 0, 0, 0));
+        m_spriteBatch.draw(glm::vec4(0.0f, 0.0f, m_window->getScreenWidth(), m_window->getScreenHeight()), glm::vec4(0.0f, 0.0f, 1.0f, 1.0f), 0, 0, 0.0f, GLEngine::ColourRGBA8(0, 0, 0, 0));
 
         m_spriteBatch.end();
         m_spriteBatch.renderBatch();
@@ -355,12 +361,16 @@ void GameplayScreen::checkInput() {
 }
 
 void GameplayScreen::initShaders() {
+
     m_textureProgram.compileShaders(ASSETS_FOLDER_PATH + "Shaders/textureShading.vert", ASSETS_FOLDER_PATH + "Shaders/textureShading.frag");
     m_textureProgram.addAttribute("vertexPosition");
     m_textureProgram.addAttribute("vertexColour");
     m_textureProgram.addAttribute("vertexUV");
     m_textureProgram.addAttribute("vertexLighting");
     m_textureProgram.linkShaders();
+
+    glUniform1i(m_textureProgram.getUniformLocation("textureSampler"), 0); // set bump-map and regular texture samplers
+    glUniform1i(m_textureProgram.getUniformLocation("bumpSampler"), 1); // set bump-map and regular texture samplers
 
     m_uiTextureProgram.compileShaders(ASSETS_FOLDER_PATH + "Shaders/uiShader.vert", ASSETS_FOLDER_PATH + "Shaders/uiShader.frag");
     m_uiTextureProgram.addAttribute("vertexPosition");
@@ -491,7 +501,7 @@ void GameplayScreen::drawDebug() {
 
         fps += "\nSelected Block: Biome: " + placeString + ", " + m_world->getPlayer()->m_selectedBlock->getPrintout(m_world);
 
-        fps += "\nPlayer Light Level: " + std::to_string(m_world->getPlayer()->getLightLevel());
+        fps += "\nPlayer Light Level: TL: " + std::to_string(m_world->getPlayer()->getLightLevel().x) + ", TR: " + std::to_string(m_world->getPlayer()->getLightLevel().y) + ", BR: " + std::to_string(m_world->getPlayer()->getLightLevel().z);
         m_fpsWidget->setText(fps);
     }
 }

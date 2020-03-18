@@ -3,6 +3,7 @@
 EntityNeutralItem::EntityNeutralItem(glm::vec2 pos, unsigned int layer, Item* item) : Entity(pos, layer, 0.0f, Categories::LootTableIds::NONE, 0, 0)
 {
     m_texture = item->getTexture();
+    m_bumpMap = item->getBumpMap();
     m_size = glm::vec2(1.0f);
     m_faction = Categories::Faction::NEUTRAL;
     m_type = Categories::Entity_Type::ITEM;
@@ -20,6 +21,7 @@ EntityNeutralItem::EntityNeutralItem(glm::vec2 pos, unsigned int layer, Item* it
 
 EntityNeutralCompanionCube::EntityNeutralCompanionCube(glm::vec2 pos, unsigned int layer) : Entity(pos, layer, 12.0f/60.0f, Categories::LootTableIds::NONE, 0, 0) {
     m_texture = GLEngine::ResourceManager::getTexture(ASSETS_FOLDER_PATH + "/Textures/Mobs/Mob0.png");
+    m_bumpMap = GLEngine::ResourceManager::getTexture(ASSETS_FOLDER_PATH + "/Textures/BumpMaps/Mob0.png");
     m_size = glm::vec2(1.0f, 1.0f);
     m_faction = Categories::Faction::BAD;
     m_jumpHeight = 0.4f;
@@ -40,6 +42,7 @@ EntityNeutralCompanionCube::EntityNeutralCompanionCube(glm::vec2 pos, unsigned i
 
 EntityBaseProjectile::EntityBaseProjectile(glm::vec2 pos, unsigned int layer, float damage, bool gravity /*= true*/) : Entity(pos, layer, MAX_SPEED, Categories::LootTableIds::NONE, 0, 0) {
     m_texture = GLEngine::ResourceManager::getTexture(ASSETS_FOLDER_PATH + "/Textures/Projectiles/ProjectileBase.png");
+    m_bumpMap = GLEngine::ResourceManager::getTexture(ASSETS_FOLDER_PATH + "/Textures/BumpMaps/ProjectileBase.png");
     m_size = glm::vec2(0.1f, 0.1f);
     m_faction = Categories::Faction::NEUTRAL;
     m_jumpHeight = 0.0f;
@@ -86,6 +89,7 @@ EntityBaseQuestGiver::EntityBaseQuestGiver(glm::vec2 pos,
                                                                                         0) {
 
     m_texture = GLEngine::ResourceManager::getTexture(ASSETS_FOLDER_PATH + "/Textures/Mobs/Mob0.png");
+    m_bumpMap = GLEngine::ResourceManager::getTexture(ASSETS_FOLDER_PATH + "/Textures/BumpMaps/Mob0.png");
     m_size = glm::vec2(1.0f, 2.0f);
     m_faction = Categories::Faction::EVIL;
     m_jumpHeight = 0.4f;

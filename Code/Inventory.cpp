@@ -81,8 +81,8 @@ void Inventory::draw(float x, float y, GLEngine::SpriteBatch& sb, GLEngine::Spri
 
         //sb.begin(GLEngine::GlyphSortType::FRONT_TO_BACK); // lower numbers in back
 
-        sb.draw(destRect, uv, inventoryImgId, 1.1f, GLEngine::ColourRGBA8(255, 255, 255, 255));
-        sb.draw(destRect, uv, inventoryOverlayImgId, 0.95f, GLEngine::ColourRGBA8(255, 255, 255, 255));
+        sb.draw(destRect, uv, inventoryImgId, 0, 1.1f, GLEngine::ColourRGBA8(255, 255, 255, 255));
+        sb.draw(destRect, uv, inventoryOverlayImgId, 0, 0.95f, GLEngine::ColourRGBA8(255, 255, 255, 255));
 
         //sb.end();
         //sb.renderBatch();
@@ -96,7 +96,7 @@ void Inventory::draw(float x, float y, GLEngine::SpriteBatch& sb, GLEngine::Spri
 
                 //sb.begin(GLEngine::GlyphSortType::FRONT_TO_BACK); // lower numbers in back
 
-                sb.draw(destRect, itemUV, itemImgId, 1.0f, GLEngine::ColourRGBA8(255, 255, 255, 255));
+                sb.draw(destRect, itemUV, itemImgId, 0, 1.0f, GLEngine::ColourRGBA8(255, 255, 255, 255));
 
                 //sb.end();
                 //sb.renderBatch();

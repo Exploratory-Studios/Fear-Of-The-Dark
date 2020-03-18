@@ -7,7 +7,8 @@
 
 #include "../ExtraFunctions.h"
 
-#include <thread>
+#include <boost/thread.hpp>
+#include <boost/chrono.hpp>
 
 extern "C" {
     #include <lua5.3/lua.h>
@@ -91,158 +92,46 @@ class Scripter {
 };
 
 #define ALL_DEPS { lua_pushlightuserdata(L, static_cast<void*>(world)); lua_pushlightuserdata(L, static_cast<void*>(qm)); lua_pushlightuserdata(L, static_cast<void*>(gs)); }
+#define addFunction(func, name) { ALL_DEPS lua_pushcclosure(L, func, 3); lua_setglobal(L, name); }
 
 class LuaScript {
 public:
     LuaScript(World* world, QuestManager* qm, GameplayScreen* gs) {
         L = luaL_newstate();
 
-        ALL_DEPS
-        lua_pushcclosure(L, l_setBlock, 3); // Push function, referring to the world pointer
-        lua_setglobal(L, "setBlock"); // Name function
+        addFunction(l_setBlock, "setBlock");
+        addFunction(l_removeBlock, "removeBlock");
+        addFunction(l_showBlock, "showBlock");
+        addFunction(l_hideBlock, "hideBlock");
 
-        ALL_DEPS
-        lua_pushcclosure(L, l_removeBlock, 3); // Push function, referring to the world pointer
-        lua_setglobal(L, "removeBlock"); // Name function
+        addFunction(l_addEntity, "addEntity");
+        addFunction(l_removeEntity, "removeEntity");
+        addFunction(l_showEntity, "showEntity");
+        addFunction(l_hideEntity, "hideEntity");
 
-        ALL_DEPS
-        lua_pushcclosure(L, l_showBlock, 3); // Push function, referring to the world pointer
-        lua_setglobal(L, "showBlock"); // Name function
+        addFunction(l_setTime, "setTime");
+        addFunction(l_teleport, "teleport");
+        addFunction(l_giveItem, "giveItem");
 
-        ALL_DEPS
-        lua_pushcclosure(L, l_hideBlock, 3); // Push function, referring to the world pointer
-        lua_setglobal(L, "hideBlock"); // Name function
+        addFunction(l_setPlayerCanInteract, "setPlayerCanInteract");
+        addFunction(l_setPlayerStat_sanity, "setPlayerStat_sanity");
+        addFunction(l_setPlayerGodMode, "setPlayerGodMode");
 
+        addFunction(l_setFlag, "setFlag");
 
-        ALL_DEPS
-        lua_pushcclosure(L, l_addEntity, 3); // Push function, referring to the world pointer
-        lua_setglobal(L, "addEntity"); // Name function
+        addFunction(l_setEra, "setEra");
 
-        ALL_DEPS
-        lua_pushcclosure(L, l_removeEntity, 3); // Push function, referring to the world pointer
-        lua_setglobal(L, "removeEntity"); // Name function
+        addFunction(l_camera_setLocked, "camera_setLocked");
+        addFunction(l_camera_setPosition, "camera_setPosition");
+        addFunction(l_camera_move, "camera_move");
+        addFunction(l_camera_smoothMove, "camera_smoothMove");
 
-        ALL_DEPS
-        lua_pushcclosure(L, l_showEntity, 3); // Push function, referring to the world pointer
-        lua_setglobal(L, "showEntity"); // Name function
+        addFunction(l_delay, "delay");
+        addFunction(l_pause, "pause");
+        addFunction(l_play, "unpause");
 
-        ALL_DEPS
-        lua_pushcclosure(L, l_hideEntity, 3); // Push function, referring to the world pointer
-        lua_setglobal(L, "hideEntity"); // Name function
-
-
-        ALL_DEPS
-        lua_pushcclosure(L, l_setTime, 3); // Push function, referring to the world pointer
-        lua_setglobal(L, "setTime"); // Name function
-
-        ALL_DEPS
-        lua_pushcclosure(L, l_teleport, 3); // Push function, referring to the world pointer
-        lua_setglobal(L, "teleport"); // Name function
-
-        ALL_DEPS
-        lua_pushcclosure(L, l_giveItem, 3); // Push function, referring to the world pointer
-        lua_setglobal(L, "giveItem"); // Name function
-
-
-        ALL_DEPS
-        lua_pushcclosure(L, l_setPlayerCanInteract, 3); // Push function, referring to the world pointer
-        lua_setglobal(L, "setPlayerCanInteract"); // Name function
-
-        ALL_DEPS
-        lua_pushcclosure(L, l_setPlayerStat_sanity, 3); // Push function, referring to the world pointer
-        lua_setglobal(L, "setPlayerStat_sanity"); // Name function
-
-        ALL_DEPS
-        lua_pushcclosure(L, l_setPlayerGodMode, 3); // Push function, referring to the world pointer
-        lua_setglobal(L, "setPlayerGodMode"); // Name function
-
-
-        ALL_DEPS
-        lua_pushcclosure(L, l_setFlag, 3); // Push function, referring to the world pointer
-        lua_setglobal(L, "setFlag"); // Name function
-
-
-        ALL_DEPS
-        lua_pushcclosure(L, l_setEra, 3); // Push function, referring to the world pointer
-        lua_setglobal(L, "setEra"); // Name function
-
-
-        ALL_DEPS
-        lua_pushcclosure(L, l_camera_setLocked, 3); // Push function, referring to the world pointer
-        lua_setglobal(L, "camera_setLocked"); // Name function
-
-        ALL_DEPS
-        lua_pushcclosure(L, l_camera_setPosition, 3); // Push function, referring to the world pointer
-        lua_setglobal(L, "camera_setPosition"); // Name function
-
-        ALL_DEPS
-        lua_pushcclosure(L, l_camera_move, 3); // Push function, referring to the world pointer
-        lua_setglobal(L, "camera_move"); // Name function
-
-        ALL_DEPS
-        lua_pushcclosure(L, l_camera_smoothMove, 3); // Push function, referring to the world pointer
-        lua_setglobal(L, "camera_smoothMove"); // Name function
-
-
-        ALL_DEPS
-        lua_pushcclosure(L, l_delay, 3); // Push function, referring to the world pointer
-        lua_setglobal(L, "delay"); // Name function
-
-        ALL_DEPS
-        lua_pushcclosure(L, l_pause, 3); // Push function, referring to the world pointer
-        lua_setglobal(L, "pause"); // Name function
-
-        ALL_DEPS
-        lua_pushcclosure(L, l_play, 3); // Push function, referring to the world pointer
-        lua_setglobal(L, "unpause"); // Name function
-
-
-        ALL_DEPS
-        lua_pushcclosure(L, l_startTrade, 3); // Push function, referring to the world pointer
-        lua_setglobal(L, "startTrade"); // Name function
-
-        ALL_DEPS
-        lua_pushcclosure(L, l_startDialogue, 3); // Push function, referring to the world pointer
-        lua_setglobal(L, "startDialogue"); // Name function
-
-        /*
-            static int l_setBlock(lua_State* L); // Wrappers. A lot of em
-            static int l_removeBlock(lua_State* L);
-            static int l_showBlock(lua_State* L);
-            static int l_hideBlock(lua_State* L);
-
-            static int l_addEntity(lua_State* L);
-            static int l_removeEntity(lua_State* L);
-            static int l_showEntity(lua_State* L);
-            static int l_hideEntity(lua_State* L);
-
-            static int l_setTime(lua_State* L)
-            static int l_teleport(lua_State* L)
-            static int l_giveItem(lua_State* L)
-
-            static int l_setPlayerCanInteract(lua_State* L)
-            static int l_setPlayerStat_sanity(lua_State* L)
-            static int l_setPlayerGodMode(lua_State* L)
-
-            static int l_setFlag(lua_State* L)
-
-            static int l_setEra(lua_State* L)
-
-            static int l_camera_setLocked(lua_State* L)
-            static int l_camera_setPosition(lua_State* L)
-            static int l_camera_move(lua_State* L)
-            static int l_camera_smoothMove(lua_State* L)
-
-            static int l_delay(lua_State* L)
-            static int l_pause(lua_State* L)
-            static int l_play(lua_State* L)
-
-            static int l_startTrade(lua_State* L)
-            static int l_startDialogue(lua_State* L)
-
-            std::vector<glm::vec2> relativePositionTarget(World* world, Entity* relativeTo, glm::vec2 relativePos);
-            std::vector<glm::vec2> areaPositionTarget(World* world, glm::vec2 pos1, glm::vec2 pos2);
-        */
+        addFunction(l_startTrade, "startTrade");
+        addFunction(l_startDialogue, "startDialogue");
     }
     ~LuaScript() {
         L = 0;
@@ -255,10 +144,8 @@ public:
             return 1;
         }
 
-        //std::thread t([=]{run();});
-        //t.detach();
-
-        run();
+        boost::thread t = boost::thread([=]{run();});
+        t.detach();
 
         return 0;
     }
@@ -269,7 +156,7 @@ public:
             return 1;
         }
 
-        std::thread t([=]{run();});
+        boost::thread t = boost::thread([=]{run();});
         t.detach();
 
         return 0;
@@ -279,7 +166,9 @@ private:
     void run() {
         lua_pcall(L, 0, 0, 0); // run
 
-        lua_close(L);
+        if(L) {
+            lua_close(L);
+        }
     }
 
     static int l_setBlock(lua_State* L); // Wrappers. A lot of em

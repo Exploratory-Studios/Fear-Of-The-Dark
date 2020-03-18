@@ -23,7 +23,7 @@ class Block : public Tile
             m_pos = other.getPosition();
             m_size = other.getSize();
             m_textureId = other.getTextureID();
-            m_backdropTextureId = other.getBackdropTextureID();
+            m_bumpMapId = other.getBumpMapID();
             m_colour = GLEngine::ColourRGBA8(255, 255, 255, 255);
             m_emittedLight = other.getEmittedLight();
             m_emittedHeat = other.getEmittedHeat();

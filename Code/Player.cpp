@@ -12,6 +12,7 @@ Player::Player(glm::vec2 position, unsigned int layer, bool loadTexture) : Entit
 {
     if(loadTexture) {
         m_texture = GLEngine::ResourceManager::getTexture(ASSETS_FOLDER_PATH + "Textures/Mobs/Mob0.png");
+        m_bumpMap = GLEngine::ResourceManager::getTexture(ASSETS_FOLDER_PATH + "Textures/BumpMaps/Mob0.png");
         m_loadedTexture = true;
     }
     m_size = glm::vec2(1.5f, 4.0f);
@@ -79,8 +80,9 @@ void Player::initGUI(GLEngine::GUI* gui) {
 }
 
 void Player::draw(GLEngine::SpriteBatch& sb, float time, int layerDifference, float xOffset) {
-    if(!m_loadedTexture) {
+    if(!m_loadedTexture || m_bumpMap.height == 0) {
         m_texture = GLEngine::ResourceManager::getTexture(ASSETS_FOLDER_PATH + "Textures/Mobs/Mob0.png");
+        m_bumpMap = GLEngine::ResourceManager::getTexture(ASSETS_FOLDER_PATH + "Textures/BumpMaps/Mob0.png");
         m_loadedTexture = true;
     }
 
@@ -112,18 +114,18 @@ void Player::draw(GLEngine::SpriteBatch& sb, float time, int layerDifference, fl
     if(!m_flippedTexture) {
         uvRect = glm::vec4(finalX,
                            finalY,
-                           1.0f / ((float)m_texture.width / (m_size.x * 32)),
-                           1.0f / ((float)m_texture.height / (m_size.y * 32)));
+                           1.0f / ((float)m_texture.width / 32),
+                           1.0f / ((float)m_texture.height / 64));
     } else if(m_flippedTexture) {
-        uvRect = glm::vec4(finalX + 1.0f / ((float)m_texture.width / (m_size.x * 32)),
+        uvRect = glm::vec4(finalX + 1.0f / ((float)m_texture.width / 32),
                            finalY,
-                           1.0f / -((float)m_texture.width / (m_size.x * 32)),
-                           1.0f / ((float)m_texture.height / (m_size.y * 32)));
+                           1.0f / -((float)m_texture.width / 32),
+                           1.0f / ((float)m_texture.height / 64));
     }
 
     GLEngine::ColourRGBA8 colour(255, 255, 255, 255);
 
-    sb.draw(destRect, uvRect, m_texture.id, 0.8f * (WORLD_DEPTH - m_layer), colour, glm::vec4(m_light));
+    sb.draw(destRect, uvRect, m_texture.id, m_bumpMap.id, 0.8f * (WORLD_DEPTH - m_layer), colour, m_cornerLight);
 
     /*for(int i = 0; i < m_limbs.size(); i++) {
         m_limbs[i]->draw(sb);
@@ -134,13 +136,13 @@ void Player::draw(GLEngine::SpriteBatch& sb, float time, int layerDifference, fl
         int cursorImgId = GLEngine::ResourceManager::getTexture(ASSETS_FOLDER_PATH + "GUI/Player/Cursor.png").id;
 
         glm::vec4 cursorDestRect(m_selectedEntity->getPosition().x + xOffset, m_selectedEntity->getPosition().y, m_selectedEntity->getSize().x, m_selectedEntity->getSize().y);
-        sb.draw(cursorDestRect, fullUV, cursorImgId, 1.5f * (WORLD_DEPTH - m_layer), GLEngine::ColourRGBA8(255, 255, 255, 255));
+        sb.draw(cursorDestRect, fullUV, cursorImgId, 0, 1.5f * (WORLD_DEPTH - m_layer), GLEngine::ColourRGBA8(255, 255, 255, 255));
     } else if(m_selectedBlock) { // Cursor box selection
         glm::vec4 fullUV(0.0f, 0.0f, 1.0f, 1.0f);
         int cursorImgId = GLEngine::ResourceManager::getTexture(ASSETS_FOLDER_PATH + "GUI/Player/Cursor.png").id;
 
         glm::vec4 cursorDestRect(m_selectedBlock->getPosition().x + xOffset, m_selectedBlock->getPosition().y, m_selectedBlock->getSize().x, m_selectedBlock->getSize().y);
-        sb.draw(cursorDestRect, fullUV, cursorImgId, 1.5f * (WORLD_DEPTH - m_layer), GLEngine::ColourRGBA8(255, 255, 255, 255));
+        sb.draw(cursorDestRect, fullUV, cursorImgId, 0, 1.5f * (WORLD_DEPTH - m_layer), GLEngine::ColourRGBA8(255, 255, 255, 255));
     }
 }
 
@@ -159,7 +161,7 @@ void Player::drawGUI(GLEngine::SpriteBatch& sb, GLEngine::SpriteFont& sf) {
 
                 glm::vec4 uv(i * (1.0 / HOTBAR_BOX_NUM), 0.0f, (1.0 / HOTBAR_BOX_NUM), 1.0f);
                 glm::vec4 destRect(HOTBAR_BOX_SIZE / 4 + (HOTBAR_BOX_SIZE + HOTBAR_BOX_PADDING) * i, HOTBAR_BOX_SIZE / 4, HOTBAR_BOX_SIZE, HOTBAR_BOX_SIZE);
-                sb.draw(destRect, uv, hotbarImgId, 0.0f, fullColour);
+                sb.draw(destRect, uv, hotbarImgId, 0, 0.0f, fullColour);
 
                 {
                     if(m_favouriteItems[i]) {
@@ -170,7 +172,7 @@ void Player::drawGUI(GLEngine::SpriteBatch& sb, GLEngine::SpriteFont& sf) {
                         glm::vec4 itemUV(0, 0, 1, 1);
                         int itemImgId = m_favouriteItems[i]->getTexture().id;//GLEngine::ResourceManager::getTexture(Category_Data::itemData[m_favouriteItems[i]->getID()].texturePath).id;
 
-                        sb.draw(destRect, itemUV, itemImgId, 0.4f, GLEngine::ColourRGBA8(255, 255, 255, 255));
+                        sb.draw(destRect, itemUV, itemImgId, 0, 0.4f, GLEngine::ColourRGBA8(255, 255, 255, 255));
                     }
                 }
             }
@@ -184,14 +186,14 @@ void Player::drawGUI(GLEngine::SpriteBatch& sb, GLEngine::SpriteFont& sf) {
                     glm::vec4 itemUV(0, 0, 1, 1);
                     int itemImgId = m_favouriteItems[i]->getTexture().id;//GLEngine::ResourceManager::getTexture(Category_Data::itemData[m_favouriteItems[i]->getID()].texturePath).id;
 
-                    sb.draw(destRect, itemUV, itemImgId, 0.4f, GLEngine::ColourRGBA8(255, 255, 255, 255));
+                    sb.draw(destRect, itemUV, itemImgId, 0, 0.4f, GLEngine::ColourRGBA8(255, 255, 255, 255));
 
                     sf.draw(sb, std::to_string(m_favouriteItems[i]->getQuantity()).c_str(), glm::vec2(destRect.x + INVENTORY_BOX_SIZE * 9/10, destRect.y + INVENTORY_BOX_SIZE - 96.0f * 0.35f), glm::vec2(0.35f), 1.0f, GLEngine::ColourRGBA8(255, 255, 255, 255), GLEngine::Justification::RIGHT);
                 }
             }
 
             glm::vec4 destRect(HOTBAR_BOX_SIZE / 4 + (HOTBAR_BOX_SIZE + HOTBAR_BOX_PADDING) * m_selectedHotbox, HOTBAR_BOX_SIZE / 4, HOTBAR_BOX_SIZE, HOTBAR_BOX_SIZE);
-            sb.draw(destRect, fullUV, hotbarSelectImgId, 1.1f, fullColour);
+            sb.draw(destRect, fullUV, hotbarSelectImgId, 0, 1.1f, fullColour);
         } // Hotbar END
 
 
@@ -258,7 +260,7 @@ void Player::updateStats(World* world, float timeStep) {
     if(m_exhaustion < 0.25f) {
         m_sanity -= 0.0001f * timeStep;
     }
-    if(m_light < 0.25f) {
+    if((m_cornerLight.x + m_cornerLight.y + m_cornerLight.z + m_cornerLight.w) / 4.0f < 0.25f) {
         if(m_exposedToSun) {
             Buff_Increase_Sanity_StarLight* potentialBuff = new Buff_Increase_Sanity_StarLight(&m_sanity);
             if(std::find(m_buffs.begin(), m_buffs.end(), potentialBuff) == m_buffs.end() || m_buffs.size() == 0) {
@@ -268,7 +270,7 @@ void Player::updateStats(World* world, float timeStep) {
             }
         }
     }
-    if(m_light < 0.25f) {
+    if((m_cornerLight.x + m_cornerLight.y + m_cornerLight.z + m_cornerLight.w) / 4.0f < 0.25f) {
         Buff_Decrease_Sanity_LowLight* potentialBuff = new Buff_Decrease_Sanity_LowLight(&m_sanity);
         if(std::find(m_buffs.begin(), m_buffs.end(), potentialBuff) == m_buffs.end() || m_buffs.size() == 0) {
             m_buffs.push_back(potentialBuff);

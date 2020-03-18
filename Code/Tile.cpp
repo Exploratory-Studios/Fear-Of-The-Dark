@@ -124,12 +124,9 @@ void Tile::tick(World* world, float tickTime, const float& sunlight) {
 void Tile::draw(GLEngine::SpriteBatch& sb, GLEngine::SpriteFont& sf, int xOffset, int depthDifference) {
 
     if(m_draw) {
-        if(m_textureId == (GLuint)-1) {
+        if(m_textureId == (GLuint)-1 || m_bumpMapId == (GLuint)-1) {
             loadTexture();
         }
-
-        //GLint lightColourUniform = program.getUniformLocation("lightColour");
-        //glUniform4fv(lightColourUniform, 3, &glm::vec3(0.0f, 1.0f, 0.0f)[0]);
 
         GLEngine::ColourRGBA8 colour = m_colour;
         if(depthDifference != 0) {
@@ -153,6 +150,7 @@ void Tile::draw(GLEngine::SpriteBatch& sb, GLEngine::SpriteFont& sf, int xOffset
         sb.draw(pos,
                 glm::vec4(0.0f, 0.0f, 1.0f, 1.0f),
                 m_textureId,
+                m_bumpMapId,
                 depth,
                 colour,
                 m_cornerLight + m_cornerSunlight);
@@ -162,7 +160,7 @@ void Tile::draw(GLEngine::SpriteBatch& sb, GLEngine::SpriteFont& sf, int xOffset
 }
 
 void Tile::drawBackdrop(GLEngine::SpriteBatch& sb, int xOffset, int yOffset, float lightLevel) {
-    if(m_draw && m_backdrop) {
+    /*if(m_draw && m_backdrop) {
         //GLint lightColourUniform = program.getUniformLocation("lightColour");
         //glUniform4fv(lightColourUniform, 3, &glm::vec3(0.0f, 1.0f, 0.0f)[0]);
 
@@ -173,7 +171,39 @@ void Tile::drawBackdrop(GLEngine::SpriteBatch& sb, int xOffset, int yOffset, flo
                 0.1f * (WORLD_DEPTH - m_layer),
                 GLEngine::ColourRGBA8(r, g, b, m_colour.a),
                 m_cornerLight);
-    }
+    }*/
+}
+
+float Tile::getLightAtPoint(glm::vec2 posFromBL) {
+    float TL = m_cornerLight.x + m_cornerSunlight.x;
+    float TR = m_cornerLight.y + m_cornerSunlight.y;
+    float BR = m_cornerLight.z + m_cornerSunlight.z;
+    float BL = m_cornerLight.w + m_cornerSunlight.w;
+
+    glm::vec2 relCoords = posFromBL / m_size;
+
+    // Cosine interpolation from TL-TR (x)
+    float TL_TR_X;
+    {
+        float mu = (1.0 - cos(relCoords.x * 3.141592)) / 2.0;
+        TL_TR_X = (TL * (1.0 - mu) + TR * mu);
+   	}
+
+   	// Cosine interpolation from BL-BR (x)
+   	float BL_BR_X;
+    {
+        float mu = (1.0 - cos(relCoords.x * 3.141592)) / 2.0;
+        BL_BR_X = (BL * (1.0 - mu) + BR * mu);
+   	}
+
+   	// Cosine interpolation from each of those, using the y coord
+   	float light;
+    {
+        float mu = (1.0 - cos(relCoords.y * 3.141592)) / 2.0;
+        light = (TL_TR_X * (1.0 - mu) + BL_BR_X * mu);
+   	}
+
+   	return light;
 }
 
 void Tile::destroy(World* world) {

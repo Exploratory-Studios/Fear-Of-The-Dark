@@ -43,6 +43,7 @@ class Item
         unsigned int getID() { return m_id; } // (unsigned int)(-1) is equivalent to null
         short unsigned int getQuantity() { return m_quantity; }
         GLEngine::GLTexture getTexture() { return m_texture; }
+        GLEngine::GLTexture getBumpMap() { return m_texture; }
         std::string& getName() { return m_name; }
         // Make new classes for different types of items: blocks, weapons, food, etc. with each one having different default left & right click events
 

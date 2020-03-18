@@ -128,7 +128,8 @@ class Entity
               glm::vec2                getVelocity()     const { return m_velocity; }
               std::vector<glm::vec3>   getTargets()      const { return m_targets; }
               float                    getJumpHeight()   const { return m_jumpHeight; }
-              float                    getLightLevel()   const { return m_light; }
+              glm::vec4                getLightLevel()   const { return m_cornerLight; }
+              float                    getAverageLightLevel() const { return (m_cornerLight.x + m_cornerLight.y + m_cornerLight.z + m_cornerLight.w) / 4.0f; }
               bool                     isDead()          const { return m_isDead; }
               void                     setPosition(glm::vec2 pos)   { m_position = pos; }
               void                     setTargets(std::vector<glm::vec3> targets)  { m_targets = targets; }
@@ -199,7 +200,8 @@ class Entity
         unsigned int m_curTarget = 0;
 
         GLEngine::GLTexture m_texture;
-        float m_light = 0.6f;
+        GLEngine::GLTexture m_bumpMap;
+        glm::vec4 m_cornerLight; // light values at each of the 4 corners. (clockwise, component 0 is at top left)
 
         Categories::Faction m_faction;
 

@@ -1,0 +1,5 @@
+pause()
+delay(1500)
+unpause()
+delay(1500)
+setTime(0)

@@ -51,7 +51,8 @@ class InteractableBlock : public Block {
 
 
         protected:
-            void loadTexture() override { m_textureId = GLEngine::ResourceManager::getTexture(ASSETS_FOLDER_PATH + "Textures/Blocks/Wood_Sign.png").id; }
+            void loadTexture() override { m_textureId = GLEngine::ResourceManager::getTexture(ASSETS_FOLDER_PATH + "Textures/Blocks/Wood_Sign.png").id;
+                                          m_bumpMapId = GLEngine::ResourceManager::getTexture(ASSETS_FOLDER_PATH + "Textures/BumpMaps/Wood_Sign.png").id; }
 
             std::string m_text = "UNDEF";
             bool m_changingText = false; // If this is true, capture the player's input and focus here? Maybe use CEGUI here...
@@ -91,7 +92,7 @@ class InteractableBlock : public Block {
             BlockDirt(glm::vec2 pos, unsigned int layer, MetaData metaData = MetaData(), bool loadTexture = true);
             void onInteract(ScriptQueue* sq) {}
         protected:
-            void loadTexture() override { m_textureId = GLEngine::ResourceManager::getTexture(ASSETS_FOLDER_PATH + "/Textures/Blocks/Dirt.png").id; m_backdropTextureId = GLEngine::ResourceManager::getTexture(ASSETS_FOLDER_PATH + "/Textures/Blocks/Dirt.png").id; }
+            void loadTexture() override { m_textureId = GLEngine::ResourceManager::getTexture(ASSETS_FOLDER_PATH + "/Textures/Blocks/Dirt.png").id; m_bumpMapId = GLEngine::ResourceManager::getTexture(ASSETS_FOLDER_PATH + "/Textures/BumpMaps/Dirt.png").id; }
             virtual void onTick(World* world, float& tickTime);
         private:
     };
@@ -102,7 +103,7 @@ class InteractableBlock : public Block {
             BlockGrass(glm::vec2 pos, unsigned int layer, MetaData metaData = MetaData(), bool loadTexture = true);
             void onInteract(ScriptQueue* sq) {}
         protected:
-            void loadTexture() override { m_textureId = GLEngine::ResourceManager::getTexture(ASSETS_FOLDER_PATH + "/Textures/Blocks/Grass.png").id; m_backdropTextureId = GLEngine::ResourceManager::getTexture(ASSETS_FOLDER_PATH + "/Textures/Blocks/Dirt.png").id; }
+            void loadTexture() override { m_textureId = GLEngine::ResourceManager::getTexture(ASSETS_FOLDER_PATH + "/Textures/Blocks/Grass.png").id; m_bumpMapId = GLEngine::ResourceManager::getTexture(ASSETS_FOLDER_PATH + "/Textures/BumpMaps/Grass.png").id; }
             virtual void onTick(World* world, float& tickTime);
         private:
     };
@@ -113,7 +114,7 @@ class InteractableBlock : public Block {
             BlockTorch(glm::vec2 pos, unsigned int layer, MetaData metaData = MetaData(), bool loadTexture = true);
             void onInteract(ScriptQueue* sq) {}
         protected:
-            void loadTexture() override { m_textureId = GLEngine::ResourceManager::getTexture(ASSETS_FOLDER_PATH + "/Textures/Blocks/Torch.png").id; }
+            void loadTexture() override { m_textureId = GLEngine::ResourceManager::getTexture(ASSETS_FOLDER_PATH + "/Textures/Blocks/Torch.png").id; m_bumpMapId = GLEngine::ResourceManager::getTexture(ASSETS_FOLDER_PATH + "/Textures/BumpMaps/Torch.png").id; }
     };
 
     class BlockTorchBright : public BlockTorch
@@ -138,8 +139,10 @@ class InteractableBlock : public Block {
                 int r = rand();
                 if(r % 2 == 0) {
                     m_textureId = GLEngine::ResourceManager::getTexture(ASSETS_FOLDER_PATH + "Textures/Blocks/WhiteFlower.png").id;
+                    m_bumpMapId = GLEngine::ResourceManager::getTexture(ASSETS_FOLDER_PATH + "/Textures/BumpMaps/WhiteFlower.png").id;
                 } else {
                     m_textureId = GLEngine::ResourceManager::getTexture(ASSETS_FOLDER_PATH + "Textures/Blocks/RedFlower.png").id;
+                    m_bumpMapId = GLEngine::ResourceManager::getTexture(ASSETS_FOLDER_PATH + "/Textures/BumpMaps/RedFlower.png").id;
                 }
             }
 
@@ -154,7 +157,7 @@ class InteractableBlock : public Block {
         protected:
             void loadTexture() override {
              m_textureId = GLEngine::ResourceManager::getTexture(ASSETS_FOLDER_PATH + "/Textures/Blocks/Stone.png").id;
-             m_backdropTextureId = m_textureId;
+             m_bumpMapId = GLEngine::ResourceManager::getTexture(ASSETS_FOLDER_PATH + "/Textures/BumpMaps/Stone.png").id;
               }
 
         private:
@@ -166,7 +169,8 @@ class InteractableBlock : public Block {
             BlockFoliage(glm::vec2 pos, unsigned int layer, MetaData metaData = MetaData(), bool loadTexture = true);
             void onInteract(ScriptQueue* sq) {}
         protected:
-            void loadTexture() override { m_textureId = GLEngine::ResourceManager::getTexture(ASSETS_FOLDER_PATH + "Textures/Blocks/BushGreen.png").id; }
+            void loadTexture() override { m_textureId = GLEngine::ResourceManager::getTexture(ASSETS_FOLDER_PATH + "Textures/Blocks/BushGreen.png").id;
+                                          m_bumpMapId = GLEngine::ResourceManager::getTexture(ASSETS_FOLDER_PATH + "/Textures/BumpMaps/BushGreen.png").id; }
             void onUpdate(World* world, float& time);
         private:
     };
@@ -177,7 +181,7 @@ class InteractableBlock : public Block {
             BlockWood(glm::vec2 pos, unsigned int layer, MetaData metaData = MetaData(), bool loadTexture = true);
             void onInteract(ScriptQueue* sq) {}
         protected:
-            void loadTexture() override { m_textureId = GLEngine::ResourceManager::getTexture(ASSETS_FOLDER_PATH + "Textures/Blocks/WoodBlock.png").id; m_backdropTextureId = m_textureId; }
+            void loadTexture() override { m_textureId = GLEngine::ResourceManager::getTexture(ASSETS_FOLDER_PATH + "Textures/Blocks/WoodBlock.png").id; m_bumpMapId = GLEngine::ResourceManager::getTexture(ASSETS_FOLDER_PATH + "/Textures/BumpMaps/Wood.png").id; }
 
         private:
     };
@@ -202,7 +206,7 @@ class InteractableBlock : public Block {
                 return m;
             }
 
-            void loadTexture() override { m_textureId = GLEngine::ResourceManager::getTexture(ASSETS_FOLDER_PATH + "/Textures/Blocks/Water.png").id; }
+            void loadTexture() override { m_textureId = GLEngine::ResourceManager::getTexture(ASSETS_FOLDER_PATH + "/Textures/Blocks/Water.png").id; m_bumpMapId = GLEngine::ResourceManager::getTexture(ASSETS_FOLDER_PATH + "/Textures/BumpMaps/Water.png").id; }
             void onUpdate(World* world, float& time) override;
         private:
             float m_waterLevel = 1.0f; // ranges from 1.0f (top of the block) to 0.0f (literally no water present)
@@ -214,7 +218,7 @@ class InteractableBlock : public Block {
             BlockPole(glm::vec2 pos, unsigned int layer, MetaData metaData = MetaData(), bool loadTexture = true);
             void onInteract(ScriptQueue* sq) {}
 
-            void loadTexture() override { m_textureId = GLEngine::ResourceManager::getTexture(ASSETS_FOLDER_PATH + "/Textures/Blocks/Wood_Pole.png").id; }
+            void loadTexture() override { m_textureId = GLEngine::ResourceManager::getTexture(ASSETS_FOLDER_PATH + "/Textures/Blocks/Wood_Pole.png").id; m_bumpMapId = GLEngine::ResourceManager::getTexture(ASSETS_FOLDER_PATH + "/Textures/BumpMaps/Wood_Pole.png").id; }
     };
 
 

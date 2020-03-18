@@ -71,7 +71,7 @@ void LoadScreen::draw() {
 
     m_textureProgram.use();
 
-    GLint textureUniform = m_textureProgram.getUniformLocation("mySampler");
+    GLint textureUniform = m_textureProgram.getUniformLocation("textureSampler");
     glUniform1i(textureUniform, 0);
     glActiveTexture(GL_TEXTURE0);
 

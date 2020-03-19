@@ -79,10 +79,12 @@ class GameplayScreen : public GLEngine::IGameScreen
         GLEngine::Window* m_window;
         GLEngine::GUI* m_gui = nullptr;
         GLEngine::SpriteBatch m_spriteBatch;
+
         GLEngine::GLSLProgram m_textureProgram;
         GLEngine::GLSLProgram m_uiTextureProgram;
         GLEngine::GLSLProgram m_vignetteTextureProgram;
         GLEngine::GLSLProgram m_skyTextureProgram;
+
         GLEngine::SpriteFont m_spriteFont;
         GLEngine::DebugRenderer m_dr;
         GLEngine::ParticleEngine2D m_particle2d;

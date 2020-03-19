@@ -214,7 +214,7 @@ void World::getRenderedLights(glm::vec4 destRect, float lights[MAX_LIGHTS_RENDER
         // 2.
         bool append = false;
 
-        if(m_lights[i]->getPosition().x < (int)destRect.x % WORLD_SIZE) { // Before the viewport starts?
+        /*if(m_lights[i]->getPosition().x < (int)destRect.x % WORLD_SIZE) { // Before the viewport starts?
             if(m_lights[i]->getPosition().x + range > (int)destRect.x % WORLD_SIZE) { // Pos + range intersects the viewport?
                 append = true;
             }
@@ -222,14 +222,34 @@ void World::getRenderedLights(glm::vec4 destRect, float lights[MAX_LIGHTS_RENDER
             if(m_lights[i]->getPosition().x < (int)(destRect.x + destRect.z) % WORLD_SIZE) { // Within the viewport?
                 append = true;
             } else {
-                if(m_lights[i]->getPosition().x - range < (int)(destRect.x + destRect.z) % WORLD_SIZE) { // Pos - range intersects the viewport?
+                if((int)(m_lights[i]->getPosition().x - range + WORLD_SIZE) % WORLD_SIZE < (int)(destRect.x + destRect.z) % WORLD_SIZE) { // Pos - range intersects the viewport?
                     append = true;
                 }
             }
+        }*/
+
+        // Get distance from centre of viewport to centre of light
+        float leftDist; // going left from viewport
+        float rightDist;
+
+        float centerXViewport = destRect.x + (destRect.z / 2.0f);
+
+        if(centerXViewport > m_lights[i]->getPosition().x) {
+            leftDist = -(centerXViewport - m_lights[i]->getPosition().x);
+            rightDist = (WORLD_SIZE - centerXViewport) + m_lights[i]->getPosition().x;
+        } else {
+            leftDist = -((WORLD_SIZE - m_lights[i]->getPosition().x) + centerXViewport);
+            rightDist = m_lights[i]->getPosition().x - centerXViewport;
         }
 
+        float shortestDist = abs(leftDist) < rightDist ? leftDist : rightDist;
+        if(abs(shortestDist) <= (range + destRect.z) / 2.0f) {
+            append = true;
+        }
+
+
         if(append) {
-             glm::vec3 result = glm::vec3(m_lights[i]->getPosition().x, m_lights[i]->getPosition().y, m_lights[i]->getEmittedLight());
+             glm::vec3 result = glm::vec3(centerXViewport + shortestDist, m_lights[i]->getPosition().y, m_lights[i]->getEmittedLight());
             // 3.
             if(added >= MAX_LIGHTS_RENDERED) {
                 glm::vec2 center(destRect.x + destRect.z / 2.0f, destRect.y + destRect.w / 2.0f);

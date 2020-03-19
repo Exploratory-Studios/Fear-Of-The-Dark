@@ -6,7 +6,7 @@ in vec4 fragmentColour;
 in vec2 fragmentUV;
 in vec4 fragmentLight;
 
-in vec4 lightSource; // just a normalized vector pointing TO light source
+in vec3 lightSource; // just a normalized vector pointing TO light source
 
 //This is the 3 component float vector that gets outputted to the screen
 //for each pixel.
@@ -37,20 +37,27 @@ float interpolateCornersforCoords(vec2 coords, vec4 corners) {
 
 void main() {
 
-	float lightLevel = 0.0;
+	float lightLevel = interpolateCornersforCoords(vec2(fragmentUV.x, 1.0 - fragmentUV.y), fragmentLight);
 
-	vec4 source = lightSource;
+	//float rise1 = lightLevel - fragmentLight.x; // TL
+	//float rise2 = lightLevel - fragmentLight.y; // TR
+	//float rise3 = -(lightLevel - fragmentLight.z); // BR
+	//float rise4 = -(lightLevel - fragmentLight.w); // BL
+	//float rise = (rise1 + rise2 + rise3 + rise4) / 4.0;
 
-	source += vec4(vec2(0.5, 5.0) - vec2(fragmentUV.x, 1.0 - fragmentUV.y), 1.0, interpolateCornersforCoords(vec2(fragmentUV.x, 1.0 - fragmentUV.y), fragmentLight));
-	source.xyz /= vec3(2.0);
-	source.xy = normalize(source.xy);
+	//float run1 = -(lightLevel - fragmentLight.x); // TL
+	//float run2 = lightLevel - fragmentLight.y; // TR
+	//float run3 = lightLevel - fragmentLight.z; // BR
+	//float run4 = -(lightLevel - fragmentLight.w); // BL
+	//float run = (run1 + run2 + run3 + run4) / 4.0;
+
+	//vec3 lightSource = normalize(vec3(-run, -rise, 1.0));
 
 	vec4 textureColour = texture(textureSampler, fragmentUV);
 
 	vec3 normalMap = normalize(texture(bumpSampler, fragmentUV).rgb * 2.0 - 1.0);
 
-	lightLevel = clamp(dot(normalMap, source.xyz), 0.0, 1.0);
-	lightLevel = clamp(lightLevel * source.w, 0.0, 1.25);
+	lightLevel *= clamp(dot(normalMap, lightSource * vec3(1.0, 1.0, -1.0)), 0.0, 1.0); // reverse z coordinate of lightsource to match direction of normal map's vector
 
 	color = textureColour * fragmentColour * vec4(lightLevel, lightLevel, lightLevel, 1.0);
 }

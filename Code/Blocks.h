@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Block.h"
+#include "Tile.h"
 #include "../Categories.h"
 #include "../Scripting/ScriptQueue.h"
 
@@ -11,18 +11,18 @@ class Inventory;
 
 /// This file holds and handles all new TILES and TILE TYPES, not just blocks
 
-class GenericBlock : public Block {
+class GenericBlock : public Tile {
     public:
-        GenericBlock(glm::vec2 pos, unsigned int layer, MetaData metaData = MetaData(), bool loadTexture = true) : Block(pos, layer, metaData) { }
+        GenericBlock(glm::vec2 pos, unsigned int layer, MetaData metaData = MetaData(), bool loadTexture = true) : Tile(pos, layer, metaData) { }
         void onInteract(ScriptQueue* sq) {}
 
     protected:
         virtual void handleMetaDataInit(MetaData& data) override {}
 };
 
-class InteractableBlock : public Block {
+class InteractableBlock : public Tile {
     public:
-        InteractableBlock(glm::vec2 pos, unsigned int layer, MetaData metaData = MetaData(), bool loadTexture = true) : Block(pos, layer, metaData) {}
+        InteractableBlock(glm::vec2 pos, unsigned int layer, MetaData metaData = MetaData(), bool loadTexture = true) : Tile(pos, layer, metaData) {}
         void onInteract(ScriptQueue* sq) { if(m_interactScriptId != (unsigned int)-1) sq->activateScript(m_interactScriptId); }
 
     protected:
@@ -223,8 +223,8 @@ class InteractableBlock : public Block {
 
 
 
-static Block* createBlock(unsigned int id, glm::vec2 pos, unsigned int layer, MetaData metaData = MetaData{}, bool loadTexture = true, float tickTime = -1.0f) {
-    Block* ret = nullptr;
+static Tile* createBlock(unsigned int id, glm::vec2 pos, unsigned int layer, MetaData metaData = MetaData{}, bool loadTexture = true, float tickTime = -1.0f) {
+    Tile* ret = nullptr;
     switch(id) {
         case (unsigned int)Categories::BlockIDs::AIR: {
             ret = new BlockAir(pos, layer, metaData, loadTexture);

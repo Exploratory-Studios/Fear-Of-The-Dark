@@ -8,7 +8,6 @@
 #include <DebugRenderer.h>
 #include <GLSLProgram.h>
 #include <SpriteFont.h>
-#include <ParticleEngine2D.h>
 
 #include <cstdio>
 
@@ -87,7 +86,6 @@ class GameplayScreen : public GLEngine::IGameScreen
 
         GLEngine::SpriteFont m_spriteFont;
         GLEngine::DebugRenderer m_dr;
-        GLEngine::ParticleEngine2D m_particle2d;
 
         Scripter* m_scripter = nullptr;
         QuestManager* m_questManager = nullptr;

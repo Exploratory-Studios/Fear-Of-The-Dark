@@ -3,7 +3,7 @@
 #include <vector>
 #include <DebugRenderer.h>
 
-#include "Block.h"
+#include "Tile.h"
 #include "Inventory.h"
 
 #include "PresetValues.h"

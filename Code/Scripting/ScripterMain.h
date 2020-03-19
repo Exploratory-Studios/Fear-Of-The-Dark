@@ -2,6 +2,7 @@
 
 #include "ScriptQueue.h"
 #include "../GameplayScreen.h"
+#include "../Entity.h"
 
 #include "../Logging.h"
 

@@ -52,7 +52,7 @@ class ItemMiscBucket : public Item {
 				if(selectedBlock->getID() == (unsigned int)Categories::BlockIDs::WATER) {
 					m_level += static_cast<BlockWater*>(selectedBlock)->getLevel();
 
-					Block* b = createBlock((unsigned int)Categories::BlockIDs::AIR, selectedBlock->getPosition(), selectedBlock->getLayer());
+					Tile* b = createBlock((unsigned int)Categories::BlockIDs::AIR, selectedBlock->getPosition(), selectedBlock->getLayer());
 					b->setAmbientLight(selectedBlock->getLight());
 					world->setTile(b);
 				}

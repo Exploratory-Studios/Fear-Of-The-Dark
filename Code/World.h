@@ -1,6 +1,7 @@
 #pragma once
 
 #include <DebugRenderer.h>
+#include <ParticleEngine2D.h>
 #include <SpriteBatch.h>
 #include <SpriteFont.h>
 
@@ -74,6 +75,8 @@ private:
     std::vector<Entity*> m_entities;
 
     Player* m_player = nullptr;
+
+    GLEngine::ParticleEngine2D m_particle2d;
 
     Categories::Places m_placesMap[(WORLD_SIZE / CHUNK_SIZE)]; // Simply a 1d vector of biome IDs, which can be mapped onto the world by referencing each "chunk"'s size
 

@@ -8,6 +8,7 @@
 
 #include "AudioManager.h"
 #include "PresetValues.h"
+#include "Scripting/ScriptQueue.h"
 
 #include "SaveDataTypes.h"
 
@@ -20,6 +21,7 @@ class Tile
 
     public:
         Tile();
+        Tile(glm::vec2 pos, unsigned int layer, MetaData data) : m_pos(pos), m_layer(layer), m_metaData(data) { handleMetaDataInit(data); }
         Tile(glm::vec2 pos,
              unsigned int layer,
              GLuint textureId,
@@ -48,6 +50,25 @@ class Tile
             return ret;
         }
         #endif
+
+        void operator=(const Tile& other) {
+            m_pos = other.getPosition();
+            m_size = other.getSize();
+            m_textureId = other.getTextureID();
+            m_bumpMapId = other.getBumpMapID();
+            m_colour = GLEngine::ColourRGBA8(255, 255, 255, 255);
+            m_emittedLight = other.getEmittedLight();
+            m_emittedHeat = other.getEmittedHeat();
+            m_needsSunCheck = true;
+            m_solid = other.isSolid();
+            m_draw = other.doDraw();
+            m_transparent = other.isTransparent();
+            m_backdrop = other.doDrawBackdrop();
+            m_natural = other.isNatural();
+            m_id = other.getID();
+            m_walkEffect = (SoundEffectIDs)other.getWalkedOnSoundEffectID();
+            m_walkParticle = (ParticleIDs)other.getWalkedOnParticleID();
+        }
 
         glm::vec2       getPosition()                   const { return m_pos;                       }
         glm::vec2       getSize()                       const { return m_size;                      }
@@ -157,12 +178,14 @@ class Tile
         void calculateSunlight(World* world, float sunlight); // Determines and sets the sunlight corner values for this tile and surrounding tiles.
 
     protected:
-        virtual void handleMetaDataInit(MetaData& data) = 0;
+        virtual void handleMetaDataInit(MetaData& data) { };
         virtual MetaData* getMetaData() { return new MetaData(); }
 
-        virtual void onUpdate(World* world, float& time) = 0;
-        virtual void onDraw(GLEngine::SpriteBatch& sb, GLEngine::SpriteFont& sf, glm::vec4& pos, float& depth) {}
-        virtual void onTick(World* world, float& tickTime) = 0;
+        virtual void onUpdate(World* world, float& time) { };
+        virtual void onDraw(GLEngine::SpriteBatch& sb, GLEngine::SpriteFont& sf, glm::vec4& pos, float& depth) { }
+        virtual void onTick(World* world, float& tickTime) { };
+        virtual void onInteract(World* world, ScriptQueue* sq) { };
+        virtual void onDestruction() { }
 
         virtual void loadTexture() = 0; // Fill this out with your own texture and bumpmap
 

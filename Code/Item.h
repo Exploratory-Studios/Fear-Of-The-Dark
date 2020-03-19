@@ -2,7 +2,7 @@
 
 #include <glm/glm.hpp>
 
-#include "Block.h"
+#include "Blocks.h"
 #include "World.h"
 
 /// Item class is basically abstract.
@@ -25,7 +25,7 @@ class Item
         virtual ~Item() {}
 
         virtual void onLeftClick(Tile* selectedBlock, World* world) {
-            Block* b = createBlock((unsigned int)Categories::BlockIDs::AIR, selectedBlock->getPosition(), selectedBlock->getLayer());
+            Tile* b = createBlock((unsigned int)Categories::BlockIDs::AIR, selectedBlock->getPosition(), selectedBlock->getLayer());
             b->setAmbientLight(selectedBlock->getLight());
             world->setTile(b);
         }

@@ -289,7 +289,14 @@ void World::setPlayer(Player& p) {
     }
 }
 
-void World::drawTiles(GLEngine::SpriteBatch& sb, GLEngine::SpriteFont& sf, GLEngine::DebugRenderer& dr, glm::vec4 destRect, GLEngine::GLSLProgram* textureProgram) {
+void World::setLightsUniform(glm::vec4 destRect, GLEngine::GLSLProgram* textureProgram) {
+    float lights[MAX_LIGHTS_RENDERED*3];
+    getRenderedLights(destRect, lights);
+    GLint textureUniform = textureProgram->getUniformLocation("lights");
+    glUniform3fv(textureUniform, MAX_LIGHTS_RENDERED, lights); /// TODO: Set define directive for 30 lights max.
+}
+
+void World::drawTiles(GLEngine::SpriteBatch& sb, GLEngine::SpriteFont& sf, GLEngine::DebugRenderer& dr, glm::vec4 destRect) {
     /**
         Draws an area of tiles at position destRect.xy, with width and height of destRect.z and destRect.w respectively.
         Negative coordinates are mapped to accomodate for 'crossover'
@@ -301,11 +308,6 @@ void World::drawTiles(GLEngine::SpriteBatch& sb, GLEngine::SpriteFont& sf, GLEng
     for(int i = 0; i < WORLD_DEPTH; i++) {
         diff[i] = playerLayer - i;
     }
-
-    float lights[MAX_LIGHTS_RENDERED*3];
-    getRenderedLights(destRect, lights);
-    GLint textureUniform = textureProgram->getUniformLocation("lights");
-    glUniform3fv(textureUniform, MAX_LIGHTS_RENDERED, lights); /// TODO: Set define directive for 30 lights max.
 
     for(int x = destRect.x; x < destRect.z + destRect.x; x++) {
         int columnIndex = (int)((x/*+destRect.x*/) + (WORLD_SIZE)) % WORLD_SIZE;

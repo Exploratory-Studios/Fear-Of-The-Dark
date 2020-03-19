@@ -30,8 +30,16 @@ void World::setTile(Tile* tile) {
     y = tile->getPosition().y;
     layer = tile->getLayer();
 
-    m_tiles[y][x][layer]->destroy(this); // Make sure everything gets cleaned up nicely.
+    if(tile->getEmittedLight() > 0.0f) {
+        addLight(tile);
+    }
+
     tile->setAmbientLight(m_tiles[y][x][layer]->getAmbientLight());
+
+    m_tiles[y][x][layer]->destroy(this); // Make sure everything gets cleaned up nicely.
+    if(m_tiles[y][x][layer]->getEmittedLight() > 0.0f) {
+        removeLight(m_tiles[y][x][layer]);
+    }
 
     m_tiles[y][x][layer] = tile;
 
@@ -118,6 +126,139 @@ void World::removeEntity(unsigned int index) {
     m_entities.pop_back();
 }
 
+void World::sortLights() {
+    bool changed = true;
+    while(changed) {
+        changed = false;
+        for(unsigned int i = 0; i < m_lights.size()-1; i++) {
+            if(m_lights[i]->getPosition().x > m_lights[i+1]->getPosition().x) {
+                Tile* temp = m_lights[i];
+                m_lights[i] = m_lights[i+1];
+                m_lights[i+1] = temp;
+                changed = true;
+            }
+        }
+    }
+}
+
+void World::addLight(Tile* t) {
+    /** ADDS TILE TO VECTOR, MAKES SURE IT'S SORTED */
+
+    /*
+        Push back the tile to the end.
+        Check tile with index 1 less. If their x pos is more than t, swap 'em!
+        Repeat until the tile with a lower index's x pos is less than t's
+    */
+
+    m_lights.push_back(t);
+    for(int i = m_lights.size()-1; i > 0; i--) {
+        if(m_lights[i]->getPosition().x > t->getPosition().x) {
+            Tile* temp = m_lights[i];
+            m_lights[i] = t;
+            m_lights[i+1] = temp;
+        } else {
+            return;
+        }
+    }
+}
+
+void World::removeLight(unsigned int index) {
+    /** REMOVES TILE FROM VECTOR. NOTHING MORE.
+    */
+
+    for(unsigned int i = index; i < m_entities.size()-1; i++) {
+        m_entities[i] = m_entities[i+1];
+    }
+
+    m_entities.pop_back();
+}
+
+void World::removeLight(Tile* t) {
+    /** REMOVES TILE FROM VECTOR. NOTHING MORE.
+    */
+
+    int index = -1;
+
+    for(unsigned int i = 0; i < m_lights.size(); i++) {
+        if(m_lights[i] == t) index = i;
+    }
+
+    if(index != -1) {
+        for(unsigned int i = index; i < m_lights.size()-1; i++) {
+            m_lights[i] = m_lights[i+1];
+        }
+
+        m_lights.pop_back();
+    } else {
+        Logger::getInstance()->log("LIGHT NOT FOUND!", true);
+    }
+}
+
+void World::getRenderedLights(glm::vec4 destRect, float lights[MAX_LIGHTS_RENDERED]) {
+    /*
+        Gets all the lights that should be rendered this frame, using a viewport rectangle (destRect). Returns glm::vec3 array of length MAX_LIGHTS_RENDERED
+        Algorithm:
+        1. Check light's range (sqrt(abs(emittedLight)) * 4.0f)
+        2. If light's position +/- range is a position within the viewport, create a vec3 (x&y are pos, z is emittedLight). Append to return array
+        3. If it cannot be appended (number added >= MAX_LIGHTS_RENDERED), change it out for one whose distance from the scene is further.
+        4. Repeat for every light in m_lights.
+    */
+
+    glm::vec3 returnVal[MAX_LIGHTS_RENDERED];
+    unsigned int added = 0; // number of lights added. Equal to next index in returnVal to set.
+
+    for(int i = 0; i < m_lights.size(); i++) {
+        // 1.
+        float range = std::sqrt(m_lights[i]->getEmittedLight()) * 4.0f;
+
+        // 2.
+        bool append = false;
+
+        if(m_lights[i]->getPosition().x < (int)destRect.x % WORLD_SIZE) { // Before the viewport starts?
+            if(m_lights[i]->getPosition().x + range > (int)destRect.x % WORLD_SIZE) { // Pos + range intersects the viewport?
+                append = true;
+            }
+        } else {
+            if(m_lights[i]->getPosition().x < (int)(destRect.x + destRect.z) % WORLD_SIZE) { // Within the viewport?
+                append = true;
+            } else {
+                if(m_lights[i]->getPosition().x - range < (int)(destRect.x + destRect.z) % WORLD_SIZE) { // Pos - range intersects the viewport?
+                    append = true;
+                }
+            }
+        }
+
+        if(append) {
+             glm::vec3 result = glm::vec3(m_lights[i]->getPosition().x, m_lights[i]->getPosition().y, m_lights[i]->getEmittedLight());
+            // 3.
+            if(added >= MAX_LIGHTS_RENDERED) {
+                glm::vec2 center(destRect.x + destRect.z / 2.0f, destRect.y + destRect.w / 2.0f);
+                float maxDist = glm::distance(glm::vec2(result.x, result.y), center); // Distance from the centre of the viewport
+                int maxDistIndex = -1;
+                for(int i = 0; i < MAX_LIGHTS_RENDERED; i++) {
+                    float IDistance = glm::distance(glm::vec2(returnVal[i].x, returnVal[i].y), center);
+                    if(IDistance > maxDist) {
+                        maxDist = IDistance;
+                        maxDistIndex = i;
+                    }
+                }
+                if(maxDistIndex != -1) {
+                    returnVal[maxDistIndex] = result;
+                }
+            } else {
+                returnVal[added] = result;
+                added++;
+            }
+        }
+    }
+
+    for(int i = 0; i < MAX_LIGHTS_RENDERED; i++) {
+        lights[i*3] = returnVal[i].x + 0.5f;
+        lights[i*3+1] = returnVal[i].y + 0.5f;
+        lights[i*3+2] = returnVal[i].z;
+    }
+}
+
 void World::setPlayer(Player& p) {
     /// Copies p, creates/updates a pointer to the world-stored player.
     if(!m_player) {
@@ -128,7 +269,7 @@ void World::setPlayer(Player& p) {
     }
 }
 
-void World::drawTiles(GLEngine::SpriteBatch& sb, GLEngine::SpriteFont& sf, GLEngine::DebugRenderer& dr, glm::vec4 destRect) {
+void World::drawTiles(GLEngine::SpriteBatch& sb, GLEngine::SpriteFont& sf, GLEngine::DebugRenderer& dr, glm::vec4 destRect, GLEngine::GLSLProgram* textureProgram) {
     /**
         Draws an area of tiles at position destRect.xy, with width and height of destRect.z and destRect.w respectively.
         Negative coordinates are mapped to accomodate for 'crossover'
@@ -141,10 +282,16 @@ void World::drawTiles(GLEngine::SpriteBatch& sb, GLEngine::SpriteFont& sf, GLEng
         diff[i] = playerLayer - i;
     }
 
-    for(int y = destRect.y; y < destRect.w + destRect.y; y++) {
-        for(int x = destRect.x; x < destRect.z + destRect.x; x++) {
-            int columnIndex = (int)((x/*+destRect.x*/) + (WORLD_SIZE)) % WORLD_SIZE;
-            int offset = (/*destRect.x + */x) - columnIndex;
+    float lights[MAX_LIGHTS_RENDERED*3];
+    getRenderedLights(destRect, lights);
+    GLint textureUniform = textureProgram->getUniformLocation("lights");
+    glUniform3fv(textureUniform, MAX_LIGHTS_RENDERED, lights); /// TODO: Set define directive for 30 lights max.
+
+    for(int x = destRect.x; x < destRect.z + destRect.x; x++) {
+        int columnIndex = (int)((x/*+destRect.x*/) + (WORLD_SIZE)) % WORLD_SIZE;
+        int offset = (/*destRect.x + */x) - columnIndex;
+
+        for(int y = destRect.y; y < destRect.w + destRect.y; y++) {
             for(unsigned int layer = 0; layer < WORLD_DEPTH; layer++) {
                 if(y >= 0) {
                     if(y < WORLD_HEIGHT) {

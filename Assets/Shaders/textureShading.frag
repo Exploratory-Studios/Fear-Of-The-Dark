@@ -6,7 +6,7 @@ in vec4 fragmentColour;
 in vec2 fragmentUV;
 in vec4 fragmentLight;
 
-in vec3 lightSource; // just a normalized vector pointing TO light source
+in vec4 lightSource; // just a normalized vector pointing TO light source
 
 //This is the 3 component float vector that gets outputted to the screen
 //for each pixel.
@@ -58,6 +58,8 @@ void main() {
 	vec3 normalMap = normalize(texture(bumpSampler, fragmentUV).rgb * 2.0 - 1.0);
 
 	lightLevel *= clamp(dot(normalMap, lightSource * vec3(1.0, 1.0, -1.0)), 0.0, 1.0); // reverse z coordinate of lightsource to match direction of normal map's vector
+
+	lightLevel /= clamp(dot(normalMap, lightSource * vec3(1.0, 1.0, -1.0)), 0.0, 1.0);
 
 	color = textureColour * fragmentColour * vec4(lightLevel, lightLevel, lightLevel, 1.0);
 }

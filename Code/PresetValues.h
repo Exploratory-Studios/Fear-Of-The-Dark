@@ -114,6 +114,8 @@
     // How often should entities spawn in each chunk? x/1000 ticks
     #define SPAWN_RATE 10
 
+    #define MAX_LIGHTS_RENDERED 30
+
 //}
 
 /// Category Datatypes

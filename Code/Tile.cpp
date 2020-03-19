@@ -153,7 +153,7 @@ void Tile::draw(GLEngine::SpriteBatch& sb, GLEngine::SpriteFont& sf, int xOffset
                 m_bumpMapId,
                 depth,
                 colour,
-                m_cornerLight + m_cornerSunlight);
+                /*m_cornerLight + */m_cornerSunlight);
 
         onDraw(sb, sf, pos, depth);
     }

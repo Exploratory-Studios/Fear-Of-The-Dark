@@ -27,6 +27,12 @@ public:
     void addEntity(Entity* e);
     void removeEntity(unsigned int index);
 
+    void sortLights();
+    void addLight(Tile* t);
+    void removeLight(unsigned int index);
+    void removeLight(Tile* t);
+    void getRenderedLights(glm::vec4 destRect, float lights[MAX_LIGHTS_RENDERED]);
+
     std::vector<Entity*> getEntities() { return m_entities; }
     Player* getPlayer() { return m_player; }
     unsigned int getTime() { return m_time; }
@@ -38,7 +44,7 @@ public:
     void setPlayer(Player& p);
     void setTime(unsigned int time) { m_time = time; }
 
-    void drawTiles(GLEngine::SpriteBatch& sb, GLEngine::SpriteFont& sf, GLEngine::DebugRenderer& dr, glm::vec4 destRect);
+    void drawTiles(GLEngine::SpriteBatch& sb, GLEngine::SpriteFont& sf, GLEngine::DebugRenderer& dr, glm::vec4 destRect, GLEngine::GLSLProgram* textureProgram);
     void updateTiles(glm::vec4 destRect);
     void tickTiles(glm::vec4 destRect);
 
@@ -60,6 +66,7 @@ private:
     void spawnEntities();
 
     Tile**** m_tiles = nullptr;
+    std::vector<Tile*> m_lights; // Vector of tiles (ordered by x pos), that need to be checked for light rendering.
     std::vector<Tile*> m_deadTiles; // Vector of tiles that need to be destroyed and deleted, but may be bound to other systems.
 
     std::vector<Entity*> m_entities;

@@ -5,6 +5,7 @@
 
 class Scripter;
 class World;
+class GameplayScreen;
 
 class Console
 {
@@ -12,14 +13,14 @@ class Console
         Console();
         virtual ~Console();
 
-        void init(GLEngine::GUI& gui, Scripter* scripter, World* world, QuestManager* qm); /// TODO: Make this not have a world member or qm variable
+        void init(GLEngine::GUI& gui, Scripter* scripter, World* world, QuestManager* qm, GameplayScreen* gs); /// TODO: Make this not have a world member or qm variable
 
         void show();
         void hide();
 
         bool isShown() { return m_showing; }
 
-        void processCommand(World* world, QuestManager* qm, std::string& command);
+        void processCommand(World* world, QuestManager* qm, GameplayScreen* gs, std::string& command);
 
     private:
         bool onEditboxInput(const CEGUI::EventArgs& e);
@@ -36,6 +37,7 @@ class Console
 
         World* m_world = nullptr;
         QuestManager* m_qm = nullptr;
+        GameplayScreen* m_gs = nullptr;
 
         bool m_showing = false;
 

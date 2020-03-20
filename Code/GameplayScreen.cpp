@@ -67,6 +67,8 @@ void GameplayScreen::onEntry() {
     m_questManager = new QuestManager(ASSETS_FOLDER_PATH + "Questing/DialogueList.txt", ASSETS_FOLDER_PATH + "Questing/FlagList.txt", ASSETS_FOLDER_PATH + "Questing/TradeList.txt", m_sq);
     m_console = new Console();
 
+    m_scripter->init(m_world, m_questManager, this);
+
     m_gui = new GLEngine::GUI();
 
     if(!m_world->getPlayer()) {
@@ -429,7 +431,7 @@ void GameplayScreen::initUI() {
 
     m_world->getPlayer()->initGUI(m_gui);
     m_questManager->initUI(m_gui);
-    m_console->init(*m_gui, m_scripter, m_world, m_questManager);
+    m_console->init(*m_gui, m_scripter, m_world, m_questManager, this);
 
     #ifdef DEV_CONTROLS
     {

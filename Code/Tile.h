@@ -4,6 +4,7 @@
 #include <GLTexture.h>
 #include <SpriteBatch.h>
 #include <SpriteFont.h>
+#include <ParticleEngine2D.h>
 #include <glm/glm.hpp>
 
 #include "AudioManager.h"
@@ -225,6 +226,8 @@ class Tile
 
         SoundEffectIDs m_walkEffect = SoundEffectIDs::WALK_DIRT;
         ParticleIDs m_walkParticle = ParticleIDs::DIRT_PARTICLE;
+
+        GLEngine::ParticleEngine2D* m_particles = nullptr;
 
         MetaData m_metaData;
 

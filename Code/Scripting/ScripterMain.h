@@ -8,9 +8,6 @@
 
 #include "../ExtraFunctions.h"
 
-#include <boost/thread.hpp>
-#include <boost/chrono.hpp>
-
 extern "C" {
     #include <lua5.3/lua.h>
     #include <lua5.3/lauxlib.h>
@@ -60,7 +57,6 @@ void camera_setPosition(GameplayScreen* gs, glm::vec2 pos);
 void camera_move(GameplayScreen* gs, glm::vec2 relPos);
 void camera_smoothMove(GameplayScreen* gs, glm::vec2 relPos, float speed);
 
-void delay(unsigned int delayMS);
 void pause(GameplayScreen* gs);
 void play(GameplayScreen* gs);
 
@@ -78,7 +74,7 @@ std::vector<glm::vec2> areaPositionTarget(World* world, glm::vec2 pos1, glm::vec
 class Scripter {
     public:
         Scripter();
-        void init();
+        void init(World* world, QuestManager* qm, GameplayScreen* gs); // Initialize all lua functions
 
         /*void showAlert(std::string& title, std::string& text); // Shows an alert window, with custom text, courtesy of CEGUI
         void showPlayerInventory(bool show); // Opens/closes player inventory on screen.
@@ -87,124 +83,106 @@ class Scripter {
         void update(World* world, ScriptQueue* sq, QuestManager* qm, GameplayScreen* gs);
 
         std::string executeScript(World* world, QuestManager* qm, GameplayScreen* gs, Script* script); /// TODO: For the love of all things unholy, do NOT pass scripts by reference. They do not like that.
-        std::string executeCommand(World* world, QuestManager* qm, GameplayScreen* gs, std::string& command, Script* script = nullptr);
+        std::string executeCommand(World* world, QuestManager* qm, GameplayScreen* gs, std::string& command);
     private:
         Logger* logger = Logger::getInstance();
+        lua_State* m_luaState = nullptr;
+
+        std::vector<LuaScript*> m_scripts;
 };
 
-#define ALL_DEPS { lua_pushlightuserdata(L, static_cast<void*>(world)); lua_pushlightuserdata(L, static_cast<void*>(qm)); lua_pushlightuserdata(L, static_cast<void*>(gs)); }
-#define addFunction(func, name) { ALL_DEPS lua_pushcclosure(L, func, 3); lua_setglobal(L, name); }
+#define ALL_DEPS { lua_pushlightuserdata(m_luaState, static_cast<void*>(world)); lua_pushlightuserdata(m_luaState, static_cast<void*>(qm)); lua_pushlightuserdata(m_luaState, static_cast<void*>(gs)); }
+#define addFunction(func, name) { ALL_DEPS lua_pushcclosure(m_luaState, func, 3); lua_setglobal(m_luaState, name); }
 
 class LuaScript {
 public:
-    LuaScript(World* world, QuestManager* qm, GameplayScreen* gs) {
-        L = luaL_newstate();
-
-        addFunction(l_setBlock, "setBlock");
-        addFunction(l_removeBlock, "removeBlock");
-        addFunction(l_showBlock, "showBlock");
-        addFunction(l_hideBlock, "hideBlock");
-
-        addFunction(l_addEntity, "addEntity");
-        addFunction(l_removeEntity, "removeEntity");
-        addFunction(l_showEntity, "showEntity");
-        addFunction(l_hideEntity, "hideEntity");
-
-        addFunction(l_setTime, "setTime");
-        addFunction(l_teleport, "teleport");
-        addFunction(l_giveItem, "giveItem");
-
-        addFunction(l_setPlayerCanInteract, "setPlayerCanInteract");
-        addFunction(l_setPlayerStat_sanity, "setPlayerStat_sanity");
-        addFunction(l_setPlayerGodMode, "setPlayerGodMode");
-
-        addFunction(l_setFlag, "setFlag");
-
-        addFunction(l_setEra, "setEra");
-
-        addFunction(l_camera_setLocked, "camera_setLocked");
-        addFunction(l_camera_setPosition, "camera_setPosition");
-        addFunction(l_camera_move, "camera_move");
-        addFunction(l_camera_smoothMove, "camera_smoothMove");
-
-        addFunction(l_delay, "delay");
-        addFunction(l_pause, "pause");
-        addFunction(l_play, "unpause");
-
-        addFunction(l_startTrade, "startTrade");
-        addFunction(l_startDialogue, "startDialogue");
+    LuaScript(lua_State* state) {
+        T = lua_newthread(state);
     }
     ~LuaScript() {
-        L = 0;
+        T = 0;
     }
 
     int runScriptFile(std::string filepath) {
-        if(luaL_loadfile(L, filepath.c_str())) {
+        if(luaL_loadfile(T, filepath.c_str())) {
             std::cout << "LUA ERROR ON LOADING FILE: " << filepath;
-            L = 0;
+            T = 0;
             return 1;
         }
 
-        boost::thread t = boost::thread([=]{run();});
-        t.detach();
+        run();
 
         return 0;
     }
     int runScriptString(std::string script) {
-        if(luaL_loadstring(L, script.c_str())) {
+        if(luaL_loadstring(T, script.c_str())) {
             std::cout << "LUA ERROR ON LOADING SCRIPT: \"" << script << "\"";
-            L = 0;
+            T = 0;
             return 1;
         }
 
-        boost::thread t = boost::thread([=]{run();});
-        t.detach();
+        run();
 
         return 0;
     }
+    void update(lua_State* state) {
+        if(lua_status(T) == LUA_YIELD) { // Is the thread currently paused?
+            int delayLeft = lua_tointeger(T, -1); // Get the delay from the top of the stack
+            delayLeft--; // Take one frame away
+            lua_pop(T, 1); // Take the delay value off of the stack completely
 
-private:
-    void run() {
-        lua_pcall(L, 0, 0, 0); // run
-
-        if(L) {
-            lua_close(L);
+            if(delayLeft <= 0) {
+                lua_resume(T, state, 0); // Continue the script
+            } else {
+                lua_pushinteger(T, delayLeft); // Otherwise, re-add the new delay value
+            }
+        } else if(lua_status(T) == LUA_OK) {
+            m_finished = true;
         }
     }
 
-    static int l_setBlock(lua_State* L); // Wrappers. A lot of em
-    static int l_removeBlock(lua_State* L);
-    static int l_showBlock(lua_State* L);
-    static int l_hideBlock(lua_State* L);
+    bool isFinished() { return m_finished; }
 
-    static int l_addEntity(lua_State* L);
-    static int l_removeEntity(lua_State* L);
-    static int l_showEntity(lua_State* L);
-    static int l_hideEntity(lua_State* L);
+    // Wrappers
+        static int l_setBlock(lua_State* L);
+        static int l_removeBlock(lua_State* L);
+        static int l_showBlock(lua_State* L);
+        static int l_hideBlock(lua_State* L);
 
-    static int l_setTime(lua_State* L);
-    static int l_teleport(lua_State* L);
-    static int l_giveItem(lua_State* L);
+        static int l_addEntity(lua_State* L);
+        static int l_removeEntity(lua_State* L);
+        static int l_showEntity(lua_State* L);
+        static int l_hideEntity(lua_State* L);
 
-    static int l_setPlayerCanInteract(lua_State* L);
-    static int l_setPlayerStat_sanity(lua_State* L);
-    static int l_setPlayerGodMode(lua_State* L);
+        static int l_setTime(lua_State* L);
+        static int l_teleport(lua_State* L);
+        static int l_giveItem(lua_State* L);
 
-    static int l_setFlag(lua_State* L);
+        static int l_setPlayerCanInteract(lua_State* L);
+        static int l_setPlayerStat_sanity(lua_State* L);
+        static int l_setPlayerGodMode(lua_State* L);
 
-    static int l_setEra(lua_State* L);
+        static int l_setFlag(lua_State* L);
 
-    static int l_camera_setLocked(lua_State* L);
-    static int l_camera_setPosition(lua_State* L);
-    static int l_camera_move(lua_State* L);
-    static int l_camera_smoothMove(lua_State* L);
+        static int l_setEra(lua_State* L);
 
-    static int l_delay(lua_State* L);
-    static int l_pause(lua_State* L);
-    static int l_play(lua_State* L);
+        static int l_camera_setLocked(lua_State* L);
+        static int l_camera_setPosition(lua_State* L);
+        static int l_camera_move(lua_State* L);
+        static int l_camera_smoothMove(lua_State* L);
 
-    static int l_startTrade(lua_State* L);
-    static int l_startDialogue(lua_State* L);
+        static int l_delay(lua_State* L);
+        static int l_pause(lua_State* L);
+        static int l_play(lua_State* L);
 
-    lua_State* L = nullptr;
+        static int l_startTrade(lua_State* L);
+        static int l_startDialogue(lua_State* L);
+
+private:
+    void run() {
+        lua_resume(T, NULL, 0);
+    }
+
+    lua_State* T = nullptr; // Main thread. Used for delaying the script
+    bool m_finished = false;
 };

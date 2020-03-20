@@ -8,11 +8,45 @@
 #include <Camera2D.h>
 
 Scripter::Scripter() {
-    init();
+
 }
 
-void Scripter::init() {
+void Scripter::init(World* world, QuestManager* qm, GameplayScreen* gs) {
+    m_luaState = luaL_newstate();
 
+    addFunction(LuaScript::l_setBlock, "setBlock");
+    addFunction(LuaScript::l_removeBlock, "removeBlock");
+    addFunction(LuaScript::l_showBlock, "showBlock");
+    addFunction(LuaScript::l_hideBlock, "hideBlock");
+
+    addFunction(LuaScript::l_addEntity, "addEntity");
+    addFunction(LuaScript::l_removeEntity, "removeEntity");
+    addFunction(LuaScript::l_showEntity, "showEntity");
+    addFunction(LuaScript::l_hideEntity, "hideEntity");
+
+    addFunction(LuaScript::l_setTime, "setTime");
+    addFunction(LuaScript::l_teleport, "teleport");
+    addFunction(LuaScript::l_giveItem, "giveItem");
+
+    addFunction(LuaScript::l_setPlayerCanInteract, "setPlayerCanInteract");
+    addFunction(LuaScript::l_setPlayerStat_sanity, "setPlayerStat_sanity");
+    addFunction(LuaScript::l_setPlayerGodMode, "setPlayerGodMode");
+
+    addFunction(LuaScript::l_setFlag, "setFlag");
+
+    addFunction(LuaScript::l_setEra, "setEra");
+
+    addFunction(LuaScript::l_camera_setLocked, "camera_setLocked");
+    addFunction(LuaScript::l_camera_setPosition, "camera_setPosition");
+    addFunction(LuaScript::l_camera_move, "camera_move");
+    addFunction(LuaScript::l_camera_smoothMove, "camera_smoothMove");
+
+    addFunction(LuaScript::l_delay, "delay");
+    addFunction(LuaScript::l_pause, "pause");
+    addFunction(LuaScript::l_play, "unpause");
+
+    addFunction(LuaScript::l_startTrade, "startTrade");
+    addFunction(LuaScript::l_startDialogue, "startDialogue");
 }
 
 void Scripter::update(World* world, ScriptQueue* sq, QuestManager* qm, GameplayScreen* gs) {
@@ -35,19 +69,43 @@ void Scripter::update(World* world, ScriptQueue* sq, QuestManager* qm, GameplayS
             sq->deactivateScript(i);
         }
     }
+
+    for(unsigned int i = 0; i < m_scripts.size(); i++) {
+        m_scripts[i]->update(m_luaState);
+        if(m_scripts[i]->isFinished()) {
+            delete m_scripts[i];
+            for(int j = i; j < m_scripts.size()-1; j++) {
+                m_scripts[j] = m_scripts[j+1];
+            }
+            m_scripts.pop_back();
+        }
+    }
 }
 
 std::string Scripter::executeScript(World* world, QuestManager* qm, GameplayScreen* gs, Script* script) {
     std::string returnMessage;
 
-    LuaScript s(world, qm, gs);
+    LuaScript* s = new LuaScript(m_luaState);
     if(script->isFile()) {
-        s.runScriptFile(script->getFileName());
+        s->runScriptFile(script->getFileName());
     } else {
-        s.runScriptString(script->getText());
+        s->runScriptString(script->getText());
     }
 
-    return returnMessage;
+    m_scripts.push_back(s);
+
+    return "NO_MSG";
+}
+
+std::string Scripter::executeCommand(World* world, QuestManager* qm, GameplayScreen* gs, std::string& command) {
+    std::string returnMessage;
+
+    LuaScript* s = new LuaScript(m_luaState);
+    s->runScriptString(command);
+
+    m_scripts.push_back(s);
+
+    return "NO_MSG";
 }
 
 std::vector<unsigned int> nearEntityTarget(World* world, glm::vec2 nearTo) {
@@ -248,10 +306,6 @@ void camera_smoothMove(GameplayScreen* gs, glm::vec2 relPos, float speed) {
 
     gs->setSmoothMoveTarget(newPos);
     gs->setSmoothMoveSpeed(speed);
-}
-
-void delay(unsigned int delayMS) {
-    boost::this_thread::sleep_for(boost::chrono::milliseconds(delayMS));
 }
 
 void pause(GameplayScreen* gs) {
@@ -486,9 +540,11 @@ int LuaScript::l_camera_smoothMove(lua_State* L) {
 }
 
 int LuaScript::l_delay(lua_State* L) {
-    unsigned int delayMS = lua_tointeger(L, 1);
+    unsigned int delay = lua_tointeger(L, 1);
 
-    delay(delayMS);
+    lua_pushinteger(L, delay);
+
+    return lua_yieldk(L, 0, 0, 0);
 }
 
 int LuaScript::l_pause(lua_State* L) {

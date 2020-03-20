@@ -1,5 +1,14 @@
-pause()
-delay(1500)
-unpause()
-delay(1500)
 setTime(0)
+
+x = 18
+y = 9
+z = 0
+
+for xMod=0,10,2 do
+	for yMod=0,5,2 do
+		setBlock(6, x+xMod, y-yMod, z, "")
+		delay(15)
+	end
+end
+
+-- x=18, y=9

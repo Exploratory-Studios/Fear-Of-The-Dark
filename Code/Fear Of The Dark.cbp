@@ -98,7 +98,6 @@
 			<Add directory="../../GLEngine" />
 		</Compiler>
 		<Linker>
-			<Add option="-pthread" />
 			<Add option="../../GLEngine/bin/Release/libGLEngine.a" />
 			<Add option="-lCEGUIBase-0" />
 			<Add option="-lCEGUIOpenGLRenderer-0" />
@@ -289,8 +288,6 @@
 		<Unit filename="App.h" />
 		<Unit filename="AudioManager.cpp" />
 		<Unit filename="AudioManager.h" />
-		<Unit filename="Block.cpp" />
-		<Unit filename="Block.h" />
 		<Unit filename="Blocks.cpp" />
 		<Unit filename="Blocks.h" />
 		<Unit filename="BuffData.h" />

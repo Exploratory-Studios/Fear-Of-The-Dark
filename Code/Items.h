@@ -2,6 +2,7 @@
 
 #include "Item.h"
 #include "ItemBlock.h"
+#include "World.h"
 
 class ItemBlockGrass : public ItemBlock {
 	public:

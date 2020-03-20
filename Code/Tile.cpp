@@ -6,7 +6,7 @@
 #include <boost/thread.hpp>
 
 Tile::Tile() {
-    //m_textureId = GLEngine::ResourceManager::getTexture(ASSETS_FOLDER_PATH + "Textures/UNDEFINED.png").id;
+
 }
 
 float Tile::getLight() {

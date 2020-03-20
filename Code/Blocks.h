@@ -5,6 +5,8 @@
 #include "../Scripting/ScriptQueue.h"
 
 #include <GLEngineErrors.h>
+#include <ParticleEngine2D.h>
+#include <ParticleBatch2D.h>
 #include <string.h>
 
 class Inventory;
@@ -15,14 +17,19 @@ class GenericBlock : public Tile {
     public:
         GenericBlock(glm::vec2 pos, unsigned int layer, MetaData metaData = MetaData(), bool loadTexture = true) : Tile(pos, layer, metaData) { }
         void onInteract(ScriptQueue* sq) {}
+        void initParticles(GLEngine::ParticleEngine2D* engine);
+
+        void interact_WalkedOn(ScriptQueue* sq) override;
 
     protected:
         virtual void handleMetaDataInit(MetaData& data) override {}
+
+        GLEngine::ParticleBatch2D* m_walkParticleBatch = nullptr;
 };
 
-class InteractableBlock : public Tile {
+class InteractableBlock : public GenericBlock {
     public:
-        InteractableBlock(glm::vec2 pos, unsigned int layer, MetaData metaData = MetaData(), bool loadTexture = true) : Tile(pos, layer, metaData) {}
+        InteractableBlock(glm::vec2 pos, unsigned int layer, MetaData metaData = MetaData(), bool loadTexture = true) : GenericBlock(pos, layer, metaData) {}
         void onInteract(ScriptQueue* sq) { if(m_interactScriptId != (unsigned int)-1) sq->activateScript(m_interactScriptId); }
 
     protected:
@@ -37,6 +44,7 @@ class InteractableBlock : public Tile {
             ~InventoryBlock() { delete m_inventory; }
 
             void onDraw(GLEngine::SpriteBatch& sb, GLEngine::SpriteFont& sf, glm::vec4& pos, float& depth) override;
+            void interact_RightClicked(ScriptQueue* sq) override;
 
             void showInventory(bool show);
         protected:
@@ -283,5 +291,6 @@ static Tile* createBlock(unsigned int id, glm::vec2 pos, unsigned int layer, Met
             break;
         }
     }
+
     return ret;
 }

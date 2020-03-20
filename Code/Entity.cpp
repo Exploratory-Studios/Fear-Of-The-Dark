@@ -66,12 +66,13 @@ Entity::~Entity()
     }
 }*/
 
-void Entity::update(World* world, AudioManager* audio, float timeStep) {
+void Entity::update(World* world, AudioManager* audio, float timeStep, ScriptQueue* sq) {
     //for(int i = 0; i < timeStep; i++) {
         updateAI();
         updateLimbs();
         move(1); /// Fix timestepping, make sure that each step, the entity collides :facepalm:
         updateSounds(world, audio);
+        interact(world, sq);
         updateMovement(world);
         updateLightLevel(world);
 
@@ -589,6 +590,13 @@ void Entity::updateSounds(World* world, AudioManager* audio) {
 
         audio->playSoundEffect(world->getTile(tileCoordsFloor.x, tileCoordsFloor.y, m_layer)->getWalkedOnSoundEffectID(), MIX_MAX_VOLUME);
         m_soundTimer = 0;
+    }
+}
+
+void Entity::interact(World* world, ScriptQueue* sq) {
+    if(m_onGround && std::abs(m_velocity.x) > 0.1f) {
+        glm::vec2 tileCoordsFloor = glm::vec2((int)(m_position.x + 0.5f), (int)(m_position.y - 0.5f));
+        world->getTile(tileCoordsFloor.x, tileCoordsFloor.y, m_layer)->interact_WalkedOn(sq);
     }
 }
 

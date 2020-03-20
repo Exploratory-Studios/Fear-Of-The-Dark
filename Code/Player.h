@@ -33,7 +33,7 @@ class Player : public Entity {
 
         void draw(GLEngine::SpriteBatch& sb, float time, int layerDifference, float xOffset) override;
         void drawGUI(GLEngine::SpriteBatch& sb, GLEngine::SpriteFont& sf);
-        void update(World* world, AudioManager* audio, float timeStep) override;
+        void update(World* world, AudioManager* audio, float timeStep, ScriptQueue* sq) override;
         void updateStats(World* world, float timeStep);
         void updateMouse(World* world, glm::vec2 mouseCoords);
         void updateInput(GLEngine::InputManager* input, World* world, ScriptQueue* sq);

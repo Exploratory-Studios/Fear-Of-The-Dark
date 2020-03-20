@@ -1,5 +1,7 @@
 #include "App.h"
 
+#include "World.h"
+
 App::App()
 {
     m_window.setScreenTitle("Fear Of The Dark");

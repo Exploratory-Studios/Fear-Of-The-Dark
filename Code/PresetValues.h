@@ -116,6 +116,8 @@
 
     #define MAX_LIGHTS_RENDERED 30
 
+    #define MAX_TYPE_PARTICLES 1000 // How many particles are there of a single type have at any given time?
+
 //}
 
 /// Category Datatypes

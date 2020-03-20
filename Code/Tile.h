@@ -41,6 +41,8 @@ class Tile
                 m_metaData(data) { handleMetaDataInit(data); }
         virtual ~Tile() {}
 
+        virtual void initParticles(GLEngine::ParticleEngine2D* engine) = 0;
+
         #ifdef DEV_CONTROLS
         std::string getPrintout(World* world) {
             std::string ret;
@@ -68,7 +70,6 @@ class Tile
             m_natural = other.isNatural();
             m_id = other.getID();
             m_walkEffect = (SoundEffectIDs)other.getWalkedOnSoundEffectID();
-            m_walkParticle = (ParticleIDs)other.getWalkedOnParticleID();
         }
 
         glm::vec2       getPosition()                   const { return m_pos;                       }
@@ -92,7 +93,6 @@ class Tile
         float           getEmittedHeat()                const { return m_emittedHeat;               }
         bool            doDraw()                        const { return m_draw;                      }
         bool            doDrawBackdrop()                const { return m_backdrop;                  }
-        ParticleIDs     getWalkedOnParticleID()         const { return m_walkParticle;              }
         unsigned int    getLayer()                      const { return m_layer;                     }
         float           getLightAtPoint(glm::vec2 posFromBL);
 
@@ -168,9 +168,9 @@ class Tile
 
         void destroy(World* world);
 
-        virtual void interact_WalkedOn() {}
-        virtual void interact_LeftClicked() {}
-        virtual void interact_RightClicked() {}
+        virtual void interact_WalkedOn(ScriptQueue* sq) {}
+        virtual void interact_LeftClicked(ScriptQueue* sq) {}
+        virtual void interact_RightClicked(ScriptQueue* sq) {}
         // ... More interact functions
 
         void resetNeighboursLight(World* world);
@@ -185,7 +185,7 @@ class Tile
         virtual void onUpdate(World* world, float& time) { };
         virtual void onDraw(GLEngine::SpriteBatch& sb, GLEngine::SpriteFont& sf, glm::vec4& pos, float& depth) { }
         virtual void onTick(World* world, float& tickTime) { };
-        virtual void onInteract(World* world, ScriptQueue* sq) { };
+        virtual void onInteract(ScriptQueue* sq) {}
         virtual void onDestruction() { }
 
         virtual void loadTexture() = 0; // Fill this out with your own texture and bumpmap
@@ -225,9 +225,6 @@ class Tile
         unsigned int m_id;
 
         SoundEffectIDs m_walkEffect = SoundEffectIDs::WALK_DIRT;
-        ParticleIDs m_walkParticle = ParticleIDs::DIRT_PARTICLE;
-
-        GLEngine::ParticleEngine2D* m_particles = nullptr;
 
         MetaData m_metaData;
 

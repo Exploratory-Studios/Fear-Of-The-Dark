@@ -12,6 +12,7 @@ class Player;
 class Entity;
 class Tile;
 class AudioManager;
+class ScriptQueue;
 
 class World {
     friend class WorldIOManager;
@@ -52,8 +53,10 @@ public:
     void tickTiles(glm::vec4 destRect);
 
     void drawEntities(GLEngine::SpriteBatch& sb, GLEngine::SpriteFont& sf, GLEngine::DebugRenderer& dr, glm::vec4 destRect);
-    void updateEntities(AudioManager* audio, float timeStep);
+    void updateEntities(AudioManager* audio, float timeStep, ScriptQueue* sq);
     void tickEntities(AudioManager* audio);
+
+    void drawParticles(GLEngine::SpriteBatch* sb);
 
     void drawDebug(GLEngine::DebugRenderer& dr, float xOffset);
 

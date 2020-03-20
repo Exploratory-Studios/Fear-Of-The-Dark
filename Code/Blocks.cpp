@@ -1,6 +1,27 @@
 #include "Blocks.h"
 
 #include "Inventory.h"
+#include "World.h"
+
+#include <random>
+#include <math.h>
+
+void updateParticle(GLEngine::Particle2D& p, float deltaTime) {
+    p.velocity.y -= 1.225f / 60.0f * deltaTime;
+    p.position += p.velocity * deltaTime;
+}
+
+void GenericBlock::initParticles(GLEngine::ParticleEngine2D* engine) {
+    std::string fp = ASSETS_FOLDER_PATH + "/Textures/Blocks/Dirt.png";
+    std::string bm = ASSETS_FOLDER_PATH + "/Textures/BumpMaps/Dirt.png";
+    m_walkParticleBatch = engine->getParticleBatch(MAX_TYPE_PARTICLES, 0.01f, fp, bm, updateParticle);
+}
+
+void GenericBlock::interact_WalkedOn(ScriptQueue* sq) {
+    float angle = ((std::rand() % 100) - 50.0f) * M_PI/180.0f;
+    glm::vec2 direction = glm::vec2(-std::sin(angle), std::cos(angle));
+    m_walkParticleBatch->addParticle(m_pos + glm::vec2(0.5f, 1.0f), direction * glm::vec2(0.02f, 0.15f), GLEngine::ColourRGBA8(255, 255, 255, 255),  0.25);
+}
 
 InventoryBlock::InventoryBlock(glm::vec2 pos, unsigned int layer, MetaData metaData, bool loadTexture) : InteractableBlock(pos, layer, metaData) {
     m_inventory = new Inventory();
@@ -14,6 +35,10 @@ void InventoryBlock::onDraw(GLEngine::SpriteBatch& sb, GLEngine::SpriteFont& sf,
 
 void InventoryBlock::showInventory(bool show) {
     m_showInventory = show;
+}
+
+void InventoryBlock::interact_RightClicked(ScriptQueue* sq) {
+    showInventory(!m_showInventory);
 }
 
 BlockSign::BlockSign(glm::vec2 pos, unsigned int layer, MetaData metaData, bool loadTexture) : InteractableBlock(pos, layer, metaData, loadTexture) {

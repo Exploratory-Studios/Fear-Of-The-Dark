@@ -1,13 +1,15 @@
 #pragma once
 
 #include <glm/glm.hpp>
-
-#include "Blocks.h"
-#include "World.h"
+#include <GLTexture.h>
+#include <string>
 
 /// Item class is basically abstract.
 /// Create new classes for different items
 /// The classes will inherit from sub-classes of this one (Block, Food, Potion, etc.) for specific functions (Place, Eat, Poison)
+
+class World;
+class Tile;
 
 enum class ItemType {
     WEAPON,
@@ -24,11 +26,7 @@ class Item
         Item(short unsigned int quantity, GLEngine::GLTexture texture, std::string name) : m_quantity(quantity), m_texture(texture), m_name(name) {}
         virtual ~Item() {}
 
-        virtual void onLeftClick(Tile* selectedBlock, World* world) {
-            Tile* b = createBlock((unsigned int)Categories::BlockIDs::AIR, selectedBlock->getPosition(), selectedBlock->getLayer());
-            b->setAmbientLight(selectedBlock->getLight());
-            world->setTile(b);
-        }
+        virtual void onLeftClick(Tile* selectedBlock, World* world);
         virtual void onRightClick(Tile* selectedBlock, World* world) {}
 
         bool operator==(Item* other) {

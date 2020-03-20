@@ -35,6 +35,7 @@ void World::setTile(Tile* tile) {
     }
 
     tile->setAmbientLight(m_tiles[y][x][layer]->getAmbientLight());
+    tile->initParticles(&m_particle2d);
 
     m_tiles[y][x][layer]->destroy(this); // Make sure everything gets cleaned up nicely.
     if(m_tiles[y][x][layer]->getEmittedLight() > 0.0f) {
@@ -330,12 +331,18 @@ void World::drawTiles(GLEngine::SpriteBatch& sb, GLEngine::SpriteFont& sf, GLEng
     sb.renderBatch();
 }
 
+void World::drawParticles(GLEngine::SpriteBatch* sb) {
+    m_particle2d.draw(sb);
+}
+
 void World::updateTiles(glm::vec4 destRect) {
     /**
         Simply updates an area of tiles at position destRect.xy, with width and height of destRect.z and destRect.w respectively.
         Negative coordinates are mapped to accomodate for 'crossover'
         eg. destRect = (-10, 10, 20, 10) will update tiles from x=(WORLD_SIZE - 10) to x=(-10 + 20) and y=(10) to y=(10 + 10)
     */
+
+    m_particle2d.update(1.0f);
 
     /*for(int i = 0; i < m_deadTiles.size(); i++) {
         m_deadTiles[i]->destroy(this);
@@ -405,7 +412,7 @@ void World::drawDebug(GLEngine::DebugRenderer& dr, float xOffset) {
     dr.end();
 }
 
-void World::updateEntities(AudioManager* audio, float timeStep) {
+void World::updateEntities(AudioManager* audio, float timeStep, ScriptQueue* sq) {
     /**
         Simply updates an area of tiles at position destRect.xy, with width and height of destRect.z and destRect.w respectively.
         Negative coordinates are mapped to accomodate for 'crossover'
@@ -413,7 +420,7 @@ void World::updateEntities(AudioManager* audio, float timeStep) {
     */
 
     for(unsigned int i = 0; i < m_entities.size(); i++) {
-        m_entities[i]->update(this, audio, timeStep);
+        m_entities[i]->update(this, audio, timeStep, sq);
         m_entities[i]->collide(this, i);
         m_entities[i]->setAITarget(this, i);
     }

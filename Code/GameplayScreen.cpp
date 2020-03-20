@@ -128,7 +128,7 @@ void GameplayScreen::update() {
         }
 
         m_world->updateTiles(getScreenBox() + glm::vec4(-10.0f, -10.0f, 20.0f, 20.0f));
-        m_world->updateEntities(m_audio, 1.0f); /// TODO: Use timestep
+        m_world->updateEntities(m_audio, 1.0f, m_sq); /// TODO: Use timestep
 
         if(!m_cameraLocked) {
             if(std::abs((m_world->getPlayer()->getPosition().x) - m_lastPlayerPos.x) >= (WORLD_SIZE/2)) {
@@ -220,6 +220,8 @@ void GameplayScreen::draw() {
         m_world->setLightsUniform(getScreenBox() + glm::vec4(0.0f, 0.0f, 1.0f, 1.0f), &m_textureProgram);
         m_world->drawTiles(m_spriteBatch, m_spriteFont, m_dr, getScreenBox() + glm::vec4(0.0f, 0.0f, 1.0f, 1.0f));
         m_world->drawEntities(m_spriteBatch, m_spriteFont, m_dr, getScreenBox() + glm::vec4(0.0f, 0.0f, 1.0f, 1.0f));
+
+        m_world->drawParticles(&m_spriteBatch);
 
         m_spriteBatch.end();
 

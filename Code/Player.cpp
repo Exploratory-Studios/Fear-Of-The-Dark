@@ -211,13 +211,14 @@ void Player::drawGUI(GLEngine::SpriteBatch& sb, GLEngine::SpriteFont& sf) {
     }
 }
 
-void Player::update(World* world, AudioManager* audio, float timeStep) {
+void Player::update(World* world, AudioManager* audio, float timeStep, ScriptQueue* sq) {
 
     updateLightLevel(world);
 
     updateLimbs();
     updateStats(world, timeStep);
     updateSounds(world, audio);
+    interact(world, sq);
     if(!m_godMode) {
         move(timeStep);
     } else {
@@ -391,10 +392,16 @@ void Player::updateInput(GLEngine::InputManager* input, World* world, ScriptQueu
                 world->setTile(b);
             }
             m_inventory->updateWeight();
+            m_selectedBlock->interact_RightClicked(sq);
         }
-        if(input->isKeyPressed(SDL_BUTTON_RIGHT) && m_selectedBlock) {
-            if(m_favouriteItems[m_selectedHotbox]) m_favouriteItems[m_selectedHotbox]->onRightClick(m_selectedBlock, world);
-            m_inventory->updateWeight();
+        if(input->isKeyPressed(SDL_BUTTON_RIGHT)) {
+            if(m_selectedBlock) {
+                if(m_favouriteItems[m_selectedHotbox]) {
+                    m_favouriteItems[m_selectedHotbox]->onRightClick(m_selectedBlock, world);
+                }
+                m_inventory->updateWeight();
+                m_selectedBlock->interact_RightClicked(sq);
+            }
         }
         if(input->isKeyPressed(SDLK_r)) {
             Item* newItem = createItem((unsigned int)Categories::ItemIDs::BLOCK_DIRT, 1);

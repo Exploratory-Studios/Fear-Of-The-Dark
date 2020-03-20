@@ -1,5 +1,7 @@
 #include "ItemBlock.h"
 
+#include "World.h"
+
 ItemBlock::ItemBlock(unsigned short int quantity, GLEngine::GLTexture texture, std::string name) : Item(quantity, texture, name) {
 
 }

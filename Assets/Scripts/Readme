@@ -1,122 +1,152 @@
-Daviscript FULL GUIDE
-Written July 2nd, 2019
+# DaviScript is no more!
 
-Capitalized words are defined inside the file.
+The scripting system in Fear Of The Dark is now Lua! This means that you can write any valid Lua expression, be it math or, uh, something else!
 
+Alongside all the regular Lua functions, Fear Of The Dark's system also includes some *custom functions*.
 
+The following is a list of custom functions with arguments and types:
 
-Commands will be written:
-CommandName [parameter_DataType1](options) [parameter_DataType2] ... // What the command actually does
+## Setters
 
-Ex.
-time [string](set) [integer]							// If parameter 1 is "set" then sets tick time to parameter 2
-NAME PARAM1   PARAM2									DOCUMENTATION
+These functions set or change values in-game.
 
-Daviscript has 3 major types of OBJECTS:
-- ENTITIES
-- COORDINATES
-- PRIMITIVE TYPES
+#### Block Setters
 
-Daviscript also has no supported types of variables, but inert ENTITIES can be created, moved, and given metadata, so they can sometimes be used as substitutes.
+- `setBlock(ID, x, y, layer, metadata)`
 
+ At the position (x, y, layer), a block with the ID of ID (duh) will be made and given the metadata. The metadata should be in the form of a string.
 
+- `removeBlock(x, y, layer)`
 
-ENTITIES:
-ENTITIES are mobs, items (in the world), projectiles, the player, really anything that can move and/or think.
+ The block at the position (x, y, layer) will be replaced with an air block. This is a synonym for setBlock(0, x, y, layer, "").
 
-There are a couple ways to TARGET ENTITIES: By
-- KEYWORDS (ENTITIES),
-- Proximity to ENTITIES, or
-- Area
+- `showBlock(x, y, layer)`
 
-Proximity TARGETING is used to find the nearest entity to another entity, type "near [entity]" (without brackets)
-Area TARGETING is used to target a group of entities inside of a rectangle made of two given COORDINATES, type "area [coord1] [coord2]" (without brackets), and
-KEYWORDS (ENTITIES) can be used to target specific entities, such as the player or a currently speaking entity.
+ Makes a block at position (x, y, layer) not-invisible.
 
+- `hideBlock(x, y, layer)`
 
+ Makes a block at position (x, y, layer) invisible.
 
-COORDINATES:
-COORDINATES are positions, sets of two numbers that correspond to x and y positions in the game. They are used in a multitude of ways.
+#### Entity Setters
 
-There are a few ways to TARGET COORDINATES:
-- Relative to ENTITIES,
-- Area, or
-- Integers (See PRIMITIVE TYPES)
+- `addEntity(ID, x, y, layer)`
 
-Targeting relative to ENTITIES is used to find coordinates a set distance away from any given ENTITIES, type "relative [entity]" (without  brackets)
-Area targeting is used to get **all** grid coordinates inside of a rectangle made of two given COORDINATES, type "area [coord1] [coord2]" (without brackets), and
-Integers PRIMITIVE TYPES can be used to simply set a constant x and y, type "[xValue] [yValue]" (without brackets)
+ Creates an entity with ID of ID and places it at position (x, y, layer).
 
+- `removeEntity(UUID)`
 
+ Removes an entity with the specified UUID from the game, leaving no trace of it. **Note: UUIDs should only be obtained from Getter functions and not modified.**
 
-PRIMITIVE TYPES:
-PRIMITIVE TYPES are types of data which are native to C++. 
+- `showEntity(UUID)`
 
-PRIMITIVE TYPES encapsulates multiple datatypes:
-- Integers (Also double as booleans),
-- Strings, and
-- Floats
+ Makes an entity with the specified UUID not-invisible. **Note: UUIDs should only be obtained from Getter functions and not modified.**
 
-Integers are whole, signed numbers, such as 1, -2, 3, but not 3.4, 6.34, etc. Integers can also be used as booleans (true/false values), using either 1/0 for true/false respectively
-Strings are strings of characters (normally parsed without spaces), such as HelloWorld, How'sLife, or This/Is/A/Path.
-Finally, floats are signed, whole or non-whole numbers like 3.6, -54, 6.23, etc.
-Primitive types can simply be typed normally
+- `hideEntity(UUID)`
 
+ Makes an entity with the specified UUID invisible. **Note: UUIDs should only be obtained from Getter functions and not modified.**
 
+- `setTime(time)`
 
-OBJECTS:
-OBJECTS are essentially different types of data, used as parameters for commands. They come in a few different types.
+ Sets the world's time to the specified time value.
 
+- `teleport(UUID, x, y)`
 
+ Teleports an entity with the specified UUID to the position (x, y). **Note: UUIDs should only be obtained from Getter functions and not modified.**
 
-TARGETING:
-TARGETING is how Daviscript refers to finding, filtering, and/or selecting objects from a command or the world.
+- `giveItem(UUID, ID, quantity)`
 
+ Gives an entity with the specified UUID the specified quantity of items with the specified ID. **Note: UUIDs should only be obtained from Getter functions and not modified.**
 
+#### Player Setters
 
-KEYWORDS:
-Daviscript has a few special keywords, which simply target specific things when used. They, of course, are substitutes for objects and each have a different type.
+- `setPlayerCanInteract(value)`
 
-ENTITY KEYWORDS target specific entities. They are as follows:
-- player (targets the player)
-- speaker (targets the entity that the player currently has selected. This is always the entity that is speaking during dialogue)
+ Sets if the player can interact with the environment and NPCs (a true value means they can, false means they can't).
 
-COORDINATES KEYWORDS target specific coordinates. They are as follows:
-- None exist as of yet.
+- `setPlayerGodMode(value)`
 
-SPECIAL KEYWORDS target very specific pointers to objects hard-coded within the program. They are only used in specific cases where a certain entity being created might need access to the Quest Manager, or a block being created might need access to something else. These special cases will be documented under the header, "SPECIAL PARAMETERS"
-Currently, the SPECIAL KEYWORDS are as follows:
-- inputManager (Pointer to the InputManager, only used for anything that needs to be controlled by the user)
-- scriptQueue (Pointer to the ScriptQueue, only used for anything that needs to run scripts unusually)
-- questManager (Pointer to the QuestManager, only used for anything that needs to access dialogue or quest information, usually any entity that speaks or takes part in a quest)
-- getFlag [string] (Gets ID of a flag from a given alias (string))
+ Gives the player god priveleges. Used for debugging and screwing around.
 
+- `setPlayerStat_sanity(sanity)`
 
+ Sets the player's sanity to a given sanity (from 0.0-1.0)
 
+#### Camera Setters
 
-COMMANDS:
-time [string](set) [integer]													// If parameter 1 is "set" then sets tick time to parameter 2
-removeBlock [coordinates]														// Changes a block at the given coordinates to air
-changeBlock [coordinates] [integer]												// Changes a block at the given coordinates to one with the id of parameter 2
-teleport [entity] [coordinates]													// Teleports a given entity to coordinates
-setFlag [integer] [integer](1,0)												// Sets a flag with id of parameter 1 to value of parameter 2	
-setCanInteract [integer](1,0)													// Sets the player's ability to interact with the world to parameter 1
-createEntity [coordinates] [integer] [special keywords]							// Creates an entity at the given coordinates with the id of parameter 2 and the special parameters of parameter 3 and onwards
-echo [string]																	// Prints a string in the in-game log, as well as the GameLog
-setPeriod [string]																// Sets era (or period) to the period with a name correlating with parameter 1
-god																				// Toggles player god mode
-camera [string](set,lock,unlock,move)											// Control the camera
-camera "set" [coordinates]														// Sets the camera's position to parameter 2 and locks in place
-camera "lock"																	// Stops the camera from automatically moving, locking it in place
-camera "unlock"																	// Lets the camera follow the player
-camera "move" [coordinates]														// Offsets the camera by the coordinates given in parameter 2
-camera "smoothMove" [coordinates]												// Offsets the camera by the coordinates given in parameter 2, but smoothly
-timer [integer]																	// Suspends current script for parameter 1 amount of frames
-pause																			// Makes sure that the game doesn't update anything. Nothing will collide, move, etc.
-continue																		// Makes the game start updating things again
-give [entity] [int] [int]														// Gives the selected entity an item with an ID of parameter 2 and quantity of parameter 3
+- `camera_setLocked(locked)`
 
+ Either sets the camera to not move (true) or unlocks it to follow the player (false).
 
+- `camera_setPosition(x, y)`
+
+ Centers the camera on the given position.
+
+- `camera_move(xDistance, yDistance)`
+
+ Moves the camera a given distance in each axis away from its current position.
+
+- `camera_smoothMove(x, y, speed)`
+
+ Moves the camera a given distance in each axis away from its current position, but smoothly at a given speed.
+
+- `pause()`
+
+ Stops the continual updating and ticking of the game. Useful for cutscenes, as it still allows the camera to move and scripts to run.
+
+- `play()`
+
+ Lets the game play normally (Unpauses).
+
+#### Other Setters
+
+- `setFlag(ID, value)`
+
+ Sets the flag with the specified ID to the specified value (true or false).
+
+- `setEra(eraName)`
+
+ Changes the era to the one specified. See below for possible values.
+
+- `startTrade(ID)`
+
+ Opens the trade dialogue, using the given tradetable ID.
+
+- `startDialogue(ID)`
+
+ Starts a conversation, using the given question ID.
 
 
+## Getters
+
+These functions are used to get values from the game into your Lua script to be used in other functions or calculations.
+
+- `getEntitiesNear(x, y, distance)`
+
+ Returns an array of all entities' UUIDs who fall within a circle around the position (x, y) with radius distance.
+
+- `getEntitiesArea(x1, y1, x2, y2)`
+
+ Returns an array of all entities' UUIDs who fall within a rectangle made between position (x1, y1) and (x2, y2).
+
+- `getPlayer()`
+
+ Returns the player's UUID.
+
+- `getSelectedEntity()`
+
+ Returns the UUID of the entity that the player has currently selected.
+
+- `getEntityPosition(UUID)`
+
+ Returns an array formed with the x (1st element) and the y (2nd element) of the entity with the given UUID.
+
+
+## Debugging
+
+These functions often don't actually affect anything in-game, but they can be useful for debugging your scripts.
+
+- `log(message)`
+
+ Logs the given message in the GameLog file and in a running console (if one is available).
 

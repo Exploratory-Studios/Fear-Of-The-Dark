@@ -481,7 +481,7 @@ int LuaScript::l_hideEntity(lua_State* L) {
 
 int LuaScript::l_setTime(lua_State* L) {
     GET_WORLD_UPVALUE;
-    unsigned int time = lua_tointeger(L, 1);
+    unsigned int time = (int)lua_tonumber(L, 1);
     setTime(world, time);
 
     return 0;
@@ -492,8 +492,8 @@ int LuaScript::l_teleport(lua_State* L) {
 
     std::string entityUUID = lua_tostring(L, 1);
 
-    int x = lua_tointeger(L, 2);
-    int y = lua_tointeger(L, 3);
+    int x = lua_tonumber(L, 2);
+    int y = lua_tonumber(L, 3);
 
     teleport(world, entityUUID, glm::vec2(x, y));
 
@@ -505,8 +505,8 @@ int LuaScript::l_giveItem(lua_State* L) {
 
     std::string entityUUID = lua_tostring(L, 1);
 
-    int id = lua_tointeger(L, 2);
-    int quantity = lua_tointeger(L, 3);
+    int id = (int)lua_tonumber(L, 2);
+    int quantity = (int)lua_tonumber(L, 3);
 
     giveItem(world, entityUUID, id, quantity);
 
@@ -526,7 +526,7 @@ int LuaScript::l_setPlayerCanInteract(lua_State* L) {
 int LuaScript::l_setFlag(lua_State* L) {
     GET_QUESTMANAGER_UPVALUE;
 
-    unsigned int id = lua_tointeger(L, 1);
+    unsigned int id = (int)lua_tonumber(L, 1);
     bool val = lua_toboolean(L, 2);
 
     setFlag(qm, id, val);
@@ -600,7 +600,7 @@ int LuaScript::l_camera_smoothMove(lua_State* L) {
 }
 
 int LuaScript::l_delay(lua_State* L) {
-    unsigned int delay = lua_tointeger(L, 1);
+    unsigned int delay = (int)lua_tonumber(L, 1);
 
     lua_pushinteger(L, delay);
 

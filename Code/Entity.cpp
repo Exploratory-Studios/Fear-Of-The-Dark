@@ -970,3 +970,20 @@ void Entity::attack(Entity* enemy) {
 void Entity::defend(Entity* attacker, float damage, LimbSection section, Item* weapon) {
 
 }
+
+void Entity::generateUUID(World* world) {
+    if(m_UUID != "NO_UUID") {
+        return;
+    }
+    std::string timeString = std::to_string(world->getTime());
+    std::string rand1 = std::to_string(std::rand());
+    std::string rand2 = std::to_string(std::rand());
+    std::string rand3 = std::to_string(std::rand());
+    std::string xString = std::to_string(m_position.x);
+    std::string yString = std::to_string(m_position.y);
+
+    std::string UUID = timeString + rand1 + rand2 + rand3 + xString + yString;
+
+    m_UUID = UUID;
+
+}

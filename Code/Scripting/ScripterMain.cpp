@@ -7,6 +7,30 @@
 
 #include <Camera2D.h>
 
+void lua_pushintegertotable(lua_State* L, int index, int value) {
+    // make sure to call lua_newtable(L) before using this function!
+
+    lua_pushinteger(L, index); // Set index ("key")
+    lua_pushinteger(L, value); // Set value
+    lua_settable(L, -3); // Add value and index to table at index -3
+}
+
+void lua_pushnumbertotable(lua_State* L, int index, float value) {
+    // make sure to call lua_newtable(L) before using this function!
+
+    lua_pushinteger(L, index); // Set index ("key")
+    lua_pushnumber(L, value); // Set value
+    lua_settable(L, -3); // Add value and index to table at index -3
+}
+
+void lua_pushstringtotable(lua_State* L, int index, char* value) {
+    // make sure to call lua_newtable(L) before using this function!
+
+    lua_pushinteger(L, index); // Set index ("key")
+    lua_pushstring(L, value); // Set value
+    lua_settable(L, -3); // Add value and index to table at index -3
+}
+
 Scripter::Scripter() {
 
 }
@@ -14,6 +38,9 @@ Scripter::Scripter() {
 void Scripter::init(World* world, QuestManager* qm, GameplayScreen* gs) {
     m_luaState = luaL_newstate();
 
+    addDepsToRegistry(m_luaState, world, qm, gs);
+
+    // Setters
     addFunction(LuaScript::l_setBlock, "setBlock");
     addFunction(LuaScript::l_removeBlock, "removeBlock");
     addFunction(LuaScript::l_showBlock, "showBlock");
@@ -47,6 +74,59 @@ void Scripter::init(World* world, QuestManager* qm, GameplayScreen* gs) {
 
     addFunction(LuaScript::l_startTrade, "startTrade");
     addFunction(LuaScript::l_startDialogue, "startDialogue");
+
+    addFunction(LuaScript::l_getEntitiesNear, "getEntitiesNear");
+    addFunction(LuaScript::l_getEntitiesArea, "getEntitiesNear");
+
+    addFunction(LuaScript::l_getPlayer, "getPlayer");
+    addFunction(LuaScript::l_getSpeakingEntity, "getSelectedEntity");
+
+    addFunction(LuaScript::l_getEntityPosition, "getEntityPosition");
+
+    addFunction(LuaScript::l_log, "log");
+
+    /*    // Setters
+        static int l_setBlock(lua_State* L);
+        static int l_removeBlock(lua_State* L);
+        static int l_showBlock(lua_State* L);
+        static int l_hideBlock(lua_State* L);
+
+        static int l_addEntity(lua_State* L); // requires UUID of entity
+        static int l_removeEntity(lua_State* L);
+        static int l_showEntity(lua_State* L);
+        static int l_hideEntity(lua_State* L);
+
+        static int l_setTime(lua_State* L);
+        static int l_teleport(lua_State* L);
+        static int l_giveItem(lua_State* L);
+
+        static int l_setPlayerCanInteract(lua_State* L);
+        static int l_setPlayerStat_sanity(lua_State* L);
+        static int l_setPlayerGodMode(lua_State* L);
+
+        static int l_setFlag(lua_State* L);
+
+        static int l_setEra(lua_State* L);
+
+        static int l_camera_setLocked(lua_State* L);
+        static int l_camera_setPosition(lua_State* L);
+        static int l_camera_move(lua_State* L);
+        static int l_camera_smoothMove(lua_State* L);
+
+        static int l_delay(lua_State* L);
+        static int l_pause(lua_State* L);
+        static int l_play(lua_State* L);
+
+        static int l_startTrade(lua_State* L);
+        static int l_startDialogue(lua_State* L);
+
+    // Getters
+        static int l_getEntitiesNear(lua_State* L); // returns UUIDs
+        static int l_getEntitiesArea(lua_State* L);
+        static int l_getPlayer(lua_State* L);
+        static int l_getSpeakingEntity(lua_State* L);
+
+        static int l_getEntityPosition(lua_State* L); // takes entity UUID, returns a 2-index array*/
 }
 
 void Scripter::update(World* world, ScriptQueue* sq, QuestManager* qm, GameplayScreen* gs) {
@@ -108,43 +188,32 @@ std::string Scripter::executeCommand(World* world, QuestManager* qm, GameplayScr
     return "NO_MSG";
 }
 
-std::vector<unsigned int> nearEntityTarget(World* world, glm::vec2 nearTo) {
+std::vector<Entity*> nearEntityTarget(World* world, glm::vec2 nearTo, float minDist) {
 
-        unsigned int chunkIndex = std::floor(nearTo.x / CHUNK_SIZE);
+    bool found = false;
+    std::vector<Entity*> ret;
 
-        float nearestDistance;
-        unsigned int nearestId;
-        unsigned int nearestChunkId;
-
-        bool found = false;
-
-        for(unsigned int i = 0; i < world->getEntities().size(); i++) { /// TODO: Optimize this
-            float dist = std::sqrt(std::abs(nearTo.x - world->getEntities()[i]->getPosition().x) + std::abs(nearTo.y - world->getEntities()[i]->getPosition().y));
-            if(dist < nearestDistance || !found) {
-                nearestDistance = dist;
-                nearestId = i;
-                nearestChunkId = chunkIndex;
-                found = true;
-            }
+    for(unsigned int i = 0; i < world->getEntities().size(); i++) { /// TODO: Optimize this
+        float dist = std::sqrt(std::abs(nearTo.x - world->getEntities()[i]->getPosition().x) + std::abs(nearTo.y - world->getEntities()[i]->getPosition().y));
+        if(dist < minDist) {
+            ret.push_back(world->getEntities()[i]);
         }
+    }
 
-        std::vector<unsigned int> ret;
-        ret.push_back(nearestId);
-
-        return ret;
+    return ret;
 }
 
-std::vector<unsigned int> areaEntityTarget(World* world, glm::vec2 pos1, glm::vec2 pos2) {
+std::vector<Entity*> areaEntityTarget(World* world, glm::vec2 pos1, glm::vec2 pos2) {
     unsigned int chunk1 = std::floor(pos1.x / CHUNK_SIZE) + WORLD_SIZE;
     unsigned int chunk2 = std::floor(pos2.x / CHUNK_SIZE) + WORLD_SIZE;
 
-    std::vector<unsigned int> ret;
+    std::vector<Entity*> ret;
 
     for(unsigned int i = 0; i <= chunk1-chunk2; i++) {
         for(unsigned int j = 0; j < world->getEntities().size(); j++) {
             if(world->getEntities()[j]->getPosition().x >= pos1.x && world->getEntities()[j]->getPosition().x <= pos2.x) {
                 if(world->getEntities()[j]->getPosition().y >= pos1.y && world->getEntities()[j]->getPosition().y <= pos2.y) {
-                    ret.push_back(j);
+                    ret.push_back(world->getEntities()[j]);
                 }
             }
         }
@@ -234,33 +303,28 @@ unsigned int addEntity(World* world, unsigned int id, glm::vec2 position, unsign
     world->addEntity(createEntity(id, position, layer));
 }
 
-void removeEntity(World* world, unsigned int index) { // index retrieved from entityTarget
-    world->removeEntity(index);
+void removeEntity(World* world, std::string UUID) { // index retrieved from entityTarget
+    world->removeEntity(UUID);
 }
 
-void showEntity(World* world, unsigned int index) {
-    world->getEntities()[index]->setToDraw(true);
+void showEntity(World* world, std::string UUID) {
+    world->getEntityByUUID(UUID)->setToDraw(true);
 }
 
-void hideEntity(World* world, unsigned int index) {
-    world->getEntities()[index]->setToDraw(false);
+void hideEntity(World* world, std::string UUID) {
+    world->getEntityByUUID(UUID)->setToDraw(false);
 }
 
 void setTime(World* world, unsigned int time) {
     world->setTime(time);
 }
 
-void teleport(World* world, std::vector<unsigned int> entityIndex, glm::vec2 pos) {
-    for(unsigned int i = 0; i < entityIndex.size(); i++) {
-        world->getEntities()[entityIndex[i]]->setPosition(pos);
-    }
+void teleport(World* world, std::string UUID, glm::vec2 pos) {
+    world->getEntityByUUID(UUID)->setPosition(pos);
 }
 
-void giveItem(World* world, std::vector<unsigned int> entityIndex, unsigned int id, unsigned int quantity) {
-    for(unsigned int i = 0; i < entityIndex.size(); i++) {
-        world->getEntities()[entityIndex[i]]->giveItem(createItem(id, quantity));
-        /// TODO:
-    }
+void giveItem(World* world, std::string UUID, unsigned int id, unsigned int quantity) {
+    world->getEntityByUUID(UUID)->giveItem(createItem(id, quantity));
 }
 
 void setPlayerCanInteract(World* world, bool canInteract) {
@@ -332,9 +396,9 @@ void startDialogue(QuestManager* qm, unsigned int questionID) {
 
 /// Wrapper functions:
 
-#define GET_WORLD_UPVALUE World* world = static_cast<World*>(lua_touserdata(L, lua_upvalueindex(1)))
-#define GET_QUESTMANAGER_UPVALUE QuestManager* qm = static_cast<QuestManager*>(lua_touserdata(L, lua_upvalueindex(2)))
-#define GET_GAMEPLAYSCREEN_UPVALUE GameplayScreen* gs = static_cast<GameplayScreen*>(lua_touserdata(L, lua_upvalueindex(3)))
+#define GET_WORLD_UPVALUE lua_pushlightuserdata(L, (void *)&WORLD_KEY); lua_gettable(L, LUA_REGISTRYINDEX); World* world = static_cast<World*>(lua_touserdata(L, -1));
+#define GET_QUESTMANAGER_UPVALUE lua_pushlightuserdata(L, (void *)&QUESTMANAGER_KEY); lua_gettable(L, LUA_REGISTRYINDEX); QuestManager* qm = static_cast<QuestManager*>(lua_touserdata(L, -1));
+#define GET_GAMEPLAYSCREEN_UPVALUE lua_pushlightuserdata(L, (void *)&GAMEPLAYSCREEN_KEY); lua_gettable(L, LUA_REGISTRYINDEX); GameplayScreen* gs = static_cast<GameplayScreen*>(lua_touserdata(L, -1));
 
 /*std::vector<glm::vec2> relativePositionTarget(World* world, Entity* relativeTo, glm::vec2 relativePos) {
     std::vector<glm::vec2> ret;
@@ -347,10 +411,10 @@ void startDialogue(QuestManager* qm, unsigned int questionID) {
 std::vector<glm::vec2> areaPositionTarget(World* world, glm::vec2 pos1, glm::vec2 pos2) {*/
 int LuaScript::l_setBlock(lua_State* L) {
     GET_WORLD_UPVALUE;
-    unsigned int id = lua_tointeger(L, 1);
-    int x = lua_tointeger(L, 2);
-    int y = lua_tointeger(L, 3);
-    int layer = lua_tointeger(L, 4);
+    unsigned int id = (int)lua_tonumber(L, 1);
+    int x = (int)lua_tonumber(L, 2);
+    int y = (int)lua_tonumber(L, 3);
+    int layer = (int)lua_tonumber(L, 4);
     std::string metaData = std::string(lua_tostring(L, 5));
     MetaData md(metaData);
     setBlock(world, id, glm::vec2(x, y), layer, md);
@@ -359,59 +423,59 @@ int LuaScript::l_setBlock(lua_State* L) {
 
 int LuaScript::l_removeBlock(lua_State* L) {
     GET_WORLD_UPVALUE;
-    int x = lua_tointeger(L, 1); // get function argument
-    int y = lua_tointeger(L, 2); // get function argument
-    int layer = lua_tointeger(L, 3); // get function argument
+    int x = (int)lua_tonumber(L, 1); // get function argument
+    int y = (int)lua_tonumber(L, 2); // get function argument
+    int layer = (int)lua_tonumber(L, 3); // get function argument
     removeBlock(world, x, y, layer); // calling C++ function with this argument...
     return 0; // no returned values
 }
 
 int LuaScript::l_showBlock(lua_State* L) {
     GET_WORLD_UPVALUE;
-    int x = lua_tointeger(L, 1); // get function argument
-    int y = lua_tointeger(L, 2); // get function argument
-    int layer = lua_tointeger(L, 3); // get function argument
+    int x = (int)lua_tonumber(L, 1); // get function argument
+    int y = (int)lua_tonumber(L, 2); // get function argument
+    int layer = (int)lua_tonumber(L, 3); // get function argument
     showBlock(world, x, y, layer); // calling C++ function with this argument...
     return 0; // no returned values
 }
 
 int LuaScript::l_hideBlock(lua_State* L) {
     GET_WORLD_UPVALUE;
-    int x = lua_tointeger(L, 1); // get function argument
-    int y = lua_tointeger(L, 2); // get function argument
-    int layer = lua_tointeger(L, 3); // get function argument
+    int x = (int)lua_tonumber(L, 1); // get function argument
+    int y = (int)lua_tonumber(L, 2); // get function argument
+    int layer = (int)lua_tonumber(L, 3); // get function argument
     hideBlock(world, x, y, layer); // calling C++ function with this argument...
     return 0; // no returned values
 }
 
 int LuaScript::l_addEntity(lua_State* L) {
     GET_WORLD_UPVALUE;
-    int id = lua_tointeger(L, 1);
-    int x = lua_tointeger(L, 2); // get function argument
-    int y = lua_tointeger(L, 3); // get function argument
-    int layer = lua_tointeger(L, 4); // get function argument
+    int id = (int)lua_tonumber(L, 1);
+    int x = lua_tonumber(L, 2); // get function argument
+    int y = lua_tonumber(L, 3); // get function argument
+    int layer = (int)lua_tonumber(L, 4); // get function argument
     addEntity(world, id, glm::vec2(x, y), layer); // calling C++ function with this argument...
     return 0; // no returned values
 }
 
 int LuaScript::l_removeEntity(lua_State* L) {
     GET_WORLD_UPVALUE;
-    int index = lua_tointeger(L, 1); // get function argument
-    removeEntity(world, index); // calling C++ function with this argument...
+    std::string entityUUID = lua_tostring(L, 1);
+    removeEntity(world, entityUUID); // calling C++ function with this argument...
     return 0; // no returned values
 }
 
 int LuaScript::l_showEntity(lua_State* L) {
     GET_WORLD_UPVALUE;
-    int index = lua_tointeger(L, 1); // get function argument
-    showEntity(world, index); // calling C++ function with this argument...
+    std::string entityUUID = lua_tostring(L, 1);
+    showEntity(world, entityUUID); // calling C++ function with this argument...
     return 0; // no returned values
 }
 
 int LuaScript::l_hideEntity(lua_State* L) {
     GET_WORLD_UPVALUE;
-    int index = lua_tointeger(L, 1); // get function argument
-    hideEntity(world, index); // calling C++ function with this argument...
+    std::string entityUUID = lua_tostring(L, 1);
+    hideEntity(world, entityUUID); // calling C++ function with this argument...
     return 0; // no returned values
 }
 
@@ -419,54 +483,34 @@ int LuaScript::l_setTime(lua_State* L) {
     GET_WORLD_UPVALUE;
     unsigned int time = lua_tointeger(L, 1);
     setTime(world, time);
+
+    return 0;
 }
 
 int LuaScript::l_teleport(lua_State* L) {
     GET_WORLD_UPVALUE;
 
-    std::vector<unsigned int> entities;
-
-    lua_len(L, 1); // Size of 'table' (array)
-
-    int vecSize = lua_tonumber(L, lua_gettop(L));
-    lua_pop(L, 1);
-
-    for (int i = 1; i <= vecSize; i++)
-    {
-        lua_rawgeti(L, 1, i);  // push to the top of the stack
-        int Top = lua_gettop(L);
-        entities.push_back(lua_tonumber(L, Top)); // take the number from the top of the stack and put it into entities
-        lua_pop(L, 1); // pop top number
-    }
+    std::string entityUUID = lua_tostring(L, 1);
 
     int x = lua_tointeger(L, 2);
     int y = lua_tointeger(L, 3);
 
-    teleport(world, entities, glm::vec2(x, y));
+    teleport(world, entityUUID, glm::vec2(x, y));
+
+    return 0;
 }
 
 int LuaScript::l_giveItem(lua_State* L) {
     GET_WORLD_UPVALUE;
 
-    std::vector<unsigned int> entities;
-
-    lua_len(L, 1); // Size of 'table' (array)
-
-    int vecSize = lua_tonumber(L, lua_gettop(L));
-    lua_pop(L, 1);
-
-    for (int i = 1; i <= vecSize; i++)
-    {
-        lua_rawgeti(L, 1, i);  // push to the top of the stack
-        int Top = lua_gettop(L);
-        entities.push_back(lua_tonumber(L, Top)); // take the number from the top of the stack and put it into entities
-        lua_pop(L, 1); // pop top number
-    }
+    std::string entityUUID = lua_tostring(L, 1);
 
     int id = lua_tointeger(L, 2);
     int quantity = lua_tointeger(L, 3);
 
-    giveItem(world, entities, id, quantity);
+    giveItem(world, entityUUID, id, quantity);
+
+    return 0;
 }
 
 int LuaScript::l_setPlayerCanInteract(lua_State* L) {
@@ -475,6 +519,8 @@ int LuaScript::l_setPlayerCanInteract(lua_State* L) {
     bool canInteract = lua_toboolean(L, 1);
 
     setPlayerCanInteract(world, canInteract);
+
+    return 0;
 }
 
 int LuaScript::l_setFlag(lua_State* L) {
@@ -484,6 +530,8 @@ int LuaScript::l_setFlag(lua_State* L) {
     bool val = lua_toboolean(L, 2);
 
     setFlag(qm, id, val);
+
+    return 0;
 }
 
 int LuaScript::l_setEra(lua_State* L) {
@@ -492,6 +540,8 @@ int LuaScript::l_setEra(lua_State* L) {
     std::string era = std::string(lua_tostring(L, 1));
 
     setEra(world, era);
+
+    return 0;
 }
 
 int LuaScript::l_setPlayerGodMode(lua_State* L) {
@@ -500,6 +550,8 @@ int LuaScript::l_setPlayerGodMode(lua_State* L) {
     bool mode = lua_toboolean(L, 1);
 
     setPlayerGodMode(world, mode);
+
+    return 0;
 }
 
 int LuaScript::l_camera_setLocked(lua_State* L) {
@@ -508,35 +560,43 @@ int LuaScript::l_camera_setLocked(lua_State* L) {
     bool locked = lua_toboolean(L, 1);
 
     camera_setLocked(gs, locked);
+
+    return 0;
 }
 
 int LuaScript::l_camera_setPosition(lua_State* L) {
     GET_GAMEPLAYSCREEN_UPVALUE;
 
-    unsigned int x = lua_tointeger(L, 1);
-    unsigned int y = lua_tointeger(L, 2);
+    unsigned int x = lua_tonumber(L, 1);
+    unsigned int y = lua_tonumber(L, 2);
 
     camera_setPosition(gs, glm::vec2(x, y));
+
+    return 0;
 }
 
 int LuaScript::l_camera_move(lua_State* L) {
     GET_GAMEPLAYSCREEN_UPVALUE;
 
-    unsigned int x = lua_tointeger(L, 1);
-    unsigned int y = lua_tointeger(L, 2);
+    unsigned int x = lua_tonumber(L, 1);
+    unsigned int y = lua_tonumber(L, 2);
 
     camera_move(gs, glm::vec2(x, y));
+
+    return 0;
 }
 
 int LuaScript::l_camera_smoothMove(lua_State* L) {
     GET_GAMEPLAYSCREEN_UPVALUE;
 
-    unsigned int x = lua_tointeger(L, 1);
-    unsigned int y = lua_tointeger(L, 2);
+    unsigned int x = lua_tonumber(L, 1);
+    unsigned int y = lua_tonumber(L, 2);
 
     float speed = lua_tonumber(L, 3);
 
     camera_smoothMove(gs, glm::vec2(x, y), speed);
+
+    return 0;
 }
 
 int LuaScript::l_delay(lua_State* L) {
@@ -551,12 +611,16 @@ int LuaScript::l_pause(lua_State* L) {
     GET_GAMEPLAYSCREEN_UPVALUE;
 
     pause(gs);
+
+    return 0;
 }
 
 int LuaScript::l_play(lua_State* L) {
     GET_GAMEPLAYSCREEN_UPVALUE;
 
     play(gs);
+
+    return 0;
 }
 
 int LuaScript::l_setPlayerStat_sanity(lua_State* L) {
@@ -565,20 +629,110 @@ int LuaScript::l_setPlayerStat_sanity(lua_State* L) {
     float sanity = lua_tonumber(L, 1);
 
     setPlayerStat_sanity(world, sanity);
+
+    return 0;
 }
 
 int LuaScript::l_startTrade(lua_State* L) {
     GET_QUESTMANAGER_UPVALUE;
 
-    unsigned int id = lua_tointeger(L, 1);
+    unsigned int id = (int)lua_tonumber(L, 1);
 
     startTrade(qm, id);
+
+    return 0;
 }
 
 int LuaScript::l_startDialogue(lua_State* L) {
     GET_QUESTMANAGER_UPVALUE;
 
-    unsigned int id = lua_tointeger(L, 1);
+    unsigned int id = (int)lua_tonumber(L, 1);
 
     startDialogue(qm, id);
+
+    return 0;
+}
+
+int LuaScript::l_getEntitiesNear(lua_State* L) { // returns UUIDs
+    GET_WORLD_UPVALUE;
+
+    float x = lua_tonumber(L, 1);
+    float y = lua_tonumber(L, 2);
+    float dist = lua_tonumber(L, 3);
+
+    glm::vec2 pos(x, y);
+
+    std::vector<Entity*> ents = nearEntityTarget(world, pos, dist);
+
+    lua_newtable(L);
+
+    for(int i = 0; i < ents.size(); i++) {
+        std::string id = ents[i]->getUUID().c_str();
+        lua_pushstringtotable(L, i+1, (char*)id.c_str());
+    }
+
+    return 1;
+}
+
+int LuaScript::l_getEntitiesArea(lua_State* L) {
+    GET_WORLD_UPVALUE;
+
+    float x1 = lua_tonumber(L, 1);
+    float y1 = lua_tonumber(L, 2);
+    float x2 = lua_tonumber(L, 3);
+    float y2 = lua_tonumber(L, 4);
+
+    glm::vec2 pos1(x2, y1);
+    glm::vec2 pos2(x2, y2);
+
+    std::vector<Entity*> ents = areaEntityTarget(world, pos1, pos2);
+
+    lua_newtable(L);
+
+    for(int i = 0; i < ents.size(); i++) {
+        std::string id = ents[i]->getUUID().c_str();
+        lua_pushstringtotable(L, i+1, (char*)id.c_str());
+    }
+
+    return 1;
+}
+
+int LuaScript::l_getPlayer(lua_State* L) {
+    GET_WORLD_UPVALUE;
+
+    Player* p = world->getPlayer();
+    std::string id = p->getUUID();
+    lua_pushstring(L, (char*)id.c_str());
+
+    return 1;
+}
+
+int LuaScript::l_getSpeakingEntity(lua_State* L) {
+    GET_WORLD_UPVALUE;
+
+    Entity* s = world->getPlayer()->getSelectedEntity();
+    std::string id = s->getUUID();
+    lua_pushstring(L, (char*)id.c_str());
+
+    return 1;
+}
+
+int LuaScript::l_getEntityPosition(lua_State* L) {
+    GET_WORLD_UPVALUE;
+
+    std::string UUID = lua_tostring(L, 1);
+
+    glm::vec2 pos = world->getEntityByUUID(UUID)->getPosition();
+
+    lua_newtable(L);
+    lua_pushnumbertotable(L, 1, pos.x);
+    lua_pushnumbertotable(L, 2, pos.y);
+
+    return 1;
+}
+
+int LuaScript::l_log(lua_State* L) {
+    std::string log = lua_tostring(L, 1);
+    Logger::getInstance()->log("LUA MESSAGE: " + log);
+    return 0;
 }

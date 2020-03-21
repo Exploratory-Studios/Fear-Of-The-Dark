@@ -84769,3 +84769,2593 @@ Flags loaded! (24 bytes)
 Loading trade tables. 180 bytes to read.
 Loaded trade tables! (24 bytes)
 Successfully Loaded Script File: /home/davis-dev/.exploratory/Fear Of The Dark/Assets/Scripts/TEST_SCRIPT.txt, and given id of: 2
+
+
+
+### LOG: Sat Mar 21 16:12:41 2020 ###
+
+CREATE: Starting world creation at time: 857.062988
+
+
+
+### LOG: Sat Mar 21 17:00:13 2020 ###
+
+CREATE: Starting world creation at time: 814.179993
+CREATE: Finished world creation at time: 4233.579102 (Elapsed: 3419.399170ms)
+Loaded all 3 music files.
+Loaded all 2 sound files.
+Loading dialogue. 1297 bytes to read.
+Successfully Loaded Script File: /home/davis-dev/.exploratory/Fear Of The Dark/Assets/Scripts/Script_selected_makeHouse.txt, and given id of: 0
+Successfully Loaded Script File: /home/davis-dev/.exploratory/Fear Of The Dark/Assets/Scripts/Script_player_makeHouse.txt, and given id of: 1
+Dialogue loaded! (24 bytes)
+Loading flags. 125 bytes to read.
+Loaded flag with id of 0 and value of 0
+Loaded flag with id of 1 and value of 0
+Loaded flag with id of 2 and value of 0
+Loaded flag with id of 3 and value of 0
+Loaded flag with id of 4 and value of 0
+Loaded flag with id of 5 and value of 0
+Flags loaded! (24 bytes)
+Loading trade tables. 180 bytes to read.
+Loaded trade tables! (24 bytes)
+Successfully Loaded Script File: /home/davis-dev/.exploratory/Fear Of The Dark/Assets/Scripts/TEST_SCRIPT.txt, and given id of: 2
+Activated script with id of: 2
+LUA MESSAGE: NO_UUID
+Activated script with id of: 2
+LUA MESSAGE: NO_UUID
+Activated script with id of: 2
+LUA MESSAGE: NO_UUID
+
+
+
+### LOG: Sat Mar 21 17:01:41 2020 ###
+
+CREATE: Starting world creation at time: 756.896973
+CREATE: Finished world creation at time: 4195.414062 (Elapsed: 3438.517090ms)
+Loaded all 3 music files.
+Loaded all 2 sound files.
+Loading dialogue. 1297 bytes to read.
+Successfully Loaded Script File: /home/davis-dev/.exploratory/Fear Of The Dark/Assets/Scripts/Script_selected_makeHouse.txt, and given id of: 0
+Successfully Loaded Script File: /home/davis-dev/.exploratory/Fear Of The Dark/Assets/Scripts/Script_player_makeHouse.txt, and given id of: 1
+Dialogue loaded! (24 bytes)
+Loading flags. 125 bytes to read.
+Loaded flag with id of 0 and value of 0
+Loaded flag with id of 1 and value of 0
+Loaded flag with id of 2 and value of 0
+Loaded flag with id of 3 and value of 0
+Loaded flag with id of 4 and value of 0
+Loaded flag with id of 5 and value of 0
+Flags loaded! (24 bytes)
+Loading trade tables. 180 bytes to read.
+Loaded trade tables! (24 bytes)
+
+
+
+### LOG: Sat Mar 21 17:03:40 2020 ###
+
+CREATE: Starting world creation at time: 769.424011
+CREATE: Finished world creation at time: 4199.136230 (Elapsed: 3429.712158ms)
+Loaded all 3 music files.
+Loaded all 2 sound files.
+Loading dialogue. 1297 bytes to read.
+Successfully Loaded Script File: /home/davis-dev/.exploratory/Fear Of The Dark/Assets/Scripts/Script_selected_makeHouse.txt, and given id of: 0
+Successfully Loaded Script File: /home/davis-dev/.exploratory/Fear Of The Dark/Assets/Scripts/Script_player_makeHouse.txt, and given id of: 1
+Dialogue loaded! (24 bytes)
+Loading flags. 125 bytes to read.
+Loaded flag with id of 0 and value of 0
+Loaded flag with id of 1 and value of 0
+Loaded flag with id of 2 and value of 0
+Loaded flag with id of 3 and value of 0
+Loaded flag with id of 4 and value of 0
+Loaded flag with id of 5 and value of 0
+Flags loaded! (24 bytes)
+Loading trade tables. 180 bytes to read.
+Loaded trade tables! (24 bytes)
+Successfully Loaded Script File: /home/davis-dev/.exploratory/Fear Of The Dark/Assets/Scripts/TEST_SCRIPT.txt, and given id of: 2
+Activated script with id of: 2
+LUA MESSAGE: NO_UUID
+Activated script with id of: 2
+LUA MESSAGE: NO_UUID
+Activated script with id of: 2
+LUA MESSAGE: NO_UUID
+Activated script with id of: 2
+LUA MESSAGE: NO_UUID
+Activated script with id of: 2
+LUA MESSAGE: NO_UUID
+Activated script with id of: 2
+LUA MESSAGE: NO_UUID
+Activated script with id of: 2
+LUA MESSAGE: NO_UUID
+Activated script with id of: 2
+LUA MESSAGE: NO_UUID
+Activated script with id of: 2
+LUA MESSAGE: NO_UUID
+Activated script with id of: 2
+LUA MESSAGE: NO_UUID
+
+
+
+### LOG: Sat Mar 21 17:04:19 2020 ###
+
+CREATE: Starting world creation at time: 782.387024
+CREATE: Finished world creation at time: 4175.881836 (Elapsed: 3393.494873ms)
+Loaded all 3 music files.
+Loaded all 2 sound files.
+Loading dialogue. 1297 bytes to read.
+Successfully Loaded Script File: /home/davis-dev/.exploratory/Fear Of The Dark/Assets/Scripts/Script_selected_makeHouse.txt, and given id of: 0
+Successfully Loaded Script File: /home/davis-dev/.exploratory/Fear Of The Dark/Assets/Scripts/Script_player_makeHouse.txt, and given id of: 1
+Dialogue loaded! (24 bytes)
+Loading flags. 125 bytes to read.
+Loaded flag with id of 0 and value of 0
+Loaded flag with id of 1 and value of 0
+Loaded flag with id of 2 and value of 0
+Loaded flag with id of 3 and value of 0
+Loaded flag with id of 4 and value of 0
+Loaded flag with id of 5 and value of 0
+Flags loaded! (24 bytes)
+Loading trade tables. 180 bytes to read.
+Loaded trade tables! (24 bytes)
+Successfully Loaded Script File: /home/davis-dev/.exploratory/Fear Of The Dark/Assets/Scripts/TEST_SCRIPT.txt, and given id of: 2
+Activated script with id of: 2
+LUA MESSAGE: NO_UUID
+
+
+
+### LOG: Sat Mar 21 17:04:59 2020 ###
+
+CREATE: Starting world creation at time: 809.737000
+CREATE: Finished world creation at time: 4250.345215 (Elapsed: 3440.608154ms)
+Loaded all 3 music files.
+Loaded all 2 sound files.
+Loading dialogue. 1297 bytes to read.
+Successfully Loaded Script File: /home/davis-dev/.exploratory/Fear Of The Dark/Assets/Scripts/Script_selected_makeHouse.txt, and given id of: 0
+Successfully Loaded Script File: /home/davis-dev/.exploratory/Fear Of The Dark/Assets/Scripts/Script_player_makeHouse.txt, and given id of: 1
+Dialogue loaded! (24 bytes)
+Loading flags. 125 bytes to read.
+Loaded flag with id of 0 and value of 0
+Loaded flag with id of 1 and value of 0
+Loaded flag with id of 2 and value of 0
+Loaded flag with id of 3 and value of 0
+Loaded flag with id of 4 and value of 0
+Loaded flag with id of 5 and value of 0
+Flags loaded! (24 bytes)
+Loading trade tables. 180 bytes to read.
+Loaded trade tables! (24 bytes)
+
+
+
+### LOG: Sat Mar 21 17:05:34 2020 ###
+
+
+
+
+### LOG: Sat Mar 21 17:05:49 2020 ###
+
+CREATE: Starting world creation at time: 860.431030
+CREATE: Finished world creation at time: 4246.138184 (Elapsed: 3385.707031ms)
+Loaded all 3 music files.
+Loaded all 2 sound files.
+Loading dialogue. 1297 bytes to read.
+Successfully Loaded Script File: /home/davis-dev/.exploratory/Fear Of The Dark/Assets/Scripts/Script_selected_makeHouse.txt, and given id of: 0
+Successfully Loaded Script File: /home/davis-dev/.exploratory/Fear Of The Dark/Assets/Scripts/Script_player_makeHouse.txt, and given id of: 1
+Dialogue loaded! (24 bytes)
+Loading flags. 125 bytes to read.
+Loaded flag with id of 0 and value of 0
+Loaded flag with id of 1 and value of 0
+Loaded flag with id of 2 and value of 0
+Loaded flag with id of 3 and value of 0
+Loaded flag with id of 4 and value of 0
+Loaded flag with id of 5 and value of 0
+Flags loaded! (24 bytes)
+Loading trade tables. 180 bytes to read.
+Loaded trade tables! (24 bytes)
+Successfully Loaded Script File: /home/davis-dev/.exploratory/Fear Of The Dark/Assets/Scripts/TEST_SCRIPT.txt, and given id of: 2
+Activated script with id of: 2
+LUA MESSAGE: 010383778082004575391523850935.000000100.000000
+Activated script with id of: 2
+LUA MESSAGE: 010383778082004575391523850935.000000100.000000
+Activated script with id of: 2
+LUA MESSAGE: 010383778082004575391523850935.000000100.000000
+Activated script with id of: 2
+LUA MESSAGE: 010383778082004575391523850935.000000100.000000
+Activated script with id of: 2
+LUA MESSAGE: 010383778082004575391523850935.000000100.000000
+Activated script with id of: 2
+LUA MESSAGE: 010383778082004575391523850935.000000100.000000
+Activated script with id of: 2
+LUA MESSAGE: 010383778082004575391523850935.000000100.000000
+Activated script with id of: 2
+LUA MESSAGE: 010383778082004575391523850935.000000100.000000
+Activated script with id of: 2
+LUA MESSAGE: 010383778082004575391523850935.000000100.000000
+Activated script with id of: 2
+LUA MESSAGE: 010383778082004575391523850935.000000100.000000
+Activated script with id of: 2
+LUA MESSAGE: 010383778082004575391523850935.000000100.000000
+Activated script with id of: 2
+LUA MESSAGE: 010383778082004575391523850935.000000100.000000
+Activated script with id of: 2
+LUA MESSAGE: 010383778082004575391523850935.000000100.000000
+Activated script with id of: 2
+LUA MESSAGE: 010383778082004575391523850935.000000100.000000
+Activated script with id of: 2
+LUA MESSAGE: 010383778082004575391523850935.000000100.000000
+Activated script with id of: 2
+LUA MESSAGE: 010383778082004575391523850935.000000100.000000
+Activated script with id of: 2
+LUA MESSAGE: 010383778082004575391523850935.000000100.000000
+Activated script with id of: 2
+LUA MESSAGE: 010383778082004575391523850935.000000100.000000
+Activated script with id of: 2
+LUA MESSAGE: 010383778082004575391523850935.000000100.000000
+Activated script with id of: 2
+LUA MESSAGE: 010383778082004575391523850935.000000100.000000
+
+
+
+### LOG: Sat Mar 21 17:06:17 2020 ###
+
+CREATE: Starting world creation at time: 793.976013
+CREATE: Finished world creation at time: 4273.860840 (Elapsed: 3479.884766ms)
+Loaded all 3 music files.
+Loaded all 2 sound files.
+Loading dialogue. 1297 bytes to read.
+Successfully Loaded Script File: /home/davis-dev/.exploratory/Fear Of The Dark/Assets/Scripts/Script_selected_makeHouse.txt, and given id of: 0
+Successfully Loaded Script File: /home/davis-dev/.exploratory/Fear Of The Dark/Assets/Scripts/Script_player_makeHouse.txt, and given id of: 1
+Dialogue loaded! (24 bytes)
+Loading flags. 125 bytes to read.
+Loaded flag with id of 0 and value of 0
+Loaded flag with id of 1 and value of 0
+Loaded flag with id of 2 and value of 0
+Loaded flag with id of 3 and value of 0
+Loaded flag with id of 4 and value of 0
+Loaded flag with id of 5 and value of 0
+Flags loaded! (24 bytes)
+Loading trade tables. 180 bytes to read.
+Loaded trade tables! (24 bytes)
+Successfully Loaded Script File: /home/davis-dev/.exploratory/Fear Of The Dark/Assets/Scripts/TEST_SCRIPT.txt, and given id of: 2
+Activated script with id of: 2
+LUA MESSAGE: 017589953818136784536150208545.000000100.000000
+Activated script with id of: 2
+LUA MESSAGE: 017589953818136784536150208545.000000100.000000
+LUA MESSAGE: 7.7063317298889
+LUA MESSAGE: 10.0
+Activated script with id of: 2
+LUA MESSAGE: 017589953818136784536150208545.000000100.000000
+LUA MESSAGE: 7.7063317298889
+LUA MESSAGE: 10.0
+Activated script with id of: 2
+LUA MESSAGE: 017589953818136784536150208545.000000100.000000
+LUA MESSAGE: 7.7063317298889
+LUA MESSAGE: 10.0
+Activated script with id of: 2
+LUA MESSAGE: 017589953818136784536150208545.000000100.000000
+LUA MESSAGE: 7.7063317298889
+LUA MESSAGE: 10.0
+Activated script with id of: 2
+LUA MESSAGE: 017589953818136784536150208545.000000100.000000
+LUA MESSAGE: 7.7063317298889
+LUA MESSAGE: 10.0
+Activated script with id of: 2
+LUA MESSAGE: 017589953818136784536150208545.000000100.000000
+LUA MESSAGE: 7.7063317298889
+LUA MESSAGE: 10.0
+Activated script with id of: 2
+LUA MESSAGE: 017589953818136784536150208545.000000100.000000
+LUA MESSAGE: 7.7063317298889
+LUA MESSAGE: 10.0
+Activated script with id of: 2
+LUA MESSAGE: 017589953818136784536150208545.000000100.000000
+LUA MESSAGE: 7.7063317298889
+LUA MESSAGE: 10.0
+Activated script with id of: 2
+LUA MESSAGE: 017589953818136784536150208545.000000100.000000
+LUA MESSAGE: 7.7063317298889
+LUA MESSAGE: 10.0
+Activated script with id of: 2
+LUA MESSAGE: 017589953818136784536150208545.000000100.000000
+LUA MESSAGE: 7.7063317298889
+LUA MESSAGE: 10.0
+Activated script with id of: 2
+LUA MESSAGE: 017589953818136784536150208545.000000100.000000
+LUA MESSAGE: 7.7063317298889
+LUA MESSAGE: 10.0
+Activated script with id of: 2
+LUA MESSAGE: 017589953818136784536150208545.000000100.000000
+LUA MESSAGE: 7.7063317298889
+LUA MESSAGE: 10.0
+Activated script with id of: 2
+LUA MESSAGE: 017589953818136784536150208545.000000100.000000
+LUA MESSAGE: 7.7063317298889
+LUA MESSAGE: 10.0
+Activated script with id of: 2
+LUA MESSAGE: 017589953818136784536150208545.000000100.000000
+LUA MESSAGE: 7.7063317298889
+LUA MESSAGE: 10.0
+Activated script with id of: 2
+LUA MESSAGE: 017589953818136784536150208545.000000100.000000
+LUA MESSAGE: 7.7063317298889
+LUA MESSAGE: 10.0
+Activated script with id of: 2
+LUA MESSAGE: 017589953818136784536150208545.000000100.000000
+LUA MESSAGE: 7.7063317298889
+LUA MESSAGE: 10.0
+Activated script with id of: 2
+LUA MESSAGE: 017589953818136784536150208545.000000100.000000
+LUA MESSAGE: 7.7063317298889
+LUA MESSAGE: 10.0
+Activated script with id of: 2
+LUA MESSAGE: 017589953818136784536150208545.000000100.000000
+LUA MESSAGE: 7.7063317298889
+LUA MESSAGE: 10.0
+Activated script with id of: 2
+LUA MESSAGE: 017589953818136784536150208545.000000100.000000
+LUA MESSAGE: 7.7063317298889
+LUA MESSAGE: 10.0
+Activated script with id of: 2
+LUA MESSAGE: 017589953818136784536150208545.000000100.000000
+LUA MESSAGE: 7.7063317298889
+LUA MESSAGE: 10.0
+Activated script with id of: 2
+LUA MESSAGE: 017589953818136784536150208545.000000100.000000
+LUA MESSAGE: 7.7063317298889
+LUA MESSAGE: 10.0
+Activated script with id of: 2
+LUA MESSAGE: 017589953818136784536150208545.000000100.000000
+LUA MESSAGE: 7.7063317298889
+LUA MESSAGE: 10.0
+Activated script with id of: 2
+LUA MESSAGE: 017589953818136784536150208545.000000100.000000
+LUA MESSAGE: 7.7063317298889
+LUA MESSAGE: 10.0
+Activated script with id of: 2
+LUA MESSAGE: 017589953818136784536150208545.000000100.000000
+LUA MESSAGE: 7.7063317298889
+LUA MESSAGE: 10.0
+Activated script with id of: 2
+LUA MESSAGE: 017589953818136784536150208545.000000100.000000
+LUA MESSAGE: 7.7063317298889
+LUA MESSAGE: 10.0
+
+
+
+### LOG: Sat Mar 21 17:10:56 2020 ###
+
+CREATE: Starting world creation at time: 769.223022
+CREATE: Finished world creation at time: 4138.090820 (Elapsed: 3368.867676ms)
+Loaded all 3 music files.
+Loaded all 2 sound files.
+Loading dialogue. 1297 bytes to read.
+Successfully Loaded Script File: /home/davis-dev/.exploratory/Fear Of The Dark/Assets/Scripts/Script_selected_makeHouse.txt, and given id of: 0
+Successfully Loaded Script File: /home/davis-dev/.exploratory/Fear Of The Dark/Assets/Scripts/Script_player_makeHouse.txt, and given id of: 1
+Dialogue loaded! (24 bytes)
+Loading flags. 125 bytes to read.
+Loaded flag with id of 0 and value of 0
+Loaded flag with id of 1 and value of 0
+Loaded flag with id of 2 and value of 0
+Loaded flag with id of 3 and value of 0
+Loaded flag with id of 4 and value of 0
+Loaded flag with id of 5 and value of 0
+Flags loaded! (24 bytes)
+Loading trade tables. 180 bytes to read.
+Loaded trade tables! (24 bytes)
+Successfully Loaded Script File: /home/davis-dev/.exploratory/Fear Of The Dark/Assets/Scripts/TEST_SCRIPT.txt, and given id of: 2
+Activated script with id of: 2
+LUA MESSAGE: 09387193011104537888788874955.000000100.000000
+LUA MESSAGE: 23.5
+LUA MESSAGE: 10.0
+
+
+
+### LOG: Sat Mar 21 17:14:27 2020 ###
+
+CREATE: Starting world creation at time: 1209.415039
+CREATE: Finished world creation at time: 4574.405762 (Elapsed: 3364.990723ms)
+Loaded all 3 music files.
+Loaded all 2 sound files.
+Loading dialogue. 1297 bytes to read.
+Successfully Loaded Script File: /home/davis-dev/.exploratory/Fear Of The Dark/Assets/Scripts/Script_selected_makeHouse.txt, and given id of: 0
+Successfully Loaded Script File: /home/davis-dev/.exploratory/Fear Of The Dark/Assets/Scripts/Script_player_makeHouse.txt, and given id of: 1
+Dialogue loaded! (24 bytes)
+Loading flags. 125 bytes to read.
+Loaded flag with id of 0 and value of 0
+Loaded flag with id of 1 and value of 0
+Loaded flag with id of 2 and value of 0
+Loaded flag with id of 3 and value of 0
+Loaded flag with id of 4 and value of 0
+Loaded flag with id of 5 and value of 0
+Flags loaded! (24 bytes)
+Loading trade tables. 180 bytes to read.
+Loaded trade tables! (24 bytes)
+Successfully Loaded Script File: /home/davis-dev/.exploratory/Fear Of The Dark/Assets/Scripts/TEST_SCRIPT.txt, and given id of: 2
+Activated script with id of: 2
+LUA MESSAGE: 01057849158153188842315424109795.000000100.000000
+LUA MESSAGE: 25.323905944824
+LUA MESSAGE: 10.0
+Activated script with id of: 2
+LUA MESSAGE: 01057849158153188842315424109795.000000100.000000
+LUA MESSAGE: 28.235912322998
+LUA MESSAGE: 10.0
+Activated script with id of: 2
+LUA MESSAGE: 01057849158153188842315424109795.000000100.000000
+LUA MESSAGE: 30.939765930176
+LUA MESSAGE: 10.0
+Activated script with id of: 2
+LUA MESSAGE: 01057849158153188842315424109795.000000100.000000
+LUA MESSAGE: 33.851608276367
+LUA MESSAGE: 10.0
+Activated script with id of: 2
+LUA MESSAGE: 01057849158153188842315424109795.000000100.000000
+LUA MESSAGE: 36.139484405518
+LUA MESSAGE: 10.0
+Activated script with id of: 2
+LUA MESSAGE: 01057849158153188842315424109795.000000100.000000
+LUA MESSAGE: 37.015377044678
+LUA MESSAGE: 10.0
+Activated script with id of: 2
+LUA MESSAGE: 01057849158153188842315424109795.000000100.000000
+LUA MESSAGE: 34.668125152588
+LUA MESSAGE: 10.0
+Activated script with id of: 2
+LUA MESSAGE: 01057849158153188842315424109795.000000100.000000
+LUA MESSAGE: 32.534259796143
+LUA MESSAGE: 10.0
+Activated script with id of: 2
+LUA MESSAGE: 01057849158153188842315424109795.000000100.000000
+LUA MESSAGE: 30.400379180908
+LUA MESSAGE: 10.0
+Activated script with id of: 2
+LUA MESSAGE: 01057849158153188842315424109795.000000100.000000
+LUA MESSAGE: 28.47988319397
+LUA MESSAGE: 10.0
+Activated script with id of: 2
+LUA MESSAGE: 01057849158153188842315424109795.000000100.000000
+LUA MESSAGE: 26.345998764038
+LUA MESSAGE: 10.0
+Activated script with id of: 2
+LUA MESSAGE: 01057849158153188842315424109795.000000100.000000
+LUA MESSAGE: 25.209787368774
+LUA MESSAGE: 9.571249961853
+Activated script with id of: 2
+LUA MESSAGE: 01057849158153188842315424109795.000000100.000000
+LUA MESSAGE: 25.5
+LUA MESSAGE: 9.0
+Activated script with id of: 2
+LUA MESSAGE: 01057849158153188842315424109795.000000100.000000
+LUA MESSAGE: 25.5
+LUA MESSAGE: 9.0
+Activated script with id of: 2
+LUA MESSAGE: 01057849158153188842315424109795.000000100.000000
+LUA MESSAGE: 25.5
+LUA MESSAGE: 9.0
+Activated script with id of: 2
+LUA MESSAGE: 01057849158153188842315424109795.000000100.000000
+LUA MESSAGE: 28.672485351562
+LUA MESSAGE: 13.006331443787
+Activated script with id of: 2
+LUA MESSAGE: 01057849158153188842315424109795.000000100.000000
+LUA MESSAGE: 30.804605484009
+LUA MESSAGE: 12.73858165741
+Activated script with id of: 2
+LUA MESSAGE: 01057849158153188842315424109795.000000100.000000
+LUA MESSAGE: 33.410541534424
+LUA MESSAGE: 10.165497779846
+Activated script with id of: 2
+LUA MESSAGE: 01057849158153188842315424109795.000000100.000000
+LUA MESSAGE: 34.354629516602
+LUA MESSAGE: 10.0
+Activated script with id of: 2
+LUA MESSAGE: 01057849158153188842315424109795.000000100.000000
+LUA MESSAGE: 32.0
+LUA MESSAGE: 9.2650003433228
+Activated script with id of: 2
+LUA MESSAGE: 01057849158153188842315424109795.000000100.000000
+LUA MESSAGE: 32.0
+LUA MESSAGE: 9.0
+Activated script with id of: 2
+LUA MESSAGE: 01057849158153188842315424109795.000000100.000000
+LUA MESSAGE: 33.071460723877
+LUA MESSAGE: 9.0
+Activated script with id of: 2
+LUA MESSAGE: 01057849158153188842315424109795.000000100.000000
+LUA MESSAGE: 33.5
+LUA MESSAGE: 9.0
+Activated script with id of: 2
+LUA MESSAGE: 01057849158153188842315424109795.000000100.000000
+LUA MESSAGE: 32.42248916626
+LUA MESSAGE: 10.473499298096
+Activated script with id of: 2
+LUA MESSAGE: 01057849158153188842315424109795.000000100.000000
+LUA MESSAGE: 30.790950775146
+LUA MESSAGE: 10.0
+Activated script with id of: 2
+LUA MESSAGE: 01057849158153188842315424109795.000000100.000000
+LUA MESSAGE: 31.962238311768
+LUA MESSAGE: 9.9795837402344
+Activated script with id of: 2
+LUA MESSAGE: 01057849158153188842315424109795.000000100.000000
+LUA MESSAGE: 32.0
+LUA MESSAGE: 8.6525001525879
+Activated script with id of: 2
+LUA MESSAGE: 01057849158153188842315424109795.000000100.000000
+LUA MESSAGE: 32.0
+LUA MESSAGE: 7.9999995231628
+Activated script with id of: 2
+LUA MESSAGE: 01057849158153188842315424109795.000000100.000000
+LUA MESSAGE: 32.0
+LUA MESSAGE: 7.9999995231628
+Activated script with id of: 2
+LUA MESSAGE: 01057849158153188842315424109795.000000100.000000
+LUA MESSAGE: 31.595190048218
+LUA MESSAGE: 12.089748382568
+Activated script with id of: 2
+LUA MESSAGE: 01057849158153188842315424109795.000000100.000000
+LUA MESSAGE: 29.571950912476
+LUA MESSAGE: 11.281831741333
+Activated script with id of: 2
+LUA MESSAGE: 01057849158153188842315424109795.000000100.000000
+LUA MESSAGE: 27.612325668335
+LUA MESSAGE: 10.0
+Activated script with id of: 2
+LUA MESSAGE: 01057849158153188842315424109795.000000100.000000
+LUA MESSAGE: 27.5
+LUA MESSAGE: 9.0
+Activated script with id of: 2
+LUA MESSAGE: 01057849158153188842315424109795.000000100.000000
+LUA MESSAGE: 27.5
+LUA MESSAGE: 9.0
+
+
+
+### LOG: Sat Mar 21 17:16:36 2020 ###
+
+CREATE: Starting world creation at time: 799.028015
+CREATE: Finished world creation at time: 4312.770996 (Elapsed: 3513.742920ms)
+Loaded all 3 music files.
+Loaded all 2 sound files.
+Loading dialogue. 1297 bytes to read.
+Successfully Loaded Script File: /home/davis-dev/.exploratory/Fear Of The Dark/Assets/Scripts/Script_selected_makeHouse.txt, and given id of: 0
+Successfully Loaded Script File: /home/davis-dev/.exploratory/Fear Of The Dark/Assets/Scripts/Script_player_makeHouse.txt, and given id of: 1
+Dialogue loaded! (24 bytes)
+Loading flags. 125 bytes to read.
+Loaded flag with id of 0 and value of 0
+Loaded flag with id of 1 and value of 0
+Loaded flag with id of 2 and value of 0
+Loaded flag with id of 3 and value of 0
+Loaded flag with id of 4 and value of 0
+Loaded flag with id of 5 and value of 0
+Flags loaded! (24 bytes)
+Loading trade tables. 180 bytes to read.
+Loaded trade tables! (24 bytes)
+Successfully Loaded Script File: /home/davis-dev/.exploratory/Fear Of The Dark/Assets/Scripts/TEST_SCRIPT.txt, and given id of: 2
+Activated script with id of: 2
+LUA MESSAGE: 04234026613513494883752635.000000100.000000
+LUA MESSAGE: 19.5
+LUA MESSAGE: 10.0
+Activated script with id of: 2
+LUA MESSAGE: 04234026613513494883752635.000000100.000000
+LUA MESSAGE: 22.443470001221
+LUA MESSAGE: 10.0
+
+
+
+### LOG: Sat Mar 21 17:17:00 2020 ###
+
+CREATE: Starting world creation at time: 756.036011
+CREATE: Finished world creation at time: 4281.721191 (Elapsed: 3525.685059ms)
+Loaded all 3 music files.
+Loaded all 2 sound files.
+Loading dialogue. 1297 bytes to read.
+Successfully Loaded Script File: /home/davis-dev/.exploratory/Fear Of The Dark/Assets/Scripts/Script_selected_makeHouse.txt, and given id of: 0
+Successfully Loaded Script File: /home/davis-dev/.exploratory/Fear Of The Dark/Assets/Scripts/Script_player_makeHouse.txt, and given id of: 1
+Dialogue loaded! (24 bytes)
+Loading flags. 125 bytes to read.
+Loaded flag with id of 0 and value of 0
+Loaded flag with id of 1 and value of 0
+Loaded flag with id of 2 and value of 0
+Loaded flag with id of 3 and value of 0
+Loaded flag with id of 4 and value of 0
+Loaded flag with id of 5 and value of 0
+Flags loaded! (24 bytes)
+Loading trade tables. 180 bytes to read.
+Loaded trade tables! (24 bytes)
+Successfully Loaded Script File: /home/davis-dev/.exploratory/Fear Of The Dark/Assets/Scripts/TEST_SCRIPT.txt, and given id of: 2
+Activated script with id of: 2
+LUA MESSAGE: 049339416205040381719174208415.000000100.000000
+LUA MESSAGE: 19.704692840576
+LUA MESSAGE: 10.0
+Activated script with id of: 2
+LUA MESSAGE: 049339416205040381719174208415.000000100.000000
+LUA MESSAGE: 19.72172164917
+LUA MESSAGE: 10.0
+Activated script with id of: 2
+LUA MESSAGE: 049339416205040381719174208415.000000100.000000
+LUA MESSAGE: 27.5
+LUA MESSAGE: 10.0
+Activated script with id of: 2
+LUA MESSAGE: 049339416205040381719174208415.000000100.000000
+LUA MESSAGE: 35.537929534912
+LUA MESSAGE: 10.0
+Activated script with id of: 2
+LUA MESSAGE: 049339416205040381719174208415.000000100.000000
+LUA MESSAGE: 36.5
+LUA MESSAGE: 8.8770837783813
+Activated script with id of: 2
+LUA MESSAGE: 049339416205040381719174208415.000000100.000000
+LUA MESSAGE: 36.5
+LUA MESSAGE: 8.8412485122681
+Activated script with id of: 2
+LUA MESSAGE: 049339416205040381719174208415.000000100.000000
+LUA MESSAGE: 36.5
+LUA MESSAGE: 8.8499984741211
+Activated script with id of: 2
+LUA MESSAGE: 049339416205040381719174208415.000000100.000000
+LUA MESSAGE: 36.5
+LUA MESSAGE: 6.5014972686768
+Activated script with id of: 2
+LUA MESSAGE: 049339416205040381719174208415.000000100.000000
+LUA MESSAGE: 36.380569458008
+LUA MESSAGE: 2.9999997615814
+Activated script with id of: 2
+LUA MESSAGE: 049339416205040381719174208415.000000100.000000
+LUA MESSAGE: 36.0
+LUA MESSAGE: 2.9999997615814
+Activated script with id of: 2
+LUA MESSAGE: 049339416205040381719174208415.000000100.000000
+LUA MESSAGE: 36.0
+LUA MESSAGE: 2.9999997615814
+Activated script with id of: 2
+LUA MESSAGE: 049339416205040381719174208415.000000100.000000
+LUA MESSAGE: 36.0
+LUA MESSAGE: 6.4404993057251
+Activated script with id of: 2
+LUA MESSAGE: 049339416205040381719174208415.000000100.000000
+LUA MESSAGE: 35.0
+LUA MESSAGE: 6.9999995231628
+Activated script with id of: 2
+LUA MESSAGE: 049339416205040381719174208415.000000100.000000
+LUA MESSAGE: 40.189968109131
+LUA MESSAGE: 10.08874797821
+Activated script with id of: 2
+LUA MESSAGE: 049339416205040381719174208415.000000100.000000
+LUA MESSAGE: 41.5
+LUA MESSAGE: 7.0
+Activated script with id of: 2
+LUA MESSAGE: 049339416205040381719174208415.000000100.000000
+LUA MESSAGE: 45.600353240967
+LUA MESSAGE: 10.0
+Activated script with id of: 2
+LUA MESSAGE: 049339416205040381719174208415.000000100.000000
+LUA MESSAGE: 47.240428924561
+LUA MESSAGE: 10.0
+Activated script with id of: 2
+LUA MESSAGE: 049339416205040381719174208415.000000100.000000
+LUA MESSAGE: 48.5
+LUA MESSAGE: 9.2650003433228
+Activated script with id of: 2
+LUA MESSAGE: 049339416205040381719174208415.000000100.000000
+LUA MESSAGE: 48.5
+LUA MESSAGE: 6.8762493133545
+Activated script with id of: 2
+LUA MESSAGE: 049339416205040381719174208415.000000100.000000
+LUA MESSAGE: 63.387691497803
+LUA MESSAGE: 11.501498222351
+Activated script with id of: 2
+LUA MESSAGE: 049339416205040381719174208415.000000100.000000
+LUA MESSAGE: 64.5
+LUA MESSAGE: 8.7207469940186
+Activated script with id of: 2
+LUA MESSAGE: 049339416205040381719174208415.000000100.000000
+LUA MESSAGE: 70.5
+LUA MESSAGE: 10.0
+Activated script with id of: 2
+LUA MESSAGE: 049339416205040381719174208415.000000100.000000
+LUA MESSAGE: 70.5
+LUA MESSAGE: 13.266081809998
+Activated script with id of: 2
+LUA MESSAGE: 049339416205040381719174208415.000000100.000000
+LUA MESSAGE: 70.5
+LUA MESSAGE: 15.087749481201
+Activated script with id of: 2
+LUA MESSAGE: 049339416205040381719174208415.000000100.000000
+LUA MESSAGE: 70.915390014648
+LUA MESSAGE: 16.841249465942
+Activated script with id of: 2
+LUA MESSAGE: 049339416205040381719174208415.000000100.000000
+LUA MESSAGE: 72.783889770508
+LUA MESSAGE: 16.940998077393
+Activated script with id of: 2
+LUA MESSAGE: 049339416205040381719174208415.000000100.000000
+LUA MESSAGE: 74.444778442383
+LUA MESSAGE: 16.399000167847
+Activated script with id of: 2
+LUA MESSAGE: 049339416205040381719174208415.000000100.000000
+LUA MESSAGE: 76.313278198242
+LUA MESSAGE: 19.071249008179
+Activated script with id of: 2
+LUA MESSAGE: 049339416205040381719174208415.000000100.000000
+LUA MESSAGE: 78.389389038086
+LUA MESSAGE: 20.100831985474
+Activated script with id of: 2
+LUA MESSAGE: 049339416205040381719174208415.000000100.000000
+LUA MESSAGE: 80.46549987793
+LUA MESSAGE: 22.087749481201
+Activated script with id of: 2
+LUA MESSAGE: 049339416205040381719174208415.000000100.000000
+LUA MESSAGE: 82.749221801758
+LUA MESSAGE: 24.006332397461
+Activated script with id of: 2
+LUA MESSAGE: 049339416205040381719174208415.000000100.000000
+LUA MESSAGE: 84.410110473633
+LUA MESSAGE: 24.0
+Activated script with id of: 2
+LUA MESSAGE: 049339416205040381719174208415.000000100.000000
+LUA MESSAGE: 86.486221313477
+LUA MESSAGE: 24.0
+Activated script with id of: 2
+LUA MESSAGE: 049339416205040381719174208415.000000100.000000
+LUA MESSAGE: 88.354721069336
+LUA MESSAGE: 24.0
+Activated script with id of: 2
+
+
+
+### LOG: Sat Mar 21 17:18:47 2020 ###
+
+CREATE: Starting world creation at time: 862.848999
+CREATE: Finished world creation at time: 4387.945801 (Elapsed: 3525.096680ms)
+Loaded all 3 music files.
+Loaded all 2 sound files.
+Loading dialogue. 1297 bytes to read.
+Successfully Loaded Script File: /home/davis-dev/.exploratory/Fear Of The Dark/Assets/Scripts/Script_selected_makeHouse.txt, and given id of: 0
+Successfully Loaded Script File: /home/davis-dev/.exploratory/Fear Of The Dark/Assets/Scripts/Script_player_makeHouse.txt, and given id of: 1
+Dialogue loaded! (24 bytes)
+Loading flags. 125 bytes to read.
+Loaded flag with id of 0 and value of 0
+Loaded flag with id of 1 and value of 0
+Loaded flag with id of 2 and value of 0
+Loaded flag with id of 3 and value of 0
+Loaded flag with id of 4 and value of 0
+Loaded flag with id of 5 and value of 0
+Flags loaded! (24 bytes)
+Loading trade tables. 180 bytes to read.
+Loaded trade tables! (24 bytes)
+Successfully Loaded Script File: /home/davis-dev/.exploratory/Fear Of The Dark/Assets/Scripts/TEST_SCRIPT.txt, and given id of: 2
+Activated script with id of: 2
+LUA MESSAGE: 0959561347192297067014695674825.000000100.000000
+LUA MESSAGE: 6.8724141120911
+LUA MESSAGE: 12.620332717896
+Activated script with id of: 2
+LUA MESSAGE: 0959561347192297067014695674825.000000100.000000
+LUA MESSAGE: 8.7444095611572
+LUA MESSAGE: 14.006331443787
+Activated script with id of: 2
+LUA MESSAGE: 0959561347192297067014695674825.000000100.000000
+LUA MESSAGE: 10.824401855469
+LUA MESSAGE: 15.135749816895
+Activated script with id of: 2
+LUA MESSAGE: 0959561347192297067014695674825.000000100.000000
+LUA MESSAGE: 12.90439414978
+LUA MESSAGE: 17.594499588013
+Activated script with id of: 2
+LUA MESSAGE: 0959561347192297067014695674825.000000100.000000
+LUA MESSAGE: 14.984386444092
+LUA MESSAGE: 18.011581420898
+Activated script with id of: 2
+LUA MESSAGE: 0959561347192297067014695674825.000000100.000000
+LUA MESSAGE: 17.064384460449
+LUA MESSAGE: 20.85599899292
+Activated script with id of: 2
+LUA MESSAGE: 0959561347192297067014695674825.000000100.000000
+LUA MESSAGE: 19.144386291504
+LUA MESSAGE: 22.089748382568
+Activated script with id of: 2
+LUA MESSAGE: 0959561347192297067014695674825.000000100.000000
+LUA MESSAGE: 21.016387939453
+LUA MESSAGE: 23.473499298096
+Activated script with id of: 2
+LUA MESSAGE: 0959561347192297067014695674825.000000100.000000
+LUA MESSAGE: 23.096389770508
+LUA MESSAGE: 25.72808265686
+Activated script with id of: 2
+LUA MESSAGE: 0959561347192297067014695674825.000000100.000000
+LUA MESSAGE: 25.176391601562
+LUA MESSAGE: 25.940998077393
+Activated script with id of: 2
+LUA MESSAGE: 0959561347192297067014695674825.000000100.000000
+LUA MESSAGE: 26.840393066406
+LUA MESSAGE: 25.399000167847
+Activated script with id of: 2
+LUA MESSAGE: 0959561347192297067014695674825.000000100.000000
+LUA MESSAGE: 28.712394714355
+LUA MESSAGE: 28.071249008179
+Activated script with id of: 2
+LUA MESSAGE: 0959561347192297067014695674825.000000100.000000
+LUA MESSAGE: 30.584396362305
+LUA MESSAGE: 29.089748382568
+Activated script with id of: 2
+LUA MESSAGE: 0959561347192297067014695674825.000000100.000000
+LUA MESSAGE: 32.456398010254
+LUA MESSAGE: 30.473499298096
+Activated script with id of: 2
+LUA MESSAGE: 0959561347192297067014695674825.000000100.000000
+LUA MESSAGE: 34.120399475098
+LUA MESSAGE: 32.440494537354
+Activated script with id of: 2
+LUA MESSAGE: 0959561347192297067014695674825.000000100.000000
+LUA MESSAGE: 36.200401306152
+LUA MESSAGE: 33.061744689941
+Activated script with id of: 2
+LUA MESSAGE: 0959561347192297067014695674825.000000100.000000
+LUA MESSAGE: 40.568405151367
+LUA MESSAGE: 37.089748382568
+Activated script with id of: 2
+LUA MESSAGE: 0959561347192297067014695674825.000000100.000000
+LUA MESSAGE: 42.648406982422
+LUA MESSAGE: 38.790828704834
+Activated script with id of: 2
+LUA MESSAGE: 0959561347192297067014695674825.000000100.000000
+LUA MESSAGE: 45.560409545898
+LUA MESSAGE: 41.089748382568
+Activated script with id of: 2
+LUA MESSAGE: 0959561347192297067014695674825.000000100.000000
+LUA MESSAGE: 46.808410644531
+LUA MESSAGE: 41.398998260498
+Activated script with id of: 2
+LUA MESSAGE: 0959561347192297067014695674825.000000100.000000
+LUA MESSAGE: 48.68041229248
+LUA MESSAGE: 44.07124710083
+Activated script with id of: 2
+LUA MESSAGE: 0959561347192297067014695674825.000000100.000000
+LUA MESSAGE: 50.968414306641
+LUA MESSAGE: 45.091495513916
+Activated script with id of: 2
+LUA MESSAGE: 0959561347192297067014695674825.000000100.000000
+LUA MESSAGE: 56.376419067383
+LUA MESSAGE: 49.011577606201
+Activated script with id of: 2
+LUA MESSAGE: 0959561347192297067014695674825.000000100.000000
+LUA MESSAGE: 60.744422912598
+LUA MESSAGE: 53.100830078125
+Activated script with id of: 2
+LUA MESSAGE: 0959561347192297067014695674825.000000100.000000
+LUA MESSAGE: 62.723167419434
+LUA MESSAGE: 53.0
+Activated script with id of: 2
+LUA MESSAGE: 0959561347192297067014695674825.000000100.000000
+LUA MESSAGE: 65.011009216309
+LUA MESSAGE: 52.979583740234
+Activated script with id of: 2
+LUA MESSAGE: 0959561347192297067014695674825.000000100.000000
+LUA MESSAGE: 67.291969299316
+LUA MESSAGE: 54.781497955322
+Activated script with id of: 2
+LUA MESSAGE: 0959561347192297067014695674825.000000100.000000
+LUA MESSAGE: 69.572929382324
+LUA MESSAGE: 56.627746582031
+Activated script with id of: 2
+LUA MESSAGE: 0959561347192297067014695674825.000000100.000000
+LUA MESSAGE: 71.853889465332
+LUA MESSAGE: 56.432331085205
+Activated script with id of: 2
+LUA MESSAGE: 0959561347192297067014695674825.000000100.000000
+LUA MESSAGE: 74.362945556641
+LUA MESSAGE: 58.620330810547
+Activated script with id of: 2
+LUA MESSAGE: 0959561347192297067014695674825.000000100.000000
+LUA MESSAGE: 76.643905639648
+LUA MESSAGE: 60.058246612549
+Activated script with id of: 2
+LUA MESSAGE: 0959561347192297067014695674825.000000100.000000
+LUA MESSAGE: 78.696769714355
+LUA MESSAGE: 61.135746002197
+Activated script with id of: 2
+LUA MESSAGE: 0959561347192297067014695674825.000000100.000000
+LUA MESSAGE: 80.977729797363
+LUA MESSAGE: 63.594493865967
+Activated script with id of: 2
+LUA MESSAGE: 0959561347192297067014695674825.000000100.000000
+LUA MESSAGE: 83.03059387207
+LUA MESSAGE: 64.061752319336
+Activated script with id of: 2
+
+
+
+### LOG: Sat Mar 21 17:19:22 2020 ###
+
+CREATE: Starting world creation at time: 826.958984
+CREATE: Finished world creation at time: 4359.950195 (Elapsed: 3532.991211ms)
+Loaded all 3 music files.
+Loaded all 2 sound files.
+Loading dialogue. 1297 bytes to read.
+Successfully Loaded Script File: /home/davis-dev/.exploratory/Fear Of The Dark/Assets/Scripts/Script_selected_makeHouse.txt, and given id of: 0
+Successfully Loaded Script File: /home/davis-dev/.exploratory/Fear Of The Dark/Assets/Scripts/Script_player_makeHouse.txt, and given id of: 1
+Dialogue loaded! (24 bytes)
+Loading flags. 125 bytes to read.
+Loaded flag with id of 0 and value of 0
+Loaded flag with id of 1 and value of 0
+Loaded flag with id of 2 and value of 0
+Loaded flag with id of 3 and value of 0
+Loaded flag with id of 4 and value of 0
+Loaded flag with id of 5 and value of 0
+Flags loaded! (24 bytes)
+Loading trade tables. 180 bytes to read.
+Loaded trade tables! (24 bytes)
+Successfully Loaded Script File: /home/davis-dev/.exploratory/Fear Of The Dark/Assets/Scripts/TEST_SCRIPT.txt, and given id of: 2
+Activated script with id of: 2
+LUA MESSAGE: 0591042546628752923763686765.000000100.000000
+LUA MESSAGE: 7.2899994850159
+LUA MESSAGE: 47.815002441406
+Activated script with id of: 2
+LUA MESSAGE: 0591042546628752923763686765.000000100.000000
+LUA MESSAGE: 9.5798358917236
+LUA MESSAGE: 30.522096633911
+Activated script with id of: 2
+LUA MESSAGE: 0591042546628752923763686765.000000100.000000
+LUA MESSAGE: 11.24517250061
+LUA MESSAGE: 16.393775939941
+Activated script with id of: 2
+LUA MESSAGE: 0591042546628752923763686765.000000100.000000
+LUA MESSAGE: 12.845058441162
+LUA MESSAGE: 10.0
+Activated script with id of: 2
+LUA MESSAGE: 0591042546628752923763686765.000000100.000000
+LUA MESSAGE: 13.569336891174
+LUA MESSAGE: 10.0
+Activated script with id of: 2
+LUA MESSAGE: 0591042546628752923763686765.000000100.000000
+LUA MESSAGE: 15.339194297791
+LUA MESSAGE: 10.0
+Activated script with id of: 2
+LUA MESSAGE: 0591042546628752923763686765.000000100.000000
+LUA MESSAGE: 16.170602798462
+LUA MESSAGE: 10.0
+Activated script with id of: 2
+LUA MESSAGE: 0591042546628752923763686765.000000100.000000
+LUA MESSAGE: 16.482189178467
+LUA MESSAGE: 12.620332717896
+Activated script with id of: 2
+LUA MESSAGE: 0591042546628752923763686765.000000100.000000
+LUA MESSAGE: 16.654357910156
+LUA MESSAGE: 14.089748382568
+Activated script with id of: 2
+LUA MESSAGE: 0591042546628752923763686765.000000100.000000
+LUA MESSAGE: 16.798620223999
+LUA MESSAGE: 14.0
+Activated script with id of: 2
+LUA MESSAGE: 0591042546628752923763686765.000000100.000000
+LUA MESSAGE: 18.100120544434
+LUA MESSAGE: 14.0
+Activated script with id of: 2
+LUA MESSAGE: 0591042546628752923763686765.000000100.000000
+LUA MESSAGE: 20.193840026855
+LUA MESSAGE: 14.0
+Activated script with id of: 2
+LUA MESSAGE: 0591042546628752923763686765.000000100.000000
+LUA MESSAGE: 21.309581756592
+LUA MESSAGE: 14.0
+Activated script with id of: 2
+LUA MESSAGE: 0591042546628752923763686765.000000100.000000
+LUA MESSAGE: 21.73818397522
+LUA MESSAGE: 14.0
+Activated script with id of: 2
+LUA MESSAGE: 0591042546628752923763686765.000000100.000000
+LUA MESSAGE: 21.848058700562
+LUA MESSAGE: 14.0
+Activated script with id of: 2
+LUA MESSAGE: 0591042546628752923763686765.000000100.000000
+LUA MESSAGE: 21.927461624146
+LUA MESSAGE: 14.0
+Activated script with id of: 2
+LUA MESSAGE: 0591042546628752923763686765.000000100.000000
+LUA MESSAGE: 23.748376846313
+LUA MESSAGE: 14.0
+Activated script with id of: 2
+LUA MESSAGE: 0591042546628752923763686765.000000100.000000
+LUA MESSAGE: 25.400873184204
+LUA MESSAGE: 14.0
+Activated script with id of: 2
+LUA MESSAGE: 0591042546628752923763686765.000000100.000000
+LUA MESSAGE: 27.259931564331
+LUA MESSAGE: 14.0
+Activated script with id of: 2
+LUA MESSAGE: 0591042546628752923763686765.000000100.000000
+LUA MESSAGE: 29.118989944458
+LUA MESSAGE: 14.0
+Activated script with id of: 2
+LUA MESSAGE: 0591042546628752923763686765.000000100.000000
+LUA MESSAGE: 30.918144226074
+LUA MESSAGE: 14.0
+Activated script with id of: 2
+LUA MESSAGE: 0591042546628752923763686765.000000100.000000
+LUA MESSAGE: 31.775768280029
+LUA MESSAGE: 14.0
+Activated script with id of: 2
+LUA MESSAGE: 0591042546628752923763686765.000000100.000000
+LUA MESSAGE: 32.1979637146
+LUA MESSAGE: 14.0
+Activated script with id of: 2
+LUA MESSAGE: 0591042546628752923763686765.000000100.000000
+LUA MESSAGE: 32.353050231934
+LUA MESSAGE: 14.0
+Activated script with id of: 2
+LUA MESSAGE: 0591042546628752923763686765.000000100.000000
+LUA MESSAGE: 32.527320861816
+LUA MESSAGE: 15.790832519531
+Activated script with id of: 2
+LUA MESSAGE: 0591042546628752923763686765.000000100.000000
+LUA MESSAGE: 34.857975006104
+LUA MESSAGE: 18.006332397461
+Activated script with id of: 2
+LUA MESSAGE: 0591042546628752923763686765.000000100.000000
+LUA MESSAGE: 36.636699676514
+LUA MESSAGE: 18.0
+Activated script with id of: 2
+LUA MESSAGE: 0591042546628752923763686765.000000100.000000
+LUA MESSAGE: 37.658256530762
+LUA MESSAGE: 18.0
+Activated script with id of: 2
+LUA MESSAGE: 0591042546628752923763686765.000000100.000000
+LUA MESSAGE: 38.02611541748
+LUA MESSAGE: 19.790832519531
+Activated script with id of: 2
+LUA MESSAGE: 0591042546628752923763686765.000000100.000000
+LUA MESSAGE: 36.852100372314
+LUA MESSAGE: 22.006332397461
+Activated script with id of: 2
+LUA MESSAGE: 0591042546628752923763686765.000000100.000000
+LUA MESSAGE: 34.348972320557
+LUA MESSAGE: 21.979583740234
+Activated script with id of: 2
+LUA MESSAGE: 0591042546628752923763686765.000000100.000000
+LUA MESSAGE: 33.097911834717
+LUA MESSAGE: 22.738498687744
+Activated script with id of: 2
+LUA MESSAGE: 0591042546628752923763686765.000000100.000000
+LUA MESSAGE: 34.600479125977
+LUA MESSAGE: 25.106248855591
+Activated script with id of: 2
+LUA MESSAGE: 0591042546628752923763686765.000000100.000000
+LUA MESSAGE: 37.439865112305
+LUA MESSAGE: 24.719497680664
+Activated script with id of: 2
+
+
+
+### LOG: Sat Mar 21 17:19:40 2020 ###
+
+CREATE: Starting world creation at time: 801.953979
+CREATE: Finished world creation at time: 4333.394043 (Elapsed: 3531.439941ms)
+Loaded all 3 music files.
+Loaded all 2 sound files.
+Loading dialogue. 1297 bytes to read.
+Successfully Loaded Script File: /home/davis-dev/.exploratory/Fear Of The Dark/Assets/Scripts/Script_selected_makeHouse.txt, and given id of: 0
+Successfully Loaded Script File: /home/davis-dev/.exploratory/Fear Of The Dark/Assets/Scripts/Script_player_makeHouse.txt, and given id of: 1
+Dialogue loaded! (24 bytes)
+Loading flags. 125 bytes to read.
+Loaded flag with id of 0 and value of 0
+Loaded flag with id of 1 and value of 0
+Loaded flag with id of 2 and value of 0
+Loaded flag with id of 3 and value of 0
+Loaded flag with id of 4 and value of 0
+Loaded flag with id of 5 and value of 0
+Flags loaded! (24 bytes)
+Loading trade tables. 180 bytes to read.
+Loaded trade tables! (24 bytes)
+Successfully Loaded Script File: /home/davis-dev/.exploratory/Fear Of The Dark/Assets/Scripts/TEST_SCRIPT.txt, and given id of: 2
+Activated script with id of: 2
+LUA MESSAGE: 04879642729983053572651244165.000000100.000000
+LUA MESSAGE: 5.0
+LUA MESSAGE: 99.428344726562
+Activated script with id of: 2
+LUA MESSAGE: 04879642729983053572651244165.000000100.000000
+LUA MESSAGE: 5.0
+LUA MESSAGE: 96.876251220703
+Activated script with id of: 2
+LUA MESSAGE: 04879642729983053572651244165.000000100.000000
+LUA MESSAGE: 5.0
+LUA MESSAGE: 93.364593505859
+Activated script with id of: 2
+LUA MESSAGE: 04879642729983053572651244165.000000100.000000
+LUA MESSAGE: 5.0
+LUA MESSAGE: 88.546249389648
+Activated script with id of: 2
+LUA MESSAGE: 04879642729983053572651244165.000000100.000000
+LUA MESSAGE: 5.0
+LUA MESSAGE: 83.258331298828
+Activated script with id of: 2
+LUA MESSAGE: 04879642729983053572651244165.000000100.000000
+LUA MESSAGE: 5.0
+LUA MESSAGE: 76.970008850098
+Activated script with id of: 2
+LUA MESSAGE: 04879642729983053572651244165.000000100.000000
+LUA MESSAGE: 5.0
+LUA MESSAGE: 68.558326721191
+Activated script with id of: 2
+LUA MESSAGE: 04879642729983053572651244165.000000100.000000
+LUA MESSAGE: 5.0
+LUA MESSAGE: 61.392082214355
+Activated script with id of: 2
+LUA MESSAGE: 04879642729983053572651244165.000000100.000000
+LUA MESSAGE: 5.2499332427979
+LUA MESSAGE: 50.693748474121
+Activated script with id of: 2
+LUA MESSAGE: 04879642729983053572651244165.000000100.000000
+LUA MESSAGE: 6.8736662864685
+LUA MESSAGE: 38.6887550354
+Activated script with id of: 2
+LUA MESSAGE: 04879642729983053572651244165.000000100.000000
+LUA MESSAGE: 8.5390005111694
+LUA MESSAGE: 25.377101898193
+Activated script with id of: 2
+LUA MESSAGE: 04879642729983053572651244165.000000100.000000
+LUA MESSAGE: 9.9961700439453
+LUA MESSAGE: 12.657529830933
+Activated script with id of: 2
+LUA MESSAGE: 04879642729983053572651244165.000000100.000000
+LUA MESSAGE: 11.117460250854
+LUA MESSAGE: 10.0
+Activated script with id of: 2
+LUA MESSAGE: 04879642729983053572651244165.000000100.000000
+LUA MESSAGE: 12.352048873901
+LUA MESSAGE: 10.0
+Activated script with id of: 2
+LUA MESSAGE: 04879642729983053572651244165.000000100.000000
+LUA MESSAGE: 13.998167037964
+LUA MESSAGE: 10.0
+Activated script with id of: 2
+LUA MESSAGE: 04879642729983053572651244165.000000100.000000
+LUA MESSAGE: 15.438520431519
+LUA MESSAGE: 10.0
+Activated script with id of: 2
+LUA MESSAGE: 04879642729983053572651244165.000000100.000000
+LUA MESSAGE: 17.084638595581
+LUA MESSAGE: 10.0
+Activated script with id of: 2
+LUA MESSAGE: 04879642729983053572651244165.000000100.000000
+LUA MESSAGE: 20.421531677246
+LUA MESSAGE: 10.0
+Activated script with id of: 2
+LUA MESSAGE: 04879642729983053572651244165.000000100.000000
+LUA MESSAGE: 20.982046127319
+LUA MESSAGE: 10.0
+Activated script with id of: 2
+LUA MESSAGE: 04879642729983053572651244165.000000100.000000
+LUA MESSAGE: 21.241565704346
+LUA MESSAGE: 10.0
+Activated script with id of: 2
+LUA MESSAGE: 04879642729983053572651244165.000000100.000000
+LUA MESSAGE: 21.393911361694
+LUA MESSAGE: 10.0
+Activated script with id of: 2
+LUA MESSAGE: 04879642729983053572651244165.000000100.000000
+LUA MESSAGE: 21.401519775391
+LUA MESSAGE: 11.135749816895
+Activated script with id of: 2
+LUA MESSAGE: 04879642729983053572651244165.000000100.000000
+LUA MESSAGE: 21.407785415649
+LUA MESSAGE: 13.440498352051
+Activated script with id of: 2
+LUA MESSAGE: 04879642729983053572651244165.000000100.000000
+LUA MESSAGE: 21.414747238159
+LUA MESSAGE: 14.061748504639
+Activated script with id of: 2
+LUA MESSAGE: 04879642729983053572651244165.000000100.000000
+LUA MESSAGE: 21.541666030884
+LUA MESSAGE: 16.087749481201
+Activated script with id of: 2
+LUA MESSAGE: 04879642729983053572651244165.000000100.000000
+LUA MESSAGE: 23.042961120605
+LUA MESSAGE: 17.72808265686
+Activated script with id of: 2
+LUA MESSAGE: 04879642729983053572651244165.000000100.000000
+LUA MESSAGE: 25.071063995361
+LUA MESSAGE: 17.940998077393
+Activated script with id of: 2
+LUA MESSAGE: 04879642729983053572651244165.000000100.000000
+LUA MESSAGE: 26.693546295166
+LUA MESSAGE: 17.399000167847
+Activated script with id of: 2
+LUA MESSAGE: 04879642729983053572651244165.000000100.000000
+LUA MESSAGE: 28.316562652588
+LUA MESSAGE: 20.071249008179
+Activated script with id of: 2
+LUA MESSAGE: 04879642729983053572651244165.000000100.000000
+LUA MESSAGE: 26.998048782349
+LUA MESSAGE: 21.058248519897
+Activated script with id of: 2
+LUA MESSAGE: 04879642729983053572651244165.000000100.000000
+LUA MESSAGE: 24.840505599976
+LUA MESSAGE: 22.135749816895
+Activated script with id of: 2
+LUA MESSAGE: 04879642729983053572651244165.000000100.000000
+LUA MESSAGE: 22.682962417603
+LUA MESSAGE: 24.440500259399
+Activated script with id of: 2
+LUA MESSAGE: 04879642729983053572651244165.000000100.000000
+LUA MESSAGE: 20.756647109985
+LUA MESSAGE: 25.091499328613
+Activated script with id of: 2
+LUA MESSAGE: 04879642729983053572651244165.000000100.000000
+LUA MESSAGE: 22.510869979858
+LUA MESSAGE: 27.364250183105
+Activated script with id of: 2
+
+
+
+### LOG: Sat Mar 21 17:19:57 2020 ###
+
+CREATE: Starting world creation at time: 764.752991
+CREATE: Finished world creation at time: 4302.737793 (Elapsed: 3537.984863ms)
+Loaded all 3 music files.
+Loaded all 2 sound files.
+Loading dialogue. 1297 bytes to read.
+Successfully Loaded Script File: /home/davis-dev/.exploratory/Fear Of The Dark/Assets/Scripts/Script_selected_makeHouse.txt, and given id of: 0
+Successfully Loaded Script File: /home/davis-dev/.exploratory/Fear Of The Dark/Assets/Scripts/Script_player_makeHouse.txt, and given id of: 1
+Dialogue loaded! (24 bytes)
+Loading flags. 125 bytes to read.
+Loaded flag with id of 0 and value of 0
+Loaded flag with id of 1 and value of 0
+Loaded flag with id of 2 and value of 0
+Loaded flag with id of 3 and value of 0
+Loaded flag with id of 4 and value of 0
+Loaded flag with id of 5 and value of 0
+Flags loaded! (24 bytes)
+Loading trade tables. 180 bytes to read.
+Loaded trade tables! (24 bytes)
+Successfully Loaded Script File: /home/davis-dev/.exploratory/Fear Of The Dark/Assets/Scripts/TEST_SCRIPT.txt, and given id of: 2
+Activated script with id of: 2
+LUA MESSAGE: 0679147499211033819116371808055.000000100.000000
+LUA MESSAGE: 6.8736662864685
+LUA MESSAGE: 66.251243591309
+Activated script with id of: 2
+LUA MESSAGE: 0679147499211033819116371808055.000000100.000000
+LUA MESSAGE: 8.5390005111694
+LUA MESSAGE: 56.206245422363
+Activated script with id of: 2
+LUA MESSAGE: 0679147499211033819116371808055.000000100.000000
+LUA MESSAGE: 10.204337120056
+LUA MESSAGE: 44.854587554932
+Activated script with id of: 2
+LUA MESSAGE: 0679147499211033819116371808055.000000100.000000
+LUA MESSAGE: 11.661506652832
+LUA MESSAGE: 33.850009918213
+Activated script with id of: 2
+LUA MESSAGE: 0679147499211033819116371808055.000000100.000000
+LUA MESSAGE: 13.118676185608
+LUA MESSAGE: 21.845020294189
+Activated script with id of: 2
+LUA MESSAGE: 0679147499211033819116371808055.000000100.000000
+LUA MESSAGE: 15.0
+LUA MESSAGE: 9.0
+Activated script with id of: 2
+LUA MESSAGE: 0679147499211033819116371808055.000000100.000000
+LUA MESSAGE: 15.816988945007
+LUA MESSAGE: 10.0
+Activated script with id of: 2
+LUA MESSAGE: 0679147499211033819116371808055.000000100.000000
+LUA MESSAGE: 17.246433258057
+LUA MESSAGE: 10.0
+Activated script with id of: 2
+LUA MESSAGE: 0679147499211033819116371808055.000000100.000000
+LUA MESSAGE: 18.67587852478
+LUA MESSAGE: 11.135749816895
+Activated script with id of: 2
+LUA MESSAGE: 0679147499211033819116371808055.000000100.000000
+LUA MESSAGE: 20.309530258179
+LUA MESSAGE: 13.266081809998
+Activated script with id of: 2
+LUA MESSAGE: 0679147499211033819116371808055.000000100.000000
+LUA MESSAGE: 21.943181991577
+LUA MESSAGE: 14.089748382568
+Activated script with id of: 2
+LUA MESSAGE: 0679147499211033819116371808055.000000100.000000
+LUA MESSAGE: 23.372627258301
+LUA MESSAGE: 13.73858165741
+Activated script with id of: 2
+LUA MESSAGE: 0679147499211033819116371808055.000000100.000000
+LUA MESSAGE: 25.006278991699
+LUA MESSAGE: 12.112248420715
+Activated script with id of: 2
+LUA MESSAGE: 0679147499211033819116371808055.000000100.000000
+LUA MESSAGE: 26.435724258423
+LUA MESSAGE: 10.0
+Activated script with id of: 2
+LUA MESSAGE: 0679147499211033819116371808055.000000100.000000
+LUA MESSAGE: 27.865169525146
+LUA MESSAGE: 10.0
+Activated script with id of: 2
+LUA MESSAGE: 0679147499211033819116371808055.000000100.000000
+LUA MESSAGE: 29.70302772522
+LUA MESSAGE: 12.85599899292
+Activated script with id of: 2
+LUA MESSAGE: 0679147499211033819116371808055.000000100.000000
+LUA MESSAGE: 31.132472991943
+LUA MESSAGE: 13.93399810791
+Activated script with id of: 2
+LUA MESSAGE: 0679147499211033819116371808055.000000100.000000
+LUA MESSAGE: 32.561912536621
+LUA MESSAGE: 14.011581420898
+Activated script with id of: 2
+LUA MESSAGE: 0679147499211033819116371808055.000000100.000000
+LUA MESSAGE: 33.343933105469
+LUA MESSAGE: 12.641331672668
+Activated script with id of: 2
+LUA MESSAGE: 0679147499211033819116371808055.000000100.000000
+LUA MESSAGE: 31.784488677979
+LUA MESSAGE: 10.432247161865
+Activated script with id of: 2
+LUA MESSAGE: 0679147499211033819116371808055.000000100.000000
+LUA MESSAGE: 29.865207672119
+LUA MESSAGE: 10.0
+Activated script with id of: 2
+LUA MESSAGE: 0679147499211033819116371808055.000000100.000000
+LUA MESSAGE: 27.94592666626
+LUA MESSAGE: 12.364249229431
+Activated script with id of: 2
+LUA MESSAGE: 0679147499211033819116371808055.000000100.000000
+LUA MESSAGE: 25.546825408936
+LUA MESSAGE: 14.006331443787
+Activated script with id of: 2
+LUA MESSAGE: 0679147499211033819116371808055.000000100.000000
+LUA MESSAGE: 23.387634277344
+LUA MESSAGE: 13.73858165741
+Activated script with id of: 2
+LUA MESSAGE: 0679147499211033819116371808055.000000100.000000
+LUA MESSAGE: 22.409675598145
+LUA MESSAGE: 11.817081451416
+Activated script with id of: 2
+LUA MESSAGE: 0679147499211033819116371808055.000000100.000000
+LUA MESSAGE: 25.095336914062
+LUA MESSAGE: 10.0
+Activated script with id of: 2
+LUA MESSAGE: 0679147499211033819116371808055.000000100.000000
+LUA MESSAGE: 27.664964675903
+LUA MESSAGE: 12.85599899292
+Activated script with id of: 2
+LUA MESSAGE: 0679147499211033819116371808055.000000100.000000
+LUA MESSAGE: 30.00098991394
+LUA MESSAGE: 14.089748382568
+Activated script with id of: 2
+LUA MESSAGE: 0679147499211033819116371808055.000000100.000000
+LUA MESSAGE: 32.103412628174
+LUA MESSAGE: 13.454498291016
+Activated script with id of: 2
+LUA MESSAGE: 0679147499211033819116371808055.000000100.000000
+LUA MESSAGE: 33.972248077393
+LUA MESSAGE: 11.501498222351
+Activated script with id of: 2
+LUA MESSAGE: 0679147499211033819116371808055.000000100.000000
+LUA MESSAGE: 35.841083526611
+LUA MESSAGE: 11.135749816895
+Activated script with id of: 2
+LUA MESSAGE: 0679147499211033819116371808055.000000100.000000
+LUA MESSAGE: 37.70991897583
+LUA MESSAGE: 13.266081809998
+Activated script with id of: 2
+LUA MESSAGE: 0679147499211033819116371808055.000000100.000000
+LUA MESSAGE: 39.812358856201
+LUA MESSAGE: 14.100831985474
+Activated script with id of: 2
+LUA MESSAGE: 0679147499211033819116371808055.000000100.000000
+LUA MESSAGE: 41.68119430542
+LUA MESSAGE: 13.454498291016
+Activated script with id of: 2
+
+
+
+### LOG: Sat Mar 21 17:21:34 2020 ###
+
+CREATE: Starting world creation at time: 789.989990
+CREATE: Finished world creation at time: 4295.324219 (Elapsed: 3505.334229ms)
+Loaded all 3 music files.
+Loaded all 2 sound files.
+Loading dialogue. 1297 bytes to read.
+Successfully Loaded Script File: /home/davis-dev/.exploratory/Fear Of The Dark/Assets/Scripts/Script_selected_makeHouse.txt, and given id of: 0
+Successfully Loaded Script File: /home/davis-dev/.exploratory/Fear Of The Dark/Assets/Scripts/Script_player_makeHouse.txt, and given id of: 1
+Dialogue loaded! (24 bytes)
+Loading flags. 125 bytes to read.
+Loaded flag with id of 0 and value of 0
+Loaded flag with id of 1 and value of 0
+Loaded flag with id of 2 and value of 0
+Loaded flag with id of 3 and value of 0
+Loaded flag with id of 4 and value of 0
+Loaded flag with id of 5 and value of 0
+Flags loaded! (24 bytes)
+Loading trade tables. 180 bytes to read.
+Loaded trade tables! (24 bytes)
+Successfully Loaded Script File: /home/davis-dev/.exploratory/Fear Of The Dark/Assets/Scripts/TEST_SCRIPT.txt, and given id of: 2
+Activated script with id of: 2
+LUA MESSAGE: 01697234501130435192598513685.000000100.000000
+LUA MESSAGE: 5.0
+LUA MESSAGE: 70.783744812012
+Activated script with id of: 2
+LUA MESSAGE: 01697234501130435192598513685.000000100.000000
+LUA MESSAGE: 5.0
+LUA MESSAGE: 57.53332901001
+Activated script with id of: 2
+LUA MESSAGE: 01697234501130435192598513685.000000100.000000
+LUA MESSAGE: 5.0
+LUA MESSAGE: 49.264583587646
+Activated script with id of: 2
+LUA MESSAGE: 01697234501130435192598513685.000000100.000000
+LUA MESSAGE: 5.0
+LUA MESSAGE: 41.812503814697
+Activated script with id of: 2
+LUA MESSAGE: 01697234501130435192598513685.000000100.000000
+LUA MESSAGE: 5.0
+LUA MESSAGE: 30.522096633911
+Activated script with id of: 2
+LUA MESSAGE: 01697234501130435192598513685.000000100.000000
+LUA MESSAGE: 5.0
+LUA MESSAGE: 20.048355102539
+Activated script with id of: 2
+LUA MESSAGE: 01697234501130435192598513685.000000100.000000
+LUA MESSAGE: 5.0
+LUA MESSAGE: 10.758781433105
+Activated script with id of: 2
+LUA MESSAGE: 01697234501130435192598513685.000000100.000000
+LUA MESSAGE: 5.0
+LUA MESSAGE: 10.0
+Activated script with id of: 2
+LUA MESSAGE: 01697234501130435192598513685.000000100.000000
+LUA MESSAGE: 5.0
+LUA MESSAGE: 10.0
+Activated script with id of: 2
+LUA MESSAGE: 01697234501130435192598513685.000000100.000000
+LUA MESSAGE: 5.0
+LUA MESSAGE: 10.0
+Activated script with id of: 2
+LUA MESSAGE: 01697234501130435192598513685.000000100.000000
+LUA MESSAGE: 5.0
+LUA MESSAGE: 10.0
+Activated script with id of: 2
+LUA MESSAGE: 01697234501130435192598513685.000000100.000000
+LUA MESSAGE: 5.0
+LUA MESSAGE: 10.0
+Activated script with id of: 2
+LUA MESSAGE: 01697234501130435192598513685.000000100.000000
+LUA MESSAGE: 5.0
+LUA MESSAGE: 10.0
+Activated script with id of: 2
+LUA MESSAGE: 01697234501130435192598513685.000000100.000000
+LUA MESSAGE: 5.0
+LUA MESSAGE: 10.0
+Activated script with id of: 2
+LUA MESSAGE: 01697234501130435192598513685.000000100.000000
+LUA MESSAGE: 5.0
+LUA MESSAGE: 10.0
+Activated script with id of: 2
+LUA MESSAGE: 01697234501130435192598513685.000000100.000000
+LUA MESSAGE: 5.0
+LUA MESSAGE: 10.0
+Activated script with id of: 2
+LUA MESSAGE: 01697234501130435192598513685.000000100.000000
+LUA MESSAGE: 5.0
+LUA MESSAGE: 10.0
+Activated script with id of: 2
+LUA MESSAGE: 01697234501130435192598513685.000000100.000000
+LUA MESSAGE: 5.0
+LUA MESSAGE: 10.0
+Activated script with id of: 2
+LUA MESSAGE: 01697234501130435192598513685.000000100.000000
+LUA MESSAGE: 5.0
+LUA MESSAGE: 10.0
+Activated script with id of: 2
+LUA MESSAGE: 01697234501130435192598513685.000000100.000000
+LUA MESSAGE: 5.0
+LUA MESSAGE: 10.0
+Activated script with id of: 2
+LUA MESSAGE: 01697234501130435192598513685.000000100.000000
+LUA MESSAGE: 5.0
+LUA MESSAGE: 10.0
+Activated script with id of: 2
+LUA MESSAGE: 01697234501130435192598513685.000000100.000000
+LUA MESSAGE: 8.115626335144
+LUA MESSAGE: 10.0
+Activated script with id of: 2
+LUA MESSAGE: 01697234501130435192598513685.000000100.000000
+LUA MESSAGE: 8.1204557418823
+LUA MESSAGE: 10.0
+Activated script with id of: 2
+LUA MESSAGE: 01697234501130435192598513685.000000100.000000
+LUA MESSAGE: 8.1218957901001
+LUA MESSAGE: 10.0
+Activated script with id of: 2
+LUA MESSAGE: 01697234501130435192598513685.000000100.000000
+LUA MESSAGE: 8.122368812561
+LUA MESSAGE: 10.0
+Activated script with id of: 2
+LUA MESSAGE: 01697234501130435192598513685.000000100.000000
+LUA MESSAGE: 8.1225385665894
+LUA MESSAGE: 10.0
+Activated script with id of: 2
+LUA MESSAGE: 01697234501130435192598513685.000000100.000000
+LUA MESSAGE: 8.1226053237915
+LUA MESSAGE: 10.0
+Activated script with id of: 2
+LUA MESSAGE: 01697234501130435192598513685.000000100.000000
+LUA MESSAGE: 8.1226577758789
+LUA MESSAGE: 10.0
+Activated script with id of: 2
+LUA MESSAGE: 01697234501130435192598513685.000000100.000000
+LUA MESSAGE: 8.1226625442505
+LUA MESSAGE: 10.0
+Activated script with id of: 2
+LUA MESSAGE: 01697234501130435192598513685.000000100.000000
+LUA MESSAGE: 8.1226625442505
+LUA MESSAGE: 10.0
+Activated script with id of: 2
+LUA MESSAGE: 01697234501130435192598513685.000000100.000000
+LUA MESSAGE: 8.1226625442505
+LUA MESSAGE: 10.0
+Activated script with id of: 2
+LUA MESSAGE: 01697234501130435192598513685.000000100.000000
+LUA MESSAGE: 8.1226625442505
+LUA MESSAGE: 10.0
+Activated script with id of: 2
+LUA MESSAGE: 01697234501130435192598513685.000000100.000000
+LUA MESSAGE: 8.1226625442505
+LUA MESSAGE: 10.0
+Activated script with id of: 2
+LUA MESSAGE: 01697234501130435192598513685.000000100.000000
+LUA MESSAGE: 8.1226625442505
+LUA MESSAGE: 10.0
+Activated script with id of: 2
+
+
+
+### LOG: Sat Mar 21 17:21:58 2020 ###
+
+CREATE: Starting world creation at time: 811.031982
+CREATE: Finished world creation at time: 4372.393066 (Elapsed: 3561.361084ms)
+Loaded all 3 music files.
+Loaded all 2 sound files.
+Loading dialogue. 1297 bytes to read.
+Successfully Loaded Script File: /home/davis-dev/.exploratory/Fear Of The Dark/Assets/Scripts/Script_selected_makeHouse.txt, and given id of: 0
+Successfully Loaded Script File: /home/davis-dev/.exploratory/Fear Of The Dark/Assets/Scripts/Script_player_makeHouse.txt, and given id of: 1
+Dialogue loaded! (24 bytes)
+Loading flags. 125 bytes to read.
+Loaded flag with id of 0 and value of 0
+Loaded flag with id of 1 and value of 0
+Loaded flag with id of 2 and value of 0
+Loaded flag with id of 3 and value of 0
+Loaded flag with id of 4 and value of 0
+Loaded flag with id of 5 and value of 0
+Flags loaded! (24 bytes)
+Loading trade tables. 180 bytes to read.
+Loaded trade tables! (24 bytes)
+Successfully Loaded Script File: /home/davis-dev/.exploratory/Fear Of The Dark/Assets/Scripts/TEST_SCRIPT.txt, and given id of: 2
+Activated script with id of: 2
+LUA MESSAGE: 0193038816863243789110566615155.000000100.000000
+LUA MESSAGE: 5.8748321533203
+LUA MESSAGE: 10.0
+Activated script with id of: 2
+LUA MESSAGE: 0193038816863243789110566615155.000000100.000000
+LUA MESSAGE: 5.8748321533203
+LUA MESSAGE: 10.0
+Activated script with id of: 2
+LUA MESSAGE: 0193038816863243789110566615155.000000100.000000
+LUA MESSAGE: 5.8748321533203
+LUA MESSAGE: 10.0
+Activated script with id of: 2
+LUA MESSAGE: 0193038816863243789110566615155.000000100.000000
+LUA MESSAGE: 5.8748321533203
+LUA MESSAGE: 10.0
+Activated script with id of: 2
+LUA MESSAGE: 0193038816863243789110566615155.000000100.000000
+LUA MESSAGE: 5.8748321533203
+LUA MESSAGE: 10.0
+Activated script with id of: 2
+LUA MESSAGE: 0193038816863243789110566615155.000000100.000000
+LUA MESSAGE: 5.8748321533203
+LUA MESSAGE: 10.0
+Activated script with id of: 2
+LUA MESSAGE: 0193038816863243789110566615155.000000100.000000
+LUA MESSAGE: 5.8748321533203
+LUA MESSAGE: 10.0
+Activated script with id of: 2
+LUA MESSAGE: 0193038816863243789110566615155.000000100.000000
+LUA MESSAGE: 5.8748321533203
+LUA MESSAGE: 10.0
+Activated script with id of: 2
+LUA MESSAGE: 0193038816863243789110566615155.000000100.000000
+LUA MESSAGE: 5.8748321533203
+LUA MESSAGE: 10.0
+Activated script with id of: 2
+LUA MESSAGE: 0193038816863243789110566615155.000000100.000000
+LUA MESSAGE: 5.8748321533203
+LUA MESSAGE: 10.0
+Activated script with id of: 2
+LUA MESSAGE: 0193038816863243789110566615155.000000100.000000
+LUA MESSAGE: 5.8748321533203
+LUA MESSAGE: 10.0
+Activated script with id of: 2
+LUA MESSAGE: 0193038816863243789110566615155.000000100.000000
+LUA MESSAGE: 5.8748321533203
+LUA MESSAGE: 10.0
+Activated script with id of: 2
+LUA MESSAGE: 0193038816863243789110566615155.000000100.000000
+LUA MESSAGE: 5.8748321533203
+LUA MESSAGE: 10.0
+Activated script with id of: 2
+LUA MESSAGE: 0193038816863243789110566615155.000000100.000000
+LUA MESSAGE: 5.8748321533203
+LUA MESSAGE: 10.0
+Activated script with id of: 2
+LUA MESSAGE: 0193038816863243789110566615155.000000100.000000
+LUA MESSAGE: 5.8748321533203
+LUA MESSAGE: 10.0
+Activated script with id of: 2
+LUA MESSAGE: 0193038816863243789110566615155.000000100.000000
+LUA MESSAGE: 5.8748321533203
+LUA MESSAGE: 10.0
+Activated script with id of: 2
+LUA MESSAGE: 0193038816863243789110566615155.000000100.000000
+LUA MESSAGE: 5.8748321533203
+LUA MESSAGE: 10.0
+Activated script with id of: 2
+LUA MESSAGE: 0193038816863243789110566615155.000000100.000000
+LUA MESSAGE: 5.8748321533203
+LUA MESSAGE: 10.0
+Activated script with id of: 2
+LUA MESSAGE: 0193038816863243789110566615155.000000100.000000
+LUA MESSAGE: 5.8748321533203
+LUA MESSAGE: 10.0
+Activated script with id of: 2
+LUA MESSAGE: 0193038816863243789110566615155.000000100.000000
+LUA MESSAGE: 5.8748321533203
+LUA MESSAGE: 10.0
+Activated script with id of: 2
+LUA MESSAGE: 0193038816863243789110566615155.000000100.000000
+LUA MESSAGE: 5.8748321533203
+LUA MESSAGE: 10.0
+Activated script with id of: 2
+LUA MESSAGE: 0193038816863243789110566615155.000000100.000000
+LUA MESSAGE: 5.8748321533203
+LUA MESSAGE: 10.0
+Activated script with id of: 2
+LUA MESSAGE: 0193038816863243789110566615155.000000100.000000
+LUA MESSAGE: 5.8748321533203
+LUA MESSAGE: 10.0
+Activated script with id of: 2
+LUA MESSAGE: 0193038816863243789110566615155.000000100.000000
+LUA MESSAGE: 5.8748321533203
+LUA MESSAGE: 10.0
+Activated script with id of: 2
+LUA MESSAGE: 0193038816863243789110566615155.000000100.000000
+LUA MESSAGE: 5.8748321533203
+LUA MESSAGE: 10.0
+Activated script with id of: 2
+LUA MESSAGE: 0193038816863243789110566615155.000000100.000000
+LUA MESSAGE: 5.8748321533203
+LUA MESSAGE: 10.0
+Activated script with id of: 2
+LUA MESSAGE: 0193038816863243789110566615155.000000100.000000
+LUA MESSAGE: 5.8748321533203
+LUA MESSAGE: 10.0
+Activated script with id of: 2
+LUA MESSAGE: 0193038816863243789110566615155.000000100.000000
+LUA MESSAGE: 5.8748321533203
+LUA MESSAGE: 10.0
+Activated script with id of: 2
+LUA MESSAGE: 0193038816863243789110566615155.000000100.000000
+LUA MESSAGE: 5.8748321533203
+LUA MESSAGE: 10.0
+Activated script with id of: 2
+LUA MESSAGE: 0193038816863243789110566615155.000000100.000000
+LUA MESSAGE: 5.8748321533203
+LUA MESSAGE: 10.0
+Activated script with id of: 2
+LUA MESSAGE: 0193038816863243789110566615155.000000100.000000
+LUA MESSAGE: 5.8748321533203
+LUA MESSAGE: 10.0
+Activated script with id of: 2
+LUA MESSAGE: 0193038816863243789110566615155.000000100.000000
+LUA MESSAGE: 5.8748321533203
+LUA MESSAGE: 10.0
+Activated script with id of: 2
+LUA MESSAGE: 0193038816863243789110566615155.000000100.000000
+LUA MESSAGE: 5.8748321533203
+LUA MESSAGE: 10.0
+Activated script with id of: 2
+LUA MESSAGE: 0193038816863243789110566615155.000000100.000000
+LUA MESSAGE: 5.8748321533203
+LUA MESSAGE: 10.0
+Activated script with id of: 2
+
+
+
+### LOG: Sat Mar 21 17:51:02 2020 ###
+
+CREATE: Starting world creation at time: 795.148010
+CREATE: Finished world creation at time: 4423.009766 (Elapsed: 3627.861816ms)
+Loaded all 3 music files.
+Loaded all 2 sound files.
+Loading dialogue. 1297 bytes to read.
+Successfully Loaded Script File: /home/davis-dev/.exploratory/Fear Of The Dark/Assets/Scripts/Script_selected_makeHouse.txt, and given id of: 0
+Successfully Loaded Script File: /home/davis-dev/.exploratory/Fear Of The Dark/Assets/Scripts/Script_player_makeHouse.txt, and given id of: 1
+Dialogue loaded! (24 bytes)
+Loading flags. 125 bytes to read.
+Loaded flag with id of 0 and value of 0
+Loaded flag with id of 1 and value of 0
+Loaded flag with id of 2 and value of 0
+Loaded flag with id of 3 and value of 0
+Loaded flag with id of 4 and value of 0
+Loaded flag with id of 5 and value of 0
+Flags loaded! (24 bytes)
+Loading trade tables. 180 bytes to read.
+Loaded trade tables! (24 bytes)
+Successfully Loaded Script File: /home/davis-dev/.exploratory/Fear Of The Dark/Assets/Scripts/TEST_SCRIPT.txt, and given id of: 2
+Activated script with id of: 2
+LUA MESSAGE: 0119781499168793411210865311225.000000100.000000
+LUA MESSAGE: 8.9553346633911
+LUA MESSAGE: 77.929595947266
+Activated script with id of: 2
+LUA MESSAGE: 0119781499168793411210865311225.000000100.000000
+LUA MESSAGE: 29.635307312012
+LUA MESSAGE: 10.0
+Activated script with id of: 2
+LUA MESSAGE: 0119781499168793411210865311225.000000100.000000
+LUA MESSAGE: 30.079755783081
+LUA MESSAGE: 10.0
+Activated script with id of: 2
+LUA MESSAGE: 0119781499168793411210865311225.000000100.000000
+LUA MESSAGE: 30.23984336853
+LUA MESSAGE: 10.0
+Activated script with id of: 2
+LUA MESSAGE: 0119781499168793411210865311225.000000100.000000
+LUA MESSAGE: 30.308753967285
+LUA MESSAGE: 10.0
+Activated script with id of: 2
+LUA MESSAGE: 0119781499168793411210865311225.000000100.000000
+LUA MESSAGE: 30.344497680664
+LUA MESSAGE: 10.0
+Activated script with id of: 2
+LUA MESSAGE: 0119781499168793411210865311225.000000100.000000
+LUA MESSAGE: 30.353805541992
+LUA MESSAGE: 10.0
+Activated script with id of: 2
+LUA MESSAGE: 0119781499168793411210865311225.000000100.000000
+LUA MESSAGE: 30.35781288147
+LUA MESSAGE: 10.0
+Activated script with id of: 2
+LUA MESSAGE: 0119781499168793411210865311225.000000100.000000
+LUA MESSAGE: 30.359233856201
+LUA MESSAGE: 10.0
+Activated script with id of: 2
+LUA MESSAGE: 0119781499168793411210865311225.000000100.000000
+LUA MESSAGE: 30.360149383545
+LUA MESSAGE: 10.0
+Activated script with id of: 2
+LUA MESSAGE: 0119781499168793411210865311225.000000100.000000
+LUA MESSAGE: 30.360471725464
+LUA MESSAGE: 10.0
+Activated script with id of: 2
+LUA MESSAGE: 0119781499168793411210865311225.000000100.000000
+LUA MESSAGE: 30.360662460327
+LUA MESSAGE: 10.0
+Activated script with id of: 2
+LUA MESSAGE: 0119781499168793411210865311225.000000100.000000
+LUA MESSAGE: 30.360759735107
+LUA MESSAGE: 10.0
+Activated script with id of: 2
+LUA MESSAGE: 0119781499168793411210865311225.000000100.000000
+LUA MESSAGE: 30.360799789429
+LUA MESSAGE: 10.0
+Activated script with id of: 2
+LUA MESSAGE: 0119781499168793411210865311225.000000100.000000
+LUA MESSAGE: 30.360818862915
+LUA MESSAGE: 10.0
+Activated script with id of: 2
+LUA MESSAGE: 0119781499168793411210865311225.000000100.000000
+LUA MESSAGE: 30.360830307007
+LUA MESSAGE: 10.0
+Activated script with id of: 2
+LUA MESSAGE: 0119781499168793411210865311225.000000100.000000
+LUA MESSAGE: 30.360830307007
+LUA MESSAGE: 10.0
+Activated script with id of: 2
+LUA MESSAGE: 0119781499168793411210865311225.000000100.000000
+LUA MESSAGE: 30.360830307007
+LUA MESSAGE: 10.0
+Activated script with id of: 2
+LUA MESSAGE: 0119781499168793411210865311225.000000100.000000
+LUA MESSAGE: 30.360830307007
+LUA MESSAGE: 10.0
+Activated script with id of: 2
+LUA MESSAGE: 0119781499168793411210865311225.000000100.000000
+LUA MESSAGE: 30.360830307007
+LUA MESSAGE: 10.0
+Activated script with id of: 2
+LUA MESSAGE: 0119781499168793411210865311225.000000100.000000
+LUA MESSAGE: 30.360830307007
+LUA MESSAGE: 10.0
+Activated script with id of: 2
+LUA MESSAGE: 0119781499168793411210865311225.000000100.000000
+LUA MESSAGE: 30.360830307007
+LUA MESSAGE: 10.0
+Activated script with id of: 2
+LUA MESSAGE: 0119781499168793411210865311225.000000100.000000
+LUA MESSAGE: 30.360830307007
+LUA MESSAGE: 10.0
+Activated script with id of: 2
+LUA MESSAGE: 0119781499168793411210865311225.000000100.000000
+LUA MESSAGE: 30.360830307007
+LUA MESSAGE: 10.0
+Activated script with id of: 2
+LUA MESSAGE: 0119781499168793411210865311225.000000100.000000
+LUA MESSAGE: 30.360830307007
+LUA MESSAGE: 10.0
+Activated script with id of: 2
+LUA MESSAGE: 0119781499168793411210865311225.000000100.000000
+LUA MESSAGE: 30.360830307007
+LUA MESSAGE: 10.0
+Activated script with id of: 2
+LUA MESSAGE: 0119781499168793411210865311225.000000100.000000
+LUA MESSAGE: 30.360830307007
+LUA MESSAGE: 10.0
+Activated script with id of: 2
+LUA MESSAGE: 0119781499168793411210865311225.000000100.000000
+LUA MESSAGE: 30.360830307007
+LUA MESSAGE: 10.0
+Activated script with id of: 2
+LUA MESSAGE: 0119781499168793411210865311225.000000100.000000
+LUA MESSAGE: 30.360830307007
+LUA MESSAGE: 10.0
+Activated script with id of: 2
+LUA MESSAGE: 0119781499168793411210865311225.000000100.000000
+LUA MESSAGE: 30.360830307007
+LUA MESSAGE: 10.0
+Activated script with id of: 2
+LUA MESSAGE: 0119781499168793411210865311225.000000100.000000
+LUA MESSAGE: 30.360830307007
+LUA MESSAGE: 10.0
+Activated script with id of: 2
+LUA MESSAGE: 0119781499168793411210865311225.000000100.000000
+LUA MESSAGE: 30.360830307007
+LUA MESSAGE: 10.0
+Activated script with id of: 2
+LUA MESSAGE: 0119781499168793411210865311225.000000100.000000
+LUA MESSAGE: 30.360830307007
+LUA MESSAGE: 10.0
+Activated script with id of: 2
+LUA MESSAGE: 0119781499168793411210865311225.000000100.000000
+LUA MESSAGE: 30.360830307007
+LUA MESSAGE: 10.0
+Activated script with id of: 2
+LUA MESSAGE: 0119781499168793411210865311225.000000100.000000
+LUA MESSAGE: 30.360830307007
+LUA MESSAGE: 10.0
+Activated script with id of: 2
+LUA MESSAGE: 0119781499168793411210865311225.000000100.000000
+LUA MESSAGE: 30.360830307007
+LUA MESSAGE: 10.0
+Activated script with id of: 2
+LUA MESSAGE: 0119781499168793411210865311225.000000100.000000
+LUA MESSAGE: 30.360830307007
+LUA MESSAGE: 10.0
+Activated script with id of: 2
+LUA MESSAGE: 0119781499168793411210865311225.000000100.000000
+LUA MESSAGE: 30.360830307007
+LUA MESSAGE: 10.0
+Activated script with id of: 2
+LUA MESSAGE: 0119781499168793411210865311225.000000100.000000
+LUA MESSAGE: 30.360830307007
+LUA MESSAGE: 10.0
+Activated script with id of: 2
+LUA MESSAGE: 0119781499168793411210865311225.000000100.000000
+LUA MESSAGE: 30.360830307007
+LUA MESSAGE: 10.0
+Activated script with id of: 2
+LUA MESSAGE: 0119781499168793411210865311225.000000100.000000
+LUA MESSAGE: 30.360830307007
+LUA MESSAGE: 10.0
+Activated script with id of: 2
+LUA MESSAGE: 0119781499168793411210865311225.000000100.000000
+LUA MESSAGE: 30.360830307007
+LUA MESSAGE: 10.0
+Activated script with id of: 2
+LUA MESSAGE: 0119781499168793411210865311225.000000100.000000
+LUA MESSAGE: 30.360830307007
+LUA MESSAGE: 10.0
+Activated script with id of: 2
+LUA MESSAGE: 0119781499168793411210865311225.000000100.000000
+LUA MESSAGE: 30.360830307007
+LUA MESSAGE: 10.0
+Activated script with id of: 2
+LUA MESSAGE: 0119781499168793411210865311225.000000100.000000
+LUA MESSAGE: 30.360830307007
+LUA MESSAGE: 10.0
+Activated script with id of: 2
+LUA MESSAGE: 0119781499168793411210865311225.000000100.000000
+LUA MESSAGE: 30.360830307007
+LUA MESSAGE: 10.0
+Activated script with id of: 2
+LUA MESSAGE: 0119781499168793411210865311225.000000100.000000
+LUA MESSAGE: 30.360830307007
+LUA MESSAGE: 10.0
+Activated script with id of: 2
+LUA MESSAGE: 0119781499168793411210865311225.000000100.000000
+LUA MESSAGE: 30.360830307007
+LUA MESSAGE: 10.0
+Activated script with id of: 2
+LUA MESSAGE: 0119781499168793411210865311225.000000100.000000
+LUA MESSAGE: 30.111108779907
+LUA MESSAGE: 10.0
+Activated script with id of: 2
+LUA MESSAGE: 0119781499168793411210865311225.000000100.000000
+LUA MESSAGE: 29.422819137573
+LUA MESSAGE: 10.0
+Activated script with id of: 2
+LUA MESSAGE: 0119781499168793411210865311225.000000100.000000
+LUA MESSAGE: 29.156164169312
+LUA MESSAGE: 10.0
+Activated script with id of: 2
+LUA MESSAGE: 0119781499168793411210865311225.000000100.000000
+LUA MESSAGE: 29.06011390686
+LUA MESSAGE: 10.0
+Activated script with id of: 2
+LUA MESSAGE: 0119781499168793411210865311225.000000100.000000
+LUA MESSAGE: 29.018768310547
+LUA MESSAGE: 10.0
+Activated script with id of: 2
+LUA MESSAGE: 0119781499168793411210865311225.000000100.000000
+LUA MESSAGE: 29.000970840454
+LUA MESSAGE: 10.0
+Activated script with id of: 2
+LUA MESSAGE: 0119781499168793411210865311225.000000100.000000
+LUA MESSAGE: 28.993310928345
+LUA MESSAGE: 10.0
+Activated script with id of: 2
+LUA MESSAGE: 0119781499168793411210865311225.000000100.000000
+LUA MESSAGE: 28.156963348389
+LUA MESSAGE: 10.0
+Activated script with id of: 2
+LUA MESSAGE: 0119781499168793411210865311225.000000100.000000
+LUA MESSAGE: 26.969430923462
+LUA MESSAGE: 10.0
+Activated script with id of: 2
+LUA MESSAGE: 0119781499168793411210865311225.000000100.000000
+LUA MESSAGE: 26.5
+LUA MESSAGE: 10.0
+Activated script with id of: 2
+LUA MESSAGE: 0119781499168793411210865311225.000000100.000000
+LUA MESSAGE: 26.915639877319
+LUA MESSAGE: 11.473499298096
+Activated script with id of: 2
+LUA MESSAGE: 0119781499168793411210865311225.000000100.000000
+LUA MESSAGE: 28.993009567261
+LUA MESSAGE: 13.728081703186
+Activated script with id of: 2
+LUA MESSAGE: 0119781499168793411210865311225.000000100.000000
+LUA MESSAGE: 30.862642288208
+LUA MESSAGE: 14.011581420898
+Activated script with id of: 2
+LUA MESSAGE: 0119781499168793411210865311225.000000100.000000
+LUA MESSAGE: 32.045768737793
+LUA MESSAGE: 14.0
+Activated script with id of: 2
+LUA MESSAGE: 0119781499168793411210865311225.000000100.000000
+LUA MESSAGE: 32.593559265137
+LUA MESSAGE: 14.0
+Activated script with id of: 2
+LUA MESSAGE: 0119781499168793411210865311225.000000100.000000
+LUA MESSAGE: 32.805786132812
+LUA MESSAGE: 14.0
+Activated script with id of: 2
+LUA MESSAGE: 0119781499168793411210865311225.000000100.000000
+LUA MESSAGE: 33.957530975342
+LUA MESSAGE: 16.620332717896
+Activated script with id of: 2
+LUA MESSAGE: 0119781499168793411210865311225.000000100.000000
+LUA MESSAGE: 36.153308868408
+LUA MESSAGE: 18.058248519897
+Activated script with id of: 2
+LUA MESSAGE: 0119781499168793411210865311225.000000100.000000
+LUA MESSAGE: 37.846252441406
+LUA MESSAGE: 18.0
+Activated script with id of: 2
+LUA MESSAGE: 0119781499168793411210865311225.000000100.000000
+LUA MESSAGE: 38.826816558838
+LUA MESSAGE: 18.0
+Activated script with id of: 2
+LUA MESSAGE: 0119781499168793411210865311225.000000100.000000
+LUA MESSAGE: 39.206707000732
+LUA MESSAGE: 18.0
+Activated script with id of: 2
+LUA MESSAGE: 0119781499168793411210865311225.000000100.000000
+LUA MESSAGE: 38.45890045166
+LUA MESSAGE: 19.473499298096
+Activated script with id of: 2
+LUA MESSAGE: 0119781499168793411210865311225.000000100.000000
+LUA MESSAGE: 36.454696655273
+LUA MESSAGE: 21.72808265686
+Activated script with id of: 2
+LUA MESSAGE: 0119781499168793411210865311225.000000100.000000
+LUA MESSAGE: 34.450492858887
+LUA MESSAGE: 21.940998077393
+Activated script with id of: 2
+LUA MESSAGE: 0119781499168793411210865311225.000000100.000000
+LUA MESSAGE: 34.058586120605
+LUA MESSAGE: 21.777584075928
+Activated script with id of: 2
+LUA MESSAGE: 0119781499168793411210865311225.000000100.000000
+LUA MESSAGE: 35.892101287842
+LUA MESSAGE: 24.266082763672
+Activated script with id of: 2
+LUA MESSAGE: 0119781499168793411210865311225.000000100.000000
+LUA MESSAGE: 37.929340362549
+LUA MESSAGE: 25.091499328613
+Activated script with id of: 2
+LUA MESSAGE: 0119781499168793411210865311225.000000100.000000
+LUA MESSAGE: 38.098503112793
+LUA MESSAGE: 26.135749816895
+Activated script with id of: 2
+LUA MESSAGE: 0119781499168793411210865311225.000000100.000000
+LUA MESSAGE: 36.051765441895
+LUA MESSAGE: 28.594499588013
+Activated script with id of: 2
+LUA MESSAGE: 0119781499168793411210865311225.000000100.000000
+LUA MESSAGE: 34.005027770996
+LUA MESSAGE: 29.011581420898
+Activated script with id of: 2
+LUA MESSAGE: 0119781499168793411210865311225.000000100.000000
+LUA MESSAGE: 35.347923278809
+LUA MESSAGE: 32.07124710083
+Activated script with id of: 2
+LUA MESSAGE: 0119781499168793411210865311225.000000100.000000
+LUA MESSAGE: 37.969268798828
+LUA MESSAGE: 33.091495513916
+Activated script with id of: 2
+LUA MESSAGE: 0119781499168793411210865311225.000000100.000000
+LUA MESSAGE: 37.404216766357
+LUA MESSAGE: 35.364246368408
+Activated script with id of: 2
+LUA MESSAGE: 0119781499168793411210865311225.000000100.000000
+LUA MESSAGE: 35.296798706055
+LUA MESSAGE: 36.933994293213
+Activated script with id of: 2
+LUA MESSAGE: 0119781499168793411210865311225.000000100.000000
+LUA MESSAGE: 33.189380645752
+LUA MESSAGE: 36.849994659424
+Activated script with id of: 2
+LUA MESSAGE: 0119781499168793411210865311225.000000100.000000
+LUA MESSAGE: 33.985774993896
+LUA MESSAGE: 37.135746002197
+Activated script with id of: 2
+LUA MESSAGE: 0119781499168793411210865311225.000000100.000000
+LUA MESSAGE: 36.069297790527
+LUA MESSAGE: 39.440494537354
+Activated script with id of: 2
+LUA MESSAGE: 0119781499168793411210865311225.000000100.000000
+LUA MESSAGE: 38.152820587158
+LUA MESSAGE: 40.091495513916
+Activated script with id of: 2
+LUA MESSAGE: 0119781499168793411210865311225.000000100.000000
+LUA MESSAGE: 38.245578765869
+LUA MESSAGE: 41.473495483398
+Activated script with id of: 2
+LUA MESSAGE: 0119781499168793411210865311225.000000100.000000
+LUA MESSAGE: 36.453277587891
+LUA MESSAGE: 43.440494537354
+Activated script with id of: 2
+LUA MESSAGE: 0119781499168793411210865311225.000000100.000000
+LUA MESSAGE: 34.851451873779
+LUA MESSAGE: 44.089748382568
+Activated script with id of: 2
+LUA MESSAGE: 0119781499168793411210865311225.000000100.000000
+LUA MESSAGE: 33.810371398926
+LUA MESSAGE: 45.135746002197
+Activated script with id of: 2
+LUA MESSAGE: 0119781499168793411210865311225.000000100.000000
+LUA MESSAGE: 35.844337463379
+LUA MESSAGE: 47.594493865967
+Activated script with id of: 2
+LUA MESSAGE: 0119781499168793411210865311225.000000100.000000
+LUA MESSAGE: 37.653541564941
+LUA MESSAGE: 48.091495513916
+Activated script with id of: 2
+LUA MESSAGE: 0119781499168793411210865311225.000000100.000000
+LUA MESSAGE: 36.427921295166
+LUA MESSAGE: 50.087745666504
+Activated script with id of: 2
+LUA MESSAGE: 0119781499168793411210865311225.000000100.000000
+LUA MESSAGE: 34.629978179932
+LUA MESSAGE: 51.728076934814
+Activated script with id of: 2
+LUA MESSAGE: 0119781499168793411210865311225.000000100.000000
+LUA MESSAGE: 32.832035064697
+LUA MESSAGE: 52.061744689941
+Activated script with id of: 2
+LUA MESSAGE: 0119781499168793411210865311225.000000100.000000
+LUA MESSAGE: 31.258834838867
+LUA MESSAGE: 53.790828704834
+Activated script with id of: 2
+LUA MESSAGE: 0119781499168793411210865311225.000000100.000000
+LUA MESSAGE: 29.902860641479
+LUA MESSAGE: 55.440494537354
+Activated script with id of: 2
+LUA MESSAGE: 0119781499168793411210865311225.000000100.000000
+LUA MESSAGE: 30.41893196106
+LUA MESSAGE: 56.006328582764
+Activated script with id of: 2
+LUA MESSAGE: 0119781499168793411210865311225.000000100.000000
+LUA MESSAGE: 31.455430984497
+LUA MESSAGE: 56.0
+Activated script with id of: 2
+LUA MESSAGE: 0119781499168793411210865311225.000000100.000000
+LUA MESSAGE: 32.343856811523
+LUA MESSAGE: 58.087745666504
+Activated script with id of: 2
+LUA MESSAGE: 0119781499168793411210865311225.000000100.000000
+LUA MESSAGE: 33.380355834961
+LUA MESSAGE: 59.594493865967
+Activated script with id of: 2
+LUA MESSAGE: 0119781499168793411210865311225.000000100.000000
+LUA MESSAGE: 33.772037506104
+LUA MESSAGE: 60.058246612549
+Activated script with id of: 2
+LUA MESSAGE: 0119781499168793411210865311225.000000100.000000
+LUA MESSAGE: 32.527729034424
+LUA MESSAGE: 60.398998260498
+Activated script with id of: 2
+LUA MESSAGE: 0119781499168793411210865311225.000000100.000000
+LUA MESSAGE: 30.911581039429
+LUA MESSAGE: 62.620330810547
+Activated script with id of: 2
+LUA MESSAGE: 0119781499168793411210865311225.000000100.000000
+LUA MESSAGE: 29.526308059692
+LUA MESSAGE: 63.728076934814
+Activated script with id of: 2
+LUA MESSAGE: 0119781499168793411210865311225.000000100.000000
+LUA MESSAGE: 27.91015625
+LUA MESSAGE: 64.091499328613
+Activated script with id of: 2
+LUA MESSAGE: 0119781499168793411210865311225.000000100.000000
+LUA MESSAGE: 26.853136062622
+LUA MESSAGE: 65.790840148926
+Activated script with id of: 2
+LUA MESSAGE: 0119781499168793411210865311225.000000100.000000
+LUA MESSAGE: 27.835378646851
+LUA MESSAGE: 67.266075134277
+Activated script with id of: 2
+LUA MESSAGE: 0119781499168793411210865311225.000000100.000000
+LUA MESSAGE: 28.927593231201
+LUA MESSAGE: 68.058242797852
+Activated script with id of: 2
+LUA MESSAGE: 0119781499168793411210865311225.000000100.000000
+LUA MESSAGE: 27.71372795105
+LUA MESSAGE: 68.777587890625
+Activated script with id of: 2
+LUA MESSAGE: 0119781499168793411210865311225.000000100.000000
+LUA MESSAGE: 25.949674606323
+LUA MESSAGE: 71.071250915527
+Activated script with id of: 2
+LUA MESSAGE: 0119781499168793411210865311225.000000100.000000
+LUA MESSAGE: 23.965114593506
+LUA MESSAGE: 72.089752197266
+Activated script with id of: 2
+LUA MESSAGE: 0119781499168793411210865311225.000000100.000000
+LUA MESSAGE: 21.760047912598
+LUA MESSAGE: 73.79084777832
+Activated script with id of: 2
+LUA MESSAGE: 0119781499168793411210865311225.000000100.000000
+LUA MESSAGE: 19.77548789978
+LUA MESSAGE: 75.728080749512
+Activated script with id of: 2
+LUA MESSAGE: 0119781499168793411210865311225.000000100.000000
+LUA MESSAGE: 18.011434555054
+LUA MESSAGE: 76.06175994873
+Activated script with id of: 2
+LUA MESSAGE: 0119781499168793411210865311225.000000100.000000
+LUA MESSAGE: 16.026874542236
+LUA MESSAGE: 78.3642578125
+Activated script with id of: 2
+LUA MESSAGE: 0119781499168793411210865311225.000000100.000000
+LUA MESSAGE: 14.042314529419
+LUA MESSAGE: 79.93399810791
+Activated script with id of: 2
+LUA MESSAGE: 0119781499168793411210865311225.000000100.000000
+LUA MESSAGE: 15.164566993713
+LUA MESSAGE: 80.606750488281
+Activated script with id of: 2
+LUA MESSAGE: 0119781499168793411210865311225.000000100.000000
+LUA MESSAGE: 29.035659790039
+LUA MESSAGE: 70.693756103516
+Activated script with id of: 2
+LUA MESSAGE: 0119781499168793411210865311225.000000100.000000
+LUA MESSAGE: 32.6389503479
+LUA MESSAGE: 69.877502441406
+Activated script with id of: 2
+LUA MESSAGE: 0119781499168793411210865311225.000000100.000000
+LUA MESSAGE: 34.970508575439
+LUA MESSAGE: 68.979583740234
+Activated script with id of: 2
+LUA MESSAGE: 0119781499168793411210865311225.000000100.000000
+LUA MESSAGE: 37.090106964111
+LUA MESSAGE: 68.0
+Activated script with id of: 2
+LUA MESSAGE: 0119781499168793411210865311225.000000100.000000
+LUA MESSAGE: 39.101463317871
+LUA MESSAGE: 68.0
+Activated script with id of: 2
+LUA MESSAGE: 0119781499168793411210865311225.000000100.000000
+LUA MESSAGE: 40.926342010498
+LUA MESSAGE: 68.0
+Activated script with id of: 2
+LUA MESSAGE: 0119781499168793411210865311225.000000100.000000
+LUA MESSAGE: 42.953815460205
+LUA MESSAGE: 69.79084777832
+Activated script with id of: 2
+LUA MESSAGE: 0119781499168793411210865311225.000000100.000000
+LUA MESSAGE: 45.184036254883
+LUA MESSAGE: 71.93399810791
+Activated script with id of: 2
+LUA MESSAGE: 0119781499168793411210865311225.000000100.000000
+LUA MESSAGE: 47.21150970459
+LUA MESSAGE: 71.738586425781
+Activated script with id of: 2
+LUA MESSAGE: 0119781499168793411210865311225.000000100.000000
+LUA MESSAGE: 49.441730499268
+LUA MESSAGE: 73.087760925293
+Activated script with id of: 2
+LUA MESSAGE: 0119781499168793411210865311225.000000100.000000
+LUA MESSAGE: 51.671951293945
+LUA MESSAGE: 75.006332397461
+Activated script with id of: 2
+LUA MESSAGE: 0119781499168793411210865311225.000000100.000000
+LUA MESSAGE: 54.510414123535
+LUA MESSAGE: 74.938751220703
+Activated script with id of: 2
+LUA MESSAGE: 0119781499168793411210865311225.000000100.000000
+LUA MESSAGE: 55.955154418945
+LUA MESSAGE: 74.0
+Activated script with id of: 2
+LUA MESSAGE: 0119781499168793411210865311225.000000100.000000
+LUA MESSAGE: 94.235824584961
+LUA MESSAGE: 13.594498634338
+Activated script with id of: 2
+LUA MESSAGE: 0119781499168793411210865311225.000000100.000000
+LUA MESSAGE: 96.774841308594
+LUA MESSAGE: 13.940998077393
+Activated script with id of: 2
+LUA MESSAGE: 0119781499168793411210865311225.000000100.000000
+LUA MESSAGE: 98.621398925781
+LUA MESSAGE: 13.399000167847
+Activated script with id of: 2
+LUA MESSAGE: 0119781499168793411210865311225.000000100.000000
+LUA MESSAGE: 100.69877624512
+LUA MESSAGE: 16.071249008179
+Activated script with id of: 2
+LUA MESSAGE: 0119781499168793411210865311225.000000100.000000
+LUA MESSAGE: 102.77615356445
+LUA MESSAGE: 17.089748382568
+Activated script with id of: 2
+LUA MESSAGE: 0119781499168793411210865311225.000000100.000000
+LUA MESSAGE: 104.39189147949
+LUA MESSAGE: 17.777584075928
+Activated script with id of: 2
+LUA MESSAGE: 0119781499168793411210865311225.000000100.000000
+LUA MESSAGE: 106.70008850098
+LUA MESSAGE: 20.440500259399
+Activated script with id of: 2
+LUA MESSAGE: 0119781499168793411210865311225.000000100.000000
+LUA MESSAGE: 108.77746582031
+LUA MESSAGE: 21.091499328613
+Activated script with id of: 2
+LUA MESSAGE: 0119781499168793411210865311225.000000100.000000
+LUA MESSAGE: 111.0856628418
+LUA MESSAGE: 23.364250183105
+Activated script with id of: 2
+LUA MESSAGE: 0119781499168793411210865311225.000000100.000000
+LUA MESSAGE: 112.93222045898
+LUA MESSAGE: 24.841249465942
+Activated script with id of: 2
+LUA MESSAGE: 0119781499168793411210865311225.000000100.000000
+LUA MESSAGE: 114.77877807617
+LUA MESSAGE: 25.011581420898
+Activated script with id of: 2
+LUA MESSAGE: 0119781499168793411210865311225.000000100.000000
+LUA MESSAGE: 118.47189331055
+LUA MESSAGE: 28.841249465942
+Activated script with id of: 2
+LUA MESSAGE: 0119781499168793411210865311225.000000100.000000
+LUA MESSAGE: 120.54927062988
+LUA MESSAGE: 28.940998077393
+Activated script with id of: 2
+LUA MESSAGE: 0119781499168793411210865311225.000000100.000000
+LUA MESSAGE: 122.39582824707
+LUA MESSAGE: 28.399000167847
+Activated script with id of: 2
+LUA MESSAGE: 0119781499168793411210865311225.000000100.000000
+LUA MESSAGE: 124.24238586426
+LUA MESSAGE: 30.85599899292
+Activated script with id of: 2
+LUA MESSAGE: 0119781499168793411210865311225.000000100.000000
+LUA MESSAGE: 135.37808227539
+LUA MESSAGE: 10.809081077576
+Activated script with id of: 2
+LUA MESSAGE: 0119781499168793411210865311225.000000100.000000
+LUA MESSAGE: 133.25650024414
+LUA MESSAGE: 12.364249229431
+Activated script with id of: 2
+LUA MESSAGE: 0119781499168793411210865311225.000000100.000000
+LUA MESSAGE: 133.04379272461
+LUA MESSAGE: 13.93399810791
+Activated script with id of: 2
+LUA MESSAGE: 0119781499168793411210865311225.000000100.000000
+LUA MESSAGE: 134.6681060791
+LUA MESSAGE: 13.940998077393
+Activated script with id of: 2
+LUA MESSAGE: 0119781499168793411210865311225.000000100.000000
+LUA MESSAGE: 136.52905273438
+LUA MESSAGE: 13.777583122253
+Activated script with id of: 2
+LUA MESSAGE: 0119781499168793411210865311225.000000100.000000
+LUA MESSAGE: 138.19511413574
+LUA MESSAGE: 16.266082763672
+Activated script with id of: 2
+LUA MESSAGE: 0119781499168793411210865311225.000000100.000000
+LUA MESSAGE: 136.77680969238
+LUA MESSAGE: 17.091499328613
+Activated script with id of: 2
+LUA MESSAGE: 0119781499168793411210865311225.000000100.000000
+LUA MESSAGE: 134.94456481934
+LUA MESSAGE: 19.087749481201
+Activated script with id of: 2
+LUA MESSAGE: 0119781499168793411210865311225.000000100.000000
+LUA MESSAGE: 133.71139526367
+LUA MESSAGE: 20.594499588013
+Activated script with id of: 2
+LUA MESSAGE: 0119781499168793411210865311225.000000100.000000
+LUA MESSAGE: 134.70806884766
+LUA MESSAGE: 21.091499328613
+Activated script with id of: 2
+LUA MESSAGE: 0119781499168793411210865311225.000000100.000000
+LUA MESSAGE: 136.5140838623
+LUA MESSAGE: 23.087749481201
+Activated script with id of: 2
+LUA MESSAGE: 0119781499168793411210865311225.000000100.000000
+LUA MESSAGE: 138.11943054199
+LUA MESSAGE: 24.72808265686
+Activated script with id of: 2
+LUA MESSAGE: 0119781499168793411210865311225.000000100.000000
+LUA MESSAGE: 139.72477722168
+LUA MESSAGE: 25.061748504639
+Activated script with id of: 2
+LUA MESSAGE: 0119781499168793411210865311225.000000100.000000
+LUA MESSAGE: 140.91465759277
+LUA MESSAGE: 27.087749481201
+Activated script with id of: 2
+LUA MESSAGE: 0119781499168793411210865311225.000000100.000000
+LUA MESSAGE: 139.71765136719
+LUA MESSAGE: 28.72808265686
+Activated script with id of: 2
+LUA MESSAGE: 0119781499168793411210865311225.000000100.000000
+LUA MESSAGE: 137.70372009277
+LUA MESSAGE: 29.011581420898
+Activated script with id of: 2
+LUA MESSAGE: 0119781499168793411210865311225.000000100.000000
+LUA MESSAGE: 137.58129882812
+LUA MESSAGE: 31.85599899292
+Activated script with id of: 2
+LUA MESSAGE: 0119781499168793411210865311225.000000100.000000
+LUA MESSAGE: 139.31079101562
+LUA MESSAGE: 33.006328582764
+Activated script with id of: 2
+LUA MESSAGE: 0119781499168793411210865311225.000000100.000000
+LUA MESSAGE: 141.06811523438
+LUA MESSAGE: 33.398998260498
+Activated script with id of: 2
+LUA MESSAGE: 0119781499168793411210865311225.000000100.000000
+LUA MESSAGE: 140.96676635742
+LUA MESSAGE: 36.07124710083
+Activated script with id of: 2
+LUA MESSAGE: 0119781499168793411210865311225.000000100.000000
+LUA MESSAGE: 138.83123779297
+LUA MESSAGE: 37.100830078125
+Activated script with id of: 2
+LUA MESSAGE: 0119781499168793411210865311225.000000100.000000
+LUA MESSAGE: 137.10089111328
+LUA MESSAGE: 38.473495483398
+Activated script with id of: 2
+LUA MESSAGE: 0119781499168793411210865311225.000000100.000000
+LUA MESSAGE: 149.98706054688
+LUA MESSAGE: 31.012825012207
+Activated script with id of: 2
+LUA MESSAGE: 0119781499168793411210865311225.000000100.000000
+LUA MESSAGE: 151.78881835938
+LUA MESSAGE: 33.620334625244
+Activated script with id of: 2
+LUA MESSAGE: 0119781499168793411210865311225.000000100.000000
+LUA MESSAGE: 153.59057617188
+LUA MESSAGE: 35.006332397461
+Activated script with id of: 2
+LUA MESSAGE: 0119781499168793411210865311225.000000100.000000
+LUA MESSAGE: 155.14866638184
+LUA MESSAGE: 36.135746002197
+Activated script with id of: 2
+LUA MESSAGE: 0119781499168793411210865311225.000000100.000000
+LUA MESSAGE: 156.5595703125
+LUA MESSAGE: 38.266078948975
+Activated script with id of: 2
+LUA MESSAGE: 0119781499168793411210865311225.000000100.000000
+LUA MESSAGE: 158.78674316406
+LUA MESSAGE: 39.091495513916
+Activated script with id of: 2
+LUA MESSAGE: 0119781499168793411210865311225.000000100.000000
+LUA MESSAGE: 158.39820861816
+LUA MESSAGE: 39.0
+Activated script with id of: 2
+LUA MESSAGE: 0119781499168793411210865311225.000000100.000000
+LUA MESSAGE: 158.18655395508
+LUA MESSAGE: 39.0
+Activated script with id of: 2
+LUA MESSAGE: 0119781499168793411210865311225.000000100.000000
+LUA MESSAGE: 160.060546875
+LUA MESSAGE: 39.0
+Activated script with id of: 2
+LUA MESSAGE: 0119781499168793411210865311225.000000100.000000
+LUA MESSAGE: 161.3550567627
+LUA MESSAGE: 39.0
+Activated script with id of: 2
+LUA MESSAGE: 0119781499168793411210865311225.000000100.000000
+LUA MESSAGE: 161.96514892578
+LUA MESSAGE: 39.0
+Activated script with id of: 2
+LUA MESSAGE: 0119781499168793411210865311225.000000100.000000
+LUA MESSAGE: 162.95433044434
+LUA MESSAGE: 39.0
+Activated script with id of: 2
+LUA MESSAGE: 0119781499168793411210865311225.000000100.000000
+LUA MESSAGE: 164.62351989746
+LUA MESSAGE: 39.0
+Activated script with id of: 2
+LUA MESSAGE: 0119781499168793411210865311225.000000100.000000
+LUA MESSAGE: 166.29270935059
+LUA MESSAGE: 39.0
+Activated script with id of: 2
+LUA MESSAGE: 0119781499168793411210865311225.000000100.000000
+LUA MESSAGE: 167.96189880371
+LUA MESSAGE: 39.0
+Activated script with id of: 2
+LUA MESSAGE: 0119781499168793411210865311225.000000100.000000
+LUA MESSAGE: 169.63108825684
+LUA MESSAGE: 39.0
+Activated script with id of: 2
+LUA MESSAGE: 0119781499168793411210865311225.000000100.000000
+LUA MESSAGE: 171.30027770996
+LUA MESSAGE: 39.0
+Activated script with id of: 2
+LUA MESSAGE: 0119781499168793411210865311225.000000100.000000
+LUA MESSAGE: 174.63865661621
+LUA MESSAGE: 38.877502441406
+Activated script with id of: 2
+LUA MESSAGE: 0119781499168793411210865311225.000000100.000000
+LUA MESSAGE: 176.30784606934
+LUA MESSAGE: 38.0
+Activated script with id of: 2
+LUA MESSAGE: 0119781499168793411210865311225.000000100.000000
+LUA MESSAGE: 177.97703552246
+LUA MESSAGE: 38.0
+Activated script with id of: 2
+LUA MESSAGE: 0119781499168793411210865311225.000000100.000000
+LUA MESSAGE: 181.52406311035
+LUA MESSAGE: 37.428333282471
+Activated script with id of: 2
+LUA MESSAGE: 0119781499168793411210865311225.000000100.000000
+LUA MESSAGE: 184.02784729004
+LUA MESSAGE: 37.0
+Activated script with id of: 2
+LUA MESSAGE: 0119781499168793411210865311225.000000100.000000
+LUA MESSAGE: 156.13583374023
+LUA MESSAGE: 14.011581420898
+Activated script with id of: 2
+LUA MESSAGE: 0119781499168793411210865311225.000000100.000000
+LUA MESSAGE: 157.95132446289
+LUA MESSAGE: 16.620332717896
+Activated script with id of: 2
+LUA MESSAGE: 0119781499168793411210865311225.000000100.000000
+LUA MESSAGE: 159.56509399414
+LUA MESSAGE: 17.934000015259
+Activated script with id of: 2
+LUA MESSAGE: 0119781499168793411210865311225.000000100.000000
+LUA MESSAGE: 161.3805847168
+LUA MESSAGE: 17.849998474121
+Activated script with id of: 2
+LUA MESSAGE: 0119781499168793411210865311225.000000100.000000
+LUA MESSAGE: 163.19607543945
+LUA MESSAGE: 18.135749816895
+Activated script with id of: 2
+LUA MESSAGE: 0119781499168793411210865311225.000000100.000000
+LUA MESSAGE: 164.8098449707
+LUA MESSAGE: 20.266082763672
+Activated script with id of: 2
+LUA MESSAGE: 0119781499168793411210865311225.000000100.000000
+LUA MESSAGE: 166.42361450195
+LUA MESSAGE: 21.089748382568
+Activated script with id of: 2
+LUA MESSAGE: 0119781499168793411210865311225.000000100.000000
+LUA MESSAGE: 168.0373840332
+LUA MESSAGE: 22.135749816895
+Activated script with id of: 2
+LUA MESSAGE: 0119781499168793411210865311225.000000100.000000
+LUA MESSAGE: 169.65115356445
+LUA MESSAGE: 24.266082763672
+Activated script with id of: 2
+LUA MESSAGE: 0119781499168793411210865311225.000000100.000000
+LUA MESSAGE: 171.0632019043
+LUA MESSAGE: 25.058248519897
+Activated script with id of: 2
+LUA MESSAGE: 0119781499168793411210865311225.000000100.000000
+LUA MESSAGE: 177.11483764648
+LUA MESSAGE: 28.940998077393
+Activated script with id of: 2
+LUA MESSAGE: 0119781499168793411210865311225.000000100.000000
+LUA MESSAGE: 178.93032836914
+LUA MESSAGE: 28.777584075928
+Activated script with id of: 2
+LUA MESSAGE: 0119781499168793411210865311225.000000100.000000
+LUA MESSAGE: 180.54409790039
+LUA MESSAGE: 30.0
+Activated script with id of: 2
+LUA MESSAGE: 0119781499168793411210865311225.000000100.000000
+LUA MESSAGE: 182.56130981445
+LUA MESSAGE: 30.0
+Activated script with id of: 2
+LUA MESSAGE: 0119781499168793411210865311225.000000100.000000
+LUA MESSAGE: 184.37680053711
+LUA MESSAGE: 30.0
+Activated script with id of: 2
+LUA MESSAGE: 0119781499168793411210865311225.000000100.000000
+LUA MESSAGE: 186.19229125977
+LUA MESSAGE: 30.0
+Activated script with id of: 2
+LUA MESSAGE: 0119781499168793411210865311225.000000100.000000
+LUA MESSAGE: 187.60433959961
+LUA MESSAGE: 30.0
+Activated script with id of: 2
+LUA MESSAGE: 0119781499168793411210865311225.000000100.000000
+LUA MESSAGE: 189.01638793945
+LUA MESSAGE: 30.0
+Activated script with id of: 2
+LUA MESSAGE: 0119781499168793411210865311225.000000100.000000
+LUA MESSAGE: 190.83187866211
+LUA MESSAGE: 30.0
+Activated script with id of: 2
+LUA MESSAGE: 0119781499168793411210865311225.000000100.000000
+LUA MESSAGE: 192.24392700195
+LUA MESSAGE: 30.0
+Activated script with id of: 2
+LUA MESSAGE: 0119781499168793411210865311225.000000100.000000
+LUA MESSAGE: 193.8576965332
+LUA MESSAGE: 30.0
+Activated script with id of: 2
+LUA MESSAGE: 0119781499168793411210865311225.000000100.000000
+LUA MESSAGE: 195.26974487305
+LUA MESSAGE: 30.0
+Activated script with id of: 2
+LUA MESSAGE: 0119781499168793411210865311225.000000100.000000
+LUA MESSAGE: 196.8835144043
+LUA MESSAGE: 30.0
+Activated script with id of: 2
+LUA MESSAGE: 0119781499168793411210865311225.000000100.000000
+LUA MESSAGE: 198.29556274414
+LUA MESSAGE: 30.0
+Activated script with id of: 2
+LUA MESSAGE: 0119781499168793411210865311225.000000100.000000
+LUA MESSAGE: 200.1110534668
+LUA MESSAGE: 30.0
+Activated script with id of: 2
+LUA MESSAGE: 0119781499168793411210865311225.000000100.000000
+LUA MESSAGE: 203.3385925293
+LUA MESSAGE: 29.979583740234
+Activated script with id of: 2
+LUA MESSAGE: 0119781499168793411210865311225.000000100.000000
+LUA MESSAGE: 204.75064086914
+LUA MESSAGE: 29.264999389648
+Activated script with id of: 2
+LUA MESSAGE: 0119781499168793411210865311225.000000100.000000
+LUA MESSAGE: 206.16268920898
+LUA MESSAGE: 29.0

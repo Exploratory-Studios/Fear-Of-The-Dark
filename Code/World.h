@@ -28,6 +28,7 @@ public:
     void sortEntities();
     void addEntity(Entity* e);
     void removeEntity(unsigned int index);
+    void removeEntity(std::string UUID);
 
     void sortLights();
     void addLight(Tile* t);
@@ -36,6 +37,7 @@ public:
     void getRenderedLights(glm::vec4 destRect, float lights[MAX_LIGHTS_RENDERED]);
 
     std::vector<Entity*> getEntities() { return m_entities; }
+    Entity* getEntityByUUID(std::string UUID) { auto i = m_entitiesByUUID.find(UUID); return i->second; }
     Player* getPlayer() { return m_player; }
     unsigned int getTime() { return m_time; }
     std::string getName() { return m_name; }
@@ -75,7 +77,8 @@ private:
     std::vector<Tile*> m_lights; // Vector of tiles (ordered by x pos), that need to be checked for light rendering.
     std::vector<Tile*> m_deadTiles; // Vector of tiles that need to be destroyed and deleted, but may be bound to other systems.
 
-    std::vector<Entity*> m_entities;
+    std::vector<Entity*> m_entities; // entities by x value
+    std::map<std::string, Entity*> m_entitiesByUUID; // Organized by UUID (For Lua)
 
     Player* m_player = nullptr;
 

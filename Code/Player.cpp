@@ -80,56 +80,58 @@ void Player::initGUI(GLEngine::GUI* gui) {
 }
 
 void Player::draw(GLEngine::SpriteBatch& sb, float time, int layerDifference, float xOffset) {
-    if(!m_loadedTexture || m_bumpMap.height == 0) {
-        m_texture = GLEngine::ResourceManager::getTexture(ASSETS_FOLDER_PATH + "Textures/Mobs/Mob0.png");
-        m_bumpMap = GLEngine::ResourceManager::getTexture(ASSETS_FOLDER_PATH + "Textures/BumpMaps/Mob0.png");
-        m_loadedTexture = true;
+    if(!m_transparent) {
+        if(!m_loadedTexture || m_bumpMap.height == 0) {
+            m_texture = GLEngine::ResourceManager::getTexture(ASSETS_FOLDER_PATH + "Textures/Mobs/Mob0.png");
+            m_bumpMap = GLEngine::ResourceManager::getTexture(ASSETS_FOLDER_PATH + "Textures/BumpMaps/Mob0.png");
+            m_loadedTexture = true;
+        }
+
+        glm::vec4 destRect = glm::vec4(m_position.x + xOffset * CHUNK_SIZE, m_position.y, m_size.x, m_size.y);
+
+        float x, y;
+        if(m_velocity.x > m_speed) {
+            x = (int)time*abs((int)m_velocity.x+1) % 3;
+            y = 1;
+            m_flippedTexture = false;
+        } else if(m_velocity.x < -m_speed) {
+            x = (int)time*abs((int)m_velocity.x+1) % 3;
+            y = 1;
+            m_flippedTexture = true;
+        } else {
+            x = 0;
+            y = 1;
+        }
+        if(m_velocity.y > 0.0f) {
+            x = (int)time % 3;
+            y = 0;
+        }
+
+        float finalX = (x / ((float)m_texture.width / (m_size.x * 32)));
+        float finalY = (y / ((float)m_texture.height / (m_size.y * 32)));
+
+        glm::vec4 uvRect;
+
+        if(!m_flippedTexture) {
+            uvRect = glm::vec4(finalX,
+                               finalY,
+                               1.0f / ((float)m_texture.width / 32),
+                               1.0f / ((float)m_texture.height / 64));
+        } else if(m_flippedTexture) {
+            uvRect = glm::vec4(finalX + 1.0f / ((float)m_texture.width / 32),
+                               finalY,
+                               1.0f / -((float)m_texture.width / 32),
+                               1.0f / ((float)m_texture.height / 64));
+        }
+
+        GLEngine::ColourRGBA8 colour(255, 255, 255, 255);
+
+        sb.draw(destRect, uvRect, m_texture.id, m_bumpMap.id, 0.8f * (WORLD_DEPTH - m_layer), colour, m_cornerLight);
+
+        /*for(int i = 0; i < m_limbs.size(); i++) {
+            m_limbs[i]->draw(sb);
+        }*/
     }
-
-    glm::vec4 destRect = glm::vec4(m_position.x + xOffset * CHUNK_SIZE, m_position.y, m_size.x, m_size.y);
-
-    float x, y;
-    if(m_velocity.x > m_speed) {
-        x = (int)time*abs((int)m_velocity.x+1) % 3;
-        y = 1;
-        m_flippedTexture = false;
-    } else if(m_velocity.x < -m_speed) {
-        x = (int)time*abs((int)m_velocity.x+1) % 3;
-        y = 1;
-        m_flippedTexture = true;
-    } else {
-        x = 0;
-        y = 1;
-    }
-    if(m_velocity.y > 0.0f) {
-        x = (int)time % 3;
-        y = 0;
-    }
-
-    float finalX = (x / ((float)m_texture.width / (m_size.x * 32)));
-    float finalY = (y / ((float)m_texture.height / (m_size.y * 32)));
-
-    glm::vec4 uvRect;
-
-    if(!m_flippedTexture) {
-        uvRect = glm::vec4(finalX,
-                           finalY,
-                           1.0f / ((float)m_texture.width / 32),
-                           1.0f / ((float)m_texture.height / 64));
-    } else if(m_flippedTexture) {
-        uvRect = glm::vec4(finalX + 1.0f / ((float)m_texture.width / 32),
-                           finalY,
-                           1.0f / -((float)m_texture.width / 32),
-                           1.0f / ((float)m_texture.height / 64));
-    }
-
-    GLEngine::ColourRGBA8 colour(255, 255, 255, 255);
-
-    sb.draw(destRect, uvRect, m_texture.id, m_bumpMap.id, 0.8f * (WORLD_DEPTH - m_layer), colour, m_cornerLight);
-
-    /*for(int i = 0; i < m_limbs.size(); i++) {
-        m_limbs[i]->draw(sb);
-    }*/
 
     if(m_selectedEntity) {
         glm::vec4 fullUV(0.0f, 0.0f, 1.0f, 1.0f);

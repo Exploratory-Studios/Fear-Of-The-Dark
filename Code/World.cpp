@@ -112,11 +112,41 @@ void World::addEntity(Entity* e) {
             return;
         }
     }
+
+    e->generateUUID(this);
+    m_entitiesByUUID.insert(std::pair<std::string, Entity*>(e->getUUID(), e));
 }
 
 void World::removeEntity(unsigned int index) {
     /** REMOVES AND DELETES ENTITY, COMPLETELY HANDLING MEMORY MANAGEMENT
     */
+
+    auto a = m_entitiesByUUID.find(m_entities[index]->getUUID());
+    m_entitiesByUUID.erase(a);
+
+    delete m_entities[index];
+
+    for(unsigned int i = index; i < m_entities.size()-1; i++) {
+        m_entities[i] = m_entities[i+1];
+    }
+
+    m_entities.pop_back();
+}
+
+void World::removeEntity(std::string UUID) {
+    /** REMOVES AND DELETES ENTITY, COMPLETELY HANDLING MEMORY MANAGEMENT
+    */
+
+    unsigned int index;
+
+    for(int i = 0; i < m_entities.size(); i++) {
+        if(m_entities[i] == m_entitiesByUUID[UUID]) {
+            index = i;
+            break;
+        }
+    }
+
+    m_entitiesByUUID.erase(UUID);
 
     delete m_entities[index];
 
@@ -284,9 +314,11 @@ void World::setPlayer(Player& p) {
     /// Copies p, creates/updates a pointer to the world-stored player.
     if(!m_player) {
         m_player = new Player(p);
-        m_entities.push_back(m_player);
+        addEntity(m_player);
     } else {
-        *m_player = p;
+        removeEntity(m_player->getUUID());
+        m_player = &p;
+        addEntity(&p);
     }
 }
 

@@ -36,13 +36,13 @@ void showBlock(World* world, int x, int y, unsigned int layer);
 void hideBlock(World* world, int x, int y, unsigned int layer);
 
 unsigned int addEntity(World* world, Entity* newEntity);
-void removeEntity(World* world, unsigned int index);
-void showEntity(World* world, unsigned int index);
-void hideEntity(World* world, unsigned int index);
+void removeEntity(World* world, std::string UUID);
+void showEntity(World* world, std::string UUID);
+void hideEntity(World* world, std::string UUID);
 
 void setTime(World* world, unsigned int time);
-void teleport(World* world, std::vector<unsigned int> entityIndex, glm::vec2 pos);
-void giveItem(World* world, std::vector<unsigned int> entityIndex, unsigned int id, unsigned int quantity);
+void teleport(World* world, std::string UUID, glm::vec2 pos);
+void giveItem(World* world, std::string UUID, unsigned int id, unsigned int quantity);
 
 void setPlayerCanInteract(World* world, bool canInteract);
 void setPlayerGodMode(World* world, bool godMode);
@@ -63,13 +63,12 @@ void play(GameplayScreen* gs);
 void startTrade(QuestManager* qm, unsigned int tableID);
 void startDialogue(QuestManager* qm, unsigned int questionID);
 
-std::vector<unsigned int> nearEntityTarget(World* world, glm::vec2 nearTo);
-std::vector<unsigned int> areaEntityTarget(World* world, glm::vec2 pos1, glm::vec2 pos2);
-std::vector<unsigned int> playerEntityTarget(World* world);
-std::vector<unsigned int> speakerEntityTarget(World* world);
+std::vector<Entity*> nearEntityTarget(World* world, glm::vec2 nearTo);
+std::vector<Entity*> areaEntityTarget(World* world, glm::vec2 pos1, glm::vec2 pos2); // returns an array of entities' indices
 
-std::vector<glm::vec2> relativePositionTarget(World* world, Entity* relativeTo, glm::vec2 relativePos);
-std::vector<glm::vec2> areaPositionTarget(World* world, glm::vec2 pos1, glm::vec2 pos2);
+void lua_pushintegertotable(lua_State* L, int index, int value);
+void lua_pushnumbertotable(lua_State* L, int index, float value);
+void lua_pushstringtotable(lua_State* L, int index, char* value);
 
 class Scripter {
     public:
@@ -91,8 +90,22 @@ class Scripter {
         std::vector<LuaScript*> m_scripts;
 };
 
-#define ALL_DEPS { lua_pushlightuserdata(m_luaState, static_cast<void*>(world)); lua_pushlightuserdata(m_luaState, static_cast<void*>(qm)); lua_pushlightuserdata(m_luaState, static_cast<void*>(gs)); }
-#define addFunction(func, name) { ALL_DEPS lua_pushcclosure(m_luaState, func, 3); lua_setglobal(m_luaState, name); }
+#define WORLD_KEY "world"
+#define GAMEPLAYSCREEN_KEY "gameplayscreen"
+#define QUESTMANAGER_KEY "questmanager"
+
+#define addDepsToRegistry(L, world, qm, gs)                 \
+    lua_pushlightuserdata(L, (void *)&WORLD_KEY);           \
+    lua_pushlightuserdata(L, static_cast<void*>(world));    \
+    lua_settable(L, LUA_REGISTRYINDEX);                     \
+    lua_pushlightuserdata(L, (void *)&QUESTMANAGER_KEY);    \
+    lua_pushlightuserdata(L, static_cast<void*>(qm));       \
+    lua_settable(L, LUA_REGISTRYINDEX);                     \
+    lua_pushlightuserdata(L, (void *)&GAMEPLAYSCREEN_KEY);  \
+    lua_pushlightuserdata(L, static_cast<void*>(gs));       \
+    lua_settable(L, LUA_REGISTRYINDEX);
+
+#define addFunction(func, name) { lua_pushcfunction(m_luaState, func); lua_setglobal(m_luaState, name); }
 
 class LuaScript {
 public:
@@ -143,13 +156,14 @@ public:
 
     bool isFinished() { return m_finished; }
 
-    // Wrappers
+    // Wrappers for Lua
+    // Setters
         static int l_setBlock(lua_State* L);
         static int l_removeBlock(lua_State* L);
         static int l_showBlock(lua_State* L);
         static int l_hideBlock(lua_State* L);
 
-        static int l_addEntity(lua_State* L);
+        static int l_addEntity(lua_State* L); // requires UUID of entity
         static int l_removeEntity(lua_State* L);
         static int l_showEntity(lua_State* L);
         static int l_hideEntity(lua_State* L);
@@ -177,6 +191,17 @@ public:
 
         static int l_startTrade(lua_State* L);
         static int l_startDialogue(lua_State* L);
+
+    // Getters
+        static int l_getEntitiesNear(lua_State* L); // returns UUIDs
+        static int l_getEntitiesArea(lua_State* L);
+        static int l_getPlayer(lua_State* L);
+        static int l_getSpeakingEntity(lua_State* L);
+
+        static int l_getEntityPosition(lua_State* L); // takes entity UUID, returns a 2-index array
+
+    // Debug
+        static int l_log(lua_State* L);
 
 private:
     void run() {

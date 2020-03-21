@@ -142,6 +142,15 @@ These functions are used to get values from the game into your Lua script to be 
  Returns an array formed with the x (1st element) and the y (2nd element) of the entity with the given UUID.
 
 
+## Miscellaneous
+
+These functions are useful, but very specific.
+
+- `delay(frames)`
+
+ Delays the script for the specified number of frames (60 frames are in one second).
+
+
 ## Debugging
 
 These functions often don't actually affect anything in-game, but they can be useful for debugging your scripts.

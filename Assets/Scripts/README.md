@@ -219,6 +219,15 @@ These functions are useful, but very specific.
  Delays the script for the specified number of `frames` (60 frames are in one second).
 
 
+## Miscellaneous
+
+These functions are useful, but very specific.
+
+- `delay(frames)`
+
+ Delays the script for the specified number of frames (60 frames are in one second).
+
+
 ## Debugging
 
 These functions often don't actually affect anything in-game, but they can be useful for debugging your scripts.

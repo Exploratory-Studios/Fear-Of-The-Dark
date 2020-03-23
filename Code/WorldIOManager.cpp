@@ -6,6 +6,7 @@
 
 #include "Player.h"
 #include "Items.h"
+#include "World.h"
 
 void WorldIOManager::loadWorld(std::string worldName, World* world) {
     setProgress(0.0f);
@@ -134,8 +135,8 @@ void WorldIOManager::P_loadWorld(std::string worldName, World* world) {
                 for(unsigned int x = 0; x < CHUNK_SIZE; x++) {
                     for(unsigned int k = 0; k < WORLD_DEPTH; k++) {
                         TileData* temp = &chunkData[i].tiles[y][x][k];
-                        Tile* block = createBlock(temp->id, temp->pos, k, *temp->metaData, false);
-                        world->setTile(block);
+                        Tile* tile = new Tile(temp->pos, k, temp->id, *temp->metaData, false);
+                        world->setTile(tile);
                         setProgress(getProgress() + 1.0f / (CHUNK_SIZE * WORLD_HEIGHT * WORLD_SIZE * WORLD_DEPTH) * 0.2f); // 0.3
                     }
                 }
@@ -454,32 +455,32 @@ void WorldIOManager::P_createWorld(unsigned int seed, std::string worldName, boo
 
             setMessage("Placing blocks...");
 
-            for(int layer = 0; layer < WORLD_DEPTH; layer++) {
+            for(int layer = 0; layer < WORLD_DEPTH; layer++) {/// TODO: re-enable blocks
                 for(int x = 0; x < WORLD_SIZE; x++) {
                     for(int y = 0; y < blockHeights[layer * WORLD_SIZE + x]; y++) {
                         if(y < blockHeights[layer * WORLD_SIZE + x] - 1 - 5 || y <= WATER_LEVEL) {
-                            BlockStone* block = new BlockStone(glm::vec2(x, y), layer, MetaData(), false);
-                            w->setTile(block);
+                            Tile* tile = new Tile(glm::vec2(x, y), layer, TileIDs::STONE, MetaData(), false);
+                            w->setTile(tile);
                         } else if(y < blockHeights[layer * WORLD_SIZE + x] - 1 && y > WATER_LEVEL) {
-                            BlockDirt* block = new BlockDirt(glm::vec2(x, y), layer, MetaData(), false);
-                            w->setTile(block);
+                            Tile* tile = new Tile(glm::vec2(x, y), layer, TileIDs::DIRT, MetaData(), false);
+                            w->setTile(tile);
                         } else if(y < blockHeights[layer * WORLD_SIZE + x] && y > WATER_LEVEL) {
-                            BlockGrass* block = new BlockGrass(glm::vec2(x, y), layer, MetaData(), false);
-                            w->setTile(block);
-                            int r = std::rand();
+                            Tile* tile = new Tile(glm::vec2(x, y), layer, TileIDs::GRASS, MetaData(), false);
+                            w->setTile(tile);
+                            int r = std::rand(); /// TODO: Re-enable flowers
                             if(r % 2 == 0) {
-                                BlockBush* flower = new BlockBush(glm::vec2(x, y + 1), layer, MetaData(), false);
-                                w->setTile(flower);
+                                //BlockBush* flower = new BlockBush(glm::vec2(x, y + 1), layer, MetaData(), false);
+                                //w->setTile(flower);
                             }
                         }
                     }
                     for(int y = blockHeights[layer * WORLD_SIZE + x]; y < WORLD_HEIGHT; y++) {
                         if(y <= WATER_LEVEL) {
-                            BlockWater* block = new BlockWater(glm::vec2(x, y), layer, 1.0f, MetaData(), false);
-                            w->setTile(block);
+                            Tile* tile = new Tile(glm::vec2(x, y), layer, TileIDs::WATER, MetaData(), false);
+                            w->setTile(tile);
                         } else {
-                            BlockAir* block = new BlockAir(glm::vec2(x, y), layer, MetaData(), false);
-                            w->setTile(block);
+                            Tile* tile = new Tile(glm::vec2(x, y), layer, TileIDs::AIR, MetaData(), false);
+                            w->setTile(tile);
                         }
                     }
                 }
@@ -490,23 +491,23 @@ void WorldIOManager::P_createWorld(unsigned int seed, std::string worldName, boo
             for(int k = 0; k < WORLD_SIZE; k++) {
                 blockHeights[k + layer * WORLD_SIZE] = 10;
                 for(int j = blockHeights[k + layer * WORLD_SIZE]; j < WORLD_HEIGHT; j++) {
-                    BlockAir* block = new BlockAir(glm::vec2(k, j), layer, MetaData(), false);
-                    w->setTile(block); /// TODO: Cross-layer worldgen
+                    Tile* tile = new Tile(glm::vec2(k, j), layer, TileIDs::AIR, MetaData(), false);
+                    w->setTile(tile);
                 }
                 for(int j = 0; j < blockHeights[k + layer * WORLD_SIZE]; j++) {
                     if(j < blockHeights[k + layer * WORLD_SIZE] - 1 - 5) {
-                        BlockStone* block = new BlockStone(glm::vec2(k, j), layer, MetaData(), false);
-                        w->setTile(block); /// TODO: Cross-layer worldgen
+                        Tile* tile = new Tile(glm::vec2(k, j), layer, TileIDs::STONE, MetaData(), false);
+                        w->setTile(tile);
                     } else if(j < blockHeights[k + layer * WORLD_SIZE] - 1) {
-                        BlockDirt* block = new BlockDirt(glm::vec2(k, j), layer, MetaData(), false);
-                        w->setTile(block); /// TODO: Cross-layer worldgen
+                        Tile* tile = new Tile(glm::vec2(k, j), layer, TileIDs::DIRT, MetaData(), false);
+                        w->setTile(tile);
                     } else {
-                        BlockGrass* block = new BlockGrass(glm::vec2(k, j), layer, MetaData(), false);
-                        w->setTile(block); /// TODO: Cross-layer worldgen
+                        Tile* tile = new Tile(glm::vec2(k, j), layer, TileIDs::GRASS, MetaData(), false);
+                        w->setTile(tile);
                         int r = std::rand() % 2;
-                        if(r == 0) {
-                            BlockBush* flower = new BlockBush(glm::vec2(k, j + 1), layer, MetaData(), false);
-                            w->setTile(flower); /// TODO: Cross-layer worldgen
+                        if(r == 0) { /// TODO: Re-enable flowers
+                            //BlockBush* flower = new BlockBush(glm::vec2(k, j + 1), layer, MetaData(), false);
+                            //w->setTile(flower); /// TODO: Cross-layer worldgen
                         }
                     }
                     setMessage("Placing blocks... \n(" + std::to_string(k * WORLD_HEIGHT + layer * WORLD_SIZE * WORLD_HEIGHT) + "/" + std::to_string(WORLD_SIZE * WORLD_HEIGHT * WORLD_DEPTH) + ")");
@@ -520,7 +521,7 @@ void WorldIOManager::P_createWorld(unsigned int seed, std::string worldName, boo
 
     for(int i = 0; i < (WORLD_SIZE / CHUNK_SIZE); i++) {
         //world->chunks[i]->update(0, 1, world->chunks, nullptr, false);
-        w->tickTiles(glm::vec4(i * CHUNK_SIZE, 0.0f, CHUNK_SIZE-1, WORLD_HEIGHT));
+        //w->tickTiles(glm::vec4(i * CHUNK_SIZE, 0.0f, CHUNK_SIZE-1, WORLD_HEIGHT));
         setMessage("Making sure everything looks great! (" + std::to_string(i * CHUNK_SIZE) + "/" + std::to_string(WORLD_SIZE) + ")");
     }
     // m_progress should be at 1.0
@@ -577,11 +578,11 @@ void WorldIOManager::setWorldEra(World* world, WorldEra newEra) {
             for(int y = 1; y < WORLD_HEIGHT; y++) {
                 for(int x = 0; x < WORLD_SIZE; x++) {
                     for(int chunkX = 0; chunkX < CHUNK_SIZE; chunkX++) { /// TODO: Cross-layer stuff
-                        if(!world->getTile(chunkX, y, 0)->isSolid() && world->getTile(chunkX, y, 0)->m_id != (unsigned int)Categories::BlockIDs::AIR) {
+                        if(!world->getTile(chunkX, y, 0)->isSolid() && world->getTile(chunkX, y, 0)->m_id != (unsigned int)TileIDs::AIR) {
                             //*world->tiles[y][chunkX] = BlockAir(glm::vec2(chunkX + CHUNK_SIZE * x, y), world);
-                            world->setTile(new BlockAir(glm::vec2(chunkX + CHUNK_SIZE * x, y), 0)); /// Implement cross-layer stuff
+                            world->setTile(new Tile(glm::vec2(chunkX + CHUNK_SIZE * x, y), 0, TileIDs::AIR, MetaData(), false)); /// Implement cross-layer stuff
                         }
-                        if(world->getTile(chunkX, y, 0)->m_id != (unsigned int)Categories::BlockIDs::AIR) {
+                        if(world->getTile(chunkX, y, 0)->m_id != (unsigned int)TileIDs::AIR) {
                             int yOffset = -1;
 
                             Tile* up = world->getTile(chunkX, y+1, 0); /// TODO: Cross-layer
@@ -625,7 +626,8 @@ void WorldIOManager::setWorldEra(World* world, WorldEra newEra) {
                                                 world->tiles[y][chunkX] = new BlockAir(glm::vec2(chunkX, y), world);
                                                 break;*/
 
-                                                world->setTile(new BlockAir(glm::vec2(chunkX, y), 0)); /// TODO: Implement cross-layer structure stuff
+                                                world->setTile(new Tile(glm::vec2(chunkX, y), 0, TileIDs::AIR, MetaData(), false)); /// TODO: Implement cross-layer structure stuff
+
                                             } else {
                                                 yOffset--;
                                             }
@@ -656,7 +658,7 @@ void WorldIOManager::setWorldEra(World* world, WorldEra newEra) {
                     for(unsigned int chunkX = 0; chunkX < CHUNK_SIZE; chunkX++) {
                         if(world->getTile(chunkX, y, 0)->isNatural() == true) {/// TODO: Cross-layer
                             //*world->tiles[y][chunkX] = BlockStone(glm::vec2(chunkX + x * CHUNK_SIZE, y), world);
-                            world->setTile(new BlockStone(glm::vec2(chunkX + x * CHUNK_SIZE, y), 0));/// TODO: Cross-layer
+                            world->setTile(new Tile(glm::vec2(chunkX + x * CHUNK_SIZE, y), 0, TileIDs::STONE, MetaData(), false));/// TODO: Cross-layer
                             blockHeights[chunkX + x * CHUNK_SIZE] = y;
                         }
                     }
@@ -668,9 +670,9 @@ void WorldIOManager::setWorldEra(World* world, WorldEra newEra) {
                 PerlinNoise heightNoise(97682354 / rand() % 6 * (x + 8) * 2348);
                 for(unsigned int chunkX = 0; chunkX < CHUNK_SIZE; chunkX++) {
                     for(unsigned int y = 1; y < heightNoise.noise(chunkX, x, 1.0f) * 10 + 5; y++) {
-                        if(world->getTile(chunkX, y+blockHeights[chunkX + x*CHUNK_SIZE], 0)->getID() == (unsigned int)Categories::BlockIDs::AIR || rand() % 100 > 90) {/// TODO: Cross-layer
+                        if(world->getTile(chunkX, y+blockHeights[chunkX + x*CHUNK_SIZE], 0)->getID() == (unsigned int)TileIDs::AIR || rand() % 100 > 90) {/// TODO: Cross-layer
                             //*world->tiles[y+blockHeights[chunkX + x * CHUNK_SIZE]][chunkX] = BlockDirt(glm::vec2(chunkX + x * CHUNK_SIZE, y+blockHeights[chunkX + x * CHUNK_SIZE]), world);
-                            world->setTile(new BlockDirt(glm::vec2(chunkX + x * CHUNK_SIZE, y+blockHeights[chunkX + x * CHUNK_SIZE]), 0));/// TODO: Cross-layer
+                            world->setTile(new Tile(glm::vec2(chunkX + x * CHUNK_SIZE, y+blockHeights[chunkX + x * CHUNK_SIZE]), 0, TileIDs::DIRT, MetaData(), false));/// TODO: Cross-layer
 
                         }
                     }
@@ -802,7 +804,7 @@ void WorldIOManager::placeStructure(World* world, StructureData& structure, glm:
 
                 unsigned int chunkX = (tileX / CHUNK_SIZE + WORLD_SIZE);
 
-                world->setTile(createBlock(structure.tiles[tileIndex].id, glm::vec2(tileX, tileY), 0));/// TODO: Cross-layer
+                world->setTile(new Tile(glm::vec2(tileX, tileY), 0, structure.tiles[tileIndex].id, MetaData(), false));/// TODO: Cross-layer
             }
         }
     }

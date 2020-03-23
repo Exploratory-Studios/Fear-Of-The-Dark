@@ -62,12 +62,11 @@ void GameplayScreen::onEntry() {
 
     ///m_WorldManager.init(m_WorldIOManager, &m_particle2d);
     m_scripter = new Scripter();
-    m_sq = new ScriptQueue();
 
-    m_questManager = new QuestManager(ASSETS_FOLDER_PATH + "Questing/DialogueList.txt", ASSETS_FOLDER_PATH + "Questing/FlagList.txt", ASSETS_FOLDER_PATH + "Questing/TradeList.txt", m_sq);
+    m_questManager = new QuestManager(ASSETS_FOLDER_PATH + "Questing/DialogueList.txt", ASSETS_FOLDER_PATH + "Questing/FlagList.txt", ASSETS_FOLDER_PATH + "Questing/TradeList.txt");
     m_console = new Console();
 
-    m_scripter->init(m_world, m_questManager, this);
+    m_scripter->init(m_world, m_questManager, this, m_audio, &m_particle2d);
 
     m_gui = new GLEngine::GUI();
 
@@ -108,6 +107,9 @@ void GameplayScreen::update() {
     m_deltaTime = std::abs((60 / m_game->getFps()) + -1);
     m_deltaTime++;
 
+    m_world->incrementTime();
+    m_particle2d.update(1.0f);
+
     checkInput();
 
     if(m_world->getNextEra() != m_world->getEra()) {
@@ -117,18 +119,18 @@ void GameplayScreen::update() {
 
     if(m_gameState != GameState::PAUSE && m_currentState != GLEngine::ScreenState::EXIT_APPLICATION) {
         m_questManager->update(m_game->inputManager, m_world->getPlayer());
-        m_scripter->update(m_world, m_sq, m_questManager, this);
+        m_scripter->update();
 
         // Set player caninteract
 
         if(m_world->getPlayer() && !m_cutscenePause) {
             m_world->getPlayer()->updateMouse(m_world, m_camera.convertScreenToWorld(m_game->inputManager.getMouseCoords()));
-            m_world->getPlayer()->updateInput(&m_game->inputManager, m_world, m_sq);
+            m_world->getPlayer()->updateInput(&m_game->inputManager, m_world);
             m_world->getPlayer()->setCanInteract(!m_questManager->isDialogueActive());
         }
 
         m_world->updateTiles(getScreenBox() + glm::vec4(-10.0f, -10.0f, 20.0f, 20.0f));
-        m_world->updateEntities(m_audio, 1.0f, m_sq); /// TODO: Use timestep
+        m_world->updateEntities(m_audio, 1.0f); /// TODO: Use timestep
 
         if(!m_cameraLocked) {
             if(std::abs((m_world->getPlayer()->getPosition().x) - m_lastPlayerPos.x) >= (WORLD_SIZE/2)) {
@@ -217,11 +219,11 @@ void GameplayScreen::draw() {
 
         m_spriteBatch.begin(GLEngine::GlyphSortType::FRONT_TO_BACK);
 
+        m_particle2d.draw(&m_spriteBatch);
+
         m_world->setLightsUniform(getScreenBox() + glm::vec4(0.0f, 0.0f, 1.0f, 1.0f), &m_textureProgram);
         m_world->drawTiles(m_spriteBatch, m_spriteFont, m_dr, getScreenBox() + glm::vec4(0.0f, 0.0f, 1.0f, 1.0f));
         m_world->drawEntities(m_spriteBatch, m_spriteFont, m_dr, getScreenBox() + glm::vec4(0.0f, 0.0f, 1.0f, 1.0f));
-
-        m_world->drawParticles(&m_spriteBatch);
 
         m_spriteBatch.end();
 
@@ -472,8 +474,6 @@ void GameplayScreen::tick() {
             }
         }
     }
-
-    m_world->incrementTime();
 }
 
 void GameplayScreen::updateScale() {

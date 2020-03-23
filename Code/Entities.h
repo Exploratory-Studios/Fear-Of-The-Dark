@@ -36,7 +36,7 @@ class EntityNeutralItem : public Entity {
     public:
         EntityNeutralItem(glm::vec2 pos, unsigned int layer, Item* item);
         ~EntityNeutralItem() { }
-        void onDeath(ScriptQueue* sq) { }
+        void onDeath() { }
 
         void setItem(Item* item) { m_item = item; }
         Item* getItem() { return m_item; }
@@ -50,7 +50,7 @@ class EntityNeutralItem : public Entity {
 class EntityNeutralCompanionCube : public Entity {
     public:
         EntityNeutralCompanionCube(glm::vec2 pos, unsigned int layer);
-        void onDeath(ScriptQueue* sq) { }
+        void onDeath() { }
     protected:
         void updateAI() { EntityFunctions::WalkingAI(m_controls, m_targets, m_curTarget, m_velocity, m_size, glm::vec3(m_position.x, m_position.y, m_layer)); }
         void updateLimbs() {}
@@ -61,7 +61,7 @@ class EntityNeutralCompanionCube : public Entity {
 class EntityBaseProjectile : public Entity { // ABSTRACT
     public:
         EntityBaseProjectile(glm::vec2 pos, unsigned int layer, float damage, bool gravity = true);
-        void onDeath(ScriptQueue* sq) = 0;
+        void onDeath() = 0;
     protected:
         void updateAI() { m_position += m_velocity * m_speed; }
         void updateLimbs() {}
@@ -89,10 +89,10 @@ class EntityBaseSpeaker : public Entity { // ABSTRACT
                                 m_questionId = questionId;
                                 m_tradeTableId = tradeTableId;
                             }
-        virtual void onTalk(ScriptQueue* sq); /// TODO: Use scriptQueue to start quests, open UIs, etc.
-        virtual void onTrade(ScriptQueue* sq);
-        virtual void post_onInteract(ScriptQueue* sq) = 0;
-        void onDeath(ScriptQueue* sq) = 0;
+        virtual void onTalk(); /// TODO: Use scriptQueue to start quests, open UIs, etc.
+        virtual void onTrade();
+        virtual void post_onInteract() = 0;
+        void onDeath() = 0;
 
         virtual bool canTrade() const override { return (m_tradeTableId != (unsigned int) -1); }
         virtual bool canTalk()  const override { return (m_questionId != (unsigned int) -1);   }
@@ -106,8 +106,8 @@ class EntityBaseSpeaker : public Entity { // ABSTRACT
 class EntityBaseQuestGiver : public EntityBaseSpeaker { // ALSO ABSTRACT
     public:
         EntityBaseQuestGiver(glm::vec2 pos, unsigned int layer, float maxRunSpeed, Categories::LootTableIds lootTable, unsigned int lootBeginLevel, unsigned int lootBeginIndex, unsigned int questionId);
-        virtual void post_onInteract(ScriptQueue* sq) = 0;
-        void onDeath(ScriptQueue* sq) = 0;
+        virtual void post_onInteract() = 0;
+        void onDeath() = 0;
     protected:
         void updateAI() = 0;
 };
@@ -115,8 +115,8 @@ class EntityBaseQuestGiver : public EntityBaseSpeaker { // ALSO ABSTRACT
 class EntityNeutralQuestGiverA : public EntityBaseQuestGiver {
     public:
         EntityNeutralQuestGiverA(glm::vec2 pos, unsigned int layer) : EntityBaseQuestGiver(pos, layer, 0.3f, Categories::LootTableIds::ANIMAL, 1, 0, 2) { }
-        void post_onInteract(ScriptQueue* sq) { } /// TODO: remove
-        void onDeath(ScriptQueue* sq) { }
+        void post_onInteract() { } /// TODO: remove
+        void onDeath() { }
     protected:
         void updateAI() { EntityFunctions::WalkingAI(m_controls, m_targets, m_curTarget, m_velocity, m_size, glm::vec3(m_position.x, m_position.y, m_layer)); }
         void updateLimbs() {}

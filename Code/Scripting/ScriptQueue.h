@@ -36,6 +36,8 @@ class Script {
             return true;
         }
 
+        std::string preCommand = "";
+
     private:
         bool m_isFile = false;
         std::string m_text;
@@ -45,55 +47,16 @@ class Script {
 class ScriptQueue {
     friend class Scripter;
     public:
-        unsigned int addScript(Script& script) // returns id of script, puts into cache
-        {
-            if(!m_scriptCache.empty()) {
-                for(unsigned int i = 0; i < m_scriptCache.size(); i++) {
-                    if(m_scriptCache[i] == script) {
-                        return i;
-                    }
-                }
-            }
-            m_scriptCache.push_back(script);
-            return m_scriptCache.size() - 1;
-        }
-        unsigned int addScript(std::string filePath) // same here
-        {
-            filePath = ASSETS_FOLDER_PATH + "Scripts/" + filePath;
+        static unsigned int addScript(Script& script); // returns id of script, puts into cache
+        static unsigned int addScript(std::string filePath); // same here
 
-            Script s(filePath, true);
+        static void activateScript(unsigned int id, std::string preCommand = ""); // Starts a script using the id given earlier
 
-            unsigned int id = addScript(s);
+        static void deactivateScripts(); // Clears active scripts
 
-            logger->log("Successfully Loaded Script File: " + filePath + ", and given id of: " + std::to_string(id));
-
-            return id;
-        }
-
-        void activateScript(unsigned int id) // Starts a script using the id given earlier
-        {
-            m_activeScripts.push_back(m_scriptCache[id]);
-            logger->log("Activated script with id of: " + std::to_string(id));
-        }
-
-        void deactivateScripts() // Clears active scripts
-        {
-            m_activeScripts.clear();
-        }
-
-        void deactivateScript(unsigned int index)
-        {
-            if(m_activeScripts.size() > 1) {
-                for(unsigned int i = index; i < m_activeScripts.size()-1; i++) {
-                    m_activeScripts[i] = m_activeScripts[i+1];
-                }
-            }
-            m_activeScripts.pop_back();
-        }
+        static void deactivateScript(unsigned int index);
 
     private:
-        std::vector<Script> m_scriptCache; // Holds all scripts in memory to be used/reused later
-        std::vector<Script> m_activeScripts; // Is a list of active scripts' copies, with blank data such as place, timer info, etc.
-
-        Logger* logger = Logger::getInstance();
+        static std::vector<Script> m_scriptCache; // Holds all scripts in memory to be used/reused later
+        static std::vector<Script> m_activeScripts; // Is a list of active scripts' copies, with blank data such as place, timer info, etc.
 };

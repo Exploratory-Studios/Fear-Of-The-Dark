@@ -1,0 +1,5 @@
+<particle id="0">
+	<texture>particleTest.png</texture>
+	<bumpMap>TestMap.png</bumpMap>
+	<decayRate>0.02</decayRate>
+</particle>

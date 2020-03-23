@@ -4,8 +4,10 @@
 #include "../Entity.h"
 #include "../Entities.h"
 #include "../QuestManager.h"
+#include "../XMLData.h"
 
 #include <Camera2D.h>
+#include <ParticleBatch2D.h>
 
 void lua_pushintegertotable(lua_State* L, int index, int value) {
     // make sure to call lua_newtable(L) before using this function!
@@ -31,14 +33,30 @@ void lua_pushstringtotable(lua_State* L, int index, char* value) {
     lua_settable(L, -3); // Add value and index to table at index -3
 }
 
+void lua_pushthreadtotable(lua_State* L, int index, lua_State* thread) {
+    // make sure to call lua_newtable(L) before using this function!
+
+    lua_pushinteger(L, index); // Set index ("key")
+    lua_pushthread(thread); // Set value
+    lua_settable(L, -3); // Add value and index to table at index -3
+}
+
 Scripter::Scripter() {
 
 }
 
-void Scripter::init(World* world, QuestManager* qm, GameplayScreen* gs) {
+void Scripter::init(World* world, QuestManager* qm, GameplayScreen* gs, AudioManager* audio, GLEngine::ParticleEngine2D* particleEngine) {
     m_luaState = luaL_newstate();
 
-    addDepsToRegistry(m_luaState, world, qm, gs);
+    luaL_openlibs(m_luaState);
+
+    //lua_newtable(m_luaState);
+
+    addDepsToRegistry(m_luaState, world, qm, gs, audio, particleEngine);
+
+    // Utility
+    addFunction(LuaScript::l_playSound, "playSound");
+    addFunction(LuaScript::l_createParticle, "createParticle");
 
     // Setters
     addFunction(LuaScript::l_setBlock, "setBlock");
@@ -82,6 +100,8 @@ void Scripter::init(World* world, QuestManager* qm, GameplayScreen* gs) {
     addFunction(LuaScript::l_getSpeakingEntity, "getSelectedEntity");
 
     addFunction(LuaScript::l_getEntityPosition, "getEntityPosition");
+
+    addFunction(LuaScript::l_getCurrentFrame, "getFrame");
 
     addFunction(LuaScript::l_log, "log");
 
@@ -129,7 +149,7 @@ void Scripter::init(World* world, QuestManager* qm, GameplayScreen* gs) {
         static int l_getEntityPosition(lua_State* L); // takes entity UUID, returns a 2-index array*/
 }
 
-void Scripter::update(World* world, ScriptQueue* sq, QuestManager* qm, GameplayScreen* gs) {
+void Scripter::update() {
     // Get active script from ScriptQueue
     // Execute script
     // Take script off active list
@@ -139,14 +159,14 @@ void Scripter::update(World* world, ScriptQueue* sq, QuestManager* qm, GameplayS
 
     scripts.clear();
 
-    for(unsigned int i = 0; i < sq->m_activeScripts.size(); i++) {
-        scripts.push_back(&(sq->m_activeScripts[i]));
+    for(unsigned int i = 0; i < ScriptQueue::m_activeScripts.size(); i++) {
+        scripts.push_back(&(ScriptQueue::m_activeScripts[i]));
     }
 
     if(scripts.size() > 0) {
         for(unsigned int i = 0; i < scripts.size(); i++) {
-            executeScript(world, qm, gs, (scripts[i]));
-            sq->deactivateScript(i);
+            executeScript(scripts[i]);
+            ScriptQueue::deactivateScript(i);
         }
     }
 
@@ -162,26 +182,39 @@ void Scripter::update(World* world, ScriptQueue* sq, QuestManager* qm, GameplayS
     }
 }
 
-std::string Scripter::executeScript(World* world, QuestManager* qm, GameplayScreen* gs, Script* script) {
+std::string Scripter::executeScript(Script* script) {
     std::string returnMessage;
 
+    lua_checkstack(m_luaState, 10);
+
     LuaScript* s = new LuaScript(m_luaState);
+    s->runScriptString(script->preCommand);
     if(script->isFile()) {
         s->runScriptFile(script->getFileName());
     } else {
         s->runScriptString(script->getText());
     }
 
+    /*lua_pop(m_luaState, 1);
+    lua_pushthreadtotable(m_luaState, m_numOfScripts, m_luaState);
+    m_numOfScripts++;*/
+
     m_scripts.push_back(s);
 
     return "NO_MSG";
 }
 
-std::string Scripter::executeCommand(World* world, QuestManager* qm, GameplayScreen* gs, std::string& command) {
+std::string Scripter::executeCommand(std::string& command) {
     std::string returnMessage;
+
+    lua_checkstack(m_luaState, 10);
 
     LuaScript* s = new LuaScript(m_luaState);
     s->runScriptString(command);
+
+    /*lua_pop(m_luaState, 1);
+    lua_pushthreadtotable(m_luaState, m_numOfScripts, m_luaState);
+    m_numOfScripts++;*/
 
     m_scripts.push_back(s);
 
@@ -277,14 +310,14 @@ std::vector<glm::vec2> areaPositionTarget(World* world, glm::vec2 pos1, glm::vec
 }
 
 void setBlock(World* world, unsigned int id, glm::vec2 pos, int layer, MetaData metaData) {
-    world->setTile(createBlock(id, pos, layer, metaData)); // Set the block, of course
+    world->setTile(new Tile(pos, layer, id, MetaData(metaData), false)); // Set the block, of course
     /// TODO: compile array of chunks in init()
 }
 
 void removeBlock(World* world, int x, int y, unsigned int layer) {
     int chunk = std::floor(x / CHUNK_SIZE); // What chunk index it belongs to
 
-    world->setTile(new BlockAir(glm::vec2(x, y), layer));
+    world->setTile(new Tile(glm::vec2(x, y), layer, 0, MetaData(""), false)); /// TODO: Constant for air
 }
 
 void showBlock(World* world, int x, int y, unsigned int layer) {
@@ -399,6 +432,8 @@ void startDialogue(QuestManager* qm, unsigned int questionID) {
 #define GET_WORLD_UPVALUE lua_pushlightuserdata(L, (void *)&WORLD_KEY); lua_gettable(L, LUA_REGISTRYINDEX); World* world = static_cast<World*>(lua_touserdata(L, -1));
 #define GET_QUESTMANAGER_UPVALUE lua_pushlightuserdata(L, (void *)&QUESTMANAGER_KEY); lua_gettable(L, LUA_REGISTRYINDEX); QuestManager* qm = static_cast<QuestManager*>(lua_touserdata(L, -1));
 #define GET_GAMEPLAYSCREEN_UPVALUE lua_pushlightuserdata(L, (void *)&GAMEPLAYSCREEN_KEY); lua_gettable(L, LUA_REGISTRYINDEX); GameplayScreen* gs = static_cast<GameplayScreen*>(lua_touserdata(L, -1));
+#define GET_AUDIO_UPVALUE lua_pushlightuserdata(L, (void *)&AUDIOMANAGER_KEY); lua_gettable(L, LUA_REGISTRYINDEX); AudioManager* audio = static_cast<AudioManager*>(lua_touserdata(L, -1));
+#define GET_PARTICLE_UPVALUE lua_pushlightuserdata(L, (void *)&PARTICLEENGINE_KEY); lua_gettable(L, LUA_REGISTRYINDEX); GLEngine::ParticleEngine2D* particles = static_cast<GLEngine::ParticleEngine2D*>(lua_touserdata(L, -1));
 
 /*std::vector<glm::vec2> relativePositionTarget(World* world, Entity* relativeTo, glm::vec2 relativePos) {
     std::vector<glm::vec2> ret;
@@ -409,6 +444,40 @@ void startDialogue(QuestManager* qm, unsigned int questionID) {
 }
 
 std::vector<glm::vec2> areaPositionTarget(World* world, glm::vec2 pos1, glm::vec2 pos2) {*/
+
+int LuaScript::l_playSound(lua_State* L) {
+    GET_AUDIO_UPVALUE;
+
+    unsigned int id = (int)lua_tonumber(L, 1);
+    float volume = lua_tonumber(L, 1);
+
+    audio->playSoundEffect(id, volume);
+
+    return 0;
+}
+
+void updateParticleGravity(GLEngine::Particle2D& p, float delta) {
+    p.velocity.y -= 1.225f / 60.0f;
+    p.position += p.velocity;
+    p.color.a = 255 * p.life;
+}
+
+int LuaScript::l_createParticle(lua_State* L) {
+    GET_PARTICLE_UPVALUE;
+
+    unsigned int id = (int)lua_tonumber(L, 1);
+    float x = lua_tonumber(L, 2);
+    float y = lua_tonumber(L, 3);
+    float xVel = lua_tonumber(L, 4);
+    float yVel = lua_tonumber(L, 5);
+    float width = lua_tonumber(L, 6);
+
+    XML_ParticleData d = XMLData::getParticleData(id);
+    GLEngine::ParticleBatch2D* batch = particles->getParticleBatch(MAX_TYPE_PARTICLES, d.decayRate, d.textureFilepath, d.bumpMapFilepath, updateParticleGravity);
+
+    batch->addParticle(glm::vec2(x, y), glm::vec2(xVel, yVel), GLEngine::ColourRGBA8(255, 255, 255, 255), width);
+}
+
 int LuaScript::l_setBlock(lua_State* L) {
     GET_WORLD_UPVALUE;
     unsigned int id = (int)lua_tonumber(L, 1);
@@ -727,6 +796,14 @@ int LuaScript::l_getEntityPosition(lua_State* L) {
     lua_newtable(L);
     lua_pushnumbertotable(L, 1, pos.x);
     lua_pushnumbertotable(L, 2, pos.y);
+
+    return 1;
+}
+
+int LuaScript::l_getCurrentFrame(lua_State* L) {
+    GET_WORLD_UPVALUE;
+
+    lua_pushnumber(L, world->getFrame());
 
     return 1;
 }

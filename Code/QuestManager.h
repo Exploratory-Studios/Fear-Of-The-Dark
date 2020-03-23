@@ -22,7 +22,7 @@ class Player;
 
 class DialogueManager {
     public:
-        DialogueManager(std::vector<Question*>* questionList, std::vector<Flag*>* flagList, std::vector<TradeTable*>* tradeTables, ScriptQueue* sq) : m_questionList(questionList), m_flagList(flagList), m_tradeTables(tradeTables), m_sq(sq) { }
+        DialogueManager(std::vector<Question*>* questionList, std::vector<Flag*>* flagList, std::vector<TradeTable*>* tradeTables) : m_questionList(questionList), m_flagList(flagList), m_tradeTables(tradeTables) { }
         ~DialogueManager();
 
         void draw();
@@ -58,8 +58,6 @@ class DialogueManager {
         std::vector<Flag*>* m_flagList = nullptr;
         std::vector<TradeTable*>* m_tradeTables = nullptr;
 
-        ScriptQueue* m_sq = nullptr;
-
         std::vector<CEGUI::PushButton*> m_buttons;
         std::vector<CEGUI::Window*> m_otherWidgets;
         CEGUI::Scrollbar* m_scrollbar = nullptr;
@@ -80,7 +78,7 @@ class DialogueManager {
 class QuestManager
 {
     public:
-        QuestManager(std::string questionListPath, std::string flagListPath, std::string tradeListPath, ScriptQueue* sq);
+        QuestManager(std::string questionListPath, std::string flagListPath, std::string tradeListPath);
         ~QuestManager();
 
         void update(GLEngine::InputManager& input, Player* p);
@@ -114,7 +112,6 @@ class QuestManager
 
         DialogueManager* m_dialogueManager = nullptr; /// TODO make this private again please :)
         GLEngine::GUI* m_gui = nullptr;
-        ScriptQueue* m_sq = nullptr;
 
         std::vector<Question*> getDialogue(std::ifstream& file);
         Question* readQuestion(std::vector<std::string> lines); // Forms question struct from given lines

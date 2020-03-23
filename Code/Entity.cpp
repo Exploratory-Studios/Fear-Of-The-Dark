@@ -25,7 +25,7 @@ Entity::~Entity()
 
 }
 
-/*void Entity::init(glm::vec2 position, Categories::Entity_Type type, unsigned int id, ScriptQueue* sq) {
+/*void Entity::init(glm::vec2 position, Categories::Entity_Type type, unsigned int id) {
     m_position = position;
     m_sq = sq;
 
@@ -66,13 +66,13 @@ Entity::~Entity()
     }
 }*/
 
-void Entity::update(World* world, AudioManager* audio, float timeStep, ScriptQueue* sq) {
+void Entity::update(World* world, AudioManager* audio, float timeStep) {
     //for(int i = 0; i < timeStep; i++) {
         updateAI();
         updateLimbs();
         move(1); /// Fix timestepping, make sure that each step, the entity collides :facepalm:
         updateSounds(world, audio);
-        interact(world, sq);
+        interact(world);
         updateMovement(world);
         updateLightLevel(world);
 
@@ -588,15 +588,15 @@ void Entity::updateSounds(World* world, AudioManager* audio) {
     if(m_onGround && m_soundTimer > 20) { // 20 is arbitrary, should probably add a variable to each type of entity (for longer strides, etc.)
         glm::vec2 tileCoordsFloor = glm::vec2((int)(m_position.x + 0.5f), (int)(m_position.y - 0.5f));
 
-        audio->playSoundEffect(world->getTile(tileCoordsFloor.x, tileCoordsFloor.y, m_layer)->getWalkedOnSoundEffectID(), MIX_MAX_VOLUME);
-        m_soundTimer = 0;
+        //audio->playSoundEffect(world->getTile(tileCoordsFloor.x, tileCoordsFloor.y, m_layer)->getWalkedOnSoundEffectID(), MIX_MAX_VOLUME);
+        m_soundTimer = 0; /// TODO: Re-enable tile walking sounds
     }
 }
 
-void Entity::interact(World* world, ScriptQueue* sq) {
+void Entity::interact(World* world) {
     if(m_onGround && std::abs(m_velocity.x) > 0.1f) {
         glm::vec2 tileCoordsFloor = glm::vec2((int)(m_position.x + 0.5f), (int)(m_position.y - 0.5f));
-        world->getTile(tileCoordsFloor.x, tileCoordsFloor.y, m_layer)->interact_WalkedOn(sq);
+        world->getTile(tileCoordsFloor.x, tileCoordsFloor.y, m_layer)->onInteract_WalkedOn();
     }
 }
 

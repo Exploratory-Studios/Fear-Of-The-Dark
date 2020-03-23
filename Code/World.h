@@ -39,7 +39,8 @@ public:
     std::vector<Entity*> getEntities() { return m_entities; }
     Entity* getEntityByUUID(std::string UUID) { auto i = m_entitiesByUUID.find(UUID); return i->second; }
     Player* getPlayer() { return m_player; }
-    unsigned int getTime() { return m_time; }
+    unsigned long int getTime() { return m_time; }
+    unsigned long int getFrame() { return m_frame; }
     std::string getName() { return m_name; }
     WorldEra getEra() { return m_worldEra; }
     WorldEra getNextEra() { return m_nextWorldEra; }
@@ -55,14 +56,14 @@ public:
     void tickTiles(glm::vec4 destRect);
 
     void drawEntities(GLEngine::SpriteBatch& sb, GLEngine::SpriteFont& sf, GLEngine::DebugRenderer& dr, glm::vec4 destRect);
-    void updateEntities(AudioManager* audio, float timeStep, ScriptQueue* sq);
+    void updateEntities(AudioManager* audio, float timeStep);
     void tickEntities(AudioManager* audio);
 
     void drawParticles(GLEngine::SpriteBatch* sb);
 
     void drawDebug(GLEngine::DebugRenderer& dr, float xOffset);
 
-    void incrementTime() { m_time++; }
+    void incrementTime() { m_frame++; if((m_frame % 60/TICK_RATE) == 0) m_time++; }
 
     void setWorldEra(WorldEra newEra) { m_nextWorldEra = newEra; }
 
@@ -82,11 +83,10 @@ private:
 
     Player* m_player = nullptr;
 
-    GLEngine::ParticleEngine2D m_particle2d;
-
     Categories::Places m_placesMap[(WORLD_SIZE / CHUNK_SIZE)]; // Simply a 1d vector of biome IDs, which can be mapped onto the world by referencing each "chunk"'s size
 
-    float m_time = 0.0f; // Tick time, really
+    unsigned long int m_time = 0; // Tick time
+    unsigned long int m_frame = 0; // frames that have passed
     float m_sunlight = 0.0f;
 
     WorldEra m_worldEra = WorldEra::NEOLITHIC_ERA;

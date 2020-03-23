@@ -13,6 +13,8 @@
 
 #include "WorldIOManager.h"
 #include "QuestManager.h"
+#include "AudioManager.h"
+#include "ParticleEngine2D.h"
 
 #include "ScreenIndices.h"
 #include "Logging.h"
@@ -78,6 +80,7 @@ class GameplayScreen : public GLEngine::IGameScreen
         GLEngine::Window* m_window;
         GLEngine::GUI* m_gui = nullptr;
         GLEngine::SpriteBatch m_spriteBatch;
+        GLEngine::ParticleEngine2D m_particle2d;
 
         GLEngine::GLSLProgram m_textureProgram;
         GLEngine::GLSLProgram m_uiTextureProgram;
@@ -89,7 +92,6 @@ class GameplayScreen : public GLEngine::IGameScreen
 
         Scripter* m_scripter = nullptr;
         QuestManager* m_questManager = nullptr;
-        ScriptQueue* m_sq = nullptr;
         WorldIOManager* m_WorldIOManager = nullptr;
         World* m_world = nullptr;
         AudioManager* m_audio = nullptr;

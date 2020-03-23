@@ -12,6 +12,7 @@ extern "C" {
     #include <lua5.3/lua.h>
     #include <lua5.3/lauxlib.h>
     #include <lua5.3/luaconf.h>
+    #include <lua5.3/lualib.h>
 }
 
 const bool
@@ -69,32 +70,37 @@ std::vector<Entity*> areaEntityTarget(World* world, glm::vec2 pos1, glm::vec2 po
 void lua_pushintegertotable(lua_State* L, int index, int value);
 void lua_pushnumbertotable(lua_State* L, int index, float value);
 void lua_pushstringtotable(lua_State* L, int index, char* value);
+void lua_pushthreadtotable(lua_State* L, int index, lua_State* thread);
 
 class Scripter {
     public:
         Scripter();
-        void init(World* world, QuestManager* qm, GameplayScreen* gs); // Initialize all lua functions
+        void init(World* world, QuestManager* qm, GameplayScreen* gs, AudioManager* audio, GLEngine::ParticleEngine2D* particleEngine); // Initialize all lua functions
 
         /*void showAlert(std::string& title, std::string& text); // Shows an alert window, with custom text, courtesy of CEGUI
         void showPlayerInventory(bool show); // Opens/closes player inventory on screen.
         void showBlockInventory(bool show, Block* block); // Shows/hides a block's inventory on screen in same style as player's.
         */
-        void update(World* world, ScriptQueue* sq, QuestManager* qm, GameplayScreen* gs);
+        void update();
 
-        std::string executeScript(World* world, QuestManager* qm, GameplayScreen* gs, Script* script); /// TODO: For the love of all things unholy, do NOT pass scripts by reference. They do not like that.
-        std::string executeCommand(World* world, QuestManager* qm, GameplayScreen* gs, std::string& command);
+        std::string executeScript(Script* script); /// TODO: For the love of all things unholy, do NOT pass scripts by reference. They do not like that.
+        std::string executeCommand(std::string& command);
     private:
         Logger* logger = Logger::getInstance();
         lua_State* m_luaState = nullptr;
 
         std::vector<LuaScript*> m_scripts;
+
+        unsigned long int m_numOfScripts = 0;
 };
 
 #define WORLD_KEY "world"
 #define GAMEPLAYSCREEN_KEY "gameplayscreen"
 #define QUESTMANAGER_KEY "questmanager"
+#define AUDIOMANAGER_KEY "audiomanager"
+#define PARTICLEENGINE_KEY "particleengine"
 
-#define addDepsToRegistry(L, world, qm, gs)                 \
+#define addDepsToRegistry(L, world, qm, gs, audio, particle)          \
     lua_pushlightuserdata(L, (void *)&WORLD_KEY);           \
     lua_pushlightuserdata(L, static_cast<void*>(world));    \
     lua_settable(L, LUA_REGISTRYINDEX);                     \
@@ -103,7 +109,14 @@ class Scripter {
     lua_settable(L, LUA_REGISTRYINDEX);                     \
     lua_pushlightuserdata(L, (void *)&GAMEPLAYSCREEN_KEY);  \
     lua_pushlightuserdata(L, static_cast<void*>(gs));       \
-    lua_settable(L, LUA_REGISTRYINDEX);
+    lua_settable(L, LUA_REGISTRYINDEX);                     \
+    lua_pushlightuserdata(L, (void *)&AUDIOMANAGER_KEY);    \
+    lua_pushlightuserdata(L, static_cast<void*>(audio));    \
+    lua_settable(L, LUA_REGISTRYINDEX);                     \
+    lua_pushlightuserdata(L, (void *)&PARTICLEENGINE_KEY);  \
+    lua_pushlightuserdata(L, static_cast<void*>(particle)); \
+    lua_settable(L, LUA_REGISTRYINDEX);                     \
+
 
 #define addFunction(func, name) { lua_pushcfunction(m_luaState, func); lua_setglobal(m_luaState, name); }
 
@@ -139,7 +152,7 @@ public:
         return 0;
     }
     void update(lua_State* state) {
-        if(lua_status(T) == LUA_YIELD) { // Is the thread currently paused?
+        if(lua_status(T) == LUA_YIELD || !m_finished) { // Is the thread currently paused?
             int delayLeft = lua_tointeger(T, -1); // Get the delay from the top of the stack
             delayLeft--; // Take one frame away
             lua_pop(T, 1); // Take the delay value off of the stack completely
@@ -149,14 +162,21 @@ public:
             } else {
                 lua_pushinteger(T, delayLeft); // Otherwise, re-add the new delay value
             }
-        } else if(lua_status(T) == LUA_OK) {
+        } else if(lua_status(T) == LUA_OK && !m_finished) {
             m_finished = true;
+            lua_close(T);
         }
     }
+
+    lua_State* getThread() { return T; }
 
     bool isFinished() { return m_finished; }
 
     // Wrappers for Lua
+    // Utility
+        static int l_playSound(lua_State* L);
+        static int l_createParticle(lua_State* L);
+
     // Setters
         static int l_setBlock(lua_State* L);
         static int l_removeBlock(lua_State* L);
@@ -199,6 +219,8 @@ public:
         static int l_getSpeakingEntity(lua_State* L);
 
         static int l_getEntityPosition(lua_State* L); // takes entity UUID, returns a 2-index array
+
+        static int l_getCurrentFrame(lua_State* L); // returns the current frame
 
     // Debug
         static int l_log(lua_State* L);

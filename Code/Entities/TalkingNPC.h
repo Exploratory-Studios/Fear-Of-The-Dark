@@ -8,7 +8,7 @@ class TalkingNPC : public Entity
 {
 
     public:
-        TalkingNPC(glm::vec2 position, unsigned int id, AudioManager* audioManager, ScriptQueue* sq);
+        TalkingNPC(glm::vec2 position, unsigned int id, AudioManager* audioManager);
         ~TalkingNPC();
 
         void startDialogue();

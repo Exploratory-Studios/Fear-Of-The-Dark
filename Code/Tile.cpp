@@ -4,9 +4,72 @@
 
 #include <random>
 #include <boost/thread.hpp>
+#include <ResourceManager.h>
+
+#include "XMLData.h"
 
 Tile::Tile() {
 
+}
+
+Tile::Tile(glm::vec2 pos, unsigned int layer, unsigned int id, MetaData data, bool loadTex) : m_pos(pos), m_layer(layer), m_id(id), m_metaData(data) {
+    XML_TileData t = XMLData::getTileData(id);
+
+    m_texturePath = t.textureFilepath;
+    m_bumpMapPath = t.bumpMapFilepath;
+    m_emittedLight = t.emittedLight;
+    m_emittedLight = t.emittedHeat;
+    m_size = t.size;
+    m_solid = t.solid;
+    m_draw = t.drawn;
+    m_natural = t.natural;
+    m_transparent = t.transparent;
+    m_updateScriptID = t.updateScriptID;
+    m_tickScriptID = t.tickScriptID;
+    m_interactScriptID_walkedOn = t.interactScriptID_walkedOn;
+    m_interactScriptID_used = t.interactScriptID_used;
+
+    if(loadTex && m_draw) {
+        loadTexture();
+    } else {
+        m_textureId = (GLuint)-1;
+    }
+}
+
+Tile::Tile(glm::vec2 pos, unsigned int layer, TileIDs id, MetaData data, bool loadTex) : m_pos(pos), m_layer(layer), m_id((unsigned int)id), m_metaData(data) {
+    XML_TileData t = XMLData::getTileData((unsigned int)id);
+
+    m_texturePath = t.textureFilepath;
+    m_bumpMapPath = t.bumpMapFilepath;
+    m_emittedLight = t.emittedLight;
+    m_emittedLight = t.emittedHeat;
+    m_size = t.size;
+    m_solid = t.solid;
+    m_draw = t.drawn;
+    m_natural = t.natural;
+    m_transparent = t.transparent;
+    m_updateScriptID = t.updateScriptID;
+    m_tickScriptID = t.tickScriptID;
+    m_destroyScriptID = t.destructionScriptID;
+    m_interactScriptID_walkedOn = t.interactScriptID_walkedOn;
+    m_interactScriptID_used = t.interactScriptID_used;
+
+    if(loadTex && m_draw) {
+        loadTexture();
+    } else {
+        m_textureId = (GLuint)-1;
+    }
+}
+
+void Tile::initParticles(GLEngine::ParticleEngine2D* engine) {
+    /*std::string fp = ASSETS_FOLDER_PATH + "/Textures/Blocks/Dirt.png";
+    std::string bm = ASSETS_FOLDER_PATH + "/Textures/BumpMaps/Dirt.png";
+    //m_walkParticleBatch = engine->getParticleBatch(MAX_TYPE_PARTICLES, 0.01f, fp, bm, updateParticle);*/ /// TODO: Move particle system to scripting system
+}
+
+void Tile::loadTexture() {
+    m_textureId = GLEngine::ResourceManager::getTexture(m_texturePath).id;
+    m_bumpMapId = GLEngine::ResourceManager::getTexture(m_bumpMapPath).id;
 }
 
 float Tile::getLight() {
@@ -106,11 +169,11 @@ void Tile::update(World* world, float time, bool updateLighting, const float& su
         }
     }
 
-    onUpdate(world, time);
+    onUpdate();
 }
 
 void Tile::tick(World* world, float tickTime, const float& sunlight) {
-    if(m_updateHeat && m_id != (unsigned int)Categories::BlockIDs::AIR) {
+    if(m_updateHeat && m_id != (unsigned int)TileIDs::AIR) {
         float heat = getSurroundingHeat(world);
         m_temperature = heat;
         m_updateHeat = false;
@@ -118,7 +181,7 @@ void Tile::tick(World* world, float tickTime, const float& sunlight) {
 
     calculateSunlight(world, sunlight);
 
-    onTick(world, tickTime);
+    onTick();
 }
 
 void Tile::draw(GLEngine::SpriteBatch& sb, GLEngine::SpriteFont& sf, int xOffset, int depthDifference) {

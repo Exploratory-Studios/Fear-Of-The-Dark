@@ -21,6 +21,7 @@
 					<Add directory="Code/Entities" />
 					<Add directory="Code/QuestSystem" />
 					<Add directory="include" />
+					<Add directory="Code/" />
 				</Compiler>
 			</Target>
 			<Target title="DebugVB">
@@ -39,6 +40,7 @@
 					<Add directory="Code/Entities" />
 					<Add directory="Code/QuestSystem" />
 					<Add directory="include" />
+					<Add directory="Code/" />
 				</Compiler>
 				<Linker>
 					<Add option="-O3" />
@@ -60,6 +62,7 @@
 					<Add directory="Code/Entities" />
 					<Add directory="Code/QuestSystem" />
 					<Add directory="include" />
+					<Add directory="Code/" />
 				</Compiler>
 				<Linker>
 					<Add option="-O3" />
@@ -83,6 +86,7 @@
 					<Add directory="Code/Entities" />
 					<Add directory="Code/QuestSystem" />
 					<Add directory="include" />
+					<Add directory="Code/" />
 				</Compiler>
 				<Linker>
 					<Add option="-O3" />
@@ -288,8 +292,6 @@
 		<Unit filename="App.h" />
 		<Unit filename="AudioManager.cpp" />
 		<Unit filename="AudioManager.h" />
-		<Unit filename="Blocks.cpp" />
-		<Unit filename="Blocks.h" />
 		<Unit filename="BuffData.h" />
 		<Unit filename="Categories.h" />
 		<Unit filename="Console.cpp" />
@@ -336,6 +338,7 @@
 		<Unit filename="QuestManager.h" />
 		<Unit filename="SaveDataTypes.h" />
 		<Unit filename="ScreenIndices.h" />
+		<Unit filename="Scripting/ScriptQueue.cpp" />
 		<Unit filename="Scripting/ScriptQueue.h" />
 		<Unit filename="Scripting/ScripterMain.cpp" />
 		<Unit filename="Scripting/ScripterMain.h" />
@@ -349,6 +352,8 @@
 		<Unit filename="World.h" />
 		<Unit filename="WorldIOManager.cpp" />
 		<Unit filename="WorldIOManager.h" />
+		<Unit filename="XMLData.cpp" />
+		<Unit filename="XMLData.h" />
 		<Extensions>
 			<code_completion />
 			<debugger />

@@ -1,14 +1,32 @@
-setTime(0)
+function placeBlock(x,y)
+	for i=1,360,50 do
+		angle = math.rad(i)
+		xPos = math.cos(angle)/4.0
+		yPos = math.sin(angle)/4.0
 
-x = 18
-y = 9
-z = 0
+		r1 = math.random() - .5
+		r2 = math.random() - .5
 
-for xMod=0,10,2 do
-	for yMod=0,5,2 do
-		setBlock(6, x+xMod, y-yMod, z, "")
-		delay(15)
+		setBlock(1, x+xPos, y+yPos, 0, "")
+		createParticle(0, x+.5+xPos+r1, y+.5+yPos+r2, xPos, yPos, 0.3)
 	end
 end
 
--- x=18, y=9
+setTime(0)
+
+playerUUID = getPlayer()
+
+pos = getEntityPosition(playerUUID)
+
+x = pos[1]
+y = pos[2]
+
+for i=1,360,8 do
+	angle = math.rad(i)
+	xPos = math.cos(angle)*10
+	yPos = math.sin(angle)*10
+
+	placeBlock(xPos + x, yPos + y)
+
+	delay(10)
+end

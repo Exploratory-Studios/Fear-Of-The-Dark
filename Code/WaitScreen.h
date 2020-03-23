@@ -4,6 +4,8 @@
 #include <Camera2D.h>
 #include <GUI.h>
 #include <GLSLProgram.h>
+#include <SpriteBatch.h>
+#include <SpriteFont.h>
 
 #include "WorldIOManager.h"
 #include "ScreenIndices.h"

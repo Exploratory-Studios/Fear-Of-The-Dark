@@ -5,7 +5,7 @@ ItemBlockGrass::ItemBlockGrass(unsigned int quantity) : ItemBlock(quantity, GLEn
 	m_type = ItemType::BLOCK;
 	m_weight = 0.0f; /// TODO
 
-	m_blockId = (unsigned int)Categories::BlockIDs::GRASS;
+	m_blockId = (unsigned int)TileIDs::GRASS;
 
 	m_canConsume = false;
 	m_canPlace = true;
@@ -16,7 +16,7 @@ ItemBlockDirt::ItemBlockDirt(unsigned int quantity) : ItemBlock(quantity, GLEngi
 	m_type = ItemType::BLOCK;
 	m_weight = 0.0f; /// TODO
 
-	m_blockId = (unsigned int)Categories::BlockIDs::DIRT;
+	m_blockId = (unsigned int)TileIDs::DIRT;
 
 	m_canConsume = false;
 	m_canPlace = true;
@@ -27,7 +27,7 @@ ItemBlockTorch::ItemBlockTorch(unsigned int quantity) : ItemBlock(quantity, GLEn
 	m_type = ItemType::BLOCK;
 	m_weight = 0.0f; /// TODO
 
-	m_blockId = (unsigned int)Categories::BlockIDs::TORCH;
+	m_blockId = (unsigned int)TileIDs::TORCH;
 
 	m_canConsume = false;
 	m_canPlace = true;
@@ -38,7 +38,7 @@ ItemBlockTorchBright::ItemBlockTorchBright(unsigned int quantity) : ItemBlock(qu
 	m_type = ItemType::BLOCK;
 	m_weight = 0.0f; /// TODO
 
-	m_blockId = (unsigned int)Categories::BlockIDs::TORCH_BRIGHT;
+	m_blockId = (unsigned int)TileIDs::TORCH_BRIGHT;
 
 	m_canConsume = false;
 	m_canPlace = true;
@@ -49,7 +49,7 @@ ItemBlockTorchAnti::ItemBlockTorchAnti(unsigned int quantity) : ItemBlock(quanti
 	m_type = ItemType::BLOCK;
 	m_weight = 0.0f; /// TODO
 
-	m_blockId = (unsigned int)Categories::BlockIDs::TORCH_ANTI;
+	m_blockId = (unsigned int)TileIDs::TORCH_ANTI;
 
 	m_canConsume = false;
 	m_canPlace = true;
@@ -60,7 +60,7 @@ ItemBlockWood::ItemBlockWood(unsigned int quantity) : ItemBlock(quantity, GLEngi
 	m_type = ItemType::BLOCK;
 	m_weight = 0.0f; /// TODO
 
-	m_blockId = (unsigned int)Categories::BlockIDs::WOOD;
+	m_blockId = (unsigned int)TileIDs::WOOD;
 
 	m_canConsume = false;
 	m_canPlace = true;
@@ -71,7 +71,7 @@ ItemBlockWood_Pole::ItemBlockWood_Pole(unsigned int quantity) : ItemBlock(quanti
     m_type = ItemType::BLOCK;
     m_weight = 0.0f;
 
-    m_blockId = (unsigned int)Categories::BlockIDs::WOOD_POLE;
+    m_blockId = (unsigned int)TileIDs::WOOD_POLE;
 
     m_canConsume = false;
     m_canPlace = true;
@@ -82,7 +82,7 @@ ItemBlockSign_Wood::ItemBlockSign_Wood(unsigned int quantity) : ItemBlock(quanti
     m_type = ItemType::BLOCK;
     m_weight = 0.0f;
 
-    m_blockId = (unsigned int)Categories::BlockIDs::SIGN_WOOD;
+    m_blockId = (unsigned int)TileIDs::SIGN_WOOD;
 
     m_canConsume = false;
     m_canPlace = true;

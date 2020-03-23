@@ -1,6 +1,6 @@
 /*#include "TalkingNPC.h"
 
-TalkingNPC::TalkingNPC(glm::vec2 position, unsigned int id, AudioManager* audioManager, ScriptQueue* sq) : Entity(position, audioManager, sq) {
+TalkingNPC::TalkingNPC(glm::vec2 position, unsigned int id, AudioManager* audioManager) : Entity(position, audioManager, sq) {
     m_audioManager = audioManager;
 
     unsigned int mobId = Category_Data::dialogueMobData[id].mobId;

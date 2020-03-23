@@ -1,8 +1,17 @@
-This folder is for ASSETS only
-That includes:
-  1. Concept Art (Goes in "Art/Concept")
-  2. Music (Goes in the "Music" folder)
-  3. Sound Effects (Go in the "Sounds" folder)
-  4. Animations (Go in "Art/Animations" folder)
-  5. Spritesheets (Go in "Art/Spritesheets" folder)
-  6. Mob/Entity Textures (Go in "Art/Entities" folder)
+# Assets
+
+This directory is for **assets**
+
+This includes:
+
+- Concept Art (Art folder)
+- GUI Layouts/Fonts (GUI folder)
+- Music (Music folder)
+- Quest Dialogue files (Questing folder)
+- Scripts of all types (Scripts folder)
+- Shaders (Shaders folder)
+- Sounds (Sounds folder)
+- Automatically-Generated Structure files (Structures folder)
+- Textures and Normal Maps, for mobs, particles, projectiles, blocks, and items (Textures folder)
+- Trade Tables (TradeTables folder)
+- Block, Item, and Entity attributes (Data folder)

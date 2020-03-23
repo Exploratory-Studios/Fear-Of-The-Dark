@@ -56,19 +56,19 @@ EntityBaseProjectile::EntityBaseProjectile(glm::vec2 pos, unsigned int layer, fl
     m_gravity = gravity;
 }
 
-void EntityBaseSpeaker::onTalk(ScriptQueue* sq) {
+void EntityBaseSpeaker::onTalk() {
     if(m_questionId != (unsigned int) -1) {
         Script s("startDialogue " + std::to_string(m_questionId), false);
-        int a = sq->addScript(s);
-        sq->activateScript(a);
+        int a = ScriptQueue::addScript(s);
+        ScriptQueue::activateScript(a);
     }
 }
 
-void EntityBaseSpeaker::onTrade(ScriptQueue* sq) {
+void EntityBaseSpeaker::onTrade() {
     if(m_tradeTableId != (unsigned int) -1) {
         Script s("startTrade " + std::to_string(m_tradeTableId), false);
-        int a = sq->addScript(s);
-        sq->activateScript(a);
+        int a = ScriptQueue::addScript(s);
+        ScriptQueue::activateScript(a);
     }
 }
 

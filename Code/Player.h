@@ -24,8 +24,8 @@ class Player : public Entity {
     public:
         Player(glm::vec2 position, unsigned int layer, bool loadTexture = true);
 
-        void onInteract(ScriptQueue* sq) {}
-        void onDeath(ScriptQueue* sq) {}
+        void onInteract() {}
+        void onDeath() {}
 
         void initGUI(GLEngine::GUI* gui);
 
@@ -33,10 +33,10 @@ class Player : public Entity {
 
         void draw(GLEngine::SpriteBatch& sb, float time, int layerDifference, float xOffset) override;
         void drawGUI(GLEngine::SpriteBatch& sb, GLEngine::SpriteFont& sf);
-        void update(World* world, AudioManager* audio, float timeStep, ScriptQueue* sq) override;
+        void update(World* world, AudioManager* audio, float timeStep) override;
         void updateStats(World* world, float timeStep);
         void updateMouse(World* world, glm::vec2 mouseCoords);
-        void updateInput(GLEngine::InputManager* input, World* world, ScriptQueue* sq);
+        void updateInput(GLEngine::InputManager* input, World* world);
 
         void showInventory(bool open) { m_inventoryOpen = open; }
 

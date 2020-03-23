@@ -213,14 +213,14 @@ void Player::drawGUI(GLEngine::SpriteBatch& sb, GLEngine::SpriteFont& sf) {
     }
 }
 
-void Player::update(World* world, AudioManager* audio, float timeStep, ScriptQueue* sq) {
+void Player::update(World* world, AudioManager* audio, float timeStep) {
 
     updateLightLevel(world);
 
     updateLimbs();
     updateStats(world, timeStep);
     updateSounds(world, audio);
-    interact(world, sq);
+    interact(world);
     if(!m_godMode) {
         move(timeStep);
     } else {
@@ -326,9 +326,9 @@ void Player::updateMouse(World* world, glm::vec2 mouseCoords) {
 
 }
 
-void Player::updateInput(GLEngine::InputManager* input, World* world, ScriptQueue* sq) {
+void Player::updateInput(GLEngine::InputManager* input, World* world) {
     if(m_scriptID_dayTime == 0) {
-        m_scriptID_dayTime = sq->addScript("TEST_SCRIPT.txt");
+        m_scriptID_dayTime = ScriptQueue::addScript("TEST_SCRIPT.txt");
     }
 
     if(input->isKeyDown(SDLK_w) && m_stamina > 0.0f) {
@@ -371,11 +371,11 @@ void Player::updateInput(GLEngine::InputManager* input, World* world, ScriptQueu
     if(m_canInteract) {
         if(input->isKeyPressed(SDLK_r)) {
             if(m_selectedEntity) { // must hover mouse over entity and press 'e'
-                m_selectedEntity->onTalk(sq);
+                m_selectedEntity->onTalk();
             }
         } else if(input->isKeyPressed(SDLK_t)) {
             if(m_selectedEntity) {
-                m_selectedEntity->onTrade(sq);
+                m_selectedEntity->onTrade();
             }
         }
 
@@ -384,17 +384,16 @@ void Player::updateInput(GLEngine::InputManager* input, World* world, ScriptQueu
         }
         if(input->isKeyPressed(SDLK_o)) {
             //m_inventory->addItem(createItem((unsigned int)Categories::ItemIDs::MISC_BUCKET, 1));
-            sq->activateScript(m_scriptID_dayTime);
+            ScriptQueue::activateScript(m_scriptID_dayTime);
         }
 
         if(input->isKeyDown(SDL_BUTTON_LEFT) && m_selectedBlock) {
             if(m_favouriteItems[m_selectedHotbox]) m_favouriteItems[m_selectedHotbox]->onLeftClick(m_selectedBlock, world);
             if(!m_favouriteItems[m_selectedHotbox]) {
-                BlockAir* b = new BlockAir(m_selectedBlock->getPosition(), m_selectedBlock->getLayer());
-                world->setTile(b);
+                Tile* t = new Tile(m_selectedBlock->getPosition(), m_selectedBlock->getLayer(), 0, MetaData(), false);
+                world->setTile(t);
             }
             m_inventory->updateWeight();
-            m_selectedBlock->interact_RightClicked(sq);
         }
         if(input->isKeyPressed(SDL_BUTTON_RIGHT)) {
             if(m_selectedBlock) {
@@ -402,13 +401,15 @@ void Player::updateInput(GLEngine::InputManager* input, World* world, ScriptQueu
                     m_favouriteItems[m_selectedHotbox]->onRightClick(m_selectedBlock, world);
                 }
                 m_inventory->updateWeight();
-                m_selectedBlock->interact_RightClicked(sq);
+                if(m_selectedBlock->getID() != (unsigned int)TileIDs::AIR) {
+                    m_selectedBlock->onInteract_RightClicked();
+                }
             }
         }
         if(input->isKeyPressed(SDLK_r)) {
             Item* newItem = createItem((unsigned int)Categories::ItemIDs::BLOCK_DIRT, 1);
             m_inventory->addItem(newItem);
-            //m_sq->activateScript(m_scriptID_makeHouse);
+            //m_ScriptQueue::activateScript(m_scriptID_makeHouse);
         }
         if(input->isKeyPressed(SDLK_t)) {
             if(input->isKeyDown(SDLK_RSHIFT)) {

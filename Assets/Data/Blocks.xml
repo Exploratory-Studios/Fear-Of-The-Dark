@@ -1,0 +1,32 @@
+<tile id="0" name="Air">
+    <isSolid>0</isSolid>
+    <isDrawn>0</isDrawn>
+    <isNatural>1</isNatural>
+	<isTransparent>1</isTransparent>
+</tile>
+<tile id="1" name="Dirt">
+    <texture>Dirt.png</texture>
+    <bumpMap>Dirt.png</bumpMap>
+    <isNatural>1</isNatural>
+</tile>
+<tile id="2" name="Grass">
+    <texture>Grass.png</texture>
+    <bumpMap>Grass.png</bumpMap>
+    <isNatural>1</isNatural>
+</tile>
+
+
+<tile id="4" name="Stone">
+    <texture>Stone.png</texture>
+    <bumpMap>Stone.png</bumpMap>
+    <isNatural>1</isNatural>
+</tile>
+
+
+
+
+<tile id="11" name="Water">
+    <texture>Water.png</texture>
+    <bumpMap>Water.png</bumpMap>
+    <isNatural>1</isNatural>
+</tile>

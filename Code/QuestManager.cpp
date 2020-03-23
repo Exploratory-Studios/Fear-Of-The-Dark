@@ -176,7 +176,7 @@ void DialogueManager::update(GLEngine::InputManager& input, Player* p) {
                     // Start script (if applicable)
                     if(m_currentQuestion->answers[i].followingScriptId != (unsigned int)-1) {
                         unsigned int id = m_currentQuestion->answers[i].followingScriptId;
-                        m_sq->activateScript(id);
+                        ScriptQueue::activateScript(id);
                     }
                     break;
                 }
@@ -243,15 +243,13 @@ bool DialogueManager::onLeaveButtonClicked(const CEGUI::EventArgs& e) {
     return true;
 }
 
-QuestManager::QuestManager(std::string questionListPath, std::string flagListPath, std::string tradeListPath, ScriptQueue* sq)
+QuestManager::QuestManager(std::string questionListPath, std::string flagListPath, std::string tradeListPath)
 {
-    m_sq = sq;
-
     readDialogueFromList(questionListPath);
     readFlagsFromList(flagListPath);
     readTradesFromList(tradeListPath);
 
-    m_dialogueManager = new DialogueManager(&m_questionList, &m_flagList, &m_tradeTables, sq);
+    m_dialogueManager = new DialogueManager(&m_questionList, &m_flagList, &m_tradeTables);
 }
 
 QuestManager::~QuestManager()
@@ -336,7 +334,7 @@ Question* QuestManager::readQuestion(std::vector<std::string> lines) {
 
                 { // Get filepath of script(s) to be executed on answer
                     while(newLines[j] != "#SCRIPTS_END" && newLines[j] != "END") {
-                        a.followingScriptId = m_sq->addScript(newLines[j]); // Adds script to cache with filepath of (Assets path)/Scripts/...
+                        a.followingScriptId = ScriptQueue::addScript(newLines[j]); // Adds script to cache with filepath of (Assets path)/Scripts/...
                         if(j < newLines.size()-1) j++;
                     }
                     if(j < newLines.size()-1) j++;

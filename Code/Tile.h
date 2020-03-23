@@ -15,6 +15,23 @@
 
 class World;
 
+enum class TileIDs {
+    AIR,
+    DIRT,
+    GRASS,
+    SAND,
+    STONE,
+    BUSH,
+    TORCH,
+    TORCH_BRIGHT,
+    TORCH_ANTI,
+    FOLIAGE,
+    WOOD,
+    WATER,
+    WOOD_POLE,
+    SIGN_WOOD
+};
+
 class Tile
 {
     friend class Scripter;
@@ -22,7 +39,7 @@ class Tile
 
     public:
         Tile();
-        Tile(glm::vec2 pos, unsigned int layer, MetaData data) : m_pos(pos), m_layer(layer), m_metaData(data) { handleMetaDataInit(data); }
+        /*Tile(glm::vec2 pos, unsigned int layer, MetaData data) : m_pos(pos), m_layer(layer), m_metaData(data) { handleMetaDataInit(data); }
         Tile(glm::vec2 pos,
              unsigned int layer,
              GLuint textureId,
@@ -38,10 +55,13 @@ class Tile
                 m_colour(colour),
                 m_solid(isSolid),
                 m_id(id),
-                m_metaData(data) { handleMetaDataInit(data); }
+                m_metaData(data) { handleMetaDataInit(data); }*/
+
+        Tile(glm::vec2 pos, unsigned int layer, unsigned int id, MetaData data, bool loadTex);
+        Tile(glm::vec2 pos, unsigned int layer, TileIDs id, MetaData data, bool loadTex);
         virtual ~Tile() {}
 
-        virtual void initParticles(GLEngine::ParticleEngine2D* engine) = 0;
+        virtual void initParticles(GLEngine::ParticleEngine2D* engine);
 
         #ifdef DEV_CONTROLS
         std::string getPrintout(World* world) {
@@ -69,7 +89,6 @@ class Tile
             m_backdrop = other.doDrawBackdrop();
             m_natural = other.isNatural();
             m_id = other.getID();
-            m_walkEffect = (SoundEffectIDs)other.getWalkedOnSoundEffectID();
         }
 
         glm::vec2       getPosition()                   const { return m_pos;                       }
@@ -84,7 +103,6 @@ class Tile
         float           getEmittedLight()               const { return m_emittedLight;              }
         //float           getSurroundingLight();
         float           getSurroundingHeat(World* world);
-        unsigned int    getWalkedOnSoundEffectID()      const { return (unsigned int)m_walkEffect;  }
         float           getSunLight()                   const { return m_sunLight;                  }
         bool            isExposedToSunlight()           const { return m_exposedToSun;              }
         bool            isTransparent()                 const { return m_transparent;               }
@@ -161,16 +179,15 @@ class Tile
             m_cornerSunlight = glm::vec4(0.0f);
         }
 
-        virtual void update(World* world, float time, bool updateLighting, const float& sunlight);
-        virtual void tick(World* world, float tickTime, const float& sunlight);
-        virtual void draw(GLEngine::SpriteBatch& sb, GLEngine::SpriteFont& sf, int xOffset, int depthDifference);
-        virtual void drawBackdrop(GLEngine::SpriteBatch& sb, int xOffset, int yOffset, float lightLevel);
+        void update(World* world, float time, bool updateLighting, const float& sunlight);
+        void tick(World* world, float tickTime, const float& sunlight);
+        void draw(GLEngine::SpriteBatch& sb, GLEngine::SpriteFont& sf, int xOffset, int depthDifference);
+        void drawBackdrop(GLEngine::SpriteBatch& sb, int xOffset, int yOffset, float lightLevel);
 
         void destroy(World* world);
 
-        virtual void interact_WalkedOn(ScriptQueue* sq) {}
-        virtual void interact_LeftClicked(ScriptQueue* sq) {}
-        virtual void interact_RightClicked(ScriptQueue* sq) {}
+        void onInteract_WalkedOn() { if(m_interactScriptID_walkedOn != -1) ScriptQueue::activateScript(m_interactScriptID_walkedOn, "selfX,selfY,selfID="+std::to_string(m_pos.x)+","+std::to_string(m_pos.y)+","+std::to_string(m_id)); }
+        void onInteract_RightClicked() { if(m_interactScriptID_used != -1) ScriptQueue::activateScript(m_interactScriptID_used, "selfX,selfY,selfID="+std::to_string(m_pos.x)+","+std::to_string(m_pos.y)+","+std::to_string(m_id)); }
         // ... More interact functions
 
         void resetNeighboursLight(World* world);
@@ -179,22 +196,31 @@ class Tile
         void calculateSunlight(World* world, float sunlight); // Determines and sets the sunlight corner values for this tile and surrounding tiles.
 
     protected:
-        virtual void handleMetaDataInit(MetaData& data) { };
-        virtual MetaData* getMetaData() { return new MetaData(); }
+        void handleMetaDataInit(MetaData& data) { };
+        MetaData* getMetaData() { return new MetaData(); }
 
-        virtual void onUpdate(World* world, float& time) { };
-        virtual void onDraw(GLEngine::SpriteBatch& sb, GLEngine::SpriteFont& sf, glm::vec4& pos, float& depth) { }
-        virtual void onTick(World* world, float& tickTime) { };
-        virtual void onInteract(ScriptQueue* sq) {}
-        virtual void onDestruction() { }
+        void onUpdate() { if(m_updateScriptID != -1) ScriptQueue::activateScript(m_updateScriptID, "selfX,selfY,selfID="+std::to_string(m_pos.x)+","+std::to_string(m_pos.y)+","+std::to_string(m_id)); };
+        void onDraw(GLEngine::SpriteBatch& sb, GLEngine::SpriteFont& sf, glm::vec4& pos, float& depth) { }
+        void onTick() { if(m_tickScriptID != -1) ScriptQueue::activateScript(m_tickScriptID, "selfX,selfY,selfID="+std::to_string(m_pos.x)+","+std::to_string(m_pos.y)+","+std::to_string(m_id)); };
+        void onDestruction() { }
 
-        virtual void loadTexture() = 0; // Fill this out with your own texture and bumpmap
+        int m_updateScriptID = -1;
+        int m_tickScriptID = -1;
+        int m_interactScriptID = -1;
+        int m_destroyScriptID = -1;
+        int m_interactScriptID_walkedOn = -1;
+        int m_interactScriptID_used = -1;
+
+        void loadTexture();
 
         bool exposedToSun(World* world);
 
         glm::vec2 m_pos = glm::vec2(69.420f, 69.420f);
         unsigned int m_layer = 0; // Higher numbers are farther behind
         glm::vec2 m_size = glm::vec2(1, 1);
+
+        std::string m_texturePath;
+        std::string m_bumpMapPath;
 
         GLuint m_textureId = (GLuint)-1;
         GLuint m_bumpMapId = (GLuint)-1;
@@ -223,8 +249,6 @@ class Tile
         bool m_natural = false; // Is it a natural block? Does it get changed to stone when eras pass?
 
         unsigned int m_id;
-
-        SoundEffectIDs m_walkEffect = SoundEffectIDs::WALK_DIRT;
 
         MetaData m_metaData;
 

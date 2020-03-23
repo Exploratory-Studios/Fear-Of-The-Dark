@@ -109,12 +109,12 @@ class Entity
 
         virtual ~Entity();
 
-        //virtual void onInteract(ScriptQueue* sq) {} // Deprecated? Yes. Hotel? Trivago.
-        virtual void onTalk(ScriptQueue* sq) {}
-        virtual void onTrade(ScriptQueue* sq) {}
-        virtual void onDeath(ScriptQueue* sq) {}
+        //virtual void onInteract() {} // Deprecated? Yes. Hotel? Trivago.
+        virtual void onTalk() {}
+        virtual void onTrade() {}
+        virtual void onDeath() {}
 
-        virtual void update(World* world, AudioManager* audio, float timeStep, ScriptQueue* sq);
+        virtual void update(World* world, AudioManager* audio, float timeStep);
         virtual void tick(World* world, AudioManager* audio);
         virtual void draw(GLEngine::SpriteBatch& sb, float time, int layerDifference, float xOffset);
         virtual void debugDraw(GLEngine::DebugRenderer& dr, float xOffset);
@@ -164,7 +164,7 @@ class Entity
         }
         void updateMovement(World* world);
         virtual void updateSounds(World* world, AudioManager* audio);
-        void interact(World* world, ScriptQueue* sq);
+        void interact(World* world);
 
         void pathfindToTarget(World* world, glm::vec3 target, bool goLeft);
 

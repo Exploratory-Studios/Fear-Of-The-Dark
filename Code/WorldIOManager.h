@@ -11,12 +11,12 @@
 
 #include "PerlinNoise/PerlinNoise.h"
 
-#include "Blocks.h"
-
 #include "PresetValues.h"
 #include "Logging.h"
 
 #include "SaveDataTypes.h"
+
+class World;
 
 class WorldIOManager
 {

@@ -50,37 +50,7 @@ void Console::hide() {
 }
 
 void Console::processCommand(World* world, QuestManager* qm, GameplayScreen* gs, std::string& command) {
-    m_scripter->executeCommand(world, qm, gs, command);
-
-    /*std::vector<std::string> returnVector;
-
-    std::string temp;
-
-    for(unsigned int i = 0; i < ret.size()-1; i++) {
-        if(ret[i] == '\n') {
-            returnVector.push_back(temp);
-            temp = "";
-        } else {
-            temp += ret[i];
-        }
-    }
-
-    for(unsigned int i = 0; i < returnVector.size(); i++) {
-        glm::vec4 destRect = glm::vec4(0.0f, m_historyLabels.size() * 0.3f, 1.0f, 0.3f);
-        std::string name = std::string("ConsoleScrollableHistoryLabel") + std::to_string((unsigned int)m_historyLabels.size()) + std::string("_") + std::to_string(i);
-        m_historyLabels.push_back(static_cast<CEGUI::DefaultWindow*>(m_gui->createWidget(m_scrollable, "FOTDSkin/Label", destRect, glm::vec4(0.0f), name)));
-        m_historyLabels[m_historyLabels.size()-1]->setText("[vert-alignment='center']" + returnVector[i]);
-        m_historyLabels[m_historyLabels.size()-1]->setProperty("HorzFormatting", "LeftAligned");
-    }
-
-    m_commandHistory.push_back(command);
-    if(m_commandHistory.size() > 25) {
-        for(int i = m_commandHistory.size()-1; i > 0; i--) {
-            m_commandHistory[i-1] = m_commandHistory[i];
-        }
-        m_commandHistory.pop_back();
-    }
-    m_historySelection = m_commandHistory.size();*/
+    m_scripter->executeCommand(command);
 }
 
 /// PRIVATE FUNCTIONS

@@ -13,23 +13,6 @@ namespace Categories {
         ASIA
     };
 
-    enum class BlockIDs {
-        AIR,
-        DIRT,
-        GRASS,
-        SAND,
-        STONE,
-        BUSH,
-        TORCH,
-        TORCH_BRIGHT,
-        TORCH_ANTI,
-        FOLIAGE,
-        WOOD,
-        WATER,
-        WOOD_POLE,
-        SIGN_WOOD
-    };
-
     enum class ItemIDs {
         WEAPON_SWORD,
         BLOCK_DIRT,

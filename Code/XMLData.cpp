@@ -92,7 +92,7 @@ XML_TileData XMLData::readTileData(rapidxml::xml_node<>* node) {
     getValue(node, "emittedHeat", d.emittedHeat);
 
     getValue(node, "sizeX", d.size.x);
-    getValue(node, "sizeX", d.size.y);
+    getValue(node, "sizeY", d.size.y);
 
     getValue(node, "isSolid", (bool&)d.solid);
     getValue(node, "isDrawn", (bool&)d.drawn);
@@ -111,19 +111,19 @@ XML_TileData XMLData::readTileData(rapidxml::xml_node<>* node) {
     getValue(node, "interactScript_used", RClickScriptID);
 
     if(updateSID.length() > 0) {
-        d.updateScriptID = ScriptQueue::addScript(ASSETS_FOLDER_PATH + "Scripts/" + updateSID);
+        d.updateScriptID = ScriptQueue::addScript(updateSID);
     }
     if(tickSID.length() > 0) {
-        d.tickScriptID = ScriptQueue::addScript(ASSETS_FOLDER_PATH + "Scripts/" + tickSID);
+        d.tickScriptID = ScriptQueue::addScript(tickSID);
     }
     if(destructionSID.length() > 0) {
-        d.destructionScriptID = ScriptQueue::addScript(ASSETS_FOLDER_PATH + "Scripts/" + destructionSID);
+        d.destructionScriptID = ScriptQueue::addScript(destructionSID);
     }
     if(walkScriptID.length() > 0) {
-        d.interactScriptID_walkedOn = ScriptQueue::addScript(ASSETS_FOLDER_PATH + "Scripts/" + walkScriptID);
+        d.interactScriptID_walkedOn = ScriptQueue::addScript(walkScriptID);
     }
     if(RClickScriptID.length() > 0) {
-        d.interactScriptID_used = ScriptQueue::addScript(ASSETS_FOLDER_PATH + "Scripts/" + RClickScriptID);
+        d.interactScriptID_used = ScriptQueue::addScript(RClickScriptID);
     }
 
     return d;
@@ -176,6 +176,8 @@ XML_ParticleData XMLData::readParticleData(rapidxml::xml_node<>* node) {
     d.textureFilepath = ASSETS_FOLDER_PATH + "/Textures/Particles/" + d.textureFilepath;
     getValue(node, "bumpMap", d.bumpMapFilepath);
     d.bumpMapFilepath = ASSETS_FOLDER_PATH + "/Textures/BumpMaps/" + d.bumpMapFilepath;
+    getValue(node, "script", d.scriptPath);
+    d.scriptPath = ASSETS_FOLDER_PATH + "/Scripts/" + d.scriptPath;
 
     getValue(node, "decayRate", d.decayRate);
 

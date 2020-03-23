@@ -8,7 +8,6 @@ class ItemBlock : public Item
     public:
         ItemBlock(unsigned short int quantity, GLEngine::GLTexture texture, std::string name);
 
-        void onLeftClick(Tile* selectedBlock, World* world) override;
         void onRightClick(Tile* selectedBlock, World* world) override;
 
     protected:

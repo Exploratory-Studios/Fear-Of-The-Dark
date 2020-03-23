@@ -18,7 +18,7 @@ Tile::Tile(glm::vec2 pos, unsigned int layer, unsigned int id, MetaData data, bo
     m_texturePath = t.textureFilepath;
     m_bumpMapPath = t.bumpMapFilepath;
     m_emittedLight = t.emittedLight;
-    m_emittedLight = t.emittedHeat;
+    m_emittedHeat = t.emittedHeat;
     m_size = t.size;
     m_solid = t.solid;
     m_draw = t.drawn;

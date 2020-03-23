@@ -8,6 +8,8 @@
 
 #include "../ExtraFunctions.h"
 
+#include <ParticleBatch2D.h>
+
 extern "C" {
     #include <lua5.3/lua.h>
     #include <lua5.3/lauxlib.h>
@@ -120,18 +122,60 @@ class Scripter {
 
 #define addFunction(func, name) { lua_pushcfunction(m_luaState, func); lua_setglobal(m_luaState, name); }
 
+class ParticleUpdate {
+public:
+    ParticleUpdate(std::string scriptPathP, lua_State* Tp) : scriptPath(scriptPathP), T(Tp) {}
+    void operator() (GLEngine::Particle2D& particle, float deltaTime) const;
+
+    std::string scriptPath;
+    lua_State* T;
+};
+
+static void stackDump (lua_State *L) {
+  int i;
+  int top = lua_gettop(L);
+  for (i = 1; i <= top; i++) {  /* repeat for each level */
+    int t = lua_type(L, i);
+    std::cout << i << ": ";
+    switch (t) {
+
+      case LUA_TSTRING:  /* strings */
+        std::cout << lua_tostring(L, i);
+        break;
+
+      case LUA_TBOOLEAN:  /* booleans */
+        std::cout << lua_toboolean(L, i);
+        break;
+
+      case LUA_TNUMBER:  /* numbers */
+        std::cout << lua_tonumber(L, i);
+        break;
+
+      default:  /* other values */
+        std::cout << lua_typename(L, t);
+        break;
+
+    }
+    std::cout << "    ";
+  }
+  std::cout << std::endl;
+}
+
 class LuaScript {
 public:
     LuaScript(lua_State* state) {
         T = lua_newthread(state);
+        m_particle = nullptr;
     }
     ~LuaScript() {
         T = 0;
     }
 
     int runScriptFile(std::string filepath) {
-        if(luaL_loadfile(T, filepath.c_str())) {
-            std::cout << "LUA ERROR ON LOADING FILE: " << filepath;
+        int errCode = luaL_loadfile(T, filepath.c_str());
+
+        if(errCode) {
+            printf("error code %i: %s\n", errCode, lua_tostring(T, -1));
             T = 0;
             return 1;
         }
@@ -141,8 +185,12 @@ public:
         return 0;
     }
     int runScriptString(std::string script) {
-        if(luaL_loadstring(T, script.c_str())) {
-            std::cout << "LUA ERROR ON LOADING SCRIPT: \"" << script << "\"";
+        std::string sc = script;
+
+        int errCode = luaL_loadstring(T, (char*)sc.c_str());
+
+        if(errCode) {
+            printf("error code %i: %s\n", errCode, lua_tostring(T, -1));
             T = 0;
             return 1;
         }
@@ -164,7 +212,7 @@ public:
             }
         } else if(lua_status(T) == LUA_OK && !m_finished) {
             m_finished = true;
-            lua_close(T);
+            //lua_close(T); Can't lua_close threads!
         }
     }
 
@@ -232,4 +280,5 @@ private:
 
     lua_State* T = nullptr; // Main thread. Used for delaying the script
     bool m_finished = false;
+    static GLEngine::Particle2D* m_particle;
 };

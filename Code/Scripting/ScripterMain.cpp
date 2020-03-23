@@ -160,7 +160,9 @@ void Scripter::update() {
     scripts.clear();
 
     for(unsigned int i = 0; i < ScriptQueue::m_activeScripts.size(); i++) {
-        scripts.push_back(&(ScriptQueue::m_activeScripts[i]));
+        Script* s = new Script;
+        *s = ScriptQueue::m_activeScripts[i];
+        scripts.push_back(s); // Make a copy!
     }
 
     if(scripts.size() > 0) {
@@ -174,7 +176,7 @@ void Scripter::update() {
         m_scripts[i]->update(m_luaState);
         if(m_scripts[i]->isFinished()) {
             delete m_scripts[i];
-            for(int j = i; j < m_scripts.size()-1; j++) {
+            for(int j = i; j < m_scripts.size(); j++) {
                 m_scripts[j] = m_scripts[j+1];
             }
             m_scripts.pop_back();
@@ -188,7 +190,7 @@ std::string Scripter::executeScript(Script* script) {
     lua_checkstack(m_luaState, 10);
 
     LuaScript* s = new LuaScript(m_luaState);
-    s->runScriptString(script->preCommand);
+    if(script->preCommand.length() > 0) s->runScriptString(script->preCommand);
     if(script->isFile()) {
         s->runScriptFile(script->getFileName());
     } else {
@@ -310,7 +312,8 @@ std::vector<glm::vec2> areaPositionTarget(World* world, glm::vec2 pos1, glm::vec
 }
 
 void setBlock(World* world, unsigned int id, glm::vec2 pos, int layer, MetaData metaData) {
-    world->setTile(new Tile(pos, layer, id, MetaData(metaData), false)); // Set the block, of course
+    float correctedX = ((int)pos.x + WORLD_SIZE) % WORLD_SIZE;
+    world->setTile(new Tile(glm::vec2(correctedX, pos.y), layer, id, MetaData(metaData), false)); // Set the block, of course
     /// TODO: compile array of chunks in init()
 }
 
@@ -455,12 +458,79 @@ int LuaScript::l_playSound(lua_State* L) {
 
     return 0;
 }
+#include <iostream>
+void ParticleUpdate::operator() (GLEngine::Particle2D& particle, float deltaTime) const {
+    lua_State* thread2 = lua_newthread(T);
 
-void updateParticleGravity(GLEngine::Particle2D& p, float delta) {
-    p.velocity.y -= 1.225f / 60.0f;
-    p.position += p.velocity;
-    p.color.a = 255 * p.life;
+    // This simply sets the variables for the particle's position, velocity, life, and width
+    std::string varString = "particleX,particleY,particleXVel,particleYVel,particleLife,particleWidth,particleAlpha=";
+    varString += std::to_string(particle.position.x) + ",";
+    varString += std::to_string(particle.position.y) + ",";
+    varString += std::to_string(particle.velocity.x) + ",";
+    varString += std::to_string(particle.velocity.y) + ",";
+    varString += std::to_string(particle.life) + ",";
+    varString += std::to_string(particle.width) + ",";
+    varString += std::to_string(particle.color.a);
+
+    int errCode = luaL_loadstring(thread2, (char*)varString.c_str());
+
+    if(errCode) {
+        printf("error code %i: %s\n", errCode, lua_tostring(thread2, -1));
+        thread2 = 0;
+        lua_pop(T, 1); // Pop the thread from the stack
+        return;
+    }
+
+    errCode = lua_resume(thread2, NULL, 0);
+
+    if(errCode != LUA_OK && errCode != LUA_YIELD) {
+        printf("error code %i: %s\n", errCode, lua_tostring(thread2, -1));
+        thread2 = 0;
+        lua_pop(T, 1); // Pop the thread from the stack
+        return;
+    }
+
+    errCode = luaL_loadfile(thread2, scriptPath.c_str());
+
+    if(errCode) {
+        printf("error code %i: %s\n", errCode, lua_tostring(thread2, -1));
+        thread2 = 0;
+        lua_pop(T, 1); // Pop the thread from the stack
+        return;
+    }
+
+    errCode = lua_resume(thread2, NULL, 0);
+
+    if(errCode != LUA_OK && errCode != LUA_YIELD) {
+        printf("error code %i: %s\n", errCode, lua_tostring(thread2, -1));
+        thread2 = 0;
+        lua_pop(T, 1); // Pop the thread from the stack
+        return;
+    }
+
+    //stackDump(thread2);
+
+    float particleX, particleY, particleVelX, particleVelY, particleLife, particleWidth, particleAlpha;
+
+    particleX = lua_tonumber(thread2, 1);
+    particleY = lua_tonumber(thread2, 2);
+    particleVelX = lua_tonumber(thread2, 3);
+    particleVelY = lua_tonumber(thread2, 4);
+    particleLife = lua_tonumber(thread2, 5);
+    particleWidth = lua_tonumber(thread2, 6);
+    particleAlpha = lua_tonumber(thread2, 7);
+
+    particle.position = glm::vec2(particleX, particleY);
+    particle.velocity = glm::vec2(particleVelX, particleVelY);
+    particle.life = particleLife;
+    particle.width = particleWidth;
+    particle.color.a = particleAlpha;
+
+    thread2 = 0;
+    lua_pop(T, 1); // Pop the thread from the stack
 }
+
+GLEngine::Particle2D* LuaScript::m_particle;
 
 int LuaScript::l_createParticle(lua_State* L) {
     GET_PARTICLE_UPVALUE;
@@ -472,10 +542,15 @@ int LuaScript::l_createParticle(lua_State* L) {
     float yVel = lua_tonumber(L, 5);
     float width = lua_tonumber(L, 6);
 
-    XML_ParticleData d = XMLData::getParticleData(id);
-    GLEngine::ParticleBatch2D* batch = particles->getParticleBatch(MAX_TYPE_PARTICLES, d.decayRate, d.textureFilepath, d.bumpMapFilepath, updateParticleGravity);
+    lua_pop(L, 6);
 
-    batch->addParticle(glm::vec2(x, y), glm::vec2(xVel, yVel), GLEngine::ColourRGBA8(255, 255, 255, 255), width);
+    XML_ParticleData d = XMLData::getParticleData(id);
+
+    ParticleUpdate updateFunc(d.scriptPath, L);
+
+    GLEngine::ParticleBatch2D* batch = particles->getParticleBatch(MAX_TYPE_PARTICLES, d.decayRate, d.textureFilepath, d.bumpMapFilepath, updateFunc);
+
+    m_particle = batch->addParticle(glm::vec2(x, y), glm::vec2(xVel, yVel), GLEngine::ColourRGBA8(255, 255, 255, 255), width);
 }
 
 int LuaScript::l_setBlock(lua_State* L) {
@@ -485,6 +560,9 @@ int LuaScript::l_setBlock(lua_State* L) {
     int y = (int)lua_tonumber(L, 3);
     int layer = (int)lua_tonumber(L, 4);
     std::string metaData = std::string(lua_tostring(L, 5));
+
+    lua_pop(L, 5);
+
     MetaData md(metaData);
     setBlock(world, id, glm::vec2(x, y), layer, md);
     return 0; // no returned values
@@ -495,6 +573,8 @@ int LuaScript::l_removeBlock(lua_State* L) {
     int x = (int)lua_tonumber(L, 1); // get function argument
     int y = (int)lua_tonumber(L, 2); // get function argument
     int layer = (int)lua_tonumber(L, 3); // get function argument
+    lua_pop(L, 3);
+
     removeBlock(world, x, y, layer); // calling C++ function with this argument...
     return 0; // no returned values
 }
@@ -504,6 +584,9 @@ int LuaScript::l_showBlock(lua_State* L) {
     int x = (int)lua_tonumber(L, 1); // get function argument
     int y = (int)lua_tonumber(L, 2); // get function argument
     int layer = (int)lua_tonumber(L, 3); // get function argument
+
+    lua_pop(L, 3);
+
     showBlock(world, x, y, layer); // calling C++ function with this argument...
     return 0; // no returned values
 }
@@ -513,6 +596,9 @@ int LuaScript::l_hideBlock(lua_State* L) {
     int x = (int)lua_tonumber(L, 1); // get function argument
     int y = (int)lua_tonumber(L, 2); // get function argument
     int layer = (int)lua_tonumber(L, 3); // get function argument
+
+    lua_pop(L, 3);
+
     hideBlock(world, x, y, layer); // calling C++ function with this argument...
     return 0; // no returned values
 }
@@ -523,6 +609,9 @@ int LuaScript::l_addEntity(lua_State* L) {
     int x = lua_tonumber(L, 2); // get function argument
     int y = lua_tonumber(L, 3); // get function argument
     int layer = (int)lua_tonumber(L, 4); // get function argument
+
+    lua_pop(L, 4);
+
     addEntity(world, id, glm::vec2(x, y), layer); // calling C++ function with this argument...
     return 0; // no returned values
 }
@@ -530,6 +619,9 @@ int LuaScript::l_addEntity(lua_State* L) {
 int LuaScript::l_removeEntity(lua_State* L) {
     GET_WORLD_UPVALUE;
     std::string entityUUID = lua_tostring(L, 1);
+
+    lua_pop(L, 1);
+
     removeEntity(world, entityUUID); // calling C++ function with this argument...
     return 0; // no returned values
 }
@@ -537,6 +629,9 @@ int LuaScript::l_removeEntity(lua_State* L) {
 int LuaScript::l_showEntity(lua_State* L) {
     GET_WORLD_UPVALUE;
     std::string entityUUID = lua_tostring(L, 1);
+
+    lua_pop(L, 1);
+
     showEntity(world, entityUUID); // calling C++ function with this argument...
     return 0; // no returned values
 }
@@ -544,6 +639,9 @@ int LuaScript::l_showEntity(lua_State* L) {
 int LuaScript::l_hideEntity(lua_State* L) {
     GET_WORLD_UPVALUE;
     std::string entityUUID = lua_tostring(L, 1);
+
+    lua_pop(L, 1);
+
     hideEntity(world, entityUUID); // calling C++ function with this argument...
     return 0; // no returned values
 }
@@ -551,6 +649,9 @@ int LuaScript::l_hideEntity(lua_State* L) {
 int LuaScript::l_setTime(lua_State* L) {
     GET_WORLD_UPVALUE;
     unsigned int time = (int)lua_tonumber(L, 1);
+
+    lua_pop(L, 1);
+
     setTime(world, time);
 
     return 0;
@@ -563,6 +664,9 @@ int LuaScript::l_teleport(lua_State* L) {
 
     int x = lua_tonumber(L, 2);
     int y = lua_tonumber(L, 3);
+
+    lua_pop(L, 3);
+
 
     teleport(world, entityUUID, glm::vec2(x, y));
 
@@ -577,6 +681,9 @@ int LuaScript::l_giveItem(lua_State* L) {
     int id = (int)lua_tonumber(L, 2);
     int quantity = (int)lua_tonumber(L, 3);
 
+    lua_pop(L, 3);
+
+
     giveItem(world, entityUUID, id, quantity);
 
     return 0;
@@ -586,6 +693,9 @@ int LuaScript::l_setPlayerCanInteract(lua_State* L) {
     GET_WORLD_UPVALUE;
 
     bool canInteract = lua_toboolean(L, 1);
+
+    lua_pop(L, 1);
+
 
     setPlayerCanInteract(world, canInteract);
 
@@ -598,6 +708,9 @@ int LuaScript::l_setFlag(lua_State* L) {
     unsigned int id = (int)lua_tonumber(L, 1);
     bool val = lua_toboolean(L, 2);
 
+    lua_pop(L, 2);
+
+
     setFlag(qm, id, val);
 
     return 0;
@@ -607,6 +720,9 @@ int LuaScript::l_setEra(lua_State* L) {
     GET_WORLD_UPVALUE;
 
     std::string era = std::string(lua_tostring(L, 1));
+
+    lua_pop(L, 1);
+
 
     setEra(world, era);
 
@@ -618,6 +734,9 @@ int LuaScript::l_setPlayerGodMode(lua_State* L) {
 
     bool mode = lua_toboolean(L, 1);
 
+    lua_pop(L, 1);
+
+
     setPlayerGodMode(world, mode);
 
     return 0;
@@ -627,6 +746,9 @@ int LuaScript::l_camera_setLocked(lua_State* L) {
     GET_GAMEPLAYSCREEN_UPVALUE;
 
     bool locked = lua_toboolean(L, 1);
+
+    lua_pop(L, 1);
+
 
     camera_setLocked(gs, locked);
 
@@ -639,6 +761,9 @@ int LuaScript::l_camera_setPosition(lua_State* L) {
     unsigned int x = lua_tonumber(L, 1);
     unsigned int y = lua_tonumber(L, 2);
 
+    lua_pop(L, 2);
+
+
     camera_setPosition(gs, glm::vec2(x, y));
 
     return 0;
@@ -649,6 +774,9 @@ int LuaScript::l_camera_move(lua_State* L) {
 
     unsigned int x = lua_tonumber(L, 1);
     unsigned int y = lua_tonumber(L, 2);
+
+    lua_pop(L, 2);
+
 
     camera_move(gs, glm::vec2(x, y));
 
@@ -663,6 +791,9 @@ int LuaScript::l_camera_smoothMove(lua_State* L) {
 
     float speed = lua_tonumber(L, 3);
 
+    lua_pop(L, 3);
+
+
     camera_smoothMove(gs, glm::vec2(x, y), speed);
 
     return 0;
@@ -670,6 +801,9 @@ int LuaScript::l_camera_smoothMove(lua_State* L) {
 
 int LuaScript::l_delay(lua_State* L) {
     unsigned int delay = (int)lua_tonumber(L, 1);
+
+    lua_pop(L, 1);
+
 
     lua_pushinteger(L, delay);
 
@@ -697,6 +831,9 @@ int LuaScript::l_setPlayerStat_sanity(lua_State* L) {
 
     float sanity = lua_tonumber(L, 1);
 
+    lua_pop(L, 1);
+
+
     setPlayerStat_sanity(world, sanity);
 
     return 0;
@@ -707,6 +844,9 @@ int LuaScript::l_startTrade(lua_State* L) {
 
     unsigned int id = (int)lua_tonumber(L, 1);
 
+    lua_pop(L, 1);
+
+
     startTrade(qm, id);
 
     return 0;
@@ -716,6 +856,9 @@ int LuaScript::l_startDialogue(lua_State* L) {
     GET_QUESTMANAGER_UPVALUE;
 
     unsigned int id = (int)lua_tonumber(L, 1);
+
+    lua_pop(L, 1);
+
 
     startDialogue(qm, id);
 
@@ -728,6 +871,9 @@ int LuaScript::l_getEntitiesNear(lua_State* L) { // returns UUIDs
     float x = lua_tonumber(L, 1);
     float y = lua_tonumber(L, 2);
     float dist = lua_tonumber(L, 3);
+
+    lua_pop(L, 3);
+
 
     glm::vec2 pos(x, y);
 
@@ -750,6 +896,9 @@ int LuaScript::l_getEntitiesArea(lua_State* L) {
     float y1 = lua_tonumber(L, 2);
     float x2 = lua_tonumber(L, 3);
     float y2 = lua_tonumber(L, 4);
+
+    lua_pop(L, 4);
+
 
     glm::vec2 pos1(x2, y1);
     glm::vec2 pos2(x2, y2);
@@ -810,6 +959,9 @@ int LuaScript::l_getCurrentFrame(lua_State* L) {
 
 int LuaScript::l_log(lua_State* L) {
     std::string log = lua_tostring(L, 1);
+
+    lua_pop(L, 1);
+
     Logger::getInstance()->log("LUA MESSAGE: " + log);
     return 0;
 }

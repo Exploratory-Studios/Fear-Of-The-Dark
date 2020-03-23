@@ -18,6 +18,7 @@ class Script {
                 m_text = filename_text;
             }
         }
+        Script() {}
 
         bool isFile() { return m_isFile; }
         std::string getFileName() { return m_fileName; }

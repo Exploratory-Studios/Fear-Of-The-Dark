@@ -48,17 +48,6 @@ class ItemMiscBucket : public Item {
 	public:
 		ItemMiscBucket(unsigned int quantity);
 
-		virtual void onLeftClick(Tile* selectedBlock, World* world) override {
-			/*if(selectedBlock) {
-				if(selectedBlock->getID() == (unsigned int)Categories::BlockIDs::WATER) {
-					m_level += static_cast<BlockWater*>(selectedBlock)->getLevel();
-
-					Tile* b = createBlock((unsigned int)Categories::BlockIDs::AIR, selectedBlock->getPosition(), selectedBlock->getLayer());
-					b->setAmbientLight(selectedBlock->getLight());
-					world->setTile(b);
-				}
-			}*/
-		}
 		virtual void onRightClick(Tile* selectedBlock, World* world) override {
 			/*if(selectedBlock && m_level > 0.0f) {
 				BlockWater* b = static_cast<BlockWater*>(createBlock((unsigned int)Categories::BlockIDs::WATER, selectedBlock->getPosition(), selectedBlock->getLayer()));

@@ -31,8 +31,8 @@ unsigned int ScriptQueue::addScript(std::string filePath) // same here
 void ScriptQueue::activateScript(unsigned int id, std::string preCommand) // Starts a script using the id given earlier
 {
     m_activeScripts.push_back(m_scriptCache[id]);
-    if(preCommand != "") m_activeScripts[m_activeScripts.size()].preCommand = preCommand;
-    Logger::getInstance()->log("Activated script with id of: " + std::to_string(id));
+    if(preCommand != "") m_activeScripts[m_activeScripts.size()-1].preCommand = preCommand;
+    //Logger::getInstance()->log("Activated script with id of: " + std::to_string(id));
 }
 
 void ScriptQueue::deactivateScripts() // Clears active scripts

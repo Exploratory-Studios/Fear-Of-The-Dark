@@ -94,8 +94,8 @@ class Player : public Entity {
         float m_exhaustion = 1.0f;
         float m_stamina = 1.0f;
 
-        unsigned int m_scriptID_dayTime = 0;
-        unsigned int m_scriptID_makeHouse = 0;
+        unsigned int m_scriptID_dayTime = -1;
+        unsigned int m_scriptID_makeHouse = -1;
 
         Item* m_favouriteItems[10] = { nullptr };
         std::vector<Buff*> m_buffs;

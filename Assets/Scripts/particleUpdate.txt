@@ -1,0 +1,8 @@
+x = particleX + particleXVel
+y = particleY + particleYVel
+yV = particleYVel / 1.1
+xV = particleXVel / 1.1
+particleAlpha = particleLife * 255
+particleLife = particleLife * 0.97
+
+return x, y, xV, yV, particleLife, particleWidth, particleAlpha

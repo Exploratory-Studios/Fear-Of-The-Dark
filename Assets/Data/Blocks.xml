@@ -13,9 +13,17 @@
     <texture>Grass.png</texture>
     <bumpMap>Grass.png</bumpMap>
     <isNatural>1</isNatural>
+	<interactScript_walkedOn>TEST_SCRIPT.txt</interactScript_walkedOn>
 </tile>
 
-
+<tile id="6" name="Torch">
+	<texture>Torch.png</texture>
+	<bumpMap>Torch.png</bumpMap>
+	<emittedLight>1.5</emittedLight>
+	<isTransparent>1</isTransparent>
+	<isSolid>0</isSolid>
+	<tickScript>TorchTick.txt</tickScript>
+</tile>
 <tile id="4" name="Stone">
     <texture>Stone.png</texture>
     <bumpMap>Stone.png</bumpMap>
@@ -29,4 +37,5 @@
     <texture>Water.png</texture>
     <bumpMap>Water.png</bumpMap>
     <isNatural>1</isNatural>
+	<updateScript>WaterUpdate.lua</updateScript>
 </tile>

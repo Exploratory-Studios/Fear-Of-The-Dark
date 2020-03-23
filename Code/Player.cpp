@@ -327,7 +327,7 @@ void Player::updateMouse(World* world, glm::vec2 mouseCoords) {
 }
 
 void Player::updateInput(GLEngine::InputManager* input, World* world) {
-    if(m_scriptID_dayTime == 0) {
+    if(m_scriptID_dayTime == (unsigned int)-1) {
         m_scriptID_dayTime = ScriptQueue::addScript("TEST_SCRIPT.txt");
     }
 
@@ -388,7 +388,7 @@ void Player::updateInput(GLEngine::InputManager* input, World* world) {
         }
 
         if(input->isKeyDown(SDL_BUTTON_LEFT) && m_selectedBlock) {
-            if(m_favouriteItems[m_selectedHotbox]) m_favouriteItems[m_selectedHotbox]->onLeftClick(m_selectedBlock, world);
+            //if(m_favouriteItems[m_selectedHotbox]) m_favouriteItems[m_selectedHotbox]->onLeftClick(m_selectedBlock, world);
             if(!m_favouriteItems[m_selectedHotbox]) {
                 Tile* t = new Tile(m_selectedBlock->getPosition(), m_selectedBlock->getLayer(), 0, MetaData(), false);
                 world->setTile(t);

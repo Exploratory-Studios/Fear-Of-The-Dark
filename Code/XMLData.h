@@ -61,5 +61,6 @@ struct XML_TileData {
 struct XML_ParticleData {
     std::string textureFilepath;
     std::string bumpMapFilepath;
+    std::string scriptPath;
     float decayRate = 0.0f;
 };

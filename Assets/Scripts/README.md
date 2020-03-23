@@ -26,6 +26,38 @@ These scripts are called on certain events (like every frame for update scripts,
 
  The ID of this block.
 
+#### Particle Update Scripts
+
+These scripts are called every frame, for each particle. Make sure they're lightweight! **Note: Particle variables are simply copies of the attribute. This means you can edit them all you want, but the particle won't change. To enact any changes, put a `return` statement at the end of your script.** Ex: To not change a particle at all, you could write `return particleX,particleY,particleXVel,particleYVel,particleLife,particleWidth,particleAlpha` *(in that order)*
+
+- `particleX`
+
+ The X position of this particle.
+
+- `particleY`
+
+ The Y position of this particle.
+
+- `particleXVel`
+
+ The X velocity of this particle.
+
+- `particleYVel`
+
+ The Y velocity of this particle.
+
+- `particleLife`
+
+ The amount of time this particle will continue to persist. When this value reaches `0`, the particle disappears, and its script isn't called anymore. Every frame, it lowers by the `decayRate` of the particle type, and it starts at `1`.
+
+- `particleWidth`
+
+ The width of the particle. **Note: One block is `1` unit wide**
+
+- `particleAlpha`
+
+ The alpha component of this particle's colouring. Ranges from `255` (opaque) to `0` (transparent).
+
 ## Utility Functions
 
 These functions are used not to set/get information, but they still affect the gameplay experience.

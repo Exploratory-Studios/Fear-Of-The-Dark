@@ -26,7 +26,6 @@ class Item
         Item(short unsigned int quantity, GLEngine::GLTexture texture, std::string name) : m_quantity(quantity), m_texture(texture), m_name(name) {}
         virtual ~Item() {}
 
-        virtual void onLeftClick(Tile* selectedBlock, World* world);
         virtual void onRightClick(Tile* selectedBlock, World* world) {}
 
         bool operator==(Item* other) {

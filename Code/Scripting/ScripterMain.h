@@ -177,6 +177,7 @@ public:
         if(errCode) {
             printf("error code %i: %s\n", errCode, lua_tostring(T, -1));
             T = 0;
+            m_finished = true;
             return 1;
         }
 
@@ -192,6 +193,7 @@ public:
         if(errCode) {
             printf("error code %i: %s\n", errCode, lua_tostring(T, -1));
             T = 0;
+            m_finished = true;
             return 1;
         }
 
@@ -200,19 +202,20 @@ public:
         return 0;
     }
     void update(lua_State* state) {
-        if(lua_status(T) == LUA_YIELD || !m_finished) { // Is the thread currently paused?
-            int delayLeft = lua_tointeger(T, -1); // Get the delay from the top of the stack
-            delayLeft--; // Take one frame away
-            lua_pop(T, 1); // Take the delay value off of the stack completely
+        if(!m_finished) {
+            if(lua_status(T) == LUA_YIELD) { // Is the thread currently paused?
+                int delayLeft = lua_tointeger(T, -1); // Get the delay from the top of the stack
+                delayLeft--; // Take one frame away
+                lua_pop(T, 1); // Take the delay value off of the stack completely
 
-            if(delayLeft <= 0) {
-                lua_resume(T, state, 0); // Continue the script
-            } else {
-                lua_pushinteger(T, delayLeft); // Otherwise, re-add the new delay value
+                if(delayLeft <= 0) {
+                    lua_resume(T, state, 0); // Continue the script
+                } else {
+                    lua_pushinteger(T, delayLeft); // Otherwise, re-add the new delay value
+                }
+            } else if(lua_status(T) == LUA_OK) {
+                m_finished = true;
             }
-        } else if(lua_status(T) == LUA_OK && !m_finished) {
-            m_finished = true;
-            //lua_close(T); Can't lua_close threads!
         }
     }
 

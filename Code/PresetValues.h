@@ -155,10 +155,12 @@ enum class WorldEra {
     FUTURE_ERA
 };
 
+/*
+
 class DropDatum {
     friend class DropTable;
     public:
-        DropDatum(unsigned int level/*Higher numbers lower in the tree*/, Categories::ItemIDs itemId, unsigned int rowId/*Unique to this level*/, unsigned int parentId, float rarity) {
+        DropDatum(unsigned int level, ItemIDs itemId, unsigned int rowId, unsigned int parentId, float rarity) {
             m_level = level;
             m_itemId = itemId;
             m_rowId = rowId;
@@ -166,10 +168,10 @@ class DropDatum {
             m_parentId = parentId;
         }
 
-        Categories::ItemIDs getItemId() const { return m_itemId; }
+        ItemIDs             getItemId() const { return m_itemId; }
         float               getRarity() const { return m_rarity; }
 
-        Categories::ItemIDs roll()      const {
+        ItemIDs roll()      const {
             if(m_level == 0) { // We're at the top level, quit
                 return m_itemId;
             }
@@ -183,7 +185,7 @@ class DropDatum {
         }
     private:
         unsigned int        m_level    = 0;
-        Categories::ItemIDs m_itemId   = (Categories::ItemIDs)0;
+        ItemIDs m_itemId   = (ItemIDs)0;
         unsigned int        m_rowId    = 0;
         float               m_rarity   = 0.0f; // Inverse chance to move up in tree (0-1)
         unsigned int        m_parentId = 0;
@@ -203,7 +205,7 @@ class DropTable {
 
             m_nodes.resize(deepestLevel+1);
             for(unsigned int i = 0; i < data.size(); i++) {
-                if(data[i].m_rowId + 1 > m_nodes[data[i].m_level].size()) m_nodes[data[i].m_level].resize(data[i].m_rowId + 1, DropDatum(-1, (Categories::ItemIDs)-1, -1, -1, -1.0f));
+                if(data[i].m_rowId + 1 > m_nodes[data[i].m_level].size()) m_nodes[data[i].m_level].resize(data[i].m_rowId + 1, DropDatum(-1, (ItemIDs)-1, -1, -1, -1.0f));
                 m_nodes[data[i].m_level][data[i].m_rowId] = data[i];
             }
 
@@ -228,7 +230,7 @@ class DropTable {
         std::vector<std::vector<DropDatum>> m_nodes;
         Categories::LootTableIds m_tableId;
 };
-
+*/ /// TODO: Move this somewhere else. Honestly just burn anything but #DEFINEs in PresetValues.h. Please.
 
 
 /// Category Data
@@ -247,18 +249,10 @@ namespace Category_Data {
                                                                  PlaceDatum(70, 10, 40, 30, 0.5, {2}),
                                                                  PlaceDatum(40, 10, 25, 2, 7.6, {2})
                                                                 };
-                                                              /*CANADA,
-                                                                ARCTIC,
-                                                                AUSTRALIA,
-                                                                USA,
-                                                                RUSSIA,
-                                                                NORTH_AFRICA,
-                                                                SOUTH_AFRICA,
-                                                                ASIA*/
 
-    static DropTable lootTables[Category_Data::TOTAL_LOOT_TABLES] = {
-                                                            DropTable({ DropDatum(0, Categories::ItemIDs::MISC_MEAT_RAW, 0, 0, 1.0f), DropDatum(1, Categories::ItemIDs::MISC_LEATHER, 0, 0, 0.5f) }, Categories::LootTableIds::ANIMAL)
-                                                           };
+    //static DropTable lootTables[Category_Data::TOTAL_LOOT_TABLES] = {
+      //                                                      DropTable({ DropDatum(0, ItemIDs::MISC_MEAT_RAW, 0, 0, 1.0f), DropDatum(1, ItemIDs::MISC_LEATHER, 0, 0, 0.5f) }, Categories::LootTableIds::ANIMAL)
+      //                                                     };
 
 
 };

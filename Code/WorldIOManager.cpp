@@ -4,8 +4,7 @@
 #include <random>
 #include <ctime>
 
-#include "Player.h"
-#include "Items.h"
+#include "EntityPlayer.h"
 #include "World.h"
 
 void WorldIOManager::loadWorld(std::string worldName, World* world) {
@@ -75,7 +74,7 @@ void WorldIOManager::P_loadWorld(std::string worldName, World* world) {
 
     { // PLAYER
 
-        world->m_player = new Player(glm::vec2(0.0f, 0.0f), false);
+        world->m_player = new EntityPlayer(glm::vec2(0.0f), 0, MetaData(), false);
 
         file.read(reinterpret_cast<char*>(&world->m_player->m_canInteract), sizeof(bool));
         file.read(reinterpret_cast<char*>(&world->m_player->m_sanity), sizeof(float));
@@ -104,7 +103,7 @@ void WorldIOManager::P_loadWorld(std::string worldName, World* world) {
             file.read(reinterpret_cast<char*>(&newItem.quantity), sizeof(unsigned int));
             //newItem.metaData->read(file);
 
-            world->getPlayer()->m_inventory->addItem(createItem(newItem.id, newItem.quantity));
+            world->getPlayer()->m_inventory->addItem(new Item(newItem.quantity, newItem.id, false));
 
             logger->log("LOAD: Loaded " + std::to_string(i+1) + " of " + std::to_string(items) + " Items");
         }

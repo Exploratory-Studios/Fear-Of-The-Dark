@@ -39,24 +39,6 @@ class Tile
 
     public:
         Tile();
-        /*Tile(glm::vec2 pos, unsigned int layer, MetaData data) : m_pos(pos), m_layer(layer), m_metaData(data) { handleMetaDataInit(data); }
-        Tile(glm::vec2 pos,
-             unsigned int layer,
-             GLuint textureId,
-             GLuint bumpMapId,
-             GLEngine::ColourRGBA8 colour,
-             bool isSolid,
-             unsigned int id,
-             MetaData data) :
-                m_pos(pos),
-                m_layer(layer),
-                m_textureId(textureId),
-                m_bumpMapId(bumpMapId),
-                m_colour(colour),
-                m_solid(isSolid),
-                m_id(id),
-                m_metaData(data) { handleMetaDataInit(data); }*/
-
         Tile(glm::vec2 pos, unsigned int layer, unsigned int id, MetaData data, bool loadTex);
         Tile(glm::vec2 pos, unsigned int layer, TileIDs id, MetaData data, bool loadTex);
         virtual ~Tile() {}
@@ -89,6 +71,15 @@ class Tile
             m_backdrop = other.doDrawBackdrop();
             m_natural = other.isNatural();
             m_id = other.getID();
+        }
+
+        std::string generateLuaData() {
+            std::string ret = "blockX, blockY, blockID=";
+            ret += std::to_string(m_pos.x) + ",";
+            ret += std::to_string(m_pos.y) + ",";
+            ret += std::to_string(m_id);
+
+            return ret;
         }
 
         glm::vec2       getPosition()                   const { return m_pos;                       }
@@ -127,7 +118,7 @@ class Tile
         virtual TileData getSaveData();
 
         void setAmbientLight(float light) { m_ambientLight = light; }
-        void addAmbientLight(float light) { m_ambientLight += light; if(m_ambientLight < 0.0f) m_ambientLight = 0.0f; }
+        void addAmbientLight(float light) { m_ambientLight += light; }
         void setToDraw(bool draw) { m_draw = draw; }
 
         void addCornerLight(float TL, float TR, float BR, float BL) {
@@ -182,12 +173,11 @@ class Tile
         void update(World* world, float time, bool updateLighting, const float& sunlight);
         void tick(World* world, float tickTime, const float& sunlight);
         void draw(GLEngine::SpriteBatch& sb, GLEngine::SpriteFont& sf, int xOffset, int depthDifference);
-        void drawBackdrop(GLEngine::SpriteBatch& sb, int xOffset, int yOffset, float lightLevel);
 
         void destroy(World* world);
 
-        void onInteract_WalkedOn() { if(m_interactScriptID_walkedOn != -1) ScriptQueue::activateScript(m_interactScriptID_walkedOn, "selfX,selfY,selfID="+std::to_string(m_pos.x)+","+std::to_string(m_pos.y)+","+std::to_string(m_id)); }
-        void onInteract_RightClicked() { if(m_interactScriptID_used != -1) ScriptQueue::activateScript(m_interactScriptID_used, "selfX,selfY,selfID="+std::to_string(m_pos.x)+","+std::to_string(m_pos.y)+","+std::to_string(m_id)); }
+        void onInteract_WalkedOn() { if(m_interactScriptID_walkedOn != -1) ScriptQueue::activateScript(m_interactScriptID_walkedOn, generateLuaData()); }
+        void onInteract_RightClicked() { if(m_interactScriptID_used != -1) ScriptQueue::activateScript(m_interactScriptID_used, generateLuaData()); }
         // ... More interact functions
 
         void resetNeighboursLight(World* world);
@@ -199,9 +189,9 @@ class Tile
         void handleMetaDataInit(MetaData& data) { };
         MetaData* getMetaData() { return new MetaData(); }
 
-        void onUpdate() { if(m_updateScriptID != -1) ScriptQueue::activateScript(m_updateScriptID, "selfX,selfY,selfID="+std::to_string(m_pos.x)+","+std::to_string(m_pos.y)+","+std::to_string(m_id)); };
+        void onUpdate() { if(m_updateScriptID != -1) ScriptQueue::activateScript(m_updateScriptID, generateLuaData()); };
         void onDraw(GLEngine::SpriteBatch& sb, GLEngine::SpriteFont& sf, glm::vec4& pos, float& depth) { }
-        void onTick() { if(m_tickScriptID != -1) ScriptQueue::activateScript(m_tickScriptID, "selfX,selfY,selfID="+std::to_string(m_pos.x)+","+std::to_string(m_pos.y)+","+std::to_string(m_id)); };
+        void onTick() { if(m_tickScriptID != -1) ScriptQueue::activateScript(m_tickScriptID, generateLuaData()); };
         void onDestruction() { }
 
         int m_updateScriptID = -1;
@@ -247,6 +237,7 @@ class Tile
         bool m_transparent = false; // 'Transmits' light?
         bool m_backdrop = false; // Does it draw a back wall?
         bool m_natural = false; // Is it a natural block? Does it get changed to stone when eras pass?
+        bool m_setLighting = false; // Has this light source set the neighbours' light values??
 
         unsigned int m_id;
 

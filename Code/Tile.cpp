@@ -158,6 +158,13 @@ float Tile::getRawHeat() {
 }
 
 void Tile::update(World* world, float time, bool updateLighting, const float& sunlight) {
+    if(m_emittedLight > 0.0f) {
+        if(!m_setLighting) {
+            setNeighboursLight(world);
+            m_setLighting = true;
+        }
+    }
+
     if(updateLighting) {
         if(m_needsSunCheck) {
             resetSunlightCorners();
@@ -208,7 +215,7 @@ void Tile::draw(GLEngine::SpriteBatch& sb, GLEngine::SpriteFont& sf, int xOffset
 
         int r = m_colour.r, g = m_colour.g, b = m_colour.b;
         glm::vec4 pos = glm::vec4(m_pos.x + xOffset, m_pos.y, m_size.x, m_size.y);
-        float depth = 0.75f * (WORLD_DEPTH - m_layer);
+        float depth = 0.4f * (WORLD_DEPTH - m_layer);
 
         sb.draw(pos,
                 glm::vec4(0.0f, 0.0f, 1.0f, 1.0f),
@@ -220,21 +227,6 @@ void Tile::draw(GLEngine::SpriteBatch& sb, GLEngine::SpriteFont& sf, int xOffset
 
         onDraw(sb, sf, pos, depth);
     }
-}
-
-void Tile::drawBackdrop(GLEngine::SpriteBatch& sb, int xOffset, int yOffset, float lightLevel) {
-    /*if(m_draw && m_backdrop) {
-        //GLint lightColourUniform = program.getUniformLocation("lightColour");
-        //glUniform4fv(lightColourUniform, 3, &glm::vec3(0.0f, 1.0f, 0.0f)[0]);
-
-        int r = m_colour.r * 0.2f, g = m_colour.g * 0.2f, b = m_colour.b * 0.2f;
-        sb.draw(glm::vec4(m_pos.x + xOffset * CHUNK_SIZE, m_pos.y + yOffset, m_size.x, m_size.y),
-                glm::vec4(0.0f, 0.0f, 1.0f, 1.0f),
-                m_backdropTextureId,
-                0.1f * (WORLD_DEPTH - m_layer),
-                GLEngine::ColourRGBA8(r, g, b, m_colour.a),
-                m_cornerLight);
-    }*/
 }
 
 float Tile::getLightAtPoint(glm::vec2 posFromBL) {
@@ -270,9 +262,6 @@ float Tile::getLightAtPoint(glm::vec2 posFromBL) {
 }
 
 void Tile::destroy(World* world) {
-    if(m_emittedLight > 0.0f) {
-        resetNeighboursLight(world);
-    }
     {
         world->getTile(m_pos.x, m_pos.y, m_layer)->setNeedsSunCheck();
         Tile* R = world->getTile(m_pos.x+1, m_pos.y, m_layer);
@@ -395,26 +384,26 @@ void Tile::resetNeighboursLight(World* world) {
             for(int layer = -std::ceil(range); layer <= std::ceil(range); layer++) {
                 Tile* t = world->getTile(m_pos.x + x, m_pos.y + y, m_layer + layer);
                 if(t) {
-                    float dist = std::sqrt((x)*(x) + (y)*(y) + (layer*layer));
+                    float dist = std::sqrt((x+0.5f)*(x+0.5f) + (y+0.5f)*(y+0.5f) + (layer*layer));
                     float light = (1.0f - dist/(float)range) * m_emittedLight;
 
                     if(light > 0.0f) {
                         t->addAmbientLight(-light);
                     }
                     { // Bottom left corner (x, y)
-                        float d = std::sqrt((x-0.5f)*(x-0.5f) + (y-0.5f)*(y-0.5f) + (layer*layer));
+                        float d = std::sqrt((x)*(x) + (y)*(y) + (layer*layer));
                         BL = ((1.0f - d/(float)(range)) * m_emittedLight); // x + 0, y + 0
                     }
                     { // Bottom right corner (x+1, y)
-                        float d = std::sqrt((x+0.5f)*(x+0.5f) + (y-0.5f)*(y-0.5f) + (layer*layer));
+                        float d = std::sqrt((x+1.0f)*(x+1.0f) + (y)*(y) + (layer*layer));
                         BR = ((1.0f - d/(float)(range)) * m_emittedLight); // x + 0, y + 0
                     }
                     { // top left corner (x, y+1)
-                        float d = std::sqrt((x-0.5f)*(x-0.5f) + (y+0.5f)*(y+0.5f) + (layer*layer));
+                        float d = std::sqrt((x)*(x) + (y+1.0f)*(y+1.0f) + (layer*layer));
                         TL = ((1.0f - d/(float)(range)) * m_emittedLight); // x + 0, y + 0
                     }
                     { // top right corner (x+1, y+1)
-                        float d = std::sqrt((x+0.5f)*(x+0.5f) + (y+0.5f)*(y+0.5f) + (layer*layer));
+                        float d = std::sqrt((x+1.0f)*(x+1.0f) + (y+1.0f)*(y+1.0f) + (layer*layer));
                         TR = ((1.0f - d/(float)(range)) * m_emittedLight); // x + 0, y + 0
                     }
 
@@ -437,26 +426,26 @@ void Tile::setNeighboursLight(World* world) {
             for(int layer = -std::ceil(range); layer <= std::ceil(range); layer++) {
                 Tile* t = world->getTile(m_pos.x + x, m_pos.y + y, m_layer + layer);
                 if(t) {
-                    float dist = std::sqrt((x)*(x) + (y)*(y) + (layer*layer));
+                    float dist = std::sqrt((x+0.5f)*(x+0.5f) + (y+0.5f)*(y+0.5f) + (layer*layer));
                     float light = (1.0f - dist/(float)range) * m_emittedLight;
 
                     if(light > 0.0f) {
                         t->addAmbientLight(light);
                     }
                     { // Bottom left corner (x, y)
-                        float d = std::sqrt((x-0.5f)*(x-0.5f) + (y-0.5f)*(y-0.5f) + (layer*layer));
+                        float d = std::sqrt((x)*(x) + (y)*(y) + (layer*layer));
                         BL = ((1.0f - d/(float)(range)) * m_emittedLight); // x + 0, y + 0
                     }
                     { // Bottom right corner (x+1, y)
-                        float d = std::sqrt((x+0.5f)*(x+0.5f) + (y-0.5f)*(y-0.5f) + (layer*layer));
+                        float d = std::sqrt((x+1.0f)*(x+1.0f) + (y)*(y) + (layer*layer));
                         BR = ((1.0f - d/(float)(range)) * m_emittedLight); // x + 0, y + 0
                     }
                     { // top left corner (x, y+1)
-                        float d = std::sqrt((x-0.5f)*(x-0.5f) + (y+0.5f)*(y+0.5f) + (layer*layer));
+                        float d = std::sqrt((x)*(x) + (y+1.0f)*(y+1.0f) + (layer*layer));
                         TL = ((1.0f - d/(float)(range)) * m_emittedLight); // x + 0, y + 0
                     }
                     { // top right corner (x+1, y+1)
-                        float d = std::sqrt((x+0.5f)*(x+0.5f) + (y+0.5f)*(y+0.5f) + (layer*layer));
+                        float d = std::sqrt((x+1.0f)*(x+1.0f) + (y+1.0f)*(y+1.0f) + (layer*layer));
                         TR = ((1.0f - d/(float)(range)) * m_emittedLight); // x + 0, y + 0
                     }
 

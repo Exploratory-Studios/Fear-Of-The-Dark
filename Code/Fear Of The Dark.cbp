@@ -75,12 +75,13 @@
 				<Option output="bin/ReleaseWin/Fear Of The Dark" prefix_auto="1" extension_auto="1" />
 				<Option object_output="obj/ReleaseWin/" />
 				<Option type="1" />
-				<Option compiler="gcc" />
+				<Option compiler="gnu_gcc_compiler_mingw" />
 				<Compiler>
 					<Add option="-fexpensive-optimizations" />
 					<Add option="-flto" />
 					<Add option="-O3" />
 					<Add option="-fPIC" />
+					<Add option="-m64" />
 					<Add option="-DWINDOWS" />
 					<Add directory="Items" />
 					<Add directory="Code" />
@@ -90,9 +91,23 @@
 					<Add directory="Code/" />
 				</Compiler>
 				<Linker>
-					<Add option="-O3" />
 					<Add option="-flto" />
 					<Add option="-s" />
+					<Add option="-m64" />
+					<Add option="-O3" />
+					<Add option="../../GLEngine/bin/Release/libGLEngine.a" />
+					<Add option="-lCEGUIBase-0" />
+					<Add option="-lCEGUIOpenGLRenderer-0" />
+					<Add option="-lSDL2" />
+					<Add option="-lSDL2_mixer" />
+					<Add option="-lSDL2_ttf" />
+					<Add option="-lGL" />
+					<Add option="-lGLU" />
+					<Add option="-lGLEW" />
+					<Add option="-lstdc++fs" />
+					<Add option="-lboost_system" />
+					<Add option="-lboost_thread" />
+					<Add option="-llua5.3" />
 				</Linker>
 			</Target>
 		</Build>
@@ -298,14 +313,18 @@
 		<Unit filename="Console.cpp" />
 		<Unit filename="Console.h" />
 		<Unit filename="Devlog FOTD Start Oct 9 2017" />
-		<Unit filename="Entities.cpp" />
-		<Unit filename="Entities.h" />
 		<Unit filename="Entities/EntityFunctions.cpp" />
 		<Unit filename="Entities/EntityFunctions.h" />
-		<Unit filename="Entities/TalkingNPC.cpp" />
-		<Unit filename="Entities/TalkingNPC.h" />
 		<Unit filename="Entity.cpp" />
 		<Unit filename="Entity.h" />
+		<Unit filename="EntityItem.cpp" />
+		<Unit filename="EntityItem.h" />
+		<Unit filename="EntityNPC.cpp" />
+		<Unit filename="EntityNPC.h" />
+		<Unit filename="EntityPlayer.cpp" />
+		<Unit filename="EntityPlayer.h" />
+		<Unit filename="EntityProjectile.cpp" />
+		<Unit filename="EntityProjectile.h" />
 		<Unit filename="ExtraFunctions.h" />
 		<Unit filename="GameplayScreen.cpp" />
 		<Unit filename="GameplayScreen.h" />
@@ -313,10 +332,6 @@
 		<Unit filename="Inventory.h" />
 		<Unit filename="Item.cpp" />
 		<Unit filename="Item.h" />
-		<Unit filename="ItemBlock.cpp" />
-		<Unit filename="ItemBlock.h" />
-		<Unit filename="Items.cpp" />
-		<Unit filename="Items.h" />
 		<Unit filename="LoadScreen.cpp" />
 		<Unit filename="LoadScreen.h" />
 		<Unit filename="Logging.cpp" />
@@ -331,8 +346,6 @@
 		<Unit filename="PerlinNoise/PerlinNoise.h" />
 		<Unit filename="PerlinNoise/ppm.cpp" />
 		<Unit filename="PerlinNoise/ppm.h" />
-		<Unit filename="Player.cpp" />
-		<Unit filename="Player.h" />
 		<Unit filename="PresetValues.h" />
 		<Unit filename="QuestClasses.h" />
 		<Unit filename="QuestManager.cpp" />

@@ -4,7 +4,7 @@
 #include <math.h>
 
 Inventory::Inventory() {
-
+    m_items.clear();
 }
 
 bool Inventory::addItem(Item* newItem) {
@@ -92,7 +92,7 @@ void Inventory::draw(float x, float y, GLEngine::SpriteBatch& sb, GLEngine::Spri
             if(m_items[i]) {
                 glm::vec4 itemUV(0, 0, 1, 1);
 
-                GLuint itemImgId = m_items[i]->getTexture().id;
+                GLuint itemImgId = m_items[i]->getTextureId();
 
                 //sb.begin(GLEngine::GlyphSortType::FRONT_TO_BACK); // lower numbers in back
 

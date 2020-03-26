@@ -12,7 +12,7 @@ class Inventory
     friend class WorldIOManager;
     public:
         Inventory();
-        ~Inventory() {}
+        virtual ~Inventory() {}
 
         bool addItem(Item* newItem);
         void subtractItem(Item* item);
@@ -31,5 +31,5 @@ class Inventory
         float m_weight = 0.0f; // The average person can carry about 40-45lbs of weight and still walk normally
         // The max weight at which you can still walk the normal speed, defined in PRESETS file. Called MAX_WEIGHT
         float m_absMaxWeight = 75.0f; // The weight at which you can't walk anymore (around 70-75lbs). 2x the max weight at normal walking speed
-        std::vector<Item*> m_items;
+        std::vector<Item*> m_items = {};
 };

@@ -18,7 +18,7 @@
 class DialogueManager;
 class QuestManager;
 
-class Player;
+class EntityPlayer;
 
 class DialogueManager {
     public:
@@ -26,7 +26,7 @@ class DialogueManager {
         ~DialogueManager();
 
         void draw();
-        void update(GLEngine::InputManager& input, Player* p);
+        void update(GLEngine::InputManager& input, EntityPlayer* p);
 
         void initUI(GLEngine::GUI* gui) { m_gui = gui; }
 
@@ -81,7 +81,7 @@ class QuestManager
         QuestManager(std::string questionListPath, std::string flagListPath, std::string tradeListPath);
         ~QuestManager();
 
-        void update(GLEngine::InputManager& input, Player* p);
+        void update(GLEngine::InputManager& input, EntityPlayer* p);
         void draw();
 
         void initUI(GLEngine::GUI* gui) { m_gui = gui; m_dialogueManager->initUI(gui); }

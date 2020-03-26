@@ -1,7 +1,9 @@
 #include "GameplayScreen.h"
 
-#include "Entities.h"
 #include "Scripting/ScripterMain.h"
+#include "World.h"
+#include "EntityNPC.h"
+#include "EntityPlayer.h"
 
 #include <SDL2/SDL_timer.h>
 
@@ -68,16 +70,17 @@ void GameplayScreen::onEntry() {
 
     m_scripter->init(m_world, m_questManager, this, m_audio, &m_particle2d);
 
-    m_gui = new GLEngine::GUI();
-
     if(!m_world->getPlayer()) {
-        Player p(glm::vec2(5.0f, 100.0f), true);
+        //Player p(glm::vec2(5.0f, 100.0f), true);
+        EntityPlayer p(glm::vec2(5, 100), 0, MetaData(), true);
+
         m_world->setPlayer(p);
     }
 
-    m_camera.setPosition(m_world->getPlayer()->getPosition());
-
+    m_gui = new GLEngine::GUI();
     initUI();
+
+    m_camera.setPosition(m_world->getPlayer()->getPosition());
 
     tick();
 }
@@ -219,11 +222,11 @@ void GameplayScreen::draw() {
 
         m_spriteBatch.begin(GLEngine::GlyphSortType::FRONT_TO_BACK);
 
-        m_particle2d.draw(&m_spriteBatch);
-
         m_world->setLightsUniform(getScreenBox() + glm::vec4(0.0f, 0.0f, 1.0f, 1.0f), &m_textureProgram);
         m_world->drawTiles(m_spriteBatch, m_spriteFont, m_dr, getScreenBox() + glm::vec4(0.0f, 0.0f, 1.0f, 1.0f));
         m_world->drawEntities(m_spriteBatch, m_spriteFont, m_dr, getScreenBox() + glm::vec4(0.0f, 0.0f, 1.0f, 1.0f));
+
+        m_particle2d.draw(&m_spriteBatch, 3.0f);
 
         m_spriteBatch.end();
 
@@ -489,11 +492,11 @@ void GameplayScreen::updateScale() {
 
 #ifdef DEV_CONTROLS
 void GameplayScreen::drawDebug() {
-    if(m_world->getPlayer()->m_selectedBlock) {
-        std::string fps = "FPS: " + std::to_string((int)m_game->getFps()) + "\nMouse x,y: " + std::to_string(m_world->getPlayer()->m_selectedBlock->getPosition().x) + "," + std::to_string(m_world->getPlayer()->m_selectedBlock->getPosition().y);
+    if(m_world->getPlayer()->getSelectedBlock()) {
+        std::string fps = "FPS: " + std::to_string((int)m_game->getFps()) + "\nMouse x,y: " + std::to_string(m_world->getPlayer()->getSelectedBlock()->getPosition().x) + "," + std::to_string(m_world->getPlayer()->getSelectedBlock()->getPosition().y);
         std::string placeString;
 
-        switch((unsigned int)m_world->getPlace(m_world->getPlayer()->m_selectedBlock->getPosition().x)) {
+        switch((unsigned int)m_world->getPlace(m_world->getPlayer()->getSelectedBlock()->getPosition().x)) {
             case (unsigned int)Categories::Places::ARCTIC: { placeString = "Arctic"; break; }
             case (unsigned int)Categories::Places::ASIA: { placeString = "Asia"; break; }
             case (unsigned int)Categories::Places::AUSTRALIA: { placeString = "Australia"; break; }
@@ -504,7 +507,7 @@ void GameplayScreen::drawDebug() {
             case (unsigned int)Categories::Places::USA: { placeString = "Excited States of America"; break; }
         }
 
-        fps += "\nSelected Block: Biome: " + placeString + ", " + m_world->getPlayer()->m_selectedBlock->getPrintout(m_world);
+        fps += "\nSelected Block: Biome: " + placeString + ", " + m_world->getPlayer()->getSelectedBlock()->getPrintout(m_world);
 
         fps += "\nPlayer Light Level: TL: " + std::to_string(m_world->getPlayer()->getLightLevel().x) + ", TR: " + std::to_string(m_world->getPlayer()->getLightLevel().y) + ", BR: " + std::to_string(m_world->getPlayer()->getLightLevel().z);
         m_fpsWidget->setText(fps);

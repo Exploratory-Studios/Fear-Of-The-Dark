@@ -22,7 +22,7 @@
 	<emittedLight>1.5</emittedLight>
 	<isTransparent>1</isTransparent>
 	<isSolid>0</isSolid>
-	<tickScript>TorchTick.txt</tickScript>
+	<tickScript>TorchTick.lua</tickScript>
 </tile>
 <tile id="4" name="Stone">
     <texture>Stone.png</texture>

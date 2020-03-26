@@ -2,19 +2,25 @@
 
 #include <glm/glm.hpp>
 #include <GLTexture.h>
+#include <ResourceManager.h>
 #include <string>
-
-/// Item class is basically abstract.
-/// Create new classes for different items
-/// The classes will inherit from sub-classes of this one (Block, Food, Potion, etc.) for specific functions (Place, Eat, Poison)
 
 class World;
 class Tile;
 
-enum class ItemType {
-    WEAPON,
-    BLOCK,
-    MISC
+enum class ItemIDs {
+    WEAPON_SWORD,
+    BLOCK_DIRT,
+    BLOCK_TORCH,
+    BLOCK_TORCH_BRIGHT,
+    BLOCK_TORCH_ANTI,
+    BLOCK_GRASS,
+    BLOCK_WOOD,
+    BLOCK_WOOD_POLE,
+    BLOCK_SIGN_WOOD,
+    MISC_BUCKET,
+    MISC_MEAT_RAW,
+    MISC_LEATHER
 };
 
 class Item
@@ -23,42 +29,36 @@ class Item
 
     public:
         //Item() {}
-        Item(short unsigned int quantity, GLEngine::GLTexture texture, std::string name) : m_quantity(quantity), m_texture(texture), m_name(name) {}
+        Item(short unsigned int quantity, unsigned int id, bool loadTex);
+        Item(short unsigned int quantity, ItemIDs id, bool loadTex);
         virtual ~Item() {}
 
-        virtual void onRightClick(Tile* selectedBlock, World* world) {}
+        void onRightClick(Tile* selectedBlock);
 
-        bool operator==(Item* other) {
-            if(other->getID() == m_id) {
-                return true;
-            }
-            return false;
+        std::string generateLuaData() {
+            std::string ret = "itemID,itemQuantity=";
+            ret += std::to_string(m_id) + ",";
+            ret += std::to_string(m_quantity);
+
+            return ret;
         }
 
-        bool isBlock() { return (m_type == ItemType::BLOCK); }
-        bool isWeapon() { return (m_type == ItemType::WEAPON); }
         unsigned int getID() { return m_id; } // (unsigned int)(-1) is equivalent to null
+        unsigned int getTextureId() { return m_textureId; }
         short unsigned int getQuantity() { return m_quantity; }
-        GLEngine::GLTexture getTexture() { return m_texture; }
-        GLEngine::GLTexture getBumpMap() { return m_texture; }
         std::string& getName() { return m_name; }
-        // Make new classes for different types of items: blocks, weapons, food, etc. with each one having different default left & right click events
-
     protected:
-
-        // There are 3 types of items: Blocks, weapons, and more to come
-        ItemType m_type;
-
-        bool m_canPlace = false; // Blocks, etc.
-        bool m_canConsume = false; // Potions, food, etc.
+        void loadTexture() { m_textureId = GLEngine::ResourceManager::getTexture(m_texturePath).id; }
 
         float m_weight = 0.0f; // How much it weighs in the inventory (kgs)
         short unsigned int m_quantity = 0; // How much you have
 
-        unsigned int m_id = (unsigned int)(-1); // Block/Non-block id
-        GLEngine::GLTexture m_texture; // So we can have animated items!
+        unsigned int m_id = (unsigned int)-1; // Block/Non-block id
+
+        int m_useScriptId = -1;
+
+        unsigned int m_textureId = (unsigned int)-1;
+        std::string m_texturePath;
 
         std::string m_name = "UNDEFINED";
-
-        // Metadata idea (from minecraft)
 };

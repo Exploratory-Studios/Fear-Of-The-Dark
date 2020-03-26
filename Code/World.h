@@ -8,8 +8,9 @@
 #include "Categories.h"
 #include "PresetValues.h"
 
-class Player;
 class Entity;
+class EntityNPC;
+class EntityPlayer;
 class Tile;
 class AudioManager;
 class ScriptQueue;
@@ -38,7 +39,7 @@ public:
 
     std::vector<Entity*> getEntities() { return m_entities; }
     Entity* getEntityByUUID(std::string UUID) { auto i = m_entitiesByUUID.find(UUID); return i->second; }
-    Player* getPlayer() { return m_player; }
+    EntityPlayer* getPlayer() { return m_player; }
     unsigned long int getTime() { return m_time; }
     unsigned long int getFrame() { return m_frame; }
     std::string getName() { return m_name; }
@@ -46,7 +47,7 @@ public:
     WorldEra getNextEra() { return m_nextWorldEra; }
 
     void setName(std::string name) { m_name = name; }
-    void setPlayer(Player& p);
+    void setPlayer(EntityPlayer& p);
     void setTime(unsigned int time) { m_time = time; }
 
     void setLightsUniform(glm::vec4 destRect, GLEngine::GLSLProgram* textureProgram);
@@ -81,7 +82,7 @@ private:
     std::vector<Entity*> m_entities; // entities by x value
     std::map<std::string, Entity*> m_entitiesByUUID; // Organized by UUID (For Lua)
 
-    Player* m_player = nullptr;
+    EntityPlayer* m_player = nullptr;
 
     Categories::Places m_placesMap[(WORLD_SIZE / CHUNK_SIZE)]; // Simply a 1d vector of biome IDs, which can be mapped onto the world by referencing each "chunk"'s size
 

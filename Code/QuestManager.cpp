@@ -1,7 +1,8 @@
 #include "QuestManager.h"
 
-#include "Items.h"
-#include "Player.h"
+#include "Inventory.h"
+
+#include "EntityPlayer.h"
 
 #include <GUI.h>
 
@@ -150,7 +151,7 @@ void DialogueManager::draw() {
 
 }
 
-void DialogueManager::update(GLEngine::InputManager& input, Player* p) {
+void DialogueManager::update(GLEngine::InputManager& input, EntityPlayer* p) {
     if(m_dialogueStarted || m_tradingStarted) {
         startConversation(input);
         return;
@@ -257,8 +258,8 @@ QuestManager::~QuestManager()
     delete m_dialogueManager;
 }
 
-void QuestManager::update(GLEngine::InputManager& input, Player* p) {
-    m_dialogueManager->update(input, p);
+void QuestManager::update(GLEngine::InputManager& input, EntityPlayer* player) {
+    m_dialogueManager->update(input, player);
 }
 
 void QuestManager::draw() {
@@ -514,12 +515,12 @@ Trade* QuestManager::readTrade(std::string line) {
     rewQuan = std::stoi(chars);
 
     Trade* t = new Trade;
-    Item* reqItem;
-    Item* rewItem;
+    Item* reqItem = nullptr;
+    Item* rewItem = nullptr;
 
-    reqItem = createItem(reqId, reqQuan);
+    reqItem = new Item(reqQuan, reqId, false);
     /// TODO: Metadata
-    rewItem = createItem(rewId, rewQuan);
+    rewItem = new Item(rewQuan, rewId, false);
     /// TODO: Metadata
 
     t->requiredItem = reqItem;

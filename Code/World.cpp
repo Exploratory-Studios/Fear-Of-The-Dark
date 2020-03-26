@@ -2,8 +2,7 @@
 
 #include <cstdlib>
 #include "Tile.h"
-#include "Entities.h"
-#include "Player.h"
+#include "EntityPlayer.h"
 
 #include "XMLData.h"
 
@@ -38,12 +37,14 @@ void World::setTile(Tile* tile) {
         addLight(tile);
     }
 
+    if(m_tiles[y][x][layer]->getEmittedLight() > 0.0f) {
+        removeLight(m_tiles[y][x][layer]);
+        m_tiles[y][x][layer]->resetNeighboursLight(this);
+    }
+
     tile->setAmbientLight(m_tiles[y][x][layer]->getAmbientLight());
 
     m_tiles[y][x][layer]->destroy(this); // Make sure everything gets cleaned up nicely.
-    if(m_tiles[y][x][layer]->getEmittedLight() > 0.0f) {
-        removeLight(m_tiles[y][x][layer]);
-    }
 
     m_tiles[y][x][layer] = tile;
 
@@ -200,11 +201,11 @@ void World::removeLight(unsigned int index) {
     /** REMOVES TILE FROM VECTOR. NOTHING MORE.
     */
 
-    for(unsigned int i = index; i < m_entities.size()-1; i++) {
-        m_entities[i] = m_entities[i+1];
+    for(unsigned int i = index; i < m_lights.size()-1; i++) {
+        m_lights[i] = m_lights[i+1];
     }
 
-    m_entities.pop_back();
+    m_lights.pop_back();
 }
 
 void World::removeLight(Tile* t) {
@@ -313,10 +314,11 @@ void World::getRenderedLights(glm::vec4 destRect, float lights[MAX_LIGHTS_RENDER
     }
 }
 
-void World::setPlayer(Player& p) {
+void World::setPlayer(EntityPlayer& p) {
     /// Copies p, creates/updates a pointer to the world-stored player.
     if(!m_player) {
-        m_player = new Player(p);
+        m_player = new EntityPlayer(glm::vec2(0.0f), 0.0f, MetaData(), false);
+        *m_player = p;
         addEntity(m_player);
     } else {
         removeEntity(m_player->getUUID());
@@ -449,9 +451,8 @@ void World::updateEntities(AudioManager* audio, float timeStep) {
     */
 
     for(unsigned int i = 0; i < m_entities.size(); i++) {
-        m_entities[i]->update(this, audio, timeStep);
+        m_entities[i]->update(this, timeStep, i);
         m_entities[i]->collide(this, i);
-        m_entities[i]->setAITarget(this, i);
     }
 }
 
@@ -465,7 +466,7 @@ void World::tickEntities(AudioManager* audio) {
     //spawnEntities();
 
     for(unsigned int i = 0; i < m_entities.size(); i++) {
-        m_entities[i]->tick(this, audio); /// TODO: Improve it.
+        m_entities[i]->tick(this);
     }
 }
 
@@ -550,7 +551,7 @@ void World::spawnEntities() {
     }
 
     for(int i = 0; i < positions.size(); i++) {
-        addEntity(createEntity((unsigned int)Categories::EntityIDs::MOB_NEUTRAL_COMPANIONCUBE, glm::vec2(positions[i].x, positions[i].y), positions[i].z));
+        addEntity(createEntity(glm::vec2(positions[i].x, positions[i].y), (int)positions[i].z, EntityIDs::NPC_NEUTRAL_COMPANIONCUBE, MetaData(), true));
     }
 }
 

@@ -2,9 +2,12 @@
 
 #include "ScriptQueue.h"
 #include "../Entity.h"
-#include "../Entities.h"
 #include "../QuestManager.h"
 #include "../XMLData.h"
+#include "../World.h"
+
+#include "../EntityNPC.h"
+#include "../EntityPlayer.h"
 
 #include <Camera2D.h>
 #include <ParticleBatch2D.h>
@@ -263,7 +266,8 @@ std::vector<unsigned int> playerEntityTarget(World* world) {
     unsigned int p = 0;
 
     for(int i = 0; i < world->getEntities().size(); i++) {
-        if(world->getEntities()[i] == world->getPlayer()) {
+        Entity* ent = world->getEntities()[i];
+        if(dynamic_cast<EntityPlayer*>(ent) == world->getPlayer()) {
             p = i;
             break;
         }
@@ -336,7 +340,7 @@ void hideBlock(World* world, int x, int y, unsigned int layer) {
 }
 
 unsigned int addEntity(World* world, unsigned int id, glm::vec2 position, unsigned int layer) {
-    world->addEntity(createEntity(id, position, layer));
+    world->addEntity(createEntity(position, layer, id, MetaData(), true));
 }
 
 void removeEntity(World* world, std::string UUID) { // index retrieved from entityTarget
@@ -360,7 +364,8 @@ void teleport(World* world, std::string UUID, glm::vec2 pos) {
 }
 
 void giveItem(World* world, std::string UUID, unsigned int id, unsigned int quantity) {
-    world->getEntityByUUID(UUID)->giveItem(createItem(id, quantity));
+    EntityNPC* e = dynamic_cast<EntityNPC*>(world->getEntityByUUID(UUID));
+    if(e) e->giveItem(new Item(quantity, id, true));
 }
 
 void setPlayerCanInteract(World* world, bool canInteract) {
@@ -382,7 +387,7 @@ void setEra(World* world, std::string era) {
 }
 
 void setPlayerGodMode(World* world, bool godMode) {
-    world->getPlayer()->setGodMode(godMode);
+    //world->getPlayer()->setGodMode(godMode);
 }
 
 void camera_setLocked(GameplayScreen* gs, bool locked) {
@@ -918,7 +923,7 @@ int LuaScript::l_getEntitiesArea(lua_State* L) {
 int LuaScript::l_getPlayer(lua_State* L) {
     GET_WORLD_UPVALUE;
 
-    Player* p = world->getPlayer();
+    EntityPlayer* p = world->getPlayer();
     std::string id = p->getUUID();
     lua_pushstring(L, (char*)id.c_str());
 

@@ -27,6 +27,10 @@ Item::Item(short unsigned int quantity, ItemIDs id, bool loadTex) : m_id((unsign
 
 void Item::onRightClick(Tile* selectedBlock) {
     if(m_useScriptId != -1) {
-        ScriptQueue::activateScript(m_useScriptId, generateLuaData() + "\n" + selectedBlock->generateLuaData());
+        std::vector<Argument> concatenatedArgs(generateLuaData());
+        std::vector<Argument> b = selectedBlock->generateLuaData();
+        concatenatedArgs.insert(concatenatedArgs.end(), b.begin(), b.end());
+
+        ScriptQueue::activateScript(m_useScriptId, concatenatedArgs);
     }
 }

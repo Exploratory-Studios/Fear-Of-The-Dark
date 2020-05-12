@@ -23,6 +23,7 @@
 					<Add directory="Code/QuestSystem" />
 					<Add directory="include" />
 					<Add directory="Code/" />
+					<Add directory="Code/Scripting" />
 				</Compiler>
 			</Target>
 			<Target title="DebugVB">
@@ -42,6 +43,7 @@
 					<Add directory="Code/QuestSystem" />
 					<Add directory="include" />
 					<Add directory="Code/" />
+					<Add directory="Code/Scripting" />
 				</Compiler>
 				<Linker>
 					<Add option="-O3" />
@@ -56,7 +58,6 @@
 					<Add option="-fexpensive-optimizations" />
 					<Add option="-flto" />
 					<Add option="-O3" />
-					<Add option="-fPIC" />
 					<Add option="-DLINUX" />
 					<Add directory="Items" />
 					<Add directory="Code" />
@@ -64,11 +65,12 @@
 					<Add directory="Code/QuestSystem" />
 					<Add directory="include" />
 					<Add directory="Code/" />
+					<Add directory="Code/Scripting" />
 				</Compiler>
 				<Linker>
-					<Add option="-O3" />
 					<Add option="-flto" />
 					<Add option="-s" />
+					<Add option="-O3" />
 				</Linker>
 			</Target>
 			<Target title="Release - Windows">
@@ -80,7 +82,6 @@
 					<Add option="-fexpensive-optimizations" />
 					<Add option="-flto" />
 					<Add option="-O3" />
-					<Add option="-fPIC" />
 					<Add option="-m64" />
 					<Add option="-DWINDOWS" />
 					<Add directory="Items" />
@@ -89,6 +90,7 @@
 					<Add directory="Code/QuestSystem" />
 					<Add directory="include" />
 					<Add directory="Code/" />
+					<Add directory="Code/Scripting" />
 				</Compiler>
 				<Linker>
 					<Add option="-flto" />
@@ -115,6 +117,7 @@
 			<Add option="-Wall" />
 			<Add option="-std=c++1z" />
 			<Add option="-fexceptions" />
+			<Add option="-DLUA_APICHECK" />
 			<Add directory="../../GLEngine" />
 		</Compiler>
 		<Linker>
@@ -352,10 +355,14 @@
 		<Unit filename="QuestManager.h" />
 		<Unit filename="SaveDataTypes.h" />
 		<Unit filename="ScreenIndices.h" />
+		<Unit filename="Scripting/LuaScript.cpp" />
+		<Unit filename="Scripting/LuaScript.h" />
 		<Unit filename="Scripting/ScriptQueue.cpp" />
 		<Unit filename="Scripting/ScriptQueue.h" />
 		<Unit filename="Scripting/ScripterMain.cpp" />
 		<Unit filename="Scripting/ScripterMain.h" />
+		<Unit filename="Scripting/ScriptingHelperFunctions.cpp" />
+		<Unit filename="Scripting/ScriptingHelperFunctions.h" />
 		<Unit filename="StartupScreen.cpp" />
 		<Unit filename="StartupScreen.h" />
 		<Unit filename="Tile.cpp" />

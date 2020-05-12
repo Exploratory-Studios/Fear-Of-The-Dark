@@ -73,13 +73,19 @@ class Tile
             m_id = other.getID();
         }
 
-        std::string generateLuaData() {
-            std::string ret = "blockX, blockY, blockID=";
+        std::vector<Argument> generateLuaData() {
+            std::vector<Argument> args = {
+                { "blockX", m_pos.x },
+                { "blockY", m_pos.y },
+                { "blockID", m_id   }
+            };
+
+            /*std::string ret = "blockX, blockY, blockID=";
             ret += std::to_string(m_pos.x) + ",";
             ret += std::to_string(m_pos.y) + ",";
-            ret += std::to_string(m_id);
+            ret += std::to_string(m_id);*/
 
-            return ret;
+            return args;
         }
 
         glm::vec2       getPosition()                   const { return m_pos;                       }

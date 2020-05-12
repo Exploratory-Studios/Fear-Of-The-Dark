@@ -20,7 +20,7 @@ public:
     }
 private:
     Logger() {
-        m_logFile.open("GameLog.txt", std::ios::app);
+        m_logFile.open("GameLog.txt", std::ios::trunc);
         if(m_logFile.fail()) {
             GLEngine::fatalError("Logger failed to open file: GameLog.txt");
         }

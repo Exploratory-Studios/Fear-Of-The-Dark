@@ -13,6 +13,9 @@ unsigned int ScriptQueue::addScript(Script& script) // returns id of script, put
         }
     }
     m_scriptCache.push_back(script);
+
+    Logger::getInstance()->log("Successfully Loaded Script File: " + script.getFileName() + ", and given id of: " + std::to_string(m_scriptCache.size() - 1));
+
     return m_scriptCache.size() - 1;
 }
 unsigned int ScriptQueue::addScript(std::string filePath) // same here
@@ -23,15 +26,13 @@ unsigned int ScriptQueue::addScript(std::string filePath) // same here
 
     unsigned int id = addScript(s);
 
-    Logger::getInstance()->log("Successfully Loaded Script File: " + filePath + ", and given id of: " + std::to_string(id));
-
     return id;
 }
 
-void ScriptQueue::activateScript(unsigned int id, std::string preCommand) // Starts a script using the id given earlier
+void ScriptQueue::activateScript(unsigned int id, std::vector<Argument> args) // Starts a script using the id given earlier
 {
     m_activeScripts.push_back(m_scriptCache[id]);
-    if(preCommand != "") m_activeScripts[m_activeScripts.size()-1].preCommand = preCommand;
+    m_activeScripts[m_activeScripts.size()-1].arguments = args;
     //Logger::getInstance()->log("Activated script with id of: " + std::to_string(id));
 }
 

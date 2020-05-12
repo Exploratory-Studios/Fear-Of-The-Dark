@@ -295,7 +295,7 @@ void EntityPlayer::updateInput(GLEngine::InputManager* input, World* world) {
                 Tile* t = new Tile(m_selectedBlock->getPosition(), m_selectedBlock->getLayer(), 0, MetaData(), false);
                 world->setTile(t);
             }
-            m_inventory->updateWeight();
+            if(m_inventory) m_inventory->updateWeight();
         }
         if(input->isKeyPressed(SDL_BUTTON_RIGHT)) {
             if(m_selectedBlock) {

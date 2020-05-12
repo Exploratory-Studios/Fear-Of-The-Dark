@@ -410,7 +410,7 @@ void XMLData::loadXMLEntityItemData(std::string filepath) {
     rapidxml::xml_document<> doc;
     doc.parse<rapidxml::parse_full>((char*)text.c_str());
 
-    for(rapidxml::xml_node<>* node = doc.first_node("entityItem"); node; node = node->next_sibling("entityItem")) {
+    for(rapidxml::xml_node<>* node = doc.first_node("itemEntity"); node; node = node->next_sibling("itemEntity")) {
         XML_EntityItemData d = XMLData::readEntityItemData(node);
         unsigned int id = std::stoi(node->first_attribute("id")->value());
         d.id = id;

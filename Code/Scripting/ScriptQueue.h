@@ -8,6 +8,8 @@
 #include "../Logging.h"
 #include "../PresetValues.h"
 
+struct Argument { const char* key; float val; };
+
 class Script {
     public:
         Script(std::string filename_text, bool isFile) {
@@ -37,7 +39,7 @@ class Script {
             return true;
         }
 
-        std::string preCommand = "";
+        std::vector<Argument> arguments;
 
     private:
         bool m_isFile = false;
@@ -51,7 +53,7 @@ class ScriptQueue {
         static unsigned int addScript(Script& script); // returns id of script, puts into cache
         static unsigned int addScript(std::string filePath); // same here
 
-        static void activateScript(unsigned int id, std::string preCommand = ""); // Starts a script using the id given earlier
+        static void activateScript(unsigned int id, std::vector<Argument> args = {}); // Starts a script using the id given earlier
 
         static void deactivateScripts(); // Clears active scripts
 

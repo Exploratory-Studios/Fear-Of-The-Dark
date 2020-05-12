@@ -62,15 +62,23 @@ class Entity
 
         void generateUUID(World* world);
 
-        virtual std::string generateLuaValues() {
-            std::string valScript = "selfX,selfY,selfXVel,selfYVel,selfID=";
+        virtual std::vector<Argument> generateLuaValues() {
+            std::vector<Argument> args = {
+                { "selfX", m_position.x },
+                { "selfY", m_position.y },
+                { "selfXVel", m_velocity.x },
+                { "selfYVel", m_velocity.y },
+                { "selfID", m_id },
+            };
+
+            /*std::string valScript = "selfX,selfY,selfXVel,selfYVel,selfID=";
             valScript += std::to_string(m_position.x) + ",";
             valScript += std::to_string(m_position.y) + ",";
             valScript += std::to_string(m_velocity.x) + ",";
             valScript += std::to_string(m_velocity.y) + ",";
-            valScript += std::to_string(m_id);
+            valScript += std::to_string(m_id);*/
 
-            return valScript;
+            return args;
         }
 
     protected:

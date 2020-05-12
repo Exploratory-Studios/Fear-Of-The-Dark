@@ -4,6 +4,9 @@
 #include <GLTexture.h>
 #include <ResourceManager.h>
 #include <string>
+#include <vector>
+
+#include "Scripting/ScriptQueue.h"
 
 class World;
 class Tile;
@@ -35,12 +38,17 @@ class Item
 
         void onRightClick(Tile* selectedBlock);
 
-        std::string generateLuaData() {
-            std::string ret = "itemID,itemQuantity=";
-            ret += std::to_string(m_id) + ",";
-            ret += std::to_string(m_quantity);
+        std::vector<Argument> generateLuaData() {
+            std::vector<Argument> args = {
+                { "itemID", m_id },
+                { "itemQuantity", m_quantity }
+            };
 
-            return ret;
+            /*std::string ret = "itemID,itemQuantity=";
+            ret += std::to_string(m_id) + ",";
+            ret += std::to_string(m_quantity);*/
+
+            return args;
         }
 
         unsigned int getID() { return m_id; } // (unsigned int)(-1) is equivalent to null

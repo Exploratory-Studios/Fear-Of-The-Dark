@@ -1,7 +1,7 @@
 
 
 
-### LOG: Tue May 12 18:58:17 2020 ###
+### LOG: Wed May 13 00:42:42 2020 ###
 
 Beginning to load data...
 Successfully Loaded Script File: /home/davis-dev/.exploratory/Fear Of The Dark/Assets/Scripts/TEST_SCRIPT.txt, and given id of: 0
@@ -15,8 +15,8 @@ Loaded data (Item Entities)...
 Successfully Loaded Script File: /home/davis-dev/.exploratory/Fear Of The Dark/Assets/Scripts/Item_BlockPlacement.lua, and given id of: 3
 Loaded data (Items)...
 Loaded all data successfully!
-CREATE: Starting world creation at time: 739.747009
-CREATE: Finished world creation at time: 3649.560059 (Elapsed: 2909.812988ms)
+CREATE: Starting world creation at time: 733.711975
+CREATE: Finished world creation at time: 2688.503906 (Elapsed: 1954.791992ms)
 Loaded all 3 music files.
 Loaded all 2 sound files.
 Loading dialogue. 1297 bytes to read.
@@ -33,5 +33,5 @@ Loaded flag with id of 5 and value of 0
 Flags loaded! (24 bytes)
 Loading trade tables. 180 bytes to read.
 Loaded trade tables! (24 bytes)
+Loaded script: /home/davis-dev/.exploratory/Fear Of The Dark/Assets/Scripts/WaterUpdate.lua
 Loaded script: /home/davis-dev/.exploratory/Fear Of The Dark/Assets/Scripts/TEST_SCRIPT.txt
-Loaded script: /home/davis-dev/.exploratory/Fear Of The Dark/Assets/Scripts/Item_BlockPlacement.lua

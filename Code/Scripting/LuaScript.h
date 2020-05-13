@@ -100,81 +100,11 @@ public:
         T = 0;
     }
 
-    void createArgumentsTable(std::vector<Argument>& args) { // Creates and labels globals for user use.
-        lua_newtable(T);
-        for(unsigned int i = 0; i < args.size(); i++) {
-            lua_pushstring(T, args[i].key);
-            lua_pushnumber(T, args[i].val);
-            lua_settable(T, -3);
-        }
-    }
+    int loadScriptFile(std::string& filepath);
+    int loadScriptString(std::string script);
 
-    int loadScriptFile(std::string& filepath) {
-        int errCode = luaL_loadfile(T, filepath.c_str());
-
-        if(errCode) {
-            printf("error (load script lua0) code %i: %s\n", errCode, lua_tostring(T, -1));
-            destroy();
-            return -1;
-        }
-
-        // Now that the file is loaded, we need to put it in the registry and return that value
-        int ref = luaL_ref(T, LUA_REGISTRYINDEX);
-        if(ref == LUA_REFNIL) {
-            Logger::getInstance()->log("LUA ERROR: REFNIL on new file load!", true);
-        }
-        return ref;
-    }
-
-    int loadScriptString(std::string script) {
-        std::string sc = script;
-
-        int errCode = luaL_loadstring(T, (char*)sc.c_str());
-
-        if(errCode) {
-            printf("error (load string lua0) code %i: %s\n", errCode, lua_tostring(T, -1));
-            destroy();
-            return 1;
-        }
-
-        return 0;
-    }
-
-    void run(unsigned int chunkIndex, std::vector<Argument>& args) {
-        lua_rawgeti(T, LUA_REGISTRYINDEX, chunkIndex);
-        createArgumentsTable(args);
-        int err = lua_pcall(T, 1, 0, 0);
-
-        if(err) {
-            printf("error (run script lua) code %i: %s\n", err, lua_tostring(T, -1));
-            destroy();
-            return;
-        }
-
-        lua_settop(T, 0);
-    }
-
-    void update(lua_State* state) {
-        if(lua_status(T) == LUA_OK) {
-            m_finished = true;
-            return;
-        } else if(lua_status(T) == LUA_YIELD) { // Is the thread currently paused?
-            int delayLeft = lua_tointeger(T, -1); // Get the delay from the top of the stack
-            delayLeft--; // Take one frame away
-            lua_pop(T, 1); // Take the delay value off of the stack completely
-
-            if(delayLeft <= 0) {
-                lua_resume(T, state, 0); // Continue the script
-            } else {
-                lua_pushinteger(T, delayLeft); // Otherwise, re-add the new delay value
-            }
-            return;
-        } else {
-            Logger::getInstance()->log("LUA ERROR: " + std::string(lua_tostring(T, -1)), true);
-            stackDump(T);
-            destroy();
-        }
-    }
+    void run(unsigned int chunkIndex, std::vector<Argument>& args);
+    void update(lua_State* state);
 
     lua_State* getThread() { return T; }
     void setThread(lua_State* s) { T = s; }
@@ -193,6 +123,8 @@ public:
         static int l_removeBlock(lua_State* L);
         static int l_showBlock(lua_State* L);
         static int l_hideBlock(lua_State* L);
+
+        static int l_getBlock(lua_State* L); // returns a table of block data to the stack
 
         static int l_addEntity(lua_State* L); // requires UUID of entity
         static int l_removeEntity(lua_State* L);

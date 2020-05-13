@@ -29,6 +29,73 @@
 
 std::vector<glm::vec2> areaPositionTarget(World* world, glm::vec2 pos1, glm::vec2 pos2) {*/
 
+int LuaScript::loadScriptFile(std::string& filepath) {
+    int errCode = luaL_loadfile(T, filepath.c_str());
+
+    if(errCode) {
+        printf("error (load script lua0) code %i: %s\n", errCode, lua_tostring(T, -1));
+        destroy();
+        return -1;
+    }
+
+    // Now that the file is loaded, we need to put it in the registry and return that value
+    int ref = luaL_ref(T, LUA_REGISTRYINDEX);
+    if(ref == LUA_REFNIL) {
+        Logger::getInstance()->log("LUA ERROR: REFNIL on new file load!", true);
+    }
+    return ref;
+}
+
+int LuaScript::loadScriptString(std::string script) {
+    std::string sc = script;
+
+    int errCode = luaL_loadstring(T, (char*)sc.c_str());
+
+    if(errCode) {
+        printf("error (load string lua0) code %i: %s\n", errCode, lua_tostring(T, -1));
+        destroy();
+        return 1;
+    }
+
+    return 0;
+}
+
+void LuaScript::run(unsigned int chunkIndex, std::vector<Argument>& args) {
+    lua_rawgeti(T, LUA_REGISTRYINDEX, chunkIndex);
+    createArgumentsTable(T, args);
+    int err = lua_pcall(T, 1, 0, 0);
+
+    if(err) {
+        printf("error (run script lua) code %i: %s\n", err, lua_tostring(T, -1));
+        destroy();
+        return;
+    }
+
+    lua_settop(T, 0);
+}
+
+void LuaScript::update(lua_State* state) {
+    if(lua_status(T) == LUA_OK) {
+        m_finished = true;
+        return;
+    } else if(lua_status(T) == LUA_YIELD) { // Is the thread currently paused?
+        int delayLeft = lua_tointeger(T, -1); // Get the delay from the top of the stack
+        delayLeft--; // Take one frame away
+        lua_pop(T, 1); // Take the delay value off of the stack completely
+
+        if(delayLeft <= 0) {
+            lua_resume(T, state, 0); // Continue the script
+        } else {
+            lua_pushinteger(T, delayLeft); // Otherwise, re-add the new delay value
+        }
+        return;
+    } else {
+        Logger::getInstance()->log("LUA ERROR: " + std::string(lua_tostring(T, -1)), true);
+        stackDump(T);
+        destroy();
+    }
+}
+
 int LuaScript::l_playSound(lua_State* L) {
     AudioManager* audio = static_cast<AudioManager*>(getUpvalue(L, AUDIOMANAGER_KEY));
 
@@ -209,6 +276,21 @@ int LuaScript::l_hideBlock(lua_State* L) {
 
     hideBlock(world, x, y, layer); // calling C++ function with this argument...
     return 0; // no returned values
+}
+
+int LuaScript::l_getBlock(lua_State* L) {
+    World* world = static_cast<World*>(getUpvalue(L, WORLD_KEY));
+    int x = (int)lua_tonumber(L, 1);
+    int y = (int)lua_tonumber(L, 2);
+    int l = (int)lua_tonumber(L, 3);
+
+    lua_pop(L, 3);
+
+    Tile* t = getBlock(world, glm::vec2(x, y), l);
+    std::vector<Argument> args = t->generateLuaData();
+    createArgumentsTable(L, args); // Creates and pushes back table
+
+    return 1; // 1 return value
 }
 
 int LuaScript::l_addEntity(lua_State* L) {
@@ -411,7 +493,6 @@ int LuaScript::l_delay(lua_State* L) {
     unsigned int delay = (int)lua_tonumber(L, 1);
 
     lua_pop(L, 1);
-
 
     lua_pushinteger(L, delay);
 

@@ -12,6 +12,8 @@ extern "C" {
     #include <lua5.3/lua.hpp>
 }
 
+#include "ScriptQueue.h"
+
 class World;
 class QuestManager;
 class GameplayScreen;
@@ -21,6 +23,7 @@ class LuaScript;
 class Script;
 class MetaData;
 class Entity;
+class Tile;
 
 static const char* WORLD_KEY = "world";
 static const char* GAMEPLAYSCREEN_KEY = "gameplayscreen";
@@ -40,11 +43,14 @@ void pushDepsToRegistry(lua_State* L, World* w, QuestManager* qm, GameplayScreen
 void pushFunction(lua_State* L, lua_CFunction func, std::string name);
 void setUpvalue(lua_State* L, const char* key, void* ptr);
 void* getUpvalue(lua_State* L, const char* key);
+void createArgumentsTable(lua_State* T, std::vector<Argument>& args);
 
 void setBlock(World* world, unsigned int id, glm::vec2 pos, int layer, MetaData metaData);
 void removeBlock(World* world, int x, int y, unsigned int layer);
 void showBlock(World* world, int x, int y, unsigned int layer);
 void hideBlock(World* world, int x, int y, unsigned int layer);
+
+Tile* getBlock(World* world, glm::vec2 pos, int layer);
 
 unsigned int addEntity(World* world, unsigned int id, glm::vec2 position, unsigned int layer);
 void removeEntity(World* world, std::string UUID);

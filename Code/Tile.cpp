@@ -179,6 +179,10 @@ void Tile::update(World* world, float time, bool updateLighting, const float& su
     onUpdate();
 }
 
+void Tile::specialUpdate(World* world, float time) {
+    if(m_updateScriptID != -1) ScriptQueue::activateScript(m_updateScriptID, generateLuaData());
+}
+
 void Tile::tick(World* world, float tickTime, const float& sunlight) {
     if(m_updateHeat && m_id != (unsigned int)TileIDs::AIR) {
         float heat = getSurroundingHeat(world);

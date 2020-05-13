@@ -41,6 +41,20 @@ void* getUpvalue(lua_State* L, const char* key) {
     return lua_touserdata(L, -1);
 }
 
+void createArgumentsTable(lua_State* T, std::vector<Argument>& args) { // Creates and labels globals for user use.
+    lua_newtable(T);
+    for(unsigned int i = 0; i < args.size(); i++) {
+        lua_pushstring(T, args[i].key);
+        lua_pushnumber(T, args[i].val);
+        lua_settable(T, -3);
+    }
+}
+
+
+
+
+
+
 void setBlock(World* world, unsigned int id, glm::vec2 pos, int layer, MetaData metaData) {
     float correctedX = ((int)pos.x + WORLD_SIZE) % WORLD_SIZE;
     world->setTile(new Tile(glm::vec2(correctedX, pos.y), layer, id, MetaData(metaData), false)); // Set the block, of course
@@ -63,6 +77,10 @@ void hideBlock(World* world, int x, int y, unsigned int layer) {
     int chunk = std::floor(x / CHUNK_SIZE); // What chunk index it belongs to
 
     world->getTile(x, y, layer)->setToDraw(false); // Make it not-transparent
+}
+
+Tile* getBlock(World* world, glm::vec2 pos, int layer) {
+    return world->getTile(pos.x, pos.y, layer);
 }
 
 unsigned int addEntity(World* world, unsigned int id, glm::vec2 position, unsigned int layer) {

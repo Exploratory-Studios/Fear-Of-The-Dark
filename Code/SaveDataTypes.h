@@ -27,6 +27,8 @@ class MetaData {
             m_data = "";
         }
 
+        std::string getRawData() { return m_data; }
+
         void addAspect(std::string aspectName, float val) {
             if(m_data.find(aspectName) == std::string::npos) {
                 m_data += "," + aspectName + ":" + std::to_string(val);

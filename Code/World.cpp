@@ -63,6 +63,8 @@ void World::setTile(Tile* tile) {
     if(l) l->setNeedsSunCheck();
     Tile* r = getTile(x+1, y, layer);
     if(r) r->setNeedsSunCheck();
+
+    specialUpdateTile(m_tiles[y][x][layer]);
     /*Tile* b = getTile(x, y, layer+1);
     if(b) b->setNeedsSunCheck();
     Tile* f = getTile(x, y, layer-1);
@@ -492,6 +494,36 @@ float World::getDistance(glm::vec2 point0, glm::vec2 point1) {
 
 
 /// PRIVATE FUNCTIONS BELOW
+
+void World::specialUpdateTile(Tile* origin) {
+    origin->specialUpdate(this, m_time);
+
+    glm::vec2 oPos = origin->getPosition();
+
+    Tile* l = getTile(oPos.x-1, oPos.y, origin->getLayer());
+    Tile* r = getTile(oPos.x+1, oPos.y, origin->getLayer());
+    Tile* u = getTile(oPos.x, oPos.y+1, origin->getLayer());
+    Tile* d = getTile(oPos.x, oPos.y-1, origin->getLayer());
+    Tile* f = getTile(oPos.x, oPos.y, origin->getLayer()-1);
+    Tile* b = getTile(oPos.x, oPos.y, origin->getLayer()+1);
+
+    //if(l) left and right will always return a tile
+    l->specialUpdate(this, m_time);
+    r->specialUpdate(this, m_time);
+
+
+    if(u)
+        u->specialUpdate(this, m_time);
+    if(d)
+        d->specialUpdate(this, m_time);
+
+
+    if(f)
+        f->specialUpdate(this, m_time);
+    if(b)
+        b->specialUpdate(this, m_time);
+
+}
 
 void World::spawnEntities() {
     /**

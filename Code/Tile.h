@@ -34,9 +34,6 @@ enum class TileIDs {
 
 class Tile
 {
-    friend class Scripter;
-    friend class WorldIOManager;
-
     public:
         Tile();
         Tile(glm::vec2 pos, unsigned int layer, unsigned int id, MetaData data, bool loadTex);
@@ -77,7 +74,7 @@ class Tile
             std::vector<Argument> args = {
                 { "blockX", m_pos.x },
                 { "blockY", m_pos.y },
-                { "blockID", m_id   }
+                { "blockID", m_id } // TODO: Implement metadata. Each element to the metadata can be an element in this table.
             };
 
             /*std::string ret = "blockX, blockY, blockID=";
@@ -145,7 +142,6 @@ class Tile
         }
 
         void setNeedsSunCheck() { m_needsSunCheck = true; }
-        void setPosition(glm::vec2 pos) { m_pos = pos; }
         void setToUpdate_heat() { m_updateHeat = true; } // Sends the signal to update heat
         void setSunLight(float light, bool left, bool right, bool top, bool bottom) {
             m_sunLight = light;
@@ -177,6 +173,7 @@ class Tile
         }
 
         void update(World* world, float time, bool updateLighting, const float& sunlight);
+        void specialUpdate(World* world, float time); // This is only called when the tile/surrounding tiles are changed. Calls updateScript
         void tick(World* world, float tickTime, const float& sunlight);
         void draw(GLEngine::SpriteBatch& sb, GLEngine::SpriteFont& sf, int xOffset, int depthDifference);
 
@@ -192,12 +189,16 @@ class Tile
         void calculateSunlight(World* world, float sunlight); // Determines and sets the sunlight corner values for this tile and surrounding tiles.
 
     protected:
+        void setPosition(glm::vec2 pos) { m_pos = pos; }
+
+
+
         void handleMetaDataInit(MetaData& data) { };
         MetaData* getMetaData() { return new MetaData(); }
 
-        void onUpdate() { if(m_updateScriptID != -1) ScriptQueue::activateScript(m_updateScriptID, generateLuaData()); };
+        void onUpdate() { }
         void onDraw(GLEngine::SpriteBatch& sb, GLEngine::SpriteFont& sf, glm::vec4& pos, float& depth) { }
-        void onTick() { if(m_tickScriptID != -1) ScriptQueue::activateScript(m_tickScriptID, generateLuaData()); };
+        void onTick() { if(m_tickScriptID != -1) ScriptQueue::activateScript(m_tickScriptID, generateLuaData()); }
         void onDestruction() { }
 
         int m_updateScriptID = -1;

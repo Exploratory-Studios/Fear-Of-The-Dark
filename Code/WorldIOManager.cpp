@@ -577,11 +577,11 @@ void WorldIOManager::setWorldEra(World* world, WorldEra newEra) {
             for(int y = 1; y < WORLD_HEIGHT; y++) {
                 for(int x = 0; x < WORLD_SIZE; x++) {
                     for(int chunkX = 0; chunkX < CHUNK_SIZE; chunkX++) { /// TODO: Cross-layer stuff
-                        if(!world->getTile(chunkX, y, 0)->isSolid() && world->getTile(chunkX, y, 0)->m_id != (unsigned int)TileIDs::AIR) {
+                        if(!world->getTile(chunkX, y, 0)->isSolid() && world->getTile(chunkX, y, 0)->getID() != (unsigned int)TileIDs::AIR) {
                             //*world->tiles[y][chunkX] = BlockAir(glm::vec2(chunkX + CHUNK_SIZE * x, y), world);
                             world->setTile(new Tile(glm::vec2(chunkX + CHUNK_SIZE * x, y), 0, TileIDs::AIR, MetaData(), false)); /// Implement cross-layer stuff
                         }
-                        if(world->getTile(chunkX, y, 0)->m_id != (unsigned int)TileIDs::AIR) {
+                        if(world->getTile(chunkX, y, 0)->getID() != (unsigned int)TileIDs::AIR) {
                             int yOffset = -1;
 
                             Tile* up = world->getTile(chunkX, y+1, 0); /// TODO: Cross-layer

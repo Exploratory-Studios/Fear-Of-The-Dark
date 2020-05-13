@@ -40,6 +40,8 @@ void Scripter::init(World* world, QuestManager* qm, GameplayScreen* gs, AudioMan
     pushFunction(m_luaState, LuaScript::l_showBlock, "showBlock");
     pushFunction(m_luaState, LuaScript::l_hideBlock, "hideBlock");
 
+    pushFunction(m_luaState, LuaScript::l_getBlock, "getBlock");
+
     pushFunction(m_luaState, LuaScript::l_addEntity, "addEntity");
     pushFunction(m_luaState, LuaScript::l_removeEntity, "removeEntity");
     pushFunction(m_luaState, LuaScript::l_showEntity, "showEntity");

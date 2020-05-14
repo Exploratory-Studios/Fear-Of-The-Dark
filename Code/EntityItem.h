@@ -2,6 +2,7 @@
 
 #include "Entity.h"
 
+#include "Item.h"
 
 class EntityItem : public Entity
 {
@@ -11,7 +12,8 @@ class EntityItem : public Entity
         virtual ~EntityItem();
 
         /// Getters
-        Item* getItem() { return nullptr; } /// TODO: Do this
+        Item* getItem(); /// TODO: Do this
+        unsigned int getItemID() { return m_itemId; }
 
     protected:
         // Item

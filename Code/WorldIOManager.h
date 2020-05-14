@@ -41,12 +41,12 @@ class WorldIOManager
 
         void setWorldEra(World* world, WorldEra newEra);
 
-        StructureData loadStructureFromFile(std::string& filepath);
-        void placeStructure(World* world, StructureData& structure, glm::vec2 position); /// TODO: Make structures "individuals" so that they don't need the WorldIOManager to function.
+        //StructureData loadStructureFromFile(std::string& filepath);
+        //void placeStructure(World* world, StructureData& structure, glm::vec2 position); /// TODO: Make structures "individuals" so that they don't need the WorldIOManager to function.
 
         #ifdef DEV_CONTROLS
-        void saveStructureToFile(World* world, std::string& filepath, StructureData& structureData);/// TODO: Make structures "individuals" so that they don't need the WorldIOManager to function.
-        void saveStructureToFile(World* world, std::string& filepath, glm::vec4 destRect);
+        //void saveStructureToFile(World* world, std::string& filepath, StructureData& structureData);/// TODO: Make structures "individuals" so that they don't need the WorldIOManager to function.
+        //void saveStructureToFile(World* world, std::string& filepath, glm::vec4 destRect);
         #endif // DEV_CONTROLS
 
         float getProgress() const { return *m_progress; }

@@ -1,5 +1,9 @@
 #pragma once
 
+#include <GUI.h>
+#include <SpriteFont.h>
+#include <InputManager.h>
+
 #include "EntityNPC.h"
 
 class WorldIOManager;
@@ -23,6 +27,10 @@ class EntityPlayer : public EntityNPC
 
         /// Getters
         float getSanity() { return m_sanity; }
+        float getThirst() { return m_thirst; }
+        float getHunger() { return m_hunger; }
+        float getExhaustion() { return m_exhaustion; }
+        float getStamina() { return m_stamina; }
         float getTemperature() { return 1; }
         Entity* getSelectedEntity() { return m_selectedEntity; }
         Tile* getSelectedBlock() { return m_selectedBlock; }

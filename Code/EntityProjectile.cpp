@@ -4,6 +4,8 @@
 
 EntityProjectile::EntityProjectile(glm::vec2 pos, unsigned int layer, unsigned int id, MetaData data, bool loadTex) : Entity(pos, layer, data)
 {
+    m_type = EntityTypes::PROJECTILE;
+
     m_id = id;
 
     XML_EntityProjectileData d = XMLData::getEntityProjectileData(id);
@@ -24,6 +26,8 @@ EntityProjectile::EntityProjectile(glm::vec2 pos, unsigned int layer, unsigned i
 
 EntityProjectile::EntityProjectile(glm::vec2 pos, unsigned int layer, EntityIDs id, MetaData data, bool loadTex) : Entity(pos, layer, data)
 {
+    m_type = EntityTypes::PROJECTILE;
+
     m_id = (unsigned int)id;
 
     XML_EntityProjectileData d = XMLData::getEntityProjectileData((unsigned int)id);

@@ -2,8 +2,14 @@
 
 #include "World.h"
 
+#include "Tile.h"
+
 #include "EntityItem.h"
 #include "EntityProjectile.h"
+
+#include "Entities/EntityFunctions.h"
+
+#include "Inventory.h"
 
 #include "XMLData.h"
 
@@ -90,8 +96,8 @@ void EntityNPC::collide(World* world, unsigned int entityIndex) {
             float dist = std::sqrt(xDist * xDist + yDist * yDist);
 
             if(dist <= 3.0f) {
-                m_inventory->addItem(ent->getItem());
-                world->removeEntity(i);
+                //m_inventory->addItem(ent->getItem());
+                ///world->removeEntity(i); /// TODO: Implement this
             }
             continue;
         }
@@ -274,6 +280,18 @@ void EntityNPC::onUpdate(World* world, float timeStep, unsigned int selfIndex) {
     } else if(m_velocity.x < -MAX_SPEED * m_inventory->getSpeedMultiplier() * std::pow(m_stamina, 0.4f)) {
         m_velocity.x = -MAX_SPEED * m_inventory->getSpeedMultiplier() * std::pow(m_stamina, 0.4f);
     }*/
+}
+
+void EntityNPC::giveItem(Item* item) {
+    if(m_inventory) {
+        m_inventory->addItem(item);
+    } else {
+        Logger::getInstance()->log("ERROR: Entity inventory not initialized, could not give item", true);
+    }
+}
+
+Inventory* EntityNPC::getInventory() {
+    return m_inventory;
 }
 
 void EntityNPC::die(World* world) {

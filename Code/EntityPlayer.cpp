@@ -3,6 +3,8 @@
 #include <Errors.h>
 
 #include "World.h"
+#include "Tile.h"
+#include "Inventory.h"
 
 EntityPlayer::EntityPlayer(glm::vec2 pos, unsigned int layer, MetaData data, bool loadTex) : EntityNPC(pos, layer, 0, data, loadTex)
 {

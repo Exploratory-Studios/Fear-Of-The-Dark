@@ -353,6 +353,7 @@
 		<Unit filename="QuestClasses.h" />
 		<Unit filename="QuestManager.cpp" />
 		<Unit filename="QuestManager.h" />
+		<Unit filename="SaveDataTypes.cpp" />
 		<Unit filename="SaveDataTypes.h" />
 		<Unit filename="ScreenIndices.h" />
 		<Unit filename="Scripting/LuaScript.cpp" />

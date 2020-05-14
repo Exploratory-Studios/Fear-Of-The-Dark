@@ -16,6 +16,9 @@
 #include "../EntityNPC.h"
 #include "../EntityPlayer.h"
 
+#include "../Tile.h"
+#include "../Item.h"
+
 void pushDepsToRegistry(lua_State* L, World* w, QuestManager* qm, GameplayScreen* gs, AudioManager* am, GLEngine::ParticleEngine2D* p) {
     setUpvalue(L, WORLD_KEY,          static_cast<void*>(w));
     setUpvalue(L, QUESTMANAGER_KEY,   static_cast<void*>(qm));
@@ -64,7 +67,7 @@ void setBlock(World* world, unsigned int id, glm::vec2 pos, int layer, MetaData 
 void removeBlock(World* world, int x, int y, unsigned int layer) {
     int chunk = std::floor(x / CHUNK_SIZE); // What chunk index it belongs to
 
-    world->setTile(new Tile(glm::vec2(x, y), layer, 0, MetaData(""), false)); /// TODO: Constant for air
+    world->setTile(new Tile(glm::vec2(x, y), layer, 0, MetaData(), false)); /// TODO: Constant for air
 }
 
 void showBlock(World* world, int x, int y, unsigned int layer) {

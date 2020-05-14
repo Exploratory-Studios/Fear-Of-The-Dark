@@ -194,7 +194,7 @@ class Tile
 
 
         void handleMetaDataInit(MetaData& data) { };
-        MetaData* getMetaData() { return new MetaData(); }
+        MetaData getMetaData() { m_metaData; }
 
         void onUpdate() { }
         void onDraw(GLEngine::SpriteBatch& sb, GLEngine::SpriteFont& sf, glm::vec4& pos, float& depth) { }

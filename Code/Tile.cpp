@@ -372,7 +372,6 @@ TileData Tile::getSaveData() {
     TileData d;
     d.pos = m_pos;
     d.id = m_id;
-    delete d.metaData;
     d.metaData = getMetaData();
     d.layer = m_layer;
     return d;

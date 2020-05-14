@@ -127,9 +127,6 @@ class GameplayScreen : public GLEngine::IGameScreen
         std::vector<int> m_drawnChunks; // Chunks that should still be drawn
         int m_lastActivated = -1;
 
-        glm::vec2 m_lastSelectedPosition; // Only used when saving structures
-        bool m_selecting = false;
-
         bool m_cameraLocked = false; // Can the camera move with the player, or is it 'locked'?
 
         unsigned int m_nextScreenIndex = SCREEN_INDEX_NO_SCREEN;

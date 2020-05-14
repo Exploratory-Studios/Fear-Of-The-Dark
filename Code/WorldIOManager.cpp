@@ -6,6 +6,8 @@
 
 #include "EntityPlayer.h"
 #include "World.h"
+#include "Inventory.h"
+#include "Tile.h"
 
 void WorldIOManager::loadWorld(std::string worldName, World* world) {
     setProgress(0.0f);
@@ -76,44 +78,12 @@ void WorldIOManager::P_loadWorld(std::string worldName, World* world) {
 
         world->m_player = new EntityPlayer(glm::vec2(0.0f), 0, MetaData(), false);
 
-        file.read(reinterpret_cast<char*>(&world->m_player->m_canInteract), sizeof(bool));
-        file.read(reinterpret_cast<char*>(&world->m_player->m_sanity), sizeof(float));
-        file.read(reinterpret_cast<char*>(&world->m_player->m_health), sizeof(float));
-        file.read(reinterpret_cast<char*>(&world->m_player->m_thirst), sizeof(float));
-        file.read(reinterpret_cast<char*>(&world->m_player->m_hunger), sizeof(float));
-        file.read(reinterpret_cast<char*>(&world->m_player->m_exhaustion), sizeof(float));
-        file.read(reinterpret_cast<char*>(&world->m_player->m_stamina), sizeof(float));
-        file.read(reinterpret_cast<char*>(&world->m_player->m_position), sizeof(glm::vec2));
+        EntityPlayerData pod;
+        pod.read(file);
 
-        unsigned int favouriteIndices[10];
-        file.read(reinterpret_cast<char*>(&favouriteIndices), sizeof(unsigned int) * 10); // Get indices (in the inventory) that the hotbar pointed to
+        /// TODO: Set actual player data from pod
 
         logger->log("LOAD: Loaded Player POD");
-
-
-        // INVENTORY
-        unsigned int items = 0;
-        file.read(reinterpret_cast<char*>(&items), sizeof(unsigned int));
-        world->m_player->m_inventory->m_items.clear();
-        world->m_player->m_inventory->m_items.reserve(items);
-        for(unsigned int i = 0; i < items; i++) {
-            // ITEMS
-            ItemData newItem;
-            file.read(reinterpret_cast<char*>(&newItem.id), sizeof(unsigned int));
-            file.read(reinterpret_cast<char*>(&newItem.quantity), sizeof(unsigned int));
-            //newItem.metaData->read(file);
-
-            world->getPlayer()->m_inventory->addItem(new Item(newItem.quantity, newItem.id, false));
-
-            logger->log("LOAD: Loaded " + std::to_string(i+1) + " of " + std::to_string(items) + " Items");
-        }
-
-        for(int i = 0; i < 10; i++) {
-            world->getPlayer()->m_favouriteItems[i] = world->getPlayer()->m_inventory->getItem(favouriteIndices[i]); // Set up the pointers based on the indices we loaded earlier
-        }
-
-        file.read(reinterpret_cast<char*>(&world->getPlayer()->m_inventory->m_absMaxWeight), sizeof(float));
-        logger->log("LOAD: Loaded Player Inventory");
     }
 
     setProgress(0.2f);
@@ -134,7 +104,7 @@ void WorldIOManager::P_loadWorld(std::string worldName, World* world) {
                 for(unsigned int x = 0; x < CHUNK_SIZE; x++) {
                     for(unsigned int k = 0; k < WORLD_DEPTH; k++) {
                         TileData* temp = &chunkData[i].tiles[y][x][k];
-                        Tile* tile = new Tile(temp->pos, k, temp->id, *temp->metaData, false);
+                        Tile* tile = new Tile(temp->pos, k, temp->id, temp->metaData, false);
                         world->setTile(tile);
                         setProgress(getProgress() + 1.0f / (CHUNK_SIZE * WORLD_HEIGHT * WORLD_SIZE * WORLD_DEPTH) * 0.2f); // 0.3
                     }
@@ -173,32 +143,31 @@ void WorldIOManager::P_saveWorld(World* world) {
     logger->log("SAVE: Starting World Save to File: " + world->getName() + ".bin");
     logger->log("SAVE: Starting Save Preparations");
 
-    PlayerData p;
+    EntityPlayerData p;
 
     // POD
-    p.canInteract = world->getPlayer()->m_canInteract;
-    p.m_sanity = world->getPlayer()->m_sanity;
-    p.m_health = world->getPlayer()->m_health;
-    p.m_thirst = world->getPlayer()->m_thirst;
-    p.m_hunger = world->getPlayer()->m_hunger;
-    p.m_exhaustion = world->getPlayer()->m_exhaustion;
-    p.m_stamina = world->getPlayer()->m_stamina;
-    p.position = world->getPlayer()->getPosition();
-    for(unsigned int i = 0; i < 10; i++) {
+    EntityPlayer* playerPtr = world->getPlayer();
+    p.sanity = playerPtr->m_sanity;
+    p.health = playerPtr->m_health;
+    p.thirst = playerPtr->m_thirst;
+    p.hunger = playerPtr->m_hunger;
+    p.exhaustion = playerPtr->m_exhaustion;
+    p.stamina = playerPtr->m_stamina;
+    p.position = playerPtr->getPosition();
+    /*for(unsigned int i = 0; i < 10; i++) {
         p.favouriteItemIndices[i] = world->getPlayer()->m_inventory->getItemIndex(world->getPlayer()->m_favouriteItems[i]);
-    }
+    }*/ /// TODO: Re-enable
 
     // INVENTORY
-    PlayerInventoryData pInventory;
-    pInventory.items = world->getPlayer()->m_inventory->getItems().size();
-    for(unsigned int i = 0; i < pInventory.items; i++) {
+    InventoryData pInventory;
+    for(unsigned int i = 0; i < pInventory.itemData.size(); i++) {
         ItemData item;
-        item.id = world->getPlayer()->m_inventory->getItem(i)->getID();
-        item.quantity = world->getPlayer()->m_inventory->getItem(i)->getQuantity();
-        //*item.metaData = *world->player->m_inventory->getItem(i)->getMetaData();
+        Item* tempI = world->getPlayer()->m_inventory->getItem(i);
+        item.id = tempI->getID();
+        item.quantity = tempI->getQuantity();
+        item.metaData = tempI->getMetaData();
         pInventory.itemData.push_back(item);
     }
-    pInventory.absMaxWeight = world->getPlayer()->m_inventory->m_absMaxWeight;
 
     p.inventory = pInventory;
 
@@ -243,30 +212,8 @@ void WorldIOManager::P_saveWorld(World* world) {
     }
 
     { // PLAYER
-        //file.write(reinterpret_cast<char*>(), sizeof());
-        file.write(reinterpret_cast<char*>(&p.canInteract), sizeof(bool));
-        file.write(reinterpret_cast<char*>(&p.m_sanity), sizeof(float));
-        file.write(reinterpret_cast<char*>(&p.m_health), sizeof(float));
-        file.write(reinterpret_cast<char*>(&p.m_thirst), sizeof(float));
-        file.write(reinterpret_cast<char*>(&p.m_hunger), sizeof(float));
-        file.write(reinterpret_cast<char*>(&p.m_exhaustion), sizeof(float));
-        file.write(reinterpret_cast<char*>(&p.m_stamina), sizeof(float));
-        file.write(reinterpret_cast<char*>(&p.position), sizeof(glm::vec2));
-        file.write(reinterpret_cast<char*>(&p.favouriteItemIndices), sizeof(unsigned int) * 10);
+        p.save(file);
         logger->log("SAVE: Wrote Player POD");
-
-
-        // INVENTORY
-        file.write(reinterpret_cast<char*>(&p.inventory.items), sizeof(unsigned int));
-        for(unsigned int i = 0; i < p.inventory.items; i++) {
-            // ITEMS
-            file.write(reinterpret_cast<char*>(&p.inventory.itemData[i].id), sizeof(unsigned int));
-            file.write(reinterpret_cast<char*>(&p.inventory.itemData[i].quantity), sizeof(unsigned int));
-            //p.inventory.itemData[i].metaData->save(file);
-            logger->log("SAVE: Wrote " + std::to_string(i+1) + " of " + std::to_string(p.inventory.items) + " Items");
-        }
-        file.write(reinterpret_cast<char*>(&p.inventory.absMaxWeight), sizeof(float));
-        logger->log("SAVE: Wrote Player Inventory");
 
     }
 
@@ -691,8 +638,8 @@ void WorldIOManager::setWorldEra(World* world, WorldEra newEra) {
     }
 }
 
-StructureData WorldIOManager::loadStructureFromFile(std::string& filepath) {
-    /*
+/*StructureData WorldIOManager::loadStructureFromFile(std::string& filepath) {
+    /**
         This function should error-check:
             - If the file could be opened
             - If the version is the same
@@ -710,7 +657,7 @@ StructureData WorldIOManager::loadStructureFromFile(std::string& filepath) {
         1. Error-check
         2. Create a structure object
         3. Populate it with data from the given file, reading the header, constructing an array of Blocks from the size, then reading the footer for any extra necessary info
-    */
+
 
     // Open the file
     std::ifstream file(filepath);
@@ -785,7 +732,7 @@ StructureData WorldIOManager::loadStructureFromFile(std::string& filepath) {
 void WorldIOManager::placeStructure(World* world, StructureData& structure, glm::vec2 position) {
     /*
         This function should simply iterate through all the tiles, special info, and PresetVals, and place a structure in the world, at a given position
-    */
+
 
     unsigned int id = structure.id;
     unsigned int width = structure.width;
@@ -832,7 +779,7 @@ void WorldIOManager::saveStructureToFile(World* world, std::string& filepath, St
         2. Break down the structureData object into its constituent parts (width, height, id, tileData -> special data as well, etc.)
         3. Save each one (in the right order) to the save file
         4. Save extra-special information such as inventories, etc.
-    */
+
 
     // Open the file
     std::ofstream file(filepath);
@@ -903,4 +850,4 @@ void WorldIOManager::saveStructureToFile(World* world, std::string& filepath, gl
     saveStructureToFile(world, filepath, data);
 }
 
-#endif // DEV_CONTROLS
+#endif // DEV_CONTROLS*/

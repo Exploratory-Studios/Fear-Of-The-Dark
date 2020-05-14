@@ -2,6 +2,7 @@
 
 #include "Scripting/ScripterMain.h"
 #include "World.h"
+#include "Tile.h"
 #include "EntityNPC.h"
 #include "EntityPlayer.h"
 
@@ -334,30 +335,6 @@ void GameplayScreen::checkInput() {
     if(m_game->inputManager.isKeyPressed(SDLK_F1)) {
         m_debuggingInfo = !m_debuggingInfo;
         m_fpsWidget->setVisible(m_debuggingInfo);
-    }
-    if(m_game->inputManager.isKeyPressed(SDLK_F2)) {
-        if(!m_selecting) {
-            m_lastSelectedPosition = m_world->getPlayer()->getSelectedBlock()->getPosition();
-        } else {
-            if(m_lastSelectedPosition.x > m_world->getPlayer()->getSelectedBlock()->getPosition().x || m_lastSelectedPosition.y > m_world->getPlayer()->getSelectedBlock()->getPosition().y) {
-                logger->log("Tried to create a structure badly, please try again, first coord is lower left corner, second is upper right.");
-            } else {
-
-                std::string filepath = ASSETS_FOLDER_PATH + "/Structures/Test.bin";
-                m_WorldIOManager->saveStructureToFile(m_world,
-                                                      filepath,
-                                                      glm::vec4(m_lastSelectedPosition.x,
-                                                      m_lastSelectedPosition.y,
-                                                      m_world->getPlayer()->getSelectedBlock()->getPosition().x - m_lastSelectedPosition.x,
-                                                      m_world->getPlayer()->getSelectedBlock()->getPosition().y - m_lastSelectedPosition.y)); // Long-ass line of code, or long ass-line of code? Only god knows, and there is no god.
-            }
-        }
-        m_selecting = !m_selecting;
-    }
-    if(m_game->inputManager.isKeyPressed(SDLK_F3)) {
-        std::string filepath = ASSETS_FOLDER_PATH + "/Structures/Test.bin";
-        StructureData data = m_WorldIOManager->loadStructureFromFile(filepath);
-        m_WorldIOManager->placeStructure(m_world, data, m_world->getPlayer()->getSelectedBlock()->getPosition());
     }
     #endif // DEV_CONTROLS
 

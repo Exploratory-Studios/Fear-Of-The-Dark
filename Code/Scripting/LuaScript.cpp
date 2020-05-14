@@ -19,6 +19,8 @@
 #include "../EntityNPC.h"
 #include "../EntityPlayer.h"
 
+#include "../Tile.h"
+
 /*std::vector<glm::vec2> relativePositionTarget(World* world, Entity* relativeTo, glm::vec2 relativePos) {
     std::vector<glm::vec2> ret;
 
@@ -238,7 +240,7 @@ int LuaScript::l_setBlock(lua_State* L) {
 
     lua_pop(L, 5);
 
-    MetaData md(metaData);
+    MetaData md; /// TODO: Read table from Lua
     setBlock(world, id, glm::vec2(x, y), layer, md);
     return 0; // no returned values
 }

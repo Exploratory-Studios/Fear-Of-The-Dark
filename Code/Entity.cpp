@@ -7,10 +7,15 @@
 #include "EntityItem.h"
 #include "EntityProjectile.h"
 
+#include "Tile.h"
+
 #include "XMLData.h"
 
-#include <DebugRenderer.h>
 #include <math.h>
+
+Entity::Entity(glm::vec2 pos, unsigned int layer, MetaData data) : m_position(pos), m_layer(layer), m_metaData(data) {
+
+} // This is more of an abstract class
 
 Entity* createEntity(glm::vec2 pos, unsigned int layer, unsigned int id, MetaData data, bool loadTex) {
     if(XMLData::getEntityNPCData(id).id != (unsigned int)-1) {

@@ -4,6 +4,8 @@
 
 EntityItem::EntityItem(glm::vec2 pos, unsigned int layer, unsigned int id, MetaData data, bool loadTex) : Entity(pos, layer, data)
 {
+    m_type = EntityTypes::ITEM;
+
     m_id = id;
 
     XML_EntityItemData d = XMLData::getEntityItemData(id);
@@ -22,6 +24,8 @@ EntityItem::EntityItem(glm::vec2 pos, unsigned int layer, unsigned int id, MetaD
 
 EntityItem::EntityItem(glm::vec2 pos, unsigned int layer, EntityIDs id, MetaData data, bool loadTex) : Entity(pos, layer, data)
 {
+    m_type = EntityTypes::ITEM;
+
     m_id = (unsigned int)id;
 
     XML_EntityItemData d = XMLData::getEntityItemData((unsigned int)id);

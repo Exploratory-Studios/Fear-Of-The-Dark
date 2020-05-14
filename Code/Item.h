@@ -8,8 +8,11 @@
 
 #include "Scripting/ScriptQueue.h"
 
+#include "SaveDataTypes.h"
+
 class World;
 class Tile;
+class MetaData;
 
 enum class ItemIDs {
     WEAPON_SWORD,
@@ -51,10 +54,11 @@ class Item
             return args;
         }
 
-        unsigned int getID() { return m_id; } // (unsigned int)(-1) is equivalent to null
-        unsigned int getTextureId() { return m_textureId; }
-        short unsigned int getQuantity() { return m_quantity; }
+        unsigned int getID() const { return m_id; } // (unsigned int)(-1) is equivalent to null
+        unsigned int getTextureId() const { return m_textureId; }
+        short unsigned int getQuantity() const { return m_quantity; }
         std::string& getName() { return m_name; }
+        MetaData getMetaData() const { return m_metaData; }
     protected:
         void loadTexture() { m_textureId = GLEngine::ResourceManager::getTexture(m_texturePath).id; }
 
@@ -69,4 +73,6 @@ class Item
         std::string m_texturePath;
 
         std::string m_name = "UNDEFINED";
+
+        MetaData m_metaData;
 };

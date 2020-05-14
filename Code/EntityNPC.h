@@ -11,6 +11,10 @@ struct NavTile { // Pretty much the same thing as a navmesh
     bool visited = false;
 };
 
+class Item;
+class Inventory;
+class Tile;
+
 class EntityNPC : public Entity
 {
     public:
@@ -25,11 +29,12 @@ class EntityNPC : public Entity
         virtual void onUpdate(World* world, float timeStep, unsigned int selfIndex);
 
         /// Getters
-        Categories::Faction getFaction() { return m_faction; }
+        Categories::Faction getFaction() const { return m_faction; }
+        float getHealth() const { return m_health; }
 
         // Inventory
-        void giveItem(Item* item) { if(m_inventory) { m_inventory->addItem(item); } else { Logger::getInstance()->log("ERROR: Entity inventory not initialized, could not give item", true); } }
-        Inventory* getInventory() { return m_inventory; }
+        void giveItem(Item* item);
+        Inventory* getInventory();
 
         // Combat
         void die(World* world);
@@ -80,5 +85,4 @@ class EntityNPC : public Entity
 
         // Inventory
         Inventory* m_inventory = nullptr;
-        std::vector<unsigned int> m_equippedItems; // For armour, weapons, etc.
 };

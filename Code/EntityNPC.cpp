@@ -13,7 +13,7 @@
 
 #include "XMLData.h"
 
-EntityNPC::EntityNPC(glm::vec2 pos, unsigned int layer, unsigned int id, MetaData data, bool loadTex) : Entity(pos, layer, data)
+EntityNPC::EntityNPC(glm::vec2 pos, unsigned int layer, unsigned int id, MetaData data, bool loadTex) : Entity(pos, layer, MetaData())
 {
     m_type = EntityTypes::NPC;
 
@@ -32,12 +32,15 @@ EntityNPC::EntityNPC(glm::vec2 pos, unsigned int layer, unsigned int id, MetaDat
     m_health = m_maxHealth;
     m_faction = d.faction;
 
+    m_metaData = d.defaultMD;
+    m_metaData += data; // Use the overloaded operator to simply add/overwrite defaults.
+
     if(loadTex) {
         loadTexture();
     }
 }
 
-EntityNPC::EntityNPC(glm::vec2 pos, unsigned int layer, EntityIDs id, MetaData data, bool loadTex) : Entity(pos, layer, data)
+EntityNPC::EntityNPC(glm::vec2 pos, unsigned int layer, EntityIDs id, MetaData data, bool loadTex) : Entity(pos, layer, MetaData())
 {
     m_type = EntityTypes::NPC;
 
@@ -55,6 +58,9 @@ EntityNPC::EntityNPC(glm::vec2 pos, unsigned int layer, EntityIDs id, MetaData d
     m_maxHealth = d.maxHealth;
     m_health = m_maxHealth;
     m_faction = d.faction;
+
+    m_metaData = d.defaultMD;
+    m_metaData += data; // Use the overloaded operator to simply add/overwrite defaults.
 
     if(loadTex) {
         loadTexture();
@@ -282,6 +288,20 @@ void EntityNPC::onUpdate(World* world, float timeStep, unsigned int selfIndex) {
     }*/
 }
 
+EntityNPCData EntityNPC::getNPCSaveData() {
+    EntityNPCData ret;
+    ret.id = m_id;
+    ret.velocity = m_velocity;
+    ret.position = m_position;
+    ret.layer = m_layer;
+    ret.md = m_metaData;
+
+    ret.health = m_health;
+    ret.inventory = m_inventory->getInventorySaveData();
+
+    return ret;
+}
+
 void EntityNPC::giveItem(Item* item) {
     if(m_inventory) {
         m_inventory->addItem(item);
@@ -424,10 +444,10 @@ void EntityNPC::pathfindToTarget(World* world, glm::vec3 target, bool goLeft) {
         }
 
         // Expand and remove (if there are no nextNodes, it will simply be removed)
-        for(int i = 0; i < frontier[lowestIndex]->nextNodes.size(); i++) {
+        for(unsigned int i = 0; i < frontier[lowestIndex]->nextNodes.size(); i++) {
             addToFrontier(expandTile(world, frontier[lowestIndex]->nextNodes[i], jumpHeight, m_size, frontier[lowestIndex], target), frontier);
         }
-        for(int i = lowestIndex; i < frontier.size()-1; i++) {
+        for(unsigned int i = lowestIndex; i < frontier.size()-1; i++) {
             frontier[i] = frontier[i+1];
         }
         frontier.pop_back();
@@ -595,7 +615,7 @@ void EntityNPC::calculateCost(World* world, NavTile* tile, glm::vec3 target) {
 void EntityNPC::addToFrontier(NavTile* tile, std::vector<NavTile*>& frontier) {
     bool clone = false;
 
-    for(int i = 0; i < frontier.size(); i++) {
+    for(unsigned int i = 0; i < frontier.size(); i++) {
         if(frontier[i]->pos == tile->pos) {
             if(frontier[i]->h > tile->h) { // Tile is a better route to get to frontier[i]
                 frontier[i] = tile;
@@ -614,7 +634,7 @@ void EntityNPC::setAITarget(World* world, unsigned int selfIndex) {
     EntityNPC* targetL = nullptr;
     EntityNPC* targetR = nullptr;
 
-    for(int i = selfIndex-1; i > -entCount - selfIndex; i--) {
+    for(int i = (int)selfIndex-1; i > -entCount - selfIndex; i--) {
         // This loop will run negatively, for length of world->getEntities().size() MAX. Often breaks out of loop early
         unsigned int normalized = (i + entCount*2) % entCount; // index from 0-size
 
@@ -632,7 +652,7 @@ void EntityNPC::setAITarget(World* world, unsigned int selfIndex) {
         }
     }
 
-    for(int i = selfIndex+1; i < entCount + selfIndex; i++) { // Runs at most once through every entity.
+    for(int i = (int)selfIndex+1; i < entCount + selfIndex; i++) { // Runs at most once through every entity.
         unsigned int normalized = i % entCount; // index from 0-size;
 
         if(normalized == selfIndex) continue;

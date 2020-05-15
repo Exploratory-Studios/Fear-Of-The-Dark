@@ -33,12 +33,6 @@ static const char* PARTICLEENGINE_KEY = "particleengine";
 
 /// Wrapper functions:
 
-/*#define GET_WORLD_UPVALUE(L) lua_pushlightuserdata(L, (void *)&WORLD_KEY); lua_gettable(L, LUA_REGISTRYINDEX); World* world = static_cast<World*>(lua_touserdata(L, -1));
-#define GET_QUESTMANAGER_UPVALUE(L) lua_pushlightuserdata(L, (void *)&QUESTMANAGER_KEY); lua_gettable(L, LUA_REGISTRYINDEX); QuestManager* qm = static_cast<QuestManager*>(lua_touserdata(L, -1));
-#define GET_GAMEPLAYSCREEN_UPVALUE(L) lua_pushlightuserdata(L, (void *)&GAMEPLAYSCREEN_KEY); lua_gettable(L, LUA_REGISTRYINDEX); GameplayScreen* gs = static_cast<GameplayScreen*>(lua_touserdata(L, -1));
-#define GET_AUDIO_UPVALUE(L) lua_pushlightuserdata(L, (void *)&AUDIOMANAGER_KEY); lua_gettable(L, LUA_REGISTRYINDEX); AudioManager* audio = static_cast<AudioManager*>(lua_touserdata(L, -1));
-#define GET_PARTICLE_UPVALUE(L) lua_pushlightuserdata(L, (void *)&PARTICLEENGINE_KEY); lua_gettable(L, LUA_REGISTRYINDEX); GLEngine::ParticleEngine2D* particles = static_cast<GLEngine::ParticleEngine2D*>(lua_touserdata(L, -1));
-*/
 void pushDepsToRegistry(lua_State* L, World* w, QuestManager* qm, GameplayScreen* gs, AudioManager* am, GLEngine::ParticleEngine2D* p);
 void pushFunction(lua_State* L, lua_CFunction func, std::string name);
 void setUpvalue(lua_State* L, const char* key, void* ptr);

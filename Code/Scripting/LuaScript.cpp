@@ -128,19 +128,23 @@ void ParticleUpdate::updateFunction(GLEngine::Particle2D& particle, float deltaT
 
         // Sets global table of arguments
         std::vector<Argument> args = {
-            { "particleX", particle.position.x },
-            { "particleY", particle.position.y },
-            { "particleXVel", particle.velocity.x },
-            { "particleYVel", particle.velocity.y },
-            { "particleLife", particle.life },
-            { "particleWidth", particle.width },
-            { "particleAlpha", particle.color.a }
+            { "particleX", std::to_string(particle.position.x) },
+            { "particleY", std::to_string(particle.position.y) },
+            { "particleXVel", std::to_string(particle.velocity.x) },
+            { "particleYVel", std::to_string(particle.velocity.y) },
+            { "particleLife", std::to_string(particle.life) },
+            { "particleWidth", std::to_string(particle.width) },
+            { "particleAlpha", std::to_string(particle.color.a) }
         };
 
         lua_newtable(thread2); // Make table of arguments
         for(unsigned int i = 0; i < args.size(); i++) {
-            lua_pushstring(thread2, args[i].key);
-            lua_pushnumber(thread2, args[i].val);
+            const char* key = args[i].key.c_str();
+            const char* val = args[i].val.c_str();
+
+            lua_pushstring(thread2, key);
+            lua_pushstring(thread2, val);
+
             lua_settable(thread2, -3);
         }
 
@@ -228,6 +232,8 @@ int LuaScript::l_createParticle(lua_State* L) {
     GLEngine::ParticleBatch2D* batch = particles->getParticleBatch(MAX_TYPE_PARTICLES, d.decayRate, d.textureFilepath, d.bumpMapFilepath, boundFunctor);
 
     batch->addParticle(glm::vec2(x, y), glm::vec2(xVel, yVel), GLEngine::ColourRGBA8(255, 255, 255, 255), width);
+
+    return 0;
 }
 
 int LuaScript::l_setBlock(lua_State* L) {
@@ -572,7 +578,7 @@ int LuaScript::l_getEntitiesNear(lua_State* L) { // returns UUIDs
 
     lua_newtable(L);
 
-    for(int i = 0; i < ents.size(); i++) {
+    for(unsigned int i = 0; i < ents.size(); i++) {
         std::string id = ents[i]->getUUID().c_str();
         lua_pushstringtotable(L, i+1, (char*)id.c_str());
     }
@@ -591,14 +597,14 @@ int LuaScript::l_getEntitiesArea(lua_State* L) {
     lua_pop(L, 4);
 
 
-    glm::vec2 pos1(x2, y1);
+    glm::vec2 pos1(x1, y1);
     glm::vec2 pos2(x2, y2);
 
     std::vector<Entity*> ents = areaEntityTarget(world, pos1, pos2);
 
     lua_newtable(L);
 
-    for(int i = 0; i < ents.size(); i++) {
+    for(unsigned int i = 0; i < ents.size(); i++) {
         std::string id = ents[i]->getUUID().c_str();
         lua_pushstringtotable(L, i+1, (char*)id.c_str());
     }

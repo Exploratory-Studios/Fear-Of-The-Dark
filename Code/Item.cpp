@@ -11,6 +11,8 @@ Item::Item(short unsigned int quantity, unsigned int id, bool loadTex) : m_id(id
     m_weight = d.weight;
     m_name = d.name;
 
+    m_metaData = d.defaultMD;
+
     if(loadTex) loadTexture();
 }
 
@@ -21,6 +23,8 @@ Item::Item(short unsigned int quantity, ItemIDs id, bool loadTex) : m_id((unsign
     m_useScriptId = d.useScriptID;
     m_weight = d.weight;
     m_name = d.name;
+
+    m_metaData = d.defaultMD;
 
     if(loadTex) loadTexture();
 }
@@ -34,3 +38,13 @@ void Item::onRightClick(Tile* selectedBlock) {
         ScriptQueue::activateScript(m_useScriptId, concatenatedArgs);
     }
 }
+
+ItemData Item::getItemSaveData() {
+    ItemData ret;
+    ret.id = m_id;
+    ret.quantity = m_quantity;
+    ret.metaData = m_metaData;
+
+    return ret;
+}
+

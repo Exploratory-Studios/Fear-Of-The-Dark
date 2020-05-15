@@ -143,10 +143,10 @@ void WorldIOManager::P_saveWorld(World* world) {
     logger->log("SAVE: Starting World Save to File: " + world->getName() + ".bin");
     logger->log("SAVE: Starting Save Preparations");
 
-    EntityPlayerData p;
+    EntityPlayerData p = world->getPlayer()->getPlayerSaveData();
 
     // POD
-    EntityPlayer* playerPtr = world->getPlayer();
+    /*EntityPlayer* playerPtr = world->getPlayer();
     p.sanity = playerPtr->m_sanity;
     p.health = playerPtr->m_health;
     p.thirst = playerPtr->m_thirst;
@@ -158,7 +158,7 @@ void WorldIOManager::P_saveWorld(World* world) {
         p.favouriteItemIndices[i] = world->getPlayer()->m_inventory->getItemIndex(world->getPlayer()->m_favouriteItems[i]);
     }*/ /// TODO: Re-enable
 
-    // INVENTORY
+    /*// INVENTORY
     InventoryData pInventory;
     for(unsigned int i = 0; i < pInventory.itemData.size(); i++) {
         ItemData item;
@@ -169,7 +169,7 @@ void WorldIOManager::P_saveWorld(World* world) {
         pInventory.itemData.push_back(item);
     }
 
-    p.inventory = pInventory;
+    p.inventory = pInventory;*/
 
     logger->log("SAVE: Player Data Prepared");
 
@@ -188,7 +188,7 @@ void WorldIOManager::P_saveWorld(World* world) {
 
     logger->log("SAVE: Chunk Data Prepared");
 
-    float time = world->getTime();
+    unsigned long int time = world->getTime();
 
     logger->log("SAVE: ALL DATA PREPARED, STARTING SAVE", true);
 

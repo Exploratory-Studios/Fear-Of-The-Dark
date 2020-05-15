@@ -43,8 +43,8 @@ class Item
 
         std::vector<Argument> generateLuaData() {
             std::vector<Argument> args = {
-                { "itemID", m_id },
-                { "itemQuantity", m_quantity }
+                { "itemID", std::to_string(m_id) },
+                { "itemQuantity", std::to_string(m_quantity) }
             };
 
             /*std::string ret = "itemID,itemQuantity=";
@@ -59,13 +59,15 @@ class Item
         short unsigned int getQuantity() const { return m_quantity; }
         std::string& getName() { return m_name; }
         MetaData getMetaData() const { return m_metaData; }
+
+        ItemData getItemSaveData();
     protected:
         void loadTexture() { m_textureId = GLEngine::ResourceManager::getTexture(m_texturePath).id; }
 
+        unsigned int m_id = (unsigned int)-1; // Block/Non-block id
+
         float m_weight = 0.0f; // How much it weighs in the inventory (kgs)
         short unsigned int m_quantity = 0; // How much you have
-
-        unsigned int m_id = (unsigned int)-1; // Block/Non-block id
 
         int m_useScriptId = -1;
 

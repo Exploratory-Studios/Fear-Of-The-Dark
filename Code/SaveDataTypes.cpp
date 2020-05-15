@@ -5,6 +5,8 @@
 #include "EntityProjectile.h"
 #include "EntityPlayer.h"
 
+#include "Scripting/ScriptQueue.h"
+
 #include "Inventory.h"
 
 MetaData::MetaData(std::vector<MetaData_Aspect>& data) {
@@ -26,6 +28,18 @@ bool MetaData::getElement(std::string& key, std::string& var) {
 void MetaData::setElement(std::string& key, std::string& val) {
     m_data[key] = val; // This operator ([]) either accesses an existing element, or creates and accesses a non-existent one.
     // No matter the circumstances, the end data will have the element with value `val`
+}
+
+void MetaData::getLuaArguments(std::vector<Argument>& args) {
+    /// Adds all elements from this object to the vector `args`. Does not modify previously-existing objects in `args`.
+    for(auto obj : m_data) {
+        // Loop through every object.
+        // Create an Argument object and populate it.
+        Argument arg;
+        arg.key = obj.first;
+        arg.val = obj.second;
+        args.push_back(arg);
+    }
 }
 
 void MetaData::read(std::ifstream& file) {

@@ -8,7 +8,7 @@
 #include "../Logging.h"
 #include "../PresetValues.h"
 
-struct Argument { const char* key; float val; };
+struct Argument { std::string key; std::string val; };
 
 class Script {
     public:

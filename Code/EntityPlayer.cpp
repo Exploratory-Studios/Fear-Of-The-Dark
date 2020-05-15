@@ -217,7 +217,7 @@ void EntityPlayer::updateMouse(World* world, glm::vec2 mouseCoords) {
 
         m_selectedEntity = nullptr;
 
-        for(int i = 0; i < world->getEntities().size() && !m_selectedEntity; i++) {
+        for(unsigned int i = 0; i < world->getEntities().size() && !m_selectedEntity; i++) {
             float sizeX = (world->getEntities()[i]->getSize().x) / 2.0f;
             float midX = world->getEntities()[i]->getPosition().x + sizeX;
 
@@ -361,4 +361,24 @@ void EntityPlayer::updateInput(GLEngine::InputManager* input, World* world) {
     if(input->isKeyPressed(SDLK_0)) {
         m_selectedHotbox = 9;
     }
+}
+
+EntityPlayerData EntityPlayer::getPlayerSaveData() {
+    EntityPlayerData ret;
+    ret.id = m_id;
+    ret.velocity = m_velocity;
+    ret.position = m_position;
+    ret.layer = m_layer;
+    ret.md = m_metaData;
+
+    ret.health = m_health;
+    ret.inventory = m_inventory->getInventorySaveData();
+
+    ret.sanity = m_sanity;
+    ret.thirst = m_thirst;
+    ret.hunger = m_hunger;
+    ret.exhaustion = m_exhaustion;
+    ret.stamina = m_stamina;
+
+    return ret;
 }

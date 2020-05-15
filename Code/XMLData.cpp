@@ -1,35 +1,74 @@
 #include "XMLData.h"
 
 void getValue(rapidxml::xml_node<>* parent, std::string valueName, std::string& variable) {
+    /// Places value of node with name `valueName` into `variable` and removes the node from the doc.
     rapidxml::xml_node<>* n = parent->first_node((char*)valueName.c_str());
     if(n) {
         variable = n->value();
+        parent->remove_node(n);
+    } else {
+        Logger::getInstance()->log("Error (XML Parse): Could not find aspect: " + valueName, true);
     }
 }
 
 void getValue(rapidxml::xml_node<>* parent, std::string valueName, float& variable) {
+    /// Places value of node with name `valueName` into `variable` and removes the node from the doc.
     rapidxml::xml_node<>* n = parent->first_node((char*)valueName.c_str());
     if(n) {
         variable = std::stof(n->value());
+        parent->remove_node(n);
+    } else {
+        Logger::getInstance()->log("Error (XML Parse): Could not find aspect: " + valueName, true);
     }
 }
 
 void getValue(rapidxml::xml_node<>* parent, std::string valueName, int& variable) {
+    /// Places value of node with name `valueName` into `variable` and removes the node from the doc.
     rapidxml::xml_node<>* n = parent->first_node((char*)valueName.c_str());
     if(n) {
         variable = std::stoi(n->value());
+        parent->remove_node(n);
+    } else {
+        Logger::getInstance()->log("Error (XML Parse): Could not find aspect: " + valueName, true);
     }
 }
 
 void getValue(rapidxml::xml_node<>* parent, std::string valueName, bool& variable) {
+    /// Places value of node with name `valueName` into `variable` and removes the node from the doc.
     rapidxml::xml_node<>* n = parent->first_node((char*)valueName.c_str());
     if(n) {
-        if(std::string(n->value()) == "0") {
+        if(std::string(n->value()) == "0" || std::string(n->value()) == "true") {
             variable = false;
         } else {
             variable = true;
         }
+        parent->remove_node(n);
+    } else {
+        Logger::getInstance()->log("Error (XML Parse): Could not find aspect: " + valueName, true);
     }
+}
+
+void getMetaData(rapidxml::xml_node<>* parent, MetaData& mdVar) {
+    /// Retrieves ALL existing children from `parent`, then sets their names as the keys, with their values as the values in a MetaData object, stored in `mdVar`. Removes each node systematically from parent after adding them to mdVar.
+
+    MetaData md;
+
+    rapidxml::xml_node<>* child = parent->first_node(); // Fetch the first node (or 0 if there are none).
+    while(child) {
+        // Now we have a node, we just need to extract its name & value, then add them to the metadata.
+        std::string key, val;
+        key = std::string(child->name());
+        val = std::string(child->value());
+
+        // Now we set (/add) an element to the MetaData.
+        md.setElement(key, val);
+
+        parent->remove_first_node(); // Remove `child` from the doc.
+        child = parent->first_node(); // Re-set `child` again
+    }
+
+    // Completed MetaData extraction, now we just set the `mdVar`
+    mdVar = md;
 }
 
 void XMLData::init() {
@@ -56,7 +95,6 @@ std::map<unsigned int, XML_EntityNPCData> XMLData::m_entityNPCData;
 std::map<unsigned int, XML_EntityProjectileData> XMLData::m_entityProjectileData;
 std::map<unsigned int, XML_EntityItemData> XMLData::m_entityItemData;
 std::map<unsigned int, XML_ItemData> XMLData::m_itemData;
-
 
 /// Tiles
 void XMLData::loadXMLTileData(std::string filepath) {
@@ -118,6 +156,7 @@ XML_TileData XMLData::readTileData(rapidxml::xml_node<>* node) {
     getValue(node, "isNatural", (bool&)d.natural);
     getValue(node, "isTransparent", (bool&)d.transparent);
 
+    // Despite their names, these are not IDs, they are paths. /// TODO: Fix this shit.
     std::string updateSID = "";
     getValue(node, "updateScript", updateSID);
     std::string tickSID = "";
@@ -144,6 +183,9 @@ XML_TileData XMLData::readTileData(rapidxml::xml_node<>* node) {
     if(RClickScriptID.length() > 0) {
         d.interactScriptID_used = ScriptQueue::addScript(RClickScriptID);
     }
+
+    // At this point, the doc is empty, save for the few extra MetaData bits. Now we need to add those.
+    getMetaData(node, d.defaultMD);
 
     return d;
 }
@@ -307,6 +349,9 @@ XML_EntityNPCData XMLData::readEntityNPCData(rapidxml::xml_node<>* node) {
         d.attackScriptID = ScriptQueue::addScript(attackSID);
     }
 
+    // At this point, the doc is empty, save for the few extra MetaData bits. Now we need to add those.
+    getMetaData(node, d.defaultMD);
+
     return d;
 }
 
@@ -382,6 +427,9 @@ XML_EntityProjectileData XMLData::readEntityProjectileData(rapidxml::xml_node<>*
         d.tickScriptID = ScriptQueue::addScript(tickSID);
     }
 
+    // At this point, the doc is empty, save for the few extra MetaData bits. Now we need to add those.
+    getMetaData(node, d.defaultMD);
+
     return d;
 }
 
@@ -454,6 +502,9 @@ XML_EntityItemData XMLData::readEntityItemData(rapidxml::xml_node<>* node) {
         d.tickScriptID = ScriptQueue::addScript(tickSID);
     }
 
+    // At this point, the doc is empty, save for the few extra MetaData bits. Now we need to add those.
+    getMetaData(node, d.defaultMD);
+
     return d;
 }
 
@@ -516,6 +567,9 @@ XML_ItemData XMLData::readItemData(rapidxml::xml_node<>* node) {
     if(useScriptSID.length() > 0) {
         d.useScriptID = ScriptQueue::addScript(useScriptSID);
     }
+
+    // At this point, the doc is empty, save for the few extra MetaData bits. Now we need to add those.
+    getMetaData(node, d.defaultMD);
 
     return d;
 }

@@ -1,22 +1,358 @@
 
 
 
-### LOG: Wed May 13 00:42:42 2020 ###
+### LOG: Thu May 14 23:51:47 2020 ###
 
 Beginning to load data...
+
+### Error (XML Parse): Could not find aspect: texture ###
+
+
+### Error (XML Parse): Could not find aspect: bumpMap ###
+
+
+### Error (XML Parse): Could not find aspect: emittedLight ###
+
+
+### Error (XML Parse): Could not find aspect: emittedHeat ###
+
+
+### Error (XML Parse): Could not find aspect: sizeX ###
+
+
+### Error (XML Parse): Could not find aspect: sizeY ###
+
+
+### Error (XML Parse): Could not find aspect: updateScript ###
+
+
+### Error (XML Parse): Could not find aspect: tickScript ###
+
+
+### Error (XML Parse): Could not find aspect: destructionScript ###
+
+
+### Error (XML Parse): Could not find aspect: interactScript_walkedOn ###
+
+
+### Error (XML Parse): Could not find aspect: interactScript_used ###
+
+
+### Error (XML Parse): Could not find aspect: emittedLight ###
+
+
+### Error (XML Parse): Could not find aspect: emittedHeat ###
+
+
+### Error (XML Parse): Could not find aspect: sizeX ###
+
+
+### Error (XML Parse): Could not find aspect: sizeY ###
+
+
+### Error (XML Parse): Could not find aspect: isSolid ###
+
+
+### Error (XML Parse): Could not find aspect: isDrawn ###
+
+
+### Error (XML Parse): Could not find aspect: isTransparent ###
+
+
+### Error (XML Parse): Could not find aspect: updateScript ###
+
+
+### Error (XML Parse): Could not find aspect: tickScript ###
+
+
+### Error (XML Parse): Could not find aspect: destructionScript ###
+
+
+### Error (XML Parse): Could not find aspect: interactScript_walkedOn ###
+
+
+### Error (XML Parse): Could not find aspect: interactScript_used ###
+
+
+### Error (XML Parse): Could not find aspect: emittedLight ###
+
+
+### Error (XML Parse): Could not find aspect: emittedHeat ###
+
+
+### Error (XML Parse): Could not find aspect: sizeX ###
+
+
+### Error (XML Parse): Could not find aspect: sizeY ###
+
+
+### Error (XML Parse): Could not find aspect: isSolid ###
+
+
+### Error (XML Parse): Could not find aspect: isDrawn ###
+
+
+### Error (XML Parse): Could not find aspect: isTransparent ###
+
+
+### Error (XML Parse): Could not find aspect: updateScript ###
+
+
+### Error (XML Parse): Could not find aspect: tickScript ###
+
+
+### Error (XML Parse): Could not find aspect: destructionScript ###
+
+
+### Error (XML Parse): Could not find aspect: interactScript_used ###
+
 Successfully Loaded Script File: /home/davis-dev/.exploratory/Fear Of The Dark/Assets/Scripts/TEST_SCRIPT.txt, and given id of: 0
+
+### Error (XML Parse): Could not find aspect: emittedHeat ###
+
+
+### Error (XML Parse): Could not find aspect: sizeX ###
+
+
+### Error (XML Parse): Could not find aspect: sizeY ###
+
+
+### Error (XML Parse): Could not find aspect: isDrawn ###
+
+
+### Error (XML Parse): Could not find aspect: isNatural ###
+
+
+### Error (XML Parse): Could not find aspect: updateScript ###
+
+
+### Error (XML Parse): Could not find aspect: destructionScript ###
+
+
+### Error (XML Parse): Could not find aspect: interactScript_walkedOn ###
+
+
+### Error (XML Parse): Could not find aspect: interactScript_used ###
+
 Successfully Loaded Script File: /home/davis-dev/.exploratory/Fear Of The Dark/Assets/Scripts/TorchTick.lua, and given id of: 1
+
+### Error (XML Parse): Could not find aspect: emittedLight ###
+
+
+### Error (XML Parse): Could not find aspect: emittedHeat ###
+
+
+### Error (XML Parse): Could not find aspect: sizeX ###
+
+
+### Error (XML Parse): Could not find aspect: sizeY ###
+
+
+### Error (XML Parse): Could not find aspect: isSolid ###
+
+
+### Error (XML Parse): Could not find aspect: isDrawn ###
+
+
+### Error (XML Parse): Could not find aspect: isTransparent ###
+
+
+### Error (XML Parse): Could not find aspect: updateScript ###
+
+
+### Error (XML Parse): Could not find aspect: tickScript ###
+
+
+### Error (XML Parse): Could not find aspect: destructionScript ###
+
+
+### Error (XML Parse): Could not find aspect: interactScript_walkedOn ###
+
+
+### Error (XML Parse): Could not find aspect: interactScript_used ###
+
+
+### Error (XML Parse): Could not find aspect: emittedLight ###
+
+
+### Error (XML Parse): Could not find aspect: emittedHeat ###
+
+
+### Error (XML Parse): Could not find aspect: sizeX ###
+
+
+### Error (XML Parse): Could not find aspect: sizeY ###
+
+
+### Error (XML Parse): Could not find aspect: isDrawn ###
+
+
+### Error (XML Parse): Could not find aspect: tickScript ###
+
+
+### Error (XML Parse): Could not find aspect: destructionScript ###
+
+
+### Error (XML Parse): Could not find aspect: interactScript_walkedOn ###
+
+
+### Error (XML Parse): Could not find aspect: interactScript_used ###
+
 Successfully Loaded Script File: /home/davis-dev/.exploratory/Fear Of The Dark/Assets/Scripts/WaterUpdate.lua, and given id of: 2
 Loaded data (Tiles)...
 Loaded data (Particles)...
+
+### Error (XML Parse): Could not find aspect: isDamagedByFalls ###
+
+
+### Error (XML Parse): Could not find aspect: isInvincible ###
+
+
+### Error (XML Parse): Could not find aspect: maxHealth ###
+
+
+### Error (XML Parse): Could not find aspect: updateScript ###
+
+
+### Error (XML Parse): Could not find aspect: tickScript ###
+
+
+### Error (XML Parse): Could not find aspect: attackScript ###
+
+
+### Error (XML Parse): Could not find aspect: isDamagedByFalls ###
+
+
+### Error (XML Parse): Could not find aspect: isInvincible ###
+
+
+### Error (XML Parse): Could not find aspect: speed ###
+
+
+### Error (XML Parse): Could not find aspect: maxHealth ###
+
+
+### Error (XML Parse): Could not find aspect: faction ###
+
+
+### Error (XML Parse): Could not find aspect: updateScript ###
+
+
+### Error (XML Parse): Could not find aspect: tickScript ###
+
+
+### Error (XML Parse): Could not find aspect: attackScript ###
+
+
+### Error (XML Parse): Could not find aspect: sizeX ###
+
+
+### Error (XML Parse): Could not find aspect: sizeY ###
+
+
+### Error (XML Parse): Could not find aspect: isDamagedByFalls ###
+
+
+### Error (XML Parse): Could not find aspect: isInvincible ###
+
+
+### Error (XML Parse): Could not find aspect: maxHealth ###
+
+
+### Error (XML Parse): Could not find aspect: updateScript ###
+
+
+### Error (XML Parse): Could not find aspect: tickScript ###
+
+
+### Error (XML Parse): Could not find aspect: attackScript ###
+
+
+### Error (XML Parse): Could not find aspect: sizeX ###
+
+
+### Error (XML Parse): Could not find aspect: sizeY ###
+
+
+### Error (XML Parse): Could not find aspect: isDamagedByFalls ###
+
+
+### Error (XML Parse): Could not find aspect: isInvincible ###
+
+
+### Error (XML Parse): Could not find aspect: maxHealth ###
+
+
+### Error (XML Parse): Could not find aspect: updateScript ###
+
+
+### Error (XML Parse): Could not find aspect: tickScript ###
+
+
+### Error (XML Parse): Could not find aspect: attackScript ###
+
 Loaded data (NPC Entities)...
 Loaded data (Projectile Entities)...
+
+### Error (XML Parse): Could not find aspect: texture ###
+
+
+### Error (XML Parse): Could not find aspect: bumpMap ###
+
+
+### Error (XML Parse): Could not find aspect: sizeX ###
+
+
+### Error (XML Parse): Could not find aspect: sizeY ###
+
+
+### Error (XML Parse): Could not find aspect: item ###
+
+
+### Error (XML Parse): Could not find aspect: updateScript ###
+
+
+### Error (XML Parse): Could not find aspect: tickScript ###
+
 Loaded data (Item Entities)...
+
+### Error (XML Parse): Could not find aspect: texture ###
+
+
+### Error (XML Parse): Could not find aspect: weight ###
+
+
+### Error (XML Parse): Could not find aspect: useScript ###
+
+
+### Error (XML Parse): Could not find aspect: weight ###
+
 Successfully Loaded Script File: /home/davis-dev/.exploratory/Fear Of The Dark/Assets/Scripts/Item_BlockPlacement.lua, and given id of: 3
+
+### Error (XML Parse): Could not find aspect: weight ###
+
+
+### Error (XML Parse): Could not find aspect: weight ###
+
+
+### Error (XML Parse): Could not find aspect: weight ###
+
+
+### Error (XML Parse): Could not find aspect: weight ###
+
+
+### Error (XML Parse): Could not find aspect: weight ###
+
+
+### Error (XML Parse): Could not find aspect: weight ###
+
+
+### Error (XML Parse): Could not find aspect: weight ###
+
 Loaded data (Items)...
 Loaded all data successfully!
-CREATE: Starting world creation at time: 733.711975
-CREATE: Finished world creation at time: 2688.503906 (Elapsed: 1954.791992ms)
+CREATE: Starting world creation at time: 625.327026
+CREATE: Finished world creation at time: 2985.528076 (Elapsed: 2360.201172ms)
 Loaded all 3 music files.
 Loaded all 2 sound files.
 Loading dialogue. 1297 bytes to read.

@@ -17,6 +17,15 @@ Entity::Entity(glm::vec2 pos, unsigned int layer, MetaData data) : m_position(po
 
 } // This is more of an abstract class
 
+Entity::Entity(EntityData& saveData) {
+    // Constructs an entity based off some very vague save data.
+    m_id = saveData.id;
+    m_velocity = saveData.velocity;
+    m_position = saveData.position;
+    m_layer = saveData.layer;
+    m_metaData = saveData.md;
+}
+
 Entity* createEntity(glm::vec2 pos, unsigned int layer, unsigned int id, MetaData data, bool loadTex) {
     if(XMLData::getEntityNPCData(id).id != (unsigned int)-1) {
         // An NPC

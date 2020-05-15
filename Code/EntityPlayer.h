@@ -41,6 +41,8 @@ class EntityPlayer : public EntityNPC
         void setSanity(float sanity) { m_sanity = sanity; } // I'm running low on this
         void setCanInteract(bool setting) { m_canInteract = setting; }
 
+        EntityPlayerData getPlayerSaveData();
+
     protected:
         // GUI
         bool m_inventoryOpen = false;

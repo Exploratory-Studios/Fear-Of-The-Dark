@@ -2,7 +2,7 @@
 
 #include "XMLData.h"
 
-EntityProjectile::EntityProjectile(glm::vec2 pos, unsigned int layer, unsigned int id, MetaData data, bool loadTex) : Entity(pos, layer, data)
+EntityProjectile::EntityProjectile(glm::vec2 pos, unsigned int layer, unsigned int id, MetaData data, bool loadTex) : Entity(pos, layer, MetaData())
 {
     m_type = EntityTypes::PROJECTILE;
 
@@ -19,12 +19,15 @@ EntityProjectile::EntityProjectile(glm::vec2 pos, unsigned int layer, unsigned i
     m_damage = d.damage;
     m_collideWithBlocks = d.collides;
 
+    m_metaData = d.defaultMD;
+    m_metaData += data; // Use the overloaded operator to simply add/overwrite defaults.
+
     if(loadTex) {
         loadTexture();
     }
 }
 
-EntityProjectile::EntityProjectile(glm::vec2 pos, unsigned int layer, EntityIDs id, MetaData data, bool loadTex) : Entity(pos, layer, data)
+EntityProjectile::EntityProjectile(glm::vec2 pos, unsigned int layer, EntityIDs id, MetaData data, bool loadTex) : Entity(pos, layer, MetaData())
 {
     m_type = EntityTypes::PROJECTILE;
 
@@ -40,6 +43,9 @@ EntityProjectile::EntityProjectile(glm::vec2 pos, unsigned int layer, EntityIDs 
     m_speed = d.speed;
     m_damage = d.damage;
     m_collideWithBlocks = d.collides;
+
+    m_metaData = d.defaultMD;
+    m_metaData += data; // Use the overloaded operator to simply add/overwrite defaults.
 
     if(loadTex) {
         loadTexture();

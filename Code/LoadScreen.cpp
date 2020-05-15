@@ -255,6 +255,7 @@ bool LoadScreen::onBackButtonClicked(const CEGUI::EventArgs& e) {
             m.checkScreen(m_miniScreen);
         }
     }
+    return true;
 }
 
 void LoadScreen::getDirectoryEntries() {

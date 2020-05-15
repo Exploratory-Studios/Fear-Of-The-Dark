@@ -18,7 +18,7 @@ void DialogueManager::startConversation(GLEngine::InputManager& input) {
         m_dialogueActive = true;
         m_dialogueStarted = false;
     } else if(m_tradingStarted) {
-        TradeTable* currentTable = (*m_tradeTables)[m_tradeTable];
+        //TradeTable* currentTable = (*m_tradeTables)[m_tradeTable];
         initConversation();
         m_tradingActive = true;
         m_tradingStarted = false;
@@ -204,12 +204,9 @@ void DialogueManager::update(GLEngine::InputManager& input, EntityPlayer* p) {
         }
     } else if(m_tradingActive) {
         if(input.isKeyPressed(SDL_BUTTON_LEFT)) { // Answer clicked, check stuff...
-            int optionChosen = -1;
             // Set new values of flags
             for(unsigned int i = 0; i < m_buttons.size(); i++) {
                 if(m_buttons[i]->isPushed() && m_buttons[i]->isActive()) {
-                    optionChosen = i;
-
                     Trade* t = (*m_tradeTables)[m_tradeTable]->trades[i];
 
                     // Check player's inventory to make sure they can buy the item
@@ -463,7 +460,7 @@ TradeTable* QuestManager::readTradeTable(std::vector<std::string> lines, unsigne
 
     table->id = id;
 
-    for(int i = 0; i < lines.size(); i++) {
+    for(unsigned int i = 0; i < lines.size(); i++) {
         table->trades.push_back(readTrade(lines[i]));
     }
 
@@ -482,7 +479,7 @@ Trade* QuestManager::readTrade(std::string line) {
 
     std::string chars;
 
-    for(int i = 0; i < line.size(); i++) {
+    for(unsigned int i = 0; i < line.size(); i++) {
         if(line[i] == ':') { // After an id
             if(requiredRead) {
                 rewId = std::stoi(chars);

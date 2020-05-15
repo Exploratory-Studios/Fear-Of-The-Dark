@@ -12,7 +12,7 @@ Tile::Tile() {
 
 }
 
-Tile::Tile(glm::vec2 pos, unsigned int layer, unsigned int id, MetaData data, bool loadTex) : m_pos(pos), m_layer(layer), m_id(id), m_metaData(data) {
+Tile::Tile(glm::vec2 pos, unsigned int layer, unsigned int id, MetaData data, bool loadTex) : m_pos(pos), m_layer(layer), m_id(id) {
     XML_TileData t = XMLData::getTileData(id);
 
     m_texturePath = t.textureFilepath;
@@ -29,6 +29,9 @@ Tile::Tile(glm::vec2 pos, unsigned int layer, unsigned int id, MetaData data, bo
     m_interactScriptID_walkedOn = t.interactScriptID_walkedOn;
     m_interactScriptID_used = t.interactScriptID_used;
 
+    m_metaData = t.defaultMD;
+    m_metaData += data; // Use the overloaded operator to simply add/overwrite defaults.
+
     if(loadTex && m_draw) {
         loadTexture();
     } else {
@@ -36,7 +39,7 @@ Tile::Tile(glm::vec2 pos, unsigned int layer, unsigned int id, MetaData data, bo
     }
 }
 
-Tile::Tile(glm::vec2 pos, unsigned int layer, TileIDs id, MetaData data, bool loadTex) : m_pos(pos), m_layer(layer), m_id((unsigned int)id), m_metaData(data) {
+Tile::Tile(glm::vec2 pos, unsigned int layer, TileIDs id, MetaData data, bool loadTex) : m_pos(pos), m_layer(layer), m_id((unsigned int)id) {
     XML_TileData t = XMLData::getTileData((unsigned int)id);
 
     m_texturePath = t.textureFilepath;
@@ -53,6 +56,9 @@ Tile::Tile(glm::vec2 pos, unsigned int layer, TileIDs id, MetaData data, bool lo
     m_destroyScriptID = t.destructionScriptID;
     m_interactScriptID_walkedOn = t.interactScriptID_walkedOn;
     m_interactScriptID_used = t.interactScriptID_used;
+
+    m_metaData = t.defaultMD;
+    m_metaData += data; // Use the overloaded operator to simply add/overwrite defaults.
 
     if(loadTex && m_draw) {
         loadTexture();
@@ -217,7 +223,6 @@ void Tile::draw(GLEngine::SpriteBatch& sb, GLEngine::SpriteFont& sf, int xOffset
             }
         }
 
-        int r = m_colour.r, g = m_colour.g, b = m_colour.b;
         glm::vec4 pos = glm::vec4(m_pos.x + xOffset, m_pos.y, m_size.x, m_size.y);
         float depth = 0.4f * (WORLD_DEPTH - m_layer);
 

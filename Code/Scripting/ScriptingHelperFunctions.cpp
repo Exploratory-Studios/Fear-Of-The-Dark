@@ -47,8 +47,8 @@ void* getUpvalue(lua_State* L, const char* key) {
 void createArgumentsTable(lua_State* T, std::vector<Argument>& args) { // Creates and labels globals for user use.
     lua_newtable(T);
     for(unsigned int i = 0; i < args.size(); i++) {
-        lua_pushstring(T, args[i].key);
-        lua_pushnumber(T, args[i].val);
+        lua_pushstring(T, (const char*)args[i].key.c_str());
+        lua_pushstring(T, (const char*)args[i].val.c_str());
         lua_settable(T, -3);
     }
 }
@@ -65,19 +65,19 @@ void setBlock(World* world, unsigned int id, glm::vec2 pos, int layer, MetaData 
 }
 
 void removeBlock(World* world, int x, int y, unsigned int layer) {
-    int chunk = std::floor(x / CHUNK_SIZE); // What chunk index it belongs to
+    //int chunk = std::floor(x / CHUNK_SIZE); // What chunk index it belongs to
 
     world->setTile(new Tile(glm::vec2(x, y), layer, 0, MetaData(), false)); /// TODO: Constant for air
 }
 
 void showBlock(World* world, int x, int y, unsigned int layer) {
-    int chunk = std::floor(x / CHUNK_SIZE); // What chunk index it belongs to
+    //int chunk = std::floor(x / CHUNK_SIZE); // What chunk index it belongs to
 
     world->getTile(x, y, layer)->setToDraw(true); // Make it not-transparent
 }
 
 void hideBlock(World* world, int x, int y, unsigned int layer) {
-    int chunk = std::floor(x / CHUNK_SIZE); // What chunk index it belongs to
+    //int chunk = std::floor(x / CHUNK_SIZE); // What chunk index it belongs to
 
     world->getTile(x, y, layer)->setToDraw(false); // Make it not-transparent
 }
@@ -88,6 +88,8 @@ Tile* getBlock(World* world, glm::vec2 pos, int layer) {
 
 unsigned int addEntity(World* world, unsigned int id, glm::vec2 position, unsigned int layer) {
     world->addEntity(createEntity(position, layer, id, MetaData(), true));
+
+    return 0;
 }
 
 void removeEntity(World* world, std::string UUID) { // index retrieved from entityTarget
@@ -215,8 +217,6 @@ void lua_pushthreadtotable(lua_State* L, int index, lua_State* thread) {
 }
 
 std::vector<Entity*> nearEntityTarget(World* world, glm::vec2 nearTo, float minDist) {
-
-    bool found = false;
     std::vector<Entity*> ret;
 
     for(unsigned int i = 0; i < world->getEntities().size(); i++) { /// TODO: Optimize this
@@ -253,7 +253,7 @@ std::vector<unsigned int> playerEntityTarget(World* world) {
 
     unsigned int p = 0;
 
-    for(int i = 0; i < world->getEntities().size(); i++) {
+    for(unsigned int i = 0; i < world->getEntities().size(); i++) {
         Entity* ent = world->getEntities()[i];
         if(dynamic_cast<EntityPlayer*>(ent) == world->getPlayer()) {
             p = i;
@@ -271,7 +271,7 @@ std::vector<unsigned int> speakerEntityTarget(World* world) {
 
     unsigned int s = 0;
 
-    for(int i = 0; i < world->getEntities().size(); i++) {
+    for(unsigned int i = 0; i < world->getEntities().size(); i++) {
         if(world->getEntities()[i] == world->getPlayer()->getSelectedEntity()) {
             s = i;
             break;

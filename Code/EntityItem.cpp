@@ -2,7 +2,7 @@
 
 #include "XMLData.h"
 
-EntityItem::EntityItem(glm::vec2 pos, unsigned int layer, unsigned int id, MetaData data, bool loadTex) : Entity(pos, layer, data)
+EntityItem::EntityItem(glm::vec2 pos, unsigned int layer, unsigned int id, MetaData data, bool loadTex) : Entity(pos, layer, MetaData())
 {
     m_type = EntityTypes::ITEM;
 
@@ -17,12 +17,15 @@ EntityItem::EntityItem(glm::vec2 pos, unsigned int layer, unsigned int id, MetaD
     m_tickScriptId = d.tickScriptID;
     m_itemId = d.itemID;
 
+    m_metaData = d.defaultMD;
+    m_metaData += data; // Use the overloaded operator to simply add/overwrite defaults.
+
     if(loadTex) {
         loadTexture();
     }
 }
 
-EntityItem::EntityItem(glm::vec2 pos, unsigned int layer, EntityIDs id, MetaData data, bool loadTex) : Entity(pos, layer, data)
+EntityItem::EntityItem(glm::vec2 pos, unsigned int layer, EntityIDs id, MetaData data, bool loadTex) : Entity(pos, layer, MetaData())
 {
     m_type = EntityTypes::ITEM;
 
@@ -36,6 +39,9 @@ EntityItem::EntityItem(glm::vec2 pos, unsigned int layer, EntityIDs id, MetaData
     m_updateScriptId = d.updateScriptID;
     m_tickScriptId = d.tickScriptID;
     m_itemId = d.itemID;
+
+    m_metaData = d.defaultMD;
+    m_metaData += data; // Use the overloaded operator to simply add/overwrite defaults.
 
     if(loadTex) {
         loadTexture();

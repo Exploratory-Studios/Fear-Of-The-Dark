@@ -171,7 +171,7 @@ public:
 private:
 
     lua_State* T = nullptr; // Main thread. Used for delaying the script
-    unsigned int m_threadReference = 0;
+    int m_threadReference = 0; // LUA_REFNIL is -1, so we need to be able to accept that.
     bool m_finished = false;
     static lua_State* m_parent;
 };

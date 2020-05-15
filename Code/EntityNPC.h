@@ -31,6 +31,7 @@ class EntityNPC : public Entity
         /// Getters
         Categories::Faction getFaction() const { return m_faction; }
         float getHealth() const { return m_health; }
+        EntityNPCData getNPCSaveData();
 
         // Inventory
         void giveItem(Item* item);

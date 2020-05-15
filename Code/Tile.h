@@ -72,15 +72,12 @@ class Tile
 
         std::vector<Argument> generateLuaData() {
             std::vector<Argument> args = {
-                { "blockX", m_pos.x },
-                { "blockY", m_pos.y },
-                { "blockID", m_id } // TODO: Implement metadata. Each element to the metadata can be an element in this table.
+                { "blockX", std::to_string(m_pos.x) },
+                { "blockY", std::to_string(m_pos.y) },
+                { "blockID", std::to_string(m_id) } // TODO: Implement metadata. Each element to the metadata can be an element in this table.
             };
 
-            /*std::string ret = "blockX, blockY, blockID=";
-            ret += std::to_string(m_pos.x) + ",";
-            ret += std::to_string(m_pos.y) + ",";
-            ret += std::to_string(m_id);*/
+            m_metaData.getLuaArguments(args);
 
             return args;
         }
@@ -194,7 +191,7 @@ class Tile
 
 
         void handleMetaDataInit(MetaData& data) { };
-        MetaData getMetaData() { m_metaData; }
+        MetaData getMetaData() { return m_metaData; }
 
         void onUpdate() { }
         void onDraw(GLEngine::SpriteBatch& sb, GLEngine::SpriteFont& sf, glm::vec4& pos, float& depth) { }

@@ -27,6 +27,8 @@ class Inventory
         void update();
         void draw(float x, float y, GLEngine::SpriteBatch& sb, GLEngine::SpriteFont& sf);
 
+        InventoryData getInventorySaveData();
+
     private:
         float m_weight = 0.0f; // The average person can carry about 40-45lbs of weight and still walk normally
         // The max weight at which you can still walk the normal speed, defined in PRESETS file. Called MAX_WEIGHT

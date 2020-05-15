@@ -16,6 +16,7 @@ class EntityItem;
 class EntityPlayer;
 class Inventory;
 class Item;
+class Argument;
 
 struct MetaData_Aspect {
     MetaData_Aspect(std::string nameP, int valP) : key(nameP), val(std::to_string(valP)) {}
@@ -35,6 +36,22 @@ class MetaData {
         bool getElement(std::string& key, std::string& var);
         // Sets an element's value using the given key and value.
         void setElement(std::string& key, std::string& val);
+
+        void getLuaArguments(std::vector<Argument>& args);
+
+        MetaData& operator+=(MetaData& other) {
+            /// Adds all elements from the other to this.
+            for(auto obj : other.m_data) {
+                std::string key, val;
+
+                key = obj.first;
+                val = obj.second;
+
+                setElement(key, val);
+            }
+
+            return *this;
+        }
 
         // Truncates data from the given file into this object
         void read(std::ifstream& file);

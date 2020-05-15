@@ -8,6 +8,8 @@
 #include "Scripting/ScriptQueue.h"
 #include "PresetValues.h"
 
+#include "SaveDataTypes.h"
+
 struct XML_TileData;
 struct XML_EntityNPCData;
 struct XML_EntityProjectileData;
@@ -16,12 +18,11 @@ struct XML_ItemData;
 struct XML_ParticleData;
 
 void getValue(rapidxml::xml_node<>* parent, std::string valueName, std::string& variable);
-
 void getValue(rapidxml::xml_node<>* parent, std::string valueName, float& variable);
-
 void getValue(rapidxml::xml_node<>* parent, std::string valueName, int& variable);
-
 void getValue(rapidxml::xml_node<>* parent, std::string valueName, bool& variable);
+
+void getMetaData(rapidxml::xml_node<>* parent, MetaData& mdVar);
 
 class XMLData
 {
@@ -86,6 +87,7 @@ struct XML_TileData {
     int destructionScriptID = -1;
     int interactScriptID_walkedOn = -1;
     int interactScriptID_used = -1;
+    MetaData defaultMD;
     /// TODO: Inventory
 };
 
@@ -120,6 +122,8 @@ struct XML_EntityNPCData {
 
     Categories::Faction faction;
 
+    MetaData defaultMD;
+
     /// TODO: Move dialogue, trades, and drops to XML format?
 };
 
@@ -138,6 +142,8 @@ struct XML_EntityProjectileData {
 
     float speed = 0.1f;
     float damage = 1.0f;
+
+    MetaData defaultMD;
 };
 
 struct XML_EntityItemData {
@@ -151,6 +157,8 @@ struct XML_EntityItemData {
     int updateScriptID = -1;
     int tickScriptID = -1;
     unsigned int itemID = 0;
+
+    MetaData defaultMD;
 };
 
 struct XML_ItemData {
@@ -160,4 +168,6 @@ struct XML_ItemData {
     int useScriptID = -1;
 
     float weight = 0.0f;
+
+    MetaData defaultMD;
 };

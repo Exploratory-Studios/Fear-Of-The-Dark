@@ -33,6 +33,7 @@ class Entity
 
     public:
         Entity(glm::vec2 pos, unsigned int layer, MetaData data);
+        Entity(EntityData& saveData);
         virtual ~Entity();
 
         void update(World* world, float timeStep, unsigned int selfIndex);
@@ -62,19 +63,14 @@ class Entity
 
         virtual std::vector<Argument> generateLuaValues() {
             std::vector<Argument> args = {
-                { "selfX", m_position.x },
-                { "selfY", m_position.y },
-                { "selfXVel", m_velocity.x },
-                { "selfYVel", m_velocity.y },
-                { "selfID", m_id },
+                { "selfX", std::to_string(m_position.x) },
+                { "selfY", std::to_string(m_position.y) },
+                { "selfXVel", std::to_string(m_velocity.x) },
+                { "selfYVel", std::to_string(m_velocity.y) },
+                { "selfID", std::to_string(m_id) }
             };
 
-            /*std::string valScript = "selfX,selfY,selfXVel,selfYVel,selfID=";
-            valScript += std::to_string(m_position.x) + ",";
-            valScript += std::to_string(m_position.y) + ",";
-            valScript += std::to_string(m_velocity.x) + ",";
-            valScript += std::to_string(m_velocity.y) + ",";
-            valScript += std::to_string(m_id);*/
+            m_metaData.getLuaArguments(args);
 
             return args;
         }
@@ -104,8 +100,6 @@ class Entity
         void loadTexture();
         int m_animationFramesX = 1, m_animationFramesY = 1;
 
-        MetaData m_metaData;
-
         bool m_controls[6]; // Up, down (crouching while on ground), left, right, backwards (layer++), forwards (layer--)
 
         bool m_exposedToSun = false;
@@ -117,6 +111,8 @@ class Entity
         glm::vec2 m_velocity = glm::vec2(0.0f);
         bool m_onGround = false;
         bool m_draw = true;
+
+        MetaData m_metaData;
 
         // XML Attributes
         unsigned int m_id;

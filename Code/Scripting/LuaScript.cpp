@@ -286,7 +286,7 @@ int LuaScript::l_hideBlock(lua_State* L) {
     return 0; // no returned values
 }
 
-int LuaScript::l_getBlock(lua_State* L) {
+int LuaScript::l_getBlockData(lua_State* L) {
     World* world = static_cast<World*>(getUpvalue(L, WORLD_KEY));
     int x = (int)lua_tonumber(L, 1);
     int y = (int)lua_tonumber(L, 2);
@@ -299,6 +299,23 @@ int LuaScript::l_getBlock(lua_State* L) {
     createArgumentsTable(L, args); // Creates and pushes back table
 
     return 1; // 1 return value
+}
+
+int LuaScript::l_setBlockMetaData(lua_State* L) {
+    World* world = static_cast<World*>(getUpvalue(L, WORLD_KEY));
+    int x = (int)lua_tonumber(L, 1);
+    int y = (int)lua_tonumber(L, 2);
+    int l = (int)lua_tonumber(L, 3);
+
+    MetaData md;
+    md.readFromLuaTable(L, -1);
+
+    lua_pop(L, 4);
+
+    Tile* t = getBlock(world, glm::vec2(x, y), l);
+    t->setMetaData(md);
+
+    return 0;
 }
 
 int LuaScript::l_addEntity(lua_State* L) {
@@ -341,6 +358,22 @@ int LuaScript::l_hideEntity(lua_State* L) {
     lua_pop(L, 1);
 
     hideEntity(world, entityUUID); // calling C++ function with this argument...
+    return 0; // no returned values
+}
+
+int LuaScript::l_setEntityMetaData(lua_State* L) {
+    World* world = static_cast<World*>(getUpvalue(L, WORLD_KEY));
+    std::string entityUUID = lua_tostring(L, 1);
+    lua_pop(L, 1);
+
+    // Now we should just have the metadata table.
+    MetaData md;
+    md.readFromLuaTable(L, -1);
+
+    lua_pop(L, 1); // Remove table.
+
+    world->getEntityByUUID(entityUUID)->setMetaData(md);
+
     return 0; // no returned values
 }
 

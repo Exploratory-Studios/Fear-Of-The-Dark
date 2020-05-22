@@ -398,4 +398,7 @@ void Entity::generateUUID(World* world) {
 
     m_UUID = UUID;
 
+    std::string key = "UUID";
+    m_metaData.setElement(key, UUID);
+
 }

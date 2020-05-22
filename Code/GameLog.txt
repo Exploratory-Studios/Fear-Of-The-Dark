@@ -1,358 +1,134 @@
 
 
 
-### LOG: Thu May 14 23:51:47 2020 ###
+### LOG: Thu May 21 22:13:04 2020 ###
 
 Beginning to load data...
-
-### Error (XML Parse): Could not find aspect: texture ###
-
-
-### Error (XML Parse): Could not find aspect: bumpMap ###
-
-
-### Error (XML Parse): Could not find aspect: emittedLight ###
-
-
-### Error (XML Parse): Could not find aspect: emittedHeat ###
-
-
-### Error (XML Parse): Could not find aspect: sizeX ###
-
-
-### Error (XML Parse): Could not find aspect: sizeY ###
-
-
-### Error (XML Parse): Could not find aspect: updateScript ###
-
-
-### Error (XML Parse): Could not find aspect: tickScript ###
-
-
-### Error (XML Parse): Could not find aspect: destructionScript ###
-
-
-### Error (XML Parse): Could not find aspect: interactScript_walkedOn ###
-
-
-### Error (XML Parse): Could not find aspect: interactScript_used ###
-
-
-### Error (XML Parse): Could not find aspect: emittedLight ###
-
-
-### Error (XML Parse): Could not find aspect: emittedHeat ###
-
-
-### Error (XML Parse): Could not find aspect: sizeX ###
-
-
-### Error (XML Parse): Could not find aspect: sizeY ###
-
-
-### Error (XML Parse): Could not find aspect: isSolid ###
-
-
-### Error (XML Parse): Could not find aspect: isDrawn ###
-
-
-### Error (XML Parse): Could not find aspect: isTransparent ###
-
-
-### Error (XML Parse): Could not find aspect: updateScript ###
-
-
-### Error (XML Parse): Could not find aspect: tickScript ###
-
-
-### Error (XML Parse): Could not find aspect: destructionScript ###
-
-
-### Error (XML Parse): Could not find aspect: interactScript_walkedOn ###
-
-
-### Error (XML Parse): Could not find aspect: interactScript_used ###
-
-
-### Error (XML Parse): Could not find aspect: emittedLight ###
-
-
-### Error (XML Parse): Could not find aspect: emittedHeat ###
-
-
-### Error (XML Parse): Could not find aspect: sizeX ###
-
-
-### Error (XML Parse): Could not find aspect: sizeY ###
-
-
-### Error (XML Parse): Could not find aspect: isSolid ###
-
-
-### Error (XML Parse): Could not find aspect: isDrawn ###
-
-
-### Error (XML Parse): Could not find aspect: isTransparent ###
-
-
-### Error (XML Parse): Could not find aspect: updateScript ###
-
-
-### Error (XML Parse): Could not find aspect: tickScript ###
-
-
-### Error (XML Parse): Could not find aspect: destructionScript ###
-
-
-### Error (XML Parse): Could not find aspect: interactScript_used ###
-
+Warning (XML Parse): Could not find aspect: texture. Reverted to default
+Warning (XML Parse): Could not find aspect: bumpMap. Reverted to default
+Warning (XML Parse): Could not find aspect: emittedLight. Reverted to default
+Warning (XML Parse): Could not find aspect: emittedHeat. Reverted to default
+Warning (XML Parse): Could not find aspect: sizeX. Reverted to default
+Warning (XML Parse): Could not find aspect: sizeY. Reverted to default
+Warning (XML Parse): Could not find aspect: updateScript. Reverted to default
+Warning (XML Parse): Could not find aspect: tickScript. Reverted to default
+Warning (XML Parse): Could not find aspect: destructionScript. Reverted to default
+Warning (XML Parse): Could not find aspect: interactScript_walkedOn. Reverted to default
+Warning (XML Parse): Could not find aspect: interactScript_used. Reverted to default
+Warning (XML Parse): Could not find aspect: emittedLight. Reverted to default
+Warning (XML Parse): Could not find aspect: emittedHeat. Reverted to default
+Warning (XML Parse): Could not find aspect: sizeX. Reverted to default
+Warning (XML Parse): Could not find aspect: sizeY. Reverted to default
+Warning (XML Parse): Could not find aspect: isSolid. Reverted to default
+Warning (XML Parse): Could not find aspect: isDrawn. Reverted to default
+Warning (XML Parse): Could not find aspect: isTransparent. Reverted to default
+Warning (XML Parse): Could not find aspect: updateScript. Reverted to default
+Warning (XML Parse): Could not find aspect: tickScript. Reverted to default
+Warning (XML Parse): Could not find aspect: destructionScript. Reverted to default
+Warning (XML Parse): Could not find aspect: interactScript_walkedOn. Reverted to default
+Warning (XML Parse): Could not find aspect: interactScript_used. Reverted to default
+Warning (XML Parse): Could not find aspect: emittedLight. Reverted to default
+Warning (XML Parse): Could not find aspect: emittedHeat. Reverted to default
+Warning (XML Parse): Could not find aspect: sizeX. Reverted to default
+Warning (XML Parse): Could not find aspect: sizeY. Reverted to default
+Warning (XML Parse): Could not find aspect: isSolid. Reverted to default
+Warning (XML Parse): Could not find aspect: isDrawn. Reverted to default
+Warning (XML Parse): Could not find aspect: isTransparent. Reverted to default
+Warning (XML Parse): Could not find aspect: updateScript. Reverted to default
+Warning (XML Parse): Could not find aspect: tickScript. Reverted to default
+Warning (XML Parse): Could not find aspect: destructionScript. Reverted to default
+Warning (XML Parse): Could not find aspect: interactScript_used. Reverted to default
 Successfully Loaded Script File: /home/davis-dev/.exploratory/Fear Of The Dark/Assets/Scripts/TEST_SCRIPT.txt, and given id of: 0
-
-### Error (XML Parse): Could not find aspect: emittedHeat ###
-
-
-### Error (XML Parse): Could not find aspect: sizeX ###
-
-
-### Error (XML Parse): Could not find aspect: sizeY ###
-
-
-### Error (XML Parse): Could not find aspect: isDrawn ###
-
-
-### Error (XML Parse): Could not find aspect: isNatural ###
-
-
-### Error (XML Parse): Could not find aspect: updateScript ###
-
-
-### Error (XML Parse): Could not find aspect: destructionScript ###
-
-
-### Error (XML Parse): Could not find aspect: interactScript_walkedOn ###
-
-
-### Error (XML Parse): Could not find aspect: interactScript_used ###
-
+Warning (XML Parse): Could not find aspect: emittedHeat. Reverted to default
+Warning (XML Parse): Could not find aspect: sizeX. Reverted to default
+Warning (XML Parse): Could not find aspect: sizeY. Reverted to default
+Warning (XML Parse): Could not find aspect: isDrawn. Reverted to default
+Warning (XML Parse): Could not find aspect: isNatural. Reverted to default
+Warning (XML Parse): Could not find aspect: updateScript. Reverted to default
+Warning (XML Parse): Could not find aspect: destructionScript. Reverted to default
+Warning (XML Parse): Could not find aspect: interactScript_walkedOn. Reverted to default
+Warning (XML Parse): Could not find aspect: interactScript_used. Reverted to default
 Successfully Loaded Script File: /home/davis-dev/.exploratory/Fear Of The Dark/Assets/Scripts/TorchTick.lua, and given id of: 1
-
-### Error (XML Parse): Could not find aspect: emittedLight ###
-
-
-### Error (XML Parse): Could not find aspect: emittedHeat ###
-
-
-### Error (XML Parse): Could not find aspect: sizeX ###
-
-
-### Error (XML Parse): Could not find aspect: sizeY ###
-
-
-### Error (XML Parse): Could not find aspect: isSolid ###
-
-
-### Error (XML Parse): Could not find aspect: isDrawn ###
-
-
-### Error (XML Parse): Could not find aspect: isTransparent ###
-
-
-### Error (XML Parse): Could not find aspect: updateScript ###
-
-
-### Error (XML Parse): Could not find aspect: tickScript ###
-
-
-### Error (XML Parse): Could not find aspect: destructionScript ###
-
-
-### Error (XML Parse): Could not find aspect: interactScript_walkedOn ###
-
-
-### Error (XML Parse): Could not find aspect: interactScript_used ###
-
-
-### Error (XML Parse): Could not find aspect: emittedLight ###
-
-
-### Error (XML Parse): Could not find aspect: emittedHeat ###
-
-
-### Error (XML Parse): Could not find aspect: sizeX ###
-
-
-### Error (XML Parse): Could not find aspect: sizeY ###
-
-
-### Error (XML Parse): Could not find aspect: isDrawn ###
-
-
-### Error (XML Parse): Could not find aspect: tickScript ###
-
-
-### Error (XML Parse): Could not find aspect: destructionScript ###
-
-
-### Error (XML Parse): Could not find aspect: interactScript_walkedOn ###
-
-
-### Error (XML Parse): Could not find aspect: interactScript_used ###
-
+Warning (XML Parse): Could not find aspect: emittedLight. Reverted to default
+Warning (XML Parse): Could not find aspect: emittedHeat. Reverted to default
+Warning (XML Parse): Could not find aspect: sizeX. Reverted to default
+Warning (XML Parse): Could not find aspect: sizeY. Reverted to default
+Warning (XML Parse): Could not find aspect: isSolid. Reverted to default
+Warning (XML Parse): Could not find aspect: isDrawn. Reverted to default
+Warning (XML Parse): Could not find aspect: isTransparent. Reverted to default
+Warning (XML Parse): Could not find aspect: updateScript. Reverted to default
+Warning (XML Parse): Could not find aspect: tickScript. Reverted to default
+Warning (XML Parse): Could not find aspect: destructionScript. Reverted to default
+Warning (XML Parse): Could not find aspect: interactScript_walkedOn. Reverted to default
+Warning (XML Parse): Could not find aspect: interactScript_used. Reverted to default
+Warning (XML Parse): Could not find aspect: emittedLight. Reverted to default
+Warning (XML Parse): Could not find aspect: emittedHeat. Reverted to default
+Warning (XML Parse): Could not find aspect: sizeX. Reverted to default
+Warning (XML Parse): Could not find aspect: sizeY. Reverted to default
+Warning (XML Parse): Could not find aspect: isDrawn. Reverted to default
+Warning (XML Parse): Could not find aspect: tickScript. Reverted to default
+Warning (XML Parse): Could not find aspect: destructionScript. Reverted to default
+Warning (XML Parse): Could not find aspect: interactScript_walkedOn. Reverted to default
+Warning (XML Parse): Could not find aspect: interactScript_used. Reverted to default
 Successfully Loaded Script File: /home/davis-dev/.exploratory/Fear Of The Dark/Assets/Scripts/WaterUpdate.lua, and given id of: 2
 Loaded data (Tiles)...
 Loaded data (Particles)...
-
-### Error (XML Parse): Could not find aspect: isDamagedByFalls ###
-
-
-### Error (XML Parse): Could not find aspect: isInvincible ###
-
-
-### Error (XML Parse): Could not find aspect: maxHealth ###
-
-
-### Error (XML Parse): Could not find aspect: updateScript ###
-
-
-### Error (XML Parse): Could not find aspect: tickScript ###
-
-
-### Error (XML Parse): Could not find aspect: attackScript ###
-
-
-### Error (XML Parse): Could not find aspect: isDamagedByFalls ###
-
-
-### Error (XML Parse): Could not find aspect: isInvincible ###
-
-
-### Error (XML Parse): Could not find aspect: speed ###
-
-
-### Error (XML Parse): Could not find aspect: maxHealth ###
-
-
-### Error (XML Parse): Could not find aspect: faction ###
-
-
-### Error (XML Parse): Could not find aspect: updateScript ###
-
-
-### Error (XML Parse): Could not find aspect: tickScript ###
-
-
-### Error (XML Parse): Could not find aspect: attackScript ###
-
-
-### Error (XML Parse): Could not find aspect: sizeX ###
-
-
-### Error (XML Parse): Could not find aspect: sizeY ###
-
-
-### Error (XML Parse): Could not find aspect: isDamagedByFalls ###
-
-
-### Error (XML Parse): Could not find aspect: isInvincible ###
-
-
-### Error (XML Parse): Could not find aspect: maxHealth ###
-
-
-### Error (XML Parse): Could not find aspect: updateScript ###
-
-
-### Error (XML Parse): Could not find aspect: tickScript ###
-
-
-### Error (XML Parse): Could not find aspect: attackScript ###
-
-
-### Error (XML Parse): Could not find aspect: sizeX ###
-
-
-### Error (XML Parse): Could not find aspect: sizeY ###
-
-
-### Error (XML Parse): Could not find aspect: isDamagedByFalls ###
-
-
-### Error (XML Parse): Could not find aspect: isInvincible ###
-
-
-### Error (XML Parse): Could not find aspect: maxHealth ###
-
-
-### Error (XML Parse): Could not find aspect: updateScript ###
-
-
-### Error (XML Parse): Could not find aspect: tickScript ###
-
-
-### Error (XML Parse): Could not find aspect: attackScript ###
-
+Warning (XML Parse): Could not find aspect: isDamagedByFalls. Reverted to default
+Warning (XML Parse): Could not find aspect: isInvincible. Reverted to default
+Warning (XML Parse): Could not find aspect: maxHealth. Reverted to default
+Warning (XML Parse): Could not find aspect: updateScript. Reverted to default
+Warning (XML Parse): Could not find aspect: tickScript. Reverted to default
+Warning (XML Parse): Could not find aspect: attackScript. Reverted to default
+Warning (XML Parse): Could not find aspect: isDamagedByFalls. Reverted to default
+Warning (XML Parse): Could not find aspect: isInvincible. Reverted to default
+Warning (XML Parse): Could not find aspect: speed. Reverted to default
+Warning (XML Parse): Could not find aspect: maxHealth. Reverted to default
+Warning (XML Parse): Could not find aspect: faction. Reverted to default
+Warning (XML Parse): Could not find aspect: updateScript. Reverted to default
+Warning (XML Parse): Could not find aspect: tickScript. Reverted to default
+Warning (XML Parse): Could not find aspect: attackScript. Reverted to default
+Warning (XML Parse): Could not find aspect: sizeX. Reverted to default
+Warning (XML Parse): Could not find aspect: sizeY. Reverted to default
+Warning (XML Parse): Could not find aspect: isDamagedByFalls. Reverted to default
+Warning (XML Parse): Could not find aspect: isInvincible. Reverted to default
+Warning (XML Parse): Could not find aspect: maxHealth. Reverted to default
+Warning (XML Parse): Could not find aspect: updateScript. Reverted to default
+Warning (XML Parse): Could not find aspect: tickScript. Reverted to default
+Warning (XML Parse): Could not find aspect: attackScript. Reverted to default
+Warning (XML Parse): Could not find aspect: sizeX. Reverted to default
+Warning (XML Parse): Could not find aspect: sizeY. Reverted to default
+Warning (XML Parse): Could not find aspect: isDamagedByFalls. Reverted to default
+Warning (XML Parse): Could not find aspect: isInvincible. Reverted to default
+Warning (XML Parse): Could not find aspect: maxHealth. Reverted to default
+Warning (XML Parse): Could not find aspect: updateScript. Reverted to default
+Warning (XML Parse): Could not find aspect: tickScript. Reverted to default
+Warning (XML Parse): Could not find aspect: attackScript. Reverted to default
 Loaded data (NPC Entities)...
 Loaded data (Projectile Entities)...
-
-### Error (XML Parse): Could not find aspect: texture ###
-
-
-### Error (XML Parse): Could not find aspect: bumpMap ###
-
-
-### Error (XML Parse): Could not find aspect: sizeX ###
-
-
-### Error (XML Parse): Could not find aspect: sizeY ###
-
-
-### Error (XML Parse): Could not find aspect: item ###
-
-
-### Error (XML Parse): Could not find aspect: updateScript ###
-
-
-### Error (XML Parse): Could not find aspect: tickScript ###
-
+Warning (XML Parse): Could not find aspect: texture. Reverted to default
+Warning (XML Parse): Could not find aspect: bumpMap. Reverted to default
+Warning (XML Parse): Could not find aspect: sizeX. Reverted to default
+Warning (XML Parse): Could not find aspect: sizeY. Reverted to default
+Warning (XML Parse): Could not find aspect: item. Reverted to default
+Warning (XML Parse): Could not find aspect: updateScript. Reverted to default
+Warning (XML Parse): Could not find aspect: tickScript. Reverted to default
 Loaded data (Item Entities)...
-
-### Error (XML Parse): Could not find aspect: texture ###
-
-
-### Error (XML Parse): Could not find aspect: weight ###
-
-
-### Error (XML Parse): Could not find aspect: useScript ###
-
-
-### Error (XML Parse): Could not find aspect: weight ###
-
+Warning (XML Parse): Could not find aspect: texture. Reverted to default
+Warning (XML Parse): Could not find aspect: weight. Reverted to default
+Warning (XML Parse): Could not find aspect: useScript. Reverted to default
+Warning (XML Parse): Could not find aspect: weight. Reverted to default
 Successfully Loaded Script File: /home/davis-dev/.exploratory/Fear Of The Dark/Assets/Scripts/Item_BlockPlacement.lua, and given id of: 3
-
-### Error (XML Parse): Could not find aspect: weight ###
-
-
-### Error (XML Parse): Could not find aspect: weight ###
-
-
-### Error (XML Parse): Could not find aspect: weight ###
-
-
-### Error (XML Parse): Could not find aspect: weight ###
-
-
-### Error (XML Parse): Could not find aspect: weight ###
-
-
-### Error (XML Parse): Could not find aspect: weight ###
-
-
-### Error (XML Parse): Could not find aspect: weight ###
-
+Warning (XML Parse): Could not find aspect: weight. Reverted to default
+Warning (XML Parse): Could not find aspect: weight. Reverted to default
+Warning (XML Parse): Could not find aspect: weight. Reverted to default
+Warning (XML Parse): Could not find aspect: weight. Reverted to default
+Warning (XML Parse): Could not find aspect: weight. Reverted to default
+Warning (XML Parse): Could not find aspect: weight. Reverted to default
+Warning (XML Parse): Could not find aspect: weight. Reverted to default
 Loaded data (Items)...
 Loaded all data successfully!
-CREATE: Starting world creation at time: 625.327026
-CREATE: Finished world creation at time: 2985.528076 (Elapsed: 2360.201172ms)
+CREATE: Starting world creation at time: 798.500977
+CREATE: Finished world creation at time: 3547.136963 (Elapsed: 2748.635986ms)
 Loaded all 3 music files.
 Loaded all 2 sound files.
 Loading dialogue. 1297 bytes to read.
@@ -370,4 +146,4 @@ Flags loaded! (24 bytes)
 Loading trade tables. 180 bytes to read.
 Loaded trade tables! (24 bytes)
 Loaded script: /home/davis-dev/.exploratory/Fear Of The Dark/Assets/Scripts/WaterUpdate.lua
-Loaded script: /home/davis-dev/.exploratory/Fear Of The Dark/Assets/Scripts/TEST_SCRIPT.txt
+Loaded script: /home/davis-dev/.exploratory/Fear Of The Dark/Assets/Scripts/Item_BlockPlacement.lua

@@ -17,6 +17,7 @@ class EntityPlayer;
 class Inventory;
 class Item;
 class Argument;
+class lua_State;
 
 struct MetaData_Aspect {
     MetaData_Aspect(std::string nameP, int valP) : key(nameP), val(std::to_string(valP)) {}
@@ -37,7 +38,11 @@ class MetaData {
         // Sets an element's value using the given key and value.
         void setElement(std::string& key, std::string& val);
 
+        std::string getElements(); // Returns a string of all elements. used for debugging
+
         void getLuaArguments(std::vector<Argument>& args);
+
+        void readFromLuaTable(lua_State* state, int tableIndex);
 
         MetaData& operator+=(MetaData& other) {
             /// Adds all elements from the other to this.
@@ -59,6 +64,8 @@ class MetaData {
         void save(std::ofstream& file);
 
     private:
+        void init(std::vector<MetaData_Aspect>& data);
+
         std::unordered_map<std::string, std::string> m_data; // unordered maps are better for non-data traversal situations. This is one of those.
 };
 

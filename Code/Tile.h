@@ -49,6 +49,7 @@ class Tile
             ret += "ID=" + std::to_string(m_id) + ", Solid=" + std::to_string(m_solid) + ", " + "LightLevel: Amb=" + std::to_string(m_ambientLight) + ", Sun=" + std::to_string(m_sunLight) + ", Emit=" + std::to_string(m_emittedLight) + "\n";
             ret += "ExposedToSun: " + std::to_string(m_exposedToSun) + "\n";
             ret += "Raw Temperature: " + std::to_string(m_temperature) + ", Real Temperature: " + std::to_string(getHeat(world)) + "\n";
+            ret += "MetaData: " + m_metaData.getElements() + "\n";
             return ret;
         }
         #endif
@@ -65,7 +66,6 @@ class Tile
             m_solid = other.isSolid();
             m_draw = other.doDraw();
             m_transparent = other.isTransparent();
-            m_backdrop = other.doDrawBackdrop();
             m_natural = other.isNatural();
             m_id = other.getID();
         }
@@ -74,6 +74,7 @@ class Tile
             std::vector<Argument> args = {
                 { "blockX", std::to_string(m_pos.x) },
                 { "blockY", std::to_string(m_pos.y) },
+                { "blockLayer", std::to_string(m_layer) },
                 { "blockID", std::to_string(m_id) } // TODO: Implement metadata. Each element to the metadata can be an element in this table.
             };
 
@@ -92,26 +93,15 @@ class Tile
         float           getLight();
         float           getAmbientLight()               const { return m_ambientLight;              }
         float           getEmittedLight()               const { return m_emittedLight;              }
-        //float           getSurroundingLight();
         float           getSurroundingHeat(World* world);
-        float           getSunLight()                   const { return m_sunLight;                  }
         bool            isExposedToSunlight()           const { return m_exposedToSun;              }
         bool            isTransparent()                 const { return m_transparent;               }
         float           getHeat(World* world);                      // Used when gameplay mechanics are in play (modifiers in use, not used when tiles are inheriting temperatures)
         float           getRawHeat();                   // Used whenever two tiles' temperatures are being compared, etc. (No modifiers excepting baseHeat)
         float           getEmittedHeat()                const { return m_emittedHeat;               }
         bool            doDraw()                        const { return m_draw;                      }
-        bool            doDrawBackdrop()                const { return m_backdrop;                  }
         unsigned int    getLayer()                      const { return m_layer;                     }
         float           getLightAtPoint(glm::vec2 posFromBL);
-
-        void light_update(float light, Tile* source);
-        void light_transferToNeighbours(float light, Tile* source);
-        void light_removeSource(Tile* source, std::vector<Tile*>& newSources);
-        void light_addEffected(Tile* effected);
-        void light_reset();
-
-        bool needsSunCheck() { return m_needsSunCheck; }
 
         // Don't fuck with my formatting
 
@@ -120,6 +110,8 @@ class Tile
         void setAmbientLight(float light) { m_ambientLight = light; }
         void addAmbientLight(float light) { m_ambientLight += light; }
         void setToDraw(bool draw) { m_draw = draw; }
+
+        void setMetaData(MetaData& md) { m_metaData = md; }
 
         void addCornerLight(float TL, float TR, float BR, float BL) {
             if(TL > 0) m_cornerLight.x += TL;
@@ -187,8 +179,6 @@ class Tile
 
     protected:
         void setPosition(glm::vec2 pos) { m_pos = pos; }
-
-
 
         void handleMetaDataInit(MetaData& data) { };
         MetaData getMetaData() { return m_metaData; }

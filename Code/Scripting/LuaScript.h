@@ -7,13 +7,7 @@
 
 #include "ScriptQueue.h"
 
-extern "C" {
-    #include <lua5.3/lua.h>
-    #include <lua5.3/lauxlib.h>
-    #include <lua5.3/luaconf.h>
-    #include <lua5.3/lualib.h>
-    #include <lua5.3/lua.hpp>
-}
+#include "../LuaHeaders.h"
 
 class ParticleUpdate {
     public:
@@ -124,12 +118,14 @@ public:
         static int l_showBlock(lua_State* L);
         static int l_hideBlock(lua_State* L);
 
-        static int l_getBlock(lua_State* L); // returns a table of block data to the stack
+        static int l_getBlockData(lua_State* L); // returns a table of block data to the stack
+        static int l_setBlockMetaData(lua_State* L); // returns a table of block data to the stack
 
         static int l_addEntity(lua_State* L); // requires UUID of entity
         static int l_removeEntity(lua_State* L);
         static int l_showEntity(lua_State* L);
         static int l_hideEntity(lua_State* L);
+        static int l_setEntityMetaData(lua_State* L); // requires UUID and a table of metadata
 
         static int l_setTime(lua_State* L);
         static int l_teleport(lua_State* L);

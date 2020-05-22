@@ -339,6 +339,7 @@
 		<Unit filename="LoadScreen.h" />
 		<Unit filename="Logging.cpp" />
 		<Unit filename="Logging.h" />
+		<Unit filename="LuaHeaders.h" />
 		<Unit filename="Main.cpp" />
 		<Unit filename="Main.h" />
 		<Unit filename="MainMenuScreen.cpp" />

@@ -9,7 +9,13 @@
 
 #include "Inventory.h"
 
+#include "LuaHeaders.h"
+
 MetaData::MetaData(std::vector<MetaData_Aspect>& data) {
+    init(data);
+}
+
+void MetaData::init(std::vector<MetaData_Aspect>& data) {
     for(unsigned int i = 0; i < data.size(); i++) {
         std::pair<std::string, std::string> p = std::make_pair(data[i].key, data[i].val);
         m_data.insert(p);
@@ -30,16 +36,46 @@ void MetaData::setElement(std::string& key, std::string& val) {
     // No matter the circumstances, the end data will have the element with value `val`
 }
 
+std::string MetaData::getElements() {
+    std::string ret;
+
+    for(auto obj : m_data) {
+        ret += "\"" + obj.first + "\"=\"" + obj.second + "\", ";
+    }
+
+    return ret;
+
+}
+
 void MetaData::getLuaArguments(std::vector<Argument>& args) {
     /// Adds all elements from this object to the vector `args`. Does not modify previously-existing objects in `args`.
+    /// Note: All new elements in `args` will have the flag `isMetadata` enabled, so that they're initialized in Lua as part of a table inside the global table.
     for(auto obj : m_data) {
         // Loop through every object.
         // Create an Argument object and populate it.
         Argument arg;
         arg.key = obj.first;
         arg.val = obj.second;
+        arg.isMetadata = true;
         args.push_back(arg);
     }
+}
+
+void MetaData::readFromLuaTable(lua_State* state, int tableIndex) {
+    /** Loads and sets all elements to those in an existing Lua table, on the stack with index `tableIndex`. **/
+
+    // We need to loop through, getting the next value until the table doesn't actually exist.
+    std::vector<MetaData_Aspect> args;
+    lua_pushnil(state); // First "key"
+    tableIndex--; // Because we pushed a key, the table is pushed farther down.
+
+    while(lua_next(state, tableIndex)) { // uses first key ("nil") to find first real key and value. After that, it uses each consecutive key to find the next key and value pair.
+        MetaData_Aspect a(lua_tostring(state, -2), lua_tostring(state, -1)); // lua_next pushes the value (-1) and key (-2) onto the stack
+        lua_pop(state, 1); // Get rid of the value, leaving the key to tell lua_next what's next.
+        args.push_back(a);
+    }
+
+    init(args);
 }
 
 void MetaData::read(std::ifstream& file) {

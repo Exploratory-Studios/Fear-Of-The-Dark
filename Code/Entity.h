@@ -58,6 +58,7 @@ class Entity
         MetaData                       getMetaData()     const { return m_metaData; }
 
         void setToDraw(bool draw) { m_draw = draw; }
+        void setMetaData(MetaData& m) { m_metaData = m; }
 
         void generateUUID(World* world);
 

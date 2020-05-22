@@ -3,48 +3,48 @@
 void getValue(rapidxml::xml_node<>* parent, std::string valueName, std::string& variable) {
     /// Places value of node with name `valueName` into `variable` and removes the node from the doc.
     rapidxml::xml_node<>* n = parent->first_node((char*)valueName.c_str());
-    if(n) {
+    if(n && std::string(n->value()) != std::string("")) {
         variable = n->value();
         parent->remove_node(n);
     } else {
-        Logger::getInstance()->log("Error (XML Parse): Could not find aspect: " + valueName, true);
+        Logger::getInstance()->log("Warning (XML Parse): Could not find aspect: " + valueName + ". Reverted to default");
     }
 }
 
 void getValue(rapidxml::xml_node<>* parent, std::string valueName, float& variable) {
     /// Places value of node with name `valueName` into `variable` and removes the node from the doc.
     rapidxml::xml_node<>* n = parent->first_node((char*)valueName.c_str());
-    if(n) {
+    if(n && std::string(n->value()) != std::string("")) {
         variable = std::stof(n->value());
         parent->remove_node(n);
     } else {
-        Logger::getInstance()->log("Error (XML Parse): Could not find aspect: " + valueName, true);
+        Logger::getInstance()->log("Warning (XML Parse): Could not find aspect: " + valueName + ". Reverted to default");
     }
 }
 
 void getValue(rapidxml::xml_node<>* parent, std::string valueName, int& variable) {
     /// Places value of node with name `valueName` into `variable` and removes the node from the doc.
     rapidxml::xml_node<>* n = parent->first_node((char*)valueName.c_str());
-    if(n) {
+    if(n && std::string(n->value()) != std::string("")) {
         variable = std::stoi(n->value());
         parent->remove_node(n);
     } else {
-        Logger::getInstance()->log("Error (XML Parse): Could not find aspect: " + valueName, true);
+        Logger::getInstance()->log("Warning (XML Parse): Could not find aspect: " + valueName + ". Reverted to default");
     }
 }
 
 void getValue(rapidxml::xml_node<>* parent, std::string valueName, bool& variable) {
     /// Places value of node with name `valueName` into `variable` and removes the node from the doc.
     rapidxml::xml_node<>* n = parent->first_node((char*)valueName.c_str());
-    if(n) {
-        if(std::string(n->value()) == "0" || std::string(n->value()) == "true") {
+    if(n && std::string(n->value()) != std::string("")) {
+        if(std::string(n->value()) == "0" || std::string(n->value()) == "false") {
             variable = false;
         } else {
             variable = true;
         }
         parent->remove_node(n);
     } else {
-        Logger::getInstance()->log("Error (XML Parse): Could not find aspect: " + valueName, true);
+        Logger::getInstance()->log("Warning (XML Parse): Could not find aspect: " + valueName + ". Reverted to default");
     }
 }
 

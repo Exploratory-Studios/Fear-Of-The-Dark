@@ -507,7 +507,7 @@ void World::specialUpdateTile(Tile* origin) {
     Tile* f = getTile(oPos.x, oPos.y, origin->getLayer()-1);
     Tile* b = getTile(oPos.x, oPos.y, origin->getLayer()+1);
 
-    //if(l) left and right will always return a tile
+    // left and right will always return a tile
     l->specialUpdate(this, m_time);
     r->specialUpdate(this, m_time);
 

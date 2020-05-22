@@ -41,16 +41,32 @@ void setUpvalue(lua_State* L, const char* key, void* ptr) {
 void* getUpvalue(lua_State* L, const char* key) {
     lua_pushstring(L, key);
     lua_gettable(L, LUA_REGISTRYINDEX);
-    return lua_touserdata(L, -1);
+    void* ret = lua_touserdata(L, -1);
+    lua_pop(L, 1);
+    return ret;
 }
 
 void createArgumentsTable(lua_State* T, std::vector<Argument>& args) { // Creates and labels globals for user use.
-    lua_newtable(T);
+    lua_newtable(T); // Create the "main" table.
     for(unsigned int i = 0; i < args.size(); i++) {
+        if(args[i].isMetadata) {
+            continue; // We have another loop to deal with these guys.
+        }
         lua_pushstring(T, (const char*)args[i].key.c_str());
         lua_pushstring(T, (const char*)args[i].val.c_str());
         lua_settable(T, -3);
     }
+    lua_pushstring(T, (const char*)"metadata"); // Set the key for the metadata table. (the key in the main table)
+    lua_newtable(T); // This is our metadata table (the value in the main table)
+    for(unsigned int i = 0; i < args.size(); i++) {
+        if(!args[i].isMetadata) {
+            continue; // We don't need to re-process these
+        }
+        lua_pushstring(T, (const char*)args[i].key.c_str()); // Add a value to the metadata table
+        lua_pushstring(T, (const char*)args[i].val.c_str());
+        lua_settable(T, -3);
+    }
+    lua_settable(T, -3); // Add the metadata table to the main table
 }
 
 

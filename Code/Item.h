@@ -47,9 +47,7 @@ class Item
                 { "itemQuantity", std::to_string(m_quantity) }
             };
 
-            /*std::string ret = "itemID,itemQuantity=";
-            ret += std::to_string(m_id) + ",";
-            ret += std::to_string(m_quantity);*/
+            m_metaData.getLuaArguments(args);
 
             return args;
         }

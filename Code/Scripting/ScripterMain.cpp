@@ -39,6 +39,7 @@ void Scripter::init(World* world, QuestManager* qm, GameplayScreen* gs, AudioMan
     pushFunction(m_luaState, LuaScript::l_removeBlock, "removeBlock");
     pushFunction(m_luaState, LuaScript::l_showBlock, "showBlock");
     pushFunction(m_luaState, LuaScript::l_hideBlock, "hideBlock");
+    pushFunction(m_luaState, LuaScript::l_setBlockSize, "setBlockSize");
 
     pushFunction(m_luaState, LuaScript::l_getBlockData, "getBlockData");
     pushFunction(m_luaState, LuaScript::l_setBlockMetaData, "setBlockMetaData");

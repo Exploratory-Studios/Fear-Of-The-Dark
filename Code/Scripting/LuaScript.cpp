@@ -93,7 +93,6 @@ void LuaScript::update(lua_State* state) {
         return;
     } else {
         Logger::getInstance()->log("LUA ERROR: " + std::string(lua_tostring(T, -1)), true);
-        stackDump(T);
         destroy();
     }
 }
@@ -284,6 +283,22 @@ int LuaScript::l_hideBlock(lua_State* L) {
 
     hideBlock(world, x, y, layer); // calling C++ function with this argument...
     return 0; // no returned values
+}
+
+int LuaScript::l_setBlockSize(lua_State* L) {
+    World* world = static_cast<World*>(getUpvalue(L, WORLD_KEY));
+    int x = (int)lua_tonumber(L, 1); // get function argument
+    int y = (int)lua_tonumber(L, 2); // get function argument
+    int layer = (int)lua_tonumber(L, 3); // get function argument
+
+    float xS = lua_tonumber(L, 4);
+    float yS = lua_tonumber(L, 5);
+
+    lua_pop(L, 5);
+
+    world->getTile(x, y, layer)->setSize(glm::vec2(xS, yS));
+
+    return 0;
 }
 
 int LuaScript::l_getBlockData(lua_State* L) {

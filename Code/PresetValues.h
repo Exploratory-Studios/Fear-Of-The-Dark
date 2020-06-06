@@ -90,7 +90,7 @@
 
     #ifdef WINDOWS
     #undef HOME_PATH
-    #define HOME_PATH std::string((std::string)getenv("APPDATA") + "/Roaming/Exploratory Studios/Fear Of The Dark")
+    #define HOME_PATH std::string((std::string)getenv("APPDATA") + "/Exploratory Studios/Fear Of The Dark")
     #endif // WINDOWS
     #ifdef LINUX
     #undef HOME_PATH

@@ -261,23 +261,21 @@ bool LoadScreen::onBackButtonClicked(const CEGUI::EventArgs& e) {
 void LoadScreen::getDirectoryEntries() {
     m_loadWorldNameListbox->resetList();
 
-    fs::v1::path path(SAVES_PATH);
-
+    fs::path path(SAVES_PATH);
     std::vector<std::string> entries;
-
     if(fs::exists(path) && fs::is_directory(path)) {
-        for (const auto& entry : fs::directory_iterator(path))
+        for(fs::directory_iterator it(path); it != fs::directory_iterator(); it++)
         {
-            auto filename = entry.path().filename();
-            if (fs::is_regular_file(entry.status())) {
-                if(std::string(entry.path().filename()).rfind(".bin") != std::string::npos) {
-                    if(std::string(entry.path().filename())[0] != '.')
-                    entries.push_back(std::string(entry.path().filename()).erase(std::string(entry.path().filename()).rfind(".bin"), 4));
+            auto filename = static_cast<std::string>(it->path().filename().string());
+            if (fs::is_regular_file(it->status())) {
+                if(filename.rfind(".bin") != std::string::npos) {
+                    if(filename[0] != '.')
+                    entries.push_back(filename.erase(filename.rfind(".bin"), 4));
                 }
             }
         }
     } else {
-        logger->log("Bad saves path: " + (std::string)path);
+        logger->log("Bad saves path: " + path.string());
     }
 
     for(unsigned int i = 0; i < entries.size(); i++) {

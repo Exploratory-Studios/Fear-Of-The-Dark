@@ -7,8 +7,6 @@
 
 #include <Window.h>
 
-#include <mutex>
-
 #include "PerlinNoise/PerlinNoise.h"
 
 #include "PresetValues.h"
@@ -70,6 +68,6 @@ class WorldIOManager
         float* m_progress = nullptr;
         std::string* m_saveLoadMessage = nullptr;
 
-        std::mutex mtx_msg;
-        std::mutex mtx_prog;
+        boost::mutex mtx_msg;
+        boost::mutex mtx_prog;
 };

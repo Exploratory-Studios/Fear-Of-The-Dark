@@ -112,6 +112,7 @@ class Tile
         void setToDraw(bool draw) { m_draw = draw; }
 
         void setMetaData(MetaData& md) { m_metaData = md; }
+        void setSize(glm::vec2 s) { m_size = s; }
 
         void addCornerLight(float TL, float TR, float BR, float BL) {
             if(TL > 0) m_cornerLight.x += TL;

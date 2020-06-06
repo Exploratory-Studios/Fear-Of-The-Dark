@@ -78,38 +78,41 @@
 				<Option object_output="obj/ReleaseWin/" />
 				<Option type="1" />
 				<Option compiler="gnu_gcc_compiler_mingw" />
+				<Option projectLinkerOptionsRelation="1" />
 				<Compiler>
 					<Add option="-fexpensive-optimizations" />
 					<Add option="-flto" />
 					<Add option="-O3" />
+					<Add option="-fPIC" />
 					<Add option="-m64" />
 					<Add option="-DWINDOWS" />
-					<Add directory="Items" />
-					<Add directory="Code" />
-					<Add directory="Code/Entities" />
-					<Add directory="Code/QuestSystem" />
-					<Add directory="include" />
-					<Add directory="Code/" />
-					<Add directory="Code/Scripting" />
+					<Add directory="/usr/x86_64-w64-mingw32/lib" />
 				</Compiler>
 				<Linker>
 					<Add option="-flto" />
 					<Add option="-s" />
 					<Add option="-m64" />
-					<Add option="-O3" />
-					<Add option="../../GLEngine/bin/Release/libGLEngine.a" />
+					<Add option="-L/usr/x86_64-w64-mingw32/include/" />
+					<Add option="-L/usr/x86_64-w64-mingw32/bin" />
+					<Add option="-Wl,-Bdynamic" />
+					<Add option="../../GLEngine/bin/ReleaseWindows/libGLEngine.a" />
 					<Add option="-lCEGUIBase-0" />
 					<Add option="-lCEGUIOpenGLRenderer-0" />
 					<Add option="-lSDL2" />
 					<Add option="-lSDL2_mixer" />
 					<Add option="-lSDL2_ttf" />
-					<Add option="-lGL" />
-					<Add option="-lGLU" />
-					<Add option="-lGLEW" />
-					<Add option="-lstdc++fs" />
+					<Add option="-lopengl32" />
+					<Add option="-lglu32" />
+					<Add option="-lglew32" />
+					<Add option="-Wl,-Bstatic" />
 					<Add option="-lboost_system" />
+					<Add option="-lboost_filesystem" />
 					<Add option="-lboost_thread" />
-					<Add option="-llua5.3" />
+					<Add option="-llua53" />
+					<Add option="-static" />
+					<Add option="-static-libstdc++" />
+					<Add option="-static-libgcc" />
+					<Add directory="/usr/x86_64-w64-mingw32/lib" />
 				</Linker>
 			</Target>
 		</Build>

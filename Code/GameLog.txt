@@ -1,7 +1,7 @@
 
 
 
-### LOG: Thu May 21 22:13:04 2020 ###
+### LOG: Sat Jun  6 17:01:29 2020 ###
 
 Beginning to load data...
 Warning (XML Parse): Could not find aspect: texture. Reverted to default
@@ -127,8 +127,8 @@ Warning (XML Parse): Could not find aspect: weight. Reverted to default
 Warning (XML Parse): Could not find aspect: weight. Reverted to default
 Loaded data (Items)...
 Loaded all data successfully!
-CREATE: Starting world creation at time: 798.500977
-CREATE: Finished world creation at time: 3547.136963 (Elapsed: 2748.635986ms)
+CREATE: Starting world creation at time: 586.299011
+CREATE: Finished world creation at time: 3168.117920 (Elapsed: 2581.818848ms)
 Loaded all 3 music files.
 Loaded all 2 sound files.
 Loading dialogue. 1297 bytes to read.
@@ -146,4 +146,3 @@ Flags loaded! (24 bytes)
 Loading trade tables. 180 bytes to read.
 Loaded trade tables! (24 bytes)
 Loaded script: /home/davis-dev/.exploratory/Fear Of The Dark/Assets/Scripts/WaterUpdate.lua
-Loaded script: /home/davis-dev/.exploratory/Fear Of The Dark/Assets/Scripts/Item_BlockPlacement.lua

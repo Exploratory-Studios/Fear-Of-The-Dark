@@ -8,12 +8,17 @@
 #include <GLSLProgram.h>
 #include <SpriteFont.h>
 #include <boost/thread.hpp>
-#include <experimental/filesystem>
+#include <boost/filesystem.hpp>
 
 #include "ScreenIndices.h"
 #include "WorldIOManager.h"
-
-namespace fs = std::experimental::filesystem;
+/*
+-Wl,-Bstatic
+-lboost_system
+-lboost_thread
+-llua5.3
+*/
+namespace fs = boost::filesystem;
 
 enum class MiniScreen {
     MAIN,

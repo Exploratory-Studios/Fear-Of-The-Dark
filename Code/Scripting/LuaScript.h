@@ -117,6 +117,7 @@ public:
         static int l_removeBlock(lua_State* L);
         static int l_showBlock(lua_State* L);
         static int l_hideBlock(lua_State* L);
+        static int l_setBlockSize(lua_State* L); // Sets the UV of a block's texture
 
         static int l_getBlockData(lua_State* L); // returns a table of block data to the stack
         static int l_setBlockMetaData(lua_State* L); // returns a table of block data to the stack

@@ -55,7 +55,7 @@ void setPlayerStat_sanity(World* world, float sanity);
 
 void setFlag(QuestManager* qm, unsigned int id, bool val);
 
-void setEra(World* world, std::string era);
+void setEra(World* world, unsigned int id);
 
 void camera_setLocked(GameplayScreen* gs, bool locked);
 void camera_setPosition(GameplayScreen* gs, glm::vec2 pos);

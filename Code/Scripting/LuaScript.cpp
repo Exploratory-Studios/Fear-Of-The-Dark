@@ -465,12 +465,14 @@ int LuaScript::l_setFlag(lua_State* L) {
 int LuaScript::l_setEra(lua_State* L) {
     World* world = static_cast<World*>(getUpvalue(L, WORLD_KEY));
 
-    std::string era = std::string(lua_tostring(L, 1));
+    //std::string era = std::string(lua_tostring(L, 1));
+
+    unsigned int eraID = lua_tointeger(L, 1);
 
     lua_pop(L, 1);
 
 
-    setEra(world, era);
+    setEra(world, eraID);
 
     return 0;
 }

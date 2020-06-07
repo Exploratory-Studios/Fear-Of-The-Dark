@@ -497,8 +497,8 @@ void WorldIOManager::P_createWorld(unsigned int seed, std::string worldName, boo
     //world->player = new Player(glm::vec2(5.0f, (blockHeights[5] + 5)), m_input, m_sq);
 }
 
-void WorldIOManager::setWorldEra(World* world, WorldEra newEra) {
-    /*
+void WorldIOManager::setWorldEra(World* world, unsigned int newEraID) {
+    /**
         This function will affect the entire world in a way that simulates lots of time passing. This may include:
             - Buildings collapsing
             - Things being buried
@@ -513,10 +513,10 @@ void WorldIOManager::setWorldEra(World* world, WorldEra newEra) {
         4. Change existing dirt to stone, add a noise-based layer of dirt/stone/sediment
         5. Smooth mountains a little bit, choose random points to 'spike' the land.
         6. Loop 3-5 the amount of eras between
-    */
+    **/
 
     // Save under a different filename (.name_numberoferaenum)
-    std::string worldName = "." + world->m_name + "_" + std::to_string((unsigned int)world->m_worldEra);
+    /*std::string worldName = "." + world->m_name + "_" + std::to_string((unsigned int)world->m_worldEra);
     P_saveWorld(world);
 
     int difference = (int)newEra - (int)world->m_worldEra;
@@ -563,28 +563,6 @@ void WorldIOManager::setWorldEra(World* world, WorldEra newEra) {
                                         while(y + yOffset >= 0) {
                                             if(world->getTile(chunkX, y+yOffset, 0)->isSolid()) {/// TODO: Cross-layer
 
-                                                /*
-                                                    1. Delete A (world->tiles[y+yOffset+1][chunkX])
-                                                    2. Move pointer to W (world->tiles[y][chunkX]) to A
-                                                    3. Move W's actual position down
-                                                    4. DON'T DELETE W! THERE WAS *NO* COPYING DONE
-                                                    5. Make a new Air block, point W's pointer to it.
-
-                                                // 1.
-                                                delete world->tiles[y+yOffset+1][chunkX];
-
-                                                // 2.
-                                                world->tiles[y+yOffset+1][chunkX] = world->tiles[y][chunkX];
-
-                                                // 3.
-                                                world->tiles[y+yOffset+1][chunkX]->setPosition(world->tiles[y+yOffset+1][chunkX]->getPosition() + glm::vec2(0.0f, yOffset+1));
-                                                world->tiles[y+yOffset+1][chunkX]->setNeedsSunCheck();
-
-                                                // 4. Okay, I heard you!
-                                                // 5.
-                                                world->tiles[y][chunkX] = new BlockAir(glm::vec2(chunkX, y), world);
-                                                break;*/
-
                                                 world->setTile(new Tile(glm::vec2(chunkX, y), 0, TileIDs::AIR, MetaData(), false)); /// TODO: Implement cross-layer structure stuff
 
                                             } else {
@@ -598,13 +576,6 @@ void WorldIOManager::setWorldEra(World* world, WorldEra newEra) {
                     }
                 }
             }
-
-            /*for(int y = 0; y < WORLD_HEIGHT; y++) {
-                for(int x = 0; x < WORLD_SIZE; x++) {
-                    world->extraTiles[y][0] = world->chunks[(x-1 + WORLD_SIZE) % WORLD_SIZE]->tiles[y][CHUNK_SIZE-1];
-                    world->extraTiles[y][1] = world->chunks[(x+1 + WORLD_SIZE) % WORLD_SIZE]->tiles[y][0];
-                }
-            }*/
         } // Gravity's done!
 
         { // Layer of rock and dirt time, bay-bee
@@ -637,18 +608,11 @@ void WorldIOManager::setWorldEra(World* world, WorldEra newEra) {
                     }
                 }
             }
-
-            /*for(int y = 0; y < WORLD_HEIGHT; y++) {
-                for(int x = 0; x < WORLD_SIZE; x++) {
-                    world->extraTiles[y][0] = world->chunks[(x-1 + WORLD_SIZE) % WORLD_SIZE]->tiles[y][CHUNK_SIZE-1];
-                    world->extraTiles[y][1] = world->chunks[(x+1 + WORLD_SIZE) % WORLD_SIZE]->tiles[y][0];
-                }
-            }*/
         } // Layering's done!
     } else if(difference < 0) { // Moving backwards through time, simply load an earlier save
         std::string oldWorldName = "." + world->m_name + "_" + std::to_string((unsigned int)newEra);
         P_loadWorld(oldWorldName, world);
-    }
+    }*/
 }
 
 /*StructureData WorldIOManager::loadStructureFromFile(std::string& filepath) {

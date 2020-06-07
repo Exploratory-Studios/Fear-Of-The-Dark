@@ -13,6 +13,10 @@ struct XML_EntityItemData;
 struct XML_ItemData;
 struct XML_ParticleData;
 struct XML_BiomeData;
+struct XML_EraData;
+struct XML_LootDrop;
+struct XML_LootTable;
+struct XML_StructureData;
 
 
 struct XML_TileData {
@@ -129,4 +133,45 @@ struct XML_BiomeData {
     float baseTemperature = 20; // The **highest** the temperature will be (midnight)
     float flatness = 1; // Higher values are more plateau-ish
     std::vector<unsigned int> mobSpawnIds = {}; // The ids of the mobs that will be spawned in this biome
+
+    /// TODO:
+    std::vector<unsigned int> structureSpawnIds = {}; // All structures (defined by XML_Structure objects)
+    std::vector<unsigned int> surfaceBlockIds = {}; // All blocks that make up the first few of the surface
+    std::vector<unsigned int> undergroundBlockIds = {}; // All blocks that make up the rest of the ground
+};
+
+struct XML_EraData { // Holds all data for each era.
+    unsigned int id;
+    std::string name = "UNDEFINED";
+
+    std::vector<unsigned int> biomeIds = {}; // Will be reassigned to world's biomesMap during era-change
+};
+
+struct XML_LootDrop {
+    unsigned int id;
+    std::string name = "UNDEFINED";
+
+    unsigned int itemID; // Points to an XML_ItemData.
+
+    unsigned int minDrop;
+    unsigned int maxDrop;
+    float chance; // Chance of this drop dropping. (Doesn't change amount. If this drop is chosen, based on this chance, then there's an equal probability of dropping the min, max, or anything in between.)
+};
+
+struct XML_LootTable {
+    unsigned int id;
+    std::string name = "UNDEFINED";
+
+    std::vector<XML_LootDrop> drops; // Will loop through all of these, and drop all who pass a chance check.
+};
+
+struct XML_StructureData {
+    unsigned int id;
+    std::string name = "UNDEFINED";
+
+    unsigned int structureID; // points to a structure ID, loaded by a structure manager.
+    unsigned int biomeID; // What biome it spawns in
+    float chance; // Chance it has to spawn. (Same as drop system)
+    unsigned int maxAmnt; // max amount in a world
+    unsigned int minAmnt; // min amount in a world
 };

@@ -1,0 +1,24 @@
+<era id="0" name="neolithic">
+	<biomes>
+		<biomeID>0</biomeID>
+		<biomeID>1</biomeID>
+		<biomeID>2</biomeID>
+		<biomeID>3</biomeID>
+		<biomeID>4</biomeID>
+		<biomeID>5</biomeID>
+		<biomeID>6</biomeID>
+		<biomeID>7</biomeID>
+	</biomes>
+</era>
+<era id="1" name="common">
+	<biomes>
+		<biomeID>0</biomeID>
+		<biomeID>1</biomeID>
+		<biomeID>2</biomeID>
+		<biomeID>3</biomeID>
+		<biomeID>4</biomeID>
+		<biomeID>5</biomeID>
+		<biomeID>6</biomeID>
+		<biomeID>7</biomeID>
+	</biomes>
+</era>

@@ -177,7 +177,7 @@ void GameplayScreen::draw() {
 
     float dayLight = cos((float)m_world->getTime() / (DAY_LENGTH / 6.28318f)) / 2.0f + 0.5f;
 
-    //glClearColor(0.3f * dayLight, 0.4f * dayLight, 1.0f * dayLight, 1.0f);
+    glClearColor(0.3f * dayLight, 0.4f * dayLight, 1.0f * dayLight, 1.0f);
 
     { // Sky
         m_skyTextureProgram.use();
@@ -193,9 +193,6 @@ void GameplayScreen::draw() {
         GLint sizeUniform = m_skyTextureProgram.getUniformLocation("screenSizeU");
         glUniform2f(sizeUniform, m_window->getScreenWidth(), m_window->getScreenHeight());
 
-        GLint timeUniform = m_skyTextureProgram.getUniformLocation("time");
-        glUniform1f(timeUniform, m_time);
-
         GLint lightUniform = m_skyTextureProgram.getUniformLocation("daylight");
         glUniform1f(lightUniform, dayLight);
 
@@ -204,7 +201,7 @@ void GameplayScreen::draw() {
         glUniform1f(playerDepthUniform, playerChunkX / (float)(CHUNK_SIZE));
 
         GLint parallaxZoomUniform = m_skyTextureProgram.getUniformLocation("parallaxZoom");
-        glUniform1f(parallaxZoomUniform, 0.9f);
+        glUniform1f(parallaxZoomUniform, 0.95f);
 
         m_spriteBatch.begin(GLEngine::GlyphSortType::FRONT_TO_BACK);
 

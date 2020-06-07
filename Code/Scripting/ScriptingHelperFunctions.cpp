@@ -141,14 +141,8 @@ void setFlag(QuestManager* qm, unsigned int id, bool val) {
     qm->setFlag(id, val);
 }
 
-void setEra(World* world, std::string era) {
-    if(era == "neolithic") {
-        world->setWorldEra(WorldEra::NEOLITHIC_ERA);
-    } else if(era == "common") {
-        world->setWorldEra(WorldEra::COMMON_ERA);
-    } else if(era == "future") {
-        world->setWorldEra(WorldEra::FUTURE_ERA);
-    }
+void setEra(World* world, unsigned int id) {
+    world->setWorldEra(id);
 }
 
 void setPlayerGodMode(World* world, bool godMode) {

@@ -45,8 +45,8 @@ public:
     unsigned long int getTime() { return m_time; }
     unsigned long int getFrame() { return m_frame; }
     std::string getName() { return m_name; }
-    WorldEra getEra() { return m_worldEra; }
-    WorldEra getNextEra() { return m_nextWorldEra; }
+    unsigned int getEra() { return m_worldEra; }
+    unsigned int getNextEra() { return m_nextWorldEra; }
 
     void setName(std::string name) { m_name = name; }
     void setPlayer(EntityPlayer& p);
@@ -68,7 +68,7 @@ public:
 
     void incrementTime() { m_frame++; if((m_frame % 60/TICK_RATE) == 0) m_time++; }
 
-    void setWorldEra(WorldEra newEra) { m_nextWorldEra = newEra; }
+    void setWorldEra(unsigned int newEraID) { m_nextWorldEra = newEraID; }
 
     float getDistance(glm::vec2 point0, glm::vec2 point1); // Gets the distance between two points, accounting for crossover.
 
@@ -94,8 +94,8 @@ private:
     unsigned long int m_frame = 0; // frames that have passed
     float m_sunlight = 0.0f;
 
-    WorldEra m_worldEra = WorldEra::NEOLITHIC_ERA;
-    WorldEra m_nextWorldEra = WorldEra::NEOLITHIC_ERA; // If this is different than m_worldEra, trigger WorldIOManager to advance time.
+    unsigned int m_worldEra = 0;
+    unsigned int m_nextWorldEra = 0; // If this is different than m_worldEra, trigger WorldIOManager to advance time.
 
     std::string m_name;
 };

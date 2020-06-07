@@ -37,7 +37,7 @@ class WorldIOManager
         void saveWorld(World* world);
         void createWorld(unsigned int seed, std::string worldName, bool isFlat, World* world);
 
-        void setWorldEra(World* world, WorldEra newEra);
+        void setWorldEra(World* world, unsigned int newEraID);
 
         //StructureData loadStructureFromFile(std::string& filepath);
         //void placeStructure(World* world, StructureData& structure, glm::vec2 position); /// TODO: Make structures "individuals" so that they don't need the WorldIOManager to function.

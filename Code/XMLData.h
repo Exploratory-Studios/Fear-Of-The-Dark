@@ -40,6 +40,10 @@ class XMLData
         static XML_EntityItemData getEntityItemData(unsigned int id);
         static XML_ItemData getItemData(unsigned int id);
         static XML_BiomeData getBiomeData(unsigned int id);
+        static XML_EraData getEraData(unsigned int id);
+        static XML_LootDrop getLootDropData(unsigned int id);
+        static XML_LootTable getLootTableData(unsigned int id);
+        static XML_StructureData getStructureData(unsigned int id);
 
         static unsigned int getTotalBiomes(); // Returns the number of biomes
 
@@ -51,6 +55,10 @@ class XMLData
         static void loadXMLEntityItemData(std::string filepath = ASSETS_FOLDER_PATH + "/Data/ItemEntities.xml");
         static void loadXMLItemData(std::string filepath = ASSETS_FOLDER_PATH + "/Data/Items.xml");
         static void loadXMLBiomeData(std::string filepath = ASSETS_FOLDER_PATH + "/Data/Biomes.xml");
+        static void loadXMLEraData(std::string filepath = ASSETS_FOLDER_PATH + "/Data/Eras.xml");
+        static void loadXMLLootDropData(std::string filepath = ASSETS_FOLDER_PATH + "/Data/Loot.xml");
+        static void loadXMLLootTableData(std::string filepath = ASSETS_FOLDER_PATH + "/Data/Loot.xml");
+        static void loadXMLStructureData(std::string filepath = ASSETS_FOLDER_PATH + "/Data/Structures.xml");
 
 
         static XML_TileData readTileData(rapidxml::xml_node<>* node);
@@ -60,6 +68,10 @@ class XMLData
         static XML_EntityItemData readEntityItemData(rapidxml::xml_node<>* node);
         static XML_ItemData readItemData(rapidxml::xml_node<>* node);
         static XML_BiomeData readBiomeData(rapidxml::xml_node<>* node);
+        static XML_EraData readEraData(rapidxml::xml_node<>* node);
+        static XML_LootDrop readLootDropData(rapidxml::xml_node<>* node);
+        static XML_LootTable readLootTableData(rapidxml::xml_node<>* node);
+        static XML_StructureData readStructureData(rapidxml::xml_node<>* node);
 
 
         static std::map<unsigned int, XML_TileData> m_tileData;
@@ -69,4 +81,8 @@ class XMLData
         static std::map<unsigned int, XML_EntityItemData> m_entityItemData;
         static std::map<unsigned int, XML_ItemData> m_itemData;
         static std::map<unsigned int, XML_BiomeData> m_biomeData;
+        static std::map<unsigned int, XML_EraData> m_eraData;
+        static std::map<unsigned int, XML_LootDrop> m_lootDropData;
+        static std::map<unsigned int, XML_LootTable> m_lootTableData;
+        static std::map<unsigned int, XML_StructureData> m_structureData;
 };

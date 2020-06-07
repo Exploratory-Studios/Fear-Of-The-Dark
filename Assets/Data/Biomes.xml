@@ -7,6 +7,7 @@
 	<entities>
 		<entityID>2</entityID>	
 	</entities>
+	<backgroundTexture>TestBackground.png</backgroundTexture>
 </biome>
 <biome id="1" name="Arctic">
 	<baseHeight>30</baseHeight>
@@ -17,6 +18,7 @@
 	<entities>
 		<entityID>2</entityID>	
 	</entities>
+	<backgroundTexture>TestBackground.png</backgroundTexture>
 </biome>
 <biome id="2" name="Australia">
 	<baseHeight>55</baseHeight>
@@ -27,6 +29,7 @@
 	<entities>
 		<entityID>2</entityID>	
 	</entities>
+	<backgroundTexture>TestBackground.png</backgroundTexture>
 </biome>
 <biome id="3" name="USA">
 	<baseHeight>80</baseHeight>
@@ -37,6 +40,7 @@
 	<entities>
 		<entityID>2</entityID>	
 	</entities>
+	<backgroundTexture>TestBackground.png</backgroundTexture>
 </biome>
 <biome id="4" name="Russia">
 	<baseHeight>110</baseHeight>
@@ -47,6 +51,7 @@
 	<entities>
 		<entityID>2</entityID>	
 	</entities>
+	<backgroundTexture>TestBackground.png</backgroundTexture>
 </biome>
 <biome id="5" name="North Africa">
 	<baseHeight>90</baseHeight>
@@ -57,6 +62,7 @@
 	<entities>
 		<entityID>2</entityID>	
 	</entities>
+	<backgroundTexture>TestBackground.png</backgroundTexture>
 </biome>
 <biome id="6" name="South Africa">
 	<baseHeight>70</baseHeight>

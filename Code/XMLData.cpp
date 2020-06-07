@@ -170,6 +170,14 @@ void XMLData::init() {
     Logger::getInstance()->log("Loaded data (Items)...");
     loadXMLBiomeData();
     Logger::getInstance()->log("Loaded data (Biomes)...");
+    loadXMLEraData();
+    Logger::getInstance()->log("Loaded data (Eras)...");
+    loadXMLLootDropData();
+    Logger::getInstance()->log("Loaded data (Loot Drops)...");
+    loadXMLLootTableData();
+    Logger::getInstance()->log("Loaded data (Loot Tables)...");
+    loadXMLStructureData();
+    Logger::getInstance()->log("Loaded data (Structures)...");
 
     Logger::getInstance()->log("Loaded all data successfully!");
 }
@@ -181,6 +189,10 @@ std::map<unsigned int, XML_EntityProjectileData> XMLData::m_entityProjectileData
 std::map<unsigned int, XML_EntityItemData> XMLData::m_entityItemData;
 std::map<unsigned int, XML_ItemData> XMLData::m_itemData;
 std::map<unsigned int, XML_BiomeData> XMLData::m_biomeData;
+std::map<unsigned int, XML_EraData> XMLData::m_eraData;
+std::map<unsigned int, XML_LootDrop> XMLData::m_lootDropData;
+std::map<unsigned int, XML_LootTable> XMLData::m_lootTableData;
+std::map<unsigned int, XML_StructureData> XMLData::m_structureData;
 
 /// Tiles
 void XMLData::loadXMLTileData(std::string filepath) {
@@ -718,7 +730,7 @@ XML_BiomeData XMLData::readBiomeData(rapidxml::xml_node<>* node) {
     getValue(node, "flatness", d.flatness);
     getVector(node, "entities", "entityID", d.mobSpawnIds);
     if(getValue(node, "backgroundTexture", d.backgroundTexture)) {
-        d.backgroundTexture = ASSETS_FOLDER_PATH + "Textures/" + d.backgroundTexture;
+        d.backgroundTexture = ASSETS_FOLDER_PATH + "Textures/BiomeBackgrounds/" + d.backgroundTexture;
     }
 
     return d;
@@ -727,3 +739,240 @@ XML_BiomeData XMLData::readBiomeData(rapidxml::xml_node<>* node) {
 unsigned int XMLData::getTotalBiomes() {
     return m_biomeData.size();
 }
+
+/// Eras
+
+void XMLData::loadXMLEraData(std::string filepath) {
+    /** Loads all era data into the biomeData map **/
+
+    // Open file at filepath
+    std::ifstream file;
+    file.open(filepath);
+
+    if(file.fail()) { // Handle exceptions
+        Logger::getInstance()->log("ERROR: Era data XML file unable to be loaded: " + filepath, true);
+        return;
+    }
+
+    // Load all the text in the file to a string
+    std::string text;
+    std::string line;
+    while(getline(file, line)) {
+        text += line + "\n";
+    }
+
+    rapidxml::xml_document<> doc;
+    doc.parse<rapidxml::parse_full>((char*)text.c_str());
+
+    for(rapidxml::xml_node<>* node = doc.first_node("era"); node; node = node->next_sibling("era")) {
+        XML_EraData e = XMLData::readEraData(node);
+        unsigned int id = std::stoi(node->first_attribute("id")->value());
+        std::string name = node->first_attribute("name")->value();
+        e.id = id;
+        e.name = name;
+        m_eraData.insert(std::pair<unsigned int, XML_EraData>(id, e));
+    }
+}
+
+XML_EraData XMLData::getEraData(unsigned int id) {
+    auto index = m_eraData.find(id);
+
+    if(index == m_eraData.end()) {
+        Logger::getInstance()->log("ERROR: Couldn't find era data with ID: " + std::to_string(id), true);
+        XML_EraData e;
+        return e;
+    }
+
+    return index->second;
+}
+
+XML_EraData XMLData::readEraData(rapidxml::xml_node<>* node) {
+
+    XML_EraData d;
+
+    getVector(node, "biomes", "biomeID", d.biomeIds);
+
+    return d;
+}
+
+/// LootDrops
+
+void XMLData::loadXMLLootDropData(std::string filepath) {
+    /** Loads all loot drop data into the biomeData map **/
+
+    // Open file at filepath
+    std::ifstream file;
+    file.open(filepath);
+
+    if(file.fail()) { // Handle exceptions
+        Logger::getInstance()->log("ERROR: Loot drop data XML file unable to be loaded: " + filepath, true);
+        return;
+    }
+
+    // Load all the text in the file to a string
+    std::string text;
+    std::string line;
+    while(getline(file, line)) {
+        text += line + "\n";
+    }
+
+    rapidxml::xml_document<> doc;
+    doc.parse<rapidxml::parse_full>((char*)text.c_str());
+
+    for(rapidxml::xml_node<>* node = doc.first_node("lootDrop"); node; node = node->next_sibling("lootDrop")) {
+        XML_LootDrop d = XMLData::readLootDropData(node);
+        unsigned int id = std::stoi(node->first_attribute("id")->value());
+        std::string name = node->first_attribute("name")->value();
+        d.id = id;
+        d.name = name;
+        m_lootDropData.insert(std::pair<unsigned int, XML_LootDrop>(id, d));
+    }
+}
+
+XML_LootDrop XMLData::getLootDropData(unsigned int id) {
+    auto index = m_lootDropData.find(id);
+
+    if(index == m_lootDropData.end()) {
+        Logger::getInstance()->log("ERROR: Couldn't find loot drop data with ID: " + std::to_string(id), true);
+        XML_LootDrop d;
+        return d;
+    }
+
+    return index->second;
+}
+
+XML_LootDrop XMLData::readLootDropData(rapidxml::xml_node<>* node) {
+
+    XML_LootDrop d;
+
+    getValue(node, "itemID", d.itemID);
+    getValue(node, "minDrop", d.minDrop);
+    getValue(node, "maxDrop", d.maxDrop);
+    getValue(node, "chance", d.chance);
+
+    return d;
+}
+
+/// LootTables
+
+void XMLData::loadXMLLootTableData(std::string filepath) {
+    /** Loads all loot table data into the biomeData map **/
+
+    // Open file at filepath
+    std::ifstream file;
+    file.open(filepath);
+
+    if(file.fail()) { // Handle exceptions
+        Logger::getInstance()->log("ERROR: Loot table data XML file unable to be loaded: " + filepath, true);
+        return;
+    }
+
+    // Load all the text in the file to a string
+    std::string text;
+    std::string line;
+    while(getline(file, line)) {
+        text += line + "\n";
+    }
+
+    rapidxml::xml_document<> doc;
+    doc.parse<rapidxml::parse_full>((char*)text.c_str());
+
+    for(rapidxml::xml_node<>* node = doc.first_node("lootTable"); node; node = node->next_sibling("lootTable")) {
+        XML_LootTable d = XMLData::readLootTableData(node);
+        unsigned int id = std::stoi(node->first_attribute("id")->value());
+        std::string name = node->first_attribute("name")->value();
+        d.id = id;
+        d.name = name;
+        m_lootTableData.insert(std::pair<unsigned int, XML_LootTable>(id, d));
+    }
+}
+
+XML_LootTable XMLData::getLootTableData(unsigned int id) {
+    auto index = m_lootTableData.find(id);
+
+    if(index == m_lootTableData.end()) {
+        Logger::getInstance()->log("ERROR: Couldn't find loot drop data with ID: " + std::to_string(id), true);
+        XML_LootTable d;
+        return d;
+    }
+
+    return index->second;
+}
+
+XML_LootTable XMLData::readLootTableData(rapidxml::xml_node<>* node) {
+
+    XML_LootTable d;
+
+    std::vector<unsigned int> ids;
+    getVector(node, "drops", "dropID", ids);
+
+    for(unsigned int i = 0; i < ids.size(); i++) {
+        d.drops.push_back(getLootDropData(ids[i]));
+    }
+
+    if(ids.size() == 0) {
+        Logger::getInstance()->log("WARNING: Loot table is empty! Confirm that loot drops are being loaded before loot tables!", true);
+    }
+
+    return d;
+}
+
+/// Structures
+
+void XMLData::loadXMLStructureData(std::string filepath) {
+    /** Loads all structure data into the structureData map **/
+
+    // Open file at filepath
+    std::ifstream file;
+    file.open(filepath);
+
+    if(file.fail()) { // Handle exceptions
+        Logger::getInstance()->log("ERROR: Structure data XML file unable to be loaded: " + filepath, true);
+        return;
+    }
+
+    // Load all the text in the file to a string
+    std::string text;
+    std::string line;
+    while(getline(file, line)) {
+        text += line + "\n";
+    }
+
+    rapidxml::xml_document<> doc;
+    doc.parse<rapidxml::parse_full>((char*)text.c_str());
+
+    for(rapidxml::xml_node<>* node = doc.first_node("structure"); node; node = node->next_sibling("structure")) {
+        XML_StructureData s = XMLData::readStructureData(node);
+        unsigned int id = std::stoi(node->first_attribute("id")->value());
+        std::string name = node->first_attribute("name")->value();
+        s.id = id;
+        s.name = name;
+        m_structureData.insert(std::pair<unsigned int, XML_StructureData>(id, s));
+    }
+}
+
+XML_StructureData XMLData::getStructureData(unsigned int id) {
+    auto index = m_structureData.find(id);
+
+    if(index == m_structureData.end()) {
+        Logger::getInstance()->log("ERROR: Couldn't find structure data with ID: " + std::to_string(id), true);
+        XML_StructureData s;
+        return s;
+    }
+
+    return index->second;
+}
+
+XML_StructureData XMLData::readStructureData(rapidxml::xml_node<>* node) {
+
+    XML_StructureData s;
+
+    getValue(node, "structureID", s.structureID);
+    getValue(node, "biomeID", s.biomeID);
+    getValue(node, "chance", s.chance);
+    getValue(node, "maxAmnt", s.maxAmnt);
+    getValue(node, "minAmnt", s.minAmnt);
+
+    return s;
+}
+

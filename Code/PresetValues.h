@@ -117,6 +117,8 @@
 
 #define MAX_TYPE_PARTICLES 300 // How many particles are there of a single type have at any given time?
 
+#define UNDEFINED_ASSET_PATH std::string(ASSETS_FOLDER_PATH + "Textures/UNDEFINED.png")
+
 enum class DayPortion {
     MORNING,
     DAY,

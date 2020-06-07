@@ -1,12 +1,13 @@
 <tile id="0" name="Air">
+	<texture/>
     <isSolid>0</isSolid>
     <isDrawn>0</isDrawn>
     <isNatural>1</isNatural>
 	<isTransparent>1</isTransparent>
 </tile>
 <tile id="1" name="Dirt">
-    <texture>Dirt.png</texture>
-    <bumpMap>Dirt.png</bumpMap>
+    <texture>Log.png</texture>
+    <bumpMap>LogMapR.png</bumpMap>
     <isNatural>1</isNatural>
 </tile>
 <tile id="2" name="Grass">
@@ -32,10 +33,12 @@
 
 
 
-
 <tile id="11" name="Water">
     <texture>Water.png</texture>
     <bumpMap>Water.png</bumpMap>
     <isNatural>1</isNatural>
+	<isSolid>0</isSolid>
+	<isTransparent>1</isTransparent>
 	<updateScript>WaterUpdate.lua</updateScript>
+	<waterLevel>1.0</waterLevel>
 </tile>

@@ -1,3 +1,5 @@
+local args = ...
+
 itemID_blockID = {
 	[1] = 1, -- dirt
 	[2] = 6, -- torch
@@ -9,6 +11,8 @@ itemID_blockID = {
 	[8] = 13 -- wood sign
 }
 
-id = itemID_blockID[itemID]
+id = itemID_blockID[args["itemID"]]
 
-setBlock(id, blockX, blockY, 0, "")
+print(id)
+
+setBlock(id, args["blockX"], args["blockY"], 0, "")

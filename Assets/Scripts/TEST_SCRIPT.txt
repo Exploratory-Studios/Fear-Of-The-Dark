@@ -1,17 +1,12 @@
---setTime(0)
+local args = ...
 
---playerUUID = getPlayer()
+local speed = (math.random() - 0.5) / 4.0;
 
---pos = getEntityPosition(playerUUID)
+local angle = math.rad(math.random()*360)
+local xVel = math.cos(angle) * speed
+local yVel = math.sin(angle) * speed
 
-x = selfX
-y = selfY
+local x = args["blockX"] + math.random()
+local y = args["blockY"] + math.random()
 
-
-angle = math.rad(math.random()*360)
-xPos = math.cos(angle)
-yPos = math.sin(angle)
-
-speed = math.random() - 0.5;
-
-createParticle(0, x + 0.5, y + 0.5, xPos * speed, yPos * speed, 0.3)
+createParticle(0, x, y, xVel, yVel, 0.3)

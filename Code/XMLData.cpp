@@ -717,6 +717,9 @@ XML_BiomeData XMLData::readBiomeData(rapidxml::xml_node<>* node) {
     getValue(node, "baseTemperature", d.baseTemperature);
     getValue(node, "flatness", d.flatness);
     getVector(node, "entities", "entityID", d.mobSpawnIds);
+    if(getValue(node, "backgroundTexture", d.backgroundTexture)) {
+        d.backgroundTexture = ASSETS_FOLDER_PATH + "Textures/" + d.backgroundTexture;
+    }
 
     return d;
 }

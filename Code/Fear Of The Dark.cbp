@@ -109,21 +109,24 @@
 					<Add option="-lboost_filesystem" />
 					<Add option="-lboost_thread" />
 					<Add option="-llua53" />
-					<Add option="-static" />
-					<Add option="-static-libstdc++" />
-					<Add option="-static-libgcc" />
 					<Add directory="/usr/x86_64-w64-mingw32/lib" />
 				</Linker>
 			</Target>
 		</Build>
 		<Compiler>
-			<Add option="-Wall" />
 			<Add option="-std=c++1z" />
 			<Add option="-fexceptions" />
 			<Add option="-DLUA_APICHECK" />
 			<Add directory="../../GLEngine" />
 		</Compiler>
 		<Linker>
+			<Add option="-Wl,-Bstatic" />
+			<Add option="/usr/lib/x86_64-linux-gnu/libboost_thread.a" />
+			<Add option="/usr/lib/x86_64-linux-gnu/libboost_filesystem.a" />
+			<Add option="/usr/lib/x86_64-linux-gnu/libboost_system.a" />
+			<Add option="-llua5.3" />
+			<Add option="-Wl,-Bdynamic" />
+			<Add option="-Wl,-Bdynamic" />
 			<Add option="../../GLEngine/bin/Release/libGLEngine.a" />
 			<Add option="-lCEGUIBase-0" />
 			<Add option="-lCEGUIOpenGLRenderer-0" />
@@ -133,10 +136,7 @@
 			<Add option="-lGL" />
 			<Add option="-lGLU" />
 			<Add option="-lGLEW" />
-			<Add option="-lstdc++fs" />
-			<Add option="-lboost_system" />
-			<Add option="-lboost_thread" />
-			<Add option="-llua5.3" />
+			<Add option="-lpthread" />
 			<Add directory="../../GLEngine" />
 		</Linker>
 		<Unit filename="../Assets/Art/Animations/Readme.txt" />
@@ -380,6 +380,7 @@
 		<Unit filename="WorldIOManager.h" />
 		<Unit filename="XMLData.cpp" />
 		<Unit filename="XMLData.h" />
+		<Unit filename="XMLDataTypes.h" />
 		<Extensions>
 			<code_completion />
 			<debugger />

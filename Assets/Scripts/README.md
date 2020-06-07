@@ -8,53 +8,65 @@ The following is a list of custom functions with arguments, types, and other inf
 
 ## Variables
 
-There are a few variables at your disposal in certain types of scripts.
+There are a few variables at your disposal in certain types of scripts. All of these variables belong to the table `caller`.
 
-#### Update, Tick, Destruction, and Interaction Scripts (Blocks)
+#### Update, Tick, Destruction, and Interaction Scripts (Blocks & Entities)
 
 These scripts are called on certain events (like every frame for update scripts, every tick for tick scripts, etc.). They automatically contain and set the variables:
 
-- `selfX`
+- `caller["selfX"]`
 
- The X position of this block.
+ The X position of this block/entity.
 
-- `selfY`
+- `caller["selfY"]`
 
- The Y position of this block.
+ The Y position of this block/entity.
 
-- `selfID`
+- `caller["selfID"]`
 
- The ID of this block.
+ The ID of this block/entity.
+
+##### Entity Scripts
+
+These scripts are called by entities. They contain:
+
+- `caller["selfXVel"]`
+
+ The X velocity component of this entity.
+
+- `caller["selfYVel"]`
+
+ The Y velocity component of this entity.
 
 #### Particle Update Scripts
 
-These scripts are called every frame, for each particle. Make sure they're lightweight! **Note: Particle variables are simply copies of the attribute. This means you can edit them all you want, but the particle won't change. To enact any changes, put a `return` statement at the end of your script.** Ex: To not change a particle at all, you could write `return particleX,particleY,particleXVel,particleYVel,particleLife,particleWidth,particleAlpha` *(in that order)*
+These scripts are called every frame, for each particle. Make sure they're lightweight! **Note: Particle variables are simply copies of the attribute. This means you can edit them all you want, but the particle won't change. To enact any changes, put a `return` statement at the end of your script.** Ex: To not change a particle at all, you could write `return caller["particleX"], caller["particleY"], caller["particleXVel"], caller["particleYVel"], caller["particleLife"], caller["particleWidth"], caller["particleAlpha"]` *(in that order)*
 
-- `particleX`
+- `caller["particleX"]`
 
  The X position of this particle.
 
-- `particleY`
+- `caller["particleY"]`
 
  The Y position of this particle.
 
-- `particleXVel`
+- `caller["particleXVel"]`
 
  The X velocity of this particle.
 
-- `particleYVel`
+- `caller["particleYVel"]`
 
  The Y velocity of this particle.
 
-- `particleLife`
+- `caller["particleLife"]`
 
  The amount of time this particle will continue to persist. When this value reaches `0`, the particle disappears, and its script isn't called anymore. Every frame, it lowers by the `decayRate` of the particle type, and it starts at `1`.
 
-- `particleWidth`
+- `caller["particleWidth"]`
 
  The width of the particle. **Note: One block is `1` unit wide**
 
-- `particleAlpha`
+- `caller["particleAlpha"]`
 
  The alpha component of this particle's colouring. Ranges from `255` (opaque) to `0` (transparent).
 

@@ -1,8 +1,10 @@
-particleYVel = 0.02
-particleXVel = particleXVel / 1.5
-particleAlpha = particleLife * 255
+local args = ...
 
-particleY = particleY + particleYVel
-particleX = particleX + particleXVel
+args["particleYVel"] = 0.02
+args["particleXVel"] = args["particleXVel"] / 1.5
+args["particleAlpha"] = args["particleLife"] * 255
 
-return particleX, particleY, particleXVel, particleYVel, particleLife, particleWidth, particleAlpha
+args["particleY"] = args["particleY"] + args["particleYVel"]
+args["particleX"] = args["particleX"] + args["particleXVel"]
+
+return args

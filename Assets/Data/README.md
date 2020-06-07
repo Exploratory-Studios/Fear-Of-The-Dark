@@ -25,7 +25,7 @@ The following attributes can be set:
 
 ## Particles
 
-Each particle is defined starting with tag `<particle id="`*`Your number here`*`">`. The ID attribute is similar to the item's ID attribute, as this is how scripts and the game will refer to the particle type.
+Each particle is defined starting with tag `<particle id="`*`Your number here`*`" name="`*`Your value here`*`">`. The ID attribute is similar to the item's ID attribute, as this is how scripts and the game will refer to the particle type.
 
 The following attributes can be set:
 
@@ -121,7 +121,7 @@ Although they're split into categories, all entities have base attributes:
 
 #### Projectiles
 
- Projectiles are defined with the tag `<projectile id="`*`Your number here`*`">`. As with the rest of the objects, the ID is how scripts and the game refer to this type of **Entity**. **Note that the IDs are shared between all types of entities. This means you can't have any identical IDs between NPCs, ItemEntities, or Projectiles.**
+ Projectiles are defined with the tag `<projectile id="`*`Your number here`*`" name="`*`Your value here`*`">`. As with the rest of the objects, the ID is how scripts and the game refer to this type of **Entity**. **Note that the IDs are shared between all types of entities. This means you can't have any identical IDs between NPCs, ItemEntities, or Projectiles.**
 
  They have the following attributes:
 

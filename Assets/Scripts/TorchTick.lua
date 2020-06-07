@@ -1,7 +1,7 @@
---.5, .75
+local args = ...
 
-x = blockX + .35
-y = blockY + .75
+x = args["blockX"] + .35
+y = args["blockY"] + .75
 
 xVel = (math.random()-0.5) / 8
 

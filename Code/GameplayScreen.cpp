@@ -179,13 +179,16 @@ void GameplayScreen::draw() {
 
     //glClearColor(0.3f * dayLight, 0.4f * dayLight, 1.0f * dayLight, 1.0f);
 
-    {
+    { // Sky
         m_skyTextureProgram.use();
 
         // Camera matrix
         glm::mat4 projectionMatrix = m_uiCamera.getCameraMatrix();
         GLint pUniform = m_skyTextureProgram.getUniformLocation("P");
         glUniformMatrix4fv(pUniform, 1, GL_FALSE, &projectionMatrix[0][0]);
+
+        GLint textureUniform = m_textureProgram.getUniformLocation("textureSampler");
+        glUniform1i(textureUniform, 0);
 
         GLint sizeUniform = m_skyTextureProgram.getUniformLocation("screenSizeU");
         glUniform2f(sizeUniform, m_window->getScreenWidth(), m_window->getScreenHeight());
@@ -196,13 +199,22 @@ void GameplayScreen::draw() {
         GLint lightUniform = m_skyTextureProgram.getUniformLocation("daylight");
         glUniform1f(lightUniform, dayLight);
 
+        GLint playerDepthUniform = m_skyTextureProgram.getUniformLocation("playerXPos");
+        float playerChunkX = std::fmod((m_world->getPlayer()->getPosition().x + (float)CHUNK_SIZE), (float)CHUNK_SIZE);
+        glUniform1f(playerDepthUniform, playerChunkX / (float)(CHUNK_SIZE));
+
+        GLint parallaxZoomUniform = m_skyTextureProgram.getUniformLocation("parallaxZoom");
+        glUniform1f(parallaxZoomUniform, 0.9f);
+
         m_spriteBatch.begin(GLEngine::GlyphSortType::FRONT_TO_BACK);
 
 
         int playerX = (int)m_world->getPlayer()->getPosition().x;
-        m_world->getBiome(playerX);
+        std::string backgroundPath = m_world->getBiome(playerX).backgroundTexture;
 
-        m_spriteBatch.draw(glm::vec4(0.0f, 0.0f, m_window->getScreenWidth(), m_window->getScreenHeight()), glm::vec4(0.0f, 0.0f, 1.0f, 1.0f), 0, 0, 1.0f, GLEngine::ColourRGBA8(0, 0, 0, 0));
+        GLuint backgroundID = GLEngine::ResourceManager::getTexture(backgroundPath).id;
+
+        m_spriteBatch.draw(glm::vec4(0.0f, 0.0f, m_window->getScreenWidth(), m_window->getScreenHeight()), glm::vec4(0.0f, 0.0f, 1.0f, 1.0f), backgroundID, 0, 1.0f, GLEngine::ColourRGBA8(255, 255, 255, 255));
 
         m_spriteBatch.end();
         m_spriteBatch.renderBatch();
@@ -211,7 +223,7 @@ void GameplayScreen::draw() {
 
     }
 
-    {
+    { // World
         m_textureProgram.use();
 
         // Camera matrix
@@ -244,7 +256,7 @@ void GameplayScreen::draw() {
         m_textureProgram.unuse();
     }
 
-    {
+    { // GUI
         m_uiTextureProgram.use();
 
         GLint textureUniform = m_uiTextureProgram.getUniformLocation("mySampler");
@@ -273,7 +285,7 @@ void GameplayScreen::draw() {
         m_uiTextureProgram.unuse();
     }
 
-    {
+    { // Post
         m_vignetteTextureProgram.use();
 
         /*GLint textureUniform = m_vignetteTextureProgram.getUniformLocation("mySampler");

@@ -1,7 +1,7 @@
 <particle id="0">
 	<texture>particleTest.png</texture>
 	<bumpMap>particleTest.png</bumpMap>
-	<decayRate>0.02</decayRate>
+	<decayRate>0.002</decayRate>
 	<script>particleUpdate.txt</script>
 </particle>
 <particle id="1">

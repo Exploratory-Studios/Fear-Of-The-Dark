@@ -1,6 +1,6 @@
 <npc id="0" name="Player">
-	<texture>Mob0.png</texture>
-	<bumpMap>Mob0.png</bumpMap>
+	<texture>Player.png</texture>
+	<bumpMap>BushGreen.png</bumpMap>
 	<sizeX>1.5</sizeX>
 	<sizeY>4.0</sizeY>
 	<speed>0.2</speed>
@@ -22,4 +22,12 @@
 	<speed>0.2</speed>
 	<jumpHeight>2.0</jumpHeight>
 	<faction>evil</faction>
+</npc>
+
+<npc id="666" name="Fox">
+	<texture>FoxStanding.png</texture>
+	<bumpMap>FoxStandingMap.png</bumpMap>
+	<speed>0.2</speed>
+	<jumpHeight>1.0</jumpHeight>
+	<faction>bad</faction>
 </npc>

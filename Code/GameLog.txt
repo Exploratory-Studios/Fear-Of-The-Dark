@@ -1,7 +1,7 @@
 
 
 
-### LOG: Sun Jun  7 00:41:44 2020 ###
+### LOG: Sun Jun  7 02:04:57 2020 ###
 
 Beginning to load data...
 Successfully Loaded Script File: /home/davis-dev/.exploratory/Fear Of The Dark/Assets/Scripts/TEST_SCRIPT.txt, and given id of: 0
@@ -16,8 +16,8 @@ Successfully Loaded Script File: /home/davis-dev/.exploratory/Fear Of The Dark/A
 Loaded data (Items)...
 Loaded data (Biomes)...
 Loaded all data successfully!
-CREATE: Starting world creation at time: 869.291992
-CREATE: Finished world creation at time: 3275.802979 (Elapsed: 2406.510986ms)
+CREATE: Starting world creation at time: 1019.807983
+CREATE: Finished world creation at time: 3869.696045 (Elapsed: 2849.888184ms)
 Loaded all 3 music files.
 Loaded all 2 sound files.
 Loading dialogue. 1297 bytes to read.
@@ -34,4 +34,4 @@ Loaded flag with id of 5 and value of 0
 Flags loaded! (24 bytes)
 Loading trade tables. 180 bytes to read.
 Loaded trade tables! (24 bytes)
-Loaded script: /home/davis-dev/.exploratory/Fear Of The Dark/Assets/Scripts/WaterUpdate.lua
+Loaded script: /home/davis-dev/.exploratory/Fear Of The Dark/Assets/Scripts/TEST_SCRIPT.txt

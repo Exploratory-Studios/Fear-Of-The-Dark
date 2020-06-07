@@ -16,7 +16,7 @@ struct XML_BiomeData;
 
 
 struct XML_TileData {
-    std::string textureFilepath;
+    std::string textureFilepath = UNDEFINED_ASSET_PATH;
     std::string bumpMapFilepath;
     float emittedLight = 0.0f;
     float emittedHeat = 0.0f;
@@ -35,7 +35,7 @@ struct XML_TileData {
 };
 
 struct XML_ParticleData {
-    std::string textureFilepath;
+    std::string textureFilepath = UNDEFINED_ASSET_PATH;
     std::string bumpMapFilepath;
     std::string scriptPath;
     float decayRate = 0.0f;
@@ -44,7 +44,7 @@ struct XML_ParticleData {
 struct XML_EntityNPCData {
     unsigned int id = (unsigned int)-1;
 
-    std::string textureFilepath;
+    std::string textureFilepath = UNDEFINED_ASSET_PATH;
     std::string bumpMapFilepath;
 
     glm::vec2 size = glm::vec2(1.0f);
@@ -73,7 +73,7 @@ struct XML_EntityNPCData {
 struct XML_EntityProjectileData {
     unsigned int id = (unsigned int)-1;
 
-    std::string textureFilepath;
+    std::string textureFilepath = UNDEFINED_ASSET_PATH;
     std::string bumpMapFilepath;
 
     glm::vec2 size = glm::vec2(1.0f);
@@ -92,7 +92,7 @@ struct XML_EntityProjectileData {
 struct XML_EntityItemData {
     unsigned int id = (unsigned int)-1;
 
-    std::string textureFilepath;
+    std::string textureFilepath = UNDEFINED_ASSET_PATH;
     std::string bumpMapFilepath;
 
     glm::vec2 size = glm::vec2(1.0f);
@@ -107,7 +107,7 @@ struct XML_EntityItemData {
 struct XML_ItemData {
     unsigned int id;
 
-    std::string textureFilepath;
+    std::string textureFilepath = UNDEFINED_ASSET_PATH;
     std::string name;
 
     int useScriptID = -1;
@@ -120,6 +120,8 @@ struct XML_ItemData {
 struct XML_BiomeData {
     unsigned int id;
     std::string name = "UNDEFINED";
+
+    std::string backgroundTexture = UNDEFINED_ASSET_PATH;
 
     int baseHeight = 10; // The base altitude of the biome.
     int maxHeightDiff = 0; // The most the altitude will change

@@ -1,51 +1,134 @@
 #include "XMLData.h"
 
-void getValue(rapidxml::xml_node<>* parent, std::string valueName, std::string& variable) {
-    /// Places value of node with name `valueName` into `variable` and removes the node from the doc.
-    rapidxml::xml_node<>* n = parent->first_node((char*)valueName.c_str());
-    if(n && std::string(n->value()) != std::string("")) {
-        variable = n->value();
-        parent->remove_node(n);
-    } else {
-        Logger::getInstance()->log("Warning (XML Parse): Could not find aspect: " + valueName + ". Reverted to default");
+void getVector(rapidxml::xml_node<>* parent, std::string valueName, std::string childName, std::vector<std::string>& vec) {
+    /**
+        Loops over getValue, getting all values out of a tag:
+
+            <entities>
+                <entityID>3</entityID>
+                <entityID>4</entityID>
+                <someotherelement>6</someotherelement>
+            </entities>
+
+        getVector(p, "entities", "entityID", vec) yields a vector of integers with elements: 3,4 and leaves the document as:
+
+            <entities>
+                <someotherelement>6</someotherelement>
+            </entities>
+    **/
+
+    rapidxml::xml_node<>* n = parent->first_node((char*)valueName.c_str()); // Gets <entities> in the example.
+
+    std::string temp;
+    while(getValue(n, childName, temp)) {
+        vec.push_back(temp);
     }
 }
 
-void getValue(rapidxml::xml_node<>* parent, std::string valueName, float& variable) {
-    /// Places value of node with name `valueName` into `variable` and removes the node from the doc.
-    rapidxml::xml_node<>* n = parent->first_node((char*)valueName.c_str());
-    if(n && std::string(n->value()) != std::string("")) {
-        variable = std::stof(n->value());
-        parent->remove_node(n);
-    } else {
-        Logger::getInstance()->log("Warning (XML Parse): Could not find aspect: " + valueName + ". Reverted to default");
+void getVector(rapidxml::xml_node<>* parent, std::string valueName, std::string childName, std::vector<float>& vec) {
+    rapidxml::xml_node<>* n = parent->first_node((char*)valueName.c_str()); // Gets <entities> in the example.
+
+    float temp;
+    while(getValue(n, childName, temp)) {
+        vec.push_back(temp);
     }
 }
 
-void getValue(rapidxml::xml_node<>* parent, std::string valueName, int& variable) {
-    /// Places value of node with name `valueName` into `variable` and removes the node from the doc.
-    rapidxml::xml_node<>* n = parent->first_node((char*)valueName.c_str());
-    if(n && std::string(n->value()) != std::string("")) {
-        variable = std::stoi(n->value());
-        parent->remove_node(n);
-    } else {
-        Logger::getInstance()->log("Warning (XML Parse): Could not find aspect: " + valueName + ". Reverted to default");
+void getVector(rapidxml::xml_node<>* parent, std::string valueName, std::string childName, std::vector<int>& vec) {
+    rapidxml::xml_node<>* n = parent->first_node((char*)valueName.c_str()); // Gets <entities> in the example.
+
+    int temp;
+    while(getValue(n, childName, temp)) {
+        vec.push_back(temp);
     }
 }
 
-void getValue(rapidxml::xml_node<>* parent, std::string valueName, bool& variable) {
+void getVector(rapidxml::xml_node<>* parent, std::string valueName, std::string childName, std::vector<unsigned int>& vec) {
+    rapidxml::xml_node<>* n = parent->first_node((char*)valueName.c_str()); // Gets <entities> in the example.
+
+    unsigned int temp;
+    while(getValue(n, childName, temp)) {
+        vec.push_back(temp);
+    }
+}
+
+void getVector(rapidxml::xml_node<>* parent, std::string valueName, std::string childName, std::vector<bool>& vec) {
+    rapidxml::xml_node<>* n = parent->first_node((char*)valueName.c_str()); // Gets <entities> in the example.
+
+    bool temp;
+    while(getValue(n, childName, temp)) {
+        vec.push_back(temp);
+    }
+}
+
+
+bool getValue(rapidxml::xml_node<>* parent, std::string valueName, std::string& variable) {
     /// Places value of node with name `valueName` into `variable` and removes the node from the doc.
     rapidxml::xml_node<>* n = parent->first_node((char*)valueName.c_str());
-    if(n && std::string(n->value()) != std::string("")) {
-        if(std::string(n->value()) == "0" || std::string(n->value()) == "false") {
-            variable = false;
-        } else {
-            variable = true;
+    if(n) {
+        if(std::string(n->value()) != std::string("")) {
+            variable = n->value();
         }
         parent->remove_node(n);
-    } else {
-        Logger::getInstance()->log("Warning (XML Parse): Could not find aspect: " + valueName + ". Reverted to default");
+        return true;
     }
+    return false;
+}
+
+bool getValue(rapidxml::xml_node<>* parent, std::string valueName, float& variable) {
+    /// Places value of node with name `valueName` into `variable` and removes the node from the doc.
+    rapidxml::xml_node<>* n = parent->first_node((char*)valueName.c_str());
+    if(n) {
+        if(std::string(n->value()) != std::string("")) {
+            variable = std::stof(n->value());
+        }
+        parent->remove_node(n);
+        return true;
+    }
+    return false;
+}
+
+bool getValue(rapidxml::xml_node<>* parent, std::string valueName, int& variable) {
+    /// Places value of node with name `valueName` into `variable` and removes the node from the doc.
+    rapidxml::xml_node<>* n = parent->first_node((char*)valueName.c_str());
+    if(n) {
+        if(std::string(n->value()) != std::string("")) {
+            variable = std::stoi(n->value());
+        }
+        parent->remove_node(n);
+        return true;
+    }
+    return false;
+}
+
+bool getValue(rapidxml::xml_node<>* parent, std::string valueName, unsigned int& variable) {
+    /// Places value of node with name `valueName` into `variable` and removes the node from the doc.
+    rapidxml::xml_node<>* n = parent->first_node((char*)valueName.c_str());
+    if(n) {
+        if(std::string(n->value()) != std::string("")) {
+            variable = std::stoul(n->value());
+        }
+        parent->remove_node(n);
+        return true;
+    }
+    return false;
+}
+
+bool getValue(rapidxml::xml_node<>* parent, std::string valueName, bool& variable) {
+    /// Places value of node with name `valueName` into `variable` and removes the node from the doc. Returns true on successful value find
+    rapidxml::xml_node<>* n = parent->first_node((char*)valueName.c_str());
+    if(n) {
+        if(std::string(n->value()) != std::string("")) {
+            if(std::string(n->value()) == "0" || std::string(n->value()) == "false") {
+                variable = false;
+            } else {
+                variable = true;
+            }
+        }
+        parent->remove_node(n);
+        return true;
+    }
+    return false;
 }
 
 void getMetaData(rapidxml::xml_node<>* parent, MetaData& mdVar) {
@@ -85,6 +168,8 @@ void XMLData::init() {
     Logger::getInstance()->log("Loaded data (Item Entities)...");
     loadXMLItemData();
     Logger::getInstance()->log("Loaded data (Items)...");
+    loadXMLBiomeData();
+    Logger::getInstance()->log("Loaded data (Biomes)...");
 
     Logger::getInstance()->log("Loaded all data successfully!");
 }
@@ -95,6 +180,7 @@ std::map<unsigned int, XML_EntityNPCData> XMLData::m_entityNPCData;
 std::map<unsigned int, XML_EntityProjectileData> XMLData::m_entityProjectileData;
 std::map<unsigned int, XML_EntityItemData> XMLData::m_entityItemData;
 std::map<unsigned int, XML_ItemData> XMLData::m_itemData;
+std::map<unsigned int, XML_BiomeData> XMLData::m_biomeData;
 
 /// Tiles
 void XMLData::loadXMLTileData(std::string filepath) {
@@ -537,6 +623,7 @@ void XMLData::loadXMLItemData(std::string filepath) {
         XML_ItemData d = XMLData::readItemData(node);
         unsigned int id = std::stoi(node->first_attribute("id")->value());
         std::string name = node->first_attribute("name")->value();
+        d.id = id;
         d.name = name;
         m_itemData.insert(std::pair<unsigned int, XML_ItemData>(id, d));
     }
@@ -572,4 +659,68 @@ XML_ItemData XMLData::readItemData(rapidxml::xml_node<>* node) {
     getMetaData(node, d.defaultMD);
 
     return d;
+}
+
+/// Biomes
+
+void XMLData::loadXMLBiomeData(std::string filepath) {
+    /** Loads all biome data into the biomeData map **/
+
+    // Open file at filepath
+    std::ifstream file;
+    file.open(filepath);
+
+    if(file.fail()) { // Handle exceptions
+        Logger::getInstance()->log("ERROR: Biome data XML file unable to be loaded: " + filepath, true);
+        return;
+    }
+
+    // Load all the text in the file to a string
+    std::string text;
+    std::string line;
+    while(getline(file, line)) {
+        text += line + "\n";
+    }
+
+    rapidxml::xml_document<> doc;
+    doc.parse<rapidxml::parse_full>((char*)text.c_str());
+
+    for(rapidxml::xml_node<>* node = doc.first_node("biome"); node; node = node->next_sibling("biome")) {
+        XML_BiomeData b = XMLData::readBiomeData(node);
+        unsigned int id = std::stoi(node->first_attribute("id")->value());
+        std::string name = node->first_attribute("name")->value();
+        b.id = id;
+        b.name = name;
+        m_biomeData.insert(std::pair<unsigned int, XML_BiomeData>(id, b));
+    }
+}
+
+XML_BiomeData XMLData::getBiomeData(unsigned int id) {
+    auto index = m_biomeData.find(id);
+
+    if(index == m_biomeData.end()) {
+        Logger::getInstance()->log("ERROR: Couldn't find biome data with ID: " + std::to_string(id), true);
+        XML_BiomeData b;
+        return b;
+    }
+
+    return index->second;
+}
+
+XML_BiomeData XMLData::readBiomeData(rapidxml::xml_node<>* node) {
+
+    XML_BiomeData d;
+
+    getValue(node, "baseHeight", d.baseHeight);
+    getValue(node, "maxHeightDiff", d.maxHeightDiff);
+    getValue(node, "maxTemperature", d.maxTemperature);
+    getValue(node, "baseTemperature", d.baseTemperature);
+    getValue(node, "flatness", d.flatness);
+    getVector(node, "entities", "entityID", d.mobSpawnIds);
+
+    return d;
+}
+
+unsigned int XMLData::getTotalBiomes() {
+    return m_biomeData.size();
 }

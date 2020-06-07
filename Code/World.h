@@ -8,6 +8,8 @@
 #include "Categories.h"
 #include "PresetValues.h"
 
+#include "XMLDataTypes.h"
+
 class Entity;
 class EntityNPC;
 class EntityPlayer;
@@ -24,7 +26,7 @@ public:
     ~World();
     void setTile(Tile* tile);
     Tile* getTile(int x, int y, int layer);
-    Categories::Places& getPlace(int x);
+    XML_BiomeData getBiome(int x); // Returns the biome data of a certain x position
 
     void sortEntities();
     void addEntity(Entity* e);
@@ -86,7 +88,7 @@ private:
 
     EntityPlayer* m_player = nullptr;
 
-    Categories::Places m_placesMap[(WORLD_SIZE / CHUNK_SIZE)]; // Simply a 1d vector of biome IDs, which can be mapped onto the world by referencing each "chunk"'s size
+    unsigned int m_biomesMap[(WORLD_SIZE / CHUNK_SIZE)]; // Simply a 1d vector of biome IDs, which can be mapped onto the world by referencing each "chunk"'s size
 
     unsigned long int m_time = 0; // Tick time
     unsigned long int m_frame = 0; // frames that have passed

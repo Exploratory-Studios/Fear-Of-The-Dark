@@ -148,8 +148,8 @@ float Tile::getSurroundingHeat(World* world) {
 }
 
 float Tile::getHeat(World* world) {
-    float baseHeat = Category_Data::placeData[(unsigned int)world->getPlace(m_pos.x)].baseTemperature;
-    float highHeat = Category_Data::placeData[(unsigned int)world->getPlace(m_pos.x)].maxTemp;
+    float baseHeat = world->getBiome(m_pos.x).baseTemperature;
+    float highHeat = world->getBiome(m_pos.x).maxTemperature;
 
     float heat = getRawHeat();
 

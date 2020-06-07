@@ -2,17 +2,6 @@
 
 namespace Categories {
 
-    enum class Places {
-        CANADA,
-        ARCTIC,
-        AUSTRALIA,
-        USA,
-        RUSSIA,
-        NORTH_AFRICA,
-        SOUTH_AFRICA,
-        ASIA
-    };
-
     enum class Faction {
         BENIGN,
         GOOD,

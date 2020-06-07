@@ -80,8 +80,16 @@ Tile* World::getTile(int x, int y, int layer) {
     return nullptr;
 }
 
-Categories::Places& World::getPlace(int x) {
-    return m_placesMap[(unsigned int)(x / CHUNK_SIZE)];
+XML_BiomeData World::getBiome(int x) {
+    // Get chunk position
+    int chunkX = (unsigned int)(x / CHUNK_SIZE);
+
+    // Get biome's id from position:
+    unsigned int biomeID = m_biomesMap[chunkX];
+
+    // Get biome data from XML Data
+    return XMLData::getBiomeData(biomeID);
+
 }
 
 void World::sortEntities() {

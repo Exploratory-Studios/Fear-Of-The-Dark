@@ -9,6 +9,8 @@
 #include "Inventory.h"
 #include "Tile.h"
 
+#include "XMLData.h"
+
 void WorldIOManager::loadWorld(std::string worldName, World* world) {
     setProgress(0.0f);
     boost::thread t( [=]() { P_loadWorld(worldName, world); } );
@@ -95,7 +97,7 @@ void WorldIOManager::P_loadWorld(std::string worldName, World* world) {
 
         for(int i = 0; i < WORLD_SIZE; i++) {
             chunkData[i].read(file);
-            world->m_placesMap[i] = ((Categories::Places)chunkData[i].place);
+            world->m_biomesMap[i] = chunkData[i].biomeID;
             setProgress(getProgress() + 1.0f / (WORLD_SIZE) * 0.1f); // 0.3
         }
 
@@ -183,7 +185,7 @@ void WorldIOManager::P_saveWorld(World* world) {
                 }
             }
         }
-        chunkData[i].place = world->m_placesMap[i];
+        chunkData[i].biomeID = world->m_biomesMap[i];
     }
 
     logger->log("SAVE: Chunk Data Prepared");
@@ -275,7 +277,7 @@ void WorldIOManager::P_createWorld(unsigned int seed, std::string worldName, boo
     for(int i = 0; i < (WORLD_SIZE / CHUNK_SIZE); i++) {
         float placeMapped = (places[i] - lowestPlace) / (highestPlace - lowestPlace);
 
-        w->m_placesMap[i] = ((Categories::Places)std::ceil(placeMapped * (Category_Data::TOTAL_PLACES - 1)));
+        w->m_biomesMap[i] = std::ceil(placeMapped * (XMLData::getTotalBiomes()-1));
 
         //setProgress(getProgress() + 1.0f / (WORLD_SIZE / CHUNK_SIZE) * 0.1f);
     }
@@ -295,14 +297,16 @@ void WorldIOManager::P_createWorld(unsigned int seed, std::string worldName, boo
         for(int layer = 0; layer < WORLD_DEPTH; layer++) {
             for(int i = 0; i < (WORLD_SIZE / CHUNK_SIZE); i++) {
 
+                XML_BiomeData biome = XMLData::getBiomeData(w->m_biomesMap[i]);
+
                 PerlinNoise heightNoise(seed * (i + 1) * 783);
 
                 for(int j = 0; j < CHUNK_SIZE; j++) {
-                    float extra = heightNoise.noise((j + layer * 0.5f) * Category_Data::placeData[(int)w->m_placesMap[i]].flatness / CHUNK_SIZE, 8.5, 3.7);
+                    float extra = heightNoise.noise((j + layer * 0.5f) * biome.flatness / CHUNK_SIZE, 8.5, 3.7);
                     //extra += heightNoise.noise(i * j * i, i, 5.8);
 
                     extra -= 0.5f;
-                    extra *= Category_Data::placeData[(int)w->m_placesMap[i]].maxHeightDiff;
+                    extra *= biome.maxHeightDiff;
                     //extra /= Category_Data::placeData[(int)w->chunks[i]->getPlace()].flatness;
 
                     float height = std::floor(extra);
@@ -363,17 +367,26 @@ void WorldIOManager::P_createWorld(unsigned int seed, std::string worldName, boo
             setMessage("Smoothing terrain... ");
             for(int layer = 0; layer < WORLD_DEPTH; layer++) {
                 for(int x = 0; x < WORLD_SIZE; x++) {
-                    // blockHeights[layer * WORLD_SIZE + x]
                     /// 1. Figure out how 'deep' this x value is in its biome
-                    int centreIndex = (int)(x / CHUNK_SIZE) * CHUNK_SIZE + (CHUNK_SIZE / 2); // Find the centre x value of this biome
-                    unsigned int chunkDepthInv = std::abs(x - centreIndex); // How far it is from the centre. Centre is 0, very outsides are CHUNK_SIZE/2.
-                    unsigned int chunkDepth = (CHUNK_SIZE / 2) - chunkDepthInv; // How far in it is. Centre is CHUNK_SIZE/2, very outsides are 0.
 
-                    unsigned int chunkIndex = ((x / CHUNK_SIZE) + (WORLD_SIZE / CHUNK_SIZE)) % (WORLD_SIZE / CHUNK_SIZE); // Chunk index of current x value
-                    unsigned int previousBase = Category_Data::placeData[(int)w->m_placesMap[(chunkIndex-1 + WORLD_SIZE/CHUNK_SIZE) % (WORLD_SIZE/CHUNK_SIZE)]].baseHeight;
-                    unsigned int nextBase = Category_Data::placeData[(int)w->m_placesMap[(chunkIndex+1 + WORLD_SIZE/CHUNK_SIZE) % (WORLD_SIZE/CHUNK_SIZE)]].baseHeight;
-                    unsigned int baseHeight = Category_Data::placeData[(int)w->m_placesMap[chunkIndex]].baseHeight; // Base height values of current, next, and previous chunks
+                    // Find the centre x value of this biome
+                    int centreIndex = (int)(x / CHUNK_SIZE) * CHUNK_SIZE + (CHUNK_SIZE / 2);
 
+                    // How far it is from the centre. Centre is 0, very outsides are CHUNK_SIZE/2.
+                    unsigned int chunkDepthInv = std::abs(x - centreIndex);
+
+                    // How far in it is (to the right, not back). Centre is CHUNK_SIZE/2, very outsides are 0.
+                    unsigned int chunkDepth = (CHUNK_SIZE / 2) - chunkDepthInv;
+
+                    // Get chunk index of current x value
+                    unsigned int chunkIndex = (int)(x / CHUNK_SIZE);
+
+                    // Get base height values of current, next, and previous chunks
+                    unsigned int previousBase = XMLData::getBiomeData(w->m_biomesMap[((chunkIndex-1) + (WORLD_SIZE/CHUNK_SIZE)) % (WORLD_SIZE/CHUNK_SIZE)]).baseHeight;
+                    unsigned int nextBase = XMLData::getBiomeData(w->m_biomesMap[chunkIndex+1] % (WORLD_SIZE/CHUNK_SIZE)).baseHeight;
+                    unsigned int baseHeight = XMLData::getBiomeData(w->m_biomesMap[chunkIndex]).baseHeight;
+
+                    /// 2. Interpolate
                     blockHeights[layer * WORLD_SIZE + x] = tempHeights[layer * WORLD_SIZE + x];
 
                     if(chunkDepth / (float)CHUNK_SIZE <= 2.0f/3.0f) {

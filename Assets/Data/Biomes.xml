@@ -1,0 +1,80 @@
+<biome id="0" name="Canada">
+	<baseHeight>20</baseHeight>
+	<maxHeightDiff>10</maxHeightDiff>
+	<baseTemperature>-14</baseTemperature>
+	<maxTemperature>25</maxTemperature>
+	<flatness>7.5</flatness>
+	<entities>
+		<entityID>2</entityID>	
+	</entities>
+</biome>
+<biome id="1" name="Arctic">
+	<baseHeight>30</baseHeight>
+	<maxHeightDiff>15</maxHeightDiff>
+	<baseTemperature>-45</baseTemperature>
+	<maxTemperature>-10</maxTemperature>
+	<flatness>4.3</flatness>
+	<entities>
+		<entityID>2</entityID>	
+	</entities>
+</biome>
+<biome id="2" name="Australia">
+	<baseHeight>55</baseHeight>
+	<maxHeightDiff>25</maxHeightDiff>
+	<baseTemperature>10</baseTemperature>
+	<maxTemperature>35</maxTemperature>
+	<flatness>1.5</flatness>
+	<entities>
+		<entityID>2</entityID>	
+	</entities>
+</biome>
+<biome id="3" name="USA">
+	<baseHeight>80</baseHeight>
+	<maxHeightDiff>30</maxHeightDiff>
+	<baseTemperature>10</baseTemperature>
+	<maxTemperature>20</maxTemperature>
+	<flatness>6.2</flatness>
+	<entities>
+		<entityID>2</entityID>	
+	</entities>
+</biome>
+<biome id="4" name="Russia">
+	<baseHeight>110</baseHeight>
+	<maxHeightDiff>50</maxHeightDiff>
+	<baseTemperature>-15</baseTemperature>
+	<maxTemperature>10</maxTemperature>
+	<flatness>1.75</flatness>
+	<entities>
+		<entityID>2</entityID>	
+	</entities>
+</biome>
+<biome id="5" name="North Africa">
+	<baseHeight>90</baseHeight>
+	<maxHeightDiff>40</maxHeightDiff>
+	<baseTemperature>10</baseTemperature>
+	<maxTemperature>30</maxTemperature>
+	<flatness>8.5</flatness>
+	<entities>
+		<entityID>2</entityID>	
+	</entities>
+</biome>
+<biome id="6" name="South Africa">
+	<baseHeight>70</baseHeight>
+	<maxHeightDiff>30</maxHeightDiff>
+	<baseTemperature>10</baseTemperature>
+	<maxTemperature>40</maxTemperature>
+	<flatness>0.5</flatness>
+	<entities>
+		<entityID>2</entityID>	
+	</entities>
+</biome>
+<biome id="7" name="Asia">
+	<baseHeight>40</baseHeight>
+	<maxHeightDiff>2</maxHeightDiff>
+	<baseTemperature>10</baseTemperature>
+	<maxTemperature>25</maxTemperature>
+	<flatness>7.6</flatness>
+	<entities>
+		<entityID>2</entityID>	
+	</entities>
+</biome>

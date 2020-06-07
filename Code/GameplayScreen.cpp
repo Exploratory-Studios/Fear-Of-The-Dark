@@ -171,7 +171,7 @@ void GameplayScreen::update() {
     }
     if(m_currentState != GLEngine::ScreenState::EXIT_APPLICATION) m_gui->update();
 }
-#include <stdio.h>
+
 void GameplayScreen::draw() {
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
@@ -197,6 +197,10 @@ void GameplayScreen::draw() {
         glUniform1f(lightUniform, dayLight);
 
         m_spriteBatch.begin(GLEngine::GlyphSortType::FRONT_TO_BACK);
+
+
+        int playerX = (int)m_world->getPlayer()->getPosition().x;
+        m_world->getBiome(playerX);
 
         m_spriteBatch.draw(glm::vec4(0.0f, 0.0f, m_window->getScreenWidth(), m_window->getScreenHeight()), glm::vec4(0.0f, 0.0f, 1.0f, 1.0f), 0, 0, 1.0f, GLEngine::ColourRGBA8(0, 0, 0, 0));
 
@@ -470,24 +474,17 @@ void GameplayScreen::updateScale() {
 #ifdef DEV_CONTROLS
 void GameplayScreen::drawDebug() {
     if(m_world->getPlayer()->getSelectedBlock()) {
-        std::string fps = "FPS: " + std::to_string((int)m_game->getFps()) + "\nMouse x,y: " + std::to_string(m_world->getPlayer()->getSelectedBlock()->getPosition().x) + "," + std::to_string(m_world->getPlayer()->getSelectedBlock()->getPosition().y);
-        std::string placeString;
+        int blockX, blockY;
+        blockX = m_world->getPlayer()->getSelectedBlock()->getPosition().x;
+        blockY = m_world->getPlayer()->getSelectedBlock()->getPosition().y;
 
-        switch((unsigned int)m_world->getPlace(m_world->getPlayer()->getSelectedBlock()->getPosition().x)) {
-            case (unsigned int)Categories::Places::ARCTIC: { placeString = "Arctic"; break; }
-            case (unsigned int)Categories::Places::ASIA: { placeString = "Asia"; break; }
-            case (unsigned int)Categories::Places::AUSTRALIA: { placeString = "Australia"; break; }
-            case (unsigned int)Categories::Places::CANADA: { placeString = "Canada"; break; }
-            case (unsigned int)Categories::Places::NORTH_AFRICA: { placeString = "North Africa"; break; }
-            case (unsigned int)Categories::Places::RUSSIA: { placeString = "Russia"; break; }
-            case (unsigned int)Categories::Places::SOUTH_AFRICA: { placeString = "South Africa"; break; }
-            case (unsigned int)Categories::Places::USA: { placeString = "Excited States of America"; break; }
-        }
+        std::string biomeString = m_world->getBiome(m_world->getPlayer()->getSelectedBlock()->getPosition().x).name;
 
-        fps += "\nSelected Block: Biome: " + placeString + ", " + m_world->getPlayer()->getSelectedBlock()->getPrintout(m_world);
+        std::string display = "FPS: " + std::to_string((int)m_game->getFps());
+        display += "\nMouse x,y: " + std::to_string(blockX) + "," + std::to_string(blockY);
+        display += "\nSelected Block: Biome: " + biomeString + ", " + m_world->getPlayer()->getSelectedBlock()->getPrintout(m_world);
 
-        fps += "\nPlayer Light Level: TL: " + std::to_string(m_world->getPlayer()->getLightLevel().x) + ", TR: " + std::to_string(m_world->getPlayer()->getLightLevel().y) + ", BR: " + std::to_string(m_world->getPlayer()->getLightLevel().z);
-        m_fpsWidget->setText(fps);
+        m_fpsWidget->setText(display);
     }
 }
 #endif //DEV_CONTROLS

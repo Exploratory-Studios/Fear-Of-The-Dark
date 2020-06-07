@@ -305,7 +305,7 @@ void ChunkData::save(std::ofstream& file) {
             }
         }
     }
-    file.write(reinterpret_cast<char*>(&(place)), sizeof(unsigned int));
+    file.write(reinterpret_cast<char*>(&(biomeID)), sizeof(unsigned int));
 }
 
 void ChunkData::read(std::ifstream& file) {
@@ -316,7 +316,7 @@ void ChunkData::read(std::ifstream& file) {
             }
         }
     }
-    file.read(reinterpret_cast<char*>(&(place)), sizeof(unsigned int));
+    file.read(reinterpret_cast<char*>(&(biomeID)), sizeof(unsigned int));
 }
 
 

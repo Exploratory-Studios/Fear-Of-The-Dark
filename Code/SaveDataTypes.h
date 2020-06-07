@@ -159,7 +159,7 @@ public:
     void read(std::ifstream& file);
 
     TileData tiles[WORLD_HEIGHT][CHUNK_SIZE][WORLD_DEPTH] {};
-    Categories::Places place;
+    unsigned int biomeID;
 };
 
 class WorldData {

@@ -1,7 +1,13 @@
 <structure id="0" name="Some Random Structure">
-	<structureID/>
-	<biomeID/>
-	<chance/>
-	<maxAmnt/>
-	<minAmnt/>
+	<structureFilepath>thisisinthestructuresfolder.str</structureFilepath>
+	<biomes>
+		<biomeID>0</biomeID>
+		<biomeID>1</biomeID>
+		<biomeID>2</biomeID>
+		<biomeID>3</biomeID>
+	</biomes>
+	<chance>0.000000</chance>
+	<maxAmnt>0</maxAmnt>
+	<minAmnt>0</minAmnt>
 </structure>
+

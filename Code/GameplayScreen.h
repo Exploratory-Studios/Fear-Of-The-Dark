@@ -90,8 +90,8 @@ class GameplayScreen : public GLEngine::IGameScreen
         GLEngine::SpriteFont m_spriteFont;
         GLEngine::DebugRenderer m_dr;
 
-        Scripter* m_scripter = nullptr;
-        QuestManager* m_questManager = nullptr;
+        ScriptingModule::Scripter* m_scripter = nullptr;
+        QuestModule::QuestManager* m_questManager = nullptr;
         WorldIOManager* m_WorldIOManager = nullptr;
         World* m_world = nullptr;
         AudioManager* m_audio = nullptr;

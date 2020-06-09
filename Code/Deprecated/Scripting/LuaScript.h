@@ -98,6 +98,7 @@ public:
     int loadScriptString(std::string script);
 
     void run(unsigned int chunkIndex, std::vector<Argument>& args);
+    void resume(lua_State* state, std::vector<Argument>& args); // Resumes from yielded position
     void update(lua_State* state);
 
     lua_State* getThread() { return T; }
@@ -146,6 +147,7 @@ public:
         static int l_camera_smoothMove(lua_State* L);
 
         static int l_delay(lua_State* L);
+        static int l_waitForEvent(lua_State* L);
         static int l_pause(lua_State* L);
         static int l_play(lua_State* L);
 

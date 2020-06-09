@@ -16,7 +16,7 @@ class EntityItem;
 class EntityPlayer;
 class Inventory;
 class Item;
-class Argument;
+namespace ScriptingModule { class Argument; }
 class lua_State;
 
 struct MetaData_Aspect {
@@ -40,7 +40,7 @@ class MetaData {
 
         std::string getElements(); // Returns a string of all elements. used for debugging
 
-        void getLuaArguments(std::vector<Argument>& args);
+        void getLuaArguments(std::vector<ScriptingModule::Argument>& args);
 
         void readFromLuaTable(lua_State* state, int tableIndex);
 

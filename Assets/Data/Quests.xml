@@ -1,0 +1,40 @@
+<quest id="0" name="testQuest">
+	<completionScript>
+		print("this is a test of the system")
+		print("this is on another line")
+	</completionScript>
+	<scriptIsFile>false</scriptIsFile>
+	<objectives>
+		<objectiveID>0</objectiveID>
+		<objectiveID>1</objectiveID>
+		<objectiveID>0</objectiveID>
+	</objectives>
+</quest>
+
+<objective id="0" name="test0Objective">
+	<text>This is the first test objective (0)</text>
+	<confirmationScript>
+		waitForEvent("setTile")
+		print("It is done")
+	</confirmationScript>
+	<isScriptFile>false</isScriptFile>
+</objective>
+
+<objective id="1" name="test1Objective">
+	<text>This is the second test objective (1)</text>
+	<confirmationScript>
+		questFunc = require("QuestFunctions")
+
+		print("It is started (1)")
+		for j=3,1,-1 do
+			print(j)
+			for i=1,60,1 do
+				waitForEvent("update")
+			end
+		end
+		print("It is done (1). Waiting for flag 0 to be set to True...")
+		questFunc.activateFlag(0, true)
+		print("NEXT!")
+	</confirmationScript>
+	<isScriptFile>false</isScriptFile>
+</objective>

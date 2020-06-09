@@ -87,6 +87,8 @@
 					<Add option="-m64" />
 					<Add option="-DWINDOWS" />
 					<Add directory="/usr/x86_64-w64-mingw32/lib" />
+					<Add directory="Code" />
+					<Add directory="Code/" />
 				</Compiler>
 				<Linker>
 					<Add option="-flto" />
@@ -125,7 +127,6 @@
 			<Add option="/usr/lib/x86_64-linux-gnu/libboost_filesystem.a" />
 			<Add option="/usr/lib/x86_64-linux-gnu/libboost_system.a" />
 			<Add option="-llua5.3" />
-			<Add option="-Wl,-Bdynamic" />
 			<Add option="-Wl,-Bdynamic" />
 			<Add option="../../GLEngine/bin/Release/libGLEngine.a" />
 			<Add option="-lCEGUIBase-0" />
@@ -331,6 +332,8 @@
 		<Unit filename="EntityPlayer.h" />
 		<Unit filename="EntityProjectile.cpp" />
 		<Unit filename="EntityProjectile.h" />
+		<Unit filename="EventQueue.cpp" />
+		<Unit filename="EventQueue.h" />
 		<Unit filename="ExtraFunctions.h" />
 		<Unit filename="GameplayScreen.cpp" />
 		<Unit filename="GameplayScreen.h" />
@@ -343,6 +346,8 @@
 		<Unit filename="Logging.cpp" />
 		<Unit filename="Logging.h" />
 		<Unit filename="LuaHeaders.h" />
+		<Unit filename="LuaScript.cpp" />
+		<Unit filename="LuaScript.h" />
 		<Unit filename="Main.cpp" />
 		<Unit filename="Main.h" />
 		<Unit filename="MainMenuScreen.cpp" />
@@ -354,20 +359,19 @@
 		<Unit filename="PerlinNoise/ppm.cpp" />
 		<Unit filename="PerlinNoise/ppm.h" />
 		<Unit filename="PresetValues.h" />
-		<Unit filename="QuestClasses.h" />
 		<Unit filename="QuestManager.cpp" />
 		<Unit filename="QuestManager.h" />
+		<Unit filename="QuestTypes.cpp" />
+		<Unit filename="QuestTypes.h" />
 		<Unit filename="SaveDataTypes.cpp" />
 		<Unit filename="SaveDataTypes.h" />
 		<Unit filename="ScreenIndices.h" />
-		<Unit filename="Scripting/LuaScript.cpp" />
-		<Unit filename="Scripting/LuaScript.h" />
-		<Unit filename="Scripting/ScriptQueue.cpp" />
-		<Unit filename="Scripting/ScriptQueue.h" />
-		<Unit filename="Scripting/ScripterMain.cpp" />
-		<Unit filename="Scripting/ScripterMain.h" />
-		<Unit filename="Scripting/ScriptingHelperFunctions.cpp" />
-		<Unit filename="Scripting/ScriptingHelperFunctions.h" />
+		<Unit filename="ScriptQueue.cpp" />
+		<Unit filename="ScriptQueue.h" />
+		<Unit filename="ScripterMain.cpp" />
+		<Unit filename="ScripterMain.h" />
+		<Unit filename="ScriptingHelperFunctions.cpp" />
+		<Unit filename="ScriptingHelperFunctions.h" />
 		<Unit filename="StartupScreen.cpp" />
 		<Unit filename="StartupScreen.h" />
 		<Unit filename="Tile.cpp" />

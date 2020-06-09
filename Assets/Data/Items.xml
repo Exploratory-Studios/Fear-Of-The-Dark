@@ -1,37 +1,44 @@
 <item id="0" name="WoodSword">
-	
+	<weight>0.000000</weight>
 </item>
 <item id="1" name="BlockDirt">
 	<texture>../Blocks/Dirt.png</texture>
+	<weight>0.000000</weight>
 	<useScript>Item_BlockPlacement.lua</useScript>
 </item>
 <item id="2" name="BlockTorch">
 	<texture>../Blocks/Torch.png</texture>
+	<weight>0.000000</weight>
 	<useScript>Item_BlockPlacement.lua</useScript>
 </item>
 <item id="3" name="BlockTorch_Bright">
 	<texture>../Blocks/Torch.png</texture>
+	<weight>0.000000</weight>
 	<useScript>Item_BlockPlacement.lua</useScript>
 </item>
 <item id="4" name="BlockTorch_Anti">
 	<texture>../Blocks/Torch.png</texture>
+	<weight>0.000000</weight>
 	<useScript>Item_BlockPlacement.lua</useScript>
 </item>
 <item id="5" name="BlockGrass">
 	<texture>../Blocks/Grass.png</texture>
+	<weight>0.000000</weight>
 	<useScript>Item_BlockPlacement.lua</useScript>
 </item>
 <item id="6" name="BlockWood">
 	<texture>../Blocks/Wood.png</texture>
+	<weight>0.000000</weight>
 	<useScript>Item_BlockPlacement.lua</useScript>
 </item>
 <item id="7" name="BlockWoodPole">
 	<texture>../Blocks/Wood.png</texture>
+	<weight>0.000000</weight>
 	<useScript>Item_BlockPlacement.lua</useScript>
 </item>
 <item id="8" name="BlockSign">
 	<texture>../Blocks/Wood.png</texture>
+	<weight>0.000000</weight>
 	<useScript>Item_BlockPlacement.lua</useScript>
 </item>
-
 

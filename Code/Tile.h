@@ -9,7 +9,7 @@
 
 #include "AudioManager.h"
 #include "PresetValues.h"
-#include "Scripting/ScriptQueue.h"
+#include "ScriptQueue.h"
 
 #include "SaveDataTypes.h"
 
@@ -70,8 +70,8 @@ class Tile
             m_id = other.getID();
         }
 
-        std::vector<Argument> generateLuaData() {
-            std::vector<Argument> args = {
+        virtual std::vector<ScriptingModule::Argument> generateLuaData() {
+            std::vector<ScriptingModule::Argument> args = {
                 { "blockX", std::to_string(m_pos.x) },
                 { "blockY", std::to_string(m_pos.y) },
                 { "blockLayer", std::to_string(m_layer) },
@@ -169,8 +169,8 @@ class Tile
 
         void destroy(World* world);
 
-        void onInteract_WalkedOn() { if(m_interactScriptID_walkedOn != -1) ScriptQueue::activateScript(m_interactScriptID_walkedOn, generateLuaData()); }
-        void onInteract_RightClicked() { if(m_interactScriptID_used != -1) ScriptQueue::activateScript(m_interactScriptID_used, generateLuaData()); }
+        void onInteract_WalkedOn() { if(m_interactScriptID_walkedOn != -1) ScriptingModule::ScriptQueue::activateScript(m_interactScriptID_walkedOn, generateLuaData()); }
+        void onInteract_RightClicked() { if(m_interactScriptID_used != -1) ScriptingModule::ScriptQueue::activateScript(m_interactScriptID_used, generateLuaData()); }
         // ... More interact functions
 
         void resetNeighboursLight(World* world);
@@ -186,7 +186,7 @@ class Tile
 
         void onUpdate() { }
         void onDraw(GLEngine::SpriteBatch& sb, GLEngine::SpriteFont& sf, glm::vec4& pos, float& depth) { }
-        void onTick() { if(m_tickScriptID != -1) ScriptQueue::activateScript(m_tickScriptID, generateLuaData()); }
+        void onTick() { if(m_tickScriptID != -1) ScriptingModule::ScriptQueue::activateScript(m_tickScriptID, generateLuaData()); }
         void onDestruction() { }
 
         int m_updateScriptID = -1;

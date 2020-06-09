@@ -6,6 +6,8 @@
 #include "../AudioManager.h"
 #include <ParticleBatch2D.h>
 #include "LuaScript.h"
+
+#include "../EventQueue.h"
 #include "ScriptQueue.h"
 
 #include <Camera2D.h>
@@ -68,6 +70,7 @@ void Scripter::init(World* world, QuestManager* qm, GameplayScreen* gs, AudioMan
     pushFunction(m_luaState, LuaScript::l_camera_smoothMove, "camera_smoothMove");
 
     pushFunction(m_luaState, LuaScript::l_delay, "delay");
+    pushFunction(m_luaState, LuaScript::l_waitForEvent, "waitForEvent");
     pushFunction(m_luaState, LuaScript::l_pause, "pause");
     pushFunction(m_luaState, LuaScript::l_play, "unpause");
 
@@ -113,6 +116,34 @@ void Scripter::update() {
 
     m_scripts.clear();
     m_scripts = liveScripts;
+}
+
+void Scripter::updateEvents() {
+    /**
+        Uses the static EventQueue to loop through all triggered events, applying them to whichever yielded scripts need them.
+    **/
+                                                                                                                                /// NOTE: The event system is only to be used for quests! Not regular scripts!
+                                                                                                                                /// ONLY ONE TIME, LONG-RUNNING SCRIPTS!!!!!
+    // First, we need to get all the triggered events.
+    std::vector<EventModule::Event> evnts = EventModule::EventQueue::getEvents();
+
+    // Then we loop through all of them.
+    for(auto evnt : evnts) {
+        // Find the lower and upper bounds of all yielded scripts with the evnt's type
+        std::string type = evnt.getType();
+        auto lb = m_yieldedScripts.lower_bound(type); // The first element that matches
+        auto ub = m_yieldedScripts.upper_bound(type); // One past the last element that matches
+
+        /// IMPORTANT NOTE: If there are events of duplicate type, then only the first is used.
+
+        while(lb != ub) { // This also handles the case where either one is std::end()
+            lb->second->resume(m_luaState, evnt.getArguments());
+            m_yieldedScripts.erase(lb);
+            lb++;
+        }
+    }
+
+    EventModule::EventQueue::clearQueue();
 }
 
 void Scripter::executeScript(Script& script) {

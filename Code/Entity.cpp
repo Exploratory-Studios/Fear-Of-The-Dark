@@ -67,7 +67,7 @@ Entity::~Entity() {
 
 void Entity::update(World* world, float timeStep, unsigned int selfIndex) {
     if(m_updateScriptId != -1) {
-        ScriptQueue::activateScript(m_updateScriptId, generateLuaValues());
+        ScriptingModule::ScriptQueue::activateScript(m_updateScriptId, generateLuaValues());
     }
 
     move(1); /// Fix timestepping, make sure that each step, the entity collides :facepalm:
@@ -79,7 +79,7 @@ void Entity::update(World* world, float timeStep, unsigned int selfIndex) {
 
 void Entity::tick(World* world) {
     if(m_tickScriptId != -1) {
-        ScriptQueue::activateScript(m_tickScriptId, generateLuaValues());
+        ScriptingModule::ScriptQueue::activateScript(m_tickScriptId, generateLuaValues());
     }
     onTick(world);
 

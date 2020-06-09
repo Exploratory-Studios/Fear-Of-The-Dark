@@ -1,6 +1,6 @@
 #include "GameplayScreen.h"
 
-#include "Scripting/ScripterMain.h"
+#include "ScripterMain.h"
 #include "World.h"
 #include "Tile.h"
 #include "EntityNPC.h"
@@ -64,12 +64,12 @@ void GameplayScreen::onEntry() {
     m_audio->init();
 
     ///m_WorldManager.init(m_WorldIOManager, &m_particle2d);
-    m_scripter = new Scripter();
+    m_scripter = new ScriptingModule::Scripter();
 
-    m_questManager = new QuestManager(ASSETS_FOLDER_PATH + "Questing/DialogueList.txt", ASSETS_FOLDER_PATH + "Questing/FlagList.txt", ASSETS_FOLDER_PATH + "Questing/TradeList.txt");
     m_console = new Console();
+    m_questManager = new QuestModule::QuestManager(m_scripter);
 
-    m_scripter->init(m_world, m_questManager, this, m_audio, &m_particle2d);
+    m_scripter->init(m_world, m_questManager, this, m_audio, &m_particle2d); /// TODO: Questmanager
 
     if(!m_world->getPlayer()) {
         //Player p(glm::vec2(5.0f, 100.0f), true);
@@ -89,10 +89,10 @@ void GameplayScreen::onEntry() {
 void GameplayScreen::onExit() {
 
     delete m_scripter;
+    delete m_questManager;
 
     m_hasBeenInited = false;
     m_gui->destroy();
-    delete m_questManager;
     delete m_console;
 
     m_textureProgram.dispose();
@@ -122,15 +122,15 @@ void GameplayScreen::update() {
     }
 
     if(m_gameState != GameState::PAUSE && m_currentState != GLEngine::ScreenState::EXIT_APPLICATION) {
-        m_questManager->update(m_game->inputManager, m_world->getPlayer());
         m_scripter->update();
+        m_questManager->update();
 
         // Set player caninteract
 
         if(m_world->getPlayer() && !m_cutscenePause) {
             m_world->getPlayer()->updateMouse(m_world, m_camera.convertScreenToWorld(m_game->inputManager.getMouseCoords()));
             m_world->getPlayer()->updateInput(&m_game->inputManager, m_world);
-            m_world->getPlayer()->setCanInteract(!m_questManager->isDialogueActive());
+            /// TODO: Re-enable this -> m_world->getPlayer()->setCanInteract(!m_questManager->isDialogueActive());
         }
 
         m_world->updateTiles(getScreenBox() + glm::vec4(-10.0f, -10.0f, 20.0f, 20.0f));
@@ -265,7 +265,6 @@ void GameplayScreen::draw() {
         GLint pUniform = m_uiTextureProgram.getUniformLocation("P");
         glUniformMatrix4fv(pUniform, 1, GL_FALSE, &projectionMatrix[0][0]);
 
-        m_questManager->draw();
         m_world->getPlayer()->drawGUI(m_spriteBatch, m_spriteFont);
 
         m_gui->draw();
@@ -328,7 +327,7 @@ void GameplayScreen::checkInput() {
             case SDL_MOUSEBUTTONDOWN:
                 break;
             case SDL_MOUSEWHEEL:
-                if(!m_questManager->isDialogueActive() && !m_questManager->isTradingActive()) updateScale();
+                /*if(!m_questManager->isDialogueActive() && !m_questManager->isTradingActive()) */updateScale();
                 break;
         }
     }
@@ -427,7 +426,6 @@ void GameplayScreen::initUI() {
     }
 
     m_world->getPlayer()->initGUI(m_gui);
-    m_questManager->initUI(m_gui);
     m_console->init(*m_gui, m_scripter, m_world, m_questManager, this);
 
     #ifdef DEV_CONTROLS

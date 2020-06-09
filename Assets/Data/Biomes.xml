@@ -1,86 +1,87 @@
 <biome id="0" name="Canada">
+	<backgroundTexture>TestBackground.png</backgroundTexture>
 	<baseHeight>20</baseHeight>
 	<maxHeightDiff>10</maxHeightDiff>
-	<baseTemperature>-14</baseTemperature>
-	<maxTemperature>25</maxTemperature>
-	<flatness>7.5</flatness>
+	<maxTemperature>25.000000</maxTemperature>
+	<baseTemperature>-14.000000</baseTemperature>
+	<flatness>7.500000</flatness>
 	<entities>
-		<entityID>2</entityID>	
+		<entityID>2</entityID>
 	</entities>
-	<backgroundTexture>TestBackground.png</backgroundTexture>
 </biome>
 <biome id="1" name="Arctic">
+	<backgroundTexture>TestBackground.png</backgroundTexture>
 	<baseHeight>30</baseHeight>
 	<maxHeightDiff>15</maxHeightDiff>
-	<baseTemperature>-45</baseTemperature>
-	<maxTemperature>-10</maxTemperature>
-	<flatness>4.3</flatness>
+	<maxTemperature>-10.000000</maxTemperature>
+	<baseTemperature>-45.000000</baseTemperature>
+	<flatness>4.300000</flatness>
 	<entities>
-		<entityID>2</entityID>	
+		<entityID>2</entityID>
 	</entities>
-	<backgroundTexture>TestBackground.png</backgroundTexture>
 </biome>
 <biome id="2" name="Australia">
+	<backgroundTexture>TestBackground.png</backgroundTexture>
 	<baseHeight>55</baseHeight>
 	<maxHeightDiff>25</maxHeightDiff>
-	<baseTemperature>10</baseTemperature>
-	<maxTemperature>35</maxTemperature>
-	<flatness>1.5</flatness>
+	<maxTemperature>35.000000</maxTemperature>
+	<baseTemperature>10.000000</baseTemperature>
+	<flatness>1.500000</flatness>
 	<entities>
-		<entityID>2</entityID>	
+		<entityID>2</entityID>
 	</entities>
-	<backgroundTexture>TestBackground.png</backgroundTexture>
 </biome>
 <biome id="3" name="USA">
+	<backgroundTexture>TestBackground.png</backgroundTexture>
 	<baseHeight>80</baseHeight>
 	<maxHeightDiff>30</maxHeightDiff>
-	<baseTemperature>10</baseTemperature>
-	<maxTemperature>20</maxTemperature>
-	<flatness>6.2</flatness>
+	<maxTemperature>20.000000</maxTemperature>
+	<baseTemperature>10.000000</baseTemperature>
+	<flatness>6.200000</flatness>
 	<entities>
-		<entityID>2</entityID>	
+		<entityID>2</entityID>
 	</entities>
-	<backgroundTexture>TestBackground.png</backgroundTexture>
 </biome>
 <biome id="4" name="Russia">
+	<backgroundTexture>TestBackground.png</backgroundTexture>
 	<baseHeight>110</baseHeight>
 	<maxHeightDiff>50</maxHeightDiff>
-	<baseTemperature>-15</baseTemperature>
-	<maxTemperature>10</maxTemperature>
-	<flatness>1.75</flatness>
+	<maxTemperature>10.000000</maxTemperature>
+	<baseTemperature>-15.000000</baseTemperature>
+	<flatness>1.750000</flatness>
 	<entities>
-		<entityID>2</entityID>	
+		<entityID>2</entityID>
 	</entities>
-	<backgroundTexture>TestBackground.png</backgroundTexture>
 </biome>
 <biome id="5" name="North Africa">
+	<backgroundTexture>TestBackground.png</backgroundTexture>
 	<baseHeight>90</baseHeight>
 	<maxHeightDiff>40</maxHeightDiff>
-	<baseTemperature>10</baseTemperature>
-	<maxTemperature>30</maxTemperature>
-	<flatness>8.5</flatness>
+	<maxTemperature>30.000000</maxTemperature>
+	<baseTemperature>10.000000</baseTemperature>
+	<flatness>8.500000</flatness>
 	<entities>
-		<entityID>2</entityID>	
+		<entityID>2</entityID>
 	</entities>
-	<backgroundTexture>TestBackground.png</backgroundTexture>
 </biome>
 <biome id="6" name="South Africa">
 	<baseHeight>70</baseHeight>
 	<maxHeightDiff>30</maxHeightDiff>
-	<baseTemperature>10</baseTemperature>
-	<maxTemperature>40</maxTemperature>
-	<flatness>0.5</flatness>
+	<maxTemperature>40.000000</maxTemperature>
+	<baseTemperature>10.000000</baseTemperature>
+	<flatness>0.500000</flatness>
 	<entities>
-		<entityID>2</entityID>	
+		<entityID>2</entityID>
 	</entities>
 </biome>
 <biome id="7" name="Asia">
 	<baseHeight>40</baseHeight>
 	<maxHeightDiff>2</maxHeightDiff>
-	<baseTemperature>10</baseTemperature>
-	<maxTemperature>25</maxTemperature>
-	<flatness>7.6</flatness>
+	<maxTemperature>25.000000</maxTemperature>
+	<baseTemperature>10.000000</baseTemperature>
+	<flatness>7.600000</flatness>
 	<entities>
-		<entityID>2</entityID>	
+		<entityID>2</entityID>
 	</entities>
 </biome>
+

@@ -6,7 +6,7 @@
 #include <string>
 #include <vector>
 
-#include "Scripting/ScriptQueue.h"
+#include "ScriptQueue.h"
 
 #include "SaveDataTypes.h"
 
@@ -41,8 +41,8 @@ class Item
 
         void onRightClick(Tile* selectedBlock);
 
-        std::vector<Argument> generateLuaData() {
-            std::vector<Argument> args = {
+        std::vector<ScriptingModule::Argument> generateLuaData() {
+            std::vector<ScriptingModule::Argument> args = {
                 { "itemID", std::to_string(m_id) },
                 { "itemQuantity", std::to_string(m_quantity) }
             };

@@ -137,7 +137,7 @@ void setPlayerCanInteract(World* world, bool canInteract) {
     world->getPlayer()->setCanInteract(canInteract);
 }
 
-void setFlag(QuestManager* qm, unsigned int id, bool val) {
+void setFlag(QuestModule::QuestManager* qm, unsigned int id, bool val) {
     qm->setFlag(id, val);
 }
 
@@ -184,12 +184,12 @@ void setPlayerStat_sanity(World* world, float sanity) {
     world->getPlayer()->setSanity(sanity);
 }
 
-void startTrade(QuestManager* qm, unsigned int tableID) {
+void startTrade(QuestModule::QuestManager* qm, unsigned int tableID) {
     qm->setTradeTableId(tableID);
     qm->setTradingStarted(true);
 }
 
-void startDialogue(QuestManager* qm, unsigned int questionID) {
+void startDialogue(QuestModule::QuestManager* qm, unsigned int questionID) {
     qm->setQuestionId(questionID);
     qm->setDialogueStarted(true);
 }

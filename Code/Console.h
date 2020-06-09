@@ -1,9 +1,10 @@
 #pragma once
 
-#include "Scripting/ScripterMain.h"
+#include "ScripterMain.h"
 #include <GUI.h>
 
-class Scripter;
+namespace ScriptingModule { class Scripter; }
+namespace QuestModule { class QuestManager; }
 class World;
 class GameplayScreen;
 
@@ -13,14 +14,14 @@ class Console
         Console();
         virtual ~Console();
 
-        void init(GLEngine::GUI& gui, Scripter* scripter, World* world, QuestManager* qm, GameplayScreen* gs); /// TODO: Make this not have a world member or qm variable
+        void init(GLEngine::GUI& gui, ScriptingModule::Scripter* scripter, World* world, QuestModule::QuestManager* qm, GameplayScreen* gs); /// TODO: Make this not have a world member or qm variable
 
         void show();
         void hide();
 
         bool isShown() { return m_showing; }
 
-        void processCommand(World* world, QuestManager* qm, GameplayScreen* gs, std::string& command);
+        void processCommand(World* world, QuestModule::QuestManager* qm, GameplayScreen* gs, std::string& command);
 
     private:
         bool onEditboxInput(const CEGUI::EventArgs& e);
@@ -36,12 +37,12 @@ class Console
         CEGUI::Editbox* m_editbox = nullptr;
 
         World* m_world = nullptr;
-        QuestManager* m_qm = nullptr;
+        QuestModule::QuestManager* m_qm = nullptr;
         GameplayScreen* m_gs = nullptr;
 
         bool m_showing = false;
 
-        Scripter* m_scripter = nullptr;
+        ScriptingModule::Scripter* m_scripter = nullptr;
         GLEngine::GUI* m_gui = nullptr;
 
 };

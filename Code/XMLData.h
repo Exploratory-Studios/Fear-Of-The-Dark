@@ -5,7 +5,7 @@
 #include <map>
 #include <rapidxml/rapidxml.hpp>
 
-#include "Scripting/ScriptQueue.h"
+#include "ScriptQueue.h"
 #include "PresetValues.h"
 
 #include "SaveDataTypes.h"
@@ -44,6 +44,8 @@ class XMLData
         static XML_LootDrop getLootDropData(unsigned int id);
         static XML_LootTable getLootTableData(unsigned int id);
         static XML_StructureData getStructureData(unsigned int id);
+        static XML_QuestData getQuestData(unsigned int id);
+        static XML_QuestObjectiveData getQuestObjectiveData(unsigned int id);
 
         static unsigned int getTotalBiomes(); // Returns the number of biomes
 
@@ -59,6 +61,8 @@ class XMLData
         static void loadXMLLootDropData(std::string filepath = ASSETS_FOLDER_PATH + "/Data/Loot.xml");
         static void loadXMLLootTableData(std::string filepath = ASSETS_FOLDER_PATH + "/Data/Loot.xml");
         static void loadXMLStructureData(std::string filepath = ASSETS_FOLDER_PATH + "/Data/Structures.xml");
+        static void loadXMLQuestData(std::string filepath = ASSETS_FOLDER_PATH + "/Data/Quests.xml");
+        static void loadXMLQuestObjectiveData(std::string filepath = ASSETS_FOLDER_PATH + "/Data/Quests.xml");
 
 
         static XML_TileData readTileData(rapidxml::xml_node<>* node);
@@ -72,6 +76,8 @@ class XMLData
         static XML_LootDrop readLootDropData(rapidxml::xml_node<>* node);
         static XML_LootTable readLootTableData(rapidxml::xml_node<>* node);
         static XML_StructureData readStructureData(rapidxml::xml_node<>* node);
+        static XML_QuestData readQuestData(rapidxml::xml_node<>* node);
+        static XML_QuestObjectiveData readQuestObjectiveData(rapidxml::xml_node<>* node);
 
 
         static std::map<unsigned int, XML_TileData> m_tileData;
@@ -85,4 +91,6 @@ class XMLData
         static std::map<unsigned int, XML_LootDrop> m_lootDropData;
         static std::map<unsigned int, XML_LootTable> m_lootTableData;
         static std::map<unsigned int, XML_StructureData> m_structureData;
+        static std::map<unsigned int, XML_QuestData> m_questData;
+        static std::map<unsigned int, XML_QuestObjectiveData> m_questObjectiveData;
 };

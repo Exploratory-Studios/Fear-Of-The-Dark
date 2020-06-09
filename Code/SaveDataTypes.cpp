@@ -5,7 +5,7 @@
 #include "EntityProjectile.h"
 #include "EntityPlayer.h"
 
-#include "Scripting/ScriptQueue.h"
+#include "ScriptQueue.h"
 
 #include "Inventory.h"
 
@@ -47,16 +47,13 @@ std::string MetaData::getElements() {
 
 }
 
-void MetaData::getLuaArguments(std::vector<Argument>& args) {
+void MetaData::getLuaArguments(std::vector<ScriptingModule::Argument>& args) {
     /// Adds all elements from this object to the vector `args`. Does not modify previously-existing objects in `args`.
     /// Note: All new elements in `args` will have the flag `isMetadata` enabled, so that they're initialized in Lua as part of a table inside the global table.
     for(auto obj : m_data) {
         // Loop through every object.
         // Create an Argument object and populate it.
-        Argument arg;
-        arg.key = obj.first;
-        arg.val = obj.second;
-        arg.isMetadata = true;
+        ScriptingModule::Argument arg(obj.first, obj.second, true);
         args.push_back(arg);
     }
 }
@@ -69,11 +66,15 @@ void MetaData::readFromLuaTable(lua_State* state, int tableIndex) {
     lua_pushnil(state); // First "key"
     tableIndex--; // Because we pushed a key, the table is pushed farther down.
 
-    while(lua_next(state, tableIndex)) { // uses first key ("nil") to find first real key and value. After that, it uses each consecutive key to find the next key and value pair.
-        MetaData_Aspect a(lua_tostring(state, -2), lua_tostring(state, -1)); // lua_next pushes the value (-1) and key (-2) onto the stack
-        lua_pop(state, 1); // Get rid of the value, leaving the key to tell lua_next what's next.
-        args.push_back(a);
+    if(lua_type(state, tableIndex) == LUA_TTABLE) {
+        while(lua_next(state, tableIndex)) { // uses first key ("nil") to find first real key and value. After that, it uses each consecutive key to find the next key and value pair.
+            MetaData_Aspect a(lua_tostring(state, -2), lua_tostring(state, -1)); // lua_next pushes the value (-1) and key (-2) onto the stack
+            lua_pop(state, 1); // Get rid of the value, leaving the key to tell lua_next what's next.
+            args.push_back(a);
+        }
     }
+
+    lua_pop(state, 1); // Get rid of the key
 
     init(args);
 }

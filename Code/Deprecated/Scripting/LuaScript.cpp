@@ -76,12 +76,24 @@ void LuaScript::run(unsigned int chunkIndex, std::vector<Argument>& args) {
     lua_settop(T, 0);
 }
 
+void LuaScript::resume(lua_State* state, std::vector<Argument>& args) {
+    // Pass arguments in
+    lua_newtable(T);
+    for(auto arg : args) {
+        lua_pushstring(T, arg.key.c_str()); // Set index ("key")
+        lua_pushstring(T, arg.val.c_str()); // Set value
+        lua_settable(T, -3); // Add value and index to table at index -3
+    }
+
+    lua_resume(T, state, 1); // Continue the script with one argument: the argument table (The call to waitForEvent(...) will return this value)
+}
+
 void LuaScript::update(lua_State* state) {
     if(lua_status(T) == LUA_OK) {
         m_finished = true;
         return;
     } else if(lua_status(T) == LUA_YIELD) { // Is the thread currently paused?
-        int delayLeft = lua_tointeger(T, -1); // Get the delay from the top of the stack
+        /*int delayLeft = lua_tointeger(T, -1); // Get the delay from the top of the stack
         delayLeft--; // Take one frame away
         lua_pop(T, 1); // Take the delay value off of the stack completely
 
@@ -90,7 +102,10 @@ void LuaScript::update(lua_State* state) {
         } else {
             lua_pushinteger(T, delayLeft); // Otherwise, re-add the new delay value
         }
-        return;
+        return;*/
+
+        std::string eventType = lua_tostring(T, -1);
+
     } else {
         Logger::getInstance()->log("LUA ERROR: " + std::string(lua_tostring(T, -1)), true);
         destroy();
@@ -548,11 +563,43 @@ int LuaScript::l_camera_smoothMove(lua_State* L) {
 }
 
 int LuaScript::l_delay(lua_State* L) {
-    unsigned int delay = (int)lua_tonumber(L, 1);
+    /*unsigned int delay = (int)lua_tonumber(L, 1); /// TODO: Remove this, exchange with event system version.
 
     lua_pop(L, 1);
 
     lua_pushinteger(L, delay);
+
+    return lua_yieldk(L, 0, 0, 0);*/
+}
+
+int LuaScript::l_waitForEvent(lua_State* L) {
+    /// Requires a string (event type) and a table (arguments)
+
+    lua_settop(L, 2); // Only 2 arguments.
+
+    // Get event type
+    /*std::string eventType = lua_tostring(L, 1);
+
+    // Get passed arguments
+    std::vector<Argument> args;
+
+    lua_pushnil(L);
+    while (lua_next(L, i) != 0) {
+        // uses 'key' (at index -2) and 'value' (at index -1)
+        std::string value = lua_tostring(L, -1);
+        std::string key = lua_tostring(L, -2);
+
+        Argument a;
+        a.key = key;
+        a.val = value;
+        args.push_back(a);
+
+        // removes 'value'; keeps 'key' for next iteration
+        lua_pop(L, 1);
+    }
+
+    // Rebalance stack
+    lua_pop(L, 2);*/ /// I suddenly realized that this stuff is already on the stack. We don't need to pop it and then push it back on before yielding. Duh
 
     return lua_yieldk(L, 0, 0, 0);
 }

@@ -17,9 +17,14 @@ struct XML_EraData;
 struct XML_LootDrop;
 struct XML_LootTable;
 struct XML_StructureData;
+struct XML_QuestData;
+struct XML_QuestObjectiveData;
 
 
 struct XML_TileData {
+    unsigned int id;
+    std::string name;
+
     std::string textureFilepath = UNDEFINED_ASSET_PATH;
     std::string bumpMapFilepath;
     float emittedLight = 0.0f;
@@ -39,6 +44,9 @@ struct XML_TileData {
 };
 
 struct XML_ParticleData {
+    unsigned int id;
+    std::string name;
+
     std::string textureFilepath = UNDEFINED_ASSET_PATH;
     std::string bumpMapFilepath;
     std::string scriptPath;
@@ -46,7 +54,8 @@ struct XML_ParticleData {
 };
 
 struct XML_EntityNPCData {
-    unsigned int id = (unsigned int)-1;
+    unsigned int id;
+    std::string name;
 
     std::string textureFilepath = UNDEFINED_ASSET_PATH;
     std::string bumpMapFilepath;
@@ -75,7 +84,8 @@ struct XML_EntityNPCData {
 };
 
 struct XML_EntityProjectileData {
-    unsigned int id = (unsigned int)-1;
+    unsigned int id;
+    std::string name;
 
     std::string textureFilepath = UNDEFINED_ASSET_PATH;
     std::string bumpMapFilepath;
@@ -94,7 +104,8 @@ struct XML_EntityProjectileData {
 };
 
 struct XML_EntityItemData {
-    unsigned int id = (unsigned int)-1;
+    unsigned int id;
+    std::string name;
 
     std::string textureFilepath = UNDEFINED_ASSET_PATH;
     std::string bumpMapFilepath;
@@ -174,4 +185,22 @@ struct XML_StructureData {
     float chance; // Chance it has to spawn. (Same as drop system)
     unsigned int maxAmnt; // max amount in a world
     unsigned int minAmnt; // min amount in a world
+};
+
+struct XML_QuestData {
+    unsigned int id;
+    std::string name = "UNDEFINED";
+
+    std::vector<XML_QuestObjectiveData> objectives;
+    std::string completionScript;
+    bool scriptIsFile = false;
+};
+
+struct XML_QuestObjectiveData {
+    unsigned int id;
+    std::string name = "UNDEFINED";
+
+    std::string text;
+    std::string confirmationScript;
+    bool scriptIsFile = false;
 };

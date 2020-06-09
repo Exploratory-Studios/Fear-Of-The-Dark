@@ -10,7 +10,7 @@ Console::~Console()
     //dtor
 }
 
-void Console::init(GLEngine::GUI& gui, Scripter* scripter, World* world, QuestManager* qm, GameplayScreen* gs) {
+void Console::init(GLEngine::GUI& gui, ScriptingModule::Scripter* scripter, World* world, QuestModule::QuestManager* qm, GameplayScreen* gs) {
     m_scripter = scripter;
     m_world = world;
     m_qm = qm;
@@ -49,7 +49,7 @@ void Console::hide() {
     m_showing = false;
 }
 
-void Console::processCommand(World* world, QuestManager* qm, GameplayScreen* gs, std::string& command) {
+void Console::processCommand(World* world, QuestModule::QuestManager* qm, GameplayScreen* gs, std::string& command) {
     m_scripter->executeCommand(command);
 }
 

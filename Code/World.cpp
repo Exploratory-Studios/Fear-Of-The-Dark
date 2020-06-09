@@ -6,6 +6,8 @@
 
 #include "XMLData.h"
 
+#include "EventQueue.h"
+
 World::World() {
     XMLData::init();
 
@@ -28,6 +30,28 @@ World::~World() {
 }
 
 void World::setTile(Tile* tile) {
+    setTile_noEvent(tile);
+
+    unsigned int x, y, layer, id;
+    x = tile->getPosition().x;
+    y = tile->getPosition().y;
+    layer = tile->getLayer();
+    id = tile->getID();
+
+    specialUpdateTile(m_tiles[y][x][layer]);
+
+    std::vector<ScriptingModule::Argument> args = { ScriptingModule::Argument("blockID", std::to_string(id)),
+                                                    ScriptingModule::Argument("blockX", std::to_string(x)),
+                                                    ScriptingModule::Argument("blockY", std::to_string(y)),
+                                                    ScriptingModule::Argument("blockLayer", std::to_string(layer)) };
+    EventModule::EventQueue::triggerEvent("setTile", args);
+    /*Tile* b = getTile(x, y, layer+1);
+    if(b) b->setNeedsSunCheck();
+    Tile* f = getTile(x, y, layer-1);
+    if(f) f->setNeedsSunCheck();*/
+}
+
+void World::setTile_noEvent(Tile* tile) {
     unsigned int x, y, layer;
     x = tile->getPosition().x;
     y = tile->getPosition().y;
@@ -63,12 +87,6 @@ void World::setTile(Tile* tile) {
     if(l) l->setNeedsSunCheck();
     Tile* r = getTile(x+1, y, layer);
     if(r) r->setNeedsSunCheck();
-
-    specialUpdateTile(m_tiles[y][x][layer]);
-    /*Tile* b = getTile(x, y, layer+1);
-    if(b) b->setNeedsSunCheck();
-    Tile* f = getTile(x, y, layer-1);
-    if(f) f->setNeedsSunCheck();*/
 }
 
 Tile* World::getTile(int x, int y, int layer) {
@@ -129,11 +147,25 @@ void World::addEntity(Entity* e) {
 
     e->generateUUID(this);
     m_entitiesByUUID.insert(std::pair<std::string, Entity*>(e->getUUID(), e));
+
+    std::vector<ScriptingModule::Argument> args = { ScriptingModule::Argument("entityUUID", e->getUUID()),
+                                                    ScriptingModule::Argument("entityID", std::to_string(e->getID())),
+                                                    ScriptingModule::Argument("entityX", std::to_string(e->getPosition().x)),
+                                                    ScriptingModule::Argument("entityY", std::to_string(e->getPosition().y)),
+                                                    ScriptingModule::Argument("entityLayer", std::to_string(e->getLayer())) };
+    EventModule::EventQueue::triggerEvent("addEntity", args);
 }
 
 void World::removeEntity(unsigned int index) {
     /** REMOVES AND DELETES ENTITY, COMPLETELY HANDLING MEMORY MANAGEMENT
     */
+
+    std::vector<ScriptingModule::Argument> args = { ScriptingModule::Argument("entityUUID", m_entities[index]->getUUID()),
+                                                    ScriptingModule::Argument("entityID", std::to_string(m_entities[index]->getID())),
+                                                    ScriptingModule::Argument("entityX", std::to_string(m_entities[index]->getPosition().x)),
+                                                    ScriptingModule::Argument("entityY", std::to_string(m_entities[index]->getPosition().y)),
+                                                    ScriptingModule::Argument("entityLayer", std::to_string(m_entities[index]->getLayer())) };
+    EventModule::EventQueue::triggerEvent("removeEntity", args);
 
     auto a = m_entitiesByUUID.find(m_entities[index]->getUUID());
     m_entitiesByUUID.erase(a);
@@ -159,6 +191,13 @@ void World::removeEntity(std::string UUID) {
             break;
         }
     }
+
+    std::vector<ScriptingModule::Argument> args = { ScriptingModule::Argument("entityUUID", m_entities[index]->getUUID()),
+                                                    ScriptingModule::Argument("entityID", std::to_string(m_entities[index]->getID())),
+                                                    ScriptingModule::Argument("entityX", std::to_string(m_entities[index]->getPosition().x)),
+                                                    ScriptingModule::Argument("entityY", std::to_string(m_entities[index]->getPosition().y)),
+                                                    ScriptingModule::Argument("entityLayer", std::to_string(m_entities[index]->getLayer())) };
+    EventModule::EventQueue::triggerEvent("removeEntity", args);
 
     m_entitiesByUUID.erase(UUID);
 

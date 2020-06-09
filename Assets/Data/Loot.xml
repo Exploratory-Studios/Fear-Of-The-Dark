@@ -1,19 +1,15 @@
-<!-- Drops -->
-
-<lootDrop id="0" name="DirtDrop"> <!-- The name doesn't really need to be anything special. Nothing is going to use it, really -->
+<lootDrop id="0" name="DirtDrop">
 	<itemID>1</itemID>
 	<minDrop>1</minDrop>
 	<maxDrop>3</maxDrop>
-	<chance>0.8</chance>
+	<chance>0.800000</chance>
 </lootDrop>
-<lootDrop id="1" name="TorchDrop"> <!-- The name doesn't really need to be anything special. Nothing is going to use it, really -->
+<lootDrop id="1" name="TorchDrop">
 	<itemID>2</itemID>
 	<minDrop>1</minDrop>
 	<maxDrop>1</maxDrop>
-	<chance>0.2</chance>
+	<chance>0.200000</chance>
 </lootDrop>
-
-<!-- Tables -->
 
 <lootTable id="0" name="DirtOnlyTable">
 	<drops>
@@ -31,3 +27,5 @@
 		<dropID>1</dropID>
 	</drops>
 </lootTable>
+<lootTable id="3" name="EmptyTable"/>
+

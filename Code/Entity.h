@@ -5,7 +5,7 @@
 #include <GLTexture.h>
 #include <SpriteBatch.h>
 
-#include "Scripting/ScriptQueue.h"
+#include "ScriptQueue.h"
 #include "SaveDataTypes.h"
 
 #include <SpriteBatch.h>
@@ -62,8 +62,8 @@ class Entity
 
         void generateUUID(World* world);
 
-        virtual std::vector<Argument> generateLuaValues() {
-            std::vector<Argument> args = {
+        virtual std::vector<ScriptingModule::Argument> generateLuaValues() {
+            std::vector<ScriptingModule::Argument> args = {
                 { "selfX", std::to_string(m_position.x) },
                 { "selfY", std::to_string(m_position.y) },
                 { "selfXVel", std::to_string(m_velocity.x) },

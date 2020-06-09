@@ -330,7 +330,7 @@ void EntityNPC::die(World* world) {
 
 void EntityNPC::attack() {
     if(m_attackScript != -1) {
-        ScriptQueue::activateScript(m_attackScript, generateLuaValues());
+        ScriptingModule::ScriptQueue::activateScript(m_attackScript, generateLuaValues());
     }
 }
 

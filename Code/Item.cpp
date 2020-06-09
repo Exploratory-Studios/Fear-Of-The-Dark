@@ -31,11 +31,11 @@ Item::Item(short unsigned int quantity, ItemIDs id, bool loadTex) : m_id((unsign
 
 void Item::onRightClick(Tile* selectedBlock) {
     if(m_useScriptId != -1) {
-        std::vector<Argument> concatenatedArgs(generateLuaData());
-        std::vector<Argument> b = selectedBlock->generateLuaData();
+        std::vector<ScriptingModule::Argument> concatenatedArgs(generateLuaData());
+        std::vector<ScriptingModule::Argument> b = selectedBlock->generateLuaData();
         concatenatedArgs.insert(concatenatedArgs.end(), b.begin(), b.end());
 
-        ScriptQueue::activateScript(m_useScriptId, concatenatedArgs);
+        ScriptingModule::ScriptQueue::activateScript(m_useScriptId, concatenatedArgs);
     }
 }
 

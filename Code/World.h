@@ -75,6 +75,8 @@ public:
 private:
     World(bool quickLoad) {}
 
+    void setTile_noEvent(Tile* tile);
+
     void specialUpdateTile(Tile* origin);
 
     void spawnEntities();

@@ -19,45 +19,55 @@ void getVector(rapidxml::xml_node<>* parent, std::string valueName, std::string 
 
     rapidxml::xml_node<>* n = parent->first_node((char*)valueName.c_str()); // Gets <entities> in the example.
 
-    std::string temp;
-    while(getValue(n, childName, temp)) {
-        vec.push_back(temp);
+    if(n) {
+        std::string temp;
+        while(getValue(n, childName, temp)) {
+            vec.push_back(temp);
+        }
     }
 }
 
 void getVector(rapidxml::xml_node<>* parent, std::string valueName, std::string childName, std::vector<float>& vec) {
     rapidxml::xml_node<>* n = parent->first_node((char*)valueName.c_str()); // Gets <entities> in the example.
 
-    float temp;
-    while(getValue(n, childName, temp)) {
-        vec.push_back(temp);
+    if(n) {
+        float temp;
+        while(getValue(n, childName, temp)) {
+            vec.push_back(temp);
+        }
     }
 }
 
 void getVector(rapidxml::xml_node<>* parent, std::string valueName, std::string childName, std::vector<int>& vec) {
     rapidxml::xml_node<>* n = parent->first_node((char*)valueName.c_str()); // Gets <entities> in the example.
 
-    int temp;
-    while(getValue(n, childName, temp)) {
-        vec.push_back(temp);
+    if(n) {
+        int temp;
+        while(getValue(n, childName, temp)) {
+            vec.push_back(temp);
+        }
     }
 }
 
 void getVector(rapidxml::xml_node<>* parent, std::string valueName, std::string childName, std::vector<unsigned int>& vec) {
     rapidxml::xml_node<>* n = parent->first_node((char*)valueName.c_str()); // Gets <entities> in the example.
 
-    unsigned int temp;
-    while(getValue(n, childName, temp)) {
-        vec.push_back(temp);
+    if(n) {
+        unsigned int temp;
+        while(getValue(n, childName, temp)) {
+            vec.push_back(temp);
+        }
     }
 }
 
 void getVector(rapidxml::xml_node<>* parent, std::string valueName, std::string childName, std::vector<bool>& vec) {
     rapidxml::xml_node<>* n = parent->first_node((char*)valueName.c_str()); // Gets <entities> in the example.
 
-    bool temp;
-    while(getValue(n, childName, temp)) {
-        vec.push_back(temp);
+    if(n) {
+        bool temp;
+        while(getValue(n, childName, temp)) {
+            vec.push_back(temp);
+        }
     }
 }
 
@@ -178,6 +188,10 @@ void XMLData::init() {
     Logger::getInstance()->log("Loaded data (Loot Tables)...");
     loadXMLStructureData();
     Logger::getInstance()->log("Loaded data (Structures)...");
+    loadXMLQuestObjectiveData();
+    Logger::getInstance()->log("Loaded data (Quest Objectives)...");
+    loadXMLQuestData();
+    Logger::getInstance()->log("Loaded data (Quests)...");
 
     Logger::getInstance()->log("Loaded all data successfully!");
 }
@@ -193,6 +207,8 @@ std::map<unsigned int, XML_EraData> XMLData::m_eraData;
 std::map<unsigned int, XML_LootDrop> XMLData::m_lootDropData;
 std::map<unsigned int, XML_LootTable> XMLData::m_lootTableData;
 std::map<unsigned int, XML_StructureData> XMLData::m_structureData;
+std::map<unsigned int, XML_QuestData> XMLData::m_questData;
+std::map<unsigned int, XML_QuestObjectiveData> XMLData::m_questObjectiveData;
 
 /// Tiles
 void XMLData::loadXMLTileData(std::string filepath) {
@@ -267,19 +283,19 @@ XML_TileData XMLData::readTileData(rapidxml::xml_node<>* node) {
     getValue(node, "interactScript_used", RClickScriptID);
 
     if(updateSID.length() > 0) {
-        d.updateScriptID = ScriptQueue::addScript(updateSID);
+        d.updateScriptID = ScriptingModule::ScriptQueue::addScript(updateSID);
     }
     if(tickSID.length() > 0) {
-        d.tickScriptID = ScriptQueue::addScript(tickSID);
+        d.tickScriptID = ScriptingModule::ScriptQueue::addScript(tickSID);
     }
     if(destructionSID.length() > 0) {
-        d.destructionScriptID = ScriptQueue::addScript(destructionSID);
+        d.destructionScriptID = ScriptingModule::ScriptQueue::addScript(destructionSID);
     }
     if(walkScriptID.length() > 0) {
-        d.interactScriptID_walkedOn = ScriptQueue::addScript(walkScriptID);
+        d.interactScriptID_walkedOn = ScriptingModule::ScriptQueue::addScript(walkScriptID);
     }
     if(RClickScriptID.length() > 0) {
-        d.interactScriptID_used = ScriptQueue::addScript(RClickScriptID);
+        d.interactScriptID_used = ScriptingModule::ScriptQueue::addScript(RClickScriptID);
     }
 
     // At this point, the doc is empty, save for the few extra MetaData bits. Now we need to add those.
@@ -438,13 +454,13 @@ XML_EntityNPCData XMLData::readEntityNPCData(rapidxml::xml_node<>* node) {
     getValue(node, "attackScript", attackSID);
 
     if(updateSID.length() > 0) {
-        d.updateScriptID = ScriptQueue::addScript(updateSID);
+        d.updateScriptID = ScriptingModule::ScriptQueue::addScript(updateSID);
     }
     if(tickSID.length() > 0) {
-        d.tickScriptID = ScriptQueue::addScript(tickSID);
+        d.tickScriptID = ScriptingModule::ScriptQueue::addScript(tickSID);
     }
     if(attackSID.length() > 0) {
-        d.attackScriptID = ScriptQueue::addScript(attackSID);
+        d.attackScriptID = ScriptingModule::ScriptQueue::addScript(attackSID);
     }
 
     // At this point, the doc is empty, save for the few extra MetaData bits. Now we need to add those.
@@ -519,10 +535,10 @@ XML_EntityProjectileData XMLData::readEntityProjectileData(rapidxml::xml_node<>*
     getValue(node, "tickScript", tickSID);
 
     if(updateSID.length() > 0) {
-        d.updateScriptID = ScriptQueue::addScript(updateSID);
+        d.updateScriptID = ScriptingModule::ScriptQueue::addScript(updateSID);
     }
     if(tickSID.length() > 0) {
-        d.tickScriptID = ScriptQueue::addScript(tickSID);
+        d.tickScriptID = ScriptingModule::ScriptQueue::addScript(tickSID);
     }
 
     // At this point, the doc is empty, save for the few extra MetaData bits. Now we need to add those.
@@ -594,10 +610,10 @@ XML_EntityItemData XMLData::readEntityItemData(rapidxml::xml_node<>* node) {
     getValue(node, "tickScript", tickSID);
 
     if(updateSID.length() > 0) {
-        d.updateScriptID = ScriptQueue::addScript(updateSID);
+        d.updateScriptID = ScriptingModule::ScriptQueue::addScript(updateSID);
     }
     if(tickSID.length() > 0) {
-        d.tickScriptID = ScriptQueue::addScript(tickSID);
+        d.tickScriptID = ScriptingModule::ScriptQueue::addScript(tickSID);
     }
 
     // At this point, the doc is empty, save for the few extra MetaData bits. Now we need to add those.
@@ -664,7 +680,7 @@ XML_ItemData XMLData::readItemData(rapidxml::xml_node<>* node) {
     getValue(node, "useScript", useScriptSID);
 
     if(useScriptSID.length() > 0) {
-        d.useScriptID = ScriptQueue::addScript(useScriptSID);
+        d.useScriptID = ScriptingModule::ScriptQueue::addScript(useScriptSID);
     }
 
     // At this point, the doc is empty, save for the few extra MetaData bits. Now we need to add those.
@@ -972,6 +988,130 @@ XML_StructureData XMLData::readStructureData(rapidxml::xml_node<>* node) {
     getValue(node, "chance", s.chance);
     getValue(node, "maxAmnt", s.maxAmnt);
     getValue(node, "minAmnt", s.minAmnt);
+
+    return s;
+}
+
+/// Quests
+
+void XMLData::loadXMLQuestData(std::string filepath) {
+    /** Loads all quest data into the questData map **/
+
+    // Open file at filepath
+    std::ifstream file;
+    file.open(filepath);
+
+    if(file.fail()) { // Handle exceptions
+        Logger::getInstance()->log("ERROR: Quest data XML file unable to be loaded: " + filepath, true);
+        return;
+    }
+
+    // Load all the text in the file to a string
+    std::string text;
+    std::string line;
+    while(getline(file, line)) {
+        text += line + "\n";
+    }
+
+    rapidxml::xml_document<> doc;
+    doc.parse<rapidxml::parse_full>((char*)text.c_str());
+
+    for(rapidxml::xml_node<>* node = doc.first_node("quest"); node; node = node->next_sibling("quest")) {
+        XML_QuestData s = XMLData::readQuestData(node);
+        unsigned int id = std::stoi(node->first_attribute("id")->value());
+        std::string name = node->first_attribute("name")->value();
+        s.id = id;
+        s.name = name;
+        m_questData.insert(std::pair<unsigned int, XML_QuestData>(id, s));
+    }
+}
+
+XML_QuestData XMLData::getQuestData(unsigned int id) {
+    auto index = m_questData.find(id);
+
+    if(index == m_questData.end()) {
+        Logger::getInstance()->log("ERROR: Couldn't find quest data with ID: " + std::to_string(id), true);
+        XML_QuestData s;
+        return s;
+    }
+
+    return index->second;
+}
+
+XML_QuestData XMLData::readQuestData(rapidxml::xml_node<>* node) {
+
+    XML_QuestData s;
+
+    getValue(node, "completionScript", s.completionScript);
+    getValue(node, "scriptIsFile", s.scriptIsFile);
+
+    // get objectives
+    rapidxml::xml_node<>* n = node->first_node("objectives"); // Gets <entities> in the example.
+
+    if(n) {
+        rapidxml::xml_node<>* n1 = n->first_node("objectiveID");
+        while(n1) {
+            s.objectives.push_back(getQuestObjectiveData(std::stoi(n1->value())));
+            n1 = n1->next_sibling("objectiveID");
+        }
+    }
+
+    return s;
+}
+
+/// QuestObjectives
+
+void XMLData::loadXMLQuestObjectiveData(std::string filepath) {
+    /** Loads all quest objective data into the questData map **/
+
+    // Open file at filepath
+    std::ifstream file;
+    file.open(filepath);
+
+    if(file.fail()) { // Handle exceptions
+        Logger::getInstance()->log("ERROR: Quest objective data XML file unable to be loaded: " + filepath, true);
+        return;
+    }
+
+    // Load all the text in the file to a string
+    std::string text;
+    std::string line;
+    while(getline(file, line)) {
+        text += line + "\n";
+    }
+
+    rapidxml::xml_document<> doc;
+    doc.parse<rapidxml::parse_full>((char*)text.c_str());
+
+    for(rapidxml::xml_node<>* node = doc.first_node("objective"); node; node = node->next_sibling("objective")) {
+        XML_QuestObjectiveData s = XMLData::readQuestObjectiveData(node);
+        unsigned int id = std::stoi(node->first_attribute("id")->value());
+        std::string name = node->first_attribute("name")->value();
+        s.id = id;
+        s.name = name;
+        m_questObjectiveData.insert(std::pair<unsigned int, XML_QuestObjectiveData>(id, s));
+    }
+}
+
+XML_QuestObjectiveData XMLData::getQuestObjectiveData(unsigned int id) {
+    auto index = m_questObjectiveData.find(id);
+
+    if(index == m_questObjectiveData.end()) {
+        Logger::getInstance()->log("ERROR: Couldn't find quest objective data with ID: " + std::to_string(id), true);
+        XML_QuestObjectiveData s;
+        return s;
+    }
+
+    return index->second;
+}
+
+XML_QuestObjectiveData XMLData::readQuestObjectiveData(rapidxml::xml_node<>* node) {
+
+    XML_QuestObjectiveData s;
+
+    getValue(node, "text", s.text);
+    getValue(node, "confirmationScript", s.confirmationScript);
+    getValue(node, "scriptIsFile", s.scriptIsFile);
 
     return s;
 }

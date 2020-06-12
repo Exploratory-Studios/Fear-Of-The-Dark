@@ -9,6 +9,7 @@
 			<Target title="Debug">
 				<Option output="bin/Debug/Fear Of The Dark" prefix_auto="1" extension_auto="1" />
 				<Option object_output="obj/Debug/" />
+				<Option external_deps="../../GLEngine/bin/Release/libGLEngine.a;" />
 				<Option type="1" />
 				<Option compiler="gcc" />
 				<Compiler>

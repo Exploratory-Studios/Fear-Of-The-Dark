@@ -54,7 +54,7 @@ public:
 
     void setLightsUniform(glm::vec4 destRect, GLEngine::GLSLProgram* textureProgram);
 
-    void drawTiles(GLEngine::SpriteBatch& sb, GLEngine::SpriteFont& sf, GLEngine::DebugRenderer& dr, glm::vec4 destRect);
+    void drawTiles(GLEngine::SpriteBatch& sb, GLEngine::SpriteFont& sf, GLEngine::DebugRenderer& dr, glm::vec4 destRect, GLEngine::GLSLProgram* textureProgram);
     void updateTiles(glm::vec4 destRect);
     void tickTiles(glm::vec4 destRect);
 

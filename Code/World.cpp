@@ -383,7 +383,7 @@ void World::setLightsUniform(glm::vec4 destRect, GLEngine::GLSLProgram* textureP
     glUniform3fv(textureUniform, MAX_LIGHTS_RENDERED, lights); /// TODO: Set define directive for 30 lights max.
 }
 
-void World::drawTiles(GLEngine::SpriteBatch& sb, GLEngine::SpriteFont& sf, GLEngine::DebugRenderer& dr, glm::vec4 destRect) {
+void World::drawTiles(GLEngine::SpriteBatch& sb, GLEngine::SpriteFont& sf, GLEngine::DebugRenderer& dr, glm::vec4 destRect, GLEngine::GLSLProgram* textureProgram) {
     /**
         Draws an area of tiles at position destRect.xy, with width and height of destRect.z and destRect.w respectively.
         Negative coordinates are mapped to accomodate for 'crossover'
@@ -392,29 +392,44 @@ void World::drawTiles(GLEngine::SpriteBatch& sb, GLEngine::SpriteFont& sf, GLEng
 
     int playerLayer = m_player->getLayer();
     int diff[WORLD_DEPTH];
+    float blur[WORLD_DEPTH];
     for(int i = 0; i < WORLD_DEPTH; i++) {
         diff[i] = playerLayer - i;
     }
 
-    for(int x = destRect.x; x < destRect.z + destRect.x; x++) {
-        int columnIndex = (int)((x/*+destRect.x*/) + (WORLD_SIZE)) % WORLD_SIZE;
-        int offset = (/*destRect.x + */x) - columnIndex;
+    for(unsigned int layer = WORLD_DEPTH; layer --> 0; ) {
+        sb.begin(true);
 
-        for(int y = destRect.y; y < destRect.w + destRect.y; y++) {
-            for(unsigned int layer = 0; layer < WORLD_DEPTH; layer++) {
+        setLightsUniform(destRect, textureProgram);
+
+        GLint blurU = textureProgram->getUniformLocation("blur");
+        glUniform1i(blurU, 0);//std::abs(diff[layer]));
+
+        for(int x = destRect.x; x < destRect.z + destRect.x; x++) {
+            int columnIndex = (int)((x/*+destRect.x*/) + (WORLD_SIZE)) % WORLD_SIZE;
+            int offset = (/*destRect.x + */x) - columnIndex;
+
+            for(int y = destRect.y; y < destRect.w + destRect.y; y++) {
                 if(y >= 0) {
                     if(y < WORLD_HEIGHT) {
-                        m_tiles[y][columnIndex][layer]->draw(sb, sf, offset, diff[layer]);
-                        if(diff[layer] <= 0 && m_tiles[y][columnIndex][layer]->doDraw() && !m_tiles[y][columnIndex][layer]->isTransparent()) {
-                            break;
+                        //if(diff[layer] <= 0 && m_tiles[y][columnIndex][layer]->doDraw() && !m_tiles[y][columnIndex][layer]->isTransparent()) {
+                        //    break;
+                        //}
+
+                        if(diff[layer] >= 0) { // Definitely not obstructed by current layer (current or in front of).
+                            m_tiles[y][columnIndex][layer]->draw(sb, sf, offset, diff[layer]);
+                        } else { // We must check now if individual blocks are obstructed by the layer directly in front of it.
+                            if(m_tiles[y][columnIndex][layer-1]->isTransparent()) {
+                                m_tiles[y][columnIndex][layer]->draw(sb, sf, offset, diff[layer]);
+                            }
                         }
                     }
                 }
             }
         }
+        sb.end();
+        sb.renderBatch();
     }
-
-    sb.renderBatch();
 }
 
 void World::updateTiles(glm::vec4 destRect) {
@@ -481,8 +496,6 @@ void World::drawEntities(GLEngine::SpriteBatch& sb, GLEngine::SpriteFont& sf, GL
     for(unsigned int i = 0; i < m_entities.size(); i++) {
         m_entities[i]->draw(sb, m_time, diff[m_entities[i]->getLayer()], 0.0f); /// TODO: Finish these entity functions up and improve!
     }
-
-    sb.renderBatch();
 }
 
 void World::drawDebug(GLEngine::DebugRenderer& dr, float xOffset) {

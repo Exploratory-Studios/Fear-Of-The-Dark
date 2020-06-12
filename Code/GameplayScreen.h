@@ -86,6 +86,7 @@ class GameplayScreen : public GLEngine::IGameScreen
         GLEngine::GLSLProgram m_uiTextureProgram;
         GLEngine::GLSLProgram m_vignetteTextureProgram;
         GLEngine::GLSLProgram m_skyTextureProgram;
+        GLEngine::GLSLProgram m_wackyProgram;
 
         GLEngine::SpriteFont m_spriteFont;
         GLEngine::DebugRenderer m_dr;

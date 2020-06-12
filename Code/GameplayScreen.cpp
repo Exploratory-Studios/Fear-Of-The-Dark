@@ -174,6 +174,8 @@ void GameplayScreen::update() {
 
 void GameplayScreen::draw() {
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+    m_spriteBatch.clearFramebuffer();
+
 
     float dayLight = cos((float)m_world->getTime() / (DAY_LENGTH / 6.28318f)) / 2.0f + 0.5f;
 
@@ -203,7 +205,7 @@ void GameplayScreen::draw() {
         GLint parallaxZoomUniform = m_skyTextureProgram.getUniformLocation("parallaxZoom");
         glUniform1f(parallaxZoomUniform, 0.95f);
 
-        m_spriteBatch.begin(GLEngine::GlyphSortType::FRONT_TO_BACK);
+        m_spriteBatch.begin();
 
 
         int playerX = (int)m_world->getPlayer()->getPosition().x;
@@ -220,6 +222,8 @@ void GameplayScreen::draw() {
 
     }
 
+    m_spriteBatch.bindFramebuffer();
+
     { // World
         m_textureProgram.use();
 
@@ -234,24 +238,96 @@ void GameplayScreen::draw() {
         textureUniform = m_textureProgram.getUniformLocation("bumpSampler");
         glUniform1i(textureUniform, 1);
 
-        m_spriteBatch.begin(GLEngine::GlyphSortType::FRONT_TO_BACK);
+        m_world->drawTiles(m_spriteBatch, m_spriteFont, m_dr, getScreenBox() + glm::vec4(0.0f, 0.0f, 1.0f, 1.0f), &m_textureProgram); // handles spritebatch.begin and end
 
-        m_world->setLightsUniform(getScreenBox() + glm::vec4(0.0f, 0.0f, 1.0f, 1.0f), &m_textureProgram);
-        m_world->drawTiles(m_spriteBatch, m_spriteFont, m_dr, getScreenBox() + glm::vec4(0.0f, 0.0f, 1.0f, 1.0f));
+        m_textureProgram.unuse();
+
+        /*m_wackyProgram.use();
+
+        projectionMatrix = m_camera.getCameraMatrix();
+        pUniform = m_wackyProgram.getUniformLocation("P");
+        glUniformMatrix4fv(pUniform, 1, GL_FALSE, &projectionMatrix[0][0]);
+
+        GLint tex = m_wackyProgram.getUniformLocation("textureSampler");
+        glUniform1i(tex, 0);
+
+        //m_spriteBatch.begin();
+
+        //m_spriteBatch.draw(glm::vec4(0.0f, 0.0f, 480.0f, 640.0f), glm::vec4(0.0f, 0.0f, 1.0f, 1.0f), m_spriteBatch.getFBO(), 0, 0, GLEngine::ColourRGBA8(255, 255, 255, 255));
+
+        //m_spriteBatch.end();
+        //m_spriteBatch.renderBatch();
+
+        //m_spriteBatch.renderFBO();
+
+        m_wackyProgram.unuse();*/
+    }
+
+    { // World: Entities
+        m_textureProgram.use();
+
+        // Camera matrix
+        glm::mat4 projectionMatrix = m_camera.getCameraMatrix();
+        GLint pUniform = m_textureProgram.getUniformLocation("P");
+        glUniformMatrix4fv(pUniform, 1, GL_FALSE, &projectionMatrix[0][0]);
+        GLint textureUniform = m_textureProgram.getUniformLocation("textureSampler");
+        glUniform1i(textureUniform, 0);
+        textureUniform = m_textureProgram.getUniformLocation("bumpSampler");
+        glUniform1i(textureUniform, 1);
+
+        m_spriteBatch.begin(true);
+
+        GLint blurU = m_textureProgram.getUniformLocation("blur");
+        glUniform1i(blurU, 0);
+
         m_world->drawEntities(m_spriteBatch, m_spriteFont, m_dr, getScreenBox() + glm::vec4(0.0f, 0.0f, 1.0f, 1.0f));
-
         m_particle2d.draw(&m_spriteBatch, 3.0f);
 
         m_spriteBatch.end();
-
         m_spriteBatch.renderBatch();
+        m_textureProgram.unuse();
+
+        /*m_wackyProgram.use();
+
+        projectionMatrix = m_camera.getCameraMatrix();
+        pUniform = m_wackyProgram.getUniformLocation("P");
+        glUniformMatrix4fv(pUniform, 1, GL_FALSE, &projectionMatrix[0][0]);
+
+        GLint tex = m_wackyProgram.getUniformLocation("textureSampler");
+        glUniform1i(tex, 0);
+
+        //m_spriteBatch.renderFBO();
+        m_spriteBatch.renderFBOExperimental();
+
+        m_wackyProgram.unuse();
 
         m_world->drawDebug(m_dr, 0.0f);
-
-        m_dr.render(projectionMatrix, 2);
-
-        m_textureProgram.unuse();
+        m_dr.render(projectionMatrix, 2);*/
     }
+
+    m_spriteBatch.unbindFramebuffer();
+
+    //m_spriteBatch.renderFBOExperimental();
+
+    m_wackyProgram.use();
+
+    GLint textureUniform = m_wackyProgram.getUniformLocation("mySampler");
+    glUniform1i(textureUniform, 0);
+    glActiveTexture(GL_TEXTURE0);
+
+    // Camera matrix
+    glm::mat4 projectionMatrix = m_uiCamera.getCameraMatrix();
+    GLint pUniform = m_wackyProgram.getUniformLocation("P");
+    glUniformMatrix4fv(pUniform, 1, GL_FALSE, &projectionMatrix[0][0]);
+
+    m_spriteBatch.begin();
+
+    m_spriteBatch.draw(glm::vec4(0.0f, 0.0f, 640.0f, 480.0f), glm::vec4(0.0f, 0.0f, 1.0f, -1.0f), m_spriteBatch.getFBOTexture(), 0, 0, GLEngine::ColourRGBA8(255, 255, 255, 255));
+
+    m_spriteBatch.end();
+    m_spriteBatch.renderBatch();
+
+    m_wackyProgram.unuse();
 
     { // GUI
         m_uiTextureProgram.use();
@@ -284,10 +360,6 @@ void GameplayScreen::draw() {
     { // Post
         m_vignetteTextureProgram.use();
 
-        /*GLint textureUniform = m_vignetteTextureProgram.getUniformLocation("mySampler");
-        glUniform1i(textureUniform, 0);
-        glActiveTexture(GL_TEXTURE0);*/
-
         // Camera matrix
         glm::mat4 projectionMatrix = m_uiCamera.getCameraMatrix();
         GLint pUniform = m_vignetteTextureProgram.getUniformLocation("P");
@@ -302,7 +374,7 @@ void GameplayScreen::draw() {
         GLint timeUniform = m_vignetteTextureProgram.getUniformLocation("time");
         glUniform1f(timeUniform, m_time);
 
-        m_spriteBatch.begin(GLEngine::GlyphSortType::FRONT_TO_BACK);
+        m_spriteBatch.begin();
 
         m_spriteBatch.draw(glm::vec4(0.0f, 0.0f, m_window->getScreenWidth(), m_window->getScreenHeight()), glm::vec4(0.0f, 0.0f, 1.0f, 1.0f), 0, 0, 0.0f, GLEngine::ColourRGBA8(0, 0, 0, 0));
 
@@ -388,6 +460,12 @@ void GameplayScreen::initShaders() {
     m_skyTextureProgram.addAttribute("vertexColour");
     m_skyTextureProgram.addAttribute("vertexUV");
     m_skyTextureProgram.linkShaders();
+
+    m_wackyProgram.compileShaders(ASSETS_FOLDER_PATH + "Shaders/wacky.vert", ASSETS_FOLDER_PATH + "Shaders/wacky.frag");
+    m_wackyProgram.addAttribute("vertexPosition");
+    m_wackyProgram.addAttribute("vertexColour");
+    m_wackyProgram.addAttribute("vertexUV");
+    m_wackyProgram.linkShaders();
 }
 
 void GameplayScreen::initUI() {

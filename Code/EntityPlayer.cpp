@@ -83,7 +83,7 @@ void EntityPlayer::drawGUI(GLEngine::SpriteBatch& sb, GLEngine::SpriteFont& sf) 
         glm::vec4 fullUV = glm::vec4(0.0f, 0.0f, 1.0f, 1.0f);
         GLEngine::ColourRGBA8 fullColour(255, 255, 255, 255);
 
-        sb.begin(GLEngine::GlyphSortType::FRONT_TO_BACK); // lower numbers in back
+        sb.begin();
 
         { // Hotbar
             int hotbarImgId = GLEngine::ResourceManager::getTexture(ASSETS_FOLDER_PATH + "GUI/Player/Hotbar.png").id;

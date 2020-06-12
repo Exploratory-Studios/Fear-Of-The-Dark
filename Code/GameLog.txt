@@ -1,7 +1,7 @@
 
 
 
-### LOG: Tue Jun  9 19:54:30 2020 ###
+### LOG: Fri Jun 12 03:25:06 2020 ###
 
 Beginning to load data...
 Successfully Loaded Script File: /home/davis-dev/.exploratory/Fear Of The Dark/Assets/Scripts/TEST_SCRIPT.txt, and given id of: 0
@@ -25,14 +25,9 @@ Loaded data (Structures)...
 Loaded data (Quest Objectives)...
 Loaded data (Quests)...
 Loaded all data successfully!
-CREATE: Starting world creation at time: 609.846008
-CREATE: Finished world creation at time: 3609.052979 (Elapsed: 2999.207031ms)
+CREATE: Starting world creation at time: 598.898010
+CREATE: Finished world creation at time: 2573.389893 (Elapsed: 1974.491943ms)
 Loaded all 3 music files.
 Loaded all 2 sound files.
 Event Triggered: addEntity
-Event Triggered: setTile
-
-### WARNING: An attempt to access a flag with ID: 0 failed! (Flag doesn't exist) ###
-
-Event Triggered: setFlag
-Event Triggered: setTile
+Loaded script: /home/davis-dev/.exploratory/Fear Of The Dark/Assets/Scripts/TEST_SCRIPT.txt

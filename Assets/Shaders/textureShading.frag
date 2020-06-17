@@ -1,7 +1,7 @@
-#version 130
+#version 330
 //The fragment shader operates on each pixel in a given polygon
 
-in vec2 fragmentPosition;
+in vec3 fragmentPosition;
 in vec4 fragmentColour;
 in vec2 fragmentUV;
 in vec4 fragmentLight;
@@ -16,6 +16,8 @@ uniform sampler2D textureSampler;
 uniform sampler2D bumpSampler;
 
 uniform vec2 screenSizeU;
+
+const float Pi = 6.28318530718; // Pi*2
 
 float linearInterpolate(float min, float max, float percentage) {
 	return ((percentage)*(max-min)) + min;
@@ -36,6 +38,15 @@ float interpolateCornersforCoords(vec2 coords, vec4 corners) {
 }
 
 void main() {
+	vec4 textureColour = vec4(0.0);
+	textureColour = texture(textureSampler, fragmentUV);
+
+	if(!(textureColour.a > 0.0f)) {
+		discard;
+	}
+
+	gl_FragDepth = fragmentPosition.z;
+
 
 	float lightLevel = 0.0;
 
@@ -44,8 +55,6 @@ void main() {
 	source += vec4(vec2(0.5, 5.0) - vec2(fragmentUV.x, 1.0 - fragmentUV.y), 1.0, interpolateCornersforCoords(vec2(fragmentUV.x, 1.0 - fragmentUV.y), fragmentLight));
 	source.xyz /= vec3(2.0);
 	source.xy = normalize(source.xy);
-
-	vec4 textureColour = texture(textureSampler, fragmentUV);
 
 	vec3 normalMap = normalize(texture(bumpSampler, fragmentUV).rgb * 2.0 - 1.0);
 

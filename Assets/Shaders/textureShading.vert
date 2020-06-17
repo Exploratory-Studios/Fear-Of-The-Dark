@@ -3,12 +3,12 @@
 //The vertex shader operates on each vertex
 
 //input data from the VBO. Each vertex is 2 floats
-in vec2 vertexPosition;
+in vec3 vertexPosition;
 in vec4 vertexColour;
 in vec2 vertexUV;
 in vec4 vertexLight; // 0th is top left, moves clockwise
 
-out vec2 fragmentPosition;
+out vec3 fragmentPosition;
 out vec4 fragmentColour;
 out vec2 fragmentUV;
 out vec4 fragmentLight;
@@ -27,9 +27,7 @@ vec3 vectorize(vec3 initial, vec3 terminal) {
 
 void main() {
     //Set the x,y position on the screen
-    gl_Position.xy = (P * vec4(vertexPosition, 0.0, 1.0)).xy;
-    //the z position is zero since we are in 2D
-    gl_Position.z = 0.0;
+    gl_Position.xyz = (P * vec4(vertexPosition.xyz, 1.0)).xyz;
 
     //Indicate that the coordinates are normalized
     gl_Position.w = 1.0;
@@ -53,7 +51,7 @@ void main() {
 			float dist = distance(fragmentPosition.xy, lights[i].xy);
 			if(dist <= range && range > 0) {
 				float intensity = (1.0f - dist/range) * lights[i].z;
-				lightSources[i] = vec4(lights[i].xy - fragmentPosition, 1.0, intensity);
+				lightSources[i] = vec4(lights[i].xy - fragmentPosition.xy, 1.0, intensity);
 
 				averageSource.xyz += lightSources[i].xyz;
 				averageSource.w += intensity;

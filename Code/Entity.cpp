@@ -178,6 +178,8 @@ void Entity::draw(GLEngine::SpriteBatch& sb, float time, int layerDifference, fl
         }
 
         GLEngine::ColourRGBA8 colour(255, 255, 255, 255);
+
+        /*layerDifference--;
         if(layerDifference != 0) {
             if(layerDifference > 0) {// in front of the player
                 colour.a = 150;
@@ -190,9 +192,9 @@ void Entity::draw(GLEngine::SpriteBatch& sb, float time, int layerDifference, fl
                 colour.g = c;
                 colour.b = c;
             }
-        }
+        }*/
 
-        float depth = 0.5f * (WORLD_DEPTH - m_layer);
+        float depth = m_layer * (1.0f / (float)(WORLD_DEPTH));
 
         sb.draw(destRect, uvRect, m_textureId, m_bumpMapId, depth, colour, lighting);
 

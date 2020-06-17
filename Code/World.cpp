@@ -394,16 +394,13 @@ void World::drawTiles(GLEngine::SpriteBatch& sb, GLEngine::SpriteFont& sf, GLEng
     int diff[WORLD_DEPTH];
     float blur[WORLD_DEPTH];
     for(int i = 0; i < WORLD_DEPTH; i++) {
-        diff[i] = playerLayer - i;
+        diff[i] = (playerLayer - i);
     }
 
     for(unsigned int layer = WORLD_DEPTH; layer --> 0; ) {
-        sb.begin(true);
+        sb.begin();
 
         setLightsUniform(destRect, textureProgram);
-
-        GLint blurU = textureProgram->getUniformLocation("blur");
-        glUniform1i(blurU, 0);//std::abs(diff[layer]));
 
         for(int x = destRect.x; x < destRect.z + destRect.x; x++) {
             int columnIndex = (int)((x/*+destRect.x*/) + (WORLD_SIZE)) % WORLD_SIZE;
@@ -494,7 +491,7 @@ void World::drawEntities(GLEngine::SpriteBatch& sb, GLEngine::SpriteFont& sf, GL
     }
 
     for(unsigned int i = 0; i < m_entities.size(); i++) {
-        m_entities[i]->draw(sb, m_time, diff[m_entities[i]->getLayer()], 0.0f); /// TODO: Finish these entity functions up and improve!
+        m_entities[i]->draw(sb, m_time, std::abs(diff[m_entities[i]->getLayer()]) + 1.0, 0.0f); /// TODO: Finish these entity functions up and improve!
     }
 }
 

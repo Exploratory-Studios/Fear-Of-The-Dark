@@ -1,7 +1,7 @@
 
 
 
-### LOG: Fri Jun 12 03:25:06 2020 ###
+### LOG: Wed Jun 17 00:29:14 2020 ###
 
 Beginning to load data...
 Successfully Loaded Script File: /home/davis-dev/.exploratory/Fear Of The Dark/Assets/Scripts/TEST_SCRIPT.txt, and given id of: 0
@@ -25,9 +25,59 @@ Loaded data (Structures)...
 Loaded data (Quest Objectives)...
 Loaded data (Quests)...
 Loaded all data successfully!
-CREATE: Starting world creation at time: 598.898010
-CREATE: Finished world creation at time: 2573.389893 (Elapsed: 1974.491943ms)
+CREATE: Starting world creation at time: 776.091003
+CREATE: Finished world creation at time: 3068.694092 (Elapsed: 2292.603027ms)
 Loaded all 3 music files.
 Loaded all 2 sound files.
 Event Triggered: addEntity
 Loaded script: /home/davis-dev/.exploratory/Fear Of The Dark/Assets/Scripts/TEST_SCRIPT.txt
+Event Triggered: setTile
+Event Triggered: setTile
+Event Triggered: setTile
+Event Triggered: setTile
+Event Triggered: setTile
+Event Triggered: setTile
+Event Triggered: setTile
+Event Triggered: setTile
+Event Triggered: setTile
+Event Triggered: setTile
+Event Triggered: setTile
+Event Triggered: setTile
+Event Triggered: setTile
+Event Triggered: setTile
+Event Triggered: setTile
+Event Triggered: setTile
+Event Triggered: setTile
+Event Triggered: setTile
+Event Triggered: setTile
+Event Triggered: setTile
+Event Triggered: setTile
+Event Triggered: setTile
+Event Triggered: setTile
+Event Triggered: setTile
+Event Triggered: setTile
+Event Triggered: setTile
+Event Triggered: setTile
+Event Triggered: setTile
+Event Triggered: setTile
+Event Triggered: setTile
+Event Triggered: setTile
+Event Triggered: setTile
+Event Triggered: setTile
+Event Triggered: setTile
+Event Triggered: setTile
+Event Triggered: setTile
+Event Triggered: setTile
+Event Triggered: setTile
+Event Triggered: setTile
+Event Triggered: setTile
+Event Triggered: setTile
+Event Triggered: setTile
+Event Triggered: setTile
+Event Triggered: setTile
+Event Triggered: setTile
+Event Triggered: setTile
+Event Triggered: setTile
+Event Triggered: setTile
+Event Triggered: setTile
+Event Triggered: setTile

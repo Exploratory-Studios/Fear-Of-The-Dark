@@ -209,7 +209,7 @@ void Tile::draw(GLEngine::SpriteBatch& sb, GLEngine::SpriteFont& sf, int xOffset
         }
 
         GLEngine::ColourRGBA8 colour = m_colour;
-        if(depthDifference != 0) {
+        /*if(depthDifference != 0) {
             if(depthDifference > 0) {// in front of the player
                 colour.a = 150;
                 colour.r = 64;
@@ -221,11 +221,10 @@ void Tile::draw(GLEngine::SpriteBatch& sb, GLEngine::SpriteFont& sf, int xOffset
                 colour.g = c;
                 colour.b = c;
             }
-        }
+        }*/
 
         glm::vec4 pos = glm::vec4(m_pos.x + xOffset, m_pos.y, m_size.x, m_size.y);
-        float depth = 0.4f * (WORLD_DEPTH - m_layer);
-
+        float depth = m_layer * (1.0f / (float)(WORLD_DEPTH));
         sb.draw(pos,
                 glm::vec4(0.0f, 0.0f, 1.0f, 1.0f),
                 m_textureId,

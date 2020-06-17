@@ -82,11 +82,14 @@ class GameplayScreen : public GLEngine::IGameScreen
         GLEngine::SpriteBatch m_spriteBatch;
         GLEngine::ParticleEngine2D m_particle2d;
 
+        GLEngine::FrameBufferObject m_mainFBO; // Used for post processing.
+
         GLEngine::GLSLProgram m_textureProgram;
         GLEngine::GLSLProgram m_uiTextureProgram;
         GLEngine::GLSLProgram m_vignetteTextureProgram;
         GLEngine::GLSLProgram m_skyTextureProgram;
         GLEngine::GLSLProgram m_wackyProgram;
+        GLEngine::GLSLProgram m_postProcessor;
 
         GLEngine::SpriteFont m_spriteFont;
         GLEngine::DebugRenderer m_dr;

@@ -2,205 +2,225 @@
 
 #include "SaveDataTypes.h"
 
-
 #include <string>
 #include <glm/glm.hpp>
+#include <rapidxml/rapidxml.hpp>
+#include <initializer_list>
 
-struct XML_TileData;
-struct XML_EntityNPCData;
-struct XML_EntityProjectileData;
-struct XML_EntityItemData;
-struct XML_ItemData;
-struct XML_ParticleData;
-struct XML_BiomeData;
-struct XML_EraData;
-struct XML_LootDrop;
-struct XML_LootTable;
-struct XML_StructureData;
-struct XML_QuestData;
-struct XML_QuestObjectiveData;
+#include <boost/variant.hpp>
 
+namespace XMLModule {
 
-struct XML_TileData {
-    unsigned int id;
-    std::string name;
+    class GenericData;
+    class TileData;
 
-    std::string textureFilepath = UNDEFINED_ASSET_PATH;
-    std::string bumpMapFilepath;
-    float emittedLight = 0.0f;
-    float emittedHeat = 0.0f;
-    glm::vec2 size = glm::vec2(1.0f);
-    bool solid = true;
-    bool drawn = true;
-    bool natural = false;
-    bool transparent = false;
-    int updateScriptID = -1;
-    int tickScriptID = -1;
-    int destructionScriptID = -1;
-    int interactScriptID_walkedOn = -1;
-    int interactScriptID_used = -1;
-    MetaData defaultMD;
-    /// TODO: Inventory
-};
+    enum class AttributeType {
+        STRING,
+        UNSIGNED_INT,
+        INT,
+        FLOAT,
+        BOOL,
+        FILEPATH_TEXTURE,
+        FILEPATH_BUMPMAP,
+        SCRIPT,
+        STRING_FACTION,
+        VECTOR_UNSIGNED_INT,
+        VEC2
+    };
 
-struct XML_ParticleData {
-    unsigned int id;
-    std::string name;
+    struct Attribute {
+        Attribute() {}
+        Attribute(std::string nameP, AttributeType typeP) {
+            type = typeP;
+            name = nameP;
+            setDefault();
+        }
+        ~Attribute() {};
 
-    std::string textureFilepath = UNDEFINED_ASSET_PATH;
-    std::string bumpMapFilepath;
-    std::string scriptPath;
-    float decayRate = 0.0f;
-};
+        void setDefault();
 
-struct XML_EntityNPCData {
-    unsigned int id;
-    std::string name;
+        AttributeType type;
+        std::string name;
+        boost::variant<std::string,
+                       unsigned int,
+                       int,
+                       float,
+                       bool,
+                       std::vector<unsigned int>,
+                       std::vector<int>,
+                       glm::vec2> data; // Basically just an easier union.
+    };
 
-    std::string textureFilepath = UNDEFINED_ASSET_PATH;
-    std::string bumpMapFilepath;
+    class GenericData {
+        /**
+            Responsibilities:
+             - Act as a base class, providing read and write functions
+             - Hold a map of Attributes, using their name as the key.
+             - Provide functions to initialize (for read/write) attributes (protected)
+             - Provide a function to read map elements.
+        **/
+        public:
+            GenericData(::std::vector<Attribute> attrs); // Children will use the constructor to list attributes in the map.
+            ~GenericData() {}
 
-    glm::vec2 size = glm::vec2(1.0f);
+            void init(::rapidxml::xml_node<>* node); // Inits all attribute values. (Read)
+            void write(::rapidxml::xml_node<>* node); // Writes to XML document
 
-    int updateScriptID = -1;
-    int tickScriptID = -1;
-    int attackScriptID = -1;
-    int tradeTableID = -1;
-    int dropTableID = -1;
-    int dialogueID = -1;
+            /*void getAttribute(::std::string name, std::string& dataPtr); // Just puts the data into the pointer
+            void getAttribute(::std::string name, unsigned int& dataPtr); // Just puts the data into the pointer
+            void getAttribute(::std::string name, int& dataPtr); // Just puts the data into the pointer
+            void getAttribute(::std::string name, float& dataPtr); // Just puts the data into the pointer
+            void getAttribute(::std::string name, bool& dataPtr); // Just puts the data into the pointer
+            void getAttribute(::std::string name, std::vector<unsigned int>& dataPtr); // Just puts the data into the pointer
+            void getAttribute(::std::string name, glm::vec2& dataPtr); // Just puts the data into the pointer*/
 
-    bool fallDamage = true;
-    bool canDie = true;
+            template<typename T>
+            void getAttribute(::std::string name, T& t);
 
-    float speed = 0.01f;
-    float jumpHeight = 1.92f; // (3 blocks default) This is the actual value the entity should be using.
-    float maxHealth = 100.0f;
+            template<class T>
+            T& getAttributeT(std::string index); // Templated, probably better version of above.
 
-    Categories::Faction faction;
+            SaveDataTypes::MetaData getMetaData() { return m_metadata; }
 
-    MetaData defaultMD;
+        protected:
+            void addAttribute(std::string name, AttributeType type);
 
-    /// TODO: Move dialogue, trades, and drops to XML format?
-};
+            std::unordered_map<std::string, Attribute> m_attributes;
+            SaveDataTypes::MetaData m_metadata;
+    };
 
-struct XML_EntityProjectileData {
-    unsigned int id;
-    std::string name;
+    class TileData : public GenericData {
+        public:
+            TileData() : GenericData({ Attribute("texture", AttributeType::FILEPATH_TEXTURE),
+                                       Attribute("bumpMap", AttributeType::FILEPATH_BUMPMAP),
+                                       Attribute("emittedLight", AttributeType::FLOAT),
+                                       Attribute("emittedHeat", AttributeType::FLOAT),
+                                       Attribute("size", AttributeType::VEC2),
+                                       Attribute("isSolid", AttributeType::BOOL),
+                                       Attribute("isDrawn", AttributeType::BOOL),
+                                       Attribute("isNatural", AttributeType::BOOL),
+                                       Attribute("isTransparent", AttributeType::BOOL),
+                                       Attribute("updateScript", AttributeType::SCRIPT),
+                                       Attribute("tickScript", AttributeType::SCRIPT),
+                                       Attribute("destructionScript", AttributeType::SCRIPT),
+                                       Attribute("interactScript_walkedOn", AttributeType::SCRIPT),
+                                       Attribute("interactScript_used", AttributeType::SCRIPT) }) {}
 
-    std::string textureFilepath = UNDEFINED_ASSET_PATH;
-    std::string bumpMapFilepath;
+            virtual ~TileData() {}
+    };
 
-    glm::vec2 size = glm::vec2(1.0f);
+    class ParticleData : public GenericData {
+        public:
+            ParticleData() : GenericData({ Attribute("texture", AttributeType::FILEPATH_TEXTURE),
+                                           Attribute("bumpMap", AttributeType::FILEPATH_BUMPMAP),
+                                           Attribute("script", AttributeType::SCRIPT),
+                                           Attribute("decayRate", AttributeType::FLOAT) }) {}
+            virtual ~ParticleData() {}
+    };
 
-    bool collides = true;
+    class EntityNPCData : public GenericData {
+        public:
+            EntityNPCData() : GenericData({ Attribute("texture", AttributeType::FILEPATH_TEXTURE),
+                                            Attribute("bumpMap", AttributeType::FILEPATH_BUMPMAP),
+                                            Attribute("size", AttributeType::VEC2),
+                                            Attribute("speed", AttributeType::FLOAT),
+                                            Attribute("jumpHeight", AttributeType::FLOAT),
+                                            Attribute("maxHealth", AttributeType::FLOAT),
+                                            Attribute("faction", AttributeType::STRING_FACTION),
+                                            Attribute("isDamagedByFalls", AttributeType::BOOL),
+                                            Attribute("isInvincible", AttributeType::BOOL),
+                                            Attribute("updateScript", AttributeType::SCRIPT),
+                                            Attribute("tickScript", AttributeType::SCRIPT) }) {}
 
-    int updateScriptID = -1;
-    int tickScriptID = -1;
+            virtual ~EntityNPCData() {}
+    };
 
-    float speed = 0.1f;
-    float damage = 1.0f;
+    class EntityProjectileData : public GenericData {
+        public:
+            EntityProjectileData() : GenericData({  Attribute("texture", AttributeType::FILEPATH_TEXTURE),
+                                                    Attribute("bumpMap", AttributeType::FILEPATH_BUMPMAP),
+                                                    Attribute("size", AttributeType::VEC2),
+                                                    Attribute("speed", AttributeType::FLOAT),
+                                                    Attribute("collides", AttributeType::BOOL),
+                                                    Attribute("damage", AttributeType::FLOAT),
+                                                    Attribute("updateScript", AttributeType::SCRIPT),
+                                                    Attribute("tickScript", AttributeType::SCRIPT) }) {}
 
-    MetaData defaultMD;
-};
+            virtual ~EntityProjectileData() {}
+    };
 
-struct XML_EntityItemData {
-    unsigned int id;
-    std::string name;
+    class EntityItemData : public GenericData {
+        public:
+            EntityItemData() : GenericData({    Attribute("texture", AttributeType::FILEPATH_TEXTURE),
+                                                Attribute("bumpMap", AttributeType::FILEPATH_BUMPMAP),
+                                                Attribute("size", AttributeType::VEC2),
+                                                Attribute("item", AttributeType::UNSIGNED_INT),
+                                                Attribute("updateScript", AttributeType::SCRIPT),
+                                                Attribute("tickScript", AttributeType::SCRIPT) }) {}
+    };
 
-    std::string textureFilepath = UNDEFINED_ASSET_PATH;
-    std::string bumpMapFilepath;
+    class ItemData : public GenericData {
+        public:
+            ItemData() : GenericData({  Attribute("texture", AttributeType::FILEPATH_TEXTURE),
+                                        Attribute("weight", AttributeType::FLOAT),
+                                        Attribute("useScript", AttributeType::SCRIPT) }) {}
+    };
 
-    glm::vec2 size = glm::vec2(1.0f);
+    class BiomeData : public GenericData {
+        public:
+            BiomeData() : GenericData({ Attribute("backgroundTexture", AttributeType::FILEPATH_TEXTURE),
+                                        Attribute("baseHeight", AttributeType::UNSIGNED_INT),
+                                        Attribute("maxHeightDiff", AttributeType::UNSIGNED_INT),
+                                        Attribute("maxTemperature", AttributeType::FLOAT),
+                                        Attribute("baseTemperature", AttributeType::FLOAT),
+                                        Attribute("flatness", AttributeType::FLOAT),
+                                        Attribute("entities/entityID", AttributeType::VECTOR_UNSIGNED_INT) }) {}
 
-    int updateScriptID = -1;
-    int tickScriptID = -1;
-    unsigned int itemID = 0;
+        /// TODO:
+        //std::vector<unsigned int> structureSpawnIds = {}; // All structures (defined by Structure objects)
+        //std::vector<unsigned int> surfaceBlockIds = {}; // All blocks that make up the first few of the surface
+        //std::vector<unsigned int> undergroundBlockIds = {}; // All blocks that make up the rest of the ground
 
-    MetaData defaultMD;
-};
+    };
 
-struct XML_ItemData {
-    unsigned int id;
+    class EraData : public GenericData {
+        public:
+            EraData() : GenericData({  Attribute("biomes/biomeID", AttributeType::VECTOR_UNSIGNED_INT) }) {}
+    };
 
-    std::string textureFilepath = UNDEFINED_ASSET_PATH;
-    std::string name;
+    class LootDropData : public GenericData {
+        public:
+            LootDropData() : GenericData({  Attribute("itemID", AttributeType::UNSIGNED_INT),
+                                            Attribute("minDrop", AttributeType::UNSIGNED_INT),
+                                            Attribute("maxDrop", AttributeType::UNSIGNED_INT),
+                                            Attribute("chance", AttributeType::FLOAT) }) {}
+    };
 
-    int useScriptID = -1;
+    class LootTableData : public GenericData {
+        public:
+            LootTableData() : GenericData({ Attribute("drops/dropID", AttributeType::VECTOR_UNSIGNED_INT) }) {}
+    };
 
-    float weight = 0.0f;
+    class StructureData : public GenericData {
+        public:
+            StructureData() : GenericData({ Attribute("structureID", AttributeType::UNSIGNED_INT),
+                                            Attribute("biomeID", AttributeType::UNSIGNED_INT),
+                                            Attribute("chance", AttributeType::FLOAT),
+                                            Attribute("maxAmnt", AttributeType::UNSIGNED_INT),
+                                            Attribute("minAmnt", AttributeType::UNSIGNED_INT) }) {}
+    };
 
-    MetaData defaultMD;
-};
+    class QuestData : public GenericData {
+        public:
+            QuestData() : GenericData({ Attribute("objectives/objectiveID", AttributeType::VECTOR_UNSIGNED_INT),
+                                        Attribute("completionScript", AttributeType::SCRIPT) }) {}
+    };
 
-struct XML_BiomeData {
-    unsigned int id;
-    std::string name = "UNDEFINED";
+    class QuestObjectiveData : public GenericData {
+        public:
+            QuestObjectiveData() : GenericData({ Attribute("text", AttributeType::STRING),
+                                                 Attribute("confirmationScript", AttributeType::SCRIPT) }) {}
+    };
+}
 
-    std::string backgroundTexture = UNDEFINED_ASSET_PATH;
-
-    int baseHeight = 10; // The base altitude of the biome.
-    int maxHeightDiff = 0; // The most the altitude will change
-    float maxTemperature = 20; // The **lowest** the temperature will be (noon, not including sun's effect)
-    float baseTemperature = 20; // The **highest** the temperature will be (midnight)
-    float flatness = 1; // Higher values are more plateau-ish
-    std::vector<unsigned int> mobSpawnIds = {}; // The ids of the mobs that will be spawned in this biome
-
-    /// TODO:
-    std::vector<unsigned int> structureSpawnIds = {}; // All structures (defined by XML_Structure objects)
-    std::vector<unsigned int> surfaceBlockIds = {}; // All blocks that make up the first few of the surface
-    std::vector<unsigned int> undergroundBlockIds = {}; // All blocks that make up the rest of the ground
-};
-
-struct XML_EraData { // Holds all data for each era.
-    unsigned int id;
-    std::string name = "UNDEFINED";
-
-    std::vector<unsigned int> biomeIds = {}; // Will be reassigned to world's biomesMap during era-change
-};
-
-struct XML_LootDrop {
-    unsigned int id;
-    std::string name = "UNDEFINED";
-
-    unsigned int itemID; // Points to an XML_ItemData.
-
-    unsigned int minDrop;
-    unsigned int maxDrop;
-    float chance; // Chance of this drop dropping. (Doesn't change amount. If this drop is chosen, based on this chance, then there's an equal probability of dropping the min, max, or anything in between.)
-};
-
-struct XML_LootTable {
-    unsigned int id;
-    std::string name = "UNDEFINED";
-
-    std::vector<XML_LootDrop> drops; // Will loop through all of these, and drop all who pass a chance check.
-};
-
-struct XML_StructureData {
-    unsigned int id;
-    std::string name = "UNDEFINED";
-
-    unsigned int structureID; // points to a structure ID, loaded by a structure manager.
-    unsigned int biomeID; // What biome it spawns in
-    float chance; // Chance it has to spawn. (Same as drop system)
-    unsigned int maxAmnt; // max amount in a world
-    unsigned int minAmnt; // min amount in a world
-};
-
-struct XML_QuestData {
-    unsigned int id;
-    std::string name = "UNDEFINED";
-
-    std::vector<XML_QuestObjectiveData> objectives;
-    std::string completionScript;
-    bool scriptIsFile = false;
-};
-
-struct XML_QuestObjectiveData {
-    unsigned int id;
-    std::string name = "UNDEFINED";
-
-    std::string text;
-    std::string confirmationScript;
-    bool scriptIsFile = false;
-};
+#include "XMLDataTypes.tcc" // Just for templated functions.

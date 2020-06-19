@@ -26,7 +26,7 @@ namespace QuestModule {
              - Make them available for read-only!
         **/
         public:
-            Objective(std::string& instructions, std::string& confirmationLuaLiteralOrPath, bool luaInFile = false);
+            Objective(std::string& instructions, unsigned int& scriptID);
 
             void start(ScriptingModule::Scripter* scripter); // Starts the confirmation "script", grabbing it's LuaScript pointer.
             bool update(); // Checks if confirmation "script" finished.
@@ -35,9 +35,9 @@ namespace QuestModule {
             std::string getConfirmationLuaLiteral();
         private:
             std::string m_instructions;
-            std::string m_luaLiteral; // This is always the literal Lua code. The constructor reads the file (if one is provided) and puts the text in here.
 
-            ScriptingModule::LuaScript* m_confirmationScript = nullptr;
+            unsigned int m_confirmationScript;
+            ScriptingModule::LuaScript* m_confirmationScriptHandle = nullptr;
     };
 
     class Quest {
@@ -63,11 +63,11 @@ namespace QuestModule {
             std::vector<unsigned int> getCurrentObjectives();
             bool startObjective(ScriptingModule::Scripter* scripter, unsigned int i);
 
-            void initObjectives(std::vector<XML_QuestObjectiveData> objectiveData);
+            void initObjectives(std::vector<unsigned int> objectiveData);
 
             std::vector<Objective> m_objectives;
             std::vector<ObjectiveState> m_objectiveStates;
             QuestState m_state = QuestState::UNASSIGNED;
-            std::string m_completionLuaLiteral; // A Lua literal string to run on completion.
+            unsigned int m_completionScript;
     };
 }

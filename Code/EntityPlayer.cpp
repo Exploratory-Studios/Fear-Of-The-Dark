@@ -6,7 +6,7 @@
 #include "Tile.h"
 #include "Inventory.h"
 
-EntityPlayer::EntityPlayer(glm::vec2 pos, unsigned int layer, MetaData data, bool loadTex) : EntityNPC(pos, layer, 0, data, loadTex)
+EntityPlayer::EntityPlayer(glm::vec2 pos, unsigned int layer, SaveDataTypes::MetaData data, bool loadTex) : EntityNPC(pos, layer, 0, data, loadTex)
 {
 
 }
@@ -294,7 +294,7 @@ void EntityPlayer::updateInput(GLEngine::InputManager* input, World* world) {
         if(input->isKeyPressed(SDL_BUTTON_LEFT) && m_selectedBlock) {
             //if(m_favouriteItems[m_selectedHotbox]) m_favouriteItems[m_selectedHotbox]->onLeftClick(m_selectedBlock, world);
             if(!m_favouriteItems[m_selectedHotbox]) {
-                Tile* t = new Tile(m_selectedBlock->getPosition(), m_selectedBlock->getLayer(), 0, MetaData(), false);
+                Tile* t = new Tile(m_selectedBlock->getPosition(), m_selectedBlock->getLayer(), 0, SaveDataTypes::MetaData(), false);
                 world->setTile(t);
             }
             if(m_inventory) m_inventory->updateWeight();
@@ -363,8 +363,8 @@ void EntityPlayer::updateInput(GLEngine::InputManager* input, World* world) {
     }
 }
 
-EntityPlayerData EntityPlayer::getPlayerSaveData() {
-    EntityPlayerData ret;
+SaveDataTypes::EntityPlayerData EntityPlayer::getPlayerSaveData() {
+    SaveDataTypes::EntityPlayerData ret;
     ret.id = m_id;
     ret.velocity = m_velocity;
     ret.position = m_position;

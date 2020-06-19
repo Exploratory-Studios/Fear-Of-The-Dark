@@ -26,7 +26,7 @@ public:
     ~World();
     void setTile(Tile* tile);
     Tile* getTile(int x, int y, int layer);
-    XML_BiomeData getBiome(int x); // Returns the biome data of a certain x position
+    XMLModule::BiomeData getBiome(int x); // Returns the biome data of a certain x position
 
     void sortEntities();
     void addEntity(Entity* e);

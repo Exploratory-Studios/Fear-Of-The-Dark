@@ -36,8 +36,8 @@ class Tile
 {
     public:
         Tile();
-        Tile(glm::vec2 pos, unsigned int layer, unsigned int id, MetaData data, bool loadTex);
-        Tile(glm::vec2 pos, unsigned int layer, TileIDs id, MetaData data, bool loadTex);
+        Tile(glm::vec2 pos, unsigned int layer, unsigned int id, SaveDataTypes::MetaData data, bool loadTex);
+        Tile(glm::vec2 pos, unsigned int layer, TileIDs id, SaveDataTypes::MetaData data, bool loadTex);
         virtual ~Tile() {}
 
         virtual void initParticles(GLEngine::ParticleEngine2D* engine);
@@ -105,13 +105,13 @@ class Tile
 
         // Don't fuck with my formatting
 
-        virtual TileData getSaveData();
+        virtual SaveDataTypes::TileData getSaveData();
 
         void setAmbientLight(float light) { m_ambientLight = light; }
         void addAmbientLight(float light) { m_ambientLight += light; }
         void setToDraw(bool draw) { m_draw = draw; }
 
-        void setMetaData(MetaData& md) { m_metaData = md; }
+        void setMetaData(SaveDataTypes::MetaData& md) { m_metaData = md; }
         void setSize(glm::vec2 s) { m_size = s; }
 
         void addCornerLight(float TL, float TR, float BR, float BL) {
@@ -181,20 +181,20 @@ class Tile
     protected:
         void setPosition(glm::vec2 pos) { m_pos = pos; }
 
-        void handleMetaDataInit(MetaData& data) { };
-        MetaData getMetaData() { return m_metaData; }
+        void handleMetaDataInit(SaveDataTypes::MetaData& data) { };
+        SaveDataTypes::MetaData getMetaData() { return m_metaData; }
 
         void onUpdate() { }
         void onDraw(GLEngine::SpriteBatch& sb, GLEngine::SpriteFont& sf, glm::vec4& pos, float& depth) { }
         void onTick() { if(m_tickScriptID != -1) ScriptingModule::ScriptQueue::activateScript(m_tickScriptID, generateLuaData()); }
         void onDestruction() { }
 
-        int m_updateScriptID = -1;
-        int m_tickScriptID = -1;
-        int m_interactScriptID = -1;
-        int m_destroyScriptID = -1;
-        int m_interactScriptID_walkedOn = -1;
-        int m_interactScriptID_used = -1;
+        unsigned int m_updateScriptID = (unsigned int)-1;
+        unsigned int m_tickScriptID = (unsigned int)-1;
+        unsigned int m_interactScriptID = (unsigned int)-1;
+        unsigned int m_destroyScriptID = (unsigned int)-1;
+        unsigned int m_interactScriptID_walkedOn = (unsigned int)-1;
+        unsigned int m_interactScriptID_used = (unsigned int)-1;
 
         void loadTexture();
 
@@ -236,6 +236,6 @@ class Tile
 
         unsigned int m_id;
 
-        MetaData m_metaData;
+        SaveDataTypes::MetaData m_metaData;
 
 };

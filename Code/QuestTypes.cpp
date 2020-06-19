@@ -6,30 +6,19 @@
 #include "ScripterMain.h"
 
 namespace QuestModule {
-    Objective::Objective(std::string& instructions, std::string& confirmationLuaLiteralOrPath, bool luaInFile/* = false*/) {
+    Objective::Objective(std::string& instructions, unsigned int& scriptID) {
         m_instructions = instructions;
-
-        if(luaInFile) {
-            // Time to read the file and determine the literal.
-            std::ifstream file(confirmationLuaLiteralOrPath);
-
-            std::string line = "";
-            while(std::getline(file, line)) {
-                m_luaLiteral += line + "\n";
-            }
-        } else {
-            // The Lua is already literal
-            m_luaLiteral = confirmationLuaLiteralOrPath;
-        }
+        m_confirmationScript = scriptID;
     }
 
     void Objective::start(ScriptingModule::Scripter* scripter) {
         /// Starts the confirmation "script", grabbing it's LuaScript pointer.
-        m_confirmationScript = scripter->executeCommand(m_luaLiteral);
+        ScriptingModule::Script s = ScriptingModule::ScriptQueue::getScript(m_confirmationScript);
+        m_confirmationScriptHandle = scripter->executeScript(s);
     }
     bool Objective::update() {
         /// Checks if confirmation "script" finished.
-        if(m_confirmationScript->isFinished()) {
+        if(m_confirmationScriptHandle->isFinished()) {
             return true;
         }
         return false;
@@ -39,27 +28,15 @@ namespace QuestModule {
         return m_instructions;
     }
 
-    std::string Objective::getConfirmationLuaLiteral() {
-        return "None-o-ya-business!";
-    }
-
     Quest::Quest(unsigned int id) {
-        XML_QuestData data = XMLData::getQuestData(id);
+        XMLModule::QuestData data = XMLModule::XMLData::getQuestData(id);
 
-        initObjectives(data.objectives);
+        std::vector<unsigned int> objectives;
+        data.getAttribute("objectives/objectiveID", objectives);
 
-        if(data.scriptIsFile) {
-            // Time to read the file and determine the literal.
-            std::ifstream file(data.completionScript);
+        initObjectives(objectives);
 
-            std::string line = "";
-            while(std::getline(file, line)) {
-                m_completionLuaLiteral += line + "\n";
-            }
-        } else {
-            // The Lua is already literal
-            m_completionLuaLiteral = data.completionScript;
-        }
+        data.getAttribute("completionScript", m_completionScript);
     }
 
     void Quest::start(ScriptingModule::Scripter* scripter) {
@@ -105,7 +82,8 @@ namespace QuestModule {
     void Quest::finish(ScriptingModule::Scripter* scripter) {
         /// Sets the state to DONE, executes Lua script.
         m_state = QuestState::DONE;
-        scripter->executeCommand(m_completionLuaLiteral);
+        ScriptingModule::Script s = ScriptingModule::ScriptQueue::getScript(m_completionScript);
+        scripter->executeScript(s);
     }
 
     std::vector<unsigned int> Quest::getCurrentObjectives() {
@@ -135,10 +113,19 @@ namespace QuestModule {
         return false;
     }
 
-    void Quest::initObjectives(std::vector<XML_QuestObjectiveData> objectiveData) {
-        /// Initializes all objectives based on their XML_Objective objects.
+    void Quest::initObjectives(std::vector<unsigned int> objectiveData) {
+        /// Initializes all objectives based on their Objective objects.
         for(unsigned int i = 0; i < objectiveData.size(); i++) {
-            m_objectives.emplace_back(objectiveData[i].text, objectiveData[i].confirmationScript, objectiveData[i].scriptIsFile);
+            XMLModule::QuestObjectiveData d = XMLModule::XMLData::getQuestObjectiveData(objectiveData[i]);
+
+            std::string text;
+            unsigned int confirmationScript;
+
+            d.getAttribute("text", text);
+            d.getAttribute("confirmationScript", confirmationScript);
+
+
+            m_objectives.emplace_back(text, confirmationScript);
             m_objectiveStates.emplace_back(ObjectiveState::HIDDEN);
         }
     }

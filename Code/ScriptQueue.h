@@ -61,11 +61,13 @@ namespace ScriptingModule {
             static unsigned int addScript(Script& script); // returns id of script, puts into cache
             static unsigned int addScript(std::string filePath); // same here
 
-            static void activateScript(unsigned int id, std::vector<Argument> args = {}); // Starts a script using the id given earlier
+            static void activateScript(unsigned int id, std::vector<Argument> args = {}); // Starts a script using the id given earlier. Returns UUID of specific script (with arguments, etc.)
 
             static void deactivateScripts(); // Clears active scripts
 
             static void deactivateScript(unsigned int index);
+
+            static Script getScript(unsigned int id);
 
         private:
             static std::vector<Script> m_scriptCache; // Holds all scripts in memory to be used/reused later

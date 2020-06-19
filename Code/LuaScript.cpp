@@ -146,7 +146,7 @@ namespace ScriptingModule {
         return 0;
     }
 
-    void ParticleUpdate::updateFunction(GLEngine::Particle2D& particle, float deltaTime, std::string& filepath, lua_State** T) {
+    void ParticleUpdate::updateFunction(GLEngine::Particle2D& particle, float deltaTime, unsigned int& scriptID, lua_State** T) {
         if(*T) { // A pointer to T would not change unless we ``delete T;``, but a pointer to a pointer of T would make sure we can know if the original *T = 0.
             int top = lua_gettop(*T);
 
@@ -154,6 +154,8 @@ namespace ScriptingModule {
             lua_State* thread2 = lua_newthread(*T);
 
             int ref = luaL_ref(*T, LUA_REGISTRYINDEX);
+
+            std::string filepath = ScriptQueue::getScript(scriptID).getFileName();
 
             int errCode = luaL_loadfile(thread2, filepath.c_str());
 
@@ -261,12 +263,21 @@ namespace ScriptingModule {
 
         GLEngine::ParticleEngine2D* particles = static_cast<GLEngine::ParticleEngine2D*>(getUpvalue(L, PARTICLEENGINE_KEY));
 
-        XML_ParticleData d = XMLData::getParticleData(id);
+        XMLModule::ParticleData d = XMLModule::XMLData::getParticleData(id);
 
-        ParticleUpdate updater(d.scriptPath, &m_parent);
+        unsigned int scriptID;
+        d.getAttribute("script", scriptID);
+
+        ParticleUpdate updater(scriptID, &m_parent);
         std::function<void(GLEngine::Particle2D&, float)> boundFunctor = updater.getBoundFunctor();
 
-        GLEngine::ParticleBatch2D* batch = particles->getParticleBatch(MAX_TYPE_PARTICLES, d.decayRate, d.textureFilepath, d.bumpMapFilepath, boundFunctor);
+        float decayRate;
+        std::string textureFilepath, bumpMapFilepath;
+        d.getAttribute("decayRate", decayRate);
+        d.getAttribute("texture", textureFilepath);
+        d.getAttribute("bumpMap", bumpMapFilepath);
+
+        GLEngine::ParticleBatch2D* batch = particles->getParticleBatch(MAX_TYPE_PARTICLES, decayRate, textureFilepath, bumpMapFilepath, boundFunctor);
 
         batch->addParticle(glm::vec2(x, y), glm::vec2(xVel, yVel), GLEngine::ColourRGBA8(255, 255, 255, 255), width);
 
@@ -281,7 +292,7 @@ namespace ScriptingModule {
         int layer = (int)lua_tonumber(L, 4);
         std::string metaData = std::string(lua_tostring(L, 5));
 
-        MetaData md;
+        SaveDataTypes::MetaData md;
         md.readFromLuaTable(L, 6);
 
         lua_pop(L, 6);
@@ -363,7 +374,7 @@ namespace ScriptingModule {
         int y = (int)lua_tonumber(L, 2);
         int l = (int)lua_tonumber(L, 3);
 
-        MetaData md;
+        SaveDataTypes::MetaData md;
         md.readFromLuaTable(L, -1);
 
         lua_pop(L, 4);
@@ -423,7 +434,7 @@ namespace ScriptingModule {
         lua_pop(L, 1);
 
         // Now we should just have the metadata table.
-        MetaData md;
+        SaveDataTypes::MetaData md;
         md.readFromLuaTable(L, -1);
 
         lua_pop(L, 1); // Remove table.

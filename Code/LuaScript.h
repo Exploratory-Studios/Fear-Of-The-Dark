@@ -15,16 +15,16 @@ namespace ScriptingModule {
 
     class ParticleUpdate {
         public:
-            ParticleUpdate(std::string scriptPathP, lua_State** Tp) : scriptPath(scriptPathP), T(Tp) {}
+            ParticleUpdate(unsigned int scriptIDP, lua_State** Tp) : scriptID(scriptIDP), T(Tp) {}
 
             std::function<void(GLEngine::Particle2D&, float)> getBoundFunctor() {
-                return std::bind(updateFunction, std::placeholders::_1, std::placeholders::_2, scriptPath, T);
+                return std::bind(updateFunction, std::placeholders::_1, std::placeholders::_2, scriptID, T);
             }
 
         private:
-            static void updateFunction(GLEngine::Particle2D& particle, float deltaTime, std::string& filepath, lua_State** T);
+            static void updateFunction(GLEngine::Particle2D& particle, float deltaTime, unsigned int& scriptID, lua_State** T);
 
-            std::string scriptPath;
+            unsigned int scriptID;
             lua_State** T = nullptr;
     };
 

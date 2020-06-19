@@ -9,7 +9,7 @@
 #include "EventQueue.h"
 
 World::World() {
-    XMLData::init();
+    XMLModule::XMLData::init();
 
     m_tiles = (Tile****)malloc(WORLD_HEIGHT * WORLD_SIZE * WORLD_DEPTH * sizeof(Tile));
     for(int y = 0; y < WORLD_HEIGHT; y++) {
@@ -98,7 +98,7 @@ Tile* World::getTile(int x, int y, int layer) {
     return nullptr;
 }
 
-XML_BiomeData World::getBiome(int x) {
+XMLModule::BiomeData World::getBiome(int x) {
     // Get chunk position
     int chunkX = (unsigned int)(x / CHUNK_SIZE);
 
@@ -106,7 +106,7 @@ XML_BiomeData World::getBiome(int x) {
     unsigned int biomeID = m_biomesMap[chunkX];
 
     // Get biome data from XML Data
-    return XMLData::getBiomeData(biomeID);
+    return XMLModule::XMLData::getBiomeData(biomeID);
 
 }
 
@@ -366,7 +366,7 @@ void World::getRenderedLights(glm::vec4 destRect, float lights[MAX_LIGHTS_RENDER
 void World::setPlayer(EntityPlayer& p) {
     /// Copies p, creates/updates a pointer to the world-stored player.
     if(!m_player) {
-        m_player = new EntityPlayer(glm::vec2(0.0f), 0.0f, MetaData(), false);
+        m_player = new EntityPlayer(glm::vec2(0.0f), 0.0f, SaveDataTypes::MetaData(), false);
         *m_player = p;
         addEntity(m_player);
     } else {
@@ -640,7 +640,7 @@ void World::spawnEntities() {
     }
 
     for(int i = 0; i < positions.size(); i++) {
-        addEntity(createEntity(glm::vec2(positions[i].x, positions[i].y), (int)positions[i].z, EntityIDs::NPC_NEUTRAL_COMPANIONCUBE, MetaData(), true));
+        addEntity(createEntity(glm::vec2(positions[i].x, positions[i].y), (int)positions[i].z, EntityIDs::NPC_NEUTRAL_COMPANIONCUBE, SaveDataTypes::MetaData(), true));
     }
 }
 

@@ -53,4 +53,8 @@ namespace ScriptingModule {
         m_activeScripts.pop_back();
     }
 
+    Script ScriptQueue::getScript(unsigned int id) {
+        return m_scriptCache[id];
+    }
+
 }

@@ -385,7 +385,9 @@
 		<Unit filename="WorldIOManager.h" />
 		<Unit filename="XMLData.cpp" />
 		<Unit filename="XMLData.h" />
+		<Unit filename="XMLDataTypes.cpp" />
 		<Unit filename="XMLDataTypes.h" />
+		<Unit filename="XMLDataTypes.tcc" />
 		<Extensions>
 			<code_completion />
 			<debugger />

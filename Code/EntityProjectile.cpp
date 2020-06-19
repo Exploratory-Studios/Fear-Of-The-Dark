@@ -2,50 +2,48 @@
 
 #include "XMLData.h"
 
-EntityProjectile::EntityProjectile(glm::vec2 pos, unsigned int layer, unsigned int id, MetaData data, bool loadTex) : Entity(pos, layer, MetaData())
+EntityProjectile::EntityProjectile(glm::vec2 pos, unsigned int layer, unsigned int id, SaveDataTypes::MetaData data, bool loadTex) : Entity(pos, layer, SaveDataTypes::MetaData())
 {
     m_type = EntityTypes::PROJECTILE;
 
     m_id = id;
 
-    XML_EntityProjectileData d = XMLData::getEntityProjectileData(id);
+    XMLModule::EntityProjectileData d = XMLModule::XMLData::getEntityProjectileData(id);
 
-    m_texturePath = d.textureFilepath;
-    m_bumpMapPath = d.bumpMapFilepath;
-    m_size = d.size;
-    m_updateScriptId = d.updateScriptID;
-    m_tickScriptId = d.tickScriptID;
-    m_speed = d.speed;
-    m_damage = d.damage;
-    m_collideWithBlocks = d.collides;
+    d.getAttribute("texture", m_texturePath);
+    d.getAttribute("bumpMap", m_bumpMapPath);
+    d.getAttribute("size", m_size);
+    d.getAttribute("updateScript", m_updateScriptId);
+    d.getAttribute("tickScript", m_tickScriptId);
+    d.getAttribute("speed", m_speed);
+    d.getAttribute("damage", m_damage);
+    d.getAttribute("collides", m_collideWithBlocks);
 
-    m_metaData = d.defaultMD;
-    m_metaData += data; // Use the overloaded operator to simply add/overwrite defaults.
+    m_metaData = d.getMetaData();
 
     if(loadTex) {
         loadTexture();
     }
 }
 
-EntityProjectile::EntityProjectile(glm::vec2 pos, unsigned int layer, EntityIDs id, MetaData data, bool loadTex) : Entity(pos, layer, MetaData())
+EntityProjectile::EntityProjectile(glm::vec2 pos, unsigned int layer, EntityIDs id, SaveDataTypes::MetaData data, bool loadTex) : Entity(pos, layer, SaveDataTypes::MetaData())
 {
     m_type = EntityTypes::PROJECTILE;
 
     m_id = (unsigned int)id;
 
-    XML_EntityProjectileData d = XMLData::getEntityProjectileData((unsigned int)id);
+    XMLModule::EntityProjectileData d = XMLModule::XMLData::getEntityProjectileData(m_id);
 
-    m_texturePath = d.textureFilepath;
-    m_bumpMapPath = d.bumpMapFilepath;
-    m_size = d.size;
-    m_updateScriptId = d.updateScriptID;
-    m_tickScriptId = d.tickScriptID;
-    m_speed = d.speed;
-    m_damage = d.damage;
-    m_collideWithBlocks = d.collides;
+    d.getAttribute("texture", m_texturePath);
+    d.getAttribute("bumpMap", m_bumpMapPath);
+    d.getAttribute("size", m_size);
+    d.getAttribute("updateScript", m_updateScriptId);
+    d.getAttribute("tickScript", m_tickScriptId);
+    d.getAttribute("speed", m_speed);
+    d.getAttribute("damage", m_damage);
+    d.getAttribute("collides", m_collideWithBlocks);
 
-    m_metaData = d.defaultMD;
-    m_metaData += data; // Use the overloaded operator to simply add/overwrite defaults.
+    m_metaData = d.getMetaData();
 
     if(loadTex) {
         loadTexture();

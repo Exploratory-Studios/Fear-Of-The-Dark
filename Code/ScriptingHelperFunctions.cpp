@@ -76,16 +76,16 @@ namespace ScriptingModule {
 
 
 
-    void setBlock(World* world, unsigned int id, glm::vec2 pos, int layer, MetaData metaData) {
+    void setBlock(World* world, unsigned int id, glm::vec2 pos, int layer, SaveDataTypes::MetaData metaData) {
         float correctedX = ((int)pos.x + WORLD_SIZE) % WORLD_SIZE;
-        world->setTile(new Tile(glm::vec2(correctedX, pos.y), layer, id, MetaData(metaData), false)); // Set the block, of course
+        world->setTile(new Tile(glm::vec2(correctedX, pos.y), layer, id, SaveDataTypes::MetaData(metaData), false)); // Set the block, of course
         /// TODO: compile array of chunks in init()
     }
 
     void removeBlock(World* world, int x, int y, unsigned int layer) {
         //int chunk = std::floor(x / CHUNK_SIZE); // What chunk index it belongs to
 
-        world->setTile(new Tile(glm::vec2(x, y), layer, 0, MetaData(), false)); /// TODO: Constant for air
+        world->setTile(new Tile(glm::vec2(x, y), layer, 0, SaveDataTypes::MetaData(), false)); /// TODO: Constant for air
     }
 
     void showBlock(World* world, int x, int y, unsigned int layer) {
@@ -105,7 +105,7 @@ namespace ScriptingModule {
     }
 
     unsigned int addEntity(World* world, unsigned int id, glm::vec2 position, unsigned int layer) {
-        world->addEntity(createEntity(position, layer, id, MetaData(), true));
+        world->addEntity(createEntity(position, layer, id, SaveDataTypes::MetaData(), true));
 
         return 0;
     }

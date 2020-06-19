@@ -5,8 +5,8 @@
 class EntityProjectile : public Entity
 {
     public:
-        EntityProjectile(glm::vec2 pos, unsigned int layer, unsigned int id, MetaData data, bool loadTex);
-        EntityProjectile(glm::vec2 pos, unsigned int layer, EntityIDs id, MetaData data, bool loadTex);
+        EntityProjectile(glm::vec2 pos, unsigned int layer, unsigned int id, SaveDataTypes::MetaData data, bool loadTex);
+        EntityProjectile(glm::vec2 pos, unsigned int layer, EntityIDs id, SaveDataTypes::MetaData data, bool loadTex);
         virtual ~EntityProjectile();
 
     protected:

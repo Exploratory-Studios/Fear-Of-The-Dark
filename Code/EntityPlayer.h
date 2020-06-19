@@ -13,7 +13,7 @@ class EntityPlayer : public EntityNPC
     friend class WorldIOManager;
 
     public:
-        EntityPlayer(glm::vec2 pos, unsigned int layer, MetaData data, bool loadTex);
+        EntityPlayer(glm::vec2 pos, unsigned int layer, SaveDataTypes::MetaData data, bool loadTex);
         virtual ~EntityPlayer();
 
         void initGUI(GLEngine::GUI* gui); /// TODO: Move GUI to GameplayScreen
@@ -41,7 +41,7 @@ class EntityPlayer : public EntityNPC
         void setSanity(float sanity) { m_sanity = sanity; } // I'm running low on this
         void setCanInteract(bool setting) { m_canInteract = setting; }
 
-        EntityPlayerData getPlayerSaveData();
+        SaveDataTypes::EntityPlayerData getPlayerSaveData();
 
     protected:
         // GUI

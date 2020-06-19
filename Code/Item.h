@@ -12,7 +12,7 @@
 
 class World;
 class Tile;
-class MetaData;
+namespace SaveDataTypes { class MetaData; }
 
 enum class ItemIDs {
     WEAPON_SWORD,
@@ -56,9 +56,9 @@ class Item
         unsigned int getTextureId() const { return m_textureId; }
         short unsigned int getQuantity() const { return m_quantity; }
         std::string& getName() { return m_name; }
-        MetaData getMetaData() const { return m_metaData; }
+        SaveDataTypes::MetaData getMetaData() const { return m_metaData; }
 
-        ItemData getItemSaveData();
+        SaveDataTypes::ItemData getItemSaveData();
     protected:
         void loadTexture() { m_textureId = GLEngine::ResourceManager::getTexture(m_texturePath).id; }
 
@@ -74,5 +74,5 @@ class Item
 
         std::string m_name = "UNDEFINED";
 
-        MetaData m_metaData;
+        SaveDataTypes::MetaData m_metaData;
 };

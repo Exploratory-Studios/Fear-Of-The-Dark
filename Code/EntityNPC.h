@@ -2,6 +2,8 @@
 
 #include "Entity.h"
 
+#include "XMLDataTypes.h"
+
 struct NavTile { // Pretty much the same thing as a navmesh
     NavTile() {}
     NavTile* parent = nullptr;
@@ -18,8 +20,8 @@ class Tile;
 class EntityNPC : public Entity
 {
     public:
-        EntityNPC(glm::vec2 pos, unsigned int layer, unsigned int id, MetaData data, bool loadTex);
-        EntityNPC(glm::vec2 pos, unsigned int layer, EntityIDs id, MetaData data, bool loadTex);
+        EntityNPC(glm::vec2 pos, unsigned int layer, unsigned int id, SaveDataTypes::MetaData data, bool loadTex);
+        EntityNPC(glm::vec2 pos, unsigned int layer, EntityIDs id, SaveDataTypes::MetaData data, bool loadTex);
         virtual ~EntityNPC();
 
         void onTalk() {}
@@ -31,7 +33,7 @@ class EntityNPC : public Entity
         /// Getters
         Categories::Faction getFaction() const { return m_faction; }
         float getHealth() const { return m_health; }
-        EntityNPCData getNPCSaveData();
+        SaveDataTypes::EntityNPCData getNPCSaveData();
 
         // Inventory
         void giveItem(Item* item);

@@ -74,7 +74,7 @@ void GameplayScreen::onEntry() {
 
     if(!m_world->getPlayer()) {
         //Player p(glm::vec2(5.0f, 100.0f), true);
-        EntityPlayer p(glm::vec2(5, 100), 0, MetaData(), true);
+        EntityPlayer p(glm::vec2(5, 100), 0, SaveDataTypes::MetaData(), true);
 
         m_world->setPlayer(p);
     }
@@ -540,7 +540,8 @@ void GameplayScreen::drawDebug() {
         blockX = m_world->getPlayer()->getSelectedBlock()->getPosition().x;
         blockY = m_world->getPlayer()->getSelectedBlock()->getPosition().y;
 
-        std::string biomeString = m_world->getBiome(m_world->getPlayer()->getSelectedBlock()->getPosition().x).name;
+        std::string biomeString;
+        m_world->getBiome(m_world->getPlayer()->getSelectedBlock()->getPosition().x).getAttribute("name", biomeString);
 
         std::string display = "FPS: " + std::to_string((int)m_game->getFps());
         display += "\nMouse x,y: " + std::to_string(blockX) + "," + std::to_string(blockY);

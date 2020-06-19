@@ -12,25 +12,24 @@ Tile::Tile() {
 
 }
 
-Tile::Tile(glm::vec2 pos, unsigned int layer, unsigned int id, MetaData data, bool loadTex) : m_pos(pos), m_layer(layer), m_id(id) {
-    XML_TileData t = XMLData::getTileData(id);
+Tile::Tile(glm::vec2 pos, unsigned int layer, unsigned int id, SaveDataTypes::MetaData data, bool loadTex) : m_pos(pos), m_layer(layer), m_id(id) {
+    XMLModule::TileData t = XMLModule::XMLData::getTileData(id);
 
-    m_texturePath = t.textureFilepath;
-    m_bumpMapPath = t.bumpMapFilepath;
-    m_emittedLight = t.emittedLight;
-    m_emittedHeat = t.emittedHeat;
-    m_size = t.size;
-    m_solid = t.solid;
-    m_draw = t.drawn;
-    m_natural = t.natural;
-    m_transparent = t.transparent;
-    m_updateScriptID = t.updateScriptID;
-    m_tickScriptID = t.tickScriptID;
-    m_interactScriptID_walkedOn = t.interactScriptID_walkedOn;
-    m_interactScriptID_used = t.interactScriptID_used;
+    t.getAttribute("texture", m_texturePath);
+    t.getAttribute("bumpMap", m_bumpMapPath);
+    t.getAttribute("emittedLight", m_emittedLight);
+    t.getAttribute("emittedHeat", m_emittedHeat);
+    t.getAttribute("size", m_size);
+    t.getAttribute("isSolid", m_solid);
+    t.getAttribute("isDrawn", m_draw);
+    t.getAttribute("isNatural", m_natural);
+    t.getAttribute("isTransparent", m_transparent);
+    t.getAttribute("updateScript", m_updateScriptID);
+    t.getAttribute("tickScript", m_tickScriptID);
+    t.getAttribute("interactScript_walkedOn", m_interactScriptID_walkedOn);
+    t.getAttribute("interactScript_used", m_interactScriptID_used);
 
-    m_metaData = t.defaultMD;
-    m_metaData += data; // Use the overloaded operator to simply add/overwrite defaults.
+    m_metaData = t.getMetaData();
 
     if(loadTex && m_draw) {
         loadTexture();
@@ -39,26 +38,24 @@ Tile::Tile(glm::vec2 pos, unsigned int layer, unsigned int id, MetaData data, bo
     }
 }
 
-Tile::Tile(glm::vec2 pos, unsigned int layer, TileIDs id, MetaData data, bool loadTex) : m_pos(pos), m_layer(layer), m_id((unsigned int)id) {
-    XML_TileData t = XMLData::getTileData((unsigned int)id);
+Tile::Tile(glm::vec2 pos, unsigned int layer, TileIDs id, SaveDataTypes::MetaData data, bool loadTex) : m_pos(pos), m_layer(layer), m_id((unsigned int)id) {
+    XMLModule::TileData t = XMLModule::XMLData::getTileData((unsigned int)id);
 
-    m_texturePath = t.textureFilepath;
-    m_bumpMapPath = t.bumpMapFilepath;
-    m_emittedLight = t.emittedLight;
-    m_emittedLight = t.emittedHeat;
-    m_size = t.size;
-    m_solid = t.solid;
-    m_draw = t.drawn;
-    m_natural = t.natural;
-    m_transparent = t.transparent;
-    m_updateScriptID = t.updateScriptID;
-    m_tickScriptID = t.tickScriptID;
-    m_destroyScriptID = t.destructionScriptID;
-    m_interactScriptID_walkedOn = t.interactScriptID_walkedOn;
-    m_interactScriptID_used = t.interactScriptID_used;
+    t.getAttribute("texture", m_texturePath);
+    t.getAttribute("bumpMap", m_bumpMapPath);
+    t.getAttribute("emittedLight", m_emittedLight);
+    t.getAttribute("emittedHeat", m_emittedHeat);
+    t.getAttribute("size", m_size);
+    t.getAttribute("isSolid", m_solid);
+    t.getAttribute("isDrawn", m_draw);
+    t.getAttribute("isNatural", m_natural);
+    t.getAttribute("isTransparent", m_transparent);
+    t.getAttribute("updateScript", m_updateScriptID);
+    t.getAttribute("tickScript", m_tickScriptID);
+    t.getAttribute("interactScript_walkedOn", m_interactScriptID_walkedOn);
+    t.getAttribute("interactScript_used", m_interactScriptID_used);
 
-    m_metaData = t.defaultMD;
-    m_metaData += data; // Use the overloaded operator to simply add/overwrite defaults.
+    m_metaData = t.getMetaData();
 
     if(loadTex && m_draw) {
         loadTexture();
@@ -148,8 +145,10 @@ float Tile::getSurroundingHeat(World* world) {
 }
 
 float Tile::getHeat(World* world) {
-    float baseHeat = world->getBiome(m_pos.x).baseTemperature;
-    float highHeat = world->getBiome(m_pos.x).maxTemperature;
+    float baseHeat;
+    world->getBiome(m_pos.x).getAttribute("baseTemperature", baseHeat);
+    float highHeat;
+    world->getBiome(m_pos.x).getAttribute("maxTemperature", highHeat);
 
     float heat = getRawHeat();
 
@@ -186,7 +185,7 @@ void Tile::update(World* world, float time, bool updateLighting, const float& su
 }
 
 void Tile::specialUpdate(World* world, float time) {
-    if(m_updateScriptID != -1) ScriptingModule::ScriptQueue::activateScript(m_updateScriptID, generateLuaData());
+    if(m_updateScriptID != (unsigned int)-1) ScriptingModule::ScriptQueue::activateScript(m_updateScriptID, generateLuaData());
 }
 
 void Tile::tick(World* world, float tickTime, const float& sunlight) {
@@ -372,8 +371,8 @@ void Tile::calculateSunlight(World* world, float sunlight) {
     }
 }
 
-TileData Tile::getSaveData() {
-    TileData d;
+SaveDataTypes::TileData Tile::getSaveData() {
+    SaveDataTypes::TileData d;
     d.pos = m_pos;
     d.id = m_id;
     d.metaData = getMetaData();

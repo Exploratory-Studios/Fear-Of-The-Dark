@@ -13,54 +13,58 @@
 
 #include "XMLData.h"
 
-EntityNPC::EntityNPC(glm::vec2 pos, unsigned int layer, unsigned int id, MetaData data, bool loadTex) : Entity(pos, layer, MetaData())
+EntityNPC::EntityNPC(glm::vec2 pos, unsigned int layer, unsigned int id, SaveDataTypes::MetaData data, bool loadTex) : Entity(pos, layer, SaveDataTypes::MetaData())
 {
     m_type = EntityTypes::NPC;
 
     m_id = id;
 
-    XML_EntityNPCData d = XMLData::getEntityNPCData(id);
+    XMLModule::EntityNPCData d = XMLModule::XMLData::getEntityNPCData(id);
 
-    m_texturePath = d.textureFilepath;
-    m_bumpMapPath = d.bumpMapFilepath;
-    m_size = d.size;
-    m_takesFallDamage = d.fallDamage;
-    m_canDie = d.canDie;
-    m_runSpeed = d.speed;
-    m_jumpHeight = d.jumpHeight;
-    m_maxHealth = d.maxHealth;
+    d.getAttribute("texture", m_texturePath);
+    d.getAttribute("bumpMap", m_bumpMapPath);
+    d.getAttribute("size", m_size);
+    d.getAttribute("isDamagedByFalls", m_takesFallDamage);
+    d.getAttribute("isInvincible", m_canDie);
+    d.getAttribute("speed", m_runSpeed);
+    d.getAttribute("jumpHeight", m_jumpHeight);
+    d.getAttribute("maxHealth", m_maxHealth);
+    unsigned int fac;
+    d.getAttribute("faction", fac);
+    m_faction = (Categories::Faction)fac;
+
+    m_metaData = d.getMetaData();
+
     m_health = m_maxHealth;
-    m_faction = d.faction;
-
-    m_metaData = d.defaultMD;
-    m_metaData += data; // Use the overloaded operator to simply add/overwrite defaults.
 
     if(loadTex) {
         loadTexture();
     }
 }
 
-EntityNPC::EntityNPC(glm::vec2 pos, unsigned int layer, EntityIDs id, MetaData data, bool loadTex) : Entity(pos, layer, MetaData())
+EntityNPC::EntityNPC(glm::vec2 pos, unsigned int layer, EntityIDs id, SaveDataTypes::MetaData data, bool loadTex) : Entity(pos, layer, SaveDataTypes::MetaData())
 {
     m_type = EntityTypes::NPC;
 
     m_id = (unsigned int)id;
 
-    XML_EntityNPCData d = XMLData::getEntityNPCData((unsigned int)id);
+    XMLModule::EntityNPCData d = XMLModule::XMLData::getEntityNPCData((unsigned int)id);
 
-    m_texturePath = d.textureFilepath;
-    m_bumpMapPath = d.bumpMapFilepath;
-    m_size = d.size;
-    m_takesFallDamage = d.fallDamage;
-    m_canDie = d.canDie;
-    m_runSpeed = d.speed;
-    m_jumpHeight = d.jumpHeight;
-    m_maxHealth = d.maxHealth;
+    d.getAttribute("texture", m_texturePath);
+    d.getAttribute("bumpMap", m_bumpMapPath);
+    d.getAttribute("size", m_size);
+    d.getAttribute("isDamagedByFalls", m_takesFallDamage);
+    d.getAttribute("isInvincible", m_canDie);
+    d.getAttribute("speed", m_runSpeed);
+    d.getAttribute("jumpHeight", m_jumpHeight);
+    d.getAttribute("maxHealth", m_maxHealth);
+    unsigned int fac;
+    d.getAttribute("faction", fac);
+    m_faction = (Categories::Faction)fac;
+
+    m_metaData = d.getMetaData();
+
     m_health = m_maxHealth;
-    m_faction = d.faction;
-
-    m_metaData = d.defaultMD;
-    m_metaData += data; // Use the overloaded operator to simply add/overwrite defaults.
 
     if(loadTex) {
         loadTexture();
@@ -288,8 +292,8 @@ void EntityNPC::onUpdate(World* world, float timeStep, unsigned int selfIndex) {
     }*/
 }
 
-EntityNPCData EntityNPC::getNPCSaveData() {
-    EntityNPCData ret;
+SaveDataTypes::EntityNPCData EntityNPC::getNPCSaveData() {
+    SaveDataTypes::EntityNPCData ret;
     ret.id = m_id;
     ret.velocity = m_velocity;
     ret.position = m_position;

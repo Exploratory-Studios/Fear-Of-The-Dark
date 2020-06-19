@@ -94,8 +94,8 @@ void Inventory::draw(float x, float y, GLEngine::SpriteBatch& sb, GLEngine::Spri
     }
 }
 
-InventoryData Inventory::getInventorySaveData() {
-    InventoryData ret;
+SaveDataTypes::InventoryData Inventory::getInventorySaveData() {
+    SaveDataTypes::InventoryData ret;
     for(unsigned int i = 0; i < m_items.size(); i++) {
         ret.itemData.push_back(m_items[i]->getItemSaveData());
     }

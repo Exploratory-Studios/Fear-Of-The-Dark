@@ -4,27 +4,27 @@
 #include "XMLData.h"
 
 Item::Item(short unsigned int quantity, unsigned int id, bool loadTex) : m_id(id), m_quantity(quantity) {
-    XML_ItemData d = XMLData::getItemData(id);
+    XMLModule::ItemData d = XMLModule::XMLData::getItemData(id);
 
-    m_texturePath = d.textureFilepath;
-    m_useScriptId = d.useScriptID;
-    m_weight = d.weight;
-    m_name = d.name;
+    d.getAttribute("texture", m_texturePath);
+    d.getAttribute("useScript", m_useScriptId);
+    d.getAttribute("weight", m_weight);
+    d.getAttribute("name", m_name);
 
-    m_metaData = d.defaultMD;
+    m_metaData = d.getMetaData();
 
     if(loadTex) loadTexture();
 }
 
 Item::Item(short unsigned int quantity, ItemIDs id, bool loadTex) : m_id((unsigned int)id), m_quantity(quantity) {
-    XML_ItemData d = XMLData::getItemData((unsigned int)id);
+    XMLModule::ItemData d = XMLModule::XMLData::getItemData((unsigned int)id);
 
-    m_texturePath = d.textureFilepath;
-    m_useScriptId = d.useScriptID;
-    m_weight = d.weight;
-    m_name = d.name;
+    d.getAttribute("texture", m_texturePath);
+    d.getAttribute("useScript", m_useScriptId);
+    d.getAttribute("weight", m_weight);
+    d.getAttribute("name", m_name);
 
-    m_metaData = d.defaultMD;
+    m_metaData = d.getMetaData();
 
     if(loadTex) loadTexture();
 }
@@ -39,8 +39,8 @@ void Item::onRightClick(Tile* selectedBlock) {
     }
 }
 
-ItemData Item::getItemSaveData() {
-    ItemData ret;
+SaveDataTypes::ItemData Item::getItemSaveData() {
+    SaveDataTypes::ItemData ret;
     ret.id = m_id;
     ret.quantity = m_quantity;
     ret.metaData = m_metaData;

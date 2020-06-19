@@ -14,7 +14,7 @@ class GameplayScreen;
 class AudioManager;
 #include <ParticleEngine2D.h>
 namespace ScriptingModule { class LuaScript; class Script; }
-class MetaData;
+namespace SaveDataTypes { class MetaData; }
 class Entity;
 class Tile;
 
@@ -34,7 +34,7 @@ namespace ScriptingModule {
     void* getUpvalue(lua_State* L, const char* key);
     void createArgumentsTable(lua_State* T, std::vector<Argument>& args);
 
-    void setBlock(World* world, unsigned int id, glm::vec2 pos, int layer, MetaData metaData);
+    void setBlock(World* world, unsigned int id, glm::vec2 pos, int layer, SaveDataTypes::MetaData metaData);
     void removeBlock(World* world, int x, int y, unsigned int layer);
     void showBlock(World* world, int x, int y, unsigned int layer);
     void hideBlock(World* world, int x, int y, unsigned int layer);

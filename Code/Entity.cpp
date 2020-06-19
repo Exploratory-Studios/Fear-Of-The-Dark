@@ -10,14 +10,15 @@
 #include "Tile.h"
 
 #include "XMLData.h"
+#include "XMLDataTypes.h"
 
 #include <math.h>
 
-Entity::Entity(glm::vec2 pos, unsigned int layer, MetaData data) : m_position(pos), m_layer(layer), m_metaData(data) {
+Entity::Entity(glm::vec2 pos, unsigned int layer, SaveDataTypes::MetaData data) : m_position(pos), m_layer(layer), m_metaData(data) {
 
 } // This is more of an abstract class
 
-Entity::Entity(EntityData& saveData) {
+Entity::Entity(SaveDataTypes::EntityData& saveData) {
     // Constructs an entity based off some very vague save data.
     m_id = saveData.id;
     m_velocity = saveData.velocity;
@@ -26,14 +27,21 @@ Entity::Entity(EntityData& saveData) {
     m_metaData = saveData.md;
 }
 
-Entity* createEntity(glm::vec2 pos, unsigned int layer, unsigned int id, MetaData data, bool loadTex) {
-    if(XMLData::getEntityNPCData(id).id != (unsigned int)-1) {
+Entity* createEntity(glm::vec2 pos, unsigned int layer, unsigned int id, SaveDataTypes::MetaData data, bool loadTex) {
+    unsigned int idTest;
+    XMLModule::XMLData::getEntityNPCData(id).getAttribute("id", idTest);
+
+    if(idTest != (unsigned int)-1) {
         // An NPC
         return new EntityNPC(pos, layer, id, data, loadTex);
-    } else if(XMLData::getEntityItemData(id).id != (unsigned int)-1) {
+    }
+    XMLModule::XMLData::getEntityItemData(id).getAttribute("id", idTest);
+    if(idTest != (unsigned int)-1) {
         // An Item
         return new EntityItem(pos, layer, id, data, loadTex);
-    } else if(XMLData::getEntityProjectileData(id).id != (unsigned int)-1) {
+    }
+    XMLModule::XMLData::getEntityProjectileData(id).getAttribute("id", idTest);
+    if(idTest != (unsigned int)-1) {
         // An Projectile
         return new EntityProjectile(pos, layer, id, data, loadTex);
     } else {
@@ -42,22 +50,10 @@ Entity* createEntity(glm::vec2 pos, unsigned int layer, unsigned int id, MetaDat
     }
 }
 
-Entity* createEntity(glm::vec2 pos, unsigned int layer, EntityIDs id, MetaData data, bool loadTex) {
+Entity* createEntity(glm::vec2 pos, unsigned int layer, EntityIDs id, SaveDataTypes::MetaData data, bool loadTex) {
     unsigned int idV = (unsigned int)id;
 
-    if(XMLData::getEntityNPCData(idV).id != (unsigned int)-1) {
-        // An NPC
-        return new EntityNPC(pos, layer, id, data, loadTex);
-    } else if(XMLData::getEntityItemData(idV).id != (unsigned int)-1) {
-        // An Item
-        return new EntityItem(pos, layer, id, data, loadTex);
-    } else if(XMLData::getEntityProjectileData(idV).id != (unsigned int)-1) {
-        // An Projectile
-        return new EntityProjectile(pos, layer, id, data, loadTex);
-    } else {
-        Logger::getInstance()->log("Failed to create entity with ID: " + std::to_string(idV), true);
-        return nullptr;
-    }
+    return createEntity(pos, layer, idV, data, loadTex);
 }
 
 

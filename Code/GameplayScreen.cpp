@@ -493,6 +493,7 @@ void GameplayScreen::initUI() {
 }
 
 void GameplayScreen::tick() {
+	// Happens not every second, nor each frame, but somewhere in between.
     m_world->tickTiles(getScreenBox() + glm::vec4(-20.0f, -20.0f, 40.0f, 40.0f));
     m_world->tickEntities(m_audio);
 

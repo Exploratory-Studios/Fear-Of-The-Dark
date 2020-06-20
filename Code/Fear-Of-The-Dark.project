@@ -1,0 +1,305 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CodeLite_Project Name="Fear-Of-The-Dark" Version="10.0.0">
+  <Plugins>
+    <Plugin Name="qmake">
+      <![CDATA[00040001N0005Debug0000000000000001N0007DebugVB0000000000000001N0015Release - Linux0000000000000001N0017Release - Windows000000000000]]>
+    </Plugin>
+  </Plugins>
+  <VirtualDirectory Name="include">
+    <File Name="XMLDataTypes.h"/>
+    <File Name="XMLData.h"/>
+    <File Name="WorldIOManager.h"/>
+    <File Name="World.h"/>
+    <File Name="WaitScreen.h"/>
+    <File Name="Tile.h"/>
+    <File Name="StartupScreen.h"/>
+    <File Name="ScriptingHelperFunctions.h"/>
+    <File Name="ScripterMain.h"/>
+    <File Name="ScriptQueue.h"/>
+    <File Name="ScreenIndices.h"/>
+    <File Name="SaveDataTypes.h"/>
+    <File Name="QuestTypes.h"/>
+    <File Name="QuestManager.h"/>
+    <File Name="PresetValues.h"/>
+    <File Name="PerlinNoise/ppm.h"/>
+    <File Name="PerlinNoise/PerlinNoise.h"/>
+    <File Name="OptionsMenuScreen.h"/>
+    <File Name="MainMenuScreen.h"/>
+    <File Name="Main.h"/>
+    <File Name="LuaScript.h"/>
+    <File Name="LuaHeaders.h"/>
+    <File Name="Logging.h"/>
+    <File Name="LoadScreen.h"/>
+    <File Name="Item.h"/>
+    <File Name="Inventory.h"/>
+    <File Name="GameplayScreen.h"/>
+    <File Name="ExtraFunctions.h"/>
+    <File Name="EventQueue.h"/>
+    <File Name="EntityProjectile.h"/>
+    <File Name="EntityPlayer.h"/>
+    <File Name="EntityNPC.h"/>
+    <File Name="EntityItem.h"/>
+    <File Name="Entity.h"/>
+    <File Name="Entities/EntityFunctions.h"/>
+    <File Name="Console.h"/>
+    <File Name="Categories.h"/>
+    <File Name="BuffData.h"/>
+    <File Name="AudioManager.h"/>
+    <File Name="App.h"/>
+  </VirtualDirectory>
+  <VirtualDirectory Name="src">
+    <File Name="XMLDataTypes.tcc"/>
+    <File Name="XMLDataTypes.cpp"/>
+    <File Name="XMLData.cpp"/>
+    <File Name="WorldIOManager.cpp"/>
+    <File Name="World.cpp"/>
+    <File Name="WaitScreen.cpp"/>
+    <File Name="Tile.cpp"/>
+    <File Name="StartupScreen.cpp"/>
+    <File Name="ScriptingHelperFunctions.cpp"/>
+    <File Name="ScripterMain.cpp"/>
+    <File Name="ScriptQueue.cpp"/>
+    <File Name="SaveDataTypes.cpp"/>
+    <File Name="QuestTypes.cpp"/>
+    <File Name="QuestManager.cpp"/>
+    <File Name="PerlinNoise/ppm.cpp"/>
+    <File Name="PerlinNoise/PerlinNoise.cpp"/>
+    <File Name="OptionsMenuScreen.cpp"/>
+    <File Name="MainMenuScreen.cpp"/>
+    <File Name="Main.cpp"/>
+    <File Name="LuaScript.cpp"/>
+    <File Name="Logging.cpp"/>
+    <File Name="LoadScreen.cpp"/>
+    <File Name="Item.cpp"/>
+    <File Name="Inventory.cpp"/>
+    <File Name="GameplayScreen.cpp"/>
+    <File Name="EventQueue.cpp"/>
+    <File Name="EntityProjectile.cpp"/>
+    <File Name="EntityPlayer.cpp"/>
+    <File Name="EntityNPC.cpp"/>
+    <File Name="EntityItem.cpp"/>
+    <File Name="Entity.cpp"/>
+    <File Name="Entities/EntityFunctions.cpp"/>
+    <File Name="Console.cpp"/>
+    <File Name="AudioManager.cpp"/>
+    <File Name="App.cpp"/>
+  </VirtualDirectory>
+  <Description/>
+  <Dependencies/>
+  <Settings Type="Executable">
+    <GlobalSettings>
+      <Compiler Options="-std=c++17" C_Options="" Assembler="">
+        <IncludePath Value="."/>
+      </Compiler>
+      <Linker Options="">
+        <LibraryPath Value="."/>
+      </Linker>
+      <ResourceCompiler Options=""/>
+    </GlobalSettings>
+    <Configuration Name="Debug" CompilerType="GCC" DebuggerType="GNU gdb debugger" Type="Executable" BuildCmpWithGlobalSettings="append" BuildLnkWithGlobalSettings="append" BuildResWithGlobalSettings="append">
+      <Compiler Options="-g3 -g -DDEV_CONTROLS -DDEBUG -DLINUX -fexceptions -DLUA_APICHECK " C_Options="" Assembler="" Required="yes" PreCompiledHeader="" PCHInCommandLine="no" PCHFlags="" PCHFlagsPolicy="0">
+        <IncludePath Value="Items"/>
+        <IncludePath Value="Code"/>
+        <IncludePath Value="Code/Entities"/>
+        <IncludePath Value="Code/QuestSystem"/>
+        <IncludePath Value="include"/>
+        <IncludePath Value="Code/"/>
+        <IncludePath Value="Code/Scripting"/>
+        <IncludePath Value="../../GLEngine"/>
+      </Compiler>
+      <Linker Options="-pg" Required="yes">
+        <LibraryPath Value="../../GLEngine/bin/Release/"/>
+        <LibraryPath Value="/usr/lib/x86_64-linux-gnu/"/>
+        <LibraryPath Value="./"/>
+        <Library Value="libboost_thread.a"/>
+        <Library Value="libboost_filesystem.a"/>
+        <Library Value="libboost_system.a"/>
+        <Library Value="lua5.3"/>
+        <Library Value="libGLEngine.a"/>
+        <Library Value="CEGUIBase-0"/>
+        <Library Value="CEGUIOpenGLRenderer-0"/>
+        <Library Value="SDL2"/>
+        <Library Value="SDL2_mixer"/>
+        <Library Value="SDL2_ttf"/>
+        <Library Value="GL"/>
+        <Library Value="GLU"/>
+        <Library Value="GLEW"/>
+        <Library Value="pthread"/>
+      </Linker>
+      <ResourceCompiler Options="" Required="no"/>
+      <General OutputFile="bin/Debug/FOTD" IntermediateDirectory="./obj/Debug" Command="./FOTD" CommandArguments="" UseSeparateDebugArgs="no" DebugArguments="" WorkingDirectory="bin/Debug" PauseExecWhenProcTerminates="yes" IsGUIProgram="no" IsEnabled="yes"/>
+      <BuildSystem Name="Default"/>
+      <Environment EnvVarSetName="&lt;Use Defaults&gt;" DbgSetName="&lt;Use Defaults&gt;">
+        <![CDATA[]]>
+      </Environment>
+      <Debugger IsRemote="no" RemoteHostName="" RemoteHostPort="" DebuggerPath="" IsExtended="no">
+        <DebuggerSearchPaths/>
+        <PostConnectCommands/>
+        <StartupCommands/>
+      </Debugger>
+      <PreBuild/>
+      <PostBuild/>
+      <CustomBuild Enabled="no">
+        <RebuildCommand/>
+        <CleanCommand/>
+        <BuildCommand/>
+        <PreprocessFileCommand/>
+        <SingleFileCommand/>
+        <MakefileGenerationCommand/>
+        <ThirdPartyToolName/>
+        <WorkingDirectory/>
+      </CustomBuild>
+      <AdditionalRules>
+        <CustomPostBuild/>
+        <CustomPreBuild/>
+      </AdditionalRules>
+      <Completion EnableCpp11="no" EnableCpp14="no">
+        <ClangCmpFlagsC/>
+        <ClangCmpFlags/>
+        <ClangPP/>
+        <SearchPaths/>
+      </Completion>
+    </Configuration>
+    <Configuration Name="DebugVB" CompilerType="GCC" DebuggerType="GNU gdb debugger" Type="Executable" BuildCmpWithGlobalSettings="append" BuildLnkWithGlobalSettings="append" BuildResWithGlobalSettings="append">
+      <Compiler Options="-g -v -DDEV_CONTROLS -DDEBUG -DLINUX -std=c++1z -fexceptions -DLUA_APICHECK " C_Options="-g -v -DDEV_CONTROLS -DDEBUG -DLINUX -std=c++1z -fexceptions -DLUA_APICHECK " Assembler="" Required="yes" PreCompiledHeader="" PCHInCommandLine="no" PCHFlags="" PCHFlagsPolicy="0">
+        <IncludePath Value="Items"/>
+        <IncludePath Value="Code"/>
+        <IncludePath Value="Code/Entities"/>
+        <IncludePath Value="Code/QuestSystem"/>
+        <IncludePath Value="include"/>
+        <IncludePath Value="Code/"/>
+        <IncludePath Value="Code/Scripting"/>
+        <IncludePath Value="../../GLEngine"/>
+      </Compiler>
+      <Linker Options="-O3 -Wl,-Bstatic /usr/lib/x86_64-linux-gnu/libboost_thread.a /usr/lib/x86_64-linux-gnu/libboost_filesystem.a /usr/lib/x86_64-linux-gnu/libboost_system.a -llua5.3 -Wl,-Bdynamic ../../GLEngine/bin/Release/libGLEngine.a -lCEGUIBase-0 -lCEGUIOpenGLRenderer-0 -lSDL2 -lSDL2_mixer -lSDL2_ttf -lGL -lGLU -lGLEW -lpthread " Required="yes">
+        <LibraryPath Value="../../GLEngine"/>
+      </Linker>
+      <ResourceCompiler Options="" Required="no"/>
+      <General OutputFile="bin/DebugVB/FOTD" IntermediateDirectory="./obj/Debug" Command="./FOTD" CommandArguments="" UseSeparateDebugArgs="no" DebugArguments="" WorkingDirectory="bin/DebugVB" PauseExecWhenProcTerminates="yes" IsGUIProgram="no" IsEnabled="yes"/>
+      <BuildSystem Name="Default"/>
+      <Environment EnvVarSetName="&lt;Use Defaults&gt;" DbgSetName="&lt;Use Defaults&gt;">
+        <![CDATA[]]>
+      </Environment>
+      <Debugger IsRemote="no" RemoteHostName="" RemoteHostPort="" DebuggerPath="" IsExtended="no">
+        <DebuggerSearchPaths/>
+        <PostConnectCommands/>
+        <StartupCommands/>
+      </Debugger>
+      <PreBuild/>
+      <PostBuild/>
+      <CustomBuild Enabled="no">
+        <RebuildCommand/>
+        <CleanCommand/>
+        <BuildCommand/>
+        <PreprocessFileCommand/>
+        <SingleFileCommand/>
+        <MakefileGenerationCommand/>
+        <ThirdPartyToolName/>
+        <WorkingDirectory/>
+      </CustomBuild>
+      <AdditionalRules>
+        <CustomPostBuild/>
+        <CustomPreBuild/>
+      </AdditionalRules>
+      <Completion EnableCpp11="no" EnableCpp14="no">
+        <ClangCmpFlagsC/>
+        <ClangCmpFlags/>
+        <ClangPP/>
+        <SearchPaths/>
+      </Completion>
+    </Configuration>
+    <Configuration Name="Release - Linux" CompilerType="GCC" DebuggerType="GNU gdb debugger" Type="Executable" BuildCmpWithGlobalSettings="append" BuildLnkWithGlobalSettings="append" BuildResWithGlobalSettings="append">
+      <Compiler Options="-fexpensive-optimizations -flto -O3 -DLINUX -fexceptions -DLUA_APICHECK " C_Options="" Assembler="" Required="yes" PreCompiledHeader="" PCHInCommandLine="no" PCHFlags="" PCHFlagsPolicy="0">
+        <IncludePath Value="Items"/>
+        <IncludePath Value="Code"/>
+        <IncludePath Value="Code/Entities"/>
+        <IncludePath Value="Code/QuestSystem"/>
+        <IncludePath Value="include"/>
+        <IncludePath Value="Code/"/>
+        <IncludePath Value="Code/Scripting"/>
+        <IncludePath Value="../../GLEngine"/>
+      </Compiler>
+      <Linker Options="-flto -s -O3 -Wl,-Bstatic /usr/lib/x86_64-linux-gnu/libboost_thread.a /usr/lib/x86_64-linux-gnu/libboost_filesystem.a /usr/lib/x86_64-linux-gnu/libboost_system.a -llua5.3 -Wl,-Bdynamic ../../GLEngine/bin/Release/libGLEngine.a -lCEGUIBase-0 -lCEGUIOpenGLRenderer-0 -lSDL2 -lSDL2_mixer -lSDL2_ttf -lGL -lGLU -lGLEW -lpthread " Required="yes">
+        <LibraryPath Value="../../GLEngine"/>
+      </Linker>
+      <ResourceCompiler Options="" Required="no"/>
+      <General OutputFile="bin/ReleaseLin/FOTD" IntermediateDirectory="./obj/ReleaseLin" Command="./FOTD" CommandArguments="" UseSeparateDebugArgs="no" DebugArguments="" WorkingDirectory="bin/ReleaseLin" PauseExecWhenProcTerminates="yes" IsGUIProgram="no" IsEnabled="yes"/>
+      <BuildSystem Name="Default"/>
+      <Environment EnvVarSetName="&lt;Use Defaults&gt;" DbgSetName="&lt;Use Defaults&gt;">
+        <![CDATA[]]>
+      </Environment>
+      <Debugger IsRemote="no" RemoteHostName="" RemoteHostPort="" DebuggerPath="" IsExtended="no">
+        <DebuggerSearchPaths/>
+        <PostConnectCommands/>
+        <StartupCommands/>
+      </Debugger>
+      <PreBuild/>
+      <PostBuild/>
+      <CustomBuild Enabled="no">
+        <RebuildCommand/>
+        <CleanCommand/>
+        <BuildCommand/>
+        <PreprocessFileCommand/>
+        <SingleFileCommand/>
+        <MakefileGenerationCommand/>
+        <ThirdPartyToolName/>
+        <WorkingDirectory/>
+      </CustomBuild>
+      <AdditionalRules>
+        <CustomPostBuild/>
+        <CustomPreBuild/>
+      </AdditionalRules>
+      <Completion EnableCpp11="no" EnableCpp14="no">
+        <ClangCmpFlagsC/>
+        <ClangCmpFlags/>
+        <ClangPP/>
+        <SearchPaths/>
+      </Completion>
+    </Configuration>
+    <Configuration Name="Release - Windows" CompilerType="GCC" DebuggerType="GNU gdb debugger" Type="Executable" BuildCmpWithGlobalSettings="append" BuildLnkWithGlobalSettings="append" BuildResWithGlobalSettings="append">
+      <Compiler Options="-fexpensive-optimizations -flto -O3 -fPIC -m64 -DWINDOWS -std=c++1z -fexceptions -DLUA_APICHECK " C_Options="-fexpensive-optimizations -flto -O3 -fPIC -m64 -DWINDOWS -std=c++1z -fexceptions -DLUA_APICHECK " Assembler="" Required="yes" PreCompiledHeader="" PCHInCommandLine="no" PCHFlags="" PCHFlagsPolicy="0">
+        <IncludePath Value="/usr/x86_64-w64-mingw32/lib"/>
+        <IncludePath Value="Code"/>
+        <IncludePath Value="Code/"/>
+        <IncludePath Value="../../GLEngine"/>
+      </Compiler>
+      <Linker Options="-flto -s -m64 -L/usr/x86_64-w64-mingw32/include/ -L/usr/x86_64-w64-mingw32/bin -Wl,-Bdynamic ../../GLEngine/bin/ReleaseWindows/libGLEngine.a -lCEGUIBase-0 -lCEGUIOpenGLRenderer-0 -lSDL2 -lSDL2_mixer -lSDL2_ttf -lopengl32 -lglu32 -lglew32 -Wl,-Bstatic -lboost_system -lboost_filesystem -lboost_thread -llua53 -Wl,-Bstatic /usr/lib/x86_64-linux-gnu/libboost_thread.a /usr/lib/x86_64-linux-gnu/libboost_filesystem.a /usr/lib/x86_64-linux-gnu/libboost_system.a -llua5.3 -Wl,-Bdynamic ../../GLEngine/bin/Release/libGLEngine.a -lCEGUIBase-0 -lCEGUIOpenGLRenderer-0 -lSDL2 -lSDL2_mixer -lSDL2_ttf -lGL -lGLU -lGLEW -lpthread " Required="yes">
+        <LibraryPath Value="/usr/x86_64-w64-mingw32/lib"/>
+        <LibraryPath Value="../../GLEngine"/>
+      </Linker>
+      <ResourceCompiler Options="" Required="no"/>
+      <General OutputFile="bin/ReleaseWin/FOTD" IntermediateDirectory="./obj/ReleaseWin" Command="./FOTD" CommandArguments="" UseSeparateDebugArgs="no" DebugArguments="" WorkingDirectory="bin/ReleaseWin" PauseExecWhenProcTerminates="yes" IsGUIProgram="no" IsEnabled="yes"/>
+      <BuildSystem Name="Default"/>
+      <Environment EnvVarSetName="&lt;Use Defaults&gt;" DbgSetName="&lt;Use Defaults&gt;">
+        <![CDATA[]]>
+      </Environment>
+      <Debugger IsRemote="no" RemoteHostName="" RemoteHostPort="" DebuggerPath="" IsExtended="no">
+        <DebuggerSearchPaths/>
+        <PostConnectCommands/>
+        <StartupCommands/>
+      </Debugger>
+      <PreBuild/>
+      <PostBuild/>
+      <CustomBuild Enabled="no">
+        <RebuildCommand/>
+        <CleanCommand/>
+        <BuildCommand/>
+        <PreprocessFileCommand/>
+        <SingleFileCommand/>
+        <MakefileGenerationCommand/>
+        <ThirdPartyToolName/>
+        <WorkingDirectory/>
+      </CustomBuild>
+      <AdditionalRules>
+        <CustomPostBuild/>
+        <CustomPreBuild/>
+      </AdditionalRules>
+      <Completion EnableCpp11="no" EnableCpp14="no">
+        <ClangCmpFlagsC/>
+        <ClangCmpFlags/>
+        <ClangPP/>
+        <SearchPaths/>
+      </Completion>
+    </Configuration>
+  </Settings>
+</CodeLite_Project>

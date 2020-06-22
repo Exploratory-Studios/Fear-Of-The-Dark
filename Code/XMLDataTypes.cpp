@@ -4,399 +4,405 @@
 
 namespace XMLModule {
 
-    void Attribute::setDefault() {
-        switch((unsigned int)type) {
-            case (unsigned int)AttributeType::STRING: {
-                data = (std::string)"UNDEFINED";
-                break;
-            }
-            case (unsigned int)AttributeType::UNSIGNED_INT: {
-                data = (unsigned int)-1;
-                break;
-            }
-            case (unsigned int)AttributeType::INT: {
-                data = (int)-1;
-                break;
-            }
-            case (unsigned int)AttributeType::FLOAT: {
-                data = (float)-1.0f;
-                break;
-            }
-            case (unsigned int)AttributeType::VEC2: {
-                glm::vec2 v2(69.0f, 69.0f);
-                data = v2;
-                break;
-            }
-            case (unsigned int)AttributeType::BOOL: {
-                data = (bool)false;
-                break;
-            }
-            case (unsigned int)AttributeType::FILEPATH_TEXTURE: {
-                data = (std::string)(ASSETS_FOLDER_PATH + "/Textures/UNDEFINED.png");
-                break;
-            }
-            case (unsigned int)AttributeType::FILEPATH_BUMPMAP: {
-                data = (std::string)(ASSETS_FOLDER_PATH + "/Textures/UNDEFINED.png");
-                break;
-            }
-            case (unsigned int)AttributeType::SCRIPT: {
-                data = (unsigned int)-1;
-                break;
-            }
-            case (unsigned int)AttributeType::STRING_FACTION: {
-                data = (unsigned int)Categories::Faction::NEUTRAL;
-                break;
-            }
-            case (unsigned int)AttributeType::VECTOR_UNSIGNED_INT: {
-                data = std::vector<unsigned int>{};
-                break;
-            }
-            default: {
-                Logger::getInstance()->log("ERROR: XML Data type not supported!", true);
-                break;
-            }
-        }
-    }
+	template<class T>
+	T GenericData::getAttributeByName(::std::string name) { /// TODO: Error checking and cleaning!
+		T t = *(m_attributes[name]->getData<T>());
+		return t;
+	}
 
-    GenericData::GenericData(std::vector<Attribute> attrs) {
-        addAttribute("name", AttributeType::STRING);
-        addAttribute("id", AttributeType::UNSIGNED_INT);
+	template<class T> // Templating acrobatics
+	void AttributeBase::setData(T data) {
+		dynamic_cast<Attribute<T>&>(*this).setData(data);
+	}
+	template<class T>
+	T AttributeBase::getData() {
+		return dynamic_cast<const Attribute<T>&>(*this).getData();
+	}
+	template<class T>
+	T* AttributeBase::getDataPtr() {
+		return dynamic_cast<const Attribute<T>&>(*this).getDataPtr();
+	}
 
-        for(auto e : attrs) {
-            addAttribute(e.name, e.type);
-        }
-    }
+	template<>
+	void Attribute<glm::vec2>::setDefault() {
+		setData(glm::vec2(0.0f, 0.0f));
+	}
 
-    void GenericData::init(rapidxml::xml_node<>* node) {
-        /// The node must be the node of the Data. For example, if one were to load a Block item, we'd need to get the Block node, and pass it to this.
+	template<>
+	void Attribute<std::vector<unsigned int>>::setDefault() {
+		setData(std::vector<unsigned int> {});
+	}
 
+	template<>
+	void Attribute<std::string>::setDefault() {
+		setData("UNDEF");
+	}
 
-        m_attributes["id"].data = (unsigned int)std::stoi(node->first_attribute("id")->value());
-        m_attributes["name"].data = (std::string)node->first_attribute("name")->value();
+	GenericData::GenericData(std::vector<AttributeBase*> attrs) : name(""), id(0) {
+		addAttributes(attrs);
+	}
 
-        for(auto& attr : m_attributes) { // Retrieved by reference, so we can change them!
-            // For each attribute, load the stuff.
-            if(attr.first == "name" || attr.first == "id") continue; // These are not regular child nodes, but rather special ones, taken care of beforehand!
+	void GenericData::init(rapidxml::xml_node<>* node) {
+		/// The node must be the node of the Data. For example, if one were to load a Block item, we'd need to get the Block node, and pass it to this.
+		addAttribute("name", AttributeType::STRING, &name);
+		addAttribute("id", AttributeType::UNSIGNED_INT, &id);
 
-            switch((unsigned int)attr.second.type) { /// TODO: Smarten this up
-                case (unsigned int)AttributeType::STRING: {
-                    std::string data;
-                    getValue(node, attr.first, data);
-                    attr.second.data = data;
-                    break;
-                }
-                case (unsigned int)AttributeType::UNSIGNED_INT: {
-                    unsigned int data;
-                    getValue(node, attr.first, data);
-                    attr.second.data = data;
-                    break;
-                }
-                case (unsigned int)AttributeType::INT: {
-                    int data;
-                    getValue(node, attr.first, data);
-                    attr.second.data = data;
-                    break;
-                }
-                case (unsigned int)AttributeType::FLOAT: {
-                    float data;
-                    getValue(node, attr.first, data);
-                    attr.second.data = data;
-                    break;
-                }
-                case (unsigned int)AttributeType::VEC2: {
-                    glm::vec2 v2;
-                    getValue(node, attr.first + "X", v2.x);
-                    getValue(node, attr.first + "Y", v2.y);
+		m_attributes["id"]->setData((unsigned int)std::stoi(node->first_attribute("id")->value()));
+		m_attributes["name"]->setData((std::string)node->first_attribute("name")->value());
 
-                    attr.second.data = v2;
-                    break;
-                }
-                case (unsigned int)AttributeType::BOOL: {
-                    bool data;
-                    getValue(node, attr.first, data);
-                    attr.second.data = data;
-                    break;
-                }
-                case (unsigned int)AttributeType::FILEPATH_TEXTURE: {
-                    std::string data;
-                    getValue(node, attr.first, data);
-                    attr.second.data = data;
-                    attr.second.data = ASSETS_FOLDER_PATH + "/Textures/" + boost::get<std::string>(attr.second.data);
-                    break;
-                }
-                case (unsigned int)AttributeType::FILEPATH_BUMPMAP: {
-                    std::string data;
-                    getValue(node, attr.first, data);
-                    attr.second.data = data;
-                    attr.second.data = ASSETS_FOLDER_PATH + "/Textures/BumpMaps/" + boost::get<std::string>(attr.second.data);
-                    break;
-                }
-                case (unsigned int)AttributeType::SCRIPT: {
-                    rapidxml::xml_node<>* scriptNode = node->first_node((char*)attr.first.c_str());
-                    // This scriptNode has a bool (whether its a file or not) and the script filepath or literal
+		for(auto& attr : m_attributes) { // Retrieved by reference, so we can change them!
+			// For each attribute, load the stuff.
+			if(attr.first == "name" || attr.first == "id") continue; // These are not regular child nodes, but rather special ones, taken care of beforehand!
 
-                    if(scriptNode) {
-                        bool isFile = false;
-                        getValue(scriptNode, "isFile", isFile); // Default false if its not found
-                        std::string script;
-                        getValue(scriptNode, "script", script);
+			switch((unsigned int)attr.second->type) { /// TODO: Smarten this up
+				case(unsigned int)AttributeType::STRING: {
+					std::string data;
+					getValue(node, attr.first, data);
+					attr.second->setData(data);
+					break;
+				}
+				case(unsigned int)AttributeType::UNSIGNED_INT: {
+					unsigned int data;
+					getValue(node, attr.first, data);
+					attr.second->setData(data);
+					break;
+				}
+				case(unsigned int)AttributeType::INT: {
+					int data;
+					getValue(node, attr.first, data);
+					attr.second->setData(data);
+					break;
+				}
+				case(unsigned int)AttributeType::FLOAT: {
+					float data;
+					getValue(node, attr.first, data);
+					attr.second->setData(data);
+					break;
+				}
+				case(unsigned int)AttributeType::VEC2: {
+					glm::vec2 v2;
+					getValue(node, attr.first + "X", v2.x);
+					getValue(node, attr.first + "Y", v2.y);
 
-                        if(isFile) {
-                            script = ASSETS_FOLDER_PATH + "/Scripts/" + script;
-                        }
+					attr.second->setData(v2);
+					break;
+				}
+				case(unsigned int)AttributeType::BOOL: {
+					bool data;
+					getValue(node, attr.first, data);
+					attr.second->setData(data);
+					break;
+				}
+				case(unsigned int)AttributeType::FILEPATH_TEXTURE: {
+					std::string data;
+					getValue(node, attr.first, data);
+					attr.second->setData((std::string)(ASSETS_FOLDER_PATH + "/Textures/" + data));
+					break;
+				}
+				case(unsigned int)AttributeType::FILEPATH_BUMPMAP: {
+					std::string data;
+					getValue(node, attr.first, data);
+					attr.second->setData((std::string)(ASSETS_FOLDER_PATH + "/Textures/BumpMaps/" + data));
+					break;
+				}
+				case(unsigned int)AttributeType::SCRIPT: {
+					rapidxml::xml_node<>* scriptNode = node->first_node((char*)(attr.first.c_str()));
+					// This scriptNode has a bool (whether its a file or not) and the script filepath or literal
 
-                        ScriptingModule::Script scr(script, isFile);
-                        attr.second.data = ScriptingModule::ScriptQueue::addScript(scr);
-                    }
-                    break;
-                }
-                case (unsigned int)AttributeType::STRING_FACTION: {
-                    std::string factionString;
-                    Categories::Faction faction;
+					if(scriptNode) {
+						bool isFile = false;
+						if(!getValue(scriptNode, "isFile", isFile)) {
+							Logger::getInstance()->log("XML ERROR: Script definition not formed correctly! Missing flag \"isFile\": ID=" + std::to_string(id), true);
+							break;
+						}
+						std::string script;
+						if(!getValue(scriptNode, "script", script)) {
+							Logger::getInstance()->log("XML ERROR: Script definition not formed correctly! Missing attribute \"script\": ID=" + std::to_string(id), true);
+							break;
+						}
 
-                    getValue(node, attr.first, factionString);
+						if(isFile) {
+							script = ASSETS_FOLDER_PATH + "/Scripts/" + script;
+						}
 
-                    if(factionString == "evil") {
-                        faction = Categories::Faction::EVIL;
-                    } else if(factionString == "bad") {
-                        faction = Categories::Faction::BAD;
-                    } else if(factionString == "neutral") {
-                        faction = Categories::Faction::NEUTRAL;
-                    } else if(factionString == "good") {
-                        faction = Categories::Faction::GOOD;
-                    } else if(factionString == "benign") {
-                        faction = Categories::Faction::BENIGN;
-                    } else {
-                        faction = Categories::Faction::NEUTRAL;
-                    }
+						ScriptingModule::Script scr(script, isFile);
+						attr.second->setData((unsigned int)ScriptingModule::ScriptQueue::addScript(scr));
+					}
+					break;
+				}
+				case(unsigned int)AttributeType::STRING_FACTION: {
+					std::string factionString;
+					Categories::Faction faction;
 
-                    attr.second.data = (unsigned int)faction;
+					getValue(node, attr.first, factionString);
 
-                    break;
-                }
-                case (unsigned int)AttributeType::VECTOR_UNSIGNED_INT: {
-                    std::string nodeName, valueName;
-                    unsigned int slashIndex = attr.first.find("/");
+					if(factionString == "evil") {
+						faction = Categories::Faction::EVIL;
+					} else if(factionString == "bad") {
+						faction = Categories::Faction::BAD;
+					} else if(factionString == "neutral") {
+						faction = Categories::Faction::NEUTRAL;
+					} else if(factionString == "good") {
+						faction = Categories::Faction::GOOD;
+					} else if(factionString == "benign") {
+						faction = Categories::Faction::BENIGN;
+					} else {
+						faction = Categories::Faction::NEUTRAL;
+					}
 
-                    nodeName = attr.first.substr(0, slashIndex); // Left half (excluding the slash)
-                    valueName = attr.first.substr(slashIndex+1); // Right half (excluding the slash)
+					attr.second->setData((unsigned int)faction);
 
-                    std::vector<unsigned int> vec;
-                    getVector(node, nodeName, valueName, vec);
-                    attr.second.data = vec;
+					break;
+				}
+				case(unsigned int)AttributeType::VECTOR_UNSIGNED_INT: {
+					std::string nodeName, valueName;
+					unsigned int slashIndex = attr.first.find("/");
 
-                    break;
-                }
-                default: {
-                    Logger::getInstance()->log("ERROR: XML Data type not supported!", true);
+					nodeName = attr.first.substr(0, slashIndex); // Left half (excluding the slash)
+					valueName = attr.first.substr(slashIndex + 1); // Right half (excluding the slash)
 
-                    break;
-                }
+					std::vector<unsigned int> vec;
+					getVector(node, nodeName, valueName, vec);
+					attr.second->setData(vec);
 
-            }
-        }
+					break;
+				}
+				default: {
+					Logger::getInstance()->log("ERROR: XML Data type not supported!", true);
 
-        ::XMLModule::getMetaData(node, m_metadata); //
-    }
+					break;
+				}
 
-    void GenericData::addAttribute(std::string name, AttributeType type) {
-        Attribute attr(name, type);
+			}
+		}
 
-        m_attributes[name] = attr;
-    }
+		::XMLModule::getMetaData(node, m_metadata); //
+	}
 
-    // basic
-    /*void GenericData::getAttribute(std::string name, void* dataPtr) {
-        // 1. Find the element:
-        auto it = m_attributes.find(name);
-        // 2. Check if it exists:
-        if(it == m_attributes.end()) {
-            Logger::getInstance()->log("ERROR: XML Attribute not found!: " + name, true);
-            dataPtr = nullptr;
-        }
-        // 3. Return the attribute (it->second.data)'s value
-        switch((unsigned int)it->second.type) {
-            case (unsigned int)AttributeType::FILEPATH_TEXTURE:
-            case (unsigned int)AttributeType::FILEPATH_BUMPMAP:
-            case (unsigned int)AttributeType::STRING: {
-                *dataPtr = it->second.data.s;
-                break;
-            }
-            case (unsigned int)AttributeType::SCRIPT:
-            case (unsigned int)AttributeType::STRING_FACTION:
-            case (unsigned int)AttributeType::UNSIGNED_INT: {
-                *dataPtr = it->second.data.ui;
-                break;
-            }
-            case (unsigned int)AttributeType::INT: {
-                *dataPtr = it->second.data.i;
-                break;
-            }
-            case (unsigned int)AttributeType::FLOAT: {
-                *dataPtr = it->second.data.f;
-                break;
-            }
-            case (unsigned int)AttributeType::BOOL: {
-                *dataPtr = it->second.data.b;
-                break;
-            }
-            case (unsigned int)AttributeType::VECTOR_UNSIGNED_INT: {
-                *dataPtr = it->second.data.v_ui;
-                break;
-            }
-            case (unsigned int)AttributeType::VEC2: {
-                *dataPtr = it->second.data.v2;
-                break;
-            }
-            default: {
-                Logger::getInstance()->log("ERROR: XML Data type not supported!", true);
-                dataPtr = nullptr;
-            }
-        }
-    }*/
+	template<class T>
+	void GenericData::addAttribute(std::string name, AttributeType type, T* data) {
+		Attribute<T>* attr = new Attribute<T>(name, type, data);
 
-    // Strings
-    /*void GenericData::getAttribute(std::string name, std::string& dataPtr) {
-        // 1. Find the element:
-        auto it = m_attributes.find(name);
-        // 2. Check if it exists:
-        if(it == m_attributes.end()) {
-            Logger::getInstance()->log("ERROR: XML Attribute not found!: " + name, true);
-        }
-        // 3. Return the attribute (it->second.data)'s value
-        switch((unsigned int)it->second.type) {
-            case (unsigned int)AttributeType::FILEPATH_TEXTURE:
-            case (unsigned int)AttributeType::FILEPATH_BUMPMAP:
-            case (unsigned int)AttributeType::STRING: {
-                dataPtr = boost::get<std::string>(it->second.data);
-                break;
-            }
-            default: {
-                Logger::getInstance()->log("ERROR: XML Data type not supported! (Get: STR)", true);
-            }
-        }
-    }
+		m_attributes[name] = attr;
+	}
 
-    // Unsigned int
-    void GenericData::getAttribute(std::string name, unsigned int& dataPtr) {
-        // 1. Find the element:
-        auto it = m_attributes.find(name);
-        // 2. Check if it exists:
-        if(it == m_attributes.end()) {
-            Logger::getInstance()->log("ERROR: XML Attribute not found!: " + name, true);
-        }
-        // 3. Return the attribute (it->second.data)'s value
-        switch((unsigned int)it->second.type) {
-            case (unsigned int)AttributeType::SCRIPT:
-            case (unsigned int)AttributeType::STRING_FACTION:
-            case (unsigned int)AttributeType::UNSIGNED_INT: {
-                dataPtr = boost::get<unsigned int>(it->second.data);
-                break;
-            }
-            default: {
-                Logger::getInstance()->log("ERROR: XML Data type not supported (Get: U_I)!", true);
-            }
-        }
-    }
+	/*void GenericData::addAttribute(std::string name, AttributeType type, void* data) {
+		Attribute attr;
+		attr.name = name;
+		attr.m_type = type;
 
-    // Signed int
-    void GenericData::getAttribute(std::string name, int& dataPtr) {
-        // 1. Find the element:
-        auto it = m_attributes.find(name);
-        // 2. Check if it exists:
-        if(it == m_attributes.end()) {
-            Logger::getInstance()->log("ERROR: XML Attribute not found!: " + name, true);
-        }
-        // 3. Return the attribute (it->second.data)'s value
-        switch((unsigned int)it->second.type) {
-            case (unsigned int)AttributeType::INT: {
-                dataPtr = boost::get<int>(it->second.data);
-                break;
-            }
-            default: {
-                Logger::getInstance()->log("ERROR: XML Data type not supported! (Get: INT)", true);
-            }
-        }
-    }
+		attr.m_data = std::any_cast<std::any*>(data); // Big ol switch statement was here
 
-    // float
-    void GenericData::getAttribute(std::string name, float& dataPtr) {
-        // 1. Find the element:
-        auto it = m_attributes.find(name);
-        // 2. Check if it exists:
-        if(it == m_attributes.end()) {
-            Logger::getInstance()->log("ERROR: XML Attribute not found!: " + name, true);
-        }
-        // 3. Return the attribute (it->second.data)'s value
-        switch((unsigned int)it->second.type) {
-            case (unsigned int)AttributeType::FLOAT: {
-                dataPtr = boost::get<float>(it->second.data);
-                break;
-            }
-            default: {
-                Logger::getInstance()->log("ERROR: XML Data type not supported! (Get: FLO)", true);
-            }
-        }
-    }
+		addAttribute(attr);
+	}*/
 
-    // bool
-    void GenericData::getAttribute(std::string name, bool& dataPtr) {
-        // 1. Find the element:
-        auto it = m_attributes.find(name);
-        // 2. Check if it exists:
-        if(it == m_attributes.end()) {
-            Logger::getInstance()->log("ERROR: XML Attribute not found!: " + name, true);
-        }
-        // 3. Return the attribute (it->second.data)'s value
-        switch((unsigned int)it->second.type) {
-            case (unsigned int)AttributeType::BOOL: {
-                dataPtr = boost::get<bool>(it->second.data);
-                break;
-            }
-            default: {
-                Logger::getInstance()->log("ERROR: XML Data type not supported! (Get: BOO)", true);
-            }
-        }
-    }
+	void GenericData::addAttribute(AttributeBase* a) {
+		m_attributes[a->name] = a;
+	}
 
-    // vector (unsigned int)
-    void GenericData::getAttribute(std::string name, std::vector<unsigned int>& dataPtr) {
-        // 1. Find the element:
-        auto it = m_attributes.find(name);
-        // 2. Check if it exists:
-        if(it == m_attributes.end()) {
-            Logger::getInstance()->log("ERROR: XML Attribute not found!: " + name, true);
-        }
-        // 3. Return the attribute (it->second.data)'s value
-        switch((unsigned int)it->second.type) {
-            case (unsigned int)AttributeType::VECTOR_UNSIGNED_INT: {
-                dataPtr = boost::get<std::vector<unsigned int>>(it->second.data);
-                break;
-            }
-            default: {
-                Logger::getInstance()->log("ERROR: XML Data type not supported! (Get: V_U_I)", true);
-            }
-        }
-    }
+	void GenericData::addAttributes(std::vector<AttributeBase*> attrs) {
+		/**
+		 * @brief Adds a vector of attributes
+		 * @param attrs
+		 */
 
-    // glm::vec2
-    void GenericData::getAttribute(std::string name, glm::vec2& dataPtr) {
-        // 1. Find the element:
-        auto it = m_attributes.find(name);
-        // 2. Check if it exists:
-        if(it == m_attributes.end()) {
-            Logger::getInstance()->log("ERROR: XML Attribute not found!: " + name, true);
-        }
-        // 3. Return the attribute (it->second.data)'s value
-        switch((unsigned int)it->second.type) {
-            case (unsigned int)AttributeType::VEC2: {
-                dataPtr = boost::get<glm::vec2>(it->second.data);
-                break;
-            }
-            default: {
-                Logger::getInstance()->log("ERROR: XML Data type not supported! (Get: V_2)", true);
-            }
-        }
-    }*/
+		for(auto* e : attrs) {
+			addAttribute(e);
+		}
+	}
+
+// basic
+	/*void GenericData::getAttribute(std::string name, void* dataPtr) {
+	    // 1. Find the element:
+	    auto it = m_attributes.find(name);
+	    // 2. Check if it exists:
+	    if(it == m_attributes.end()) {
+	        Logger::getInstance()->log("ERROR: XML Attribute not found!: " + name, true);
+	        dataPtr = nullptr;
+	    }
+	    // 3. Return the attribute (it->second.data)'s value
+	    switch((unsigned int)it->second.type) {
+	        case (unsigned int)AttributeType::FILEPATH_TEXTURE:
+	        case (unsigned int)AttributeType::FILEPATH_BUMPMAP:
+	        case (unsigned int)AttributeType::STRING: {
+	            *dataPtr = it->second.data.s;
+	            break;
+	        }
+	        case (unsigned int)AttributeType::SCRIPT:
+	        case (unsigned int)AttributeType::STRING_FACTION:
+	        case (unsigned int)AttributeType::UNSIGNED_INT: {
+	            *dataPtr = it->second.data.ui;
+	            break;
+	        }
+	        case (unsigned int)AttributeType::INT: {
+	            *dataPtr = it->second.data.i;
+	            break;
+	        }
+	        case (unsigned int)AttributeType::FLOAT: {
+	            *dataPtr = it->second.data.f;
+	            break;
+	        }
+	        case (unsigned int)AttributeType::BOOL: {
+	            *dataPtr = it->second.data.b;
+	            break;
+	        }
+	        case (unsigned int)AttributeType::VECTOR_UNSIGNED_INT: {
+	            *dataPtr = it->second.data.v_ui;
+	            break;
+	        }
+	        case (unsigned int)AttributeType::VEC2: {
+	            *dataPtr = it->second.data.v2;
+	            break;
+	        }
+	        default: {
+	            Logger::getInstance()->log("ERROR: XML Data type not supported!", true);
+	            dataPtr = nullptr;
+	        }
+	    }
+	}*/
+
+// Strings
+	/*void GenericData::getAttribute(std::string name, std::string& dataPtr) {
+	    // 1. Find the element:
+	    auto it = m_attributes.find(name);
+	    // 2. Check if it exists:
+	    if(it == m_attributes.end()) {
+	        Logger::getInstance()->log("ERROR: XML Attribute not found!: " + name, true);
+	    }
+	    // 3. Return the attribute (it->second.data)'s value
+	    switch((unsigned int)it->second.type) {
+	        case (unsigned int)AttributeType::FILEPATH_TEXTURE:
+	        case (unsigned int)AttributeType::FILEPATH_BUMPMAP:
+	        case (unsigned int)AttributeType::STRING: {
+	            dataPtr = boost::get<std::string>(it->second.data);
+	            break;
+	        }
+	        default: {
+	            Logger::getInstance()->log("ERROR: XML Data type not supported! (Get: STR)", true);
+	        }
+	    }
+	}
+
+	// Unsigned int
+	void GenericData::getAttribute(std::string name, unsigned int& dataPtr) {
+	    // 1. Find the element:
+	    auto it = m_attributes.find(name);
+	    // 2. Check if it exists:
+	    if(it == m_attributes.end()) {
+	        Logger::getInstance()->log("ERROR: XML Attribute not found!: " + name, true);
+	    }
+	    // 3. Return the attribute (it->second.data)'s value
+	    switch((unsigned int)it->second.type) {
+	        case (unsigned int)AttributeType::SCRIPT:
+	        case (unsigned int)AttributeType::STRING_FACTION:
+	        case (unsigned int)AttributeType::UNSIGNED_INT: {
+	            dataPtr = boost::get<unsigned int>(it->second.data);
+	            break;
+	        }
+	        default: {
+	            Logger::getInstance()->log("ERROR: XML Data type not supported (Get: U_I)!", true);
+	        }
+	    }
+	}
+
+	// Signed int
+	void GenericData::getAttribute(std::string name, int& dataPtr) {
+	    // 1. Find the element:
+	    auto it = m_attributes.find(name);
+	    // 2. Check if it exists:
+	    if(it == m_attributes.end()) {
+	        Logger::getInstance()->log("ERROR: XML Attribute not found!: " + name, true);
+	    }
+	    // 3. Return the attribute (it->second.data)'s value
+	    switch((unsigned int)it->second.type) {
+	        case (unsigned int)AttributeType::INT: {
+	            dataPtr = boost::get<int>(it->second.data);
+	            break;
+	        }
+	        default: {
+	            Logger::getInstance()->log("ERROR: XML Data type not supported! (Get: INT)", true);
+	        }
+	    }
+	}
+
+	// float
+	void GenericData::getAttribute(std::string name, float& dataPtr) {
+	    // 1. Find the element:
+	    auto it = m_attributes.find(name);
+	    // 2. Check if it exists:
+	    if(it == m_attributes.end()) {
+	        Logger::getInstance()->log("ERROR: XML Attribute not found!: " + name, true);
+	    }
+	    // 3. Return the attribute (it->second.data)'s value
+	    switch((unsigned int)it->second.type) {
+	        case (unsigned int)AttributeType::FLOAT: {
+	            dataPtr = boost::get<float>(it->second.data);
+	            break;
+	        }
+	        default: {
+	            Logger::getInstance()->log("ERROR: XML Data type not supported! (Get: FLO)", true);
+	        }
+	    }
+	}
+
+	// bool
+	void GenericData::getAttribute(std::string name, bool& dataPtr) {
+	    // 1. Find the element:
+	    auto it = m_attributes.find(name);
+	    // 2. Check if it exists:
+	    if(it == m_attributes.end()) {
+	        Logger::getInstance()->log("ERROR: XML Attribute not found!: " + name, true);
+	    }
+	    // 3. Return the attribute (it->second.data)'s value
+	    switch((unsigned int)it->second.type) {
+	        case (unsigned int)AttributeType::BOOL: {
+	            dataPtr = boost::get<bool>(it->second.data);
+	            break;
+	        }
+	        default: {
+	            Logger::getInstance()->log("ERROR: XML Data type not supported! (Get: BOO)", true);
+	        }
+	    }
+	}
+
+	// vector (unsigned int)
+	void GenericData::getAttribute(std::string name, std::vector<unsigned int>& dataPtr) {
+	    // 1. Find the element:
+	    auto it = m_attributes.find(name);
+	    // 2. Check if it exists:
+	    if(it == m_attributes.end()) {
+	        Logger::getInstance()->log("ERROR: XML Attribute not found!: " + name, true);
+	    }
+	    // 3. Return the attribute (it->second.data)'s value
+	    switch((unsigned int)it->second.type) {
+	        case (unsigned int)AttributeType::VECTOR_UNSIGNED_INT: {
+	            dataPtr = boost::get<std::vector<unsigned int>>(it->second.data);
+	            break;
+	        }
+	        default: {
+	            Logger::getInstance()->log("ERROR: XML Data type not supported! (Get: V_U_I)", true);
+	        }
+	    }
+	}
+
+	// glm::vec2
+	void GenericData::getAttribute(std::string name, glm::vec2& dataPtr) {
+	    // 1. Find the element:
+	    auto it = m_attributes.find(name);
+	    // 2. Check if it exists:
+	    if(it == m_attributes.end()) {
+	        Logger::getInstance()->log("ERROR: XML Attribute not found!: " + name, true);
+	    }
+	    // 3. Return the attribute (it->second.data)'s value
+	    switch((unsigned int)it->second.type) {
+	        case (unsigned int)AttributeType::VEC2: {
+	            dataPtr = boost::get<glm::vec2>(it->second.data);
+	            break;
+	        }
+	        default: {
+	            Logger::getInstance()->log("ERROR: XML Data type not supported! (Get: V_2)", true);
+	        }
+	    }
+	}*/
 
 }

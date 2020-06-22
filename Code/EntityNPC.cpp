@@ -13,693 +13,689 @@
 
 #include "XMLData.h"
 
-EntityNPC::EntityNPC(glm::vec2 pos, unsigned int layer, unsigned int id, SaveDataTypes::MetaData data, bool loadTex) : Entity(pos, layer, SaveDataTypes::MetaData())
-{
-    m_type = EntityTypes::NPC;
+class faction;
+EntityNPC::EntityNPC(glm::vec2 pos, unsigned int layer, unsigned int id, SaveDataTypes::MetaData data, bool loadTex) : Entity(pos, layer, SaveDataTypes::MetaData()) {
+	m_type = EntityTypes::NPC;
 
-    m_id = id;
+	m_id = id;
 
-    XMLModule::EntityNPCData d = XMLModule::XMLData::getEntityNPCData(id);
+	XMLModule::EntityNPCData d = XMLModule::XMLData::getEntityNPCData(id);
 
-    d.getAttribute("texture", m_texturePath);
-    d.getAttribute("bumpMap", m_bumpMapPath);
-    d.getAttribute("size", m_size);
-    d.getAttribute("isDamagedByFalls", m_takesFallDamage);
-    d.getAttribute("isInvincible", m_canDie);
-    d.getAttribute("speed", m_runSpeed);
-    d.getAttribute("jumpHeight", m_jumpHeight);
-    d.getAttribute("maxHealth", m_maxHealth);
-    unsigned int fac;
-    d.getAttribute("faction", fac);
-    m_faction = (Categories::Faction)fac;
+	m_texturePath = d.texture;
+	m_bumpMapPath = d.bumpMap;
+	m_size = d.size;
+	m_takesFallDamage = d.isDamagedByFalls;
+	m_canDie = !d.isInvincible;
+	m_runSpeed = d.speed;
+	m_jumpHeight = d.jumpHeight;
+	m_maxHealth = d.maxHealth;
+	m_faction = (Categories::Faction)d.faction;
 
-    m_metaData = d.getMetaData();
+	m_metaData = d.getMetaData();
 
-    m_health = m_maxHealth;
+	m_health = m_maxHealth;
 
-    if(loadTex) {
-        loadTexture();
-    }
+	if(loadTex) {
+		loadTexture();
+	}
 }
 
-EntityNPC::EntityNPC(glm::vec2 pos, unsigned int layer, EntityIDs id, SaveDataTypes::MetaData data, bool loadTex) : Entity(pos, layer, SaveDataTypes::MetaData())
-{
-    m_type = EntityTypes::NPC;
+EntityNPC::EntityNPC(glm::vec2 pos, unsigned int layer, EntityIDs id, SaveDataTypes::MetaData data, bool loadTex) : Entity(pos, layer, SaveDataTypes::MetaData()) {
+	m_type = EntityTypes::NPC;
 
-    m_id = (unsigned int)id;
+	m_id = (unsigned int)id;
 
-    XMLModule::EntityNPCData d = XMLModule::XMLData::getEntityNPCData((unsigned int)id);
+	XMLModule::EntityNPCData d = XMLModule::XMLData::getEntityNPCData(m_id);
 
-    d.getAttribute("texture", m_texturePath);
-    d.getAttribute("bumpMap", m_bumpMapPath);
-    d.getAttribute("size", m_size);
-    d.getAttribute("isDamagedByFalls", m_takesFallDamage);
-    d.getAttribute("isInvincible", m_canDie);
-    d.getAttribute("speed", m_runSpeed);
-    d.getAttribute("jumpHeight", m_jumpHeight);
-    d.getAttribute("maxHealth", m_maxHealth);
-    unsigned int fac;
-    d.getAttribute("faction", fac);
-    m_faction = (Categories::Faction)fac;
+	m_texturePath = d.texture;
+	m_bumpMapPath = d.bumpMap;
+	m_size = d.size;
+	m_takesFallDamage = d.isDamagedByFalls;
+	m_canDie = !d.isInvincible;
+	m_runSpeed = d.speed;
+	m_jumpHeight = d.jumpHeight;
+	m_maxHealth = d.maxHealth;
+	m_faction = (Categories::Faction)d.faction;
 
-    m_metaData = d.getMetaData();
+	m_metaData = d.getMetaData();
 
-    m_health = m_maxHealth;
+	m_health = m_maxHealth;
 
-    if(loadTex) {
-        loadTexture();
-    }
+	if(loadTex) {
+		loadTexture();
+	}
 }
 
-EntityNPC::~EntityNPC()
-{
-    delete m_inventory;
+EntityNPC::~EntityNPC() {
+	delete m_inventory;
 }
 
 void EntityNPC::collide(World* world, unsigned int entityIndex) {
-    std::vector<Entity*> entities = world->getEntities();
+	std::vector<Entity*> entities = world->getEntities();
 
-    /// Entity collision
-    for(unsigned int i = entityIndex+1; i < entities.size(); i++) { /// To the right
-        if(entities[i]->getType() == EntityTypes::NPC) {
-            EntityNPC* ent = dynamic_cast<EntityNPC*>(entities[i]);
+	/// Entity collision
+	for(unsigned int i = entityIndex + 1; i < entities.size(); i++) { /// To the right
+		if(entities[i]->getType() == EntityTypes::NPC) {
+			EntityNPC* ent = dynamic_cast<EntityNPC*>(entities[i]);
 
-            float xDist = (m_position.x + m_size.x / 2.0f) - (ent->getPosition().x + ent->getSize().x / 2.0f);
-            float yDist = (m_position.y + m_size.y / 2.0f) - (ent->getPosition().y + ent->getSize().y / 2.0f);
-            if(abs(xDist) < abs(m_size.x / 2.0f + ent->getSize().x / 2.0f)) {
-                if(abs(yDist) < abs(m_size.y / 2.0f + ent->getSize().y / 2.0f)) {
+			float xDist = (m_position.x + m_size.x / 2.0f) - (ent->getPosition().x + ent->getSize().x / 2.0f);
+			float yDist = (m_position.y + m_size.y / 2.0f) - (ent->getPosition().y + ent->getSize().y / 2.0f);
+			if(abs(xDist) < abs(m_size.x / 2.0f + ent->getSize().x / 2.0f)) {
+				if(abs(yDist) < abs(m_size.y / 2.0f + ent->getSize().y / 2.0f)) {
 
-                    float depth = xDist - (m_size.x / 2.0f + ent->getSize().x / 2.0f);
-                    float force = (depth / 2.0f) * (depth / 2.0f) / ((m_size.x / 2.0f + ent->getSize().x / 2.0f) * 512.0f);
-
-
-                    m_position.x -= force;
-                    ent->setPosition(glm::vec2(ent->getPosition().x + force, ent->getPosition().y));
-                    continue;
-                }
-            }
-        } else if(entities[i]->getType() == EntityTypes::ITEM) {
-            EntityItem* ent = dynamic_cast<EntityItem*>(entities[i]);
-
-            float xDist = std::abs(ent->getPosition().x - m_position.x);
-            float yDist = std::abs(ent->getPosition().y - m_position.y);
-            float dist = std::sqrt(xDist * xDist + yDist * yDist);
-
-            if(dist <= 3.0f) {
-                //m_inventory->addItem(ent->getItem());
-                ///world->removeEntity(i); /// TODO: Implement this
-            }
-            continue;
-        }
-        break;
-    }
-
-    for(int i = entityIndex-1; i >= 0; i--) { /// To the left
-        if(entities[i]->getType() == EntityTypes::NPC) {
-            EntityNPC* ent = dynamic_cast<EntityNPC*>(entities[i]);
-
-            float xDist = (m_position.x + m_size.x / 2.0f) - (ent->getPosition().x + ent->getSize().x / 2.0f);
-            float yDist = (m_position.y + m_size.y / 2.0f) - (ent->getPosition().y + ent->getSize().y / 2.0f);
-            if(abs(xDist) < abs(m_size.x / 2.0f + ent->getSize().x / 2.0f)) {
-                if(abs(yDist) < abs(m_size.y / 2.0f + ent->getSize().y / 2.0f)) {
-
-                    float depth = xDist - (m_size.x / 2.0f + ent->getSize().x / 2.0f);
-                    float force = (depth / 2.0f) * (depth / 2.0f) / ((m_size.x / 2.0f + ent->getSize().x / 2.0f) * 512.0f);
+					float depth = xDist - (m_size.x / 2.0f + ent->getSize().x / 2.0f);
+					float force = (depth / 2.0f) * (depth / 2.0f) / ((m_size.x / 2.0f + ent->getSize().x / 2.0f) * 512.0f);
 
 
-                    m_position.x -= force;
-                    ent->setPosition(glm::vec2(ent->getPosition().x + force, ent->getPosition().y));
-                    continue;
-                }
-            }
-        }
-        break;
-    }
+					m_position.x -= force;
+					ent->setPosition(glm::vec2(ent->getPosition().x + force, ent->getPosition().y));
+					continue;
+				}
+			}
+		} else if(entities[i]->getType() == EntityTypes::ITEM) {
+			EntityItem* ent = dynamic_cast<EntityItem*>(entities[i]);
 
-    /// Tile collision
-    {
-        /// Many thanks to Ben Arnold. He taught me almost everything I know about programming through his Youtube channel, "Makinggameswithben"
-        /// This is just a small piece of code that handles and reacts to dynamic rectangle and tile collisions
-        std::vector<glm::vec2> collideTilePositions;
-        std::vector<glm::vec2> groundTilePositions;
+			float xDist = std::abs(ent->getPosition().x - m_position.x);
+			float yDist = std::abs(ent->getPosition().y - m_position.y);
+			float dist = std::sqrt(xDist * xDist + yDist * yDist);
 
-        float x = m_position.x, y = m_position.y, width = m_size.x, height = m_size.y;
+			if(dist <= 3.0f) {
+				//m_inventory->addItem(ent->getItem());
+				///world->removeEntity(i); /// TODO: Implement this
+			}
+			continue;
+		}
+		break;
+	}
 
-        glm::vec2 posBL(x, y);
-        glm::vec2 posBR(x + width, y);
-        glm::vec2 posTL(x, y + height);
-        glm::vec2 posTR(x + width, y + height);
+	for(int i = entityIndex - 1; i >= 0; i--) { /// To the left
+		if(entities[i]->getType() == EntityTypes::NPC) {
+			EntityNPC* ent = dynamic_cast<EntityNPC*>(entities[i]);
 
-        const float testVar = 1.0f/16.0f;
+			float xDist = (m_position.x + m_size.x / 2.0f) - (ent->getPosition().x + ent->getSize().x / 2.0f);
+			float yDist = (m_position.y + m_size.y / 2.0f) - (ent->getPosition().y + ent->getSize().y / 2.0f);
+			if(abs(xDist) < abs(m_size.x / 2.0f + ent->getSize().x / 2.0f)) {
+				if(abs(yDist) < abs(m_size.y / 2.0f + ent->getSize().y / 2.0f)) {
 
-        // Check for ground/ceiling
-
-        // Bottom right corner
-        checkTilePosition(world, groundTilePositions,
-                          posBR.x - testVar,
-                          posBR.y);
-
-
-        // Bottom left corner
-        checkTilePosition(world, groundTilePositions,
-                          posBL.x + testVar,
-                          posBL.y);
+					float depth = xDist - (m_size.x / 2.0f + ent->getSize().x / 2.0f);
+					float force = (depth / 2.0f) * (depth / 2.0f) / ((m_size.x / 2.0f + ent->getSize().x / 2.0f) * 512.0f);
 
 
-        // Top right corner
-        checkTilePosition(world, groundTilePositions,
-                          posTR.x - testVar,
-                          posTR.y);
+					m_position.x -= force;
+					ent->setPosition(glm::vec2(ent->getPosition().x + force, ent->getPosition().y));
+					continue;
+				}
+			}
+		}
+		break;
+	}
+
+	/// Tile collision
+	{
+		/// Many thanks to Ben Arnold. He taught me almost everything I know about programming through his Youtube channel, "Makinggameswithben"
+		/// This is just a small piece of code that handles and reacts to dynamic rectangle and tile collisions
+		std::vector<glm::vec2> collideTilePositions;
+		std::vector<glm::vec2> groundTilePositions;
+
+		float x = m_position.x, y = m_position.y, width = m_size.x, height = m_size.y;
+
+		glm::vec2 posBL(x, y);
+		glm::vec2 posBR(x + width, y);
+		glm::vec2 posTL(x, y + height);
+		glm::vec2 posTR(x + width, y + height);
+
+		const float testVar = 1.0f / 16.0f;
+
+		// Check for ground/ceiling
+
+		// Bottom right corner
+		checkTilePosition(world, groundTilePositions,
+		                  posBR.x - testVar,
+		                  posBR.y);
 
 
-        // Top left corner
-        checkTilePosition(world, groundTilePositions,
-                          posTL.x + testVar,
-                          posTL.y);
-
-        // Top/Bottom sides
-        for(float yMod = 0; yMod < height; yMod += height) {
-            for(float xMod = 0; xMod < width - (2*testVar); xMod += 1.0f) {
-                checkTilePosition(world, groundTilePositions,
-                                  posBL.x + xMod + testVar,
-                                  posBL.y + yMod);
-            }
-        }
+		// Bottom left corner
+		checkTilePosition(world, groundTilePositions,
+		                  posBL.x + testVar,
+		                  posBL.y);
 
 
+		// Top right corner
+		checkTilePosition(world, groundTilePositions,
+		                  posTR.x - testVar,
+		                  posTR.y);
 
-        // Check the sides (not ground)
-        checkTilePosition(world, collideTilePositions,
-                          posBR.x,
-                          posBR.y + testVar);
 
-        checkTilePosition(world, collideTilePositions,
-                          posBL.x,
-                          posBL.y + testVar);
+		// Top left corner
+		checkTilePosition(world, groundTilePositions,
+		                  posTL.x + testVar,
+		                  posTL.y);
 
-        checkTilePosition(world, collideTilePositions,
-                          posTL.x,
-                          posTL.y - testVar);
+		// Top/Bottom sides
+		for(float yMod = 0; yMod < height; yMod += height) {
+			for(float xMod = 0; xMod < width - (2 * testVar); xMod += 1.0f) {
+				checkTilePosition(world, groundTilePositions,
+				                  posBL.x + xMod + testVar,
+				                  posBL.y + yMod);
+			}
+		}
 
-        checkTilePosition(world, collideTilePositions,
-                          posTR.x,
-                          posTR.y - testVar);
 
-        // Sides
-        for(float xMod = 0; xMod <= width; xMod += width) {
-            for(float yMod = 0; yMod < height - (2*testVar); yMod += 1.0f) {
-                checkTilePosition(world, collideTilePositions,
-                                  posBL.x + xMod,
-                                  posBL.y + yMod + testVar);
-            }
-        }
 
-        /// Collision prediction time!
+		// Check the sides (not ground)
+		checkTilePosition(world, collideTilePositions,
+		                  posBR.x,
+		                  posBR.y + testVar);
 
-        float increment = 0.1f;
-        int signX = (m_velocity.x > 0.0f) ? 1 : -1;
-        int signY = (m_velocity.y > 0.0f) ? 1 : -1;
+		checkTilePosition(world, collideTilePositions,
+		                  posBL.x,
+		                  posBL.y + testVar);
 
-        std::vector<glm::vec2> predictiveTiles;
+		checkTilePosition(world, collideTilePositions,
+		                  posTL.x,
+		                  posTL.y - testVar);
 
-        for(int i = 0; i < std::abs(m_velocity.x) / (increment * width) + increment; i++) {
-            for(int j = 0; j < std::abs(m_velocity.y) / (increment * height) + increment; j++) {
-                glm::vec2 p_posBL(x+(i*increment*width)*signX, y+(j*increment*height)*signY);
-                glm::vec2 p_posBR(x+(i*increment*width)*signX + width, y+(j*increment*height)*signY);
-                glm::vec2 p_posTL(x+(i*increment*width)*signX, y+(j*increment*height)*signY + height);
-                glm::vec2 p_posTR(x+(i*increment*width)*signX + width, y+(j*increment*height)*signY + height);
+		checkTilePosition(world, collideTilePositions,
+		                  posTR.x,
+		                  posTR.y - testVar);
 
-                checkTilePosition(world, predictiveTiles,
-                                  p_posBR.x,
-                                  p_posBR.y);
+		// Sides
+		for(float xMod = 0; xMod <= width; xMod += width) {
+			for(float yMod = 0; yMod < height - (2 * testVar); yMod += 1.0f) {
+				checkTilePosition(world, collideTilePositions,
+				                  posBL.x + xMod,
+				                  posBL.y + yMod + testVar);
+			}
+		}
 
-                checkTilePosition(world, predictiveTiles,
-                                  p_posBL.x,
-                                  p_posBL.y);
+		/// Collision prediction time!
 
-                checkTilePosition(world, predictiveTiles,
-                                  p_posTL.x,
-                                  p_posTL.y);
+		float increment = 0.1f;
+		int signX = (m_velocity.x > 0.0f) ? 1 : -1;
+		int signY = (m_velocity.y > 0.0f) ? 1 : -1;
 
-                checkTilePosition(world, predictiveTiles,
-                                  p_posTR.x,
-                                  p_posTR.y);
-                }
-        }
+		std::vector<glm::vec2> predictiveTiles;
 
-        for (unsigned int i = 0; i < collideTilePositions.size(); i++) {
-            collideWithTile(collideTilePositions[i], false);
-        }
+		for(int i = 0; i < std::abs(m_velocity.x) / (increment * width) + increment; i++) {
+			for(int j = 0; j < std::abs(m_velocity.y) / (increment * height) + increment; j++) {
+				glm::vec2 p_posBL(x + (i * increment * width)*signX, y + (j * increment * height)*signY);
+				glm::vec2 p_posBR(x + (i * increment * width)*signX + width, y + (j * increment * height)*signY);
+				glm::vec2 p_posTL(x + (i * increment * width)*signX, y + (j * increment * height)*signY + height);
+				glm::vec2 p_posTR(x + (i * increment * width)*signX + width, y + (j * increment * height)*signY + height);
 
-        if(predictiveTiles.size() > 0) collideWithTile(predictiveTiles[0], false);
+				checkTilePosition(world, predictiveTiles,
+				                  p_posBR.x,
+				                  p_posBR.y);
 
-        for (unsigned int i = 0; i < groundTilePositions.size(); i++) {
-            collideWithTile(groundTilePositions[i], true);
-        }
-    }
+				checkTilePosition(world, predictiveTiles,
+				                  p_posBL.x,
+				                  p_posBL.y);
+
+				checkTilePosition(world, predictiveTiles,
+				                  p_posTL.x,
+				                  p_posTL.y);
+
+				checkTilePosition(world, predictiveTiles,
+				                  p_posTR.x,
+				                  p_posTR.y);
+			}
+		}
+
+		for(unsigned int i = 0; i < collideTilePositions.size(); i++) {
+			collideWithTile(collideTilePositions[i], false);
+		}
+
+		if(predictiveTiles.size() > 0) collideWithTile(predictiveTiles[0], false);
+
+		for(unsigned int i = 0; i < groundTilePositions.size(); i++) {
+			collideWithTile(groundTilePositions[i], true);
+		}
+	}
 }
 
 void EntityNPC::onUpdate(World* world, float timeStep, unsigned int selfIndex) {
-    if(m_takesFallDamage) {
-        if(m_velocity.y < 0.0f) {
-            m_fallenDistance += -m_velocity.y * timeStep;
-        } else {
-            if(m_fallenDistance > 4.0f) {
-                m_health -= std::pow(m_fallenDistance - 4.0f, 1.5f) * 0.08f;
-            }
-            m_fallenDistance = 0.0f;
-        }
-    }
+	if(m_takesFallDamage) {
+		if(m_velocity.y < 0.0f) {
+			m_fallenDistance += -m_velocity.y * timeStep;
+		} else {
+			if(m_fallenDistance > 4.0f) {
+				m_health -= std::pow(m_fallenDistance - 4.0f, 1.5f) * 0.08f;
+			}
+			m_fallenDistance = 0.0f;
+		}
+	}
 
-    updateMovement(world);
-    updateLightLevel(world);
+	updateMovement(world);
+	updateLightLevel(world);
 
-    setAITarget(world, selfIndex);
+	setAITarget(world, selfIndex);
 
-    if(!m_inventory) {
-        m_inventory = new Inventory();
-    }
-    m_inventory->update();
+	if(!m_inventory) {
+		m_inventory = new Inventory();
+	}
+	m_inventory->update();
 
-    if(m_health <= 0.0f) {
-        die(world);
-    }
+	if(m_health <= 0.0f) {
+		die(world);
+	}
 
-    /*if(m_velocity.x > MAX_SPEED * m_inventory->getSpeedMultiplier() * std::pow(m_stamina, 0.4f)) {
-        m_velocity.x = MAX_SPEED * m_inventory->getSpeedMultiplier() * std::pow(m_stamina, 0.4f);
-    } else if(m_velocity.x < -MAX_SPEED * m_inventory->getSpeedMultiplier() * std::pow(m_stamina, 0.4f)) {
-        m_velocity.x = -MAX_SPEED * m_inventory->getSpeedMultiplier() * std::pow(m_stamina, 0.4f);
-    }*/
+	/*if(m_velocity.x > MAX_SPEED * m_inventory->getSpeedMultiplier() * std::pow(m_stamina, 0.4f)) {
+	    m_velocity.x = MAX_SPEED * m_inventory->getSpeedMultiplier() * std::pow(m_stamina, 0.4f);
+	} else if(m_velocity.x < -MAX_SPEED * m_inventory->getSpeedMultiplier() * std::pow(m_stamina, 0.4f)) {
+	    m_velocity.x = -MAX_SPEED * m_inventory->getSpeedMultiplier() * std::pow(m_stamina, 0.4f);
+	}*/
 }
 
 SaveDataTypes::EntityNPCData EntityNPC::getNPCSaveData() {
-    SaveDataTypes::EntityNPCData ret;
-    ret.id = m_id;
-    ret.velocity = m_velocity;
-    ret.position = m_position;
-    ret.layer = m_layer;
-    ret.md = m_metaData;
+	SaveDataTypes::EntityNPCData ret;
+	ret.id = m_id;
+	ret.velocity = m_velocity;
+	ret.position = m_position;
+	ret.layer = m_layer;
+	ret.md = m_metaData;
 
-    ret.health = m_health;
-    ret.inventory = m_inventory->getInventorySaveData();
+	ret.health = m_health;
+	ret.inventory = m_inventory->getInventorySaveData();
 
-    return ret;
+	return ret;
 }
 
 void EntityNPC::giveItem(Item* item) {
-    if(m_inventory) {
-        m_inventory->addItem(item);
-    } else {
-        Logger::getInstance()->log("ERROR: Entity inventory not initialized, could not give item", true);
-    }
+	if(m_inventory) {
+		m_inventory->addItem(item);
+	} else {
+		Logger::getInstance()->log("ERROR: Entity inventory not initialized, could not give item", true);
+	}
 }
 
 Inventory* EntityNPC::getInventory() {
-    return m_inventory;
+	return m_inventory;
 }
 
 void EntityNPC::die(World* world) {
-    if(m_canDie) {
-       /* if(m_lootTableStart.getRarity() != -1.0f) {
-            for(int i = 0; i < m_lootRolls; i++) {
-                // (unsigned int)m_lootTableStart.roll()
-                //world->addEntity(item);
-            }
-        }*/ /// TODO: Re-enable Drops
-        m_isDead = true;
-    } else {
-        m_isDead = false; // Just in case
-    }
+	if(m_canDie) {
+		/* if(m_lootTableStart.getRarity() != -1.0f) {
+		     for(int i = 0; i < m_lootRolls; i++) {
+		         // (unsigned int)m_lootTableStart.roll()
+		         //world->addEntity(item);
+		     }
+		 }*/ /// TODO: Re-enable Drops
+		m_isDead = true;
+	} else {
+		m_isDead = false; // Just in case
+	}
 }
 
 void EntityNPC::attack() {
-    if(m_attackScript != -1) {
-        ScriptingModule::ScriptQueue::activateScript(m_attackScript, generateLuaValues());
-    }
+	if(m_attackScript != -1) {
+		ScriptingModule::ScriptQueue::activateScript(m_attackScript, generateLuaValues());
+	}
 }
 
 void EntityNPC::updateMovement(World* world) {
-    if(!m_flying) { EntityFunctions::WalkingAI(m_controls, m_targets, m_curTarget, m_velocity, m_size, glm::vec3(m_position.x, m_position.y, m_layer)); }
+	if(!m_flying) {
+		EntityFunctions::WalkingAI(m_controls, m_targets, m_curTarget, m_velocity, m_size, glm::vec3(m_position.x, m_position.y, m_layer));
+	}
 
-    if(m_controls[0]) { // UP
-        if(m_onGround) {
-            m_velocity.y = m_jumpHeight;
-            m_onGround = false;
-        }
-    }
-    if(m_controls[1]) { // DOWN
-        /// TODO: implement crouching
-    }
-    if(m_controls[2] && !m_controls[3]) { // LEFT
-        if(std::abs(m_velocity.x) < MAX_SPEED) {
-            m_velocity.x -= m_runSpeed;
-        }
-    } else if(m_controls[3] && !m_controls[2]) { // RIGHT
-        if(std::abs(m_velocity.x) < MAX_SPEED) {
-            m_velocity.x += m_runSpeed;
-        }
-    } else {
-        m_velocity.x /= 5.0f;
-    }
-    if(m_controls[4]) { // Backwards (layer++)
-        moveDownLayer(world);
-    } else if(m_controls[5]) { // Forwards (layer--)
-        moveUpLayer(world);
-    }
+	if(m_controls[0]) { // UP
+		if(m_onGround) {
+			m_velocity.y = m_jumpHeight;
+			m_onGround = false;
+		}
+	}
+	if(m_controls[1]) { // DOWN
+		/// TODO: implement crouching
+	}
+	if(m_controls[2] && !m_controls[3]) { // LEFT
+		if(std::abs(m_velocity.x) < MAX_SPEED) {
+			m_velocity.x -= m_runSpeed;
+		}
+	} else if(m_controls[3] && !m_controls[2]) { // RIGHT
+		if(std::abs(m_velocity.x) < MAX_SPEED) {
+			m_velocity.x += m_runSpeed;
+		}
+	} else {
+		m_velocity.x /= 5.0f;
+	}
+	if(m_controls[4]) { // Backwards (layer++)
+		moveDownLayer(world);
+	} else if(m_controls[5]) { // Forwards (layer--)
+		moveUpLayer(world);
+	}
 
-    if(m_velocity.x > MAX_SPEED) {
-        m_velocity.x = MAX_SPEED;
-    } else if(m_velocity.x < -MAX_SPEED) {
-        m_velocity.x = -MAX_SPEED;
-    }
+	if(m_velocity.x > MAX_SPEED) {
+		m_velocity.x = MAX_SPEED;
+	} else if(m_velocity.x < -MAX_SPEED) {
+		m_velocity.x = -MAX_SPEED;
+	}
 
-    for(int i = 0; i < 6; i++) {
-        m_controls[i] = false;
-    }
+	for(int i = 0; i < 6; i++) {
+		m_controls[i] = false;
+	}
 }
 
 void EntityNPC::pathfindToTarget(World* world, glm::vec3 target, bool goLeft) {
-    /**
-        1. Set outer bounds (how far away the algorithm will expand before deciding there's no path)
-        2. 'Link' all accessible tiles as "NavTile"s, effectively creating a system of nodes
-        3. Calculate costs of each path to target coords
-        4. Use the shortest route, adding each NavTile's coords to AI targets
-        5. Return!
-    */
+	/**
+	    1. Set outer bounds (how far away the algorithm will expand before deciding there's no path)
+	    2. 'Link' all accessible tiles as "NavTile"s, effectively creating a system of nodes
+	    3. Calculate costs of each path to target coords
+	    4. Use the shortest route, adding each NavTile's coords to AI targets
+	    5. Return!
+	*/
 
-    m_targets.clear();
+	m_targets.clear();
 
-    /// TODO: Implement jumping over gaps!
+	/// TODO: Implement jumping over gaps!
 
-    // 1. Set outer bounds
-    int outerBoundXMin = m_position.x < target.x ? m_position.x : target.x; // The lesser of the two
-    int outerBoundXMax = m_position.x > target.x ? m_position.x : target.x; // The greater of the two
-
-
-    // 2. Link accessible tiles from start
-    NavTile* start = nullptr;
-
-    int jumpHeight = std::floor((60.0f*m_jumpHeight*m_jumpHeight) / 2.45f + 0.1f);
-
-    start = expandTile(world, glm::vec3((int)m_position.x, (int)m_position.y, m_layer), jumpHeight, m_size, nullptr, target);
-
-    // Check to make sure if there's a path:
-    if(!start) {
-        /// TODO: Implement wandering.
-        return;
-    }
+	// 1. Set outer bounds
+	int outerBoundXMin = m_position.x < target.x ? m_position.x : target.x; // The lesser of the two
+	int outerBoundXMax = m_position.x > target.x ? m_position.x : target.x; // The greater of the two
 
 
-    // 4. Use shortest route, adding each NavTile coords to targets
+	// 2. Link accessible tiles from start
+	NavTile* start = nullptr;
 
-    /**
-        Construct 'frontier' (just the child tiles of start)
+	int jumpHeight = std::floor((60.0f * m_jumpHeight * m_jumpHeight) / 2.45f + 0.1f);
 
-        Repeat until a path is found (Just one):
-            Choose smallest h value on frontier, remove from frontier and add children to frontier (expand node)
-            if tile with smallest h value is target, go backwards. Start with the tile with smallest h, and add each parent to targets.
+	start = expandTile(world, glm::vec3((int)m_position.x, (int)m_position.y, m_layer), jumpHeight, m_size, nullptr, target);
 
-    */
-    std::vector<NavTile*> frontier;
-    frontier.push_back(start);
-
-    bool pathFound = false;
-    NavTile* targetNavTile = nullptr;
-
-    // Expand start tile, add em to frontier, then expand nextTile with lowest h, add em to frontier, repeat.
+	// Check to make sure if there's a path:
+	if(!start) {
+		/// TODO: Implement wandering.
+		return;
+	}
 
 
-    unsigned int searchIteration = 0;
-    unsigned int highestH = 0;
+	// 4. Use shortest route, adding each NavTile coords to targets
 
-    while(!pathFound && highestH < 100 && searchIteration < 50 && frontier.size() > 0) {
+	/**
+	    Construct 'frontier' (just the child tiles of start)
 
-        // Choose lowest h value
-        int lowestIndex = 0;
-        for(unsigned int i = 0; i < frontier.size(); i++) {
-            if(frontier[lowestIndex]->h > frontier[i]->h) lowestIndex = i;
-            if(frontier[i]->h > highestH) highestH = frontier[i]->h;
-        }
+	    Repeat until a path is found (Just one):
+	        Choose smallest h value on frontier, remove from frontier and add children to frontier (expand node)
+	        if tile with smallest h value is target, go backwards. Start with the tile with smallest h, and add each parent to targets.
 
-        if(frontier[lowestIndex]->pos == target) {
-            // We found a path!
-            targetNavTile = frontier[lowestIndex];
-            pathFound = true;
-        }
+	*/
+	std::vector<NavTile*> frontier;
+	frontier.push_back(start);
 
-        // Expand and remove (if there are no nextNodes, it will simply be removed)
-        for(unsigned int i = 0; i < frontier[lowestIndex]->nextNodes.size(); i++) {
-            addToFrontier(expandTile(world, frontier[lowestIndex]->nextNodes[i], jumpHeight, m_size, frontier[lowestIndex], target), frontier);
-        }
-        for(unsigned int i = lowestIndex; i < frontier.size()-1; i++) {
-            frontier[i] = frontier[i+1];
-        }
-        frontier.pop_back();
+	bool pathFound = false;
+	NavTile* targetNavTile = nullptr;
 
-        searchIteration++;
-    }
+	// Expand start tile, add em to frontier, then expand nextTile with lowest h, add em to frontier, repeat.
 
 
-    if(pathFound) {
-        std::vector<glm::vec3> targetsReversed; // Targets to go to, reversed :)
+	unsigned int searchIteration = 0;
+	unsigned int highestH = 0;
 
-        while(targetNavTile) {
-            glm::vec3 p(targetNavTile->pos);
-            targetsReversed.push_back(p);
-            targetNavTile = targetNavTile->parent;
-        }
+	while(!pathFound && highestH < 100 && searchIteration < 50 && frontier.size() > 0) {
 
-        for(unsigned int i = 1; i < targetsReversed.size(); i++) { // We don't need the very last one, that's just on top of the entity
-            m_targets.push_back(targetsReversed[targetsReversed.size()-1 - i]);
-        }
-    }
+		// Choose lowest h value
+		int lowestIndex = 0;
+		for(unsigned int i = 0; i < frontier.size(); i++) {
+			if(frontier[lowestIndex]->h > frontier[i]->h) lowestIndex = i;
+			if(frontier[i]->h > highestH) highestH = frontier[i]->h;
+		}
 
-    return;
+		if(frontier[lowestIndex]->pos == target) {
+			// We found a path!
+			targetNavTile = frontier[lowestIndex];
+			pathFound = true;
+		}
+
+		// Expand and remove (if there are no nextNodes, it will simply be removed)
+		for(unsigned int i = 0; i < frontier[lowestIndex]->nextNodes.size(); i++) {
+			addToFrontier(expandTile(world, frontier[lowestIndex]->nextNodes[i], jumpHeight, m_size, frontier[lowestIndex], target), frontier);
+		}
+		for(unsigned int i = lowestIndex; i < frontier.size() - 1; i++) {
+			frontier[i] = frontier[i + 1];
+		}
+		frontier.pop_back();
+
+		searchIteration++;
+	}
+
+
+	if(pathFound) {
+		std::vector<glm::vec3> targetsReversed; // Targets to go to, reversed :)
+
+		while(targetNavTile) {
+			glm::vec3 p(targetNavTile->pos);
+			targetsReversed.push_back(p);
+			targetNavTile = targetNavTile->parent;
+		}
+
+		for(unsigned int i = 1; i < targetsReversed.size(); i++) { // We don't need the very last one, that's just on top of the entity
+			m_targets.push_back(targetsReversed[targetsReversed.size() - 1 - i]);
+		}
+	}
+
+	return;
 }
 
 bool EntityNPC::fitsOnTile(World* world, Tile* t, bool needsFloor) {
-    bool fits = true;
-    int start = needsFloor ? -1 : 0;
+	bool fits = true;
+	int start = needsFloor ? -1 : 0;
 
-    for(int y = start; fits && y < m_size.y; y++) {
-        for(int x = 0; fits && x < m_size.x; x++) {
-            Tile* tmp = world->getTile(t->getPosition().x + x, t->getPosition().y + y, t->getLayer());
-            if(tmp) {
-                if(y >= 0) {
-                    if(tmp->isSolid()) fits = false;
-                } else {
-                    if(!tmp->isSolid()) fits = false;
-                }
-            }
-        }
-    }
-    return fits;
+	for(int y = start; fits && y < m_size.y; y++) {
+		for(int x = 0; fits && x < m_size.x; x++) {
+			Tile* tmp = world->getTile(t->getPosition().x + x, t->getPosition().y + y, t->getLayer());
+			if(tmp) {
+				if(y >= 0) {
+					if(tmp->isSolid()) fits = false;
+				} else {
+					if(!tmp->isSolid()) fits = false;
+				}
+			}
+		}
+	}
+	return fits;
 }
 
 NavTile* EntityNPC::expandTile(World* world, glm::vec3 pos, int jumpHeight, glm::vec2 size, NavTile* parent, glm::vec3 target) {
 
-    NavTile* ret = new NavTile;
-    ret->parent = parent;
-    ret->pos = pos;
+	NavTile* ret = new NavTile;
+	ret->parent = parent;
+	ret->pos = pos;
 
-    // Check Left
-    Tile* left = world->getTile(pos.x-1, pos.y, pos.z);
-    if(fitsOnTile(world, left, true)) {
-        glm::vec3 p(left->getPosition().x, left->getPosition().y, left->getLayer());
-        if(!parent || p != parent->pos) {
-            ret->nextNodes.push_back(p);
-        }
-    } else {
-        for(int i = 0; i < jumpHeight; i++) { /// TODO: Implement some sort of 'safe' fall distance
-            Tile* leftDown = world->getTile(pos.x-1, pos.y-i, pos.z);// Check tiles below so that we can fall distances.
-            if(leftDown) {
-                if(fitsOnTile(world, leftDown)) {
-                    glm::vec3 p(leftDown->getPosition().x, leftDown->getPosition().y, leftDown->getLayer());
-                    if(!parent || p != parent->pos) {
-                        ret->nextNodes.push_back(p);
-                    }
-                }
-            }
-        }
-    }
+	// Check Left
+	Tile* left = world->getTile(pos.x - 1, pos.y, pos.z);
+	if(fitsOnTile(world, left, true)) {
+		glm::vec3 p(left->getPosition().x, left->getPosition().y, left->getLayer());
+		if(!parent || p != parent->pos) {
+			ret->nextNodes.push_back(p);
+		}
+	} else {
+		for(int i = 0; i < jumpHeight; i++) { /// TODO: Implement some sort of 'safe' fall distance
+			Tile* leftDown = world->getTile(pos.x - 1, pos.y - i, pos.z); // Check tiles below so that we can fall distances.
+			if(leftDown) {
+				if(fitsOnTile(world, leftDown)) {
+					glm::vec3 p(leftDown->getPosition().x, leftDown->getPosition().y, leftDown->getLayer());
+					if(!parent || p != parent->pos) {
+						ret->nextNodes.push_back(p);
+					}
+				}
+			}
+		}
+	}
 
-    Tile* right = world->getTile(pos.x+1, pos.y, pos.z);
-    if(fitsOnTile(world, right, true)) {
-        glm::vec3 p(right->getPosition().x, right->getPosition().y, right->getLayer());
-        if(!parent || p != parent->pos) {
-            ret->nextNodes.push_back(p);
-        }
-    } else {
-        for(int i = 0; i < jumpHeight; i++) { /// TODO: Implement some sort of 'safe' fall distance
-            Tile* rightDown = world->getTile(pos.x+1, pos.y-i, pos.z);// Check tiles below so that we can fall distances.
-            if(rightDown) {
-                if(fitsOnTile(world, rightDown)) {
-                    glm::vec3 p(rightDown->getPosition().x, rightDown->getPosition().y, rightDown->getLayer());
-                    if(!parent || p != parent->pos) {
-                        ret->nextNodes.push_back(p);
-                    }
-                }
-            }
-        }
-    }
-
-
-    if(pos.z < WORLD_DEPTH-1) {
-        // Check Behind
-        Tile* back = world->getTile(pos.x, pos.y, pos.z+1);
-        if(fitsOnTile(world, back, true)) {
-            glm::vec3 p(back->getPosition().x, back->getPosition().y, back->getLayer());
-            if(!parent || p != parent->pos) {
-                ret->nextNodes.push_back(p);
-            }
-        } else {
-            for(int i = 0; i < jumpHeight; i++) { /// TODO: Implement some sort of 'safe' fall distance
-                Tile* backDown = world->getTile(pos.x, pos.y-i, pos.z+1);// Check tiles below so that we can fall distances.
-                if(backDown) {
-                    if(fitsOnTile(world, backDown)) {
-                        glm::vec3 p(backDown->getPosition().x, backDown->getPosition().y, backDown->getLayer());
-                        if(!parent || p != parent->pos) {
-                            ret->nextNodes.push_back(p);
-                        }
-                    }
-                }
-            }
-        }
-    }
+	Tile* right = world->getTile(pos.x + 1, pos.y, pos.z);
+	if(fitsOnTile(world, right, true)) {
+		glm::vec3 p(right->getPosition().x, right->getPosition().y, right->getLayer());
+		if(!parent || p != parent->pos) {
+			ret->nextNodes.push_back(p);
+		}
+	} else {
+		for(int i = 0; i < jumpHeight; i++) { /// TODO: Implement some sort of 'safe' fall distance
+			Tile* rightDown = world->getTile(pos.x + 1, pos.y - i, pos.z); // Check tiles below so that we can fall distances.
+			if(rightDown) {
+				if(fitsOnTile(world, rightDown)) {
+					glm::vec3 p(rightDown->getPosition().x, rightDown->getPosition().y, rightDown->getLayer());
+					if(!parent || p != parent->pos) {
+						ret->nextNodes.push_back(p);
+					}
+				}
+			}
+		}
+	}
 
 
-    if(pos.z > 0) {
-        // Check In Front
-        Tile* front = world->getTile(pos.x, pos.y, pos.z-1);
-        if(fitsOnTile(world, front, true)) {
-            glm::vec3 p(front->getPosition().x, front->getPosition().y, front->getLayer());
-            if(!parent || p != parent->pos) {
-                ret->nextNodes.push_back(p);
-            }
-        } else {
-            for(int i = 0; i < jumpHeight; i++) { /// TODO: Implement some sort of 'safe' fall distance
-                Tile* frontDown = world->getTile(pos.x, pos.y-i, pos.z-1);// Check tiles below so that we can fall distances.
-                if(frontDown) {
-                    if(fitsOnTile(world, frontDown)) {
-                        glm::vec3 p(frontDown->getPosition().x, frontDown->getPosition().y, frontDown->getLayer());
-                        if(!parent || p != parent->pos) {
-                            ret->nextNodes.push_back(p);
-                        }
-                    }
-                }
-            }
-        }
-    }
+	if(pos.z < WORLD_DEPTH - 1) {
+		// Check Behind
+		Tile* back = world->getTile(pos.x, pos.y, pos.z + 1);
+		if(fitsOnTile(world, back, true)) {
+			glm::vec3 p(back->getPosition().x, back->getPosition().y, back->getLayer());
+			if(!parent || p != parent->pos) {
+				ret->nextNodes.push_back(p);
+			}
+		} else {
+			for(int i = 0; i < jumpHeight; i++) { /// TODO: Implement some sort of 'safe' fall distance
+				Tile* backDown = world->getTile(pos.x, pos.y - i, pos.z + 1); // Check tiles below so that we can fall distances.
+				if(backDown) {
+					if(fitsOnTile(world, backDown)) {
+						glm::vec3 p(backDown->getPosition().x, backDown->getPosition().y, backDown->getLayer());
+						if(!parent || p != parent->pos) {
+							ret->nextNodes.push_back(p);
+						}
+					}
+				}
+			}
+		}
+	}
 
-    // Check up!
-    for(int i = 0; i < jumpHeight; i++) {
-        Tile* up = world->getTile(pos.x, pos.y+i, pos.z);
-        if(up) {
-            if(fitsOnTile(world, up, false)) {
-                glm::vec3 p(up->getPosition().x, up->getPosition().y, up->getLayer());
-                if(!parent || p != parent->pos) {
-                    ret->nextNodes.push_back(p);
-                }
-            } else {
-                break; // Something is blocking our jump
-            }
-        }
-    }
 
-    calculateCost(world, ret, target);
+	if(pos.z > 0) {
+		// Check In Front
+		Tile* front = world->getTile(pos.x, pos.y, pos.z - 1);
+		if(fitsOnTile(world, front, true)) {
+			glm::vec3 p(front->getPosition().x, front->getPosition().y, front->getLayer());
+			if(!parent || p != parent->pos) {
+				ret->nextNodes.push_back(p);
+			}
+		} else {
+			for(int i = 0; i < jumpHeight; i++) { /// TODO: Implement some sort of 'safe' fall distance
+				Tile* frontDown = world->getTile(pos.x, pos.y - i, pos.z - 1); // Check tiles below so that we can fall distances.
+				if(frontDown) {
+					if(fitsOnTile(world, frontDown)) {
+						glm::vec3 p(frontDown->getPosition().x, frontDown->getPosition().y, frontDown->getLayer());
+						if(!parent || p != parent->pos) {
+							ret->nextNodes.push_back(p);
+						}
+					}
+				}
+			}
+		}
+	}
 
-    return ret;
+	// Check up!
+	for(int i = 0; i < jumpHeight; i++) {
+		Tile* up = world->getTile(pos.x, pos.y + i, pos.z);
+		if(up) {
+			if(fitsOnTile(world, up, false)) {
+				glm::vec3 p(up->getPosition().x, up->getPosition().y, up->getLayer());
+				if(!parent || p != parent->pos) {
+					ret->nextNodes.push_back(p);
+				}
+			} else {
+				break; // Something is blocking our jump
+			}
+		}
+	}
+
+	calculateCost(world, ret, target);
+
+	return ret;
 }
 
 void EntityNPC::calculateCost(World* world, NavTile* tile, glm::vec3 target) {
-    tile->h = world->getDistance(glm::vec2(tile->pos.x, tile->pos.y), glm::vec2(target.x, target.y)) + std::abs(tile->pos.z - target.z); /// TODO: Implement crossover
-    if(tile->parent) tile->h += tile->parent->h/2.0f; // The distance to the entity is more important than the path. Plus, this improves performance.
+	tile->h = world->getDistance(glm::vec2(tile->pos.x, tile->pos.y), glm::vec2(target.x, target.y)) + std::abs(tile->pos.z - target.z); /// TODO: Implement crossover
+	if(tile->parent) tile->h += tile->parent->h / 2.0f; // The distance to the entity is more important than the path. Plus, this improves performance.
 }
 
 void EntityNPC::addToFrontier(NavTile* tile, std::vector<NavTile*>& frontier) {
-    bool clone = false;
+	bool clone = false;
 
-    for(unsigned int i = 0; i < frontier.size(); i++) {
-        if(frontier[i]->pos == tile->pos) {
-            if(frontier[i]->h > tile->h) { // Tile is a better route to get to frontier[i]
-                frontier[i] = tile;
-            }
-            clone = true;
-        }
-    }
+	for(unsigned int i = 0; i < frontier.size(); i++) {
+		if(frontier[i]->pos == tile->pos) {
+			if(frontier[i]->h > tile->h) { // Tile is a better route to get to frontier[i]
+				frontier[i] = tile;
+			}
+			clone = true;
+		}
+	}
 
-    if(clone) return;
-    frontier.push_back(tile);
+	if(clone) return;
+	frontier.push_back(tile);
 }
 
 void EntityNPC::setAITarget(World* world, unsigned int selfIndex) {
-    unsigned int entCount = world->getEntities().size();
+	unsigned int entCount = world->getEntities().size();
 
-    EntityNPC* targetL = nullptr;
-    EntityNPC* targetR = nullptr;
+	EntityNPC* targetL = nullptr;
+	EntityNPC* targetR = nullptr;
 
-    for(int i = (int)selfIndex-1; i > -entCount - selfIndex; i--) {
-        // This loop will run negatively, for length of world->getEntities().size() MAX. Often breaks out of loop early
-        unsigned int normalized = (i + entCount*2) % entCount; // index from 0-size
+	for(int i = (int)selfIndex - 1; i > -entCount - selfIndex; i--) {
+		// This loop will run negatively, for length of world->getEntities().size() MAX. Often breaks out of loop early
+		unsigned int normalized = (i + entCount * 2) % entCount; // index from 0-size
 
-        if(normalized == selfIndex) continue;
+		if(normalized == selfIndex) continue;
 
-        Entity* target = world->getEntities()[normalized];
-        if(target->getType() == EntityTypes::NPC) {
-            EntityNPC* targetNPC = dynamic_cast<EntityNPC*>(target);
+		Entity* target = world->getEntities()[normalized];
+		if(target->getType() == EntityTypes::NPC) {
+			EntityNPC* targetNPC = dynamic_cast<EntityNPC*>(target);
 
-            if(getFaction() > Categories::Faction::NEUTRAL &&
-               targetNPC->getFaction() <= Categories::Faction::NEUTRAL) {
-                targetL = targetNPC;
-                break;
-            }
-        }
-    }
+			if(getFaction() > Categories::Faction::NEUTRAL &&
+			        targetNPC->getFaction() <= Categories::Faction::NEUTRAL) {
+				targetL = targetNPC;
+				break;
+			}
+		}
+	}
 
-    for(int i = (int)selfIndex+1; i < entCount + selfIndex; i++) { // Runs at most once through every entity.
-        unsigned int normalized = i % entCount; // index from 0-size;
+	for(int i = (int)selfIndex + 1; i < entCount + selfIndex; i++) { // Runs at most once through every entity.
+		unsigned int normalized = i % entCount; // index from 0-size;
 
-        if(normalized == selfIndex) continue;
+		if(normalized == selfIndex) continue;
 
-        Entity* target = world->getEntities()[normalized];
-        if(target->getType() == EntityTypes::NPC) {
-            EntityNPC* targetNPC = dynamic_cast<EntityNPC*>(target);
+		Entity* target = world->getEntities()[normalized];
+		if(target->getType() == EntityTypes::NPC) {
+			EntityNPC* targetNPC = dynamic_cast<EntityNPC*>(target);
 
-            if(getFaction() > Categories::Faction::NEUTRAL &&
-               targetNPC->getFaction() <= Categories::Faction::NEUTRAL) {
-                targetR = targetNPC;
-                break;
-            }
-        }
-    }
+			if(getFaction() > Categories::Faction::NEUTRAL &&
+			        targetNPC->getFaction() <= Categories::Faction::NEUTRAL) {
+				targetR = targetNPC;
+				break;
+			}
+		}
+	}
 
-    if(targetL || targetR) {
-        float distToTargetL = targetL ? world->getDistance(m_position, targetL->getPosition()) : (unsigned int)-1;
-        float distToTargetR = targetR ? world->getDistance(m_position, targetR->getPosition()) : (unsigned int)-1;
+	if(targetL || targetR) {
+		float distToTargetL = targetL ? world->getDistance(m_position, targetL->getPosition()) : (unsigned int) - 1;
+		float distToTargetR = targetR ? world->getDistance(m_position, targetR->getPosition()) : (unsigned int) - 1;
 
-        if(distToTargetL < distToTargetR) {
-            pathfindToTarget(world, glm::vec3((int)targetL->getPosition().x, (int)targetL->getPosition().y, targetL->getLayer()), true);
-        } else {
-            pathfindToTarget(world, glm::vec3((int)targetR->getPosition().x, (int)targetR->getPosition().y, targetR->getLayer()), false);
-        }
-    }
+		if(distToTargetL < distToTargetR) {
+			pathfindToTarget(world, glm::vec3((int)targetL->getPosition().x, (int)targetL->getPosition().y, targetL->getLayer()), true);
+		} else {
+			pathfindToTarget(world, glm::vec3((int)targetR->getPosition().x, (int)targetR->getPosition().y, targetR->getLayer()), false);
+		}
+	}
 }
 
 void EntityNPC::animate(int& x, int& y, bool& flip, float time) {
-    if(m_velocity.x > m_runSpeed) {
-        x = (int)time*abs((int)m_velocity.x)+1 % m_animationFramesX;
-        y = 1;
-        m_flippedTexture = false;
-    } else if(m_velocity.x < -m_runSpeed) {
-        x = (int)time*abs((int)m_velocity.x)+1 % m_animationFramesX;
-        y = 1;
-        m_flippedTexture = true;
-    } else {
-        x = 0;
-        y = 1;
-    }
-    if(m_velocity.y > 0.0f) {
-        x = (int)time % m_animationFramesX;
-        y = 0;
-    }
+	if(m_velocity.x > m_runSpeed) {
+		x = (int)time * abs((int)m_velocity.x) + 1 % m_animationFramesX;
+		y = 1;
+		m_flippedTexture = false;
+	} else if(m_velocity.x < -m_runSpeed) {
+		x = (int)time * abs((int)m_velocity.x) + 1 % m_animationFramesX;
+		y = 1;
+		m_flippedTexture = true;
+	} else {
+		x = 0;
+		y = 1;
+	}
+	if(m_velocity.y > 0.0f) {
+		x = (int)time % m_animationFramesX;
+		y = 0;
+	}
 }

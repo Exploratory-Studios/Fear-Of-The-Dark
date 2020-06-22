@@ -7,220 +7,447 @@
 #include <rapidxml/rapidxml.hpp>
 #include <initializer_list>
 
-#include <boost/variant.hpp>
-
 namespace XMLModule {
 
-    class GenericData;
-    class TileData;
+	class GenericData;
+	class TileData;
 
-    enum class AttributeType {
-        STRING,
-        UNSIGNED_INT,
-        INT,
-        FLOAT,
-        BOOL,
-        FILEPATH_TEXTURE,
-        FILEPATH_BUMPMAP,
-        SCRIPT,
-        STRING_FACTION,
-        VECTOR_UNSIGNED_INT,
-        VEC2
-    };
+	enum class AttributeType {
+		STRING,
+		UNSIGNED_INT,
+		INT,
+		FLOAT,
+		BOOL,
+		FILEPATH_TEXTURE,
+		FILEPATH_BUMPMAP,
+		SCRIPT,
+		STRING_FACTION,
+		VECTOR_UNSIGNED_INT,
+		VEC2
+	};
 
-    struct Attribute {
-        Attribute() {}
-        Attribute(std::string nameP, AttributeType typeP) {
-            type = typeP;
-            name = nameP;
-            setDefault();
-        }
-        ~Attribute() {};
+	class GenericData; // Forward Dec.
 
-        void setDefault();
+	class AttributeBase { // Just some template acrobatics.
+		public:
+			template<class T>
+			void setData(T data);
+			template<class T>
+			T getData();
+			template<class T>
+			T* getDataPtr();
+			virtual ~AttributeBase() {}
 
-        AttributeType type;
-        std::string name;
-        boost::variant<std::string,
-                       unsigned int,
-                       int,
-                       float,
-                       bool,
-                       std::vector<unsigned int>,
-                       std::vector<int>,
-                       glm::vec2> data; // Basically just an easier union.
-    };
+			std::string name;
+			AttributeType type;
 
-    class GenericData {
-        /**
-            Responsibilities:
-             - Act as a base class, providing read and write functions
-             - Hold a map of Attributes, using their name as the key.
-             - Provide functions to initialize (for read/write) attributes (protected)
-             - Provide a function to read map elements.
-        **/
-        public:
-            GenericData(::std::vector<Attribute> attrs); // Children will use the constructor to list attributes in the map.
-            ~GenericData() {}
+		protected:
+			virtual void setDefault() = 0;
+	};
 
-            void init(::rapidxml::xml_node<>* node); // Inits all attribute values. (Read)
-            void write(::rapidxml::xml_node<>* node); // Writes to XML document
+	template<class T>
+	class Attribute : public AttributeBase {
+			friend class GenericData;
+		public:
+			Attribute() {}
+			Attribute(std::string nameP, AttributeType typeP, T* data) {
+				/**
+				 * @brief Constructs an Attribute, linking it to the member variable represented by `data`
+				 * @param nameP
+				 * @param type
+				 * @param data
+				 */
+				name = nameP;
+				type = typeP;
 
-            /*void getAttribute(::std::string name, std::string& dataPtr); // Just puts the data into the pointer
-            void getAttribute(::std::string name, unsigned int& dataPtr); // Just puts the data into the pointer
-            void getAttribute(::std::string name, int& dataPtr); // Just puts the data into the pointer
-            void getAttribute(::std::string name, float& dataPtr); // Just puts the data into the pointer
-            void getAttribute(::std::string name, bool& dataPtr); // Just puts the data into the pointer
-            void getAttribute(::std::string name, std::vector<unsigned int>& dataPtr); // Just puts the data into the pointer
-            void getAttribute(::std::string name, glm::vec2& dataPtr); // Just puts the data into the pointer*/
+				m_data = data;
+				setDefault();
+			}
+			~Attribute() {};
 
-            template<typename T>
-            void getAttribute(::std::string name, T& t);
+			void setData(T data) {
+				*m_data = data;
+			}
 
-            template<class T>
-            T& getAttributeT(std::string index); // Templated, probably better version of above.
+			T getData() {
+				return *m_data;
+			}
 
-            SaveDataTypes::MetaData getMetaData() { return m_metadata; }
+			T const* getDataPtr() {
+				return m_data;
+			}
 
-        protected:
-            void addAttribute(std::string name, AttributeType type);
+			/*boost::variant<std::string,
+			      unsigned int,
+			      int,
+			      float,
+			      bool,
+			      std::vector<unsigned int>,
+			      std::vector<int>,
+			      glm::vec2> data; // Basically just an easier union.*/
 
-            std::unordered_map<std::string, Attribute> m_attributes;
-            SaveDataTypes::MetaData m_metadata;
-    };
+		private:
+			T* m_data = nullptr;
+			void setDefault() {
+				setData((T)(-1));
+			}
+			/*
+				"if your function template still depends on some unspecified template parameters,
+					it is a true template and it has to be defined in header file.
+				But once you "fix" all the parameters (by explicit specialization),
+					it is no longer a template.
+				It becomes an ordinary function,
+					that has to be declared in header file
+					and defined only once in some implementation file."
+																				~ AnT, 2013, "stackoverflow.com/questions/17575735/multiple-definition-of-a-function-in-templated-class"
+			*/
+	};
 
-    class TileData : public GenericData {
-        public:
-            TileData() : GenericData({ Attribute("texture", AttributeType::FILEPATH_TEXTURE),
-                                       Attribute("bumpMap", AttributeType::FILEPATH_BUMPMAP),
-                                       Attribute("emittedLight", AttributeType::FLOAT),
-                                       Attribute("emittedHeat", AttributeType::FLOAT),
-                                       Attribute("size", AttributeType::VEC2),
-                                       Attribute("isSolid", AttributeType::BOOL),
-                                       Attribute("isDrawn", AttributeType::BOOL),
-                                       Attribute("isNatural", AttributeType::BOOL),
-                                       Attribute("isTransparent", AttributeType::BOOL),
-                                       Attribute("updateScript", AttributeType::SCRIPT),
-                                       Attribute("tickScript", AttributeType::SCRIPT),
-                                       Attribute("destructionScript", AttributeType::SCRIPT),
-                                       Attribute("interactScript_walkedOn", AttributeType::SCRIPT),
-                                       Attribute("interactScript_used", AttributeType::SCRIPT) }) {}
+	class GenericData {
+			/**
+			    Responsibilities:
+			     - Act as a base class, providing read and write functions
+			     - Hold a map of Attributes, using their name as the key.
+			     - Provide functions to initialize (for read/write) attributes (protected)
+			     - Provide a function to read map elements.
+			**/
+		public:
+			GenericData() {}
+			GenericData(::std::vector<AttributeBase*> attrs); // Children will use the constructor to list attributes in the map.
+			~GenericData() {}
 
-            virtual ~TileData() {}
-    };
+			void init(::rapidxml::xml_node<>* node); // Inits all attribute values. (Read)
+			void write(::rapidxml::xml_node<>* node); // Writes to XML document
 
-    class ParticleData : public GenericData {
-        public:
-            ParticleData() : GenericData({ Attribute("texture", AttributeType::FILEPATH_TEXTURE),
-                                           Attribute("bumpMap", AttributeType::FILEPATH_BUMPMAP),
-                                           Attribute("script", AttributeType::SCRIPT),
-                                           Attribute("decayRate", AttributeType::FLOAT) }) {}
-            virtual ~ParticleData() {}
-    };
+			/*void getAttribute(::std::string name, std::string& dataPtr); // Just puts the data into the pointer
+				void getAttribute(::std::string name, unsigned int& dataPtr); // Just puts the data into the pointer
+				void getAttribute(::std::string name, int& dataPtr); // Just puts the data into the pointer
+				void getAttribute(::std::string name, float& dataPtr); // Just puts the data into the pointer
+				void getAttribute(::std::string name, bool& dataPtr); // Just puts the data into the pointer
+				void getAttribute(::std::string name, std::vector<unsigned int>& dataPtr); // Just puts the data into the pointer
+				void getAttribute(::std::string name, glm::vec2& dataPtr); // Just puts the data into the pointer*/
 
-    class EntityNPCData : public GenericData {
-        public:
-            EntityNPCData() : GenericData({ Attribute("texture", AttributeType::FILEPATH_TEXTURE),
-                                            Attribute("bumpMap", AttributeType::FILEPATH_BUMPMAP),
-                                            Attribute("size", AttributeType::VEC2),
-                                            Attribute("speed", AttributeType::FLOAT),
-                                            Attribute("jumpHeight", AttributeType::FLOAT),
-                                            Attribute("maxHealth", AttributeType::FLOAT),
-                                            Attribute("faction", AttributeType::STRING_FACTION),
-                                            Attribute("isDamagedByFalls", AttributeType::BOOL),
-                                            Attribute("isInvincible", AttributeType::BOOL),
-                                            Attribute("updateScript", AttributeType::SCRIPT),
-                                            Attribute("tickScript", AttributeType::SCRIPT) }) {}
+			template<typename T>
+			T getAttributeByName(::std::string name);
 
-            virtual ~EntityNPCData() {}
-    };
+			//template<class T> OUT OF USE.
+			//T & getAttributeT(std::string index); // Templated, probably better version of above.
 
-    class EntityProjectileData : public GenericData {
-        public:
-            EntityProjectileData() : GenericData({  Attribute("texture", AttributeType::FILEPATH_TEXTURE),
-                                                    Attribute("bumpMap", AttributeType::FILEPATH_BUMPMAP),
-                                                    Attribute("size", AttributeType::VEC2),
-                                                    Attribute("speed", AttributeType::FLOAT),
-                                                    Attribute("collides", AttributeType::BOOL),
-                                                    Attribute("damage", AttributeType::FLOAT),
-                                                    Attribute("updateScript", AttributeType::SCRIPT),
-                                                    Attribute("tickScript", AttributeType::SCRIPT) }) {}
+			SaveDataTypes::MetaData getMetaData() {
+				return m_metadata;
+			}
 
-            virtual ~EntityProjectileData() {}
-    };
+			/// Members!
+			std::string name;
+			unsigned int id;
 
-    class EntityItemData : public GenericData {
-        public:
-            EntityItemData() : GenericData({    Attribute("texture", AttributeType::FILEPATH_TEXTURE),
-                                                Attribute("bumpMap", AttributeType::FILEPATH_BUMPMAP),
-                                                Attribute("size", AttributeType::VEC2),
-                                                Attribute("item", AttributeType::UNSIGNED_INT),
-                                                Attribute("updateScript", AttributeType::SCRIPT),
-                                                Attribute("tickScript", AttributeType::SCRIPT) }) {}
-    };
+		protected:
+			template<class T>
+			void addAttribute(std::string name, AttributeType type, T* data);
+			void addAttribute(AttributeBase* a);
 
-    class ItemData : public GenericData {
-        public:
-            ItemData() : GenericData({  Attribute("texture", AttributeType::FILEPATH_TEXTURE),
-                                        Attribute("weight", AttributeType::FLOAT),
-                                        Attribute("useScript", AttributeType::SCRIPT) }) {}
-    };
+			void addAttributes(std::vector<AttributeBase*> attrs);
 
-    class BiomeData : public GenericData {
-        public:
-            BiomeData() : GenericData({ Attribute("backgroundTexture", AttributeType::FILEPATH_TEXTURE),
-                                        Attribute("baseHeight", AttributeType::UNSIGNED_INT),
-                                        Attribute("maxHeightDiff", AttributeType::UNSIGNED_INT),
-                                        Attribute("maxTemperature", AttributeType::FLOAT),
-                                        Attribute("baseTemperature", AttributeType::FLOAT),
-                                        Attribute("flatness", AttributeType::FLOAT),
-                                        Attribute("entities/entityID", AttributeType::VECTOR_UNSIGNED_INT) }) {}
+			std::unordered_map<std::string, AttributeBase*> m_attributes;
+			SaveDataTypes::MetaData m_metadata;
+	};
 
-        /// TODO:
-        //std::vector<unsigned int> structureSpawnIds = {}; // All structures (defined by Structure objects)
-        //std::vector<unsigned int> surfaceBlockIds = {}; // All blocks that make up the first few of the surface
-        //std::vector<unsigned int> undergroundBlockIds = {}; // All blocks that make up the rest of the ground
+	class TileData : public GenericData {
+		public:
+			TileData() : texture("") {
+				std::vector<AttributeBase*> attrs = {
+					new Attribute<std::string>("texture", AttributeType::FILEPATH_TEXTURE, &texture),
+					new Attribute<std::string>("bumpMap", AttributeType::FILEPATH_BUMPMAP, &bumpMap),
+					new Attribute<float>("emittedLight", AttributeType::FLOAT, &emittedLight),
+					new Attribute<float>("emittedHeat", AttributeType::FLOAT, &emittedHeat),
+					new Attribute<glm::vec2>("size", AttributeType::VEC2, &size),
+					new Attribute<bool>("isSolid", AttributeType::BOOL, &isSolid),
+					new Attribute<bool>("isDrawn", AttributeType::BOOL, &isDrawn),
+					new Attribute<bool>("isNatural", AttributeType::BOOL, &isNatural),
+					new Attribute<bool>("isTransparent", AttributeType::BOOL, &isTransparent),
+					new Attribute<unsigned int>("updateScript", AttributeType::SCRIPT, &updateScript),
+					new Attribute<unsigned int>("tickScript", AttributeType::SCRIPT, &tickScript),
+					new Attribute<unsigned int>("destructionScript", AttributeType::SCRIPT, &destructionScript),
+					new Attribute<unsigned int>("interactScript_walkedOn", AttributeType::SCRIPT, &interactScript_walkedOn),
+					new Attribute<unsigned int>("interactScript_used", AttributeType::SCRIPT, &interactScript_used)
+				};
 
-    };
+				addAttributes(attrs);
 
-    class EraData : public GenericData {
-        public:
-            EraData() : GenericData({  Attribute("biomes/biomeID", AttributeType::VECTOR_UNSIGNED_INT) }) {}
-    };
+			}
 
-    class LootDropData : public GenericData {
-        public:
-            LootDropData() : GenericData({  Attribute("itemID", AttributeType::UNSIGNED_INT),
-                                            Attribute("minDrop", AttributeType::UNSIGNED_INT),
-                                            Attribute("maxDrop", AttributeType::UNSIGNED_INT),
-                                            Attribute("chance", AttributeType::FLOAT) }) {}
-    };
+			virtual ~TileData() {}
 
-    class LootTableData : public GenericData {
-        public:
-            LootTableData() : GenericData({ Attribute("drops/dropID", AttributeType::VECTOR_UNSIGNED_INT) }) {}
-    };
+			std::string texture = "", bumpMap = "";
+			float emittedLight = 0.0f, emittedHeat = 0.0f;
+			glm::vec2 size;
+			bool isSolid, isDrawn, isNatural, isTransparent;
+			unsigned int updateScript, tickScript, destructionScript, interactScript_walkedOn, interactScript_used;
+	};
 
-    class StructureData : public GenericData {
-        public:
-            StructureData() : GenericData({ Attribute("structureID", AttributeType::UNSIGNED_INT),
-                                            Attribute("biomeID", AttributeType::UNSIGNED_INT),
-                                            Attribute("chance", AttributeType::FLOAT),
-                                            Attribute("maxAmnt", AttributeType::UNSIGNED_INT),
-                                            Attribute("minAmnt", AttributeType::UNSIGNED_INT) }) {}
-    };
+	class ParticleData : public GenericData {
+		public:
+			ParticleData() {
+				std::vector<AttributeBase*> attrs = {
+					new Attribute<std::string>("texture", AttributeType::FILEPATH_TEXTURE, &texture),
+					new Attribute<std::string>("bumpMap", AttributeType::FILEPATH_BUMPMAP, &bumpMap),
+					new Attribute<unsigned int>("script", AttributeType::SCRIPT, &script),
+					new Attribute<float>("decayRate", AttributeType::FLOAT, &decayRate)
+				};
 
-    class QuestData : public GenericData {
-        public:
-            QuestData() : GenericData({ Attribute("objectives/objectiveID", AttributeType::VECTOR_UNSIGNED_INT),
-                                        Attribute("completionScript", AttributeType::SCRIPT) }) {}
-    };
+				addAttributes(attrs);
+			}
+			virtual ~ParticleData() {}
 
-    class QuestObjectiveData : public GenericData {
-        public:
-            QuestObjectiveData() : GenericData({ Attribute("text", AttributeType::STRING),
-                                                 Attribute("confirmationScript", AttributeType::SCRIPT) }) {}
-    };
+			std::string texture, bumpMap;
+			unsigned int script;
+			float decayRate;
+	};
+
+	class EntityData : public GenericData {
+		public:
+			EntityData() {
+				Attribute<std::string>* texA = new Attribute<std::string>("texture", AttributeType::FILEPATH_TEXTURE, &texture);
+				Attribute<std::string>* bumpA = new Attribute<std::string>("bumpMap", AttributeType::FILEPATH_BUMPMAP, &bumpMap);
+
+				Attribute<glm::vec2>* sizeA = new Attribute<glm::vec2>("size", AttributeType::VEC2, &size);
+
+				Attribute<unsigned int>* updateA = new Attribute<unsigned int>("updateScript", AttributeType::SCRIPT, &updateScript);
+				Attribute<unsigned int>* tickA = new Attribute<unsigned int>("tickScript", AttributeType::SCRIPT, &tickScript);
+
+				addAttribute(texA);
+				addAttribute(bumpA);
+				addAttribute(sizeA);
+				addAttribute(updateA);
+				addAttribute(tickA);
+			}
+
+			~EntityData() {}
+
+			std::string texture, bumpMap;
+			glm::vec2 size;
+			unsigned int updateScript, tickScript;
+
+	};
+
+	class EntityNPCData : public EntityData {
+		public:
+			EntityNPCData() {
+				std::vector<AttributeBase*> attrs = {
+					new Attribute<float>("speed", AttributeType::FLOAT, &speed),
+					new Attribute<float>("jumpHeight", AttributeType::FLOAT, &jumpHeight),
+					new Attribute<float>("maxHealth", AttributeType::FLOAT, &maxHealth),
+					new Attribute<unsigned int>("faction", AttributeType::STRING_FACTION, &faction),
+					new Attribute<bool>("isDamagedByFalls", AttributeType::BOOL, &isDamagedByFalls),
+					new Attribute<bool>("isInvincible", AttributeType::BOOL, &isInvincible)
+				};
+
+				addAttributes(attrs);
+			}
+
+			virtual ~EntityNPCData() {}
+
+			float speed, jumpHeight, maxHealth;
+			unsigned int faction;
+			bool isDamagedByFalls, isInvincible;
+	};
+
+	class EntityProjectileData : public EntityData {
+		public:
+			EntityProjectileData() {
+				std::vector<AttributeBase*> attrs = {
+					new Attribute<float>("speed", AttributeType::FLOAT, &speed),
+					new Attribute<bool>("collides", AttributeType::BOOL, &collides),
+					new Attribute<float>("damage", AttributeType::FLOAT, &damage)
+				};
+
+				addAttributes(attrs);
+			}
+
+			virtual ~EntityProjectileData() {}
+
+			float speed, damage;
+			bool collides;
+	};
+
+	class EntityItemData : public EntityData {
+		public:
+			EntityItemData() {
+				std::vector<AttributeBase*> attrs = {
+					new Attribute<unsigned int>("item", AttributeType::UNSIGNED_INT, &item)
+				};
+
+				addAttributes(attrs);
+			}
+
+			unsigned int item;
+	};
+
+	class ItemData : public GenericData {
+		public:
+			ItemData() {
+				std::vector<AttributeBase*> attrs = {
+					new Attribute<std::string>("texture", AttributeType::FILEPATH_TEXTURE, &texture),
+					new Attribute<float>("weight", AttributeType::FLOAT, &weight),
+					new Attribute<unsigned int>("useScript", AttributeType::SCRIPT, &useScript)
+				};
+
+				addAttributes(attrs);
+			}
+
+			std::string texture;
+			float weight;
+			unsigned int useScript;
+	};
+
+	class BiomeData : public GenericData {
+		public:
+			BiomeData() {
+				std::vector<AttributeBase*> attrs = {
+					new Attribute<std::string>("backgroundTexture", AttributeType::FILEPATH_TEXTURE, &backgroundTexture),
+					new Attribute<unsigned int>("baseHeight", AttributeType::UNSIGNED_INT, &baseHeight),
+					new Attribute<unsigned int>("maxHeightDiff", AttributeType::UNSIGNED_INT, &maxHeightDiff),
+					new Attribute<float>("maxTemperature", AttributeType::FLOAT, &maxTemperature),
+					new Attribute<float>("baseTemperature", AttributeType::FLOAT, &baseTemperature),
+					new Attribute<float>("flatness", AttributeType::FLOAT, &flatness),
+					new Attribute<std::vector<unsigned int>>("entities/entityID", AttributeType::VECTOR_UNSIGNED_INT, &entities)
+				};
+
+				addAttributes(attrs);
+			}
+
+			std::string backgroundTexture;
+			unsigned int baseHeight, maxHeightDiff;
+			float maxTemperature, baseTemperature, flatness;
+			std::vector<unsigned int> entities;
+
+			/// TODO:
+			//std::vector<unsigned int> structureSpawnIds = {}; // All structures (defined by Structure objects)
+			//std::vector<unsigned int> surfaceBlockIds = {}; // All blocks that make up the first few of the surface
+			//std::vector<unsigned int> undergroundBlockIds = {}; // All blocks that make up the rest of the ground
+
+	};
+
+	class EraData : public GenericData {
+		public:
+			EraData() {
+				std::vector<AttributeBase*> attrs = {
+					new Attribute<std::vector<unsigned int>>("biomes/biomeID", AttributeType::VECTOR_UNSIGNED_INT, &biomes)
+				};
+				addAttributes(attrs);
+			}
+
+			std::vector<unsigned int> biomes;
+	};
+
+	class LootDropData : public GenericData {
+		public:
+			LootDropData() {
+				std::vector<AttributeBase*> attrs = {
+					new Attribute<unsigned int>("itemID", AttributeType::UNSIGNED_INT, &itemID),
+					new Attribute<unsigned int>("minDrop", AttributeType::UNSIGNED_INT, &minDrop),
+					new Attribute<unsigned int>("maxDrop", AttributeType::UNSIGNED_INT, &maxDrop),
+					new Attribute<float>("chance", AttributeType::FLOAT, &chance)
+				};
+
+				addAttributes(attrs);
+			}
+
+			unsigned int itemID, minDrop, maxDrop;
+			float chance;
+	};
+
+	class LootTableData : public GenericData {
+		public:
+			LootTableData() {
+				std::vector<AttributeBase*> attrs = {
+					new Attribute<std::vector<unsigned int>>("drops/dropID", AttributeType::VECTOR_UNSIGNED_INT, &drops)
+				};
+
+				addAttributes(attrs);
+			}
+
+			std::vector<unsigned int> drops;
+	};
+
+	class StructureData : public GenericData {
+		public:
+			StructureData() {
+				std::vector<AttributeBase*> attrs = {
+					new Attribute<unsigned int>("structureID", AttributeType::UNSIGNED_INT, &structureID),
+					new Attribute<unsigned int>("biomeID", AttributeType::UNSIGNED_INT, &biomeID),
+					new Attribute<float>("chance", AttributeType::FLOAT, &chance),
+					new Attribute<unsigned int>("maxAmnt", AttributeType::UNSIGNED_INT, &maxAmnt),
+					new Attribute<unsigned int>("minAmnt", AttributeType::UNSIGNED_INT, &minAmnt)
+				};
+				addAttributes(attrs);
+			}
+
+			unsigned int structureID, biomeID, maxAmnt, minAmnt;
+			float chance;
+	};
+
+	class QuestData : public GenericData {
+		public:
+			QuestData() {
+				std::vector<AttributeBase*> attrs = {
+					new Attribute<std::vector<unsigned int>>("objectives/objectiveID", AttributeType::VECTOR_UNSIGNED_INT, &objectives),
+					                                      new Attribute<unsigned int>("completionScript", AttributeType::SCRIPT, &completionScript)
+				};
+
+				addAttributes(attrs);
+			}
+
+			std::vector<unsigned int> objectives;
+			unsigned int completionScript;
+	};
+
+	class QuestObjectiveData : public GenericData {
+		public:
+			QuestObjectiveData() {
+				std::vector<AttributeBase*> attrs = {
+					new Attribute<std::string>("text", AttributeType::STRING, &text),
+					new Attribute<unsigned int>("confirmationScript", AttributeType::SCRIPT, &confirmationScript)
+				};
+
+				addAttributes(attrs);
+			}
+
+			std::string text;
+			unsigned int confirmationScript;
+	};
+
+	class DialogueQuestionData : public GenericData { // Asked by the NPC.
+		public:
+			DialogueQuestionData() {
+				std::vector<AttributeBase*> attrs = {
+					new Attribute<std::string>("text", AttributeType::STRING, &text),
+					new Attribute<std::vector<unsigned int>>("nextResponses", AttributeType::VECTOR_UNSIGNED_INT, &nextResponses) // List of possible responses. Shown iff all required flags are true.
+				};
+
+				addAttributes(attrs);
+			}
+
+			std::string text;
+			std::vector<unsigned int> nextResponses;
+	};
+
+	class DialogueResponseData : public GenericData { // Said by the player.
+		public:
+			DialogueResponseData() {
+				std::vector<AttributeBase*> attrs = {
+					new Attribute<std::string>("text", AttributeType::STRING, &text),
+					new Attribute<std::vector<unsigned int>>("requiredFlags", AttributeType::VECTOR_UNSIGNED_INT, &requiredFlags), // Requires all to be true
+					                                      new Attribute<unsigned int>("nextQuestion", AttributeType::UNSIGNED_INT, &nextQuestion) // -1 for none
+				};
+
+				addAttributes(attrs);
+			}
+
+			std::string text;
+			std::vector<unsigned int> requiredFlags;
+			unsigned int nextQuestion;
+	};
 }
 
-#include "XMLDataTypes.tcc" // Just for templated functions.
+#include "XMLDataTypes.tpp" // Just for templated functions.

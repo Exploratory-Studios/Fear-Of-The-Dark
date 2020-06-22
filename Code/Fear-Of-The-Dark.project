@@ -48,7 +48,7 @@
     <File Name="App.h"/>
   </VirtualDirectory>
   <VirtualDirectory Name="src">
-    <File Name="XMLDataTypes.tcc"/>
+    <File Name="XMLDataTypes.tpp"/>
     <File Name="XMLDataTypes.cpp"/>
     <File Name="XMLData.cpp"/>
     <File Name="WorldIOManager.cpp"/>

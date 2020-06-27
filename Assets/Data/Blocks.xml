@@ -9,7 +9,7 @@
 	<isTransparent>1</isTransparent>
 </tile>
 <tile id="1" name="Dirt">
-	<texture>Log.png</texture>
+	<texture>Blocks/Log.png</texture>
 	<bumpMap>LogMapR.png</bumpMap>
 	<emittedLight>0.000000</emittedLight>
 	<emittedHeat>0.000000</emittedHeat>
@@ -21,7 +21,7 @@
 	<isTransparent>0</isTransparent>
 </tile>
 <tile id="2" name="Grass">
-	<texture>Grass.png</texture>
+	<texture>Blocks/Grass.png</texture>
 	<bumpMap>Grass.png</bumpMap>
 	<emittedLight>0.000000</emittedLight>
 	<emittedHeat>0.000000</emittedHeat>
@@ -31,10 +31,10 @@
 	<isDrawn>1</isDrawn>
 	<isNatural>1</isNatural>
 	<isTransparent>0</isTransparent>
-	<interactScript_walkedOn>TEST_SCRIPT.txt</interactScript_walkedOn>
+	<interactScript_walkedOn><script>TEST_SCRIPT.txt</script><isFile>1</isFile></interactScript_walkedOn>
 </tile>
 <tile id="4" name="Stone">
-	<texture>Stone.png</texture>
+	<texture>Blocks/Stone.png</texture>
 	<bumpMap>Stone.png</bumpMap>
 	<emittedLight>0.000000</emittedLight>
 	<emittedHeat>0.000000</emittedHeat>
@@ -46,7 +46,7 @@
 	<isTransparent>0</isTransparent>
 </tile>
 <tile id="6" name="Torch">
-	<texture>Torch.png</texture>
+	<texture>Blocks/Torch.png</texture>
 	<bumpMap>Torch.png</bumpMap>
 	<emittedLight>1.500000</emittedLight>
 	<emittedHeat>0.000000</emittedHeat>
@@ -56,10 +56,10 @@
 	<isDrawn>1</isDrawn>
 	<isNatural>0</isNatural>
 	<isTransparent>1</isTransparent>
-	<tickScript>TorchTick.lua</tickScript>
+	<tickScript><isFile>1</isFile><script>TorchTick.lua</script></tickScript>
 </tile>
 <tile id="11" name="Water">
-	<texture>Water.png</texture>
+	<texture>Blocks/Water.png</texture>
 	<bumpMap>Water.png</bumpMap>
 	<emittedLight>0.000000</emittedLight>
 	<emittedHeat>0.000000</emittedHeat>
@@ -69,6 +69,6 @@
 	<isDrawn>1</isDrawn>
 	<isNatural>1</isNatural>
 	<isTransparent>1</isTransparent>
-	<updateScript>WaterUpdate.lua</updateScript>
+	<updateScript><script>WaterUpdate.lua</script><isFile>1</isFile></updateScript>
 </tile>
 

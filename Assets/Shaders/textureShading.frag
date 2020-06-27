@@ -41,7 +41,7 @@ void main() {
 	vec4 textureColour = vec4(0.0);
 	textureColour = texture(textureSampler, fragmentUV);
 
-	if(!(textureColour.a > 0.0f)) {
+	if(textureColour.a <= 0.01f) {
 		discard;
 	}
 

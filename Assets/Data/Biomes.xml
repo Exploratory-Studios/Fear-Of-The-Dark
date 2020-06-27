@@ -1,5 +1,5 @@
 <biome id="0" name="Canada">
-	<backgroundTexture>TestBackground.png</backgroundTexture>
+	<backgroundTexture>BiomeBackgrounds/TestBackground.png</backgroundTexture>
 	<baseHeight>20</baseHeight>
 	<maxHeightDiff>10</maxHeightDiff>
 	<maxTemperature>25.000000</maxTemperature>
@@ -10,7 +10,7 @@
 	</entities>
 </biome>
 <biome id="1" name="Arctic">
-	<backgroundTexture>TestBackground.png</backgroundTexture>
+	<backgroundTexture>BiomeBackgrounds/TestBackground.png</backgroundTexture>
 	<baseHeight>30</baseHeight>
 	<maxHeightDiff>15</maxHeightDiff>
 	<maxTemperature>-10.000000</maxTemperature>
@@ -21,7 +21,7 @@
 	</entities>
 </biome>
 <biome id="2" name="Australia">
-	<backgroundTexture>TestBackground.png</backgroundTexture>
+	<backgroundTexture>BiomeBackgrounds/TestBackground.png</backgroundTexture>
 	<baseHeight>55</baseHeight>
 	<maxHeightDiff>25</maxHeightDiff>
 	<maxTemperature>35.000000</maxTemperature>
@@ -32,7 +32,7 @@
 	</entities>
 </biome>
 <biome id="3" name="USA">
-	<backgroundTexture>TestBackground.png</backgroundTexture>
+	<backgroundTexture>BiomeBackgrounds/TestBackground.png</backgroundTexture>
 	<baseHeight>80</baseHeight>
 	<maxHeightDiff>30</maxHeightDiff>
 	<maxTemperature>20.000000</maxTemperature>
@@ -43,7 +43,7 @@
 	</entities>
 </biome>
 <biome id="4" name="Russia">
-	<backgroundTexture>TestBackground.png</backgroundTexture>
+	<backgroundTexture>BiomeBackgrounds/TestBackground.png</backgroundTexture>
 	<baseHeight>110</baseHeight>
 	<maxHeightDiff>50</maxHeightDiff>
 	<maxTemperature>10.000000</maxTemperature>
@@ -54,7 +54,7 @@
 	</entities>
 </biome>
 <biome id="5" name="North Africa">
-	<backgroundTexture>TestBackground.png</backgroundTexture>
+	<backgroundTexture>BiomeBackgrounds/TestBackground.png</backgroundTexture>
 	<baseHeight>90</baseHeight>
 	<maxHeightDiff>40</maxHeightDiff>
 	<maxTemperature>30.000000</maxTemperature>

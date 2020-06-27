@@ -19,6 +19,9 @@ vec4 blur(float directions, float quality, float size, sampler2D textureSampler,
 	// Pixel colour
 	vec4 pixColour = texture(textureSampler, uv);
 
+	if(pixColour.a <= 0.01f) {
+		discard;
+	}
 	// Blur calculations
 	for( float d=0.0; d<Pi; d+=Pi/directions)
 	{
@@ -42,17 +45,9 @@ void main()
 	float depth = texture(depthMap, fragmentUV).r; // Get depth (It's set to the exact values that SpriteBatch wrote to the buffer with.) (0 is closest to camera, 1 is farthest)
 	float depthDiff = abs(playerDepth - depth); // Difference from player, for a focused effect when the player is on the same layer. (Just for blur)
 
-	if(fragmentUV.x < 0.249) {
-		colour = vec4(vec3(depth), 1.0);
-	} else if(fragmentUV.x < 0.499) {
-		colour = texture(textureS, fragmentUV);
-		
-		float c = 1.0f / map(depth, 0.0, 1.0, 1.0, 4.0);
-		colour.rgb *= c;
-	} else {
-		// Final
-		colour = blur(16.0, 3.0, 0.0008 * (depthDiff * 10), textureS, fragmentUV);
-		float c = 1.0f / map(depth, 0.0, 1.0, 1.0, 4.0);
-		colour.rgb *= c;
-	}
+	
+	// Final
+	colour = blur(16.0, 3.0, 0.008 * depthDiff, textureS, fragmentUV);
+	float c = 1.0f / map(depth, 0.0, 1.0, 1.0, 4.0);
+	colour.rgb *= c;
 }

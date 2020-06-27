@@ -1,5 +1,5 @@
 <npc id="0" name="Player">
-	<texture>Player.png</texture>
+	<texture>Entities/NPCs/Player.png</texture>
 	<bumpMap>BushGreen.png</bumpMap>
 	<sizeX>1.500000</sizeX>
 	<sizeY>4.000000</sizeY>
@@ -11,7 +11,7 @@
 	<faction>good</faction>
 </npc>
 <npc id="1" name="QuestGiverA">
-	<texture>Mob0.png</texture>
+	<texture>Entities/NPCs/Mob0.png</texture>
 	<bumpMap>Mob0.png</bumpMap>
 	<sizeX>1.500000</sizeX>
 	<sizeY>4.000000</sizeY>
@@ -22,7 +22,7 @@
 	<maxHealth>100.000000</maxHealth>
 </npc>
 <npc id="2" name="CompanionCube">
-	<texture>CompanionCube.png</texture>
+	<texture>Entities/NPCs/CompanionCube.png</texture>
 	<bumpMap>CompanionCube.png</bumpMap>
 	<sizeX>1.000000</sizeX>
 	<sizeY>1.000000</sizeY>
@@ -34,7 +34,7 @@
 	<faction>evil</faction>
 </npc>
 <npc id="4" name="Fox">
-	<texture>FoxStanding.png</texture>
+	<texture>Entities/NPCs/FoxStanding.png</texture>
 	<bumpMap>FoxStandingMap.png</bumpMap>
 	<sizeX>1.000000</sizeX>
 	<sizeY>1.000000</sizeY>

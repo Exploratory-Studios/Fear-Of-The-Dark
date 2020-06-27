@@ -4,7 +4,7 @@
 #include <vector>
 #include <unordered_map>
 
-#include "../Logging.h"
+#include "Logging.h"
 
 class World;
 namespace QuestModule { class QuestManager; }

@@ -9,15 +9,15 @@
 
 #include <Camera2D.h>
 
-#include "../ExtraFunctions.h"
+#include "ExtraFunctions.h"
 
-#include "../XMLData.h"
+#include "XMLData.h"
 
-#include "../EntityNPC.h"
-#include "../EntityPlayer.h"
+#include "EntityNPC.h"
+#include "EntityPlayer.h"
 
-#include "../Tile.h"
-#include "../Item.h"
+#include "Tile.h"
+#include "Item.h"
 
 namespace ScriptingModule {
 

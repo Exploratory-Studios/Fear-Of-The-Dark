@@ -95,6 +95,10 @@
 #undef HOME_PATH
 #define HOME_PATH std::string((std::string)getenv("HOME") + "/.exploratory/Fear Of The Dark")
 #endif // LINUX
+#ifdef DEBUG
+#undef HOME_PATH
+#define HOME_PATH std::string("../../..") // For debugging purposes, so we don't have to copy/paste and deal with weird directories in git.
+#endif // DEBUG
 
 #define SAVES_PATH HOME_PATH + std::string("/Saves/")
 #define ASSETS_FOLDER_PATH HOME_PATH + std::string("/Assets/")

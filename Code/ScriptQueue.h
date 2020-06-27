@@ -5,8 +5,8 @@
 #include <fstream>
 #include <GLEngineErrors.h>
 
-#include "../Logging.h"
-#include "../PresetValues.h"
+#include "Logging.h"
+#include "PresetValues.h"
 
 namespace ScriptingModule {
 

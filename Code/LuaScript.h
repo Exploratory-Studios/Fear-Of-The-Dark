@@ -7,7 +7,7 @@
 
 #include "ScriptQueue.h"
 
-#include "../LuaHeaders.h"
+#include "LuaHeaders.h"
 
 #include <iostream>
 

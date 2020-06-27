@@ -1,23 +1,23 @@
 #include "ScripterMain.h"
 
-#include "../World.h"
-#include "../QuestManager.h"
-#include "../GameplayScreen.h"
-#include "../AudioManager.h"
+#include "World.h"
+#include "QuestManager.h"
+#include "GameplayScreen.h"
+#include "AudioManager.h"
 #include <ParticleBatch2D.h>
 #include "LuaScript.h"
 
-#include "../EventQueue.h"
+#include "EventQueue.h"
 #include "ScriptQueue.h"
 
 #include <Camera2D.h>
 
-#include "../ExtraFunctions.h"
+#include "ExtraFunctions.h"
 
-#include "../XMLData.h"
+#include "XMLData.h"
 
-#include "../EntityNPC.h"
-#include "../EntityPlayer.h"
+#include "EntityNPC.h"
+#include "EntityPlayer.h"
 
 #include "ScriptingHelperFunctions.h"
 

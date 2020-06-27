@@ -4,7 +4,7 @@
 #include <string>
 #include <vector>
 
-#include "../LuaHeaders.h"
+#include "LuaHeaders.h"
 
 #include "ScriptQueue.h"
 

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<CodeLite_Project Name="Fear-Of-The-Dark" Version="10.0.0">
+<CodeLite_Project Name="Fear-Of-The-Dark" Version="11000">
   <Plugins>
     <Plugin Name="qmake">
       <![CDATA[00040001N0005Debug0000000000000001N0007DebugVB0000000000000001N0015Release - Linux0000000000000001N0017Release - Windows000000000000]]>
@@ -109,6 +109,7 @@
         <IncludePath Value="Code/"/>
         <IncludePath Value="Code/Scripting"/>
         <IncludePath Value="../../GLEngine"/>
+        <IncludePath Value="/usr/include/x86_64-linux-gnu/cegui-0.8.7"/>
       </Compiler>
       <Linker Options="-pg" Required="yes">
         <LibraryPath Value="../../GLEngine/bin/Release/"/>

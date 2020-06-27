@@ -422,7 +422,7 @@ namespace XMLModule {
 			DialogueQuestionData() {
 				std::vector<AttributeBase*> attrs = {
 					new Attribute<std::string>("text", AttributeType::STRING, &text),
-					new Attribute<std::vector<unsigned int>>("nextResponses", AttributeType::VECTOR_UNSIGNED_INT, &nextResponses) // List of possible responses. Shown iff all required flags are true.
+					new Attribute<std::vector<unsigned int>>("nextResponses/responseID", AttributeType::VECTOR_UNSIGNED_INT, &nextResponses) // List of possible responses. Shown iff all required flags are true.
 				};
 
 				addAttributes(attrs);
@@ -437,7 +437,7 @@ namespace XMLModule {
 			DialogueResponseData() {
 				std::vector<AttributeBase*> attrs = {
 					new Attribute<std::string>("text", AttributeType::STRING, &text),
-					new Attribute<std::vector<unsigned int>>("requiredFlags", AttributeType::VECTOR_UNSIGNED_INT, &requiredFlags), // Requires all to be true
+					new Attribute<std::vector<unsigned int>>("requiredFlags/flagID", AttributeType::VECTOR_UNSIGNED_INT, &requiredFlags), // Requires all to be true
 					                                      new Attribute<unsigned int>("nextQuestion", AttributeType::UNSIGNED_INT, &nextQuestion) // -1 for none
 				};
 

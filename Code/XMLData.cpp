@@ -208,6 +208,12 @@ namespace XMLModule {
 		loadXMLData(ASSETS_FOLDER_PATH + "/Data/Quests.xml", XMLDataType::QUEST);
 		Logger::getInstance()->log("Loaded data (Quests)...");
 
+		loadXMLData(ASSETS_FOLDER_PATH + "/Data/Dialogue.xml", XMLDataType::DIALOGUE_QUESTION);
+		Logger::getInstance()->log("Loaded data (Dialogue Questions)...");
+
+		loadXMLData(ASSETS_FOLDER_PATH + "/Data/Dialogue.xml", XMLDataType::DIALOGUE_RESPONSE);
+		Logger::getInstance()->log("Loaded data (Dialogue Responses)...");
+
 		Logger::getInstance()->log("Loaded all data successfully!");
 	}
 
@@ -224,6 +230,8 @@ namespace XMLModule {
 	std::map<unsigned int, GenericData*> XMLData::m_structureData;
 	std::map<unsigned int, GenericData*> XMLData::m_questData;
 	std::map<unsigned int, GenericData*> XMLData::m_questObjectiveData;
+	std::map<unsigned int, GenericData*> XMLData::m_dialogueQuestionData;
+	std::map<unsigned int, GenericData*> XMLData::m_dialogueResponseData;
 
 	void XMLData::loadXMLData(std::string filepath, XMLDataType type) {
 		/** Loads all XML data into the map **/
@@ -316,6 +324,16 @@ namespace XMLModule {
 				nodeName = "objective";
 				break;
 			}
+			case(unsigned int)XMLDataType::DIALOGUE_QUESTION: {
+				mapForWrite = &m_dialogueQuestionData;
+				nodeName = "question";
+				break;
+			}
+			case(unsigned int)XMLDataType::DIALOGUE_RESPONSE: {
+				mapForWrite = &m_dialogueResponseData;
+				nodeName = "response";
+				break;
+			}
 			default: {
 				Logger::getInstance()->log("ERROR: Type not supported!", true);
 				break;
@@ -376,6 +394,14 @@ namespace XMLModule {
 				}
 				case(unsigned int)XMLDataType::QUEST_OBJECTIVE: {
 					d = new QuestObjectiveData();
+					break;
+				}
+				case(unsigned int)XMLDataType::DIALOGUE_QUESTION: {
+					d = new DialogueQuestionData();
+					break;
+				}
+				case(unsigned int)XMLDataType::DIALOGUE_RESPONSE: {
+					d = new DialogueResponseData();
 					break;
 				}
 				default: {
@@ -577,6 +603,34 @@ namespace XMLModule {
 		}
 
 		return *static_cast<QuestObjectiveData*>(index->second);
+	}
+
+	/// DialogueQuestions
+
+	DialogueQuestionData XMLData::getDialogueQuestionData(unsigned int id) {
+		auto index = m_dialogueQuestionData.find(id);
+
+		if(index == m_dialogueQuestionData.end()) {
+			Logger::getInstance()->log("ERROR: Couldn't find dialogue question data with ID: " + std::to_string(id), true);
+			DialogueQuestionData s;
+			return s;
+		}
+
+		return *static_cast<DialogueQuestionData*>(index->second);
+	}
+
+	/// DialogueResponses
+
+	DialogueResponseData XMLData::getDialogueResponseData(unsigned int id) {
+		auto index = m_dialogueResponseData.find(id);
+
+		if(index == m_dialogueResponseData.end()) {
+			Logger::getInstance()->log("ERROR: Couldn't find dialogue response data with ID: " + std::to_string(id), true);
+			DialogueResponseData s;
+			return s;
+		}
+
+		return *static_cast<DialogueResponseData*>(index->second);
 	}
 
 }

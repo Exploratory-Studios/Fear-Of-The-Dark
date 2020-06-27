@@ -189,7 +189,7 @@ void Entity::draw(GLEngine::SpriteBatch& sb, float time, int layerDifference, fl
 		    }
 		}*/
 
-		float depth = m_layer * (1.0f / (float)(WORLD_DEPTH));
+		float depth = 0.1f + (m_layer * (1.0f / (float)(WORLD_DEPTH)) * 0.9f);
 
 		sb.draw(destRect, uvRect, m_textureId, m_bumpMapId, depth, colour, lighting);
 

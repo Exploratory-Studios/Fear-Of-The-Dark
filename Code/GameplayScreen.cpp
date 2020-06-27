@@ -13,7 +13,7 @@
 #include <regex>
 #endif //DEV_CONTROLS
 
-GameplayScreen::GameplayScreen(GLEngine::Window* window, WorldIOManager* WorldIOManager, World* world) : m_window(window), m_WorldIOManager(WorldIOManager), m_world(world) {
+GameplayScreen::GameplayScreen(GLEngine::Window* window, WorldIOManager* WorldIOManager, World* world, Options* options) : m_window(window), m_WorldIOManager(WorldIOManager), m_world(world), m_options(options) {
 
 }
 
@@ -48,6 +48,7 @@ void GameplayScreen::onEntry() {
 	m_spriteBatch.init();
 	m_spriteFont.init((ASSETS_FOLDER_PATH + "GUI/fonts/Amatic-Bold.ttf").c_str(), 96);
 	m_mainFBO.init(glm::vec4(0.0f, 0.0f, m_window->getScreenWidth(), m_window->getScreenHeight()));
+	m_skyFBO.init(glm::vec4(0.0f, 0.0f, m_window->getScreenWidth(), m_window->getScreenHeight()));
 
 	m_scale = INITIAL_ZOOM;
 	m_camera.setScale(m_scale);
@@ -61,6 +62,8 @@ void GameplayScreen::onEntry() {
 
 	m_audio = new AudioManager();
 	m_audio->init();
+	m_audio->setSoundsVolume(m_options->soundsVolume * m_options->masterVolume);
+	m_audio->setMusicVolume(m_options->musicVolume * m_options->masterVolume);
 
 	///m_WorldManager.init(m_WorldIOManager, &m_particle2d);
 	m_scripter = new ScriptingModule::Scripter();
@@ -80,6 +83,9 @@ void GameplayScreen::onEntry() {
 	m_gui = new GLEngine::GUI();
 	initUI();
 
+	m_dialogueManager = new DialogueModule::DialogueManager(m_gui, m_questManager);
+	m_dialogueManager->activateDialogue(0);
+
 	m_camera.setPosition(m_world->getPlayer()->getPosition());
 
 	tick();
@@ -89,6 +95,7 @@ void GameplayScreen::onExit() {
 
 	delete m_scripter;
 	delete m_questManager;
+	delete m_dialogueManager;
 
 	m_hasBeenInited = false;
 	m_gui->destroy();
@@ -176,11 +183,15 @@ void GameplayScreen::draw() {
 
 	float dayLight = cos((float)m_world->getTime() / (DAY_LENGTH / 6.28318f)) / 2.0f + 0.5f;
 
-	//glClearColor(0.3f * dayLight, 0.4f * dayLight, 1.0f * dayLight, 1.0f);
+	glClearColor(0.3f * dayLight, 0.4f * dayLight, 1.0f * dayLight, 1.0f);
+
+	m_skyFBO.begin();
+
+	m_skyFBO.clear();
 
 	{
 		// Sky
-		/*m_skyTextureProgram.use();
+		m_skyTextureProgram.use();
 
 		// Camera matrix
 		glm::mat4 projectionMatrix = m_uiCamera.getCameraMatrix();
@@ -216,10 +227,29 @@ void GameplayScreen::draw() {
 		m_spriteBatch.end();
 		m_spriteBatch.renderBatch();
 
-		m_skyTextureProgram.unuse();*/
+		m_skyTextureProgram.unuse();
 
 	}
+	m_skyFBO.end();
+
+
+	m_basicTextureProgram.use();
+
+	// Camera matrix
+	glm::mat4 projectionMatrix = m_uiCamera.getCameraMatrix();
+	GLint pUniform = m_basicTextureProgram.getUniformLocation("P");
+	glUniformMatrix4fv(pUniform, 1, GL_FALSE, &projectionMatrix[0][0]);
+
+	GLint textureUniform = m_basicTextureProgram.getUniformLocation("textureSampler");
+	glUniform1i(textureUniform, 0);
+
+	m_skyFBO.draw();
+
+	m_basicTextureProgram.unuse();
+
 	m_mainFBO.begin();
+
+	m_mainFBO.clear();
 
 	{
 		// World
@@ -259,7 +289,6 @@ void GameplayScreen::draw() {
 		m_spriteBatch.begin();
 
 		m_world->drawEntities(m_spriteBatch, m_spriteFont, m_dr, getScreenBox() + glm::vec4(0.0f, 0.0f, 1.0f, 1.0f));
-		m_particle2d.draw(&m_spriteBatch, 3.0f);
 
 		m_spriteBatch.end();
 		m_spriteBatch.renderBatch();
@@ -271,25 +300,11 @@ void GameplayScreen::draw() {
 	m_postProcessor.use();
 
 	// Camera matrix
-	/*glm::mat4 projectionMatrix = m_uiCamera.getCameraMatrix();
-	GLint pUniform = m_wackyProgram.getUniformLocation("P");
+	projectionMatrix = m_uiCamera.getCameraMatrix();
+	pUniform = m_postProcessor.getUniformLocation("P");
 	glUniformMatrix4fv(pUniform, 1, GL_FALSE, &projectionMatrix[0][0]);
 
-	GLint screenSizeU = m_wackyProgram.getUniformLocation("screenSizeU");
-	glUniform2f(screenSizeU, m_window->getScreenWidth(), m_window->getScreenHeight());
-
-	GLint textureUniform = m_wackyProgram.getUniformLocation("mySampler");
-	glUniform1i(textureUniform, 0);
-
-	textureUniform = m_wackyProgram.getUniformLocation("depthSampler");
-	glUniform1i(textureUniform, 1);*/
-
-	// Camera matrix
-	glm::mat4 projectionMatrix = m_uiCamera.getCameraMatrix();
-	GLint pUniform = m_postProcessor.getUniformLocation("P");
-	glUniformMatrix4fv(pUniform, 1, GL_FALSE, &projectionMatrix[0][0]);
-
-	GLint textureUniform = m_postProcessor.getUniformLocation("textureS");
+	textureUniform = m_postProcessor.getUniformLocation("textureS");
 	glUniform1i(textureUniform, 0);
 	textureUniform = m_postProcessor.getUniformLocation("depthMap");
 	glUniform1i(textureUniform, 1);
@@ -300,6 +315,45 @@ void GameplayScreen::draw() {
 	m_mainFBO.draw();
 
 	m_postProcessor.unuse();
+
+
+	m_particleFBO.begin();
+	{
+		// World: Particles
+		m_textureProgram.use();
+
+		// Camera matrix
+		glm::mat4 projectionMatrix = m_camera.getCameraMatrix();
+		GLint pUniform = m_textureProgram.getUniformLocation("P");
+		glUniformMatrix4fv(pUniform, 1, GL_FALSE, &projectionMatrix[0][0]);
+		GLint textureUniform = m_textureProgram.getUniformLocation("textureSampler");
+		glUniform1i(textureUniform, 0);
+		textureUniform = m_textureProgram.getUniformLocation("bumpSampler");
+		glUniform1i(textureUniform, 1);
+
+		m_spriteBatch.begin();
+
+		m_particle2d.draw(&m_spriteBatch, 0.0f);
+
+		m_spriteBatch.end();
+		m_spriteBatch.renderBatch();
+		m_textureProgram.unuse();
+	}
+	m_particleFBO.end();
+
+	m_basicTextureProgram.use();
+
+	// Camera matrix
+	projectionMatrix = m_uiCamera.getCameraMatrix();
+	pUniform = m_basicTextureProgram.getUniformLocation("P");
+	glUniformMatrix4fv(pUniform, 1, GL_FALSE, &projectionMatrix[0][0]);
+
+	textureUniform = m_basicTextureProgram.getUniformLocation("textureSampler");
+	glUniform1i(textureUniform, 0);
+
+	m_particleFBO.draw();
+
+	m_basicTextureProgram.unuse();
 
 	{
 		// GUI
@@ -332,7 +386,7 @@ void GameplayScreen::draw() {
 
 	{
 		// Post
-		/*m_vignetteTextureProgram.use();
+		m_vignetteTextureProgram.use();
 
 		// Camera matrix
 		glm::mat4 projectionMatrix = m_uiCamera.getCameraMatrix();
@@ -353,9 +407,9 @@ void GameplayScreen::draw() {
 		m_spriteBatch.draw(glm::vec4(0.0f, 0.0f, m_window->getScreenWidth(), m_window->getScreenHeight()), glm::vec4(0.0f, 0.0f, 1.0f, 1.0f), 0, 0, 0.0f, GLEngine::ColourRGBA8(0, 0, 0, 0));
 
 		m_spriteBatch.end();
-		m_spriteBatch.renderBatch();
+		//m_spriteBatch.renderBatch();
 
-		m_vignetteTextureProgram.unuse();*/
+		m_vignetteTextureProgram.unuse();
 	}
 }
 
@@ -436,11 +490,11 @@ void GameplayScreen::initShaders() {
 	m_skyTextureProgram.addAttribute("vertexUV");
 	m_skyTextureProgram.linkShaders();
 
-	m_wackyProgram.compileShaders(ASSETS_FOLDER_PATH + "Shaders/wacky.vert", ASSETS_FOLDER_PATH + "Shaders/wacky.frag");
-	m_wackyProgram.addAttribute("vertexPosition");
-	m_wackyProgram.addAttribute("vertexColour");
-	m_wackyProgram.addAttribute("vertexUV");
-	m_wackyProgram.linkShaders();
+	m_basicTextureProgram.compileShaders(ASSETS_FOLDER_PATH + "Shaders/basicShader.vert", ASSETS_FOLDER_PATH + "Shaders/basicShader.frag");
+	m_basicTextureProgram.addAttribute("vertexPosition");
+	m_basicTextureProgram.addAttribute("vertexColour");
+	m_basicTextureProgram.addAttribute("vertexUV");
+	m_basicTextureProgram.linkShaders();
 
 	m_postProcessor.compileShaders(ASSETS_FOLDER_PATH + "Shaders/postProcesser.vert", ASSETS_FOLDER_PATH + "Shaders/postProcesser.frag");
 	m_postProcessor.addAttribute("vertexPosition");

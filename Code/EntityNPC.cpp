@@ -27,7 +27,7 @@ EntityNPC::EntityNPC(glm::vec2 pos, unsigned int layer, unsigned int id, SaveDat
 	m_takesFallDamage = d.isDamagedByFalls;
 	m_canDie = !d.isInvincible;
 	m_runSpeed = d.speed;
-	m_jumpHeight = d.jumpHeight;
+	m_jumpHeight = std::sqrt(d.jumpHeight * 2.0f * (1.225f / 60.0f)); // Converts # of blocks to actual acceleration required.
 	m_maxHealth = d.maxHealth;
 	m_faction = (Categories::Faction)d.faction;
 

@@ -306,8 +306,8 @@ void WorldIOManager::P_createWorld(unsigned int seed, std::string worldName, boo
 		// Set the block heights in each chunk
 		setMessage("Setting block heights...");
 
-		for(int layer = 0; layer < WORLD_DEPTH; layer++) {
-			for(int i = 0; i < (WORLD_SIZE / CHUNK_SIZE); i++) {
+		for(int i = 0; i < (WORLD_SIZE / CHUNK_SIZE); i++) {
+			for(int layer = 0; layer < WORLD_DEPTH; layer++) {
 
 				XMLModule::BiomeData biome = XMLModule::XMLData::getBiomeData(w->m_biomesMap[i]);
 
@@ -327,9 +327,9 @@ void WorldIOManager::P_createWorld(unsigned int seed, std::string worldName, boo
 
 					float height = std::floor(extra);
 
-					tempHeights[layer * WORLD_SIZE + i * CHUNK_SIZE + j] = height;
+					tempHeights[layer * CHUNK_SIZE + j + i * CHUNK_SIZE * WORLD_DEPTH] = height;
 
-					setMessage("Setting block heights... \n(" + std::to_string(layer * WORLD_SIZE + i * CHUNK_SIZE + j) + "/" + std::to_string(WORLD_SIZE * WORLD_DEPTH) + ")");
+					setMessage("Setting block heights... \n(" + std::to_string(i * CHUNK_SIZE * WORLD_DEPTH + j + layer * CHUNK_SIZE) + "/" + std::to_string(WORLD_SIZE * WORLD_DEPTH) + ")");
 					setProgress(0.1f + 0.069f / (WORLD_DEPTH * WORLD_SIZE) * ((WORLD_SIZE * layer) + (i * CHUNK_SIZE) + (j + 1))); // Ends at 0.169f;
 				}
 			}
@@ -404,6 +404,7 @@ void WorldIOManager::P_createWorld(unsigned int seed, std::string worldName, boo
 								//w->setTile_noEvent(flower);
 							}
 						}
+						setMessage("Placing blocks... (" + std::to_string(layer * WORLD_SIZE * WORLD_HEIGHT + x * WORLD_HEIGHT + y) + "/" + std::to_string((WORLD_DEPTH * WORLD_SIZE * WORLD_HEIGHT)) + ")");
 						setProgress(0.238f + 0.752f / (WORLD_DEPTH * WORLD_SIZE * WORLD_HEIGHT) * ((WORLD_SIZE * WORLD_HEIGHT * layer) + (WORLD_HEIGHT * x) + (y + 1))); // Ends at 0.99
 					}
 					for(int y = blockHeights[layer * WORLD_SIZE + x]; y < WORLD_HEIGHT; y++) {
@@ -414,6 +415,7 @@ void WorldIOManager::P_createWorld(unsigned int seed, std::string worldName, boo
 							Tile* tile = new Tile(glm::vec2(x, y), layer, TileIDs::AIR, SaveDataTypes::MetaData(), false);
 							w->setTile_noEvent(tile);
 						}
+						setMessage("Placing blocks... (" + std::to_string(layer * WORLD_SIZE * WORLD_HEIGHT + x * WORLD_HEIGHT + y) + "/" + std::to_string((WORLD_DEPTH * WORLD_SIZE * WORLD_HEIGHT)) + ")");
 						setProgress(0.238f + 0.752f / (WORLD_DEPTH * WORLD_SIZE * WORLD_HEIGHT) * ((WORLD_SIZE * WORLD_HEIGHT * layer) + (WORLD_HEIGHT * x) + (y + 1))); // Ends at 0.99
 					}
 				}

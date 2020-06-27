@@ -6,15 +6,18 @@
       <Environment/>
       <Project Name="Fear-Of-The-Dark" ConfigName="Release - Linux"/>
       <Project Name="Fear-Of-The-Dark" ConfigName="Release - Windows"/>
+      <Project Name="" ConfigName="Debug"/>
     </WorkspaceConfiguration>
     <WorkspaceConfiguration Name="Linux Debug" Selected="yes">
       <Environment/>
       <Project Name="Fear-Of-The-Dark" ConfigName="Debug"/>
       <Project Name="Fear-Of-The-Dark" ConfigName="DebugVB"/>
+      <Project Name="" ConfigName="Debug"/>
     </WorkspaceConfiguration>
-    <WorkspaceConfiguration Name="Windows Release" Selected="no">
+    <WorkspaceConfiguration Name="Windows Release" Selected="yes">
       <Environment/>
       <Project Name="Fear-Of-The-Dark" ConfigName="Release - Windows"/>
+      <Project Name="" ConfigName="Debug"/>
     </WorkspaceConfiguration>
   </BuildMatrix>
 </CodeLite_Workspace>

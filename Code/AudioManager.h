@@ -9,14 +9,14 @@
 #include "Logging.h"
 
 enum class SoundEffectIDs {
-    WALK_DIRT, // = 0
-    HUSK_SOUND // = 1
+	WALK_DIRT, // = 0
+	HUSK_SOUND // = 1
 };
 
 enum class ParticleIDs {
-    DIRT_PARTICLE,
-    WATER_PARTICLE,
-    FIRE_PARTICLE
+	DIRT_PARTICLE,
+	WATER_PARTICLE,
+	FIRE_PARTICLE
 };
 
 #define SOUND_EFFECT_LENGTH 2 // How many sound effect files there are
@@ -26,38 +26,42 @@ enum class ParticleIDs {
 #define NIGHT_MUSIC_LENGTH 0 // How many music files there are for 'night'
 #define NIGHTMARE_MUSIC_LENGTH 0 // How many music files there are for 'nightmare hour'
 
-class AudioManager
-{
-    public:
-        AudioManager();
-        ~AudioManager();
+class AudioManager {
+	public:
+		AudioManager();
+		~AudioManager();
 
-        void init();
+		void init();
 
-        bool isMusicPlaying();
+		bool isMusicPlaying();
 
-        void playMorningSong(int id);
-        void playDaySong(int id);
-        void playAfternoonSong(int id);
-        void playNightSong(int id);
-        void playNightmareSong(int id);
-        void playSoundEffect(int id, unsigned int volume);
+		float setMusicVolume(float vol);
+		float setSoundsVolume(float vol);
 
-        void updateSoundEffect(int id, unsigned int volume);
+		void playMorningSong(int id);
+		void playDaySong(int id);
+		void playAfternoonSong(int id);
+		void playNightSong(int id);
+		void playNightmareSong(int id);
+		void playSoundEffect(int id, unsigned int volume);
 
-    private:
-        Logger* logger = Logger::getInstance();
+		void updateSoundEffect(int id, unsigned int volume);
 
-        GLEngine::AudioEngine* m_audio;
+	private:
+		Logger* logger = Logger::getInstance();
 
-        bool m_playingMusic = false;
+		GLEngine::AudioEngine* m_audio;
 
-        std::vector<GLEngine::Music> m_music;
-        std::vector<GLEngine::SoundEffect> m_soundEffects;
-        std::string m_soundEffectFiles[SOUND_EFFECT_LENGTH] =
-        {
-            "WalkDirt.wav",
-            "HuskNoise.wav"
-        };
+		bool m_playingMusic = false;
+
+		float m_musicVolume = 1.0f;
+		float m_soundsVolume = 1.0f;
+
+		std::vector<GLEngine::Music> m_music;
+		std::vector<GLEngine::SoundEffect> m_soundEffects;
+		std::string m_soundEffectFiles[SOUND_EFFECT_LENGTH] = {
+			"WalkDirt.wav",
+			"HuskNoise.wav"
+		};
 
 };

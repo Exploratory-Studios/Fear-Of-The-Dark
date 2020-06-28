@@ -11,135 +11,156 @@
 #include <SpriteBatch.h>
 
 class Chunk;
-namespace SaveDataTypes { class MetaData; }
+namespace SaveDataTypes {
+	class MetaData;
+}
 class World;
 
 enum class EntityIDs {
-    NPC_PLAYER,
-    NPC_NEUTRAL_QUESTGIVER_A,
-    NPC_NEUTRAL_COMPANIONCUBE,
-    ITEM
+	NPC_PLAYER,
+	NPC_NEUTRAL_QUESTGIVER_A,
+	NPC_NEUTRAL_COMPANIONCUBE,
+	ITEM
 };
 
 enum class EntityTypes {
-    NPC,
-    ITEM,
-    PROJECTILE
+	NPC,
+	ITEM,
+	PROJECTILE
 };
 
-class Entity
-{
-    friend class Scripter;
+class Entity {
+		friend class Scripter;
 
-    public:
-        Entity(glm::vec2 pos, unsigned int layer, SaveDataTypes::MetaData data);
-        Entity(SaveDataTypes::EntityData& saveData);
-        virtual ~Entity();
+	public:
+		Entity(glm::vec2 pos, unsigned int layer, SaveDataTypes::MetaData data);
+		Entity(SaveDataTypes::EntityData& saveData);
+		virtual ~Entity();
 
-        void update(World* world, float timeStep, unsigned int selfIndex);
-        void tick(World* world);
-        void draw(GLEngine::SpriteBatch& sb, float time, int layerDifference, float xOffset);
-        void debugDraw(GLEngine::DebugRenderer& dr, float xOffset);
-        void move(float timeStepVariable);
+		void update(World* world, float timeStep, unsigned int selfIndex);
+		void tick(World* world);
+		void draw(GLEngine::SpriteBatch& sb, float time, int layerDifference, float xOffset);
+		void drawNormal(GLEngine::SpriteBatch& sb, float time, int layerDifference, float xOffset);
+		void debugDraw(GLEngine::DebugRenderer& dr, float xOffset);
+		void move(float timeStepVariable);
 
-        virtual void collide(World* world, unsigned int entityIndex) {}
+		virtual void collide(World* world, unsigned int entityIndex) {}
 
-        // Getters
-        const glm::vec2&               getPosition()     const { return m_position; }
-        const glm::vec2&               getSize()         const { return m_size; }
-              glm::vec2                getVelocity()     const { return m_velocity; }
-              glm::vec4                getLightLevel()   const { return m_cornerLight; }
-              float                    getAverageLightLevel() const { return (m_cornerLight.x + m_cornerLight.y + m_cornerLight.z + m_cornerLight.w) / 4.0f; }
-              void                     setPosition(glm::vec2 pos)   { m_position = pos; }
-        unsigned int                   getLayer()        const { return m_layer; }
-        std::string                    getUUID()         const { return m_UUID; }
-        unsigned int                   getID()           const { return m_id; }
-        EntityTypes                    getType()         const { return m_type; }
-        SaveDataTypes::MetaData                       getMetaData()     const { return m_metaData; }
+		// Getters
+		const glm::vec2&               getPosition()     const {
+			return m_position;
+		}
+		const glm::vec2&               getSize()         const {
+			return m_size;
+		}
+		glm::vec2                getVelocity()     const {
+			return m_velocity;
+		}
+		glm::vec4                getLightLevel()   const {
+			return m_cornerLight;
+		}
+		float                    getAverageLightLevel() const {
+			return (m_cornerLight.x + m_cornerLight.y + m_cornerLight.z + m_cornerLight.w) / 4.0f;
+		}
+		void                     setPosition(glm::vec2 pos)   {
+			m_position = pos;
+		}
+		unsigned int                   getLayer()        const {
+			return m_layer;
+		}
+		std::string                    getUUID()         const {
+			return m_UUID;
+		}
+		unsigned int                   getID()           const {
+			return m_id;
+		}
+		EntityTypes                    getType()         const {
+			return m_type;
+		}
+		SaveDataTypes::MetaData                       getMetaData()     const {
+			return m_metaData;
+		}
 
-        void setToDraw(bool draw) { m_draw = draw; }
-        void setMetaData(SaveDataTypes::MetaData& m) { m_metaData = m; }
+		void setToDraw(bool draw) {
+			m_draw = draw;
+		}
+		void setMetaData(SaveDataTypes::MetaData& m) {
+			m_metaData = m;
+		}
 
-        void generateUUID(World* world);
+		void generateUUID(World* world);
 
-        virtual std::vector<ScriptingModule::Argument> generateLuaValues() {
-            std::vector<ScriptingModule::Argument> args = {
-                { "selfX", std::to_string(m_position.x) },
-                { "selfY", std::to_string(m_position.y) },
-                { "selfXVel", std::to_string(m_velocity.x) },
-                { "selfYVel", std::to_string(m_velocity.y) },
-                { "selfID", std::to_string(m_id) }
-            };
+		virtual std::vector<ScriptingModule::Argument> generateLuaValues() {
+			std::vector<ScriptingModule::Argument> args = {
+				{ "selfX", std::to_string(m_position.x) },
+				{ "selfY", std::to_string(m_position.y) },
+				{ "selfXVel", std::to_string(m_velocity.x) },
+				{ "selfYVel", std::to_string(m_velocity.y) },
+				{ "selfID", std::to_string(m_id) }
+			};
 
-            m_metaData.getLuaArguments(args);
+			m_metaData.getLuaArguments(args);
 
-            return args;
-        }
+			return args;
+		}
 
-    protected:
-        // Collision
-        bool checkTilePosition(World* world, std::vector<glm::vec2>& collideTilePositions, float xPos, float yPos);
-        virtual void collideWithTile(glm::vec2 tilePos, bool ground = false);
+	protected:
+		// Collision
+		bool checkTilePosition(World* world, std::vector<glm::vec2>& collideTilePositions, float xPos, float yPos);
+		virtual void collideWithTile(glm::vec2 tilePos, bool ground = false);
 
-        void updateLightLevel(World* world);
-        virtual void interact(World* world);
+		void updateLightLevel(World* world);
+		virtual void interact(World* world);
 
-        void moveUpLayer(World* world);
-        void moveDownLayer(World* world);
+		void moveUpLayer(World* world);
+		void moveDownLayer(World* world);
 
-        void die(World* world);
+		void die(World* world);
 
-        virtual void onUpdate(World* world, float timeStep, unsigned int selfIndex) {}
-        virtual void onTick(World* world) {}
-        virtual void onDraw(GLEngine::SpriteBatch& sb, float time, int layerDifference, float xOffset) {}
+		virtual void onUpdate(World* world, float timeStep, unsigned int selfIndex) {}
+		virtual void onTick(World* world) {}
+		virtual void onDraw(GLEngine::SpriteBatch& sb, float time, int layerDifference, float xOffset) {}
 
-        virtual void animate(int& x, int& y, bool& flip, float time) {}
+		virtual void animate(int& x, int& y, bool& flip, float time) {}
 
 
-        // Internal
-        // Rendering
-        void loadTexture();
-        int m_animationFramesX = 1, m_animationFramesY = 1;
+		// Internal
+		// Rendering
+		void loadTexture();
+		int m_animationFramesX = 1, m_animationFramesY = 1;
 
-        bool m_controls[6]; // Up, down (crouching while on ground), left, right, backwards (layer++), forwards (layer--)
+		bool m_controls[6]; // Up, down (crouching while on ground), left, right, backwards (layer++), forwards (layer--)
 
-        bool m_exposedToSun = false;
-        glm::vec4 m_cornerLight; // light values at each of the 4 corners. (clockwise, component 0 is at top left
-        bool m_flippedTexture = false;
+		bool m_exposedToSun = false;
+		glm::vec4 m_cornerLight; // light values at each of the 4 corners. (clockwise, component 0 is at top left
+		bool m_flippedTexture = false;
 
-        glm::vec2 m_position = glm::vec2(0.0f);
-        unsigned int m_layer = 0;
-        glm::vec2 m_velocity = glm::vec2(0.0f);
-        bool m_onGround = false;
-        bool m_draw = true;
+		glm::vec2 m_position = glm::vec2(0.0f);
+		unsigned int m_layer = 0;
+		glm::vec2 m_velocity = glm::vec2(0.0f);
+		bool m_onGround = false;
+		bool m_draw = true;
 
-        SaveDataTypes::MetaData m_metaData;
+		SaveDataTypes::MetaData m_metaData;
 
-        // XML Attributes
-        unsigned int m_id;
-        GLuint m_textureId = (GLuint)-1;
-        GLuint m_bumpMapId = (GLuint)-1;
+		// XML Attributes
+		unsigned int m_id;
+		GLuint m_textureId = (GLuint) - 1;
+		GLuint m_bumpMapId = (GLuint) - 1;
 
-        std::string m_texturePath;
-        std::string m_bumpMapPath;
+		std::string m_texturePath;
+		std::string m_bumpMapPath;
 
-        glm::vec2 m_size = glm::vec2(1.0f);
+		glm::vec2 m_size = glm::vec2(1.0f);
 
-        int m_updateScriptId = -1;
-        int m_tickScriptId = -1;
+		int m_updateScriptId = -1;
+		int m_tickScriptId = -1;
 
-        EntityTypes m_type;
+		EntityTypes m_type;
 
-        // UUID
-        std::string m_UUID = "NO_UUID"; // This is a universally unique identifier, and is generated by concatenating the current gametime, a few random numbers, and the position of this entity on creation
+		// UUID
+		std::string m_UUID = "NO_UUID"; // This is a universally unique identifier, and is generated by concatenating the current gametime, a few random numbers, and the position of this entity on creation
 };
 
 Entity* createEntity(glm::vec2 pos, unsigned int layer, unsigned int id, SaveDataTypes::MetaData data, bool loadTex);
 Entity* createEntity(glm::vec2 pos, unsigned int layer, EntityIDs id, SaveDataTypes::MetaData data, bool loadTex);
-
-
-
-
-
-
-

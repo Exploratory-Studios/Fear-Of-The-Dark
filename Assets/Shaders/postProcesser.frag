@@ -6,18 +6,18 @@ in vec2 fragmentUV;
 
 out vec4 colour;
 
-uniform sampler2D textureS;
+uniform sampler2D textureSampler;
 uniform sampler2D depthMap;
 
 uniform float playerDepth;
 
 const float Pi = 6.28318530718; // Pi*2
 
-vec4 blur(float directions, float quality, float size, sampler2D textureSampler, vec2 uv) {
+vec4 blur(float directions, float quality, float size, sampler2D textureS, vec2 uv) {
 	vec2 radius = vec2(size);
 	
 	// Pixel colour
-	vec4 pixColour = texture(textureSampler, uv);
+	vec4 pixColour = texture(textureS, uv);
 
 	if(pixColour.a <= 0.01f) {
 		discard;
@@ -27,7 +27,7 @@ vec4 blur(float directions, float quality, float size, sampler2D textureSampler,
 	{
 		for(float i=1.0/quality; i<=1.0; i+=1.0/quality)
 		{
-			pixColour += texture(textureSampler, uv+vec2(cos(d),sin(d))*radius*i);		
+			pixColour += texture(textureS, uv+vec2(cos(d),sin(d))*radius*i);		
 		}
 	}
 
@@ -47,7 +47,7 @@ void main()
 
 	
 	// Final
-	colour = blur(16.0, 3.0, 0.008 * depthDiff, textureS, fragmentUV);
+	colour = blur(16.0, 3.0, 0.008 * depthDiff, textureSampler, fragmentUV);
 	float c = 1.0f / map(depth, 0.0, 1.0, 1.0, 4.0);
 	colour.rgb *= c;
 }

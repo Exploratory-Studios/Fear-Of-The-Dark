@@ -201,34 +201,42 @@ void Tile::tick(World* world, float tickTime, const float& sunlight) {
 void Tile::draw(GLEngine::SpriteBatch& sb, GLEngine::SpriteFont& sf, int xOffset, int depthDifference) {
 
 	if(m_draw) {
-		if(m_textureId == (GLuint) - 1 || m_bumpMapId == (GLuint) - 1) {
+		if(m_textureId == (GLuint) - 1) {
 			loadTexture();
 		}
 
 		GLEngine::ColourRGBA8 colour = m_colour;
-		/*if(depthDifference != 0) {
-		    if(depthDifference > 0) {// in front of the player
-		        colour.a = 150;
-		        colour.r = 64;
-		        colour.g = 64;
-		        colour.b = 64;
-		    } else {
-		        float c = 100 / -depthDifference; // Same layer will be (255, 255, 255), 1 layer back (64, 64, 64), 2 layers (32, 32, 32), etc.
-		        colour.r = c;
-		        colour.g = c;
-		        colour.b = c;
-		    }
-		}*/
 
 		glm::vec4 pos = glm::vec4(m_pos.x + xOffset, m_pos.y, m_size.x, m_size.y);
 		float depth = 0.1f + (m_layer * (1.0f / (float)(WORLD_DEPTH)) * 0.9f);
 		sb.draw(pos,
 		        glm::vec4(0.0f, 0.0f, 1.0f, 1.0f),
 		        m_textureId,
+		        depth,
+		        colour,
+		        m_cornerSunlight);
+
+		onDraw(sb, sf, pos, depth);
+	}
+}
+
+void Tile::drawNormal(GLEngine::SpriteBatch& sb, int xOffset, int depthDifference) {
+
+	if(m_draw) {
+		if(m_bumpMapId == (GLuint) - 1) {
+			loadTexture();
+		}
+
+		GLEngine::ColourRGBA8 colour = m_colour;
+
+		glm::vec4 pos = glm::vec4(m_pos.x + xOffset, m_pos.y, m_size.x, m_size.y);
+		float depth = 0.1f + (m_layer * (1.0f / (float)(WORLD_DEPTH)) * 0.9f);
+		sb.draw(pos,
+		        glm::vec4(0.0f, 0.0f, 1.0f, 1.0f),
 		        m_bumpMapId,
 		        depth,
 		        colour,
-		        /*m_cornerLight + */m_cornerSunlight);
+		        m_cornerSunlight);
 
 		onDraw(sb, sf, pos, depth);
 	}

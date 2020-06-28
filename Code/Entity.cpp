@@ -143,7 +143,7 @@ void Entity::draw(GLEngine::SpriteBatch& sb, float time, int layerDifference, fl
 	//glUniform3fv(lightUniform, 3, &glm::vec3(1.0f, 1.0f, 1.0f)[0]);
 
 	if(m_draw) {
-		if(m_textureId == (GLuint) - 1 || m_bumpMapId == (GLuint) - 1) {
+		if(m_textureId == (GLuint) - 1) {
 			loadTexture();
 		}
 
@@ -174,24 +174,54 @@ void Entity::draw(GLEngine::SpriteBatch& sb, float time, int layerDifference, fl
 
 		GLEngine::ColourRGBA8 colour(255, 255, 255, 255);
 
-		/*layerDifference--;
-		if(layerDifference != 0) {
-		    if(layerDifference > 0) {// in front of the player
-		        colour.a = 150;
-		        colour.r = 64;
-		        colour.g = 64;
-		        colour.b = 64;
-		    } else {
-		        float c = 100 / -layerDifference; // Same layer will be (255, 255, 255), 1 layer back (64, 64, 64), 2 layers (32, 32, 32), etc.
-		        colour.r = c;
-		        colour.g = c;
-		        colour.b = c;
-		    }
-		}*/
+		float depth = 0.1f + (m_layer * (1.0f / (float)(WORLD_DEPTH)) * 0.9f);
+
+		sb.draw(destRect, uvRect, m_textureId, depth, colour, lighting);
+
+		onDraw(sb, time, layerDifference, xOffset);
+	}
+}
+
+void Entity::drawNormal(GLEngine::SpriteBatch& sb, float time, int layerDifference, float xOffset) {
+
+	//GLint lightUniform = program->getUniformLocation("lightColour");
+	//glUniform3fv(lightUniform, 3, &glm::vec3(1.0f, 1.0f, 1.0f)[0]);
+
+	if(m_draw) {
+		if(m_bumpMapId == (GLuint) - 1) {
+			loadTexture();
+		}
+
+		glm::vec4 destRect = glm::vec4(m_position.x + (xOffset * CHUNK_SIZE), m_position.y, m_size.x, m_size.y);
+		glm::vec4 lighting = m_cornerLight;
+
+		int x = 0, y = 0;
+
+		animate(x, y, m_flippedTexture, time);
+
+		float finalX = (x / m_animationFramesX);
+		float finalY = (y / m_animationFramesY);
+
+		glm::vec4 uvRect;
+
+		if(!m_flippedTexture) {
+			uvRect = glm::vec4(finalX,
+			                   finalY,
+			                   1.0f / m_animationFramesX,
+			                   1.0f / m_animationFramesY);
+		} else if(m_flippedTexture) {
+			uvRect = glm::vec4(finalX + 1.0f / m_animationFramesX,
+			                   finalY,
+			                   1.0f / -m_animationFramesX,
+			                   1.0f / m_animationFramesY);
+			lighting = glm::vec4(lighting.y, lighting.x, lighting.w, lighting.z);
+		}
+
+		GLEngine::ColourRGBA8 colour(255, 255, 255, 255);
 
 		float depth = 0.1f + (m_layer * (1.0f / (float)(WORLD_DEPTH)) * 0.9f);
 
-		sb.draw(destRect, uvRect, m_textureId, m_bumpMapId, depth, colour, lighting);
+		sb.draw(destRect, uvRect, m_bumpMapId, depth, colour, lighting);
 
 		onDraw(sb, time, layerDifference, xOffset);
 	}

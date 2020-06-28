@@ -48,6 +48,7 @@ void GameplayScreen::onEntry() {
 	m_spriteBatch.init();
 	m_spriteFont.init((ASSETS_FOLDER_PATH + "GUI/fonts/Amatic-Bold.ttf").c_str(), 96);
 	m_mainFBO.init(glm::vec4(0.0f, 0.0f, m_window->getScreenWidth(), m_window->getScreenHeight()));
+	m_normalFBO.init(glm::vec4(0.0f, 0.0f, m_window->getScreenWidth(), m_window->getScreenHeight()));
 	m_skyFBO.init(glm::vec4(0.0f, 0.0f, m_window->getScreenWidth(), m_window->getScreenHeight()));
 
 	m_scale = INITIAL_ZOOM;
@@ -185,74 +186,134 @@ void GameplayScreen::draw() {
 
 	glClearColor(0.3f * dayLight, 0.4f * dayLight, 1.0f * dayLight, 1.0f);
 
-	m_skyFBO.begin();
-
-	m_skyFBO.clear();
-
 	{
 		// Sky
-		m_skyTextureProgram.use();
+		drawSkyToFBO(); // Readies the FBO.
+
+		m_basicTextureProgram.use();
 
 		// Camera matrix
 		glm::mat4 projectionMatrix = m_uiCamera.getCameraMatrix();
-		GLint pUniform = m_skyTextureProgram.getUniformLocation("P");
+		GLint pUniform = m_basicTextureProgram.getUniformLocation("P");
 		glUniformMatrix4fv(pUniform, 1, GL_FALSE, &projectionMatrix[0][0]);
-
-		GLint textureUniform = m_textureProgram.getUniformLocation("textureSampler");
+		GLint textureUniform = m_basicTextureProgram.getUniformLocation("textureSampler");
 		glUniform1i(textureUniform, 0);
 
-		GLint sizeUniform = m_skyTextureProgram.getUniformLocation("screenSizeU");
-		glUniform2f(sizeUniform, m_window->getScreenWidth(), m_window->getScreenHeight());
+		m_skyFBO.draw();
 
-		GLint lightUniform = m_skyTextureProgram.getUniformLocation("daylight");
-		glUniform1f(lightUniform, dayLight);
+		m_basicTextureProgram.unuse();
+	}
 
-		GLint playerDepthUniform = m_skyTextureProgram.getUniformLocation("playerXPos");
-		float playerChunkX = std::fmod((m_world->getPlayer()->getPosition().x + (float)CHUNK_SIZE), (float)CHUNK_SIZE);
-		glUniform1f(playerDepthUniform, playerChunkX / (float)(CHUNK_SIZE));
+	{
+		drawWorldToFBO();
+		drawWorldNormalToFBO();
 
-		GLint parallaxZoomUniform = m_skyTextureProgram.getUniformLocation("parallaxZoom");
-		glUniform1f(parallaxZoomUniform, 0.95f);
+		// Draw main
+		m_postProcessor.use();
 
-		m_spriteBatch.begin();
+		// Camera matrix
+		projectionMatrix = m_uiCamera.getCameraMatrix();
+		pUniform = m_postProcessor.getUniformLocation("P");
+		glUniformMatrix4fv(pUniform, 1, GL_FALSE, &projectionMatrix[0][0]);
 
+		textureUniform = m_postProcessor.getUniformLocation("textureSampler");
+		glUniform1i(textureUniform, 0);
 
-		int playerX = (int)m_world->getPlayer()->getPosition().x;
-		std::string backgroundPath = m_world->getBiome(playerX).backgroundTexture;
+		textureUniform = m_postProcessor.getUniformLocation("depthMap");
+		glUniform1i(textureUniform, 1);
 
-		GLuint backgroundID = GLEngine::ResourceManager::getTexture(backgroundPath).id;
+		// Normal Map.
+		glActiveTexture(GL_TEXTURE2);
+		glBindTexture(GL_TEXTURE_2D, m_normalFBO.getTexture()); // Bind the texture
+		textureUniform = m_postProcessor.getUniformLocation("normalMap");
+		glUniform1i(textureUniform, 2);
 
-		m_spriteBatch.draw(glm::vec4(0.0f, 0.0f, m_window->getScreenWidth(), m_window->getScreenHeight()), glm::vec4(0.0f, 0.0f, 1.0f, 1.0f), backgroundID, 0, 1.0f, GLEngine::ColourRGBA8(255, 255, 255, 255));
+		GLint playerDepthUniform = m_postProcessor.getUniformLocation("playerDepth");
+		glUniform1f(playerDepthUniform, m_world->getPlayer()->getLayer() * (1.0f / (float)(WORLD_DEPTH)));
 
-		m_spriteBatch.end();
-		m_spriteBatch.renderBatch();
+		m_world.setLightsUniform(getScreenBox() + glm::vec4(0.0f, 0.0f, 1.0f, 1.0f), &m_postProcessor);
 
-		m_skyTextureProgram.unuse();
+		m_mainFBO.draw();
+		m_postProcessor.unuse();
 
 	}
-	m_skyFBO.end();
 
+	{
+		// Particles
+		drawParticlesToFBO();
 
-	m_basicTextureProgram.use();
+		m_basicTextureProgram.use();
+
+		// Camera matrix
+		projectionMatrix = m_uiCamera.getCameraMatrix();
+		pUniform = m_basicTextureProgram.getUniformLocation("P");
+		glUniformMatrix4fv(pUniform, 1, GL_FALSE, &projectionMatrix[0][0]);
+
+		textureUniform = m_basicTextureProgram.getUniformLocation("textureSampler");
+		glUniform1i(textureUniform, 0);
+
+		m_particleFBO.draw();
+
+		m_basicTextureProgram.unuse();
+	}
+
+	drawGUIToScreen(); // These two actually do draw to the screen.
+	drawPostToScreen();
+}
+
+void GameplayScreen::drawSkyToFBO() {
+	m_skyFBO.begin();
+	m_skyFBO.clear();
+
+	// Sky
+	m_skyTextureProgram.use();
 
 	// Camera matrix
 	glm::mat4 projectionMatrix = m_uiCamera.getCameraMatrix();
-	GLint pUniform = m_basicTextureProgram.getUniformLocation("P");
+	GLint pUniform = m_skyTextureProgram.getUniformLocation("P");
 	glUniformMatrix4fv(pUniform, 1, GL_FALSE, &projectionMatrix[0][0]);
 
-	GLint textureUniform = m_basicTextureProgram.getUniformLocation("textureSampler");
+	GLint textureUniform = m_textureProgram.getUniformLocation("textureSampler");
 	glUniform1i(textureUniform, 0);
 
-	m_skyFBO.draw();
+	GLint sizeUniform = m_skyTextureProgram.getUniformLocation("screenSizeU");
+	glUniform2f(sizeUniform, m_window->getScreenWidth(), m_window->getScreenHeight());
 
-	m_basicTextureProgram.unuse();
+	GLint lightUniform = m_skyTextureProgram.getUniformLocation("daylight");
+	glUniform1f(lightUniform, dayLight);
 
+	GLint playerDepthUniform = m_skyTextureProgram.getUniformLocation("playerXPos");
+	float playerChunkX = std::fmod((m_world->getPlayer()->getPosition().x + (float)CHUNK_SIZE), (float)CHUNK_SIZE);
+	glUniform1f(playerDepthUniform, playerChunkX / (float)(CHUNK_SIZE));
+
+	GLint parallaxZoomUniform = m_skyTextureProgram.getUniformLocation("parallaxZoom");
+	glUniform1f(parallaxZoomUniform, 0.95f);
+
+	m_spriteBatch.begin();
+
+
+	int playerX = (int)m_world->getPlayer()->getPosition().x;
+	std::string backgroundPath = m_world->getBiome(playerX).backgroundTexture;
+
+	GLuint backgroundID = GLEngine::ResourceManager::getTexture(backgroundPath).id;
+
+	m_spriteBatch.draw(glm::vec4(0.0f, 0.0f, m_window->getScreenWidth(), m_window->getScreenHeight()), glm::vec4(0.0f, 0.0f, 1.0f, 1.0f), backgroundID, 0, 1.0f, GLEngine::ColourRGBA8(255, 255, 255, 255));
+
+	m_spriteBatch.end();
+	m_spriteBatch.renderBatch();
+
+	m_skyTextureProgram.unuse();
+
+	m_skyFBO.end();
+}
+
+void GameplayScreen::drawWorldToFBO() {
 	m_mainFBO.begin();
 
 	m_mainFBO.clear();
 
 	{
-		// World
+		// World: Tiles
 		m_textureProgram.use();
 
 		// Camera matrix
@@ -262,61 +323,45 @@ void GameplayScreen::draw() {
 
 		GLint textureUniform = m_textureProgram.getUniformLocation("textureSampler");
 		glUniform1i(textureUniform, 0);
-
-		textureUniform = m_textureProgram.getUniformLocation("bumpSampler");
-		glUniform1i(textureUniform, 1);
-
-		m_world->drawTiles(m_spriteBatch, m_spriteFont, m_dr, getScreenBox() + glm::vec4(0.0f, 0.0f, 1.0f, 1.0f), &m_textureProgram); // handles spritebatch.begin and end
-
-		m_textureProgram.unuse();
-	}
-
-	//m_mainFBO.begin();
-
-	{
-		// World: Entities
-		m_textureProgram.use();
-
-		// Camera matrix
-		glm::mat4 projectionMatrix = m_camera.getCameraMatrix();
-		GLint pUniform = m_textureProgram.getUniformLocation("P");
-		glUniformMatrix4fv(pUniform, 1, GL_FALSE, &projectionMatrix[0][0]);
-		GLint textureUniform = m_textureProgram.getUniformLocation("textureSampler");
-		glUniform1i(textureUniform, 0);
-		textureUniform = m_textureProgram.getUniformLocation("bumpSampler");
-		glUniform1i(textureUniform, 1);
 
 		m_spriteBatch.begin();
 
+		m_world->drawTiles(m_spriteBatch, m_spriteFont, m_dr, getScreenBox() + glm::vec4(0.0f, 0.0f, 1.0f, 1.0f), &m_textureProgram); // handles spritebatch.begin and end
 		m_world->drawEntities(m_spriteBatch, m_spriteFont, m_dr, getScreenBox() + glm::vec4(0.0f, 0.0f, 1.0f, 1.0f));
 
 		m_spriteBatch.end();
-		m_spriteBatch.renderBatch();
+		m_spriteBatch.renderBatches();
+
 		m_textureProgram.unuse();
 	}
 
 	m_mainFBO.end();
+}
 
-	m_postProcessor.use();
+void GameplayScreen::drawWorldNormalToFBO() {
+	m_normalFBO.begin(); // Normal mapping begin
+	m_textureProgram.use();
 
 	// Camera matrix
-	projectionMatrix = m_uiCamera.getCameraMatrix();
-	pUniform = m_postProcessor.getUniformLocation("P");
+	glm::mat4 projectionMatrix = m_camera.getCameraMatrix();
+	GLint pUniform = m_textureProgram.getUniformLocation("P");
 	glUniformMatrix4fv(pUniform, 1, GL_FALSE, &projectionMatrix[0][0]);
 
-	textureUniform = m_postProcessor.getUniformLocation("textureS");
+	GLint textureUniform = m_textureProgram.getUniformLocation("textureSampler");
 	glUniform1i(textureUniform, 0);
-	textureUniform = m_postProcessor.getUniformLocation("depthMap");
-	glUniform1i(textureUniform, 1);
 
-	GLint playerDepthUniform = m_postProcessor.getUniformLocation("playerDepth");
-	glUniform1f(playerDepthUniform, m_world->getPlayer()->getLayer() * (1.0f / (float)(WORLD_DEPTH)));
+	m_spriteBatch.begin();
 
-	m_mainFBO.draw();
+	m_world->drawTilesNormal(m_spriteBatch, getScreenBox() + glm::vec4(0.0f, 0.0f, 1.0f, 1.0f), &m_textureProgram);
+	m_world->drawEntitiesNormal(m_spriteBatch, getScreenBox() + glm::vec4(0.0f, 0.0f, 1.0f, 1.0f), &m_textureProgram);
 
-	m_postProcessor.unuse();
+	m_spriteBatch.end();
+	m_spriteBatch.renderBatch();
+	m_textureProgram.unuse();
+	m_normalFBO.end(); // Normal mapping end.
+}
 
-
+void GameplayScreen::drawParticlesToFBO() {
 	m_particleFBO.begin();
 	{
 		// World: Particles
@@ -328,8 +373,6 @@ void GameplayScreen::draw() {
 		glUniformMatrix4fv(pUniform, 1, GL_FALSE, &projectionMatrix[0][0]);
 		GLint textureUniform = m_textureProgram.getUniformLocation("textureSampler");
 		glUniform1i(textureUniform, 0);
-		textureUniform = m_textureProgram.getUniformLocation("bumpSampler");
-		glUniform1i(textureUniform, 1);
 
 		m_spriteBatch.begin();
 
@@ -340,78 +383,65 @@ void GameplayScreen::draw() {
 		m_textureProgram.unuse();
 	}
 	m_particleFBO.end();
+}
 
-	m_basicTextureProgram.use();
+void GameplayScreen::drawGUIToScreen() {
+	// GUI
+	m_uiTextureProgram.use();
+
+	GLint textureUniform = m_uiTextureProgram.getUniformLocation("mySampler");
+	glUniform1i(textureUniform, 0);
+	glActiveTexture(GL_TEXTURE0);
 
 	// Camera matrix
-	projectionMatrix = m_uiCamera.getCameraMatrix();
-	pUniform = m_basicTextureProgram.getUniformLocation("P");
+	glm::mat4 projectionMatrix = m_uiCamera.getCameraMatrix();
+	GLint pUniform = m_uiTextureProgram.getUniformLocation("P");
 	glUniformMatrix4fv(pUniform, 1, GL_FALSE, &projectionMatrix[0][0]);
 
-	textureUniform = m_basicTextureProgram.getUniformLocation("textureSampler");
-	glUniform1i(textureUniform, 0);
+	m_world->getPlayer()->drawGUI(m_spriteBatch, m_spriteFont);
 
-	m_particleFBO.draw();
+	m_gui->draw();
 
-	m_basicTextureProgram.unuse();
-
-	{
-		// GUI
-		m_uiTextureProgram.use();
-
-		GLint textureUniform = m_uiTextureProgram.getUniformLocation("mySampler");
-		glUniform1i(textureUniform, 0);
-		glActiveTexture(GL_TEXTURE0);
-
-		// Camera matrix
-		glm::mat4 projectionMatrix = m_uiCamera.getCameraMatrix();
-		GLint pUniform = m_uiTextureProgram.getUniformLocation("P");
-		glUniformMatrix4fv(pUniform, 1, GL_FALSE, &projectionMatrix[0][0]);
-
-		m_world->getPlayer()->drawGUI(m_spriteBatch, m_spriteFont);
-
-		m_gui->draw();
-
-		m_dr.end();
-		m_dr.render(projectionMatrix, 3);
+	m_dr.end();
+	m_dr.render(projectionMatrix, 3);
 
 #ifdef DEV_CONTROLS
-		if(m_debuggingInfo) {
-			drawDebug();
-		}
+	if(m_debuggingInfo) {
+		drawDebug();
+	}
 #endif // DEV_CONTROLS
 
-		m_uiTextureProgram.unuse();
-	}
-
-	{
-		// Post
-		m_vignetteTextureProgram.use();
-
-		// Camera matrix
-		glm::mat4 projectionMatrix = m_uiCamera.getCameraMatrix();
-		GLint pUniform = m_vignetteTextureProgram.getUniformLocation("P");
-		glUniformMatrix4fv(pUniform, 1, GL_FALSE, &projectionMatrix[0][0]);
-
-		GLint sizeUniform = m_vignetteTextureProgram.getUniformLocation("screenSizeU");
-		glUniform2f(sizeUniform, m_window->getScreenWidth(), m_window->getScreenHeight());
-
-		GLint sanityUniform = m_vignetteTextureProgram.getUniformLocation("sanity");
-		glUniform1f(sanityUniform, m_world->getPlayer()->getSanity());
-
-		GLint timeUniform = m_vignetteTextureProgram.getUniformLocation("time");
-		glUniform1f(timeUniform, m_time);
-
-		m_spriteBatch.begin();
-
-		m_spriteBatch.draw(glm::vec4(0.0f, 0.0f, m_window->getScreenWidth(), m_window->getScreenHeight()), glm::vec4(0.0f, 0.0f, 1.0f, 1.0f), 0, 0, 0.0f, GLEngine::ColourRGBA8(0, 0, 0, 0));
-
-		m_spriteBatch.end();
-		//m_spriteBatch.renderBatch();
-
-		m_vignetteTextureProgram.unuse();
-	}
+	m_uiTextureProgram.unuse();
 }
+
+void GameplayScreen::drawPostToScreen() {
+	// Post
+	m_vignetteTextureProgram.use();
+
+	// Camera matrix
+	glm::mat4 projectionMatrix = m_uiCamera.getCameraMatrix();
+	GLint pUniform = m_vignetteTextureProgram.getUniformLocation("P");
+	glUniformMatrix4fv(pUniform, 1, GL_FALSE, &projectionMatrix[0][0]);
+
+	GLint sizeUniform = m_vignetteTextureProgram.getUniformLocation("screenSizeU");
+	glUniform2f(sizeUniform, m_window->getScreenWidth(), m_window->getScreenHeight());
+
+	GLint sanityUniform = m_vignetteTextureProgram.getUniformLocation("sanity");
+	glUniform1f(sanityUniform, m_world->getPlayer()->getSanity());
+
+	GLint timeUniform = m_vignetteTextureProgram.getUniformLocation("time");
+	glUniform1f(timeUniform, m_time);
+
+	m_spriteBatch.begin();
+
+	m_spriteBatch.draw(glm::vec4(0.0f, 0.0f, m_window->getScreenWidth(), m_window->getScreenHeight()), glm::vec4(0.0f, 0.0f, 1.0f, 1.0f), 0, 0, 0.0f, GLEngine::ColourRGBA8(0, 0, 0, 0));
+
+	m_spriteBatch.end();
+	//m_spriteBatch.renderBatch();
+
+	m_vignetteTextureProgram.unuse();
+}
+
 
 /// GameplayScreen PRIVATE FUNCTIONS
 

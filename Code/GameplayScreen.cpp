@@ -181,27 +181,24 @@ void GameplayScreen::update() {
 
 void GameplayScreen::draw() {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
-	float dayLight = cos((float)m_world->getTime() / (DAY_LENGTH / 6.28318f)) / 2.0f + 0.5f;
-
-	glClearColor(0.3f * dayLight, 0.4f * dayLight, 1.0f * dayLight, 1.0f);
+	glClearColor(1.0, 0.0, 1.0, 1.0);
 
 	{
 		// Sky
 		drawSkyToFBO(); // Readies the FBO.
 
-		m_basicTextureProgram.use();
+		m_basicFBOTextureProgram.use(); // Begins to draw the FBO
 
 		// Camera matrix
 		glm::mat4 projectionMatrix = m_uiCamera.getCameraMatrix();
-		GLint pUniform = m_basicTextureProgram.getUniformLocation("P");
+		GLint pUniform = m_basicFBOTextureProgram.getUniformLocation("P");
 		glUniformMatrix4fv(pUniform, 1, GL_FALSE, &projectionMatrix[0][0]);
-		GLint textureUniform = m_basicTextureProgram.getUniformLocation("textureSampler");
+		GLint textureUniform = m_basicFBOTextureProgram.getUniformLocation("textureSampler");
 		glUniform1i(textureUniform, 0);
 
 		m_skyFBO.draw();
 
-		m_basicTextureProgram.unuse();
+		m_basicFBOTextureProgram.unuse();
 	}
 
 	{
@@ -212,26 +209,27 @@ void GameplayScreen::draw() {
 		m_postProcessor.use();
 
 		// Camera matrix
-		projectionMatrix = m_uiCamera.getCameraMatrix();
-		pUniform = m_postProcessor.getUniformLocation("P");
+		glm::mat4 projectionMatrix = m_uiCamera.getCameraMatrix();
+		GLuint pUniform = m_postProcessor.getUniformLocation("P");
 		glUniformMatrix4fv(pUniform, 1, GL_FALSE, &projectionMatrix[0][0]);
 
-		textureUniform = m_postProcessor.getUniformLocation("textureSampler");
+		GLuint textureUniform = m_postProcessor.getUniformLocation("textureSampler");
 		glUniform1i(textureUniform, 0);
 
 		textureUniform = m_postProcessor.getUniformLocation("depthMap");
 		glUniform1i(textureUniform, 1);
 
 		// Normal Map.
-		glActiveTexture(GL_TEXTURE2);
-		glBindTexture(GL_TEXTURE_2D, m_normalFBO.getTexture()); // Bind the texture
-		textureUniform = m_postProcessor.getUniformLocation("normalMap");
-		glUniform1i(textureUniform, 2);
+		//glActiveTexture(GL_TEXTURE2);
+		//glBindTexture(GL_TEXTURE_2D, m_normalFBO.getTexture()); // Bind the texture
+		//textureUniform = m_postProcessor.getUniformLocation("normalMap");
+		//glUniform1i(textureUniform, 2);
 
 		GLint playerDepthUniform = m_postProcessor.getUniformLocation("playerDepth");
-		glUniform1f(playerDepthUniform, m_world->getPlayer()->getLayer() * (1.0f / (float)(WORLD_DEPTH)));
+		float playerDepth = 0.1f + (m_world->getPlayer()->getLayer() * (1.0f / (float)(WORLD_DEPTH)) * 0.9f);
+		glUniform1f(playerDepthUniform, playerDepth);
 
-		m_world.setLightsUniform(getScreenBox() + glm::vec4(0.0f, 0.0f, 1.0f, 1.0f), &m_postProcessor);
+		//m_world->setLightsUniform(getScreenBox() + glm::vec4(0.0f, 0.0f, 1.0f, 1.0f), &m_postProcessor); // sets "lights" uniform of vec3s
 
 		m_mainFBO.draw();
 		m_postProcessor.unuse();
@@ -242,19 +240,19 @@ void GameplayScreen::draw() {
 		// Particles
 		drawParticlesToFBO();
 
-		m_basicTextureProgram.use();
+		m_basicFBOTextureProgram.use();
 
 		// Camera matrix
-		projectionMatrix = m_uiCamera.getCameraMatrix();
-		pUniform = m_basicTextureProgram.getUniformLocation("P");
+		glm::mat4 projectionMatrix = m_camera.getCameraMatrix();
+		GLuint pUniform = m_basicFBOTextureProgram.getUniformLocation("P");
 		glUniformMatrix4fv(pUniform, 1, GL_FALSE, &projectionMatrix[0][0]);
 
-		textureUniform = m_basicTextureProgram.getUniformLocation("textureSampler");
+		GLuint textureUniform = m_basicFBOTextureProgram.getUniformLocation("textureSampler");
 		glUniform1i(textureUniform, 0);
 
 		m_particleFBO.draw();
 
-		m_basicTextureProgram.unuse();
+		m_basicFBOTextureProgram.unuse();
 	}
 
 	drawGUIToScreen(); // These two actually do draw to the screen.
@@ -262,6 +260,11 @@ void GameplayScreen::draw() {
 }
 
 void GameplayScreen::drawSkyToFBO() {
+
+	float dayLight = cos((float)m_world->getTime() / (DAY_LENGTH / 6.28318f)) / 2.0f + 0.5f;
+
+	glClearColor(0.3f * dayLight, 0.4f * dayLight, 1.0f * dayLight, 1.0f);
+
 	m_skyFBO.begin();
 	m_skyFBO.clear();
 
@@ -297,7 +300,7 @@ void GameplayScreen::drawSkyToFBO() {
 
 	GLuint backgroundID = GLEngine::ResourceManager::getTexture(backgroundPath).id;
 
-	m_spriteBatch.draw(glm::vec4(0.0f, 0.0f, m_window->getScreenWidth(), m_window->getScreenHeight()), glm::vec4(0.0f, 0.0f, 1.0f, 1.0f), backgroundID, 0, 1.0f, GLEngine::ColourRGBA8(255, 255, 255, 255));
+	m_spriteBatch.draw(glm::vec4(0.0f, 0.0f, m_window->getScreenWidth(), m_window->getScreenHeight()), glm::vec4(0.0f, 0.0f, 1.0f, 1.0f), backgroundID, 1.0f, GLEngine::ColourRGBA8(255, 255, 255, 255));
 
 	m_spriteBatch.end();
 	m_spriteBatch.renderBatch();
@@ -330,7 +333,7 @@ void GameplayScreen::drawWorldToFBO() {
 		m_world->drawEntities(m_spriteBatch, m_spriteFont, m_dr, getScreenBox() + glm::vec4(0.0f, 0.0f, 1.0f, 1.0f));
 
 		m_spriteBatch.end();
-		m_spriteBatch.renderBatches();
+		m_spriteBatch.renderBatch();
 
 		m_textureProgram.unuse();
 	}
@@ -340,6 +343,7 @@ void GameplayScreen::drawWorldToFBO() {
 
 void GameplayScreen::drawWorldNormalToFBO() {
 	m_normalFBO.begin(); // Normal mapping begin
+	m_normalFBO.clear();
 	m_textureProgram.use();
 
 	// Camera matrix
@@ -353,7 +357,7 @@ void GameplayScreen::drawWorldNormalToFBO() {
 	m_spriteBatch.begin();
 
 	m_world->drawTilesNormal(m_spriteBatch, getScreenBox() + glm::vec4(0.0f, 0.0f, 1.0f, 1.0f), &m_textureProgram);
-	m_world->drawEntitiesNormal(m_spriteBatch, getScreenBox() + glm::vec4(0.0f, 0.0f, 1.0f, 1.0f), &m_textureProgram);
+	m_world->drawEntitiesNormal(m_spriteBatch, getScreenBox() + glm::vec4(0.0f, 0.0f, 1.0f, 1.0f));
 
 	m_spriteBatch.end();
 	m_spriteBatch.renderBatch();
@@ -389,7 +393,7 @@ void GameplayScreen::drawGUIToScreen() {
 	// GUI
 	m_uiTextureProgram.use();
 
-	GLint textureUniform = m_uiTextureProgram.getUniformLocation("mySampler");
+	GLint textureUniform = m_uiTextureProgram.getUniformLocation("textureSampler");
 	glUniform1i(textureUniform, 0);
 	glActiveTexture(GL_TEXTURE0);
 
@@ -434,7 +438,7 @@ void GameplayScreen::drawPostToScreen() {
 
 	m_spriteBatch.begin();
 
-	m_spriteBatch.draw(glm::vec4(0.0f, 0.0f, m_window->getScreenWidth(), m_window->getScreenHeight()), glm::vec4(0.0f, 0.0f, 1.0f, 1.0f), 0, 0, 0.0f, GLEngine::ColourRGBA8(0, 0, 0, 0));
+	m_spriteBatch.draw(glm::vec4(0.0f, 0.0f, m_window->getScreenWidth(), m_window->getScreenHeight()), glm::vec4(0.0f, 0.0f, 1.0f, 1.0f), 0, 0.0f, GLEngine::ColourRGBA8(0, 0, 0, 0));
 
 	m_spriteBatch.end();
 	//m_spriteBatch.renderBatch();
@@ -492,17 +496,15 @@ void GameplayScreen::checkInput() {
 
 void GameplayScreen::initShaders() {
 
-	m_textureProgram.compileShaders(ASSETS_FOLDER_PATH + "Shaders/textureShading.vert", ASSETS_FOLDER_PATH + "Shaders/textureShading.frag");
+	m_textureProgram.compileShaders(ASSETS_FOLDER_PATH + "Shaders/textureShader.vert", ASSETS_FOLDER_PATH + "Shaders/textureShader.frag");
 	m_textureProgram.addAttribute("vertexPosition");
 	m_textureProgram.addAttribute("vertexColour");
 	m_textureProgram.addAttribute("vertexUV");
-	m_textureProgram.addAttribute("vertexLighting");
 	m_textureProgram.linkShaders();
 
 	glUniform1i(m_textureProgram.getUniformLocation("textureSampler"), 0); // set bump-map and regular texture samplers
-	glUniform1i(m_textureProgram.getUniformLocation("bumpSampler"), 1); // set bump-map and regular texture samplers
 
-	m_uiTextureProgram.compileShaders(ASSETS_FOLDER_PATH + "Shaders/uiShader.vert", ASSETS_FOLDER_PATH + "Shaders/uiShader.frag");
+	m_uiTextureProgram.compileShaders(ASSETS_FOLDER_PATH + "Shaders/textureShader.vert", ASSETS_FOLDER_PATH + "Shaders/textureShader.frag");
 	m_uiTextureProgram.addAttribute("vertexPosition");
 	m_uiTextureProgram.addAttribute("vertexColour");
 	m_uiTextureProgram.addAttribute("vertexUV");
@@ -520,11 +522,11 @@ void GameplayScreen::initShaders() {
 	m_skyTextureProgram.addAttribute("vertexUV");
 	m_skyTextureProgram.linkShaders();
 
-	m_basicTextureProgram.compileShaders(ASSETS_FOLDER_PATH + "Shaders/basicShader.vert", ASSETS_FOLDER_PATH + "Shaders/basicShader.frag");
-	m_basicTextureProgram.addAttribute("vertexPosition");
-	m_basicTextureProgram.addAttribute("vertexColour");
-	m_basicTextureProgram.addAttribute("vertexUV");
-	m_basicTextureProgram.linkShaders();
+	m_basicFBOTextureProgram.compileShaders(ASSETS_FOLDER_PATH + "Shaders/superBasicShader.vert", ASSETS_FOLDER_PATH + "Shaders/superBasicShader.frag");
+	m_basicFBOTextureProgram.addAttribute("vertexPosition");
+	m_basicFBOTextureProgram.addAttribute("vertexColour");
+	m_basicFBOTextureProgram.addAttribute("vertexUV");
+	m_basicFBOTextureProgram.linkShaders();
 
 	m_postProcessor.compileShaders(ASSETS_FOLDER_PATH + "Shaders/postProcesser.vert", ASSETS_FOLDER_PATH + "Shaders/postProcesser.frag");
 	m_postProcessor.addAttribute("vertexPosition");

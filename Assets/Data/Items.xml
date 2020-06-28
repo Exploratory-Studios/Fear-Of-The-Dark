@@ -6,8 +6,9 @@
 	<weight>0.000000</weight>
 </item>
 <item id="2" name="BlockTorch">
-	<texture>../Blocks/Torch.png</texture>
+	<texture>Blocks/Torch.png</texture>
 	<weight>0.000000</weight>
+	<useScript><script>Item_BlockPlacement.lua</script><isFile>1</isFile></useScript>
 </item>
 <item id="3" name="BlockTorch_Bright">
 	<texture>../Blocks/Torch.png</texture>

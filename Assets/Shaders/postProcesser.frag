@@ -9,6 +9,10 @@ out vec4 colour;
 uniform sampler2D textureSampler;
 uniform sampler2D depthMap;
 
+const int MAX_LIGHTS = 30; // This is the max amnt of lights a scene can manage (MAX_LIGHTS_RENDERED)
+
+uniform vec3 lights[MAX_LIGHTS]; // First three components are XYZ, 4th is intensity
+
 uniform float playerDepth;
 
 const float Pi = 6.28318530718; // Pi*2
@@ -40,14 +44,31 @@ float map(float value, float min1, float max1, float min2, float max2) {
   return min2 + (value - min1) * (max2 - min2) / (max1 - min1);
 }
 
+float getLightLevel() {
+	float lightLevel = 0.0;
+	int num = 0;
+
+	for(int i = 0; i < MAX_LIGHTS; i++) {
+		float intensity = lights[i].z / pow(distance(fragmentPosition.xy, lights[i].xy), 2.0); // relative intensity
+
+		if(intensity > 0.01) {
+		    lightLevel += intensity;
+		    num += 1;
+		}
+	}
+
+	lightLevel /= float(num);
+	return lightLevel;
+}
+
 void main() 
 { 
 	float depth = texture(depthMap, fragmentUV).r; // Get depth (It's set to the exact values that SpriteBatch wrote to the buffer with.) (0 is closest to camera, 1 is farthest)
 	float depthDiff = abs(playerDepth - depth); // Difference from player, for a focused effect when the player is on the same layer. (Just for blur)
 
-	
 	// Final
 	colour = blur(16.0, 3.0, 0.008 * depthDiff, textureSampler, fragmentUV);
-	float c = 1.0f / map(depth, 0.0, 1.0, 1.0, 4.0);
+	float c = 1.0 / map(depth-0.1, 0.0, 0.9, 1.0, 4.0);
 	colour.rgb *= c;
+	colour.rgb *= getLightLevel();
 }

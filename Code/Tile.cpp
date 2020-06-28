@@ -197,7 +197,7 @@ void Tile::tick(World* world, float tickTime, const float& sunlight) {
 
 	onTick();
 }
-
+#include <iostream>
 void Tile::draw(GLEngine::SpriteBatch& sb, GLEngine::SpriteFont& sf, int xOffset, int depthDifference) {
 
 	if(m_draw) {
@@ -213,8 +213,7 @@ void Tile::draw(GLEngine::SpriteBatch& sb, GLEngine::SpriteFont& sf, int xOffset
 		        glm::vec4(0.0f, 0.0f, 1.0f, 1.0f),
 		        m_textureId,
 		        depth,
-		        colour,
-		        m_cornerSunlight);
+		        colour);
 
 		onDraw(sb, sf, pos, depth);
 	}
@@ -235,10 +234,9 @@ void Tile::drawNormal(GLEngine::SpriteBatch& sb, int xOffset, int depthDifferenc
 		        glm::vec4(0.0f, 0.0f, 1.0f, 1.0f),
 		        m_bumpMapId,
 		        depth,
-		        colour,
-		        m_cornerSunlight);
+		        colour);
 
-		onDraw(sb, sf, pos, depth);
+		//onDraw(sb, sf, pos, depth);
 	}
 }
 

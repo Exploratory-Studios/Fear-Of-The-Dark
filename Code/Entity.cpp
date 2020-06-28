@@ -139,16 +139,12 @@ void Entity::tick(World* world) {
 
 void Entity::draw(GLEngine::SpriteBatch& sb, float time, int layerDifference, float xOffset) {
 
-	//GLint lightUniform = program->getUniformLocation("lightColour");
-	//glUniform3fv(lightUniform, 3, &glm::vec3(1.0f, 1.0f, 1.0f)[0]);
-
 	if(m_draw) {
 		if(m_textureId == (GLuint) - 1) {
 			loadTexture();
 		}
 
 		glm::vec4 destRect = glm::vec4(m_position.x + (xOffset * CHUNK_SIZE), m_position.y, m_size.x, m_size.y);
-		glm::vec4 lighting = m_cornerLight;
 
 		int x = 0, y = 0;
 
@@ -169,14 +165,13 @@ void Entity::draw(GLEngine::SpriteBatch& sb, float time, int layerDifference, fl
 			                   finalY,
 			                   1.0f / -m_animationFramesX,
 			                   1.0f / m_animationFramesY);
-			lighting = glm::vec4(lighting.y, lighting.x, lighting.w, lighting.z);
 		}
 
 		GLEngine::ColourRGBA8 colour(255, 255, 255, 255);
 
 		float depth = 0.1f + (m_layer * (1.0f / (float)(WORLD_DEPTH)) * 0.9f);
 
-		sb.draw(destRect, uvRect, m_textureId, depth, colour, lighting);
+		sb.draw(destRect, uvRect, m_textureId, depth, colour);
 
 		onDraw(sb, time, layerDifference, xOffset);
 	}

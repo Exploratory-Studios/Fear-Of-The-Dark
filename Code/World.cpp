@@ -282,7 +282,7 @@ void World::removeLight(Tile* t) {
 	}
 }
 
-void World::getRenderedLights(glm::vec4 destRect, float lights[MAX_LIGHTS_RENDERED]) {
+void World::getRenderedLights(glm::vec4 destRect, float lights[MAX_LIGHTS_RENDERED * 3]) {
 	/*
 	    Gets all the lights that should be rendered this frame, using a viewport rectangle (destRect). Returns glm::vec3 array of length MAX_LIGHTS_RENDERED
 	    Algorithm:
@@ -301,20 +301,6 @@ void World::getRenderedLights(glm::vec4 destRect, float lights[MAX_LIGHTS_RENDER
 
 		// 2.
 		bool append = false;
-
-		/*if(m_lights[i]->getPosition().x < (int)destRect.x % WORLD_SIZE) { // Before the viewport starts?
-		    if(m_lights[i]->getPosition().x + range > (int)destRect.x % WORLD_SIZE) { // Pos + range intersects the viewport?
-		        append = true;
-		    }
-		} else {
-		    if(m_lights[i]->getPosition().x < (int)(destRect.x + destRect.z) % WORLD_SIZE) { // Within the viewport?
-		        append = true;
-		    } else {
-		        if((int)(m_lights[i]->getPosition().x - range + WORLD_SIZE) % WORLD_SIZE < (int)(destRect.x + destRect.z) % WORLD_SIZE) { // Pos - range intersects the viewport?
-		            append = true;
-		        }
-		    }
-		}*/
 
 		// Get distance from centre of viewport to centre of light
 		float leftDist; // going left from viewport

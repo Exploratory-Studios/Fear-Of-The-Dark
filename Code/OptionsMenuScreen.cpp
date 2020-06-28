@@ -104,7 +104,7 @@ void OptionsMenuScreen::initUI() {
 }
 
 void OptionsMenuScreen::initShaders() {
-	m_uiTextureProgram.compileShaders(ASSETS_FOLDER_PATH + "Shaders/uiShader.vert", ASSETS_FOLDER_PATH + "Shaders/uiShader.frag");
+	m_uiTextureProgram.compileShaders(ASSETS_FOLDER_PATH + "Shaders/textureShader.vert", ASSETS_FOLDER_PATH + "Shaders/textureShader.frag");
 	m_uiTextureProgram.addAttribute("vertexPosition");
 	m_uiTextureProgram.addAttribute("vertexColour");
 	m_uiTextureProgram.addAttribute("vertexUV");

@@ -572,14 +572,38 @@ void World::drawSunlight(GLEngine::SpriteBatch& sb, glm::vec4 destRect) {
 	sb.begin();
 
 	for(float y = destRect.y; y < (destRect.y + destRect.w); y++) {
-		if((int)y < 1) {
+		if((int)y < 1 || (int)y > WORLD_HEIGHT - 2) {
 			continue;
 		}
 		for(float x = destRect.x; x < (destRect.x + destRect.z); x++) {
 			// Loop though all tiles in the destRect.
-			int light = m_tiles[(int)y][((int)x + WORLD_SIZE) % WORLD_SIZE][0]->getSunlight() * 255;
-			int belowLight = m_tiles[(int)y - 1][((int)x + WORLD_SIZE) % WORLD_SIZE][0]->getSunlight() * 255;
-			sb.draw(glm::vec4((int)x, (int)y, 1.0f, 1.0f), glm::vec4(0.0f, 0.0f, 1.0f, 1.0f), 0, 0.0f, GLEngine::ColourRGBA8(light, belowLight, light, 255));
+
+			/*
+			 *
+			 * Each corner can be described in a bit. 4 bits for four corners. Room for expansion.
+			 *
+			 * */
+
+			// Determine actual light value (R)
+			Tile* t = m_tiles[(int)y][((int)x + WORLD_SIZE) % WORLD_SIZE][0];
+
+			int light = (t->getSunlight() * 255.0f);
+
+			int corners = 0; // Describes whether each corner is lit. (G)
+
+			// Determine TL (bit 0)
+			corners |= (t->getSunlightCorners().x > 0.0f);
+
+			// Determine TR (bit 1)
+			corners |= (t->getSunlightCorners().y > 0.0f) << 1;
+
+			// Determine BL (bit 2)
+			corners |= (t->getSunlightCorners().w > 0.0f) << 2;
+
+			// Determine BR (bit 3)
+			corners |= (t->getSunlightCorners().z > 0.0f) << 3;
+
+			sb.draw(glm::vec4((int)x, (int)y, 1.0f, 1.0f), glm::vec4(0.0f, 0.0f, 1.0f, 1.0f), 0, 0.0f, GLEngine::ColourRGBA8(light, corners, 255, 255));
 		}
 	}
 

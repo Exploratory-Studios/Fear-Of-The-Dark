@@ -16,8 +16,32 @@ float map(float value, float min1, float max1, float min2, float max2) {
 }
 
 void main() {
-	float light = map(fragmentUV.y, 0.0, 1.0, fragmentColour.g, fragmentColour.b);
+	float TL = 0.0f, TR = 0.0f, BL = 0.0f, BR = 0.0f;
+	int bits = int(fragmentColour.g * 255.0f);
 
-	color.r = light; // Actual light
-	color.gba = vec3(1.0);
+	color = vec4(1.0);
+
+	if(bool(bits & 1)) { // Top corners
+		// This is right
+		TL = fragmentColour.r;
+	}
+	if(bool((bits & 2) >> 1)) {
+		// This is left
+		TR = fragmentColour.r;
+	}
+
+	if(bool((bits & 4) >> 2)) { // Bottom corners
+		// This is right
+		BL = fragmentColour.r;
+	}
+	if(bool((bits & 8) >> 3)) {
+		// This is left
+		BR = fragmentColour.r;
+	}
+
+	float highPass = map(fragmentUV.x, 0.0, 1.0, TL, TR);
+	float lowPass = map(fragmentUV.x, 0.0, 1.0, BL, BR);
+	float midPass = map(fragmentUV.y, 0.0, 1.0, lowPass, highPass);
+
+	color.r = midPass; // Actual light
 }

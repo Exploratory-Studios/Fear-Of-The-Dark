@@ -104,7 +104,10 @@ class Tile {
 			return m_natural;
 		}
 		float           getLight();
-		float getSunlight() const {
+		glm::vec4 getSunlightCorners() {
+			return m_cornerSunlight;
+		}
+		float getSunlight() {
 			return m_sunLight;
 		}
 		float           getAmbientLight()               const {

@@ -83,7 +83,4 @@ void main()
 	float c = 1.0 / map(depth-0.1, 0.0, 0.9, 1.0, 4.0);
 	colour.rgb *= c;
 	colour.rgb *= getLightLevel() + getSunlight();
-	if(fragmentUV.x > 0.5) {
-		colour.rgb = vec3(texture(sunlightMap, fragmentUV.xy).r);
-	}
 }

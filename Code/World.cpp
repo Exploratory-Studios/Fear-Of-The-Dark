@@ -567,6 +567,25 @@ void World::tickEntities(AudioManager* audio) {
 		m_entities[i]->tick(this);
 	}
 }
+#include <iostream>
+void World::drawSunlight(GLEngine::SpriteBatch& sb, glm::vec4 destRect) {
+	sb.begin();
+
+	for(float y = destRect.y; y < (destRect.y + destRect.w); y++) {
+		if((int)y < 1) {
+			continue;
+		}
+		for(float x = destRect.x; x < (destRect.x + destRect.z); x++) {
+			// Loop though all tiles in the destRect.
+			int light = m_tiles[(int)y][((int)x + WORLD_SIZE) % WORLD_SIZE][0]->getSunlight() * 255;
+			int belowLight = m_tiles[(int)y - 1][((int)x + WORLD_SIZE) % WORLD_SIZE][0]->getSunlight() * 255;
+			sb.draw(glm::vec4((int)x, (int)y, 1.0f, 1.0f), glm::vec4(0.0f, 0.0f, 1.0f, 1.0f), 0, 0.0f, GLEngine::ColourRGBA8(light, belowLight, light, 255));
+		}
+	}
+
+	sb.end();
+	sb.renderBatch();
+}
 
 float World::getDistance(glm::vec2 point0, glm::vec2 point1) {
 	float xDist;

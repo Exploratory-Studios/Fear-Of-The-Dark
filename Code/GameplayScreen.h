@@ -70,6 +70,7 @@ class GameplayScreen : public GLEngine::IGameScreen {
 		void drawSkyToFBO(); /// These just draw to the FBOs, not to the screen.
 		void drawWorldToFBO();
 		void drawWorldNormalToFBO();
+		void drawWorldSunlightToFBO();
 		void drawParticlesToFBO();
 		void drawGUIToScreen(); // These two actually do draw to the screen.
 		void drawPostToScreen();
@@ -107,6 +108,7 @@ class GameplayScreen : public GLEngine::IGameScreen {
 		GLEngine::FrameBufferObject m_normalFBO; // Used for normal mapping.
 		GLEngine::FrameBufferObject m_skyFBO; // Used for the sky!
 		GLEngine::FrameBufferObject m_particleFBO; // Used for particles!
+		GLEngine::FrameBufferObject m_sunlightFBO; // Used for fantastic sunlight!
 
 		GLEngine::GLSLProgram m_textureProgram;
 		GLEngine::GLSLProgram m_uiTextureProgram;
@@ -114,6 +116,7 @@ class GameplayScreen : public GLEngine::IGameScreen {
 		GLEngine::GLSLProgram m_skyTextureProgram;
 		GLEngine::GLSLProgram m_basicFBOTextureProgram;
 		GLEngine::GLSLProgram m_postProcessor; // Adds lights!
+		GLEngine::GLSLProgram m_sunlightProgram; // Adds lights!
 
 		GLEngine::SpriteFont m_spriteFont;
 		GLEngine::DebugRenderer m_dr;

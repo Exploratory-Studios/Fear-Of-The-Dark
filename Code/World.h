@@ -87,6 +87,7 @@ class World {
 		void tickEntities(AudioManager* audio);
 
 		void drawParticles(GLEngine::SpriteBatch* sb);
+		void drawSunlight(GLEngine::SpriteBatch& sb, glm::vec4 destRect); // Just draws the sunlight value into the rgb components.
 
 		void drawDebug(GLEngine::DebugRenderer& dr, float xOffset);
 

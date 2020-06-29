@@ -104,6 +104,9 @@ class Tile {
 			return m_natural;
 		}
 		float           getLight();
+		float getSunlight() const {
+			return m_sunLight;
+		}
 		float           getAmbientLight()               const {
 			return m_ambientLight;
 		}

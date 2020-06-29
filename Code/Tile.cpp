@@ -429,7 +429,7 @@ void Tile::resetNeighboursLight(World* world) {
 		}
 	}
 }
-#include <iostream>
+
 void Tile::setNeighboursLight(World* world) {
 	float range = m_emittedLight * 3.0;
 

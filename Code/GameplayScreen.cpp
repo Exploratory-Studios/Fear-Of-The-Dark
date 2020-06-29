@@ -50,6 +50,7 @@ void GameplayScreen::onEntry() {
 	m_mainFBO.init(glm::vec4(0.0f, 0.0f, m_window->getScreenWidth(), m_window->getScreenHeight()));
 	m_normalFBO.init(glm::vec4(0.0f, 0.0f, m_window->getScreenWidth(), m_window->getScreenHeight()));
 	m_skyFBO.init(glm::vec4(0.0f, 0.0f, m_window->getScreenWidth(), m_window->getScreenHeight()));
+	m_sunlightFBO.init(glm::vec4(0.0f, 0.0f, m_window->getScreenWidth(), m_window->getScreenHeight()));
 
 	m_scale = INITIAL_ZOOM;
 	m_camera.setScale(m_scale);
@@ -85,7 +86,7 @@ void GameplayScreen::onEntry() {
 	initUI();
 
 	m_dialogueManager = new DialogueModule::DialogueManager(m_gui, m_questManager);
-	m_dialogueManager->activateDialogue(0);
+	//m_dialogueManager->activateDialogue(0);
 
 	m_camera.setPosition(m_world->getPlayer()->getPosition());
 
@@ -203,7 +204,9 @@ void GameplayScreen::draw() {
 
 	{
 		drawWorldToFBO();
-		drawWorldNormalToFBO();
+		drawWorldNormalToFBO(); // Draws to normal FBO
+		drawWorldSunlightToFBO(); // Draws to sunlight FBO.
+		drawParticlesToFBO();
 
 		// Draw main
 		m_postProcessor.use();
@@ -219,11 +222,17 @@ void GameplayScreen::draw() {
 		textureUniform = m_postProcessor.getUniformLocation("depthMap");
 		glUniform1i(textureUniform, 1);
 
+		// Sunlight
+		glActiveTexture(GL_TEXTURE2);
+		glBindTexture(GL_TEXTURE_2D, m_sunlightFBO.getTexture());
+		textureUniform = m_postProcessor.getUniformLocation("sunlightMap");
+		glUniform1i(textureUniform, 2);
+
 		// Normal Map.
-		//glActiveTexture(GL_TEXTURE2);
+		//glActiveTexture(GL_TEXTURE3);
 		//glBindTexture(GL_TEXTURE_2D, m_normalFBO.getTexture()); // Bind the texture
 		//textureUniform = m_postProcessor.getUniformLocation("normalMap");
-		//glUniform1i(textureUniform, 2);
+		//glUniform1i(textureUniform, 3);
 
 		GLint playerDepthUniform = m_postProcessor.getUniformLocation("playerDepth");
 		float playerDepth = 0.1f + (m_world->getPlayer()->getLayer() * (1.0f / (float)(WORLD_DEPTH)) * 0.9f);
@@ -238,9 +247,9 @@ void GameplayScreen::draw() {
 
 	{
 		// Particles
-		drawParticlesToFBO();
+		//drawParticlesToFBO();
 
-		m_basicFBOTextureProgram.use();
+		/*m_basicFBOTextureProgram.use();
 
 		// Camera matrix
 		glm::mat4 projectionMatrix = m_camera.getCameraMatrix();
@@ -252,7 +261,7 @@ void GameplayScreen::draw() {
 
 		m_particleFBO.draw();
 
-		m_basicFBOTextureProgram.unuse();
+		m_basicFBOTextureProgram.unuse();*/
 	}
 
 	drawGUIToScreen(); // These two actually do draw to the screen.
@@ -365,8 +374,27 @@ void GameplayScreen::drawWorldNormalToFBO() {
 	m_normalFBO.end(); // Normal mapping end.
 }
 
+void GameplayScreen::drawWorldSunlightToFBO() {
+	m_sunlightFBO.begin(); // Normal mapping begin
+	m_sunlightFBO.clear();
+	m_sunlightProgram.use(); // Literally just writes the colour value.
+	m_spriteBatch.begin();
+
+	// Camera matrix
+	glm::mat4 projectionMatrix = m_camera.getCameraMatrix();
+	GLint pUniform = m_sunlightProgram.getUniformLocation("P");
+	glUniformMatrix4fv(pUniform, 1, GL_FALSE, &projectionMatrix[0][0]);
+
+	m_world->drawSunlight(m_spriteBatch, getScreenBox() + glm::vec4(0.0f, 0.0f, 1.0f, 1.0f)); // Should probably change screenBox to world coords. ///// NEVERMIND, It already does!
+
+	m_spriteBatch.end();
+	m_spriteBatch.renderBatch();
+	m_sunlightProgram.unuse();
+	m_sunlightFBO.end(); // Normal mapping end.
+}
+
 void GameplayScreen::drawParticlesToFBO() {
-	m_particleFBO.begin();
+	m_mainFBO.begin();
 	{
 		// World: Particles
 		m_textureProgram.use();
@@ -386,7 +414,7 @@ void GameplayScreen::drawParticlesToFBO() {
 		m_spriteBatch.renderBatch();
 		m_textureProgram.unuse();
 	}
-	m_particleFBO.end();
+	m_mainFBO.end();
 }
 
 void GameplayScreen::drawGUIToScreen() {
@@ -533,6 +561,12 @@ void GameplayScreen::initShaders() {
 	m_postProcessor.addAttribute("vertexColour");
 	m_postProcessor.addAttribute("vertexUV");
 	m_postProcessor.linkShaders();
+
+	m_sunlightProgram.compileShaders(ASSETS_FOLDER_PATH + "Shaders/colourShader.vert", ASSETS_FOLDER_PATH + "Shaders/colourShader.frag");
+	m_sunlightProgram.addAttribute("vertexPosition");
+	m_sunlightProgram.addAttribute("vertexColour");
+	m_sunlightProgram.addAttribute("vertexUV");
+	m_sunlightProgram.linkShaders();
 }
 
 void GameplayScreen::initUI() {

@@ -8,6 +8,7 @@ out vec4 colour;
 
 uniform sampler2D textureSampler;
 uniform sampler2D depthMap;
+uniform sampler2D sunlightMap;
 
 const int MAX_LIGHTS = 30; // This is the max amnt of lights a scene can manage (MAX_LIGHTS_RENDERED)
 
@@ -40,6 +41,17 @@ vec4 blur(float directions, float quality, float size, sampler2D textureS, vec2 
 	return pixColour;
 }
 
+float downBlur(sampler2D sampler) {
+	float res = 0.0;
+
+	res = texture(sampler, fragmentUV.xy).r;
+	for(float i = 0; i < 0.05; i += 0.01) {
+		res += texture(sampler, fragmentUV.xy + vec2(0.0, i)).r;
+	}
+
+	return res / 6.0;
+}
+
 float map(float value, float min1, float max1, float min2, float max2) {
   return min2 + (value - min1) * (max2 - min2) / (max1 - min1);
 }
@@ -57,6 +69,10 @@ float getLightLevel() {
 	return clamp(lightLevel, 0.0, 1.4);
 }
 
+float getSunlight() {
+	return texture(sunlightMap, fragmentUV.xy).r;
+}
+
 void main() 
 { 
 	float depth = texture(depthMap, fragmentUV).r; // Get depth (It's set to the exact values that SpriteBatch wrote to the buffer with.) (0 is closest to camera, 1 is farthest)
@@ -66,5 +82,8 @@ void main()
 	colour = blur(16.0, 3.0, 0.008 * depthDiff, textureSampler, fragmentUV);
 	float c = 1.0 / map(depth-0.1, 0.0, 0.9, 1.0, 4.0);
 	colour.rgb *= c;
-	colour.rgb *= getLightLevel();
+	colour.rgb *= getLightLevel() + getSunlight();
+	if(fragmentUV.x > 0.5) {
+		colour.rgb = vec3(texture(sunlightMap, fragmentUV.xy).r);
+	}
 }

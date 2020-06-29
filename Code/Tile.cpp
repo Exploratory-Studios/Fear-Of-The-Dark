@@ -431,7 +431,7 @@ void Tile::resetNeighboursLight(World* world) {
 }
 #include <iostream>
 void Tile::setNeighboursLight(World* world) {
-	float range = std::sqrt(std::abs(m_emittedLight)) * 4.0f;
+	float range = m_emittedLight * 3.0;
 
 	float TL, TR, BL, BR;
 
@@ -440,30 +440,30 @@ void Tile::setNeighboursLight(World* world) {
 			for(int layer = -std::ceil(range); layer <= std::ceil(range); layer++) {
 				Tile* t = world->getTile(m_pos.x + x, m_pos.y + y, m_layer + layer);
 				if(t) {
-					float dist = std::sqrt((x + 0.5f) * (x + 0.5f) + (y + 0.5f) * (y + 0.5f) + (layer * layer));
-					float light = (1.0f - dist / (float)range) * m_emittedLight;
+					float dist = glm::distance(glm::vec2(m_pos.x + 1.0f, m_pos.y), glm::vec2(m_pos.x + x, m_pos.y + y));
+					float light = m_emittedLight / std::pow(dist, 2.0);
 
 					if(light > 0.0f) {
 						t->addAmbientLight(light);
 					}
 					{
 						// Bottom left corner (x, y)
-						float d = std::sqrt((x) * (x) + (y) * (y) + (layer * layer));
+						float d = glm::distance(glm::vec2(m_pos.x + 1.0f, m_pos.y), glm::vec2(m_pos.x + x, m_pos.y + y));
 						BL = ((1.0f - d / (float)(range)) * m_emittedLight); // x + 0, y + 0
 					}
 					{
 						// Bottom right corner (x+1, y)
-						float d = std::sqrt((x + 1.0f) * (x + 1.0f) + (y) * (y) + (layer * layer));
+						float d = glm::distance(glm::vec2(m_pos.x + 1.0f, m_pos.y), glm::vec2(m_pos.x + x + 1.0f, m_pos.y + y));
 						BR = ((1.0f - d / (float)(range)) * m_emittedLight); // x + 0, y + 0
 					}
 					{
 						// top left corner (x, y+1)
-						float d = std::sqrt((x) * (x) + (y + 1.0f) * (y + 1.0f) + (layer * layer));
+						float d = glm::distance(glm::vec2(m_pos.x + 1.0f, m_pos.y), glm::vec2(m_pos.x + x, m_pos.y + y + 1.0f));
 						TL = ((1.0f - d / (float)(range)) * m_emittedLight); // x + 0, y + 0
 					}
 					{
 						// top right corner (x+1, y+1)
-						float d = std::sqrt((x + 1.0f) * (x + 1.0f) + (y + 1.0f) * (y + 1.0f) + (layer * layer));
+						float d = glm::distance(glm::vec2(m_pos.x + 1.0f, m_pos.y), glm::vec2(m_pos.x + x + 1.0f, m_pos.y + y + 1.0f));
 						TR = ((1.0f - d / (float)(range)) * m_emittedLight); // x + 0, y + 0
 					}
 

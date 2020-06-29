@@ -229,7 +229,7 @@ void GameplayScreen::draw() {
 		float playerDepth = 0.1f + (m_world->getPlayer()->getLayer() * (1.0f / (float)(WORLD_DEPTH)) * 0.9f);
 		glUniform1f(playerDepthUniform, playerDepth);
 
-		//m_world->setLightsUniform(getScreenBox() + glm::vec4(0.0f, 0.0f, 1.0f, 1.0f), &m_postProcessor); // sets "lights" uniform of vec3s
+		m_world->setLightsUniform(getScreenBox() + glm::vec4(0.0f, 0.0f, 1.0f, 1.0f), &m_postProcessor, m_camera); // sets "lights" uniform of vec3s
 
 		m_mainFBO.draw();
 		m_postProcessor.unuse();

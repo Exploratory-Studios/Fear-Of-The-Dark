@@ -282,7 +282,7 @@ void World::removeLight(Tile* t) {
 	}
 }
 
-void World::getRenderedLights(glm::vec4 destRect, float lights[MAX_LIGHTS_RENDERED * 3]) {
+void World::getRenderedLights(glm::vec4 destRect, float lights[MAX_LIGHTS_RENDERED * 3], GLEngine::Camera2D& cam) {
 	/*
 	    Gets all the lights that should be rendered this frame, using a viewport rectangle (destRect). Returns glm::vec3 array of length MAX_LIGHTS_RENDERED
 	    Algorithm:
@@ -293,6 +293,11 @@ void World::getRenderedLights(glm::vec4 destRect, float lights[MAX_LIGHTS_RENDER
 	*/
 
 	glm::vec3 returnVal[MAX_LIGHTS_RENDERED];
+
+	for(unsigned int i = 0; i < MAX_LIGHTS_RENDERED; i++) {
+		returnVal[i] = glm::vec3(0.0);
+	}
+
 	unsigned int added = 0; // number of lights added. Equal to next index in returnVal to set.
 
 	for(int i = 0; i < m_lights.size(); i++) {
@@ -347,9 +352,11 @@ void World::getRenderedLights(glm::vec4 destRect, float lights[MAX_LIGHTS_RENDER
 	}
 
 	for(int i = 0; i < MAX_LIGHTS_RENDERED; i++) {
-		lights[i * 3] = returnVal[i].x + 0.5f;
-		lights[i * 3 + 1] = returnVal[i].y + 0.5f;
-		lights[i * 3 + 2] = returnVal[i].z;
+		glm::vec2 pos = cam.convertWorldToScreen(glm::vec2(returnVal[i].x + 0.5f, returnVal[i].y + 0.5f));
+
+		lights[i * 3] = pos.x;
+		lights[i * 3 + 1] = pos.y;
+		lights[i * 3 + 2] = returnVal[i].z * cam.getScale() * cam.getScale();
 	}
 }
 
@@ -366,9 +373,9 @@ void World::setPlayer(EntityPlayer& p) {
 	}
 }
 
-void World::setLightsUniform(glm::vec4 destRect, GLEngine::GLSLProgram* textureProgram) {
+void World::setLightsUniform(glm::vec4 destRect, GLEngine::GLSLProgram* textureProgram, GLEngine::Camera2D& cam) {
 	float lights[MAX_LIGHTS_RENDERED * 3];
-	getRenderedLights(destRect, lights);
+	getRenderedLights(destRect, lights, cam);
 	GLint textureUniform = textureProgram->getUniformLocation("lights");
 	glUniform3fv(textureUniform, MAX_LIGHTS_RENDERED, lights); /// TODO: Set define directive for 30 lights max.
 }

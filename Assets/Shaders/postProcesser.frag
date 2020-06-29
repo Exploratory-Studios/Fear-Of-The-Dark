@@ -45,20 +45,16 @@ float map(float value, float min1, float max1, float min2, float max2) {
 }
 
 float getLightLevel() {
-	float lightLevel = 0.0;
-	int num = 0;
-
+	float lightLevel = 0.0f;
 	for(int i = 0; i < MAX_LIGHTS; i++) {
 		float intensity = lights[i].z / pow(distance(fragmentPosition.xy, lights[i].xy), 2.0); // relative intensity
 
 		if(intensity > 0.01) {
+
 		    lightLevel += intensity;
-		    num += 1;
 		}
 	}
-
-	lightLevel /= float(num);
-	return lightLevel;
+	return clamp(lightLevel, 0.0, 1.4);
 }
 
 void main() 

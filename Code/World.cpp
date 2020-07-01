@@ -379,7 +379,7 @@ void World::setLightsUniform(glm::vec4 destRect, GLEngine::GLSLProgram* textureP
 	GLint textureUniform = textureProgram->getUniformLocation("lights");
 	glUniform3fv(textureUniform, MAX_LIGHTS_RENDERED, lights); /// TODO: Set define directive for 30 lights max.
 }
-
+#include <iostream>
 void World::drawTiles(GLEngine::SpriteBatch& sb, GLEngine::SpriteFont& sf, GLEngine::DebugRenderer& dr, glm::vec4 destRect, GLEngine::GLSLProgram* textureProgram) {
 	/**
 	    Draws an area of tiles at position destRect.xy, with width and height of destRect.z and destRect.w respectively.
@@ -394,24 +394,17 @@ void World::drawTiles(GLEngine::SpriteBatch& sb, GLEngine::SpriteFont& sf, GLEng
 		diff[i] = (playerLayer - i);
 	}
 
-	for(unsigned int layer = WORLD_DEPTH; layer -- > 0;) {
-		for(int x = destRect.x; x < destRect.z + destRect.x; x++) {
-			int columnIndex = (int)((x/*+destRect.x*/) + (WORLD_SIZE)) % WORLD_SIZE;
-			int offset = (/*destRect.x + */x) - columnIndex;
+	for(int x = destRect.x; x < destRect.z + destRect.x; x++) {
+		int columnIndex = (int)((x/*+destRect.x*/) + (WORLD_SIZE)) % WORLD_SIZE;
+		int offset = (/*destRect.x + */x) - columnIndex;
 
-			for(int y = destRect.y; y < destRect.w + destRect.y; y++) {
+		for(int y = destRect.y; y < destRect.w + destRect.y; y++) {
+			for(unsigned int layer = 0; layer < WORLD_DEPTH; layer++) {
 				if(y >= 0) {
 					if(y < WORLD_HEIGHT) {
-						//if(diff[layer] <= 0 && m_tiles[y][columnIndex][layer]->doDraw() && !m_tiles[y][columnIndex][layer]->isTransparent()) {
-						//    break;
-						//}
-
-						if(diff[layer] >= 0) { // Definitely not obstructed by current layer (current or in front of).
-							m_tiles[y][columnIndex][layer]->draw(sb, sf, offset, diff[layer]);
-						} else { // We must check now if individual blocks are obstructed by the layer directly in front of it.
-							if(m_tiles[y][columnIndex][layer - 1]->isTransparent()) {
-								m_tiles[y][columnIndex][layer]->draw(sb, sf, offset, diff[layer]);
-							}
+						m_tiles[y][columnIndex][layer]->draw(sb, sf, offset, diff[layer]);
+						if(!m_tiles[y][columnIndex][layer]->isTransparent()) {
+							break;
 						}
 					}
 				}
@@ -428,20 +421,17 @@ void World::drawTilesNormal(GLEngine::SpriteBatch& sb, glm::vec4 destRect, GLEng
 		diff[i] = (playerLayer - i);
 	}
 
-	for(unsigned int layer = WORLD_DEPTH; layer -- > 0;) {
-		for(int x = destRect.x; x < destRect.z + destRect.x; x++) {
-			int columnIndex = (int)((x/*+destRect.x*/) + (WORLD_SIZE)) % WORLD_SIZE;
-			int offset = (/*destRect.x + */x) - columnIndex;
+	for(int x = destRect.x; x < destRect.z + destRect.x; x++) {
+		int columnIndex = (int)((x/*+destRect.x*/) + (WORLD_SIZE)) % WORLD_SIZE;
+		int offset = (/*destRect.x + */x) - columnIndex;
 
-			for(int y = destRect.y; y < destRect.w + destRect.y; y++) {
+		for(int y = destRect.y; y < destRect.w + destRect.y; y++) {
+			for(unsigned int layer = 0; layer < WORLD_DEPTH; layer++) {
 				if(y >= 0) {
 					if(y < WORLD_HEIGHT) {
-						if(diff[layer] >= 0) { // Definitely not obstructed by current layer (current or in front of).
-							m_tiles[y][columnIndex][layer]->drawNormal(sb, offset, diff[layer]);
-						} else { // We must check now if individual blocks are obstructed by the layer directly in front of it.
-							if(m_tiles[y][columnIndex][layer - 1]->isTransparent()) {
-								m_tiles[y][columnIndex][layer]->drawNormal(sb, offset, diff[layer]);
-							}
+						m_tiles[y][columnIndex][layer]->drawNormal(sb, offset, diff[layer]);
+						if(!m_tiles[y][columnIndex][layer]->isTransparent()) {
+							break;
 						}
 					}
 				}

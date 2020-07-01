@@ -268,6 +268,7 @@ class Tile {
 		GLuint m_textureId = (GLuint) - 1;
 		GLuint m_bumpMapId = (GLuint) - 1;
 		GLEngine::ColourRGBA8 m_colour = GLEngine::ColourRGBA8(255.0f, 255.0f, 255.0f, 255.0f);
+		float m_depthForRender = 0.0f;
 
 		float m_ambientLight = 0.0f; // Really should be inherited light or something, as this light is inherited from surrounding blocks
 		float m_emittedLight = 0.0f;

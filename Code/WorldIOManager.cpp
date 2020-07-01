@@ -316,7 +316,7 @@ void WorldIOManager::P_createWorld(unsigned int seed, std::string worldName, boo
 				for(int j = 0; j < CHUNK_SIZE; j++) {
 					float flatness = biome.flatness;
 
-					float extra = heightNoise.noise((j + layer * 0.5f) * flatness / CHUNK_SIZE, 8.5, 3.7);
+					float extra = heightNoise.noise((j) * flatness / CHUNK_SIZE, 8.5, 3.7);
 					//extra += heightNoise.noise(i * j * i, i, 5.8);
 
 					unsigned int maxHeightDiff = biome.maxHeightDiff;
@@ -386,37 +386,40 @@ void WorldIOManager::P_createWorld(unsigned int seed, std::string worldName, boo
 
 			setMessage("Placing blocks...");
 
-			for(int layer = 0; layer < WORLD_DEPTH; layer++) {
-				for(int x = 0; x < WORLD_SIZE; x++) {
-					for(int y = 0; y < blockHeights[layer * WORLD_SIZE + x]; y++) {
-						if(y < blockHeights[layer * WORLD_SIZE + x] - 1 - 5 || y <= WATER_LEVEL) {
-							Tile* tile = new Tile(glm::vec2(x, y), layer, TileIDs::STONE, SaveDataTypes::MetaData(), false);
-							w->setTile_noEvent(tile);
-						} else if(y < blockHeights[layer * WORLD_SIZE + x] - 1 && y > WATER_LEVEL) {
-							Tile* tile = new Tile(glm::vec2(x, y), layer, TileIDs::DIRT, SaveDataTypes::MetaData(), false);
-							w->setTile_noEvent(tile);
-						} else if(y < blockHeights[layer * WORLD_SIZE + x] && y > WATER_LEVEL) {
-							Tile* tile = new Tile(glm::vec2(x, y), layer, TileIDs::GRASS, SaveDataTypes::MetaData(), false);
-							w->setTile_noEvent(tile);
-							int r = std::rand(); /// TODO: Re-enable flowers
-							if(r % 2 == 0) {
-								//BlockBush* flower = new BlockBush(glm::vec2(x, y + 1), layer, MetaData(), false);
-								//w->setTile_noEvent(flower);
+			for(int chunk = 0; chunk < (WORLD_SIZE / CHUNK_SIZE); chunk++) {
+				for(int layer = 0; layer < WORLD_DEPTH; layer++) {
+					for(int x = 0; x < CHUNK_SIZE; x++) {
+						unsigned int blockIndex = layer * CHUNK_SIZE + x + chunk * CHUNK_SIZE * WORLD_DEPTH;
+						for(int y = 0; y < blockHeights[blockIndex]; y++) {
+							if(y < blockHeights[blockIndex] - 1 - 5 || y <= WATER_LEVEL) {
+								Tile* tile = new Tile(glm::vec2(x + chunk * CHUNK_SIZE, y), layer, TileIDs::STONE, SaveDataTypes::MetaData(), false);
+								w->setTile_noEvent(tile);
+							} else if(y < blockHeights[blockIndex] - 1 && y > WATER_LEVEL) {
+								Tile* tile = new Tile(glm::vec2(x + chunk * CHUNK_SIZE, y), layer, TileIDs::DIRT, SaveDataTypes::MetaData(), false);
+								w->setTile_noEvent(tile);
+							} else if(y < blockHeights[blockIndex] && y > WATER_LEVEL) {
+								Tile* tile = new Tile(glm::vec2(x + chunk * CHUNK_SIZE, y), layer, TileIDs::GRASS, SaveDataTypes::MetaData(), false);
+								w->setTile_noEvent(tile);
+								int r = std::rand(); /// TODO: Re-enable flowers
+								if(r % 2 == 0) {
+									//BlockBush* flower = new BlockBush(glm::vec2(x, y + 1), layer, MetaData(), false);
+									//w->setTile_noEvent(flower);
+								}
 							}
+							//setMessage("Placing blocks... (" + std::to_string(layer * WORLD_SIZE * WORLD_HEIGHT + x * WORLD_HEIGHT + y) + "/" + std::to_string((WORLD_DEPTH * WORLD_SIZE * WORLD_HEIGHT)) + ")");
+							//setProgress(0.238f + 0.752f / (WORLD_DEPTH * WORLD_SIZE * WORLD_HEIGHT) * ((WORLD_SIZE * WORLD_HEIGHT * layer) + (WORLD_HEIGHT * x) + (y + 1))); // Ends at 0.99
 						}
-						setMessage("Placing blocks... (" + std::to_string(layer * WORLD_SIZE * WORLD_HEIGHT + x * WORLD_HEIGHT + y) + "/" + std::to_string((WORLD_DEPTH * WORLD_SIZE * WORLD_HEIGHT)) + ")");
-						setProgress(0.238f + 0.752f / (WORLD_DEPTH * WORLD_SIZE * WORLD_HEIGHT) * ((WORLD_SIZE * WORLD_HEIGHT * layer) + (WORLD_HEIGHT * x) + (y + 1))); // Ends at 0.99
-					}
-					for(int y = blockHeights[layer * WORLD_SIZE + x]; y < WORLD_HEIGHT; y++) {
-						if(y <= WATER_LEVEL) {
-							Tile* tile = new Tile(glm::vec2(x, y), layer, TileIDs::WATER, SaveDataTypes::MetaData(), false);
-							w->setTile_noEvent(tile);
-						} else {
-							Tile* tile = new Tile(glm::vec2(x, y), layer, TileIDs::AIR, SaveDataTypes::MetaData(), false);
-							w->setTile_noEvent(tile);
+						for(int y = blockHeights[blockIndex]; y < WORLD_HEIGHT; y++) {
+							if(y <= WATER_LEVEL) {
+								Tile* tile = new Tile(glm::vec2(x + chunk * CHUNK_SIZE, y), layer, TileIDs::WATER, SaveDataTypes::MetaData(), false);
+								w->setTile_noEvent(tile);
+							} else {
+								Tile* tile = new Tile(glm::vec2(x + chunk * CHUNK_SIZE, y), layer, TileIDs::AIR, SaveDataTypes::MetaData(), false);
+								w->setTile_noEvent(tile);
+							}
+							//setMessage("Placing blocks... (" + std::to_string(layer * WORLD_SIZE * WORLD_HEIGHT + x * WORLD_HEIGHT + y) + "/" + std::to_string((WORLD_DEPTH * WORLD_SIZE * WORLD_HEIGHT)) + ")");
+							//setProgress(0.238f + 0.752f / (WORLD_DEPTH * WORLD_SIZE * WORLD_HEIGHT) * ((WORLD_SIZE * WORLD_HEIGHT * layer) + (WORLD_HEIGHT * x) + (y + 1))); // Ends at 0.99
 						}
-						setMessage("Placing blocks... (" + std::to_string(layer * WORLD_SIZE * WORLD_HEIGHT + x * WORLD_HEIGHT + y) + "/" + std::to_string((WORLD_DEPTH * WORLD_SIZE * WORLD_HEIGHT)) + ")");
-						setProgress(0.238f + 0.752f / (WORLD_DEPTH * WORLD_SIZE * WORLD_HEIGHT) * ((WORLD_SIZE * WORLD_HEIGHT * layer) + (WORLD_HEIGHT * x) + (y + 1))); // Ends at 0.99
 					}
 				}
 			}

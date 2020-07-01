@@ -336,7 +336,7 @@ void GameplayScreen::drawWorldToFBO() {
 		GLint textureUniform = m_textureProgram.getUniformLocation("textureSampler");
 		glUniform1i(textureUniform, 0);
 
-		m_spriteBatch.begin();
+		m_spriteBatch.begin(GLEngine::GlyphSortType::NONE);
 
 		m_world->drawTiles(m_spriteBatch, m_spriteFont, m_dr, getScreenBox() + glm::vec4(0.0f, 0.0f, 1.0f, 1.0f), &m_textureProgram); // handles spritebatch.begin and end
 		m_world->drawEntities(m_spriteBatch, m_spriteFont, m_dr, getScreenBox() + glm::vec4(0.0f, 0.0f, 1.0f, 1.0f));
@@ -363,7 +363,7 @@ void GameplayScreen::drawWorldNormalToFBO() {
 	GLint textureUniform = m_textureProgram.getUniformLocation("textureSampler");
 	glUniform1i(textureUniform, 0);
 
-	m_spriteBatch.begin();
+	m_spriteBatch.begin(GLEngine::GlyphSortType::NONE);
 
 	m_world->drawTilesNormal(m_spriteBatch, getScreenBox() + glm::vec4(0.0f, 0.0f, 1.0f, 1.0f), &m_textureProgram);
 	m_world->drawEntitiesNormal(m_spriteBatch, getScreenBox() + glm::vec4(0.0f, 0.0f, 1.0f, 1.0f));

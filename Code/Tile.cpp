@@ -36,6 +36,8 @@ Tile::Tile(glm::vec2 pos, unsigned int layer, unsigned int id, SaveDataTypes::Me
 	} else {
 		m_textureId = (GLuint) - 1;
 	}
+
+	m_depthForRender = 0.1f + (m_layer * (1.0f / (float)(WORLD_DEPTH)) * 0.9f);
 }
 
 Tile::Tile(glm::vec2 pos, unsigned int layer, TileIDs id, SaveDataTypes::MetaData data, bool loadTex) : m_pos(pos), m_layer(layer), m_id((unsigned int)id) {
@@ -62,6 +64,8 @@ Tile::Tile(glm::vec2 pos, unsigned int layer, TileIDs id, SaveDataTypes::MetaDat
 	} else {
 		m_textureId = (GLuint) - 1;
 	}
+
+	m_depthForRender = 0.1f + (m_layer * (1.0f / (float)(WORLD_DEPTH)) * 0.9f);
 }
 
 void Tile::initParticles(GLEngine::ParticleEngine2D* engine) {
@@ -205,17 +209,14 @@ void Tile::draw(GLEngine::SpriteBatch& sb, GLEngine::SpriteFont& sf, int xOffset
 			loadTexture();
 		}
 
-		GLEngine::ColourRGBA8 colour = m_colour;
-
 		glm::vec4 pos = glm::vec4(m_pos.x + xOffset, m_pos.y, m_size.x, m_size.y);
-		float depth = 0.1f + (m_layer * (1.0f / (float)(WORLD_DEPTH)) * 0.9f);
 		sb.draw(pos,
 		        glm::vec4(0.0f, 0.0f, 1.0f, 1.0f),
 		        m_textureId,
-		        depth,
-		        colour);
+		        m_depthForRender,
+		        m_colour);
 
-		onDraw(sb, sf, pos, depth);
+		//onDraw(sb, sf, pos, depth);
 	}
 }
 

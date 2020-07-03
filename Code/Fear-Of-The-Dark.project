@@ -6,6 +6,9 @@
     </Plugin>
   </Plugins>
   <VirtualDirectory Name="include">
+    <File Name="EntityManager.h"/>
+    <File Name="Factory.h"/>
+    <File Name="Attack.h"/>
     <File Name="DialogueManager.h"/>
     <File Name="Options.h"/>
     <File Name="XMLDataTypes.h"/>
@@ -50,6 +53,9 @@
     <File Name="App.h"/>
   </VirtualDirectory>
   <VirtualDirectory Name="src">
+    <File Name="Factory.cpp"/>
+    <File Name="EntityManager.cpp"/>
+    <File Name="Attack.cpp"/>
     <File Name="DialogueManager.cpp"/>
     <File Name="XMLDataTypes.tpp"/>
     <File Name="XMLDataTypes.cpp"/>
@@ -103,11 +109,7 @@
       <Compiler Options="-g3 -g -DDEV_CONTROLS -DDEBUG -DLINUX -fexceptions -DLUA_APICHECK " C_Options="" Assembler="" Required="yes" PreCompiledHeader="" PCHInCommandLine="no" PCHFlags="" PCHFlagsPolicy="0">
         <IncludePath Value="Items"/>
         <IncludePath Value="Code"/>
-        <IncludePath Value="Code/Entities"/>
-        <IncludePath Value="Code/QuestSystem"/>
         <IncludePath Value="include"/>
-        <IncludePath Value="Code/"/>
-        <IncludePath Value="Code/Scripting"/>
         <IncludePath Value="../../GLEngine"/>
         <IncludePath Value="/usr/include/x86_64-linux-gnu/cegui-0.8.7"/>
       </Compiler>

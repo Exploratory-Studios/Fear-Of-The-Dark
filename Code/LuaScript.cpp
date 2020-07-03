@@ -23,6 +23,8 @@
 
 #include "EventQueue.h"
 
+#include "Factory.h"
+
 namespace ScriptingModule {
 
 	/*std::vector<glm::vec2> relativePositionTarget(World* world, Entity* relativeTo, glm::vec2 relativePos) {
@@ -435,7 +437,7 @@ namespace ScriptingModule {
 
 		lua_pop(L, 1); // Remove table.
 
-		world->getEntityByUUID(entityUUID)->setMetaData(md);
+		Factory::getEntityManager()->getEntityByUUID(entityUUID)->setMetaData(md);
 
 		return 0; // no returned values
 	}
@@ -800,9 +802,7 @@ namespace ScriptingModule {
 	}
 
 	int LuaScript::l_getPlayer(lua_State* L) {
-		World* world = static_cast<World*>(getUpvalue(L, WORLD_KEY));
-
-		EntityPlayer* p = world->getPlayer();
+		EntityPlayer* p = Factory::getEntityManager()->getPlayer();
 		std::string id = p->getUUID();
 		lua_pushstring(L, (char*)id.c_str());
 
@@ -810,9 +810,7 @@ namespace ScriptingModule {
 	}
 
 	int LuaScript::l_getSpeakingEntity(lua_State* L) {
-		World* world = static_cast<World*>(getUpvalue(L, WORLD_KEY));
-
-		Entity* s = world->getPlayer()->getSelectedEntity();
+		Entity* s = Factory::getEntityManager()->getPlayer()->getSelectedEntity();
 		std::string id = s->getUUID();
 		lua_pushstring(L, (char*)id.c_str());
 
@@ -820,11 +818,9 @@ namespace ScriptingModule {
 	}
 
 	int LuaScript::l_getEntityPosition(lua_State* L) {
-		World* world = static_cast<World*>(getUpvalue(L, WORLD_KEY));
-
 		std::string UUID = lua_tostring(L, 1);
 
-		glm::vec2 pos = world->getEntityByUUID(UUID)->getPosition();
+		glm::vec2 pos = Factory::getEntityManager()->getEntityByUUID(UUID)->getPosition();
 
 		lua_newtable(L);
 		lua_pushnumbertotable(L, 1, pos.x);

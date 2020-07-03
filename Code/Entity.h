@@ -1,9 +1,9 @@
 #pragma once
 
-#include <DebugRenderer.h>
 #include <vector>
 #include <GLTexture.h>
 #include <SpriteBatch.h>
+#include <DebugRenderer.h>
 
 #include "ScriptQueue.h"
 #include "SaveDataTypes.h"

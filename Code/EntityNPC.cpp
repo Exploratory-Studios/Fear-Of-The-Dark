@@ -13,7 +13,8 @@
 
 #include "XMLData.h"
 
-class faction;
+#include "Factory.h"
+
 EntityNPC::EntityNPC(glm::vec2 pos, unsigned int layer, unsigned int id, SaveDataTypes::MetaData data, bool loadTex) : Entity(pos, layer, SaveDataTypes::MetaData()) {
 	m_type = EntityTypes::NPC;
 
@@ -71,7 +72,7 @@ EntityNPC::~EntityNPC() {
 }
 
 void EntityNPC::collide(World* world, unsigned int entityIndex) {
-	std::vector<Entity*> entities = world->getEntities();
+	std::vector<Entity*> entities = Factory::getEntityManager()->getEntities();
 
 	/// Entity collision
 	for(unsigned int i = entityIndex + 1; i < entities.size(); i++) { /// To the right
@@ -629,7 +630,7 @@ void EntityNPC::addToFrontier(NavTile* tile, std::vector<NavTile*>& frontier) {
 }
 
 void EntityNPC::setAITarget(World* world, unsigned int selfIndex) {
-	unsigned int entCount = world->getEntities().size();
+	unsigned int entCount = Factory::getEntityManager()->getEntities().size();
 
 	EntityNPC* targetL = nullptr;
 	EntityNPC* targetR = nullptr;
@@ -640,7 +641,7 @@ void EntityNPC::setAITarget(World* world, unsigned int selfIndex) {
 
 		if(normalized == selfIndex) continue;
 
-		Entity* target = world->getEntities()[normalized];
+		Entity* target = Factory::getEntityManager()->getEntities()[normalized];
 		if(target->getType() == EntityTypes::NPC) {
 			EntityNPC* targetNPC = dynamic_cast<EntityNPC*>(target);
 
@@ -657,7 +658,7 @@ void EntityNPC::setAITarget(World* world, unsigned int selfIndex) {
 
 		if(normalized == selfIndex) continue;
 
-		Entity* target = world->getEntities()[normalized];
+		Entity* target = Factory::getEntityManager()->getEntities()[normalized];
 		if(target->getType() == EntityTypes::NPC) {
 			EntityNPC* targetNPC = dynamic_cast<EntityNPC*>(target);
 

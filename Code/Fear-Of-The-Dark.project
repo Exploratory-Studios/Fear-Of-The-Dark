@@ -6,6 +6,7 @@
     </Plugin>
   </Plugins>
   <VirtualDirectory Name="include">
+    <File Name="Animation.h"/>
     <File Name="EntityManager.h"/>
     <File Name="Factory.h"/>
     <File Name="Attack.h"/>

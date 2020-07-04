@@ -2,6 +2,8 @@
 
 class Entity;
 
+#include "Animation.h"
+
 namespace CombatModule {
 
 	enum class AttackRange { // For the AI to select which one to use.
@@ -16,18 +18,18 @@ namespace CombatModule {
 
 			virtual void execute() {} // Spawns the projectile or starts the script
 
-			Animation getLeadIn() const {
+			AnimationModule::Animation getLeadIn() const {
 				return m_leadIn;
 			}
-			Animation getLeadOut() const {
+			AnimationModule::Animation getLeadOut() const {
 				return m_leadOut;
 			}
 
 		private:
 			::Entity* m_owner;
 
-			::Animation m_leadIn;
-			::Animation m_leadOut;
+			AnimationModule::Animation m_leadIn;
+			AnimationModule::Animation m_leadOut;
 	};
 
 	class MeleeAttack : public Attack {

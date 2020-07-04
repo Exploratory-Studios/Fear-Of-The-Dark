@@ -30,7 +30,8 @@ namespace XMLModule {
 		QUEST,
 		QUEST_OBJECTIVE,
 		DIALOGUE_QUESTION,
-		DIALOGUE_RESPONSE
+		DIALOGUE_RESPONSE,
+		ANIMATION
 	};
 
 	void getVector(rapidxml::xml_node<>* parent, std::string valueName, std::string childName, std::vector<std::string>& vec); // Retrieves a string vector from a node
@@ -66,6 +67,7 @@ namespace XMLModule {
 			static QuestObjectiveData getQuestObjectiveData(unsigned int id);
 			static DialogueQuestionData getDialogueQuestionData(unsigned int id);
 			static DialogueResponseData getDialogueResponseData(unsigned int id);
+			static AnimationData getAnimationData(unsigned int id);
 
 			static unsigned int getTotalBiomes(); // Returns the number of biomes
 
@@ -87,6 +89,7 @@ namespace XMLModule {
 			static std::map<unsigned int, GenericData*> m_questObjectiveData;
 			static std::map<unsigned int, GenericData*> m_dialogueQuestionData;
 			static std::map<unsigned int, GenericData*> m_dialogueResponseData;
+			static std::map<unsigned int, GenericData*> m_animationData;
 	};
 
 }

@@ -6,6 +6,8 @@
 #include "EntityNPC.h"
 #include "EntityPlayer.h"
 
+#include "Factory.h"
+
 #include <SDL2/SDL_timer.h>
 
 #ifdef DEV_CONTROLS
@@ -75,11 +77,11 @@ void GameplayScreen::onEntry() {
 
 	m_scripter->init(m_world, m_questManager, this, m_audio, &m_particle2d); /// TODO: Questmanager
 
-	if(!m_world->getPlayer()) {
+	if(!Factory::getEntityManager()->getPlayer()) {
 		//Player p(glm::vec2(5.0f, 100.0f), true);
 		EntityPlayer p(glm::vec2(5, 100), 0, SaveDataTypes::MetaData(), true);
 
-		m_world->setPlayer(p);
+		Factory::getEntityManager()->setPlayer(p);
 	}
 
 	m_gui = new GLEngine::GUI();
@@ -88,7 +90,7 @@ void GameplayScreen::onEntry() {
 	m_dialogueManager = new DialogueModule::DialogueManager(m_gui, m_questManager);
 	//m_dialogueManager->activateDialogue(0);
 
-	m_camera.setPosition(m_world->getPlayer()->getPosition());
+	m_camera.setPosition(Factory::getEntityManager()->getPlayer()->getPosition());
 
 	tick();
 }
@@ -135,22 +137,24 @@ void GameplayScreen::update() {
 
 		// Set player caninteract
 
-		if(m_world->getPlayer() && !m_cutscenePause) {
-			m_world->getPlayer()->updateMouse(m_world, m_camera.convertScreenToWorld(m_game->inputManager.getMouseCoords()));
-			m_world->getPlayer()->updateInput(&m_game->inputManager, m_world);
+		if(Factory::getEntityManager()->getPlayer() && !m_cutscenePause) {
+			Factory::getEntityManager()->getPlayer()->updateMouse(m_world, m_camera.convertScreenToWorld(m_game->inputManager.getMouseCoords()));
+			Factory::getEntityManager()->getPlayer()->updateInput(&m_game->inputManager, m_world);
 			/// TODO: Re-enable this -> m_world->getPlayer()->setCanInteract(!m_questManager->isDialogueActive());
 		}
 
 		m_world->updateTiles(getScreenBox() + glm::vec4(-10.0f, -10.0f, 20.0f, 20.0f));
-		m_world->updateEntities(m_audio, 1.0f); /// TODO: Use timestep
+		Factory::getEntityManager()->updateEntities(1.0f); /// TODO: Use timestep
 
 		if(!m_cameraLocked) {
-			if(std::abs((m_world->getPlayer()->getPosition().x) - m_lastPlayerPos.x) >= (WORLD_SIZE / 2)) {
-				int sign = ((m_world->getPlayer()->getPosition().x + m_world->getPlayer()->getSize().x / 2.0f) - m_lastPlayerPos.x) / std::abs((m_world->getPlayer()->getPosition().x + m_world->getPlayer()->getSize().x / 2.0f) - m_lastPlayerPos.x);
+			EntityPlayer* player = Factory::getEntityManager()->getPlayer();
+
+			if(std::abs((player->getPosition().x) - m_lastPlayerPos.x) >= (WORLD_SIZE / 2)) {
+				int sign = ((player->getPosition().x + player->getSize().x / 2.0f) - m_lastPlayerPos.x) / std::abs((player->getPosition().x + player->getSize().x / 2.0f) - m_lastPlayerPos.x);
 				m_lastPlayerPos.x += (float)(WORLD_SIZE) * sign;
 				m_camera.setPosition(m_camera.getPosition() + glm::vec2((float)(WORLD_SIZE) * sign, 0.0f));
 			}
-			m_lastPlayerPos = (m_lastPlayerPos + ((m_world->getPlayer()->getPosition() + m_world->getPlayer()->getSize() / glm::vec2(2.0f)) - m_lastPlayerPos) / glm::vec2(4.0f));
+			m_lastPlayerPos = (m_lastPlayerPos + ((player->getPosition() + player->getSize() / glm::vec2(2.0f)) - m_lastPlayerPos) / glm::vec2(4.0f));
 			m_camera.setPosition(m_lastPlayerPos); // If lastplayerpos is never updated, the camera is still 'locked' per say, but we can actually change the lastPlayerPos on purpose to get a smooth movement somewhere.
 		} else {
 			m_lastPlayerPos = (m_lastPlayerPos + (m_smoothMoveTarget - m_lastPlayerPos) * m_smoothMoveSpeed);
@@ -235,7 +239,7 @@ void GameplayScreen::draw() {
 		//glUniform1i(textureUniform, 3);
 
 		GLint playerDepthUniform = m_postProcessor.getUniformLocation("playerDepth");
-		float playerDepth = 0.1f + (m_world->getPlayer()->getLayer() * (1.0f / (float)(WORLD_DEPTH)) * 0.9f);
+		float playerDepth = 0.1f + (Factory::getEntityManager()->getPlayer()->getLayer() * (1.0f / (float)(WORLD_DEPTH)) * 0.9f);
 		glUniform1f(playerDepthUniform, playerDepth);
 
 		m_world->setLightsUniform(getScreenBox() + glm::vec4(0.0f, 0.0f, 1.0f, 1.0f), &m_postProcessor, m_camera); // sets "lights" uniform of vec3s
@@ -295,7 +299,7 @@ void GameplayScreen::drawSkyToFBO() {
 	glUniform1f(lightUniform, dayLight);
 
 	GLint playerDepthUniform = m_skyTextureProgram.getUniformLocation("playerXPos");
-	float playerChunkX = std::fmod((m_world->getPlayer()->getPosition().x + (float)CHUNK_SIZE), (float)CHUNK_SIZE);
+	float playerChunkX = std::fmod((Factory::getEntityManager()->getPlayer()->getPosition().x + (float)CHUNK_SIZE), (float)CHUNK_SIZE);
 	glUniform1f(playerDepthUniform, playerChunkX / (float)(CHUNK_SIZE));
 
 	GLint parallaxZoomUniform = m_skyTextureProgram.getUniformLocation("parallaxZoom");
@@ -304,7 +308,7 @@ void GameplayScreen::drawSkyToFBO() {
 	m_spriteBatch.begin();
 
 
-	int playerX = (int)m_world->getPlayer()->getPosition().x;
+	int playerX = (int)Factory::getEntityManager()->getPlayer()->getPosition().x;
 	std::string backgroundPath = m_world->getBiome(playerX).backgroundTexture;
 
 	GLuint backgroundID = GLEngine::ResourceManager::getTexture(backgroundPath).id;
@@ -339,7 +343,7 @@ void GameplayScreen::drawWorldToFBO() {
 		m_spriteBatch.begin(GLEngine::GlyphSortType::NONE);
 
 		m_world->drawTiles(m_spriteBatch, m_spriteFont, m_dr, getScreenBox() + glm::vec4(0.0f, 0.0f, 1.0f, 1.0f), &m_textureProgram); // handles spritebatch.begin and end
-		m_world->drawEntities(m_spriteBatch, m_spriteFont, m_dr, getScreenBox() + glm::vec4(0.0f, 0.0f, 1.0f, 1.0f));
+		Factory::getEntityManager()->drawEntities(m_spriteBatch, m_spriteFont, m_dr, getScreenBox() + glm::vec4(0.0f, 0.0f, 1.0f, 1.0f));
 
 		m_spriteBatch.end();
 		m_spriteBatch.renderBatch();
@@ -366,7 +370,7 @@ void GameplayScreen::drawWorldNormalToFBO() {
 	m_spriteBatch.begin(GLEngine::GlyphSortType::NONE);
 
 	m_world->drawTilesNormal(m_spriteBatch, getScreenBox() + glm::vec4(0.0f, 0.0f, 1.0f, 1.0f), &m_textureProgram);
-	m_world->drawEntitiesNormal(m_spriteBatch, getScreenBox() + glm::vec4(0.0f, 0.0f, 1.0f, 1.0f));
+	Factory::getEntityManager()->drawEntitiesNormal(m_spriteBatch, getScreenBox() + glm::vec4(0.0f, 0.0f, 1.0f, 1.0f));
 
 	m_spriteBatch.end();
 	m_spriteBatch.renderBatch();
@@ -430,7 +434,7 @@ void GameplayScreen::drawGUIToScreen() {
 	GLint pUniform = m_uiTextureProgram.getUniformLocation("P");
 	glUniformMatrix4fv(pUniform, 1, GL_FALSE, &projectionMatrix[0][0]);
 
-	m_world->getPlayer()->drawGUI(m_spriteBatch, m_spriteFont);
+	Factory::getEntityManager()->getPlayer()->drawGUI(m_spriteBatch, m_spriteFont);
 
 	m_gui->draw();
 
@@ -459,7 +463,7 @@ void GameplayScreen::drawPostToScreen() {
 	glUniform2f(sizeUniform, m_window->getScreenWidth(), m_window->getScreenHeight());
 
 	GLint sanityUniform = m_vignetteTextureProgram.getUniformLocation("sanity");
-	glUniform1f(sanityUniform, m_world->getPlayer()->getSanity());
+	glUniform1f(sanityUniform, Factory::getEntityManager()->getPlayer()->getSanity());
 
 	GLint timeUniform = m_vignetteTextureProgram.getUniformLocation("time");
 	glUniform1f(timeUniform, m_time);
@@ -605,7 +609,7 @@ void GameplayScreen::initUI() {
 		m_pauseWidgets.push_back(static_cast<CEGUI::Window*>(quitButton));
 	}
 
-	m_world->getPlayer()->initGUI(m_gui);
+	Factory::getEntityManager()->getPlayer()->initGUI(m_gui);
 	m_console->init(*m_gui, m_scripter, m_world, m_questManager, this);
 
 #ifdef DEV_CONTROLS
@@ -620,7 +624,7 @@ void GameplayScreen::initUI() {
 void GameplayScreen::tick() {
 	// Happens not every second, nor each frame, but somewhere in between.
 	m_world->tickTiles(getScreenBox() + glm::vec4(-20.0f, -20.0f, 40.0f, 40.0f));
-	m_world->tickEntities(m_audio);
+	Factory::getEntityManager()->tickEntities();
 
 	if(!m_audio->isMusicPlaying()) {
 		float hour = (float)((int)m_time % DAY_LENGTH) / (float)DAY_LENGTH + 0.5f;//(int)((m_time / TICK_RATE) + 12) % DAY_LENGTH;
@@ -660,21 +664,25 @@ void GameplayScreen::updateScale() {
 #include "ExtraFunctions.h"
 
 #ifdef DEV_CONTROLS
-void GameplayScreen::drawDebug() {
-	if(m_world->getPlayer()->getSelectedBlock()) {
-		int blockX, blockY;
-		blockX = m_world->getPlayer()->getSelectedBlock()->getPosition().x;
-		blockY = m_world->getPlayer()->getSelectedBlock()->getPosition().y;
 
-		std::string biomeString = m_world->getBiome(m_world->getPlayer()->getSelectedBlock()->getPosition().x).name;
+void GameplayScreen::drawDebug() {
+	if(Factory::getEntityManager()->getPlayer()->getSelectedBlock()) {
+		EntityPlayer* p = Factory::getEntityManager()->getPlayer();
+
+		int blockX, blockY;
+		blockX = p->getSelectedBlock()->getPosition().x;
+		blockY = p->getSelectedBlock()->getPosition().y;
+
+		std::string biomeString = m_world->getBiome(p->getSelectedBlock()->getPosition().x).name;
 
 		std::string display = "FPS: " + std::to_string((int)m_game->getFps());
 		display += "\nMouse x,y: " + std::to_string(blockX) + "," + std::to_string(blockY);
-		display += "\nSelected Block: Biome: " + biomeString + ", " + m_world->getPlayer()->getSelectedBlock()->getPrintout(m_world);
+		display += "\nSelected Block: Biome: " + biomeString + ", " + p->getSelectedBlock()->getPrintout(m_world);
 
 		m_fpsWidget->setText(display);
 	}
 }
+
 #endif //DEV_CONTROLS
 
 void GameplayScreen::pauseGame() {

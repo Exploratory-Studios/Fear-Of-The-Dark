@@ -6,6 +6,8 @@
 #include "Tile.h"
 #include "Inventory.h"
 
+#include "Factory.h"
+
 EntityPlayer::EntityPlayer(glm::vec2 pos, unsigned int layer, SaveDataTypes::MetaData data, bool loadTex) : EntityNPC(pos, layer, 0, data, loadTex) {
 
 }
@@ -216,16 +218,16 @@ void EntityPlayer::updateMouse(World* world, glm::vec2 mouseCoords) {
 
 		m_selectedEntity = nullptr;
 
-		for(unsigned int i = 0; i < world->getEntities().size() && !m_selectedEntity; i++) {
-			float sizeX = (world->getEntities()[i]->getSize().x) / 2.0f;
-			float midX = world->getEntities()[i]->getPosition().x + sizeX;
+		for(unsigned int i = 0; i < Factory::getEntityManager()->getEntities().size() && !m_selectedEntity; i++) {
+			float sizeX = (Factory::getEntityManager()->getEntities()[i]->getSize().x) / 2.0f;
+			float midX = Factory::getEntityManager()->getEntities()[i]->getPosition().x + sizeX;
 
-			float sizeY = (world->getEntities()[i]->getSize().y) / 2.0f;
-			float midY = world->getEntities()[i]->getPosition().y + sizeY;
+			float sizeY = (Factory::getEntityManager()->getEntities()[i]->getSize().y) / 2.0f;
+			float midY = Factory::getEntityManager()->getEntities()[i]->getPosition().y + sizeY;
 
 			if(std::abs(midX - mouseCoords.x) <= sizeX / 2.0f) {
 				if(std::abs(midY - mouseCoords.y) <= sizeY / 2.0f) {
-					m_selectedEntity = world->getEntities()[i];
+					m_selectedEntity = Factory::getEntityManager()->getEntities()[i];
 				}
 			}
 		}

@@ -214,6 +214,9 @@ namespace XMLModule {
 		loadXMLData(ASSETS_FOLDER_PATH + "/Data/Dialogue.xml", XMLDataType::DIALOGUE_RESPONSE);
 		Logger::getInstance()->log("Loaded data (Dialogue Responses)...");
 
+		loadXMLData(ASSETS_FOLDER_PATH + "/Data/Animations.xml", XMLDataType::ANIMATION);
+		Logger::getInstance()->log("Loaded data (Animations)...");
+
 		Logger::getInstance()->log("Loaded all data successfully!");
 	}
 
@@ -232,6 +235,7 @@ namespace XMLModule {
 	std::map<unsigned int, GenericData*> XMLData::m_questObjectiveData;
 	std::map<unsigned int, GenericData*> XMLData::m_dialogueQuestionData;
 	std::map<unsigned int, GenericData*> XMLData::m_dialogueResponseData;
+	std::map<unsigned int, GenericData*> XMLData::m_animationData;
 
 	void XMLData::loadXMLData(std::string filepath, XMLDataType type) {
 		/** Loads all XML data into the map **/
@@ -334,6 +338,11 @@ namespace XMLModule {
 				nodeName = "response";
 				break;
 			}
+			case(unsigned int)XMLDataType::ANIMATION: {
+				mapForWrite = &m_animationData;
+				nodeName = "animation";
+				break;
+			}
 			default: {
 				Logger::getInstance()->log("ERROR: Type not supported!", true);
 				break;
@@ -402,6 +411,10 @@ namespace XMLModule {
 				}
 				case(unsigned int)XMLDataType::DIALOGUE_RESPONSE: {
 					d = new DialogueResponseData();
+					break;
+				}
+				case(unsigned int)XMLDataType::ANIMATION: {
+					d = new AnimationData();
 					break;
 				}
 				default: {
@@ -631,6 +644,20 @@ namespace XMLModule {
 		}
 
 		return *static_cast<DialogueResponseData*>(index->second);
+	}
+
+	/// Animations
+
+	AnimationData XMLData::getAnimationData(unsigned int id) {
+		auto index = m_animationData.find(id);
+
+		if(index == m_animationData.end()) {
+			Logger::getInstance()->log("ERROR: Couldn't find animation data with ID: " + std::to_string(id), true);
+			AnimationData s;
+			return s;
+		}
+
+		return *static_cast<AnimationData*>(index->second);
 	}
 
 }

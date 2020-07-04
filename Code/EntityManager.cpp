@@ -38,6 +38,19 @@ void EntityManager::dispose() {
 	Logger::getInstance()->log("EntityManager deconstructed");
 }
 
+void EntityManager::setPlayer(EntityPlayer& p) {
+	/// Copies p, creates/updates a pointer to the world-stored player.
+	if(!m_player) {
+		m_player = new EntityPlayer(glm::vec2(0.0f), 0.0f, SaveDataTypes::MetaData(), false);
+		*m_player = p;
+		addEntity(m_player);
+	} else {
+		removeEntity(m_player->getUUID());
+		m_player = &p;
+		addEntity(&p);
+	}
+}
+
 void EntityManager::sortEntities() {
 	bool changed = true;
 	while(changed) {

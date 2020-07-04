@@ -448,6 +448,23 @@ namespace XMLModule {
 			std::vector<unsigned int> requiredFlags;
 			unsigned int nextQuestion;
 	};
+
+	class AnimationData : public GenericData {
+		public:
+			AnimationData() {
+				std::vector<AttributeBase*> attrs = {
+					new Attribute<std::string>("texture", AttributeType::STRING, &texture),
+					new Attribute<unsigned int>("y", AttributeType::UNSIGNED_INT, &y),
+					new Attribute<unsigned int>("width", AttributeType::UNSIGNED_INT, &width),
+					new Attribute<unsigned int>("height", AttributeType::UNSIGNED_INT, &height)
+				};
+
+				addAttributes(attrs);
+			};
+
+			std::string texture;
+			unsigned int y, width, height;
+	};
 }
 
 #include "XMLDataTypes.tpp" // Just for templated functions.

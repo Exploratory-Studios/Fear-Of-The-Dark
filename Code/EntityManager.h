@@ -14,6 +14,8 @@ class AudioManager;
 class World;
 
 class EntityManager {
+		friend class WorldIOManager;
+
 	public:
 		EntityManager();
 		~EntityManager(); // Deletes all created entities. RAII Rocks.
@@ -41,6 +43,7 @@ class EntityManager {
 		EntityPlayer* getPlayer() {
 			return m_player;
 		}
+		void setPlayer(EntityPlayer& p);
 
 	private:
 		void spawnEntities();

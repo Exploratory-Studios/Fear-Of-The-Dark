@@ -11,6 +11,8 @@
 
 #include "XMLData.h"
 
+#include "Factory.h"
+
 void WorldIOManager::loadWorld(std::string worldName, World* world) {
 	setProgress(0.0f);
 	boost::thread t([ = ]() {
@@ -87,7 +89,7 @@ void WorldIOManager::P_loadWorld(std::string worldName, World* world) {
 	{
 		// PLAYER
 
-		world->m_player = new EntityPlayer(glm::vec2(0.0f), 0, SaveDataTypes::MetaData(), false);
+		Factory::getEntityManager()->m_player = new EntityPlayer(glm::vec2(0.0f), 0, SaveDataTypes::MetaData(), false);
 
 		SaveDataTypes::EntityPlayerData pod;
 		pod.read(file);
@@ -155,7 +157,7 @@ void WorldIOManager::P_saveWorld(World* world) {
 	logger->log("SAVE: Starting World Save to File: " + world->getName() + ".bin");
 	logger->log("SAVE: Starting Save Preparations");
 
-	SaveDataTypes::EntityPlayerData p = world->getPlayer()->getPlayerSaveData();
+	SaveDataTypes::EntityPlayerData p = Factory::getEntityManager()->getPlayer()->getPlayerSaveData();
 
 	// POD
 	/*EntityPlayer* playerPtr = world->getPlayer();

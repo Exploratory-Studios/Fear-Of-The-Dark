@@ -15,25 +15,6 @@
 
 namespace XMLModule {
 
-	enum class XMLDataType {
-		TILE,
-		PARTICLE,
-		ENTITY_NPC,
-		ENTITY_PROJECTILE,
-		ENTITY_ITEM,
-		ITEM,
-		BIOME,
-		ERA,
-		LOOT_DROP,
-		LOOT_TABLE,
-		STRUCTURE,
-		QUEST,
-		QUEST_OBJECTIVE,
-		DIALOGUE_QUESTION,
-		DIALOGUE_RESPONSE,
-		ANIMATION
-	};
-
 	void getVector(rapidxml::xml_node<>* parent, std::string valueName, std::string childName, std::vector<std::string>& vec); // Retrieves a string vector from a node
 	void getVector(rapidxml::xml_node<>* parent, std::string valueName, std::string childName, std::vector<float>& vec); // Retrieves a float vector from a node
 	void getVector(rapidxml::xml_node<>* parent, std::string valueName, std::string childName, std::vector<int>& vec); // Retrieves an int vector from a node
@@ -68,11 +49,15 @@ namespace XMLModule {
 			static DialogueQuestionData getDialogueQuestionData(unsigned int id);
 			static DialogueResponseData getDialogueResponseData(unsigned int id);
 			static AnimationData getAnimationData(unsigned int id);
+			static AttackData getAttackData(unsigned int id);
+			static MeleeAttackData getMeleeAttackData(unsigned int id);
+			static RangedAttackData getRangedAttackData(unsigned int id);
+			static MagicAttackData getMagicAttackData(unsigned int id);
 
 			static unsigned int getTotalBiomes(); // Returns the number of biomes
 
 		private:
-			static void loadXMLData(std::string filepath, XMLDataType type); // Loads any valid map of GenericData children.
+			static void loadXMLData(std::string filepath); // Loads any valid map of GenericData children.
 
 			static std::map<unsigned int, GenericData*> m_tileData;
 			static std::map<unsigned int, GenericData*> m_particleData;
@@ -90,6 +75,7 @@ namespace XMLModule {
 			static std::map<unsigned int, GenericData*> m_dialogueQuestionData;
 			static std::map<unsigned int, GenericData*> m_dialogueResponseData;
 			static std::map<unsigned int, GenericData*> m_animationData;
+			static std::map<unsigned int, GenericData*> m_attackData;
 	};
 
 }

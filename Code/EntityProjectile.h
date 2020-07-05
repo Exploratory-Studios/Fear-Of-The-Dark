@@ -2,19 +2,22 @@
 
 #include "Entity.h"
 
-class EntityProjectile : public Entity
-{
-    public:
-        EntityProjectile(glm::vec2 pos, unsigned int layer, unsigned int id, SaveDataTypes::MetaData data, bool loadTex);
-        EntityProjectile(glm::vec2 pos, unsigned int layer, EntityIDs id, SaveDataTypes::MetaData data, bool loadTex);
-        virtual ~EntityProjectile();
+class EntityProjectile : public Entity {
+	public:
+		EntityProjectile(glm::vec2 pos, unsigned int layer, unsigned int id, SaveDataTypes::MetaData data, bool loadTex);
+		EntityProjectile(glm::vec2 pos, unsigned int layer, EntityIDs id, SaveDataTypes::MetaData data, bool loadTex);
+		virtual ~EntityProjectile();
 
-    protected:
-        // Movement
-        float m_speed;
-        bool m_collideWithBlocks;
+		void setDirection(glm::vec2& direction) {
+			m_velocity = direction * glm::vec2(m_speed);
+		}
 
-        // Combat
-        float m_damage;
+	protected:
+		// Movement
+		float m_speed;
+		bool m_collideWithBlocks;
+
+		// Combat
+		float m_damage;
 
 };

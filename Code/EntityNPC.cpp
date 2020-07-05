@@ -681,22 +681,3 @@ void EntityNPC::setAITarget(World* world, unsigned int selfIndex) {
 		}
 	}
 }
-
-void EntityNPC::animate(int& x, int& y, bool& flip, float time) {
-	if(m_velocity.x > m_runSpeed) {
-		x = (int)time * abs((int)m_velocity.x) + 1 % m_animationFramesX;
-		y = 1;
-		m_flippedTexture = false;
-	} else if(m_velocity.x < -m_runSpeed) {
-		x = (int)time * abs((int)m_velocity.x) + 1 % m_animationFramesX;
-		y = 1;
-		m_flippedTexture = true;
-	} else {
-		x = 0;
-		y = 1;
-	}
-	if(m_velocity.y > 0.0f) {
-		x = (int)time % m_animationFramesX;
-		y = 0;
-	}
-}

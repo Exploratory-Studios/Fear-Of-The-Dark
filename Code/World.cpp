@@ -261,19 +261,6 @@ void World::getRenderedLights(glm::vec4 destRect, float lights[MAX_LIGHTS_RENDER
 	}
 }
 
-void World::setPlayer(EntityPlayer& p) {
-	/// Copies p, creates/updates a pointer to the world-stored player.
-	if(!m_player) {
-		m_player = new EntityPlayer(glm::vec2(0.0f), 0.0f, SaveDataTypes::MetaData(), false);
-		*m_player = p;
-		addEntity(m_player);
-	} else {
-		removeEntity(m_player->getUUID());
-		m_player = &p;
-		addEntity(&p);
-	}
-}
-
 void World::setLightsUniform(glm::vec4 destRect, GLEngine::GLSLProgram* textureProgram, GLEngine::Camera2D& cam) {
 	float lights[MAX_LIGHTS_RENDERED * 3];
 	getRenderedLights(destRect, lights, cam);
@@ -288,7 +275,9 @@ void World::drawTiles(GLEngine::SpriteBatch& sb, GLEngine::SpriteFont& sf, GLEng
 	    eg. destRect = (-10, 10, 20, 10) will draw tiles from x=(WORLD_SIZE - 10) to x=(-10 + 20) and y=(10) to y=(10 + 10)
 	*/
 
-	int playerLayer = m_player->getLayer();
+	EntityPlayer* player = Factory::getEntityManager()->getPlayer();
+
+	int playerLayer = player->getLayer();
 	int diff[WORLD_DEPTH];
 	float blur[WORLD_DEPTH];
 	for(int i = 0; i < WORLD_DEPTH; i++) {
@@ -315,7 +304,9 @@ void World::drawTiles(GLEngine::SpriteBatch& sb, GLEngine::SpriteFont& sf, GLEng
 }
 
 void World::drawTilesNormal(GLEngine::SpriteBatch& sb, glm::vec4 destRect, GLEngine::GLSLProgram* textureProgram) {
-	int playerLayer = m_player->getLayer();
+	EntityPlayer* player = Factory::getEntityManager()->getPlayer();
+
+	int playerLayer = player->getLayer();
 	int diff[WORLD_DEPTH];
 	float blur[WORLD_DEPTH];
 	for(int i = 0; i < WORLD_DEPTH; i++) {
@@ -389,10 +380,10 @@ void World::tickTiles(glm::vec4 destRect) {
 }
 
 void World::drawDebug(GLEngine::DebugRenderer& dr, float xOffset) {
-	for(unsigned int i = 0; i < m_entities.size(); i++) {
-		m_entities[i]->debugDraw(dr, 0.0f); /// TODO: Finish these entity functions up and improve!
-	}
-	dr.end();
+	//for(unsigned int i = 0; i < m_entities.size(); i++) {
+	//	m_entities[i]->debugDraw(dr, 0.0f); /// TODO: Finish these entity functions up and improve!
+	//}
+	//dr.end();
 }
 
 void World::drawSunlight(GLEngine::SpriteBatch& sb, glm::vec4 destRect) {

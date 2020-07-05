@@ -8,6 +8,8 @@
 #include "ScriptQueue.h"
 #include "SaveDataTypes.h"
 
+#include "Animation.h"
+
 #include <SpriteBatch.h>
 
 class Chunk;
@@ -47,37 +49,37 @@ class Entity {
 		virtual void collide(World* world, unsigned int entityIndex) {}
 
 		// Getters
-		const glm::vec2&               getPosition()     const {
+		const glm::vec2& getPosition() const {
 			return m_position;
 		}
-		const glm::vec2&               getSize()         const {
+		const glm::vec2& getSize() const {
 			return m_size;
 		}
-		glm::vec2                getVelocity()     const {
+		glm::vec2 getVelocity() const {
 			return m_velocity;
 		}
-		glm::vec4                getLightLevel()   const {
+		glm::vec4 getLightLevel() const {
 			return m_cornerLight;
 		}
-		float                    getAverageLightLevel() const {
+		float getAverageLightLevel() const {
 			return (m_cornerLight.x + m_cornerLight.y + m_cornerLight.z + m_cornerLight.w) / 4.0f;
 		}
-		void                     setPosition(glm::vec2 pos)   {
+		void setPosition(glm::vec2 pos) {
 			m_position = pos;
 		}
-		unsigned int                   getLayer()        const {
+		unsigned int getLayer() const {
 			return m_layer;
 		}
-		std::string                    getUUID()         const {
+		std::string getUUID() const {
 			return m_UUID;
 		}
-		unsigned int                   getID()           const {
+		unsigned int getID() const {
 			return m_id;
 		}
-		EntityTypes                    getType()         const {
+		EntityTypes getType() const {
 			return m_type;
 		}
-		SaveDataTypes::MetaData                       getMetaData()     const {
+		SaveDataTypes::MetaData getMetaData() const {
 			return m_metaData;
 		}
 
@@ -127,7 +129,8 @@ class Entity {
 		// Internal
 		// Rendering
 		void loadTexture();
-		int m_animationFramesX = 1, m_animationFramesY = 1;
+
+		AnimationModule::Animation m_idleAnimation, m_lowVelAnimation, m_highVelAnimation, m_upAnimation, m_downAnimation;
 
 		bool m_controls[6]; // Up, down (crouching while on ground), left, right, backwards (layer++), forwards (layer--)
 

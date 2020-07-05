@@ -453,7 +453,7 @@ namespace XMLModule {
 		public:
 			AnimationData() {
 				std::vector<AttributeBase*> attrs = {
-					new Attribute<std::string>("texture", AttributeType::STRING, &texture),
+					new Attribute<std::string>("texture", AttributeType::FILEPATH_TEXTURE, &texture),
 					new Attribute<unsigned int>("y", AttributeType::UNSIGNED_INT, &y),
 					new Attribute<unsigned int>("width", AttributeType::UNSIGNED_INT, &width),
 					new Attribute<unsigned int>("height", AttributeType::UNSIGNED_INT, &height)
@@ -464,6 +464,63 @@ namespace XMLModule {
 
 			std::string texture;
 			unsigned int y, width, height;
+	};
+
+	class AttackData : public GenericData {
+		public:
+			AttackData() {
+				std::vector<AttributeBase*> attrs = {
+					new Attribute<unsigned int>("leadInAnimationID", AttributeType::UNSIGNED_INT, &leadInAnimationID),
+					new Attribute<unsigned int>("leadOutAnimationID", AttributeType::UNSIGNED_INT, &leadOutAnimationID)
+				};
+
+				addAttributes(attrs);
+			};
+
+			unsigned int leadInAnimationID, leadOutAnimationID;
+	};
+
+	class MeleeAttackData : public AttackData {
+		public:
+			MeleeAttackData() {
+				std::vector<AttributeBase*> attrs = {
+					new Attribute<unsigned int>("projectileID", AttributeType::UNSIGNED_INT, &projectileID)
+				};
+
+				addAttributes(attrs);
+			};
+
+			unsigned int projectileID;
+	};
+
+	class RangedAttackData : public AttackData {
+		public:
+			RangedAttackData() {
+				std::vector<AttributeBase*> attrs = {
+					new Attribute<unsigned int>("projectileID", AttributeType::UNSIGNED_INT, &projectileID),
+					new Attribute<unsigned int>("numProjectiles", AttributeType::UNSIGNED_INT, &numProjectiles),
+					new Attribute<float>("angleWidth", AttributeType::FLOAT, &angleWidth)
+				};
+
+				addAttributes(attrs);
+			};
+
+			unsigned int projectileID;
+			unsigned int numProjectiles;
+			float angleWidth; // 6 degrees default IN RADIANS!
+	};
+
+	class MagicAttackData : public AttackData {
+		public:
+			MagicAttackData() {
+				std::vector<AttributeBase*> attrs = {
+					new Attribute<unsigned int>("script", AttributeType::SCRIPT, &script)
+				};
+
+				addAttributes(attrs);
+			};
+
+			unsigned int script;
 	};
 }
 

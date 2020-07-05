@@ -1,0 +1,19 @@
+<meleeAttack name="Melee Test" id="0">
+	<leadInAnimation>0</leadInAnimation>
+	<leadOutAnimation>0</leadOutAnimation>
+	<projectileID>0</projectileID>
+</meleeAttack>
+
+<rangedAttack name="Shotgun Test" id="1">
+	<leadInAnimation>0</leadInAnimation>
+	<leadOutAnimation>0</leadOutAnimation>
+	<projectileID>0</projectileID>
+	<numProjectiles>3</numProjectiles>
+	<angleWidth>45</angleWidth>
+</rangedAttack>
+
+<meleeAttack name="Magic Test" id="2">
+	<leadInAnimation>0</leadInAnimation>
+	<leadOutAnimation>0</leadOutAnimation>
+	<script/>
+</meleeAttack>

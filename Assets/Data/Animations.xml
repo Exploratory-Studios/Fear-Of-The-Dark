@@ -1,0 +1,6 @@
+<animation name="Test" id="0">
+	<texture>/Entities/NPCs/Mob0.png</texture>
+	<y>0</y>
+	<width>32</width>
+	<height>64</height>
+</animation>

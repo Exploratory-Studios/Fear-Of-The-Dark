@@ -9,7 +9,7 @@
 #include "Factory.h"
 
 EntityPlayer::EntityPlayer(glm::vec2 pos, unsigned int layer, SaveDataTypes::MetaData data, bool loadTex) : EntityNPC(pos, layer, 0, data, loadTex) {
-
+	m_lowVelAnimation.init(0);
 }
 
 EntityPlayer::~EntityPlayer() {

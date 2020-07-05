@@ -15,43 +15,44 @@ namespace CombatModule {
 	class Attack {
 		public:
 			Attack(unsigned int attackID, ::Entity* owner); // Uses the ID to fill in various fields (exclusive to each type of attack)
+			virtual ~Attack() {};
 
 			virtual void execute() {} // Spawns the projectile or starts the script
 
-			AnimationModule::Animation getLeadIn() const {
+			::AnimationModule::Animation getLeadIn() const {
 				return m_leadIn;
 			}
-			AnimationModule::Animation getLeadOut() const {
+			::AnimationModule::Animation getLeadOut() const {
 				return m_leadOut;
 			}
 
-		private:
+		protected:
 			::Entity* m_owner;
 
-			AnimationModule::Animation m_leadIn;
-			AnimationModule::Animation m_leadOut;
+			::AnimationModule::Animation m_leadIn;
+			::AnimationModule::Animation m_leadOut;
 	};
 
 	class MeleeAttack : public Attack {
 		public:
 			MeleeAttack(unsigned int attackID, ::Entity* owner);
+			~MeleeAttack() {};
 
 			virtual void execute() override;
 
-		private:
-			float m_range = 1.0f; // Blocks
-			float m_damage = 0.0f;
-			float m_angleWidth = (1.0f / 4.0f) * (2.0f * 3.141f); // 90 degrees default IN RADIANS!
+		protected:
+			unsigned int m_projectileID;
 	};
 
 	class RangedAttack : public Attack {
 		public:
 			RangedAttack(unsigned int attackID, ::Entity* owner);
+			~RangedAttack() {};
 
 			virtual void execute() override;
 
-		private:
-			unsigned int m_projectileID = 0;
+		protected:
+			unsigned int m_projectileID;
 			unsigned int m_numProjectiles = 1;
 			float m_angleWidth = (1.0f / 60.0f) * (2.0f * 3.141f); // 6 degrees default IN RADIANS!
 	};
@@ -59,10 +60,11 @@ namespace CombatModule {
 	class MagicAttack : public Attack {
 		public:
 			MagicAttack(unsigned int attackID, ::Entity* owner);
+			~MagicAttack() {};
 
 			virtual void execute() override;
 
-		private:
+		protected:
 			unsigned int m_scriptID = 0;
 	};
 }

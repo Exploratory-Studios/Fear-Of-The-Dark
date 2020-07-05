@@ -114,7 +114,7 @@
         <IncludePath Value="../../GLEngine"/>
         <IncludePath Value="/usr/include/x86_64-linux-gnu/cegui-0.8.7"/>
       </Compiler>
-      <Linker Options="-pg" Required="yes">
+      <Linker Options="" Required="yes">
         <LibraryPath Value="../../GLEngine/bin/Release/"/>
         <LibraryPath Value="/usr/lib/x86_64-linux-gnu/"/>
         <LibraryPath Value="./"/>
@@ -134,7 +134,7 @@
         <Library Value="pthread"/>
       </Linker>
       <ResourceCompiler Options="" Required="no"/>
-      <General OutputFile="bin/Debug/FOTD" IntermediateDirectory="./obj/Debug" Command="./FOTD" CommandArguments="" UseSeparateDebugArgs="no" DebugArguments="" WorkingDirectory="bin/Debug" PauseExecWhenProcTerminates="yes" IsGUIProgram="no" IsEnabled="yes"/>
+      <General OutputFile="bin/Debug/FOTDExec.exe" IntermediateDirectory="./obj/Debug" Command="./FOTDExec.exe" CommandArguments="" UseSeparateDebugArgs="no" DebugArguments="" WorkingDirectory="bin/Debug" PauseExecWhenProcTerminates="yes" IsGUIProgram="no" IsEnabled="yes"/>
       <BuildSystem Name="Default"/>
       <Environment EnvVarSetName="&lt;Use Defaults&gt;" DbgSetName="&lt;Use Defaults&gt;">
         <![CDATA[]]>
@@ -219,15 +219,28 @@
       <Compiler Options="-fexpensive-optimizations -flto -O3 -DLINUX -fexceptions -DLUA_APICHECK " C_Options="" Assembler="" Required="yes" PreCompiledHeader="" PCHInCommandLine="no" PCHFlags="" PCHFlagsPolicy="0">
         <IncludePath Value="Items"/>
         <IncludePath Value="Code"/>
-        <IncludePath Value="Code/Entities"/>
-        <IncludePath Value="Code/QuestSystem"/>
         <IncludePath Value="include"/>
-        <IncludePath Value="Code/"/>
-        <IncludePath Value="Code/Scripting"/>
         <IncludePath Value="../../GLEngine"/>
+        <IncludePath Value="/usr/include/x86_64-linux-gnu/cegui-0.8.7"/>
       </Compiler>
-      <Linker Options="-flto -s -O3 -Wl,-Bstatic /usr/lib/x86_64-linux-gnu/libboost_thread.a /usr/lib/x86_64-linux-gnu/libboost_filesystem.a /usr/lib/x86_64-linux-gnu/libboost_system.a -llua5.3 -Wl,-Bdynamic ../../GLEngine/bin/Release/libGLEngine.a -lCEGUIBase-0 -lCEGUIOpenGLRenderer-0 -lSDL2 -lSDL2_mixer -lSDL2_ttf -lGL -lGLU -lGLEW -lpthread " Required="yes">
-        <LibraryPath Value="../../GLEngine"/>
+      <Linker Options="-flto -s" Required="yes">
+        <LibraryPath Value="../../GLEngine/bin/Release/"/>
+        <LibraryPath Value="/usr/lib/x86_64-linux-gnu/"/>
+        <LibraryPath Value="./"/>
+        <Library Value="libboost_thread.a"/>
+        <Library Value="libboost_filesystem.a"/>
+        <Library Value="libboost_system.a"/>
+        <Library Value="lua5.3"/>
+        <Library Value="libGLEngine.a"/>
+        <Library Value="CEGUIBase-0"/>
+        <Library Value="CEGUIOpenGLRenderer-0"/>
+        <Library Value="SDL2"/>
+        <Library Value="SDL2_mixer"/>
+        <Library Value="SDL2_ttf"/>
+        <Library Value="GL"/>
+        <Library Value="GLU"/>
+        <Library Value="GLEW"/>
+        <Library Value="pthread"/>
       </Linker>
       <ResourceCompiler Options="" Required="no"/>
       <General OutputFile="bin/ReleaseLin/FOTD" IntermediateDirectory="./obj/ReleaseLin" Command="./FOTD" CommandArguments="" UseSeparateDebugArgs="no" DebugArguments="" WorkingDirectory="bin/ReleaseLin" PauseExecWhenProcTerminates="yes" IsGUIProgram="no" IsEnabled="yes"/>

@@ -169,53 +169,12 @@ namespace XMLModule {
 	void XMLData::init() {
 		Logger::getInstance()->log("Beginning to load data...");
 
-		loadXMLData(ASSETS_FOLDER_PATH + "/Data/Blocks.xml", XMLDataType::TILE);
-		Logger::getInstance()->log("Loaded data (Tiles)...");
+		std::vector<std::string> files{ "Blocks", "Particles", "NPCs", "Projectiles", "ItemEntities", "Items", "Biomes", "Eras", "Loot", "Structures", "Quests", "Dialogue", "Animations", "Attacks" };
 
-		loadXMLData(ASSETS_FOLDER_PATH + "/Data/Particles.xml", XMLDataType::PARTICLE);
-		Logger::getInstance()->log("Loaded data (Particles)...");
-
-		loadXMLData(ASSETS_FOLDER_PATH + "/Data/NPCs.xml", XMLDataType::ENTITY_NPC);
-		Logger::getInstance()->log("Loaded data (NPC Entities)...");
-
-		loadXMLData(ASSETS_FOLDER_PATH + "/Data/Projectiles.xml", XMLDataType::ENTITY_PROJECTILE);
-		Logger::getInstance()->log("Loaded data (Projectile Entities)...");
-
-		loadXMLData(ASSETS_FOLDER_PATH + "/Data/ItemEntities.xml", XMLDataType::ENTITY_ITEM);
-		Logger::getInstance()->log("Loaded data (Item Entities)...");
-
-		loadXMLData(ASSETS_FOLDER_PATH + "/Data/Items.xml", XMLDataType::ITEM);
-		Logger::getInstance()->log("Loaded data (Items)...");
-
-		loadXMLData(ASSETS_FOLDER_PATH + "/Data/Biomes.xml", XMLDataType::BIOME);
-		Logger::getInstance()->log("Loaded data (Biomes)...");
-
-		loadXMLData(ASSETS_FOLDER_PATH + "/Data/Eras.xml", XMLDataType::ERA);
-		Logger::getInstance()->log("Loaded data (Eras)...");
-
-		loadXMLData(ASSETS_FOLDER_PATH + "/Data/Loot.xml", XMLDataType::LOOT_DROP);
-		Logger::getInstance()->log("Loaded data (Loot Drops)...");
-
-		loadXMLData(ASSETS_FOLDER_PATH + "/Data/Loot.xml", XMLDataType::LOOT_TABLE);
-		Logger::getInstance()->log("Loaded data (Loot Tables)...");
-
-		loadXMLData(ASSETS_FOLDER_PATH + "/Data/Structures.xml", XMLDataType::STRUCTURE);
-		Logger::getInstance()->log("Loaded data (Structures)...");
-
-		loadXMLData(ASSETS_FOLDER_PATH + "/Data/Quests.xml", XMLDataType::QUEST_OBJECTIVE);
-		Logger::getInstance()->log("Loaded data (Quest Objectives)...");
-
-		loadXMLData(ASSETS_FOLDER_PATH + "/Data/Quests.xml", XMLDataType::QUEST);
-		Logger::getInstance()->log("Loaded data (Quests)...");
-
-		loadXMLData(ASSETS_FOLDER_PATH + "/Data/Dialogue.xml", XMLDataType::DIALOGUE_QUESTION);
-		Logger::getInstance()->log("Loaded data (Dialogue Questions)...");
-
-		loadXMLData(ASSETS_FOLDER_PATH + "/Data/Dialogue.xml", XMLDataType::DIALOGUE_RESPONSE);
-		Logger::getInstance()->log("Loaded data (Dialogue Responses)...");
-
-		loadXMLData(ASSETS_FOLDER_PATH + "/Data/Animations.xml", XMLDataType::ANIMATION);
-		Logger::getInstance()->log("Loaded data (Animations)...");
+		for(std::string& s : files) {
+			loadXMLData(ASSETS_FOLDER_PATH + "/Data/" + s + ".xml");
+			Logger::getInstance()->log("Loaded data (" + s + ")...");
+		}
 
 		Logger::getInstance()->log("Loaded all data successfully!");
 	}
@@ -236,8 +195,9 @@ namespace XMLModule {
 	std::map<unsigned int, GenericData*> XMLData::m_dialogueQuestionData;
 	std::map<unsigned int, GenericData*> XMLData::m_dialogueResponseData;
 	std::map<unsigned int, GenericData*> XMLData::m_animationData;
+	std::map<unsigned int, GenericData*> XMLData::m_attackData;
 
-	void XMLData::loadXMLData(std::string filepath, XMLDataType type) {
+	void XMLData::loadXMLData(std::string filepath) {
 		/** Loads all XML data into the map **/
 
 		// Open file at filepath
@@ -260,168 +220,73 @@ namespace XMLModule {
 		doc.parse<rapidxml::parse_full>((char*)text.c_str());
 
 		std::map<unsigned int, GenericData*>* mapForWrite = nullptr;
-		std::string nodeName;
 
-		switch((unsigned int)type) {
-			case(unsigned int)XMLDataType::TILE: {
-				mapForWrite = &m_tileData;
-				nodeName = "tile";
-				break;
-			}
-			case(unsigned int)XMLDataType::PARTICLE: {
-				mapForWrite = &m_particleData;
-				nodeName = "particle";
-				break;
-			}
-			case(unsigned int)XMLDataType::ENTITY_NPC: {
-				mapForWrite = &m_entityNPCData;
-				nodeName = "npc";
-				break;
-			}
-			case(unsigned int)XMLDataType::ENTITY_PROJECTILE: {
-				mapForWrite = &m_entityProjectileData;
-				nodeName = "projectile";
-				break;
-			}
-			case(unsigned int)XMLDataType::ENTITY_ITEM: {
-				mapForWrite = &m_entityItemData;
-				nodeName = "itemEntity";
-				break;
-			}
-			case(unsigned int)XMLDataType::ITEM: {
-				mapForWrite = &m_itemData;
-				nodeName = "item";
-				break;
-			}
-			case(unsigned int)XMLDataType::BIOME: {
-				mapForWrite = &m_biomeData;
-				nodeName = "biome";
-				break;
-			}
-			case(unsigned int)XMLDataType::ERA: {
-				mapForWrite = &m_eraData;
-				nodeName = "era";
-				break;
-			}
-			case(unsigned int)XMLDataType::LOOT_DROP: {
-				mapForWrite = &m_lootDropData;
-				nodeName = "lootDrop";
-				break;
-			}
-			case(unsigned int)XMLDataType::LOOT_TABLE: {
-				mapForWrite = &m_lootTableData;
-				nodeName = "lootTable";
-				break;
-			}
-			case(unsigned int)XMLDataType::STRUCTURE: {
-				mapForWrite = &m_structureData;
-				nodeName = "structure";
-				break;
-			}
-			case(unsigned int)XMLDataType::QUEST: {
-				mapForWrite = &m_questData;
-				nodeName = "quest";
-				break;
-			}
-			case(unsigned int)XMLDataType::QUEST_OBJECTIVE: {
-				mapForWrite = &m_questObjectiveData;
-				nodeName = "objective";
-				break;
-			}
-			case(unsigned int)XMLDataType::DIALOGUE_QUESTION: {
-				mapForWrite = &m_dialogueQuestionData;
-				nodeName = "question";
-				break;
-			}
-			case(unsigned int)XMLDataType::DIALOGUE_RESPONSE: {
-				mapForWrite = &m_dialogueResponseData;
-				nodeName = "response";
-				break;
-			}
-			case(unsigned int)XMLDataType::ANIMATION: {
-				mapForWrite = &m_animationData;
-				nodeName = "animation";
-				break;
-			}
-			default: {
-				Logger::getInstance()->log("ERROR: Type not supported!", true);
-				break;
-			}
-		}
-
-		for(rapidxml::xml_node<>* node = doc.first_node((const char*)nodeName.c_str()); node; node = node->next_sibling((const char*)nodeName.c_str())) {
+		for(rapidxml::xml_node<>* node = doc.first_node(); node; node = node->next_sibling()) {
 			GenericData* d = nullptr;
 
-			switch((unsigned int)type) {
-				case(unsigned int)XMLDataType::TILE: {
-					d = new TileData();
-					break;
-				}
-				case(unsigned int)XMLDataType::PARTICLE: {
-					d = new ParticleData();
-					break;
-				}
-				case(unsigned int)XMLDataType::ENTITY_NPC: {
-					d = new EntityNPCData();
-					break;
-				}
-				case(unsigned int)XMLDataType::ENTITY_PROJECTILE: {
-					d = new EntityProjectileData();
-					break;
-				}
-				case(unsigned int)XMLDataType::ENTITY_ITEM: {
-					d = new EntityItemData();
-					break;
-				}
-				case(unsigned int)XMLDataType::ITEM: {
-					d = new ItemData();
-					break;
-				}
-				case(unsigned int)XMLDataType::BIOME: {
-					d = new BiomeData();
-					break;
-				}
-				case(unsigned int)XMLDataType::ERA: {
-					d = new EraData();
-					break;
-				}
-				case(unsigned int)XMLDataType::LOOT_DROP: {
-					d = new LootDropData();
-					break;
-				}
-				case(unsigned int)XMLDataType::LOOT_TABLE: {
-					d = new LootTableData();
-					break;
-				}
-				case(unsigned int)XMLDataType::STRUCTURE: {
-					d = new StructureData();
-					break;
-				}
-				case(unsigned int)XMLDataType::QUEST: {
-					d = new QuestData();
-					break;
-				}
-				case(unsigned int)XMLDataType::QUEST_OBJECTIVE: {
-					d = new QuestObjectiveData();
-					break;
-				}
-				case(unsigned int)XMLDataType::DIALOGUE_QUESTION: {
-					d = new DialogueQuestionData();
-					break;
-				}
-				case(unsigned int)XMLDataType::DIALOGUE_RESPONSE: {
-					d = new DialogueResponseData();
-					break;
-				}
-				case(unsigned int)XMLDataType::ANIMATION: {
-					d = new AnimationData();
-					break;
-				}
-				default: {
-					Logger::getInstance()->log("ERROR: Type not supported!", true);
-					break;
-				}
+			std::string name = node->name();
+
+			if(name == "tile") {
+				d = new TileData();
+				mapForWrite = &m_tileData;
+			} else if(name == "particle") {
+				d = new ParticleData();
+				mapForWrite = &m_particleData;
+			} else if(name == "npc") {
+				d = new EntityNPCData();
+				mapForWrite = &m_entityNPCData;
+			} else if(name == "projectile") {
+				d = new EntityProjectileData();
+				mapForWrite = &m_entityProjectileData;
+			} else if(name == "itemEntity") {
+				d = new EntityItemData();
+				mapForWrite = &m_entityItemData;
+			} else if(name == "item") {
+				d = new ItemData();
+				mapForWrite = &m_itemData;
+			} else if(name == "biome") {
+				d = new BiomeData();
+				mapForWrite = &m_biomeData;
+			} else if(name == "era") {
+				d = new EraData();
+				mapForWrite = &m_eraData;
+			} else if(name == "lootDrop") {
+				d = new LootDropData();
+				mapForWrite = &m_lootDropData;
+			} else if(name == "lootTable") {
+				d = new LootTableData();
+				mapForWrite = &m_lootTableData;
+			} else if(name == "structure") {
+				d = new StructureData();
+				mapForWrite = &m_structureData;
+			} else if(name == "quest") {
+				d = new QuestData();
+				mapForWrite = &m_questData;
+			} else if(name == "objective") {
+				d = new QuestObjectiveData();
+				mapForWrite = &m_questObjectiveData;
+			} else if(name == "question") {
+				d = new DialogueQuestionData();
+				mapForWrite = &m_dialogueQuestionData;
+			} else if(name == "response") {
+				d = new DialogueResponseData();
+				mapForWrite = &m_dialogueResponseData;
+			} else if(name == "animation") {
+				d = new AnimationData();
+				mapForWrite = &m_animationData;
+			} else if(name == "meleeAttack") {
+				d = new MeleeAttackData();
+				mapForWrite = &m_attackData;
+			} else if(name == "rangedAttack") {
+				d = new RangedAttackData();
+				mapForWrite = &m_attackData;
+			} else if(name == "magicAttack") {
+				d = new MagicAttackData();
+				mapForWrite = &m_attackData;
+			} else {
+				Logger::getInstance()->log("ERROR: Type '" + name + "' not supported!", true);
 			}
+
 
 			d->init(node); // Actually do the read.
 
@@ -431,7 +296,7 @@ namespace XMLModule {
 		}
 	}
 
-	/// Tiles
+/// Tiles
 
 	TileData XMLData::getTileData(unsigned int id) {
 		auto index = m_tileData.find(id);
@@ -445,7 +310,7 @@ namespace XMLModule {
 		return *static_cast<TileData*>(index->second);
 	}
 
-	/// Particles
+/// Particles
 
 	ParticleData XMLData::getParticleData(unsigned int id) {
 		auto index = m_particleData.find(id);
@@ -459,7 +324,7 @@ namespace XMLModule {
 		return *static_cast<ParticleData*>(index->second);
 	}
 
-	/// Entities: NPCS
+/// Entities: NPCS
 
 	EntityNPCData XMLData::getEntityNPCData(unsigned int id) {
 		auto index = m_entityNPCData.find(id);
@@ -473,7 +338,7 @@ namespace XMLModule {
 		return *static_cast<EntityNPCData*>(index->second);
 	}
 
-	/// Entities: Projectiles
+/// Entities: Projectiles
 
 	EntityProjectileData XMLData::getEntityProjectileData(unsigned int id) {
 		auto index = m_entityProjectileData.find(id);
@@ -487,7 +352,7 @@ namespace XMLModule {
 		return *static_cast<EntityProjectileData*>(index->second);
 	}
 
-	/// Entities: Items
+/// Entities: Items
 
 	EntityItemData XMLData::getEntityItemData(unsigned int id) {
 		auto index = m_entityItemData.find(id);
@@ -502,7 +367,7 @@ namespace XMLModule {
 	}
 
 
-	/// Real Items
+/// Real Items
 
 	ItemData XMLData::getItemData(unsigned int id) {
 		auto index = m_itemData.find(id);
@@ -516,7 +381,7 @@ namespace XMLModule {
 		return *static_cast<ItemData*>(index->second);
 	}
 
-	/// Biomes
+/// Biomes
 
 	BiomeData XMLData::getBiomeData(unsigned int id) {
 		auto index = m_biomeData.find(id);
@@ -534,7 +399,7 @@ namespace XMLModule {
 		return m_biomeData.size();
 	}
 
-	/// Eras
+/// Eras
 
 	EraData XMLData::getEraData(unsigned int id) {
 		auto index = m_eraData.find(id);
@@ -548,7 +413,7 @@ namespace XMLModule {
 		return *static_cast<EraData*>(index->second);
 	}
 
-	/// LootDrops
+/// LootDrops
 
 	LootDropData XMLData::getLootDropData(unsigned int id) {
 		auto index = m_lootDropData.find(id);
@@ -562,7 +427,7 @@ namespace XMLModule {
 		return *static_cast<LootDropData*>(index->second);
 	}
 
-	/// LootTables
+/// LootTables
 
 	LootTableData XMLData::getLootTableData(unsigned int id) {
 		auto index = m_lootTableData.find(id);
@@ -576,7 +441,7 @@ namespace XMLModule {
 		return *static_cast<LootTableData*>(index->second);
 	}
 
-	/// Structures
+/// Structures
 
 	StructureData XMLData::getStructureData(unsigned int id) {
 		auto index = m_structureData.find(id);
@@ -590,7 +455,7 @@ namespace XMLModule {
 		return *static_cast<StructureData*>(index->second);
 	}
 
-	/// Quests
+/// Quests
 
 	QuestData XMLData::getQuestData(unsigned int id) {
 		auto index = m_questData.find(id);
@@ -604,7 +469,7 @@ namespace XMLModule {
 		return *static_cast<QuestData*>(index->second);
 	}
 
-	/// QuestObjectives
+/// QuestObjectives
 
 	QuestObjectiveData XMLData::getQuestObjectiveData(unsigned int id) {
 		auto index = m_questObjectiveData.find(id);
@@ -618,7 +483,7 @@ namespace XMLModule {
 		return *static_cast<QuestObjectiveData*>(index->second);
 	}
 
-	/// DialogueQuestions
+/// DialogueQuestions
 
 	DialogueQuestionData XMLData::getDialogueQuestionData(unsigned int id) {
 		auto index = m_dialogueQuestionData.find(id);
@@ -632,7 +497,7 @@ namespace XMLModule {
 		return *static_cast<DialogueQuestionData*>(index->second);
 	}
 
-	/// DialogueResponses
+/// DialogueResponses
 
 	DialogueResponseData XMLData::getDialogueResponseData(unsigned int id) {
 		auto index = m_dialogueResponseData.find(id);
@@ -646,7 +511,7 @@ namespace XMLModule {
 		return *static_cast<DialogueResponseData*>(index->second);
 	}
 
-	/// Animations
+/// Animations
 
 	AnimationData XMLData::getAnimationData(unsigned int id) {
 		auto index = m_animationData.find(id);
@@ -658,6 +523,56 @@ namespace XMLModule {
 		}
 
 		return *static_cast<AnimationData*>(index->second);
+	}
+
+/// Attack
+
+	AttackData XMLData::getAttackData(unsigned int id) {
+		auto index = m_attackData.find(id);
+
+		if(index == m_attackData.end()) {
+			Logger::getInstance()->log("ERROR: Couldn't find attack data with ID: " + std::to_string(id), true);
+			AttackData s;
+			return s;
+		}
+
+		return *static_cast<AttackData*>(index->second);
+	}
+
+	MeleeAttackData XMLData::getMeleeAttackData(unsigned int id) {
+		auto index = m_attackData.find(id);
+
+		if(index == m_attackData.end()) {
+			Logger::getInstance()->log("ERROR: Couldn't find attack data with ID: " + std::to_string(id), true);
+			MeleeAttackData s;
+			return s;
+		}
+
+		return *static_cast<MeleeAttackData*>(index->second);
+	}
+
+	RangedAttackData XMLData::getRangedAttackData(unsigned int id) {
+		auto index = m_attackData.find(id);
+
+		if(index == m_attackData.end()) {
+			Logger::getInstance()->log("ERROR: Couldn't find attack data with ID: " + std::to_string(id), true);
+			RangedAttackData s;
+			return s;
+		}
+
+		return *static_cast<RangedAttackData*>(index->second);
+	}
+
+	MagicAttackData XMLData::getMagicAttackData(unsigned int id) {
+		auto index = m_attackData.find(id);
+
+		if(index == m_attackData.end()) {
+			Logger::getInstance()->log("ERROR: Couldn't find attack data with ID: " + std::to_string(id), true);
+			MagicAttackData s;
+			return s;
+		}
+
+		return *static_cast<MagicAttackData*>(index->second);
 	}
 
 }

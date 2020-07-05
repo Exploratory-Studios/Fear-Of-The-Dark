@@ -78,6 +78,8 @@ void Entity::tick(World* world) {
 	}
 	onTick(world);
 
+	m_lowVelAnimation.update();
+
 	/*if(std::rand() % 100 <= m_noiseFrequency) { // This should be a script
 	    Player* p = world->getPlayer();
 
@@ -146,7 +148,7 @@ void Entity::draw(GLEngine::SpriteBatch& sb, float time, int layerDifference, fl
 
 		glm::vec4 destRect = glm::vec4(m_position.x + (xOffset * CHUNK_SIZE), m_position.y, m_size.x, m_size.y);
 
-		int x = 0, y = 0;
+		/*int x = 0, y = 0;
 
 		animate(x, y, m_flippedTexture, time);
 
@@ -171,7 +173,10 @@ void Entity::draw(GLEngine::SpriteBatch& sb, float time, int layerDifference, fl
 
 		float depth = 0.1f + (m_layer * (1.0f / (float)(WORLD_DEPTH)) * 0.9f);
 
-		sb.draw(destRect, uvRect, m_textureId, depth, colour);
+		sb.draw(destRect, uvRect, m_textureId, depth, colour);*/
+
+		float depth = 0.1f + (m_layer * (1.0f / (float)(WORLD_DEPTH)) * 0.9f);
+		m_lowVelAnimation.draw(sb, destRect, depth);
 
 		onDraw(sb, time, layerDifference, xOffset);
 	}
@@ -188,7 +193,7 @@ void Entity::drawNormal(GLEngine::SpriteBatch& sb, float time, int layerDifferen
 		}
 
 		glm::vec4 destRect = glm::vec4(m_position.x + (xOffset * CHUNK_SIZE), m_position.y, m_size.x, m_size.y);
-		glm::vec4 lighting = m_cornerLight;
+		/*glm::vec4 lighting = m_cornerLight;
 
 		int x = 0, y = 0;
 
@@ -216,9 +221,7 @@ void Entity::drawNormal(GLEngine::SpriteBatch& sb, float time, int layerDifferen
 
 		float depth = 0.1f + (m_layer * (1.0f / (float)(WORLD_DEPTH)) * 0.9f);
 
-		sb.draw(destRect, uvRect, m_bumpMapId, depth, colour, lighting);
-
-		onDraw(sb, time, layerDifference, xOffset);
+		sb.draw(destRect, uvRect, m_bumpMapId, depth, colour, lighting);*/
 	}
 }
 
@@ -398,8 +401,8 @@ void Entity::loadTexture() {
 	GLEngine::GLTexture temp;
 	temp = GLEngine::ResourceManager::getTexture(m_texturePath);
 	m_textureId = temp.id;
-	m_animationFramesX = temp.width / (32 * m_size.x);
-	m_animationFramesY = temp.height / (32 * m_size.y);
+	//m_animationFramesX = temp.width / (32 * m_size.x);
+	//m_animationFramesY = temp.height / (32 * m_size.y);
 
 	temp = GLEngine::ResourceManager::getTexture(m_bumpMapPath);
 	m_bumpMapId = temp.id;

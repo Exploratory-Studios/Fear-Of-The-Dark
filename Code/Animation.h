@@ -6,17 +6,11 @@
 #include <SpriteBatch.h>
 #include <GLTexture.h>
 
-#include "Animation.h"
-
 namespace AnimationModule {
-
-	unsigned int m_textureID;
-	unsigned int m_width, m_height, m_y;
-	unsigned int m_frameWidth, m_frameHeight;
 
 	class Animation {
 		public:
-			Animation();
+			Animation() {}
 			Animation(unsigned int id) {
 				init(id);
 			}
@@ -33,10 +27,15 @@ namespace AnimationModule {
 				m_frameWidth = d.width;
 				float frameHeight = d.height;
 
+				float framesVert = height / frameHeight;
+
 				m_uv.x = 0.0f;
-				m_uv.y = (float)(y * frameHeight) / (float)(height);
+				m_uv.y = (((framesVert - 1 - y) * frameHeight) / height);
 				m_uv.z = (float)(m_frameWidth) / (float)(m_width);
-				m_uv.z = (float)(frameHeight) / (float)(height);
+				m_uv.w = (float)(frameHeight) / (float)(height);
+				//m_uv.y = (float)(y * frameHeight) / (float)(height);
+				//m_uv.z = (float)(m_frameWidth) / (float)(m_width);
+				//m_uv.z = (float)(frameHeight) / (float)(height);
 			}
 
 			void draw(::GLEngine::SpriteBatch& sb, glm::vec4& destRect, float& depth) {
@@ -46,7 +45,19 @@ namespace AnimationModule {
 			}
 
 			void update() {
-				m_currentFrame++;
+				if(!isFinished()) {
+					m_currentFrame++;
+				}
+			}
+
+			bool isFinished() {
+				/// Returns true if this animation's m_currentFrame is the last frame.
+				return m_currentFrame == ((m_width / m_frameWidth) - 1);
+			}
+
+			void restart() {
+				/// Resets current frame to 0
+				m_currentFrame = 0;
 			}
 
 		private:

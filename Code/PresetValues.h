@@ -26,6 +26,8 @@
 
 // How many ticks per second?
 #define TICK_RATE 4
+// How many frames per second?
+#define FRAME_RATE 60
 
 #define INITIAL_ZOOM 25.0f
 
@@ -199,4 +201,3 @@ class DropTable {
         Categories::LootTableIds m_tableId;
 };
 */ /// TODO: Move this somewhere else. Honestly just burn anything but #DEFINEs in PresetValues.h. Please.
-

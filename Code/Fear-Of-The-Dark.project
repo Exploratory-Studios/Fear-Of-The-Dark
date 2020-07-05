@@ -54,6 +54,7 @@
     <File Name="App.h"/>
   </VirtualDirectory>
   <VirtualDirectory Name="src">
+    <File Name="Animation.cpp"/>
     <File Name="Factory.cpp"/>
     <File Name="EntityManager.cpp"/>
     <File Name="Attack.cpp"/>

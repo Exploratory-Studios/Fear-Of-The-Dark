@@ -19,12 +19,14 @@ namespace XMLModule {
 	void getVector(rapidxml::xml_node<>* parent, std::string valueName, std::string childName, std::vector<float>& vec); // Retrieves a float vector from a node
 	void getVector(rapidxml::xml_node<>* parent, std::string valueName, std::string childName, std::vector<int>& vec); // Retrieves an int vector from a node
 	void getVector(rapidxml::xml_node<>* parent, std::string valueName, std::string childName, std::vector<unsigned int>& vec); // Retrieves an unsigned int vector from a node
+	void getVector(rapidxml::xml_node<>* parent, std::string valueName, std::string childName, std::vector<glm::vec2>& vec); // Retrieves an unsigned int vector from a node
 	void getVector(rapidxml::xml_node<>* parent, std::string valueName, std::string childName, std::vector<bool>& vec); // Retrieves a bool vector from a node
 
 	bool getValue(rapidxml::xml_node<>* parent, std::string valueName, std::string& variable);
 	bool getValue(rapidxml::xml_node<>* parent, std::string valueName, float& variable);
 	bool getValue(rapidxml::xml_node<>* parent, std::string valueName, int& variable);
 	bool getValue(rapidxml::xml_node<>* parent, std::string valueName, unsigned int& variable);
+	bool getValue(rapidxml::xml_node<>* parent, std::string valueName, glm::vec2& variable);
 	bool getValue(rapidxml::xml_node<>* parent, std::string valueName, bool& variable);
 
 	void getMetaData(rapidxml::xml_node<>* parent, SaveDataTypes::MetaData& mdVar);
@@ -49,6 +51,7 @@ namespace XMLModule {
 			static DialogueQuestionData getDialogueQuestionData(unsigned int id);
 			static DialogueResponseData getDialogueResponseData(unsigned int id);
 			static AnimationData getAnimationData(unsigned int id);
+			static SkeletalAnimationData getSkeletalAnimationData(unsigned int id);
 			static AttackData getAttackData(unsigned int id);
 			static MeleeAttackData getMeleeAttackData(unsigned int id);
 			static RangedAttackData getRangedAttackData(unsigned int id);

@@ -118,7 +118,7 @@ void GameplayScreen::onExit() {
 }
 
 void GameplayScreen::update() {
-	m_deltaTime = std::abs((60 / m_game->getFps()) + -1);
+	m_deltaTime = std::abs((FRAME_RATE / m_game->getFps()) + -1);
 	m_deltaTime++;
 
 	m_world->incrementTime();

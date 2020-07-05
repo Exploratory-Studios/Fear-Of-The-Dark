@@ -34,6 +34,16 @@ namespace XMLModule {
 	}
 
 	template<>
+	void Attribute<std::vector<float>>::setDefault() {
+		setData(std::vector<float> {});
+	}
+
+	template<>
+	void Attribute<std::vector<glm::vec2>>::setDefault() {
+		setData(std::vector<glm::vec2> {});
+	}
+
+	template<>
 	void Attribute<std::string>::setDefault() {
 		setData("UNDEF");
 	}
@@ -162,6 +172,32 @@ namespace XMLModule {
 					valueName = attr.first.substr(slashIndex + 1); // Right half (excluding the slash)
 
 					std::vector<unsigned int> vec;
+					getVector(node, nodeName, valueName, vec);
+					attr.second->setData(vec);
+
+					break;
+				}
+				case(unsigned int)AttributeType::VECTOR_FLOAT: {
+					std::string nodeName, valueName;
+					unsigned int slashIndex = attr.first.find("/");
+
+					nodeName = attr.first.substr(0, slashIndex);
+					valueName = attr.first.substr(slashIndex + 1);
+
+					std::vector<float> vec;
+					getVector(node, nodeName, valueName, vec);
+					attr.second->setData(vec);
+
+					break;
+				}
+				case(unsigned int)AttributeType::VECTOR_VEC2: {
+					std::string nodeName, valueName;
+					unsigned int slashIndex = attr.first.find("/");
+
+					nodeName = attr.first.substr(0, slashIndex);
+					valueName = attr.first.substr(slashIndex + 1);
+
+					std::vector<glm::vec2> vec;
 					getVector(node, nodeName, valueName, vec);
 					attr.second->setData(vec);
 

@@ -14,6 +14,10 @@ namespace XMLModule {
 	template<>
 	void Attribute<std::vector<unsigned int>>::setDefault();
 	template<>
+	void Attribute<std::vector<float>>::setDefault();
+	template<>
+	void Attribute<std::vector<glm::vec2>>::setDefault();
+	template<>
 	void Attribute<std::string>::setDefault();
 
 	/*template<class T>

@@ -40,6 +40,17 @@ namespace XMLModule {
 		}
 	}
 
+	void getVector(rapidxml::xml_node<>* parent, std::string valueName, std::string childName, std::vector<glm::vec2>& vec) {
+		rapidxml::xml_node<>* n = parent->first_node((char*)valueName.c_str()); // Gets <entities> in the example.
+
+		if(n) {
+			glm::vec2 temp;
+			while(getValue(n, childName, temp)) {
+				vec.push_back(temp);
+			}
+		}
+	}
+
 	void getVector(rapidxml::xml_node<>* parent, std::string valueName, std::string childName, std::vector<int>& vec) {
 		rapidxml::xml_node<>* n = parent->first_node((char*)valueName.c_str()); // Gets <entities> in the example.
 
@@ -93,6 +104,23 @@ namespace XMLModule {
 		if(n) {
 			if(std::string(n->value()) != std::string("")) {
 				variable = std::stof(n->value());
+			}
+			parent->remove_node(n);
+			return true;
+		}
+		return false;
+	}
+
+	bool getValue(rapidxml::xml_node<>* parent, std::string valueName, glm::vec2& variable) {
+		/// Places value of node with name `valueName` into `variable` and removes the node from the doc.
+		rapidxml::xml_node<>* n = parent->first_node((char*)valueName.c_str());
+		if(n) {
+			if(std::string(n->value()) != std::string("")) {
+				float x, y;
+				unsigned int separatorIndex = std::string(n->value()).find(",");
+
+				x = std::string(n->value()).substr(0, separatorIndex);
+				y = std::string(n->value()).substr(separatorIndex + 1);
 			}
 			parent->remove_node(n);
 			return true;
@@ -523,6 +551,20 @@ namespace XMLModule {
 		}
 
 		return *static_cast<AnimationData*>(index->second);
+	}
+
+/// Skeletal Animations
+
+	SkeletalAnimationData XMLData::getSkeletalAnimationData(unsigned int id) {
+		auto index = m_animationData.find(id);
+
+		if(index == m_animationData.end()) {
+			Logger::getInstance()->log("ERROR: Couldn't find animation data with ID: " + std::to_string(id), true);
+			AnimationData s;
+			return s;
+		}
+
+		return *static_cast<SkeletalAnimationData*>(index->second);
 	}
 
 /// Attack

@@ -8,57 +8,21 @@
 
 namespace AnimationModule {
 
+	class Animation;
+	class SkeletalAnimation;
+	class Limb;
+
 	class Animation {
 		public:
-			Animation() {}
-			Animation(unsigned int id) {
-				init(id);
-			}
+			Animation();
+			Animation(unsigned int id);
+			void init(unsigned int id);
 
-			void init(unsigned int id) {
-				XMLModule::AnimationData d = XMLModule::XMLData::getAnimationData(id);
+			void draw(::GLEngine::SpriteBatch& sb, glm::vec4& destRect, float& depth, float& angle);
+			void update();
 
-				GLEngine::GLTexture tex = GLEngine::ResourceManager::getTexture(d.texture);
-
-				m_textureID = tex.id;
-				m_width = tex.width;
-				float height = tex.height;
-				float y = d.y;
-				m_frameWidth = d.width;
-				float frameHeight = d.height;
-
-				float framesVert = height / frameHeight;
-
-				m_uv.x = 0.0f;
-				m_uv.y = (((framesVert - 1 - y) * frameHeight) / height);
-				m_uv.z = (float)(m_frameWidth) / (float)(m_width);
-				m_uv.w = (float)(frameHeight) / (float)(height);
-				//m_uv.y = (float)(y * frameHeight) / (float)(height);
-				//m_uv.z = (float)(m_frameWidth) / (float)(m_width);
-				//m_uv.z = (float)(frameHeight) / (float)(height);
-			}
-
-			void draw(::GLEngine::SpriteBatch& sb, glm::vec4& destRect, float& depth) {
-				m_uv.x = (float)(m_currentFrame * m_frameWidth) / (float)(m_width);
-
-				sb.draw(destRect, m_uv, m_textureID, depth, GLEngine::ColourRGBA8(255, 255, 255, 255));
-			}
-
-			void update() {
-				if(!isFinished()) {
-					m_currentFrame++;
-				}
-			}
-
-			bool isFinished() {
-				/// Returns true if this animation's m_currentFrame is the last frame.
-				return m_currentFrame == ((m_width / m_frameWidth) - 1);
-			}
-
-			void restart() {
-				/// Resets current frame to 0
-				m_currentFrame = 0;
-			}
+			bool isFinished();
+			void restart();
 
 		private:
 			unsigned int m_currentFrame = 0;
@@ -68,6 +32,61 @@ namespace AnimationModule {
 			unsigned int m_frameWidth;
 
 			glm::vec4 m_uv;
+	};
+
+	class SkeletalAnimation {
+			// Provides angles and relative positions for all limbs in a creature. Most of the time, this will just be a torso (and head), 2 arms, and 2 legs.
+		public:
+			SkeletalAnimation();
+			SkeletalAnimation(unsigned int id);
+
+			void init(unsigned int id);
+
+			void updateLimb(Limb* limb);
+			void update();
+
+			bool isFinished();
+			void restart();
+
+		private:
+			unsigned int m_currentFrame = 0;
+
+			unsigned int m_numLimbs = 5;
+
+			// Uses a one dimensional vector. Pattern: Limb0 Angle0, Limb1 Angle0, Limb2 Angle0, Limb0 Angle1, Limb1 Angle1, Limb2 Angle1, etc.
+			std::vector<float> m_angles; // Relative to the centre of the limb.
+			std::vector<glm::vec2> m_offsets; // Relative to the centre of the animation.
+	};
+
+	class Limb {
+			/// The limb will hold all data for limbs: position on the body, angle, texture.
+		public:
+			Limb();
+			Limb(Entity* owner, Animation idleAnimation, unsigned int index); // The idleAnimation is the animation that constantly runs. Most of the time, this is just a single-textured sprite which supplies the texture
+
+			void init(Entity* owner, Animation idleAnimation, unsigned int index);
+			void activateSkeletalAnimation(SkeletalAnimation anim);
+
+			void tick();
+			void draw(GLEngine::SpriteBatch& sb);
+
+			bool isAnimationActive();
+			unsigned int getIndex();
+			float getAngle();
+			glm::vec2 getOffset();
+
+			void setAngle(float& angle);
+			void setOffset(glm::vec2& offset);
+
+		private:
+			SkeletalAnimation m_activeAnimation; // This is what actually moves the limb. This is changeable
+			Animation m_idleAnimation; // This is the "skin"
+			bool m_isAnimated = false; // Does it have an active skeletal animation?
+			unsigned int m_index; // This is used to make sure that each arm/leg follows the correct skeletal animation's limb (right leg might be 0, left leg might be 1, etc.)
+			Entity* m_owner = nullptr;
+
+			float m_angle = 0.0f;
+			glm::vec2 m_offset;
 	};
 
 }

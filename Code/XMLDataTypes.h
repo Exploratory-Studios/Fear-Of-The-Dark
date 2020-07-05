@@ -23,6 +23,8 @@ namespace XMLModule {
 		SCRIPT,
 		STRING_FACTION,
 		VECTOR_UNSIGNED_INT,
+		VECTOR_FLOAT,
+		VECTOR_VEC2,
 		VEC2
 	};
 
@@ -464,6 +466,21 @@ namespace XMLModule {
 
 			std::string texture;
 			unsigned int y, width, height;
+	};
+
+	class SkeletalAnimationData : public GenericData {
+		public:
+			SkeletalAnimationData() {
+				std::vector<AttributeBase*> attrs = {
+					new Attribute<std::vector<float>>("angles/angle", AttributeType::VECTOR_FLOAT, &angles),
+					                               new Attribute<std::vector<glm::vec2>>("offsets/offset", AttributeType::VECTOR_VEC2, &offsets)
+				};
+
+				addAttributes(attrs);
+			}
+
+			std::vector<float> angles;
+			std::vector<glm::vec2> offsets;
 	};
 
 	class AttackData : public GenericData {

@@ -77,66 +77,6 @@ void Entity::tick(World* world) {
 		ScriptingModule::ScriptQueue::activateScript(m_tickScriptId, generateLuaValues());
 	}
 	onTick(world);
-
-	m_lowVelAnimation.update();
-
-	/*if(std::rand() % 100 <= m_noiseFrequency) { // This should be a script
-	    Player* p = world->getPlayer();
-
-	    unsigned int dist;
-	    unsigned int crossDist;
-	    unsigned int pureDist;
-
-	    if(p->getPosition().x < m_position.x) { // Crossover is on right
-	        crossDist = (WORLD_SIZE - m_position.x) + (p->getPosition().x);
-	    } else { // Crossover on left
-	        crossDist = (m_position.x) + (WORLD_SIZE - p->getPosition().x);
-	    }
-
-	    pureDist = std::abs(m_position.x - p->getPosition().x);
-
-	    unsigned int xDist = crossDist > pureDist ? pureDist : crossDist;
-	    unsigned int yDist = std::abs(p->getPosition().y - m_position.y);
-
-	    dist = (std::sqrt(xDist * xDist + yDist * yDist)); //  Good 'ol pythagoras
-
-	    unsigned int vol = ((dist)*(-MIX_MAX_VOLUME)/(MAX_DIST_HEARD) + MIX_MAX_VOLUME); // Mapping 0-max_dist_heard -> mix_max_volume-0
-
-	    if(dist >= MAX_DIST_HEARD) {
-	        vol = 0;
-	    }
-
-	    m_currentNoise = std::rand() % m_ambientNoiseSound.size();
-	    audio->playSoundEffect((unsigned int)m_ambientNoiseSound[m_currentNoise], vol);
-	}
-	if(m_currentNoise != -1) {
-	    Player* p = world->getPlayer();
-
-	    unsigned int dist;
-	    unsigned int crossDist;
-	    unsigned int pureDist;
-
-	    if(p->getPosition().x < m_position.x) { // Crossover is on right
-	        crossDist = (WORLD_SIZE - m_position.x) + (p->getPosition().x);
-	    } else { // Crossover on left
-	        crossDist = (m_position.x) + (WORLD_SIZE - p->getPosition().x);
-	    }
-
-	    pureDist = std::abs(m_position.x - p->getPosition().x);
-
-	    unsigned int xDist = crossDist > pureDist ? pureDist : crossDist;
-	    unsigned int yDist = std::abs(p->getPosition().y - m_position.y);
-
-	    dist = (std::sqrt(xDist * xDist + yDist * yDist)); //  Good 'ol pythagoras
-
-	    unsigned int vol = ((dist)*(-MIX_MAX_VOLUME)/(MAX_DIST_HEARD) + MIX_MAX_VOLUME); // Mapping 0-max_dist_heard -> mix_max_volume-0
-
-	    if(dist >= MAX_DIST_HEARD) {
-	        vol = 0;
-	    }
-
-	    audio->updateSoundEffect((unsigned int)m_ambientNoiseSound[m_currentNoise], vol);
-	}*/
 }
 
 void Entity::draw(GLEngine::SpriteBatch& sb, float time, int layerDifference, float xOffset) {
@@ -148,35 +88,16 @@ void Entity::draw(GLEngine::SpriteBatch& sb, float time, int layerDifference, fl
 
 		glm::vec4 destRect = glm::vec4(m_position.x + (xOffset * CHUNK_SIZE), m_position.y, m_size.x, m_size.y);
 
-		/*int x = 0, y = 0;
+		int x = 0, y = 0;
 
-		animate(x, y, m_flippedTexture, time);
-
-		float finalX = (x / m_animationFramesX);
-		float finalY = (y / m_animationFramesY);
-
-		glm::vec4 uvRect;
-
-		if(!m_flippedTexture) {
-			uvRect = glm::vec4(finalX,
-			                   finalY,
-			                   1.0f / m_animationFramesX,
-			                   1.0f / m_animationFramesY);
-		} else if(m_flippedTexture) {
-			uvRect = glm::vec4(finalX + 1.0f / m_animationFramesX,
-			                   finalY,
-			                   1.0f / -m_animationFramesX,
-			                   1.0f / m_animationFramesY);
-		}
+		glm::vec4 uvRect(0.0f, 0.0f, 1.0f, 1.0f);
 
 		GLEngine::ColourRGBA8 colour(255, 255, 255, 255);
 
-		float depth = 0.1f + (m_layer * (1.0f / (float)(WORLD_DEPTH)) * 0.9f);
+		float depth = getDepth();
 
-		sb.draw(destRect, uvRect, m_textureId, depth, colour);*/
+		sb.draw(destRect, uvRect, m_textureId, depth, colour);
 
-		float depth = 0.1f + (m_layer * (1.0f / (float)(WORLD_DEPTH)) * 0.9f);
-		m_lowVelAnimation.draw(sb, destRect, depth);
 
 		onDraw(sb, time, layerDifference, xOffset);
 	}

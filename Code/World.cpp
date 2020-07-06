@@ -52,8 +52,6 @@ void World::setTile(Tile* tile) {
 	if(b) b->setNeedsSunCheck();
 	Tile* f = getTile(x, y, layer-1);
 	if(f) f->setNeedsSunCheck();*/
-
-	Factory::getEntityManager()->dispose();
 }
 
 void World::setTile_noEvent(Tile* tile) {

@@ -23,6 +23,8 @@ class EntityNPC : public Entity {
 		EntityNPC(glm::vec2 pos, unsigned int layer, EntityIDs id, SaveDataTypes::MetaData data, bool loadTex);
 		virtual ~EntityNPC();
 
+		virtual void draw(GLEngine::SpriteBatch& sb, float time, int layerDifference, float xOffset) override;
+
 		void onTalk() {}
 		void onTrade() {}
 
@@ -59,6 +61,16 @@ class EntityNPC : public Entity {
 		void     addToFrontier(NavTile* tile, std::vector<NavTile*>& frontier); // Makes sure there are no copies, and handles them if there are.
 		std::vector<glm::vec3> m_targets;
 		unsigned int m_curTarget = 0;
+
+		virtual void onTick(World* world) override;
+
+		void initLimbs(); // Initializes limbs and animations.
+
+		// Animation (TODO: Add animation to entity XML)
+		AnimationModule::Limb m_test;
+		
+		std::vector<AnimationModule::Limb> m_limbs;
+		AnimationModule::SkeletalAnimation m_idleAnimation, m_lowVelAnimation, m_highVelAnimation, m_upAnimation, m_downAnimation;
 
 		// Fall damage
 		float m_fallenDistance = 0.0f;

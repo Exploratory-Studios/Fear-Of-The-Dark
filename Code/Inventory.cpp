@@ -4,7 +4,7 @@
 #include <math.h>
 
 Inventory::Inventory() {
-	m_items.clear();
+	
 }
 
 bool Inventory::addItem(Item* newItem) {

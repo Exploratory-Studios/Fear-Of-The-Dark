@@ -9,7 +9,7 @@
 #include "Factory.h"
 
 EntityPlayer::EntityPlayer(glm::vec2 pos, unsigned int layer, SaveDataTypes::MetaData data, bool loadTex) : EntityNPC(pos, layer, 0, data, loadTex) {
-	m_lowVelAnimation.init(0);
+
 }
 
 EntityPlayer::~EntityPlayer() {
@@ -298,7 +298,7 @@ void EntityPlayer::updateInput(GLEngine::InputManager* input, World* world) {
 				Tile* t = new Tile(m_selectedBlock->getPosition(), m_selectedBlock->getLayer(), 0, SaveDataTypes::MetaData(), false);
 				world->setTile(t);
 			}
-			if(m_inventory) m_inventory->updateWeight();
+			//if(m_inventory) m_inventory->updateWeight();
 		}
 		if(input->isKeyPressed(SDL_BUTTON_RIGHT)) {
 			if(m_selectedBlock) {

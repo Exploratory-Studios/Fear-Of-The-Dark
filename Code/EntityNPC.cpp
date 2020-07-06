@@ -39,6 +39,8 @@ EntityNPC::EntityNPC(glm::vec2 pos, unsigned int layer, unsigned int id, SaveDat
 	if(loadTex) {
 		loadTexture();
 	}
+
+	initLimbs();
 }
 
 EntityNPC::EntityNPC(glm::vec2 pos, unsigned int layer, EntityIDs id, SaveDataTypes::MetaData data, bool loadTex) : Entity(pos, layer, SaveDataTypes::MetaData()) {
@@ -65,10 +67,55 @@ EntityNPC::EntityNPC(glm::vec2 pos, unsigned int layer, EntityIDs id, SaveDataTy
 	if(loadTex) {
 		loadTexture();
 	}
+
+	initLimbs();
+}
+
+void EntityNPC::initLimbs() {
+	/// TODO: Construct from XML
+
+
+
+
+
+
+	//////// For debugging purposes
+
+	AnimationModule::Animation torsoIdle;
+	torsoIdle.init(0);
+
+	AnimationModule::Limb torso;
+	torso.init(torsoIdle, 0);
+
+	m_idleAnimation.init(1);
+
+
+	torso.activateSkeletalAnimation(m_idleAnimation);
+
+	m_limbs.push_back(torso);
+
+	//////// XXXXXXXXXXXXXXXXXXXXXX
 }
 
 EntityNPC::~EntityNPC() {
 	delete m_inventory;
+}
+
+void EntityNPC::draw(GLEngine::SpriteBatch& sb, float time, int layerDifference, float xOffset) {
+	if(m_draw) {
+		if(m_textureId == (GLuint) - 1) {
+			loadTexture();
+		}
+
+		glm::vec4 destRect = glm::vec4(m_position.x + (xOffset * CHUNK_SIZE), m_position.y, m_size.x, m_size.y);
+
+		float depth = getDepth();
+		for(unsigned int i = 0; i < m_limbs.size(); i++) {
+			m_limbs[i].draw(sb, destRect, depth);
+		}
+
+		onDraw(sb, time, layerDifference, xOffset);
+	}
 }
 
 void EntityNPC::collide(World* world, unsigned int entityIndex) {
@@ -285,6 +332,12 @@ void EntityNPC::onUpdate(World* world, float timeStep, unsigned int selfIndex) {
 	} else if(m_velocity.x < -MAX_SPEED * m_inventory->getSpeedMultiplier() * std::pow(m_stamina, 0.4f)) {
 	    m_velocity.x = -MAX_SPEED * m_inventory->getSpeedMultiplier() * std::pow(m_stamina, 0.4f);
 	}*/
+}
+
+void EntityNPC::onTick(World* world) {
+	for(unsigned int i = 0; i < m_limbs.size(); i++) {
+		m_limbs[i].tick();
+	}
 }
 
 SaveDataTypes::EntityNPCData EntityNPC::getNPCSaveData() {

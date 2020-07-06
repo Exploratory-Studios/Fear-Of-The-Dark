@@ -473,7 +473,9 @@ namespace XMLModule {
 			SkeletalAnimationData() {
 				std::vector<AttributeBase*> attrs = {
 					new Attribute<std::vector<float>>("angles/angle", AttributeType::VECTOR_FLOAT, &angles),
-					                               new Attribute<std::vector<glm::vec2>>("offsets/offset", AttributeType::VECTOR_VEC2, &offsets)
+					                               new Attribute<std::vector<glm::vec2>>("offsets/offset", AttributeType::VECTOR_VEC2, &offsets),
+					                               new Attribute<unsigned int>("numLimbs", AttributeType::UNSIGNED_INT, &numLimbs),
+					                               new Attribute<bool>("repeats", AttributeType::BOOL, &repeats)
 				};
 
 				addAttributes(attrs);
@@ -481,6 +483,8 @@ namespace XMLModule {
 
 			std::vector<float> angles;
 			std::vector<glm::vec2> offsets;
+			unsigned int numLimbs;
+			bool repeats;
 	};
 
 	class AttackData : public GenericData {

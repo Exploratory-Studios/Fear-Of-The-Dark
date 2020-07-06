@@ -41,7 +41,7 @@ class Entity {
 
 		void update(World* world, float timeStep, unsigned int selfIndex);
 		void tick(World* world);
-		void draw(GLEngine::SpriteBatch& sb, float time, int layerDifference, float xOffset);
+		virtual void draw(GLEngine::SpriteBatch& sb, float time, int layerDifference, float xOffset);
 		void drawNormal(GLEngine::SpriteBatch& sb, float time, int layerDifference, float xOffset);
 		void debugDraw(GLEngine::DebugRenderer& dr, float xOffset);
 		void move(float timeStepVariable);
@@ -106,6 +106,11 @@ class Entity {
 			return args;
 		}
 
+		float getDepth() {
+			/// Returns the depth for drawing.
+			return 0.1f + (m_layer * (1.0f / (float)(WORLD_DEPTH)) * 0.9f);
+		}
+
 	protected:
 		// Collision
 		bool checkTilePosition(World* world, std::vector<glm::vec2>& collideTilePositions, float xPos, float yPos);
@@ -129,8 +134,6 @@ class Entity {
 		// Internal
 		// Rendering
 		void loadTexture();
-
-		AnimationModule::Animation m_idleAnimation, m_lowVelAnimation, m_highVelAnimation, m_upAnimation, m_downAnimation;
 
 		bool m_controls[6]; // Up, down (crouching while on ground), left, right, backwards (layer++), forwards (layer--)
 

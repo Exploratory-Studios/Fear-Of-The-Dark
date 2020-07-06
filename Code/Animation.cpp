@@ -1,5 +1,11 @@
 #include "Animation.h"
 
+#include "Entity.h"
+
+#include <string>
+
+#include <iostream>
+
 namespace AnimationModule {
 
 	Animation::Animation() {
@@ -36,7 +42,9 @@ namespace AnimationModule {
 	void Animation::draw(::GLEngine::SpriteBatch& sb, glm::vec4& destRect, float& depth, float& angle) {
 		m_uv.x = (float)(m_currentFrame * m_frameWidth) / (float)(m_width);
 
-		sb.draw(destRect, m_uv, m_textureID, depth, GLEngine::ColourRGBA8(255, 255, 255, 255), angle);
+		glm::vec2 centre(0.5f, 0.5f);
+
+		sb.draw(destRect, m_uv, m_textureID, depth, GLEngine::ColourRGBA8(255, 255, 255, 255), angle, centre);
 	}
 
 	void Animation::update() {
@@ -66,34 +74,48 @@ namespace AnimationModule {
 	void SkeletalAnimation::init(unsigned int id) {
 		XMLModule::SkeletalAnimationData d = XMLModule::XMLData::getSkeletalAnimationData(id);
 
+		m_currentFrame = 0;
+
 		m_angles = d.angles;
 		m_offsets = d.offsets;
+		m_numLimbs = d.numLimbs;
+		m_repeats = d.repeats;
 	}
 
 	void SkeletalAnimation::updateLimb(Limb* limb) {
 		// Interpolate betweem this keypoint and next point. One can assume that this is called every frame,
 		// so a constant value (an integral from one angle/place to the next) can be added each frame.
 
-		unsigned int elementI = m_currentFrame * m_numLimbs + limb->getIndex();
+		if(m_currentFrame < m_angles.size() - 1) {
+			unsigned int elementI = m_currentFrame * m_numLimbs + limb->getIndex();
 
-		glm::vec2 diffPos = m_offsets[elementI + 1] - m_offsets[elementI];
-		float diffAngle = m_angles[elementI + 1] - m_angles[elementI];
+			glm::vec2 diffPos = m_offsets[elementI + 1] - m_offsets[elementI];
+			float diffAngle = glm::radians(m_angles[elementI + 1] - m_angles[elementI]);
 
-		glm::vec2 integralPos = diffPos / glm::vec2(FRAME_RATE / TICK_RATE);
-		float integralAngle = diffAngle / (FRAME_RATE / TICK_RATE);
+			glm::vec2 integralPos = diffPos / glm::vec2(FRAME_RATE / TICK_RATE);
+			float integralAngle = diffAngle / (FRAME_RATE / TICK_RATE);
 
-		limb->setPosition(limb->getPosition() + integralPos);
-		limb->setAngle(limb->getAngle() + integralAngle);
+			glm::vec2 newOffset = limb->getOffset() + integralPos;
+			float newAngle = limb->getAngle() + integralAngle;
+
+			limb->setOffset(newOffset);
+			limb->setAngle(newAngle);
+
+			std::cout << m_currentFrame << std::endl;
+
+		}
 	}
 
 	void SkeletalAnimation::update() {
 		if(!isFinished()) {
 			m_currentFrame++;
+		} else if(m_repeats) {
+			m_currentFrame = 0;
 		}
 	}
 
 	bool SkeletalAnimation::isFinished() {
-		return (m_currentFrame >= m_angles.size());
+		return (m_currentFrame >= m_angles.size() - 1);
 	}
 
 	void SkeletalAnimation::restart() {
@@ -104,10 +126,12 @@ namespace AnimationModule {
 
 	}
 
-	Limb::Limb(Entity* owner, Animation idleAnimation, unsigned int index); // The idleAnimation is the animation that constantly runs. Most of the time, this is just a single-textured sprite which supplies the texture
+	Limb::Limb(Animation idleAnimation, unsigned int index) {
+		// The idleAnimation is the animation that constantly runs. Most of the time, this is just a single-textured sprite which supplies the texture
+		init(idleAnimation, index);
+	}
 
-	void Limb::init(Entity* owner, Animation idleAnimation, unsigned int index) {
-		m_owner = owner;
+	void Limb::init(Animation idleAnimation, unsigned int index) {
 		m_idleAnimation = idleAnimation;
 		m_index = index;
 	}
@@ -116,6 +140,9 @@ namespace AnimationModule {
 		// Sets current m_activeAnimation and sets m_animationTime to 0.0f
 		m_activeAnimation = anim;
 		m_isAnimated = true;
+
+		m_offset = anim.getOffset(m_index);
+		m_angle = anim.getAngle(m_index);
 	}
 
 	void Limb::tick() {
@@ -126,16 +153,18 @@ namespace AnimationModule {
 		}
 	}
 
-	void Limb::draw(GLEngine::SpriteBatch& sb) {
+	void Limb::draw(GLEngine::SpriteBatch& sb, glm::vec4 destRect, float& depth) {
 		// Draws based on the owner.
-		glm::vec4 destRect(m_owner->getPosition() + m_offset, m_owner->getSize());
-		m_idleAnimation.draw(sb, destRect, m_owner->getDepth(), m_angle);
+		destRect.x += m_offset.x;
+		destRect.y += m_offset.y;
+		float angle = m_angle;//glm::radians(m_angle);
+		m_idleAnimation.draw(sb, destRect, depth, angle);
 
-		m_activeAnimation.updateLimb(this);
+		if(isAnimationActive()) m_activeAnimation.updateLimb(this);
 	}
 
 	bool Limb::isAnimationActive() {
-		if(m_activeAnimation) {
+		if(m_isAnimated) {
 			return !m_activeAnimation.isFinished();
 		}
 		return false;

@@ -48,8 +48,16 @@ namespace AnimationModule {
 			bool isFinished();
 			void restart();
 
+			float getAngle(unsigned int index) {
+				return m_angles[index];
+			}
+			glm::vec2 getOffset(unsigned int index) {
+				return m_offsets[index];
+			}
+
 		private:
-			unsigned int m_currentFrame = 0;
+			int m_currentFrame = 0;
+			bool m_repeats = false;
 
 			unsigned int m_numLimbs = 5;
 
@@ -62,13 +70,13 @@ namespace AnimationModule {
 			/// The limb will hold all data for limbs: position on the body, angle, texture.
 		public:
 			Limb();
-			Limb(Entity* owner, Animation idleAnimation, unsigned int index); // The idleAnimation is the animation that constantly runs. Most of the time, this is just a single-textured sprite which supplies the texture
+			Limb(Animation idleAnimation, unsigned int index); // The idleAnimation is the animation that constantly runs. Most of the time, this is just a single-textured sprite which supplies the texture
 
-			void init(Entity* owner, Animation idleAnimation, unsigned int index);
+			void init(Animation idleAnimation, unsigned int index);
 			void activateSkeletalAnimation(SkeletalAnimation anim);
 
 			void tick();
-			void draw(GLEngine::SpriteBatch& sb);
+			void draw(GLEngine::SpriteBatch& sb, glm::vec4 destRect, float& depth);
 
 			bool isAnimationActive();
 			unsigned int getIndex();
@@ -83,7 +91,6 @@ namespace AnimationModule {
 			Animation m_idleAnimation; // This is the "skin"
 			bool m_isAnimated = false; // Does it have an active skeletal animation?
 			unsigned int m_index; // This is used to make sure that each arm/leg follows the correct skeletal animation's limb (right leg might be 0, left leg might be 1, etc.)
-			Entity* m_owner = nullptr;
 
 			float m_angle = 0.0f;
 			glm::vec2 m_offset;

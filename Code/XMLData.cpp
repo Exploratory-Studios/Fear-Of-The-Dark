@@ -116,11 +116,13 @@ namespace XMLModule {
 		rapidxml::xml_node<>* n = parent->first_node((char*)valueName.c_str());
 		if(n) {
 			if(std::string(n->value()) != std::string("")) {
-				float x, y;
+				float x = 0.0f, y = 0.0f;
 				unsigned int separatorIndex = std::string(n->value()).find(",");
 
-				x = std::string(n->value()).substr(0, separatorIndex);
-				y = std::string(n->value()).substr(separatorIndex + 1);
+				x = std::stof(std::string(n->value()).substr(0, separatorIndex));
+				y = std::stof(std::string(n->value()).substr(separatorIndex + 1));
+
+				variable = glm::vec2(x, y);
 			}
 			parent->remove_node(n);
 			return true;
@@ -301,6 +303,9 @@ namespace XMLModule {
 				mapForWrite = &m_dialogueResponseData;
 			} else if(name == "animation") {
 				d = new AnimationData();
+				mapForWrite = &m_animationData;
+			} else if(name == "skeletalAnimation") {
+				d = new SkeletalAnimationData();
 				mapForWrite = &m_animationData;
 			} else if(name == "meleeAttack") {
 				d = new MeleeAttackData();
@@ -560,7 +565,7 @@ namespace XMLModule {
 
 		if(index == m_animationData.end()) {
 			Logger::getInstance()->log("ERROR: Couldn't find animation data with ID: " + std::to_string(id), true);
-			AnimationData s;
+			SkeletalAnimationData s;
 			return s;
 		}
 

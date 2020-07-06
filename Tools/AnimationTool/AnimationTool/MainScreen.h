@@ -6,7 +6,7 @@
 #include <DebugRenderer.h>
 #include <GUI.h>
 
-#include <Code/XMLData.h>
+//#include <Code/XMLData.h>
 
 class MainScreen : public GLEngine::IGameScreen {
 	public:
@@ -38,7 +38,7 @@ class MainScreen : public GLEngine::IGameScreen {
 		GLEngine::DebugRenderer m_debugRenderer;
 		GLEngine::GLSLProgram m_textureProgram;
 
-		XMLModule::TileData t;
+		//XMLModule::TileData t;
 
 		// GUI
 		GLEngine::GUI m_gui;

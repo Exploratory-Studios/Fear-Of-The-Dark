@@ -16,7 +16,7 @@
   </VirtualDirectory>
   <Settings Type="Executable">
     <GlobalSettings>
-      <Compiler Options="" C_Options="" Assembler="">
+      <Compiler Options="-std=c++17" C_Options="" Assembler="">
         <IncludePath Value="."/>
       </Compiler>
       <Linker Options="">
@@ -25,18 +25,20 @@
       <ResourceCompiler Options=""/>
     </GlobalSettings>
     <Configuration Name="Debug" CompilerType="GCC" DebuggerType="GNU gdb debugger" Type="Executable" BuildCmpWithGlobalSettings="append" BuildLnkWithGlobalSettings="append" BuildResWithGlobalSettings="append">
-      <Compiler Options="-g;-O0;-Wall" C_Options="-g;-O0;-Wall" Assembler="" Required="yes" PreCompiledHeader="" PCHInCommandLine="no" PCHFlags="" PCHFlagsPolicy="0">
-        <IncludePath Value="/home/davis-dev/Documents/Programming/C++/CodingGithub/Fear-Of-The-Dark/Tools/AnimationTool/AnimationTool/"/>
-        <IncludePath Value="/home/davis-dev/Documents/Programming/C++/CodingGithub/GLEngine/"/>
-        <IncludePath Value="/home/davis-dev/Documents/Programming/C++/CodingGithub/Fear-Of-The-Dark/"/>
+      <Compiler Options="-g3 -g -fexceptions " C_Options="" Assembler="" Required="yes" PreCompiledHeader="" PCHInCommandLine="no" PCHFlags="" PCHFlagsPolicy="0">
+        <IncludePath Value="../../../Code"/>
+        <IncludePath Value="include"/>
+        <IncludePath Value="../../../../GLEngine"/>
         <IncludePath Value="/usr/include/x86_64-linux-gnu/cegui-0.8.7"/>
       </Compiler>
       <Linker Options="" Required="yes">
-        <LibraryPath Value="/home/davis-dev/Documents/Programming/C++/CodingGithub/GLEngine/bin/Release/"/>
+        <LibraryPath Value="../../../../GLEngine/bin/Release/"/>
+        <LibraryPath Value="/usr/lib/x86_64-linux-gnu/"/>
+        <LibraryPath Value="./"/>
+        <Library Value="libGLEngine.a"/>
+        <Library Value="libboost_thread.a"/>
         <Library Value="libboost_filesystem.a"/>
         <Library Value="libboost_system.a"/>
-        <Library Value="lua5.3"/>
-        <Library Value="libGLEngine.a"/>
         <Library Value="CEGUIBase-0"/>
         <Library Value="CEGUIOpenGLRenderer-0"/>
         <Library Value="SDL2"/>
@@ -45,9 +47,10 @@
         <Library Value="GL"/>
         <Library Value="GLU"/>
         <Library Value="GLEW"/>
+        <Library Value="pthread"/>
       </Linker>
       <ResourceCompiler Options="" Required="no"/>
-      <General OutputFile="/home/davis-dev/Documents/Programming/C++/CodingGithub/Fear-Of-The-Dark/Tools/AnimationTool/AnimationTool/Debug/bin/Tool" IntermediateDirectory="/home/davis-dev/Documents/Programming/C++/CodingGithub/Fear-Of-The-Dark/Tools/AnimationTool/AnimationTool/Debug/obj" Command="/home/davis-dev/Documents/Programming/C++/CodingGithub/Fear-Of-The-Dark/Tools/AnimationTool/AnimationTool/Debug/bin/Tool" CommandArguments="" UseSeparateDebugArgs="no" DebugArguments="" WorkingDirectory="/home/davis-dev/Documents/Programming/C++/CodingGithub/Fear-Of-The-Dark/Tools/AnimationTool/AnimationTool/" PauseExecWhenProcTerminates="yes" IsGUIProgram="no" IsEnabled="yes"/>
+      <General OutputFile="Debug/Tesst" IntermediateDirectory="objSPEC" Command="$(OutputFile)" CommandArguments="" UseSeparateDebugArgs="no" DebugArguments="" WorkingDirectory="/home/davis-dev/Documents/Programming/C++/CodingGithub/Fear-Of-The-Dark/Tools/AnimationTool/AnimationTool" PauseExecWhenProcTerminates="yes" IsGUIProgram="no" IsEnabled="yes"/>
       <BuildSystem Name="Default"/>
       <Environment EnvVarSetName="&lt;Use Defaults&gt;" DbgSetName="&lt;Use Defaults&gt;">
         <![CDATA[]]>
@@ -66,7 +69,7 @@
         <PreprocessFileCommand/>
         <SingleFileCommand/>
         <MakefileGenerationCommand/>
-        <ThirdPartyToolName>None</ThirdPartyToolName>
+        <ThirdPartyToolName/>
         <WorkingDirectory/>
       </CustomBuild>
       <AdditionalRules>

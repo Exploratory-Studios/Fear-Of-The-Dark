@@ -1,1 +1,1 @@
-/home/davis-dev/Documents/Programming/C++/CodingGithub/Fear-Of-The-Dark/Tools/AnimationTool/AnimationTool/Debug/obj/main.cpp.o /home/davis-dev/Documents/Programming/C++/CodingGithub/Fear-Of-The-Dark/Tools/AnimationTool/AnimationTool/Debug/obj/App.cpp.o /home/davis-dev/Documents/Programming/C++/CodingGithub/Fear-Of-The-Dark/Tools/AnimationTool/AnimationTool/Debug/obj/MainScreen.cpp.o
+objSPEC/main.cpp.o objSPEC/App.cpp.o objSPEC/MainScreen.cpp.o

@@ -1,16 +1,9 @@
-/home/davis-dev/Documents/Programming/C++/CodingGithub/Fear-Of-The-Dark/Tools/AnimationTool/AnimationTool/Debug/obj/main.cpp.o: \
- main.cpp \
- /home/davis-dev/Documents/Programming/C++/CodingGithub/GLEngine/IMainGame.h \
- /home/davis-dev/Documents/Programming/C++/CodingGithub/GLEngine/GLEngine.h \
- /home/davis-dev/Documents/Programming/C++/CodingGithub/GLEngine/Window.h \
- /home/davis-dev/Documents/Programming/C++/CodingGithub/GLEngine/InputManager.h \
- App.h MainScreen.h \
- /home/davis-dev/Documents/Programming/C++/CodingGithub/GLEngine/IGameScreen.h \
- /home/davis-dev/Documents/Programming/C++/CodingGithub/GLEngine/SpriteBatch.h \
- /home/davis-dev/Documents/Programming/C++/CodingGithub/GLEngine/Vertex.h \
- /home/davis-dev/Documents/Programming/C++/CodingGithub/GLEngine/DebugRenderer.h \
- /home/davis-dev/Documents/Programming/C++/CodingGithub/GLEngine/GLSLProgram.h \
- /home/davis-dev/Documents/Programming/C++/CodingGithub/GLEngine/GUI.h \
+objSPEC/App.cpp.o: App.cpp App.h MainScreen.h \
+ ../../../../GLEngine/IGameScreen.h ../../../../GLEngine/IMainGame.h \
+ ../../../../GLEngine/GLEngine.h ../../../../GLEngine/Window.h \
+ ../../../../GLEngine/InputManager.h ../../../../GLEngine/SpriteBatch.h \
+ ../../../../GLEngine/Vertex.h ../../../../GLEngine/DebugRenderer.h \
+ ../../../../GLEngine/GLSLProgram.h ../../../../GLEngine/GUI.h \
  /usr/include/x86_64-linux-gnu/cegui-0.8.7/CEGUI/CEGUI.h \
  /usr/include/x86_64-linux-gnu/cegui-0.8.7/CEGUI/Affector.h \
  /usr/include/x86_64-linux-gnu/cegui-0.8.7/CEGUI/String.h \
@@ -276,43 +269,31 @@
  /usr/include/x86_64-linux-gnu/cegui-0.8.7/CEGUI/RendererModules/OpenGL/../../Rect.h \
  /usr/include/x86_64-linux-gnu/cegui-0.8.7/CEGUI/RendererModules/OpenGL/../../TextureTarget.h \
  /usr/include/x86_64-linux-gnu/cegui-0.8.7/CEGUI/RendererModules/OpenGL/GL.h \
- /home/davis-dev/Documents/Programming/C++/CodingGithub/Fear-Of-The-Dark/Code/XMLData.h \
- /home/davis-dev/Documents/Programming/C++/CodingGithub/Fear-Of-The-Dark/Code/ScriptQueue.h \
- /home/davis-dev/Documents/Programming/C++/CodingGithub/GLEngine/GLEngineErrors.h \
- /home/davis-dev/Documents/Programming/C++/CodingGithub/Fear-Of-The-Dark/Code/Logging.h \
- /home/davis-dev/Documents/Programming/C++/CodingGithub/Fear-Of-The-Dark/Code/PresetValues.h \
- /home/davis-dev/Documents/Programming/C++/CodingGithub/GLEngine/ResourceManager.h \
- /home/davis-dev/Documents/Programming/C++/CodingGithub/GLEngine/TextureCache.h \
- /home/davis-dev/Documents/Programming/C++/CodingGithub/GLEngine/GLTexture.h \
- /home/davis-dev/Documents/Programming/C++/CodingGithub/Fear-Of-The-Dark/Code/Categories.h \
- /home/davis-dev/Documents/Programming/C++/CodingGithub/Fear-Of-The-Dark/Code/SaveDataTypes.h \
- /home/davis-dev/Documents/Programming/C++/CodingGithub/Fear-Of-The-Dark/Code/XMLDataTypes.h \
- /home/davis-dev/Documents/Programming/C++/CodingGithub/Fear-Of-The-Dark/Code/XMLDataTypes.tpp \
- /home/davis-dev/Documents/Programming/C++/CodingGithub/GLEngine/ScreenList.h
-
-/home/davis-dev/Documents/Programming/C++/CodingGithub/GLEngine/IMainGame.h:
-
-/home/davis-dev/Documents/Programming/C++/CodingGithub/GLEngine/GLEngine.h:
-
-/home/davis-dev/Documents/Programming/C++/CodingGithub/GLEngine/Window.h:
-
-/home/davis-dev/Documents/Programming/C++/CodingGithub/GLEngine/InputManager.h:
+ ../../../../GLEngine/ScreenList.h
 
 App.h:
 
 MainScreen.h:
 
-/home/davis-dev/Documents/Programming/C++/CodingGithub/GLEngine/IGameScreen.h:
+../../../../GLEngine/IGameScreen.h:
 
-/home/davis-dev/Documents/Programming/C++/CodingGithub/GLEngine/SpriteBatch.h:
+../../../../GLEngine/IMainGame.h:
 
-/home/davis-dev/Documents/Programming/C++/CodingGithub/GLEngine/Vertex.h:
+../../../../GLEngine/GLEngine.h:
 
-/home/davis-dev/Documents/Programming/C++/CodingGithub/GLEngine/DebugRenderer.h:
+../../../../GLEngine/Window.h:
 
-/home/davis-dev/Documents/Programming/C++/CodingGithub/GLEngine/GLSLProgram.h:
+../../../../GLEngine/InputManager.h:
 
-/home/davis-dev/Documents/Programming/C++/CodingGithub/GLEngine/GUI.h:
+../../../../GLEngine/SpriteBatch.h:
+
+../../../../GLEngine/Vertex.h:
+
+../../../../GLEngine/DebugRenderer.h:
+
+../../../../GLEngine/GLSLProgram.h:
+
+../../../../GLEngine/GUI.h:
 
 /usr/include/x86_64-linux-gnu/cegui-0.8.7/CEGUI/CEGUI.h:
 
@@ -844,28 +825,4 @@ MainScreen.h:
 
 /usr/include/x86_64-linux-gnu/cegui-0.8.7/CEGUI/RendererModules/OpenGL/GL.h:
 
-/home/davis-dev/Documents/Programming/C++/CodingGithub/Fear-Of-The-Dark/Code/XMLData.h:
-
-/home/davis-dev/Documents/Programming/C++/CodingGithub/Fear-Of-The-Dark/Code/ScriptQueue.h:
-
-/home/davis-dev/Documents/Programming/C++/CodingGithub/GLEngine/GLEngineErrors.h:
-
-/home/davis-dev/Documents/Programming/C++/CodingGithub/Fear-Of-The-Dark/Code/Logging.h:
-
-/home/davis-dev/Documents/Programming/C++/CodingGithub/Fear-Of-The-Dark/Code/PresetValues.h:
-
-/home/davis-dev/Documents/Programming/C++/CodingGithub/GLEngine/ResourceManager.h:
-
-/home/davis-dev/Documents/Programming/C++/CodingGithub/GLEngine/TextureCache.h:
-
-/home/davis-dev/Documents/Programming/C++/CodingGithub/GLEngine/GLTexture.h:
-
-/home/davis-dev/Documents/Programming/C++/CodingGithub/Fear-Of-The-Dark/Code/Categories.h:
-
-/home/davis-dev/Documents/Programming/C++/CodingGithub/Fear-Of-The-Dark/Code/SaveDataTypes.h:
-
-/home/davis-dev/Documents/Programming/C++/CodingGithub/Fear-Of-The-Dark/Code/XMLDataTypes.h:
-
-/home/davis-dev/Documents/Programming/C++/CodingGithub/Fear-Of-The-Dark/Code/XMLDataTypes.tpp:
-
-/home/davis-dev/Documents/Programming/C++/CodingGithub/GLEngine/ScreenList.h:
+../../../../GLEngine/ScreenList.h:

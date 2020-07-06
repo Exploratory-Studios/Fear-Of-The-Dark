@@ -1,3 +1,6 @@
+#define BOOST_NO_CXX11_SCOPED_ENUMS
+#define BOOST_NO_SCOPED_ENUMS
+
 #include <IMainGame.h>
 
 #include "App.h"

@@ -269,7 +269,7 @@ objSPEC/App.cpp.o: App.cpp App.h MainScreen.h \
  /usr/include/x86_64-linux-gnu/cegui-0.8.7/CEGUI/RendererModules/OpenGL/../../Rect.h \
  /usr/include/x86_64-linux-gnu/cegui-0.8.7/CEGUI/RendererModules/OpenGL/../../TextureTarget.h \
  /usr/include/x86_64-linux-gnu/cegui-0.8.7/CEGUI/RendererModules/OpenGL/GL.h \
- ../../../../GLEngine/ScreenList.h
+ ../../../../GLEngine/Camera2D.h ../../../../GLEngine/ScreenList.h
 
 App.h:
 
@@ -824,5 +824,7 @@ MainScreen.h:
 /usr/include/x86_64-linux-gnu/cegui-0.8.7/CEGUI/RendererModules/OpenGL/../../TextureTarget.h:
 
 /usr/include/x86_64-linux-gnu/cegui-0.8.7/CEGUI/RendererModules/OpenGL/GL.h:
+
+../../../../GLEngine/Camera2D.h:
 
 ../../../../GLEngine/ScreenList.h:

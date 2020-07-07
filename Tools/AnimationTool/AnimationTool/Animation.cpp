@@ -1,42 +1,15 @@
 #include "Animation.h"
 
-#include "Entity.h"
-
 #include <string>
 
 #include <iostream>
+
+#include "Presets.h"
 
 namespace AnimationModule {
 
 	Animation::Animation() {
 
-	}
-
-	Animation::Animation(unsigned int id) {
-		init(id);
-	}
-
-	void Animation::init(unsigned int id) {
-		XMLModule::AnimationData d = XMLModule::XMLData::getAnimationData(id);
-
-		GLEngine::GLTexture tex = GLEngine::ResourceManager::getTexture(d.texture);
-
-		m_textureID = tex.id;
-		m_width = tex.width;
-		float height = tex.height;
-		float y = d.y;
-		m_frameWidth = d.width;
-		float frameHeight = d.height;
-
-		float framesVert = height / frameHeight;
-
-		m_uv.x = 0.0f;
-		m_uv.y = (((framesVert - 1 - y) * frameHeight) / height);
-		m_uv.z = (float)(m_frameWidth) / (float)(m_width);
-		m_uv.w = (float)(frameHeight) / (float)(height);
-		//m_uv.y = (float)(y * frameHeight) / (float)(height);
-		//m_uv.z = (float)(m_frameWidth) / (float)(m_width);
-		//m_uv.z = (float)(frameHeight) / (float)(height);
 	}
 
 	void Animation::draw(::GLEngine::SpriteBatch& sb, glm::vec4& destRect, float& depth, float& angle) {
@@ -67,21 +40,6 @@ namespace AnimationModule {
 
 	SkeletalAnimation::SkeletalAnimation() {
 
-	}
-
-	SkeletalAnimation::SkeletalAnimation(unsigned int id) {
-		init(id);
-	}
-
-	void SkeletalAnimation::init(unsigned int id) {
-		XMLModule::SkeletalAnimationData d = XMLModule::XMLData::getSkeletalAnimationData(id);
-
-		m_currentFrame = 0;
-
-		m_angles = d.angles;
-		m_offsets = d.offsets;
-		m_numLimbs = d.numLimbs;
-		m_repeats = d.repeats;
 	}
 
 	void SkeletalAnimation::updateLimb(Limb* limb) {
@@ -128,16 +86,6 @@ namespace AnimationModule {
 
 	}
 
-	Limb::Limb(Animation idleAnimation, unsigned int index) {
-		// The idleAnimation is the animation that constantly runs. Most of the time, this is just a single-textured sprite which supplies the texture
-		init(idleAnimation, index);
-	}
-
-	void Limb::init(Animation idleAnimation, unsigned int index) {
-		m_idleAnimation = idleAnimation;
-		m_index = index;
-	}
-
 	void Limb::activateSkeletalAnimation(SkeletalAnimation anim) {
 		// Sets current m_activeAnimation and sets m_animationTime to 0.0f
 		m_activeAnimation = anim;
@@ -150,6 +98,9 @@ namespace AnimationModule {
 	void Limb::tick() {
 		// Sets the idle animation to the next state. If active, continues the skeletal animation too. If the skeletal animation finishes, set m_animationTime to -1.0f;
 		m_idleAnimation.update();
+	}
+
+	void Limb::update() {
 		if(m_isAnimated) {
 			m_activeAnimation.update();
 		}

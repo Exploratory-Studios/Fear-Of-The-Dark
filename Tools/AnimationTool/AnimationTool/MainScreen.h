@@ -1,5 +1,7 @@
 #pragma once
 
+#include <vector>
+
 #include <IGameScreen.h>
 #include <Window.h>
 #include <SpriteBatch.h>
@@ -8,12 +10,17 @@
 #include <Camera2D.h>
 
 //#include <Code/XMLData.h>
+#include "AugAnimation.h"
 
 enum class ToolType {
 	ROTATE,
 	OFFSET
 };
 
+struct KeyFrame {
+	std::vector<glm::vec2> offsets;
+	std::vector<float> angles;
+};
 
 class MainScreen : public GLEngine::IGameScreen {
 	public:
@@ -40,8 +47,21 @@ class MainScreen : public GLEngine::IGameScreen {
 		void initUI();
 		void initShaders();
 
+		bool selectLimb(glm::vec2& mouseCoords);
+
 		// Actual functionality
 		ToolType m_tool;
+		bool m_previewing = false;
+		std::vector<KeyFrame> m_keyframes;
+		std::vector<AnimationModule::AugLimb> m_limbs;
+		std::vector<bool> m_limbsVisibility;
+		std::vector<AnimationModule::AugAnimation> m_skins;
+		unsigned int m_selectedLimb = 0;
+		bool m_limbSelected = false;
+		glm::vec2 m_grabPosition = glm::vec2(0.0f);
+		unsigned int m_selectedFrame = 0;
+
+		unsigned int m_frame = 0;
 
 		// Rendering
 		GLEngine::SpriteBatch m_spriteBatch;
@@ -50,6 +70,8 @@ class MainScreen : public GLEngine::IGameScreen {
 		GLEngine::GLSLProgram m_backgroundProgram;
 
 		GLEngine::Camera2D m_cam;
+		float m_scale;
+		GLEngine::Camera2D m_backgroundCam;
 
 		GLEngine::Window* m_window = nullptr;
 		//XMLModule::TileData t;
@@ -60,20 +82,31 @@ class MainScreen : public GLEngine::IGameScreen {
 		CEGUI::FrameWindow* m_fileFrame = nullptr;
 		CEGUI::PushButton* m_exportButton = nullptr;
 		CEGUI::Editbox* m_nameBox = nullptr;
+		CEGUI::PushButton* m_importButton = nullptr;
+		CEGUI::Editbox* m_skinBox = nullptr;
+		CEGUI::Spinner* m_skinX = nullptr;
+		CEGUI::Spinner* m_skinY = nullptr;
+		CEGUI::PushButton* m_loadSkinButton = nullptr;
 		CEGUI::PushButton* m_newLimbButton = nullptr;
 		bool EventExportButtonClicked(const CEGUI::EventArgs& e);
+		bool EventImportButtonClicked(const CEGUI::EventArgs& e);
 		bool EventNewLimbButtonClicked(const CEGUI::EventArgs& e);
 
 		CEGUI::FrameWindow* m_toolFrame = nullptr;
 		CEGUI::PushButton* m_removeLimbButton = nullptr;
 		CEGUI::PushButton* m_rotateOffsetButton = nullptr;
+		CEGUI::PushButton* m_makeAllVisibleButton = nullptr;
+		bool EventMakeAllVisibleButtonClicked(const CEGUI::EventArgs& e);
 		bool EventRemoveLimbButtonClicked(const CEGUI::EventArgs& e);
+		bool EventLoadSkinButtonClicked(const CEGUI::EventArgs& e);
 		bool EventRotateOffsetLimbButtonClicked(const CEGUI::EventArgs& e);
 
 		CEGUI::FrameWindow* m_keyframesFrame = nullptr;
+		CEGUI::Listbox* m_keyframesList = nullptr;
 		CEGUI::PushButton* m_playPauseButton = nullptr;
 		CEGUI::PushButton* m_addFrameButton = nullptr;
 		CEGUI::PushButton* m_removeFrameButton = nullptr;
+		bool EventKeyFrameClicked(const CEGUI::EventArgs& e);
 		bool EventPlayPauseButtonClicked(const CEGUI::EventArgs& e);
 		bool EventAddFrameButtonClicked(const CEGUI::EventArgs& e);
 		bool EventRemoveFrameButtonClicked(const CEGUI::EventArgs& e);

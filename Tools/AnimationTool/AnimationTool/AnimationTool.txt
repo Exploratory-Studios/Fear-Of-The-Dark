@@ -1,1 +1,1 @@
-objSPEC/main.cpp.o objSPEC/App.cpp.o objSPEC/MainScreen.cpp.o
+objSPEC/App.cpp.o objSPEC/main.cpp.o objSPEC/AugAnimation.cpp.o objSPEC/Animation.cpp.o objSPEC/MainScreen.cpp.o

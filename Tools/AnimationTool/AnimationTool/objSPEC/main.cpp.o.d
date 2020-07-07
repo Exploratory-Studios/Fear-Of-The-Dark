@@ -269,7 +269,8 @@ objSPEC/main.cpp.o: main.cpp ../../../../GLEngine/IMainGame.h \
  /usr/include/x86_64-linux-gnu/cegui-0.8.7/CEGUI/RendererModules/OpenGL/../../Rect.h \
  /usr/include/x86_64-linux-gnu/cegui-0.8.7/CEGUI/RendererModules/OpenGL/../../TextureTarget.h \
  /usr/include/x86_64-linux-gnu/cegui-0.8.7/CEGUI/RendererModules/OpenGL/GL.h \
- ../../../../GLEngine/Camera2D.h ../../../../GLEngine/ScreenList.h
+ ../../../../GLEngine/Camera2D.h AugAnimation.h Animation.h \
+ ../../../../GLEngine/GLTexture.h ../../../../GLEngine/ScreenList.h
 
 ../../../../GLEngine/IMainGame.h:
 
@@ -826,5 +827,11 @@ MainScreen.h:
 /usr/include/x86_64-linux-gnu/cegui-0.8.7/CEGUI/RendererModules/OpenGL/GL.h:
 
 ../../../../GLEngine/Camera2D.h:
+
+AugAnimation.h:
+
+Animation.h:
+
+../../../../GLEngine/GLTexture.h:
 
 ../../../../GLEngine/ScreenList.h:

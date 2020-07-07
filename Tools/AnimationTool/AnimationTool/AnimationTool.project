@@ -8,6 +8,11 @@
   <Description/>
   <Dependencies/>
   <VirtualDirectory Name="src">
+    <File Name="Presets.h"/>
+    <File Name="Animation.h"/>
+    <File Name="Animation.cpp"/>
+    <File Name="AugAnimation.h"/>
+    <File Name="AugAnimation.cpp"/>
     <File Name="MainScreen.h"/>
     <File Name="MainScreen.cpp"/>
     <File Name="App.h"/>
@@ -26,7 +31,6 @@
     </GlobalSettings>
     <Configuration Name="Debug" CompilerType="GCC" DebuggerType="GNU gdb debugger" Type="Executable" BuildCmpWithGlobalSettings="append" BuildLnkWithGlobalSettings="append" BuildResWithGlobalSettings="append">
       <Compiler Options="-g3 -g -fexceptions " C_Options="" Assembler="" Required="yes" PreCompiledHeader="" PCHInCommandLine="no" PCHFlags="" PCHFlagsPolicy="0">
-        <IncludePath Value="../../../Code"/>
         <IncludePath Value="include"/>
         <IncludePath Value="../../../../GLEngine"/>
         <IncludePath Value="/usr/include/x86_64-linux-gnu/cegui-0.8.7"/>
@@ -35,6 +39,7 @@
         <LibraryPath Value="../../../../GLEngine/bin/Release/"/>
         <LibraryPath Value="/usr/lib/x86_64-linux-gnu/"/>
         <LibraryPath Value="./"/>
+        <LibraryPath Value="../../../"/>
         <Library Value="libGLEngine.a"/>
         <Library Value="libboost_thread.a"/>
         <Library Value="libboost_filesystem.a"/>

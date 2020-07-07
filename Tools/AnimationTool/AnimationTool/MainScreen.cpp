@@ -395,6 +395,23 @@ colour = texture(textureSampler, fragmentUV.xy) * fragmentColour;\n\
 
 void MainScreen::exportToFile(std::string filepath) {
 	std::cout << "Export to file: " << filepath << std::endl;
+
+	XMLModule::SkeletalAnimationData anim;
+
+	for(unsigned int i = 0; i < m_keyframes.size(); i++) {
+		for(unsigned int j = 0; j < m_limbs.size(); j++) {
+			anim.angles[j] = m_keyframes[i].angles[j];
+			anim.offsets[j] = m_keyframes[i].offsets[j];
+		}
+	}
+
+	rapidxml::xml_document<> doc;
+	char* name, val;
+	name = doc.allocate_string("keyframe");
+	value = doc.allocate_string("");
+	doc.allocate_node(rapidxml::node_)
+
+	anim.write()
 }
 
 void MainScreen::importFromFile(std::string filepath) {

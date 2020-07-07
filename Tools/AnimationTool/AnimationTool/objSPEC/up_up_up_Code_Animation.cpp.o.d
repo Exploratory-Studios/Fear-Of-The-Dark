@@ -5,6 +5,7 @@ objSPEC/up_up_up_Code_Animation.cpp.o: ../../../Code/Animation.cpp \
  ../../../../GLEngine/ResourceManager.h \
  ../../../../GLEngine/TextureCache.h ../../../../GLEngine/GLTexture.h \
  ../../../Code/Categories.h ../../../Code/SaveDataTypes.h \
+ ../../../Code/MetaData.h ../../../Code/LuaHeaders.h \
  ../../../Code/XMLDataTypes.h ../../../Code/XMLDataTypes.tpp \
  ../../../../GLEngine/SpriteBatch.h ../../../../GLEngine/Vertex.h \
  ../../../Code/Entity.h ../../../../GLEngine/DebugRenderer.h \
@@ -31,6 +32,10 @@ objSPEC/up_up_up_Code_Animation.cpp.o: ../../../Code/Animation.cpp \
 ../../../Code/Categories.h:
 
 ../../../Code/SaveDataTypes.h:
+
+../../../Code/MetaData.h:
+
+../../../Code/LuaHeaders.h:
 
 ../../../Code/XMLDataTypes.h:
 

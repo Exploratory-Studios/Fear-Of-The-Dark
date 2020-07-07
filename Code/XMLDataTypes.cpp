@@ -1,6 +1,8 @@
 #include "XMLDataTypes.h"
 
+#include "MetaData.h"
 #include "XMLData.h"
+#include "ScriptQueue.h"
 
 namespace XMLModule {
 
@@ -48,6 +50,23 @@ namespace XMLModule {
 		setData("UNDEF");
 	}
 
+	template<>
+	std::string Attribute<glm::vec2>::getDataString() {
+		return std::string(std::to_string(m_data->x) + "," + std::to_string(m_data->y));
+	}
+	template<>
+	std::string Attribute<std::vector<glm::vec2>>::getDataString() {
+		return "";
+	}
+	template<>
+	std::string Attribute<std::vector<float>>::getDataString() {
+		return "";
+	}
+	template<>
+	std::string Attribute<std::vector<unsigned int>>::getDataString() {
+		return "";
+	}
+
 	GenericData::GenericData(std::vector<AttributeBase*> attrs) : name(""), id(0) {
 		addAttributes(attrs);
 	}
@@ -91,8 +110,14 @@ namespace XMLModule {
 				}
 				case(unsigned int)AttributeType::VEC2: {
 					glm::vec2 v2;
-					getValue(node, attr.first + "X", v2.x);
-					getValue(node, attr.first + "Y", v2.y);
+					std::string str;
+					getValue(node, attr.first, str);
+
+					unsigned int index = str.find(",");
+					std::string x = str.substr(0, index);
+					std::string y = str.substr(index + 1);
+
+					v2 = glm::vec2(std::to_string(x), std::to_string(y));
 
 					attr.second->setData(v2);
 					break;
@@ -200,6 +225,197 @@ namespace XMLModule {
 					std::vector<glm::vec2> vec;
 					getVector(node, nodeName, valueName, vec);
 					attr.second->setData(vec);
+
+					break;
+				}
+				default: {
+					Logger::getInstance()->log("ERROR: XML Data type not supported!", true);
+
+					break;
+				}
+
+			}
+		}
+
+		::XMLModule::getMetaData(node, m_metadata); //
+	}
+
+	void GenericData::write(rapidxml::xml_node<>* node) {
+
+		{
+			char* val = node->document()->allocate_string(std::to_string(m_attributes["id"]->getData<unsigned int>()));
+			rapidxml::xml_attribute<>* id = node->document()->allocate_attribute("id", val);
+			node->append_attribute(id);
+
+			val = node->document()->allocate_string(std::to_string(m_attributes["name"]->getData<std::string>()));
+			rapidxml::xml_attribute<>* name = node->document()->allocate_attribute("name", val);
+			node->append_attribute(name);
+		}
+
+		for(auto& attr : m_attributes) { // Retrieved by reference, so we can change them!
+			// For each attribute, load the stuff.
+			if(attr.first == "name" || attr.first == "id") continue; // These are not regular child nodes, but rather special ones, taken care of beforehand!
+
+			switch((unsigned int)attr.second->type) { /// TODO: Smarten this up
+				case(unsigned int)AttributeType::STRING: {
+					char* val = node->document()->allocate_string(attr.second->getData<std::string>());
+					rapidxml::xml_node<>* newNode = node->document()->allocate_node(attr.first, val);
+					node->append_node(newNode);
+					break;
+				}
+				case(unsigned int)AttributeType::UNSIGNED_INT: {
+					char* val = node->document()->allocate_string(std::to_string(attr.second->getData<unsigned int>()));
+					rapidxml::xml_node<>* newNode = node->document()->allocate_node(attr.first, val);
+					node->append_node(newNode);
+					break;
+				}
+				case(unsigned int)AttributeType::INT: {
+					char* val = node->document()->allocate_string(std::to_string(attr.second->getData<int>()));
+					rapidxml::xml_node<>* newNode = node->document()->allocate_node(attr.first, val);
+					node->append_node(newNode);
+					break;
+				}
+				case(unsigned int)AttributeType::FLOAT: {
+					char* val = node->document()->allocate_string(std::to_string(attr.second->getData<float>()));
+					rapidxml::xml_node<>* newNode = node->document()->allocate_node(attr.first, val);
+					node->append_node(newNode);
+					break;
+				}
+				case(unsigned int)AttributeType::VEC2: {
+					char* val = node->document()->allocate_string(std::to_string(attr.second->getData<glm::vec2>().x) + "," + std::to_string(attr.second->getData<glm::vec2>().y));
+					rapidxml::xml_node<>* newNode = node->document()->allocate_node(attr.first, val);
+					node->append_node(newNode);
+					break;
+				}
+				case(unsigned int)AttributeType::BOOL: {
+					char* val = node->document()->allocate_string(std::to_string(attr.second->getData<bool>()));
+					rapidxml::xml_node<>* newNode = node->document()->allocate_node(attr.first, val);
+					node->append_node(newNode);
+					break;
+				}
+				case(unsigned int)AttributeType::FILEPATH_TEXTURE: {
+					unsigned int beginIndex = (std::string)(ASSETS_FOLDER_PATH + "/Textures/").length() + 1;
+					char* val = node->document()->allocate_string(std::to_string(attr.second->getData<std::string>()).substr(beginIndex));
+					rapidxml::xml_node<>* newNode = node->document()->allocate_node(attr.first, val);
+					node->append_node(newNode);
+					break;
+				}
+				case(unsigned int)AttributeType::FILEPATH_BUMPMAP: {
+					unsigned int beginIndex = (std::string)(ASSETS_FOLDER_PATH + "/Textures/BumpMaps").length() + 1;
+					char* val = node->document()->allocate_string(std::to_string(attr.second->getData<std::string>()).substr(beginIndex));
+					rapidxml::xml_node<>* newNode = node->document()->allocate_node(attr.first, val);
+					node->append_node(newNode);
+					break;
+				}
+				case(unsigned int)AttributeType::SCRIPT: {
+					rapidxml::xml_node<>* scriptNode = node->first_node((char*)(attr.first.c_str()));
+					// This scriptNode has a bool (whether its a file or not) and the script filepath or literal
+
+					if(scriptNode) {
+						bool isFile = false;
+						if(!getValue(scriptNode, "isFile", isFile)) {
+							Logger::getInstance()->log("XML ERROR: Script definition not formed correctly! Missing flag \"isFile\": ID=" + std::to_string(id), true);
+							break;
+						}
+						std::string script;
+						if(!getValue(scriptNode, "script", script)) {
+							Logger::getInstance()->log("XML ERROR: Script definition not formed correctly! Missing attribute \"script\": ID=" + std::to_string(id), true);
+							break;
+						}
+
+						if(isFile) {
+							script = ASSETS_FOLDER_PATH + "/Scripts/" + script;
+						}
+
+						ScriptingModule::Script scr(script, isFile);
+						attr.second->setData((unsigned int)ScriptingModule::ScriptQueue::addScript(scr));
+					}
+
+					char* val = node->document()->allocate_string(std::to_string(attr.first));
+					rapidxml::xml_node<>* newNode = node->document()->allocate_node(val, "");
+					node->append_node(newNode);
+
+					char* name1 = node->document()->allocate_string("isFile");
+					char* val1 = node->document()->allocate_string(attr.second->getData<ScriptingModule::Script>().isFile());
+					rapidxml::xml_node<>* newNode1 = newNode->document()->allocate_node(name1, val1);
+					newNode->append_node(newNode1);
+
+					char* name2 = node->document()->allocate_string("script");
+					char* val2 = node->document()->allocate_string(attr.second->getData<ScriptingModule::Script>().getFileName() + attr.second->getData<ScriptingModule::Script>().getText());
+					rapidxml::xml_node<>* newNode2 = newNode->document()->allocate_node(name2, val2);
+					newNode->append_node(newNode2);
+					break;
+				}
+				case(unsigned int)AttributeType::STRING_FACTION: {
+					std::string factionString;
+					Categories::Faction faction;
+
+					getValue(node, attr.first, factionString);
+
+					if(factionString == "evil") {
+						faction = Categories::Faction::EVIL;
+					} else if(factionString == "bad") {
+						faction = Categories::Faction::BAD;
+					} else if(factionString == "neutral") {
+						faction = Categories::Faction::NEUTRAL;
+					} else if(factionString == "good") {
+						faction = Categories::Faction::GOOD;
+					} else if(factionString == "benign") {
+						faction = Categories::Faction::BENIGN;
+					} else {
+						faction = Categories::Faction::NEUTRAL;
+					}
+
+					attr.second->setData((unsigned int)faction);
+
+					break;
+				}
+				case(unsigned int)AttributeType::VECTOR_UNSIGNED_INT: {
+					std::string nodeName, valueName;
+					unsigned int slashIndex = attr.first.find("/");
+
+					nodeName = attr.first.substr(0, slashIndex); // Left half (excluding the slash)
+					valueName = attr.first.substr(slashIndex + 1); // Right half (excluding the slash)
+
+					std::vector<unsigned int> vec;
+					getVector(node, nodeName, valueName, vec);
+					attr.second->setData(vec);
+
+					break;
+				}
+				case(unsigned int)AttributeType::VECTOR_FLOAT: {
+					std::string nodeName, valueName;
+					unsigned int slashIndex = attr.first.find("/");
+
+					nodeName = attr.first.substr(0, slashIndex);
+					valueName = attr.first.substr(slashIndex + 1);
+
+					std::vector<float> vec;
+					getVector(node, nodeName, valueName, vec);
+					attr.second->setData(vec);
+
+					break;
+				}
+				case(unsigned int)AttributeType::VECTOR_VEC2: {
+					std::string nodeName, valueName;
+					unsigned int slashIndex = attr.first.find("/");
+
+					nodeName = attr.first.substr(0, slashIndex);
+					valueName = attr.first.substr(slashIndex + 1);
+
+					std::vector<glm::vec2> value = attr.second->getData<std::vector<glm::vec2>>();
+
+					char* val = node->document()->allocate_string(nodeName);
+					rapidxml::xml_node<>* newNode = node->document()->allocate_node(val, "");
+					node->append_node(newNode);
+
+					char* nodeNameV = node->document()->allocate_string(valueName);
+
+					for(unsigned int i = 0; i < value.size(); i++) {
+						char* val1 = node->document()->allocate_string(std::to_string(value[i].x) + "," + std::to_string(value[i].y));
+						rapidxml::xml_node<>* newNode1 = node->document()->allocate_node(nodeNameV, val1);
+						newNode->append_node(newNode1);
+					}
 
 					break;
 				}

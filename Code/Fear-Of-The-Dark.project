@@ -6,6 +6,7 @@
     </Plugin>
   </Plugins>
   <VirtualDirectory Name="include">
+    <File Name="MetaData.h"/>
     <File Name="Animation.h"/>
     <File Name="EntityManager.h"/>
     <File Name="Factory.h"/>
@@ -54,6 +55,7 @@
     <File Name="App.h"/>
   </VirtualDirectory>
   <VirtualDirectory Name="src">
+    <File Name="MetaData.cpp"/>
     <File Name="Animation.cpp"/>
     <File Name="Factory.cpp"/>
     <File Name="EntityManager.cpp"/>

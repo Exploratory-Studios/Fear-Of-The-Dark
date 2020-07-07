@@ -4,6 +4,7 @@ objSPEC/up_up_up_Code_XMLData.cpp.o: ../../../Code/XMLData.cpp \
  ../../../Code/PresetValues.h ../../../../GLEngine/ResourceManager.h \
  ../../../../GLEngine/TextureCache.h ../../../../GLEngine/GLTexture.h \
  ../../../Code/Categories.h ../../../Code/SaveDataTypes.h \
+ ../../../Code/MetaData.h ../../../Code/LuaHeaders.h \
  ../../../Code/XMLDataTypes.h ../../../Code/XMLDataTypes.tpp
 
 ../../../Code/XMLData.h:
@@ -25,6 +26,10 @@ objSPEC/up_up_up_Code_XMLData.cpp.o: ../../../Code/XMLData.cpp \
 ../../../Code/Categories.h:
 
 ../../../Code/SaveDataTypes.h:
+
+../../../Code/MetaData.h:
+
+../../../Code/LuaHeaders.h:
 
 ../../../Code/XMLDataTypes.h:
 

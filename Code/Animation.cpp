@@ -39,15 +39,15 @@ namespace AnimationModule {
 		//m_uv.z = (float)(frameHeight) / (float)(height);
 	}
 
-	void Animation::draw(::GLEngine::SpriteBatch& sb, glm::vec4& destRect, float& depth, float& angle) {
+	void Animation::draw(::GLEngine::SpriteBatch& sb, GLEngine::ColourRGBA8 colour, glm::vec4& destRect, float& depth, float& angle) {
 		m_uv.x = (float)(m_currentFrame * m_frameWidth) / (float)(m_width);
 
 		glm::vec2 centre(0.5f, 0.5f);
 
-		sb.draw(destRect, m_uv, m_textureID, depth, GLEngine::ColourRGBA8(255, 255, 255, 255), angle, centre);
+		sb.draw(destRect, m_uv, m_textureID, depth, colour, angle, centre);
 	}
 
-	void Animation::update() {
+	void Animation::tick() {
 		if(!isFinished()) {
 			m_currentFrame++;
 		} else if(m_loops) {
@@ -92,7 +92,7 @@ namespace AnimationModule {
 			unsigned int elementI = m_currentFrame * m_numLimbs + limb->getIndex();
 
 			glm::vec2 diffPos = m_offsets[elementI + 1] - m_offsets[elementI];
-			float diffAngle = glm::radians(m_angles[elementI + 1] - m_angles[elementI]);
+			float diffAngle = m_angles[elementI + 1] - m_angles[elementI];
 
 			glm::vec2 integralPos = diffPos / glm::vec2(FRAME_RATE / TICK_RATE);
 			float integralAngle = diffAngle / (FRAME_RATE / TICK_RATE);
@@ -103,12 +103,10 @@ namespace AnimationModule {
 			limb->setOffset(newOffset);
 			limb->setAngle(newAngle);
 
-			std::cout << m_currentFrame << std::endl;
-
 		}
 	}
 
-	void SkeletalAnimation::update() {
+	void SkeletalAnimation::tick() {
 		if(!isFinished()) {
 			m_currentFrame++;
 		} else if(m_repeats) {
@@ -149,20 +147,22 @@ namespace AnimationModule {
 
 	void Limb::tick() {
 		// Sets the idle animation to the next state. If active, continues the skeletal animation too. If the skeletal animation finishes, set m_animationTime to -1.0f;
-		m_idleAnimation.update();
+		m_idleAnimation.tick();
 		if(m_isAnimated) {
-			m_activeAnimation.update();
+			m_activeAnimation.tick();
 		}
 	}
 
-	void Limb::draw(GLEngine::SpriteBatch& sb, glm::vec4 destRect, float& depth) {
+	void Limb::update() {
+		if(isAnimationActive()) m_activeAnimation.updateLimb(this);
+	}
+
+	void Limb::draw(GLEngine::SpriteBatch& sb, GLEngine::ColourRGBA8 colour, glm::vec4 destRect, float& depth) {
 		// Draws based on the owner.
 		destRect.x += m_offset.x;
 		destRect.y += m_offset.y;
 		float angle = m_angle;//glm::radians(m_angle);
-		m_idleAnimation.draw(sb, destRect, depth, angle);
-
-		if(isAnimationActive()) m_activeAnimation.updateLimb(this);
+		m_idleAnimation.draw(sb, colour, destRect, depth, angle);
 	}
 
 	bool Limb::isAnimationActive() {

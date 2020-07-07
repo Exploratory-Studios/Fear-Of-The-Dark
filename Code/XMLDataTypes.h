@@ -75,6 +75,10 @@ namespace XMLModule {
 				return *m_data;
 			}
 
+			std::string getDataString() {
+				return std::to_string(getData());
+			}
+
 			T const* getDataPtr() {
 				return m_data;
 			}

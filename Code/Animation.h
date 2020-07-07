@@ -18,11 +18,22 @@ namespace AnimationModule {
 			Animation(unsigned int id);
 			void init(unsigned int id);
 
-			void draw(::GLEngine::SpriteBatch& sb, glm::vec4& destRect, float& depth, float& angle);
-			void update();
+			void draw(::GLEngine::SpriteBatch& sb, GLEngine::ColourRGBA8 colour, glm::vec4& destRect, float& depth, float& angle);
+			void tick();
 
 			void setToLoop(bool loops) {
 				m_loops = loops;
+			}
+
+			unsigned int getFrameWidth() {
+				return m_frameWidth;
+			}
+			unsigned int getFrameHeight() {
+				return m_frameHeight;
+			}
+
+			void setFrame(unsigned int frame) {
+				m_currentFrame = frame % (m_width / m_frameWidth);
 			}
 
 			bool isFinished();
@@ -34,6 +45,7 @@ namespace AnimationModule {
 			unsigned int m_textureID;
 			unsigned int m_width;
 			unsigned int m_frameWidth;
+			unsigned int m_frameHeight;
 
 			bool m_loops = false;
 
@@ -49,16 +61,24 @@ namespace AnimationModule {
 			void init(unsigned int id);
 
 			void updateLimb(Limb* limb);
-			void update();
+			void tick();
 
 			bool isFinished();
 			void restart();
+
+			void setToLoop(bool loops) {
+				m_repeats = loops;
+			}
 
 			float getAngle(unsigned int index) {
 				return m_angles[index];
 			}
 			glm::vec2 getOffset(unsigned int index) {
 				return m_offsets[index];
+			}
+
+			void setFrame(unsigned int frame) {
+				if(m_angles.size() > 0) m_currentFrame = frame % (m_angles.size() / m_numLimbs);
 			}
 
 		protected:
@@ -82,7 +102,8 @@ namespace AnimationModule {
 			void activateSkeletalAnimation(SkeletalAnimation anim);
 
 			void tick();
-			virtual void draw(GLEngine::SpriteBatch& sb, glm::vec4 destRect, float& depth);
+			void update();
+			virtual void draw(GLEngine::SpriteBatch& sb, GLEngine::ColourRGBA8 colour, glm::vec4 destRect, float& depth);
 
 			bool isAnimationActive();
 			unsigned int getIndex();

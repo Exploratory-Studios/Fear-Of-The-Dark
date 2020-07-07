@@ -1,5 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <CodeLite_Project Name="AnimationTool" Version="11000" InternalType="Console">
+  <VirtualDirectory Name="FOTDCode">
+    <File Name="../../../Code/ScriptQueue.h"/>
+    <File Name="../../../Code/ScriptQueue.cpp"/>
+    <File Name="../../../Code/MetaData.h"/>
+    <File Name="../../../Code/MetaData.cpp"/>
+    <File Name="../../../Code/PresetValues.h"/>
+    <File Name="../../../Code/Logging.h"/>
+    <File Name="../../../Code/Logging.cpp"/>
+    <File Name="../../../Code/XMLDataTypes.tpp"/>
+    <File Name="../../../Code/XMLDataTypes.h"/>
+    <File Name="../../../Code/XMLDataTypes.cpp"/>
+    <File Name="../../../Code/XMLData.h"/>
+    <File Name="../../../Code/XMLData.cpp"/>
+    <File Name="../../../Code/Animation.h"/>
+    <File Name="../../../Code/Animation.cpp"/>
+  </VirtualDirectory>
   <Plugins>
     <Plugin Name="qmake">
       <![CDATA[00010001N0005Debug000000000000]]>
@@ -9,8 +25,6 @@
   <Dependencies/>
   <VirtualDirectory Name="src">
     <File Name="Presets.h"/>
-    <File Name="Animation.h"/>
-    <File Name="Animation.cpp"/>
     <File Name="AugAnimation.h"/>
     <File Name="AugAnimation.cpp"/>
     <File Name="MainScreen.h"/>
@@ -31,6 +45,7 @@
     </GlobalSettings>
     <Configuration Name="Debug" CompilerType="GCC" DebuggerType="GNU gdb debugger" Type="Executable" BuildCmpWithGlobalSettings="append" BuildLnkWithGlobalSettings="append" BuildResWithGlobalSettings="append">
       <Compiler Options="-g3 -g -fexceptions " C_Options="" Assembler="" Required="yes" PreCompiledHeader="" PCHInCommandLine="no" PCHFlags="" PCHFlagsPolicy="0">
+        <IncludePath Value="../../../Code"/>
         <IncludePath Value="include"/>
         <IncludePath Value="../../../../GLEngine"/>
         <IncludePath Value="/usr/include/x86_64-linux-gnu/cegui-0.8.7"/>
@@ -44,6 +59,7 @@
         <Library Value="libboost_thread.a"/>
         <Library Value="libboost_filesystem.a"/>
         <Library Value="libboost_system.a"/>
+        <Library Value="lua5.3"/>
         <Library Value="CEGUIBase-0"/>
         <Library Value="CEGUIOpenGLRenderer-0"/>
         <Library Value="SDL2"/>

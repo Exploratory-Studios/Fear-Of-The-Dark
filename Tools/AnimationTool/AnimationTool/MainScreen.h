@@ -48,6 +48,10 @@ class MainScreen : public GLEngine::IGameScreen {
 		void initShaders();
 
 		bool selectLimb(glm::vec2& mouseCoords);
+		AnimationModule::SkeletalAnimation getSkeletal(); // Constructs the skeletal animation from existing data.
+
+		void exportToFile(std::string filepath);
+		void importFromFile(std::string filepath);
 
 		// Actual functionality
 		ToolType m_tool;
@@ -70,7 +74,7 @@ class MainScreen : public GLEngine::IGameScreen {
 		GLEngine::GLSLProgram m_backgroundProgram;
 
 		GLEngine::Camera2D m_cam;
-		float m_scale;
+		float m_scale = 1.0f;
 		GLEngine::Camera2D m_backgroundCam;
 
 		GLEngine::Window* m_window = nullptr;

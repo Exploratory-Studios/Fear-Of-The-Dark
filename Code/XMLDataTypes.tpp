@@ -20,6 +20,15 @@ namespace XMLModule {
 	template<>
 	void Attribute<std::string>::setDefault();
 
+	template<>
+	std::string Attribute<glm::vec2>::getDataString();
+	template<>
+	std::string Attribute<std::vector<glm::vec2>>::getDataString();
+	template<>
+	std::string Attribute<std::vector<float>>::getDataString();
+	template<>
+	std::string Attribute<std::vector<unsigned int>>::getDataString();
+
 	/*template<class T>
 	T& GenericData::getAttributeT(std::string index) {
 	    Attribute a = m_attributes[index];

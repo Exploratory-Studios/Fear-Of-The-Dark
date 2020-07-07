@@ -87,7 +87,7 @@
 #define STRX(x) std::string(#x)
 #define STR(x) STRX(x)
 
-#define HOME_PATH UNDEFINED_HOME_ERROR
+#define HOME_PATH std::string("UNDEFINED_HOME_ERROR")
 
 #ifdef WINDOWS
 #undef HOME_PATH

@@ -5,6 +5,8 @@
 
 #include "Presets.h"
 
+#include <iostream>
+
 MainScreen::MainScreen(GLEngine::Window* window) : m_window(window) {
 }
 
@@ -70,7 +72,10 @@ void MainScreen::draw() {
 			glm::vec4 destRect(width / 2, height / 2, m_limbs[i].getAnimation().getFrameWidth(), m_limbs[i].getAnimation().getFrameHeight());
 			if(m_limbsVisibility[i]) {
 				float depth = 0.0f;
-				m_limbs[i].draw(m_spriteBatch, destRect, depth);
+				GLEngine::ColourRGBA8 col(255, 255, 255, 255);
+				if(m_selectedLimb == i && m_limbSelected)
+					col = GLEngine::ColourRGBA8(128, 128, 128, 255);
+				m_limbs[i].draw(m_spriteBatch, col, destRect, depth);
 			} else {
 				float angle = m_limbs[i].getAngle();
 				m_debugRenderer.drawBox(destRect, GLEngine::ColourRGBA8(255, 0, 0, 128), angle);
@@ -105,9 +110,13 @@ void MainScreen::update() {
 	if(m_previewing) {
 		for(unsigned int i = 0; i < m_limbs.size(); i++) {
 			m_limbs[i].update();
-			if(m_frame % (m_frame / TICK_RATE) == 0) {
+		}
+		if(m_frame % (FRAME_RATE / TICK_RATE) == 0) {
+			for(unsigned int i = 0; i < m_limbs.size(); i++) {
 				m_limbs[i].tick();
 			}
+			m_selectedFrame = (m_selectedFrame + 1) % m_keyframes.size();
+			m_keyframesList->setItemSelectState(m_selectedFrame, true);
 		}
 	}
 
@@ -149,28 +158,52 @@ void MainScreen::checkInput() {
 				glm::vec2 change = m_cam.convertScreenToWorld(m_game->inputManager.getMouseCoords()) - m_grabPosition;
 
 				glm::vec2 newOffset = m_limbs[m_selectedLimb].getOffset() + change;
-				newOffset.x = (int)newOffset.x;
-				newOffset.y = (int)newOffset.y;
+				newOffset.x = newOffset.x;
+				newOffset.y = newOffset.y;
 
 				m_limbs[m_selectedLimb].setOffset(newOffset);
 
 				m_grabPosition = m_cam.convertScreenToWorld(m_game->inputManager.getMouseCoords());
+
+				if(m_keyframesList->getFirstSelectedItem()) {
+					m_keyframes[m_selectedFrame].offsets[m_selectedLimb] = m_limbs[m_selectedLimb].getOffset();
+				}
 			} else if(m_tool == ToolType::ROTATE) {
+				glm::vec2 centre = m_limbs[m_selectedLimb].getOffset() + glm::vec2(m_limbs[m_selectedLimb].getAnimation().getFrameWidth() / 2, m_limbs[m_selectedLimb].getAnimation().getFrameHeight() / 2);
 				glm::vec2 screenSize = glm::vec2(m_window->getScreenWidth() / 2, m_window->getScreenHeight() / 2);
-				glm::vec2 old = glm::normalize(m_grabPosition - screenSize);
+				glm::vec2 old = glm::normalize(m_grabPosition - centre - screenSize);
 				m_grabPosition = m_cam.convertScreenToWorld(m_game->inputManager.getMouseCoords());
-				glm::vec2 now = glm::normalize(m_grabPosition - screenSize);
+				glm::vec2 now = glm::normalize(m_grabPosition - centre - screenSize);
 
 				float dot = old.x * now.x + old.y * now.y;
 				float det = old.x * now.y - old.y * now.x;
 				float newAngle = (m_limbs[m_selectedLimb].getAngle() + std::atan2(det, dot));
 
 				m_limbs[m_selectedLimb].setAngle(newAngle);
+
+				if(m_keyframesList->getFirstSelectedItem()) {
+					m_keyframes[m_selectedFrame].angles[m_selectedLimb] = m_limbs[m_selectedLimb].getAngle();
+				}
 			}
 		}
 	}
 	if(m_game->inputManager.isKeyPressed(SDL_BUTTON_RIGHT)) {
 		m_limbsVisibility[m_selectedLimb] = false;
+	}
+	if(m_game->inputManager.isKeyPressed(SDLK_DOWN)) {
+		if(m_keyframes.size() > 0) {
+			m_selectedFrame = (m_selectedFrame + 1) % m_keyframes.size();
+			m_keyframesList->setItemSelectState(m_selectedFrame, true);
+		}
+	} else if(m_game->inputManager.isKeyPressed(SDLK_UP)) {
+		if(m_keyframes.size() > 0) {
+			m_selectedFrame = (m_selectedFrame - 1 + m_keyframes.size()) % m_keyframes.size();
+			m_keyframesList->setItemSelectState(m_selectedFrame, true);
+		}
+	}
+	if(m_game->inputManager.isKeyPressed(SDLK_SPACE)) {
+		CEGUI::EventArgs e;
+		EventPlayPauseButtonClicked(e);
 	}
 }
 
@@ -182,19 +215,20 @@ bool MainScreen::selectLimb(glm::vec2& mouseCoords) {
 		if(m_limbsVisibility[i]) {
 			// Get copies of each position
 			glm::vec2 size = glm::vec2(m_limbs[i].getAnimation().getFrameWidth(), m_limbs[i].getAnimation().getFrameHeight());
-			glm::vec2 mousePos = m_cam.convertScreenToWorld(mouseCoords) - glm::vec2(width / 2, height / 2) - size * glm::vec2(0.5f);
-			glm::vec2 limbPosBL = m_limbs[i].getOffset() - size * glm::vec2(0.5f);
+			glm::vec2 mousePos = m_cam.convertScreenToWorld(mouseCoords) - glm::vec2(width / 2, height / 2) - size * glm::vec2(0.5f) - m_limbs[i].getOffset();
+			glm::vec2 limbPosBL = -size * glm::vec2(0.5f);
+			glm::vec2 limbPosTR = size * glm::vec2(0.5f);
 
 			//(xcosθ−ysinθ ,xsinθ+ycosθ)
 			float theta = -m_limbs[i].getAngle(); // radians
 			glm::vec2 mouseTrans = glm::vec2(mousePos.x * std::cos(theta) - mousePos.y * std::sin(theta), mousePos.x * std::sin(theta) + mousePos.y * std::cos(theta));
 
-			glm::vec2 BLTrans = limbPosBL;//glm::vec2(limbPosBL.x * std::cos(theta) - limbPosBL.y * std::sin(theta), limbPosBL.x * std::sin(theta) + limbPosBL.y * std::cos(theta));
-			glm::vec2 TRTrans = BLTrans + glm::vec2(m_limbs[i].getAnimation().getFrameWidth(), m_limbs[i].getAnimation().getFrameHeight());
+			//glm::vec2 BLTrans = limbPosBL;//glm::vec2(limbPosBL.x * std::cos(theta) - limbPosBL.y * std::sin(theta), limbPosBL.x * std::sin(theta) + limbPosBL.y * std::cos(theta));
+			//glm::vec2 TRTrans = BLTrans + glm::vec2(m_limbs[i].getAnimation().getFrameWidth(), m_limbs[i].getAnimation().getFrameHeight());
 
 			// Check for intersection
-			if(mouseTrans.x > BLTrans.x && mouseTrans.x < TRTrans.x) {
-				if(mouseTrans.y > BLTrans.y && mouseTrans.y < TRTrans.y) {
+			if(mouseTrans.x > limbPosBL.x && mouseTrans.x < limbPosTR.x) {
+				if(mouseTrans.y > limbPosBL.y && mouseTrans.y < limbPosTR.y) {
 					m_selectedLimb = i;
 					return true;
 				}
@@ -343,7 +377,7 @@ in vec2 fragmentUV;\n\
 uniform sampler2D textureSampler;\n\
 out vec4 colour;\n\
 void main() {\n\
-colour = texture(textureSampler, fragmentUV.xy);\n\
+colour = texture(textureSampler, fragmentUV.xy) * fragmentColour;\n\
 }";
 
 	m_backgroundProgram.compileShadersFromSource(backgroundSrcVert.c_str(), backgroundSrcFrag.c_str());
@@ -359,18 +393,31 @@ colour = texture(textureSampler, fragmentUV.xy);\n\
 	m_textureProgram.linkShaders();
 }
 
+void MainScreen::exportToFile(std::string filepath) {
+	std::cout << "Export to file: " << filepath << std::endl;
+}
 
+void MainScreen::importFromFile(std::string filepath) {
+	std::cout << "Import from file: " << filepath << std::endl;
+}
 
 /// CEGUI Event Functions
-#include <iostream>
 bool MainScreen::EventExportButtonClicked(const CEGUI::EventArgs& e) {
 	std::cout << "Export" << std::endl;
+
+	std::string filepath = std::filesystem::current_path().generic_string() + "/" + std::string(m_nameBox->getText().c_str());
+
+	exportToFile(filepath);
 
 	return true;
 }
 
 bool MainScreen::EventImportButtonClicked(const CEGUI::EventArgs& e) {
 	std::cout << "Import" << std::endl;
+
+	std::string filepath = std::filesystem::current_path().generic_string() + "/" + std::string(m_nameBox->getText().c_str());
+
+	importFromFile(filepath);
 
 	return true;
 }
@@ -391,6 +438,7 @@ bool MainScreen::EventLoadSkinButtonClicked(const CEGUI::EventArgs& e) {
 		unsigned int frameHeight = m_skinY->getCurrentValue();
 		for(unsigned int y = 0; y < tex.height / frameHeight; y++) {
 			AnimationModule::AugAnimation anim(tex, y, frameWidth, frameHeight);
+			anim.setToLoop(true);
 
 			m_skins.push_back(anim);
 		}
@@ -404,6 +452,32 @@ bool MainScreen::EventLoadSkinButtonClicked(const CEGUI::EventArgs& e) {
 	return true;
 }
 
+AnimationModule::SkeletalAnimation MainScreen::getSkeletal() {
+	AnimationModule::AugSkeletalAnimation anim;
+
+	// Set up our 1 dimensional vectors
+	std::vector<float> angles;
+	angles.resize(m_keyframes.size() * m_limbs.size());
+	std::vector<glm::vec2> offsets;
+	offsets.resize(m_keyframes.size() * m_limbs.size());
+
+	// Convert 2d vectors (vector of keyframes * vectors of angles/offsets) to 1d
+	for(unsigned int i = 0; i < m_keyframes.size(); i++) {
+		for(unsigned int j = 0; j < m_limbs.size(); j++) {
+			angles[j + m_limbs.size() * i] = m_keyframes[i].angles[j];
+			offsets[j + m_limbs.size() * i] = m_keyframes[i].offsets[j];
+		}
+	}
+
+	// Set values
+	anim.setAngles(angles);
+	anim.setOffsets(offsets);
+	anim.setNumLimbs(m_limbs.size());
+
+	return anim;
+
+}
+
 bool MainScreen::EventNewLimbButtonClicked(const CEGUI::EventArgs& e) {
 	std::cout << "New Limb" << std::endl;
 
@@ -413,6 +487,11 @@ bool MainScreen::EventNewLimbButtonClicked(const CEGUI::EventArgs& e) {
 	m_limbs.push_back(limb);
 	m_limbsVisibility.push_back(true);
 
+	for(unsigned int i = 0; i < m_keyframes.size(); i++) {
+		m_keyframes[i].angles.push_back(0.0f);
+		m_keyframes[i].offsets.push_back(glm::vec2(0.0f));
+	}
+
 	return true;
 }
 
@@ -420,6 +499,7 @@ bool MainScreen::EventMakeAllVisibleButtonClicked(const CEGUI::EventArgs& e) {
 	for(unsigned int i = 0; i < m_limbsVisibility.size(); i++) {
 		m_limbsVisibility[i] = true;
 	}
+	return true;
 }
 
 bool MainScreen::EventRemoveLimbButtonClicked(const CEGUI::EventArgs& e) {
@@ -462,14 +542,18 @@ bool MainScreen::EventRotateOffsetLimbButtonClicked(const CEGUI::EventArgs& e) {
 bool MainScreen::EventKeyFrameClicked(const CEGUI::EventArgs& e) {
 	std::cout << "Key Frame Selected: ";
 
-	unsigned int index = m_keyframesList->getItemIndex(m_keyframesList->getFirstSelectedItem());
-	m_selectedFrame = index;
+	if(m_keyframesList->getFirstSelectedItem()) {
+		unsigned int index = m_keyframesList->getItemIndex(m_keyframesList->getFirstSelectedItem());
+		m_selectedFrame = index;
 
-	std::cout << index << std::endl;
+		std::cout << index << std::endl;
 
-	for(unsigned int i = 0; i < m_limbs.size(); i++) {
-		m_limbs[i].setAngle(m_keyframes[index].angles[i + index * m_limbs.size()]);
-		m_limbs[i].setOffset(m_keyframes[index].offsets[i + index * m_limbs.size()]);
+		for(unsigned int i = 0; i < m_limbs.size(); i++) {
+			m_limbs[i].setAngle(m_keyframes[index].angles[i]);
+			m_limbs[i].setOffset(m_keyframes[index].offsets[i]);
+			m_limbs[i].getAnimation().setFrame(index);
+			m_limbs[i].getSkeletalAnimation().setFrame(index);
+		}
 	}
 
 	return false;
@@ -488,7 +572,7 @@ bool MainScreen::EventPlayPauseButtonClicked(const CEGUI::EventArgs& e) {
 	}
 
 	for(unsigned int i = 0; i < m_limbs.size(); i++) {
-		//m_limbs[i].activateSkeletalAnimation(getSkeletal());
+		m_limbs[i].activateSkeletalAnimation(getSkeletal());
 	}
 
 	return true;
@@ -498,8 +582,14 @@ bool MainScreen::EventAddFrameButtonClicked(const CEGUI::EventArgs& e) {
 	std::cout << "Add Frame" << std::endl;
 
 	KeyFrame kf;
-	kf.angles.resize(m_limbs.size() + 1);
-	kf.offsets.resize(m_limbs.size() + 1);
+	kf.angles.resize(m_limbs.size());
+	kf.offsets.resize(m_limbs.size());
+
+	for(unsigned int i = 0; i < m_limbs.size(); i++) {
+		kf.angles[i] = m_limbs[i].getAngle();
+		kf.offsets[i] = m_limbs[i].getOffset();
+	}
+
 	m_keyframes.push_back(kf);
 
 	unsigned int ms = 1000 / TICK_RATE;

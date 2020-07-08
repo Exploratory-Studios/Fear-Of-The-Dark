@@ -111,7 +111,7 @@ void EntityNPC::draw(GLEngine::SpriteBatch& sb, float time, int layerDifference,
 
 		float depth = getDepth();
 		for(unsigned int i = 0; i < m_limbs.size(); i++) {
-			m_limbs[i].draw(sb, destRect, depth);
+			m_limbs[i].draw(sb, GLEngine::ColourRGBA8(255, 255, 255, 255), destRect, depth);
 		}
 
 		onDraw(sb, time, layerDifference, xOffset);

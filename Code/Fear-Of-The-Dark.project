@@ -279,16 +279,29 @@
         <SearchPaths/>
       </Completion>
     </Configuration>
-    <Configuration Name="Release - Windows" CompilerType="Cross GCC ( x86_64-linux-gnu ) (Needs fixin)" DebuggerType="GNU gdb debugger" Type="Executable" BuildCmpWithGlobalSettings="append" BuildLnkWithGlobalSettings="append" BuildResWithGlobalSettings="append">
+    <Configuration Name="Release - Windows" CompilerType="Cross GCC (mingw-w64)" DebuggerType="GNU gdb debugger" Type="Executable" BuildCmpWithGlobalSettings="append" BuildLnkWithGlobalSettings="append" BuildResWithGlobalSettings="append">
       <Compiler Options="-fexpensive-optimizations -flto -O3 -fPIC -m64 -DWINDOWS -std=c++1z -fexceptions -DLUA_APICHECK " C_Options="-fexpensive-optimizations -flto -O3 -fPIC -m64 -DWINDOWS -std=c++1z -fexceptions -DLUA_APICHECK " Assembler="" Required="yes" PreCompiledHeader="" PCHInCommandLine="no" PCHFlags="" PCHFlagsPolicy="0">
         <IncludePath Value="/usr/x86_64-w64-mingw32/include"/>
-        <IncludePath Value="Code"/>
         <IncludePath Value="Code/"/>
         <IncludePath Value="../../GLEngine"/>
       </Compiler>
-      <Linker Options="-flto -s -m64 -L/usr/x86_64-w64-mingw32/include/ -L/usr/x86_64-w64-mingw32/bin -Wl,-Bdynamic ../../GLEngine/bin/ReleaseWindows/libGLEngine.a -lCEGUIBase-0 -lCEGUIOpenGLRenderer-0 -lSDL2 -lSDL2_mixer -lSDL2_ttf -lopengl32 -lglu32 -lglew32 -Wl,-Bstatic -lboost_system -lboost_filesystem -lboost_thread -llua53 -Wl,-Bstatic /usr/lib/x86_64-linux-gnu/libboost_thread.a /usr/lib/x86_64-linux-gnu/libboost_filesystem.a /usr/lib/x86_64-linux-gnu/libboost_system.a -llua5.3 -Wl,-Bdynamic ../../GLEngine/bin/Release/libGLEngine.a -lCEGUIBase-0 -lCEGUIOpenGLRenderer-0 -lSDL2 -lSDL2_mixer -lSDL2_ttf -lGL -lGLU -lGLEW -lpthread " Required="yes">
+      <Linker Options="-flto -s -m64" Required="yes">
         <LibraryPath Value="/usr/x86_64-w64-mingw32/lib"/>
         <LibraryPath Value="../../GLEngine"/>
+        <Library Value="../../GLEngine/bin/ReleaseWindows/libGLEngine.a"/>
+        <Library Value="CEGUIBase-0"/>
+        <Library Value="CEGUIOpenGLRenderer-0"/>
+        <Library Value="SDL2"/>
+        <Library Value="SDL2_mixer"/>
+        <Library Value="SDL2_ttf"/>
+        <Library Value="opengl32"/>
+        <Library Value="glu32"/>
+        <Library Value="glew32"/>
+        <Library Value="boost_system"/>
+        <Library Value="boost_filesystem"/>
+        <Library Value="boost_thread"/>
+        <Library Value="lua53"/>
+        <Library Value="pthread"/>
       </Linker>
       <ResourceCompiler Options="" Required="no"/>
       <General OutputFile="bin/ReleaseWin/FOTD" IntermediateDirectory="./obj/ReleaseWin" Command="./FOTD" CommandArguments="" UseSeparateDebugArgs="no" DebugArguments="" WorkingDirectory="bin/ReleaseWin" PauseExecWhenProcTerminates="yes" IsGUIProgram="no" IsEnabled="yes"/>

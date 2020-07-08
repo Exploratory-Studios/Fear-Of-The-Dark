@@ -165,7 +165,7 @@
         <SearchPaths/>
       </Completion>
     </Configuration>
-    <Configuration Name="Release - Windows" CompilerType="Cross GCC ( x86_64-linux-gnu ) (Needs fixin)" DebuggerType="GNU gdb debugger" Type="Executable" BuildCmpWithGlobalSettings="append" BuildLnkWithGlobalSettings="append" BuildResWithGlobalSettings="append">
+    <Configuration Name="Release - Windows" CompilerType="Cross GCC (mingw-w64)" DebuggerType="GNU gdb debugger" Type="Executable" BuildCmpWithGlobalSettings="append" BuildLnkWithGlobalSettings="append" BuildResWithGlobalSettings="append">
       <Compiler Options="-O3;-g3 -g -fexceptions" C_Options="" Assembler="" Required="yes" PreCompiledHeader="" PCHInCommandLine="no" PCHFlags="" PCHFlagsPolicy="0">
         <IncludePath Value="../../../Code"/>
         <IncludePath Value="include"/>

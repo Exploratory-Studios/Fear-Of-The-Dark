@@ -90,9 +90,10 @@ namespace AnimationModule {
 
 		if(m_currentFrame < m_angles.size() - 1) {
 			unsigned int elementI = m_currentFrame * m_numLimbs + limb->getIndex();
+			unsigned int nextElementI = ((m_currentFrame + 1) % m_angles.size()) * m_numLimbs + limb->getIndex();
 
-			glm::vec2 diffPos = m_offsets[elementI + 1] - m_offsets[elementI];
-			float diffAngle = m_angles[elementI + 1] - m_angles[elementI];
+			glm::vec2 diffPos = m_offsets[nextElementI] - m_offsets[elementI];
+			float diffAngle = m_angles[nextElementI] - m_angles[elementI];
 
 			glm::vec2 integralPos = diffPos / glm::vec2(FRAME_RATE / TICK_RATE);
 			float integralAngle = diffAngle / (FRAME_RATE / TICK_RATE);

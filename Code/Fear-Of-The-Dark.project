@@ -280,15 +280,15 @@
       </Completion>
     </Configuration>
     <Configuration Name="Release - Windows" CompilerType="Cross GCC (mingw-w64)" DebuggerType="GNU gdb debugger" Type="Executable" BuildCmpWithGlobalSettings="append" BuildLnkWithGlobalSettings="append" BuildResWithGlobalSettings="append">
-      <Compiler Options="-fexpensive-optimizations -flto -O3 -fPIC -m64 -DWINDOWS -std=c++1z -fexceptions -DLUA_APICHECK " C_Options="-fexpensive-optimizations -flto -O3 -fPIC -m64 -DWINDOWS -std=c++1z -fexceptions -DLUA_APICHECK " Assembler="" Required="yes" PreCompiledHeader="" PCHInCommandLine="no" PCHFlags="" PCHFlagsPolicy="0">
+      <Compiler Options="-fexpensive-optimizations -flto -O3 -fPIC -m64 -DWINDOWS -std=c++1z -fexceptions -DLUA_APICHECK " C_Options="" Assembler="" Required="yes" PreCompiledHeader="" PCHInCommandLine="no" PCHFlags="" PCHFlagsPolicy="0">
         <IncludePath Value="/usr/x86_64-w64-mingw32/include"/>
         <IncludePath Value="Code/"/>
         <IncludePath Value="../../GLEngine"/>
       </Compiler>
       <Linker Options="-flto -s -m64" Required="yes">
         <LibraryPath Value="/usr/x86_64-w64-mingw32/lib"/>
-        <LibraryPath Value="../../GLEngine"/>
-        <Library Value="../../GLEngine/bin/ReleaseWindows/libGLEngine.a"/>
+        <LibraryPath Value="../../GLEngine/bin/ReleaseWindows"/>
+        <Library Value="GLEngine"/>
         <Library Value="CEGUIBase-0"/>
         <Library Value="CEGUIOpenGLRenderer-0"/>
         <Library Value="SDL2"/>

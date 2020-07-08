@@ -1,0 +1,7 @@
+XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+
+
+This installer should:
+1. make the necessary directories in %Appdata%/Roaming/Exploratory\ Studios/Fear Of The Dark/ (Assets, Saves)
+2. extract and copy all data from the package to the Assets folder
+3. make a desktop shortcut

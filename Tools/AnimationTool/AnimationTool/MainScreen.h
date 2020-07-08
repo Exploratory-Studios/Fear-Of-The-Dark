@@ -49,6 +49,7 @@ class MainScreen : public GLEngine::IGameScreen {
 
 		bool selectLimb(glm::vec2& mouseCoords);
 		AnimationModule::SkeletalAnimation getSkeletal(); // Constructs the skeletal animation from existing data.
+		void addFrame();
 
 		void exportToFile(std::string filepath);
 		void importFromFile(std::string filepath);

@@ -60,7 +60,7 @@ AS       := /usr/bin/as
 ## User defined environment variables
 ##
 CodeLiteDir:=/usr/share/codelite
-Objects0=$(IntermediateDirectory)/up_up_up_Code_ScriptQueue.cpp$(ObjectSuffix) $(IntermediateDirectory)/up_up_up_Code_Logging.cpp$(ObjectSuffix) $(IntermediateDirectory)/up_up_up_Code_MetaData.cpp$(ObjectSuffix) $(IntermediateDirectory)/AugAnimation.cpp$(ObjectSuffix) $(IntermediateDirectory)/App.cpp$(ObjectSuffix) $(IntermediateDirectory)/MainScreen.cpp$(ObjectSuffix) $(IntermediateDirectory)/main.cpp$(ObjectSuffix) $(IntermediateDirectory)/up_up_up_Code_Animation.cpp$(ObjectSuffix) $(IntermediateDirectory)/up_up_up_Code_XMLData.cpp$(ObjectSuffix) $(IntermediateDirectory)/up_up_up_Code_XMLDataTypes.cpp$(ObjectSuffix) \
+Objects0=$(IntermediateDirectory)/main.cpp$(ObjectSuffix) $(IntermediateDirectory)/App.cpp$(ObjectSuffix) $(IntermediateDirectory)/up_up_up_Code_ScriptQueue.cpp$(ObjectSuffix) $(IntermediateDirectory)/up_up_up_Code_Logging.cpp$(ObjectSuffix) $(IntermediateDirectory)/AugAnimation.cpp$(ObjectSuffix) $(IntermediateDirectory)/up_up_up_Code_MetaData.cpp$(ObjectSuffix) $(IntermediateDirectory)/MainScreen.cpp$(ObjectSuffix) $(IntermediateDirectory)/up_up_up_Code_XMLDataTypes.cpp$(ObjectSuffix) $(IntermediateDirectory)/up_up_up_Code_Animation.cpp$(ObjectSuffix) $(IntermediateDirectory)/up_up_up_Code_XMLData.cpp$(ObjectSuffix) \
 	
 
 
@@ -92,6 +92,18 @@ PreBuild:
 ##
 ## Objects
 ##
+$(IntermediateDirectory)/main.cpp$(ObjectSuffix): main.cpp
+	@$(CXX) $(CXXFLAGS) $(IncludePCH) $(IncludePath) -MG -MP -MT$(IntermediateDirectory)/main.cpp$(ObjectSuffix) -MF$(IntermediateDirectory)/main.cpp$(DependSuffix) -MM main.cpp
+	$(CXX) $(IncludePCH) $(SourceSwitch) "/home/davis-dev/Documents/Programming/C++/CodingGithub/Fear-Of-The-Dark/Tools/AnimationTool/AnimationTool/main.cpp" $(CXXFLAGS) $(ObjectSwitch)$(IntermediateDirectory)/main.cpp$(ObjectSuffix) $(IncludePath)
+$(IntermediateDirectory)/main.cpp$(PreprocessSuffix): main.cpp
+	$(CXX) $(CXXFLAGS) $(IncludePCH) $(IncludePath) $(PreprocessOnlySwitch) $(OutputSwitch) $(IntermediateDirectory)/main.cpp$(PreprocessSuffix) main.cpp
+
+$(IntermediateDirectory)/App.cpp$(ObjectSuffix): App.cpp
+	@$(CXX) $(CXXFLAGS) $(IncludePCH) $(IncludePath) -MG -MP -MT$(IntermediateDirectory)/App.cpp$(ObjectSuffix) -MF$(IntermediateDirectory)/App.cpp$(DependSuffix) -MM App.cpp
+	$(CXX) $(IncludePCH) $(SourceSwitch) "/home/davis-dev/Documents/Programming/C++/CodingGithub/Fear-Of-The-Dark/Tools/AnimationTool/AnimationTool/App.cpp" $(CXXFLAGS) $(ObjectSwitch)$(IntermediateDirectory)/App.cpp$(ObjectSuffix) $(IncludePath)
+$(IntermediateDirectory)/App.cpp$(PreprocessSuffix): App.cpp
+	$(CXX) $(CXXFLAGS) $(IncludePCH) $(IncludePath) $(PreprocessOnlySwitch) $(OutputSwitch) $(IntermediateDirectory)/App.cpp$(PreprocessSuffix) App.cpp
+
 $(IntermediateDirectory)/up_up_up_Code_ScriptQueue.cpp$(ObjectSuffix): ../../../Code/ScriptQueue.cpp
 	@$(CXX) $(CXXFLAGS) $(IncludePCH) $(IncludePath) -MG -MP -MT$(IntermediateDirectory)/up_up_up_Code_ScriptQueue.cpp$(ObjectSuffix) -MF$(IntermediateDirectory)/up_up_up_Code_ScriptQueue.cpp$(DependSuffix) -MM ../../../Code/ScriptQueue.cpp
 	$(CXX) $(IncludePCH) $(SourceSwitch) "/home/davis-dev/Documents/Programming/C++/CodingGithub/Fear-Of-The-Dark/Code/ScriptQueue.cpp" $(CXXFLAGS) $(ObjectSwitch)$(IntermediateDirectory)/up_up_up_Code_ScriptQueue.cpp$(ObjectSuffix) $(IncludePath)
@@ -104,23 +116,17 @@ $(IntermediateDirectory)/up_up_up_Code_Logging.cpp$(ObjectSuffix): ../../../Code
 $(IntermediateDirectory)/up_up_up_Code_Logging.cpp$(PreprocessSuffix): ../../../Code/Logging.cpp
 	$(CXX) $(CXXFLAGS) $(IncludePCH) $(IncludePath) $(PreprocessOnlySwitch) $(OutputSwitch) $(IntermediateDirectory)/up_up_up_Code_Logging.cpp$(PreprocessSuffix) ../../../Code/Logging.cpp
 
-$(IntermediateDirectory)/up_up_up_Code_MetaData.cpp$(ObjectSuffix): ../../../Code/MetaData.cpp
-	@$(CXX) $(CXXFLAGS) $(IncludePCH) $(IncludePath) -MG -MP -MT$(IntermediateDirectory)/up_up_up_Code_MetaData.cpp$(ObjectSuffix) -MF$(IntermediateDirectory)/up_up_up_Code_MetaData.cpp$(DependSuffix) -MM ../../../Code/MetaData.cpp
-	$(CXX) $(IncludePCH) $(SourceSwitch) "/home/davis-dev/Documents/Programming/C++/CodingGithub/Fear-Of-The-Dark/Code/MetaData.cpp" $(CXXFLAGS) $(ObjectSwitch)$(IntermediateDirectory)/up_up_up_Code_MetaData.cpp$(ObjectSuffix) $(IncludePath)
-$(IntermediateDirectory)/up_up_up_Code_MetaData.cpp$(PreprocessSuffix): ../../../Code/MetaData.cpp
-	$(CXX) $(CXXFLAGS) $(IncludePCH) $(IncludePath) $(PreprocessOnlySwitch) $(OutputSwitch) $(IntermediateDirectory)/up_up_up_Code_MetaData.cpp$(PreprocessSuffix) ../../../Code/MetaData.cpp
-
 $(IntermediateDirectory)/AugAnimation.cpp$(ObjectSuffix): AugAnimation.cpp
 	@$(CXX) $(CXXFLAGS) $(IncludePCH) $(IncludePath) -MG -MP -MT$(IntermediateDirectory)/AugAnimation.cpp$(ObjectSuffix) -MF$(IntermediateDirectory)/AugAnimation.cpp$(DependSuffix) -MM AugAnimation.cpp
 	$(CXX) $(IncludePCH) $(SourceSwitch) "/home/davis-dev/Documents/Programming/C++/CodingGithub/Fear-Of-The-Dark/Tools/AnimationTool/AnimationTool/AugAnimation.cpp" $(CXXFLAGS) $(ObjectSwitch)$(IntermediateDirectory)/AugAnimation.cpp$(ObjectSuffix) $(IncludePath)
 $(IntermediateDirectory)/AugAnimation.cpp$(PreprocessSuffix): AugAnimation.cpp
 	$(CXX) $(CXXFLAGS) $(IncludePCH) $(IncludePath) $(PreprocessOnlySwitch) $(OutputSwitch) $(IntermediateDirectory)/AugAnimation.cpp$(PreprocessSuffix) AugAnimation.cpp
 
-$(IntermediateDirectory)/App.cpp$(ObjectSuffix): App.cpp
-	@$(CXX) $(CXXFLAGS) $(IncludePCH) $(IncludePath) -MG -MP -MT$(IntermediateDirectory)/App.cpp$(ObjectSuffix) -MF$(IntermediateDirectory)/App.cpp$(DependSuffix) -MM App.cpp
-	$(CXX) $(IncludePCH) $(SourceSwitch) "/home/davis-dev/Documents/Programming/C++/CodingGithub/Fear-Of-The-Dark/Tools/AnimationTool/AnimationTool/App.cpp" $(CXXFLAGS) $(ObjectSwitch)$(IntermediateDirectory)/App.cpp$(ObjectSuffix) $(IncludePath)
-$(IntermediateDirectory)/App.cpp$(PreprocessSuffix): App.cpp
-	$(CXX) $(CXXFLAGS) $(IncludePCH) $(IncludePath) $(PreprocessOnlySwitch) $(OutputSwitch) $(IntermediateDirectory)/App.cpp$(PreprocessSuffix) App.cpp
+$(IntermediateDirectory)/up_up_up_Code_MetaData.cpp$(ObjectSuffix): ../../../Code/MetaData.cpp
+	@$(CXX) $(CXXFLAGS) $(IncludePCH) $(IncludePath) -MG -MP -MT$(IntermediateDirectory)/up_up_up_Code_MetaData.cpp$(ObjectSuffix) -MF$(IntermediateDirectory)/up_up_up_Code_MetaData.cpp$(DependSuffix) -MM ../../../Code/MetaData.cpp
+	$(CXX) $(IncludePCH) $(SourceSwitch) "/home/davis-dev/Documents/Programming/C++/CodingGithub/Fear-Of-The-Dark/Code/MetaData.cpp" $(CXXFLAGS) $(ObjectSwitch)$(IntermediateDirectory)/up_up_up_Code_MetaData.cpp$(ObjectSuffix) $(IncludePath)
+$(IntermediateDirectory)/up_up_up_Code_MetaData.cpp$(PreprocessSuffix): ../../../Code/MetaData.cpp
+	$(CXX) $(CXXFLAGS) $(IncludePCH) $(IncludePath) $(PreprocessOnlySwitch) $(OutputSwitch) $(IntermediateDirectory)/up_up_up_Code_MetaData.cpp$(PreprocessSuffix) ../../../Code/MetaData.cpp
 
 $(IntermediateDirectory)/MainScreen.cpp$(ObjectSuffix): MainScreen.cpp
 	@$(CXX) $(CXXFLAGS) $(IncludePCH) $(IncludePath) -MG -MP -MT$(IntermediateDirectory)/MainScreen.cpp$(ObjectSuffix) -MF$(IntermediateDirectory)/MainScreen.cpp$(DependSuffix) -MM MainScreen.cpp
@@ -128,11 +134,11 @@ $(IntermediateDirectory)/MainScreen.cpp$(ObjectSuffix): MainScreen.cpp
 $(IntermediateDirectory)/MainScreen.cpp$(PreprocessSuffix): MainScreen.cpp
 	$(CXX) $(CXXFLAGS) $(IncludePCH) $(IncludePath) $(PreprocessOnlySwitch) $(OutputSwitch) $(IntermediateDirectory)/MainScreen.cpp$(PreprocessSuffix) MainScreen.cpp
 
-$(IntermediateDirectory)/main.cpp$(ObjectSuffix): main.cpp
-	@$(CXX) $(CXXFLAGS) $(IncludePCH) $(IncludePath) -MG -MP -MT$(IntermediateDirectory)/main.cpp$(ObjectSuffix) -MF$(IntermediateDirectory)/main.cpp$(DependSuffix) -MM main.cpp
-	$(CXX) $(IncludePCH) $(SourceSwitch) "/home/davis-dev/Documents/Programming/C++/CodingGithub/Fear-Of-The-Dark/Tools/AnimationTool/AnimationTool/main.cpp" $(CXXFLAGS) $(ObjectSwitch)$(IntermediateDirectory)/main.cpp$(ObjectSuffix) $(IncludePath)
-$(IntermediateDirectory)/main.cpp$(PreprocessSuffix): main.cpp
-	$(CXX) $(CXXFLAGS) $(IncludePCH) $(IncludePath) $(PreprocessOnlySwitch) $(OutputSwitch) $(IntermediateDirectory)/main.cpp$(PreprocessSuffix) main.cpp
+$(IntermediateDirectory)/up_up_up_Code_XMLDataTypes.cpp$(ObjectSuffix): ../../../Code/XMLDataTypes.cpp
+	@$(CXX) $(CXXFLAGS) $(IncludePCH) $(IncludePath) -MG -MP -MT$(IntermediateDirectory)/up_up_up_Code_XMLDataTypes.cpp$(ObjectSuffix) -MF$(IntermediateDirectory)/up_up_up_Code_XMLDataTypes.cpp$(DependSuffix) -MM ../../../Code/XMLDataTypes.cpp
+	$(CXX) $(IncludePCH) $(SourceSwitch) "/home/davis-dev/Documents/Programming/C++/CodingGithub/Fear-Of-The-Dark/Code/XMLDataTypes.cpp" $(CXXFLAGS) $(ObjectSwitch)$(IntermediateDirectory)/up_up_up_Code_XMLDataTypes.cpp$(ObjectSuffix) $(IncludePath)
+$(IntermediateDirectory)/up_up_up_Code_XMLDataTypes.cpp$(PreprocessSuffix): ../../../Code/XMLDataTypes.cpp
+	$(CXX) $(CXXFLAGS) $(IncludePCH) $(IncludePath) $(PreprocessOnlySwitch) $(OutputSwitch) $(IntermediateDirectory)/up_up_up_Code_XMLDataTypes.cpp$(PreprocessSuffix) ../../../Code/XMLDataTypes.cpp
 
 $(IntermediateDirectory)/up_up_up_Code_Animation.cpp$(ObjectSuffix): ../../../Code/Animation.cpp
 	@$(CXX) $(CXXFLAGS) $(IncludePCH) $(IncludePath) -MG -MP -MT$(IntermediateDirectory)/up_up_up_Code_Animation.cpp$(ObjectSuffix) -MF$(IntermediateDirectory)/up_up_up_Code_Animation.cpp$(DependSuffix) -MM ../../../Code/Animation.cpp
@@ -145,12 +151,6 @@ $(IntermediateDirectory)/up_up_up_Code_XMLData.cpp$(ObjectSuffix): ../../../Code
 	$(CXX) $(IncludePCH) $(SourceSwitch) "/home/davis-dev/Documents/Programming/C++/CodingGithub/Fear-Of-The-Dark/Code/XMLData.cpp" $(CXXFLAGS) $(ObjectSwitch)$(IntermediateDirectory)/up_up_up_Code_XMLData.cpp$(ObjectSuffix) $(IncludePath)
 $(IntermediateDirectory)/up_up_up_Code_XMLData.cpp$(PreprocessSuffix): ../../../Code/XMLData.cpp
 	$(CXX) $(CXXFLAGS) $(IncludePCH) $(IncludePath) $(PreprocessOnlySwitch) $(OutputSwitch) $(IntermediateDirectory)/up_up_up_Code_XMLData.cpp$(PreprocessSuffix) ../../../Code/XMLData.cpp
-
-$(IntermediateDirectory)/up_up_up_Code_XMLDataTypes.cpp$(ObjectSuffix): ../../../Code/XMLDataTypes.cpp
-	@$(CXX) $(CXXFLAGS) $(IncludePCH) $(IncludePath) -MG -MP -MT$(IntermediateDirectory)/up_up_up_Code_XMLDataTypes.cpp$(ObjectSuffix) -MF$(IntermediateDirectory)/up_up_up_Code_XMLDataTypes.cpp$(DependSuffix) -MM ../../../Code/XMLDataTypes.cpp
-	$(CXX) $(IncludePCH) $(SourceSwitch) "/home/davis-dev/Documents/Programming/C++/CodingGithub/Fear-Of-The-Dark/Code/XMLDataTypes.cpp" $(CXXFLAGS) $(ObjectSwitch)$(IntermediateDirectory)/up_up_up_Code_XMLDataTypes.cpp$(ObjectSuffix) $(IncludePath)
-$(IntermediateDirectory)/up_up_up_Code_XMLDataTypes.cpp$(PreprocessSuffix): ../../../Code/XMLDataTypes.cpp
-	$(CXX) $(CXXFLAGS) $(IncludePCH) $(IncludePath) $(PreprocessOnlySwitch) $(OutputSwitch) $(IntermediateDirectory)/up_up_up_Code_XMLDataTypes.cpp$(PreprocessSuffix) ../../../Code/XMLDataTypes.cpp
 
 
 -include $(IntermediateDirectory)/*$(DependSuffix)

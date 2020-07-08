@@ -7,6 +7,8 @@
 
 #include <iostream>
 
+#include <rapidxml/rapidxml_print.hpp>
+
 MainScreen::MainScreen(GLEngine::Window* window) : m_window(window) {
 }
 
@@ -398,24 +400,95 @@ void MainScreen::exportToFile(std::string filepath) {
 
 	XMLModule::SkeletalAnimationData anim;
 
+	anim.angles.resize(m_limbs.size() * m_keyframes.size());
+	anim.offsets.resize(m_limbs.size() * m_keyframes.size());
+
 	for(unsigned int i = 0; i < m_keyframes.size(); i++) {
 		for(unsigned int j = 0; j < m_limbs.size(); j++) {
-			anim.angles[j] = m_keyframes[i].angles[j];
-			anim.offsets[j] = m_keyframes[i].offsets[j];
+			anim.angles[j + i * m_limbs.size()] = m_keyframes[i].angles[j];
+			anim.offsets[j + i * m_limbs.size()] = m_keyframes[i].offsets[j];
 		}
 	}
 
-	rapidxml::xml_document<> doc;
-	char* name, val;
-	name = doc.allocate_string("keyframe");
-	value = doc.allocate_string("");
-	doc.allocate_node(rapidxml::node_)
+	anim.numLimbs = m_limbs.size();
+	anim.repeats = true;
+	anim.id = 0;
+	anim.name = "Animation_Name";
 
-	anim.write()
+	rapidxml::xml_document<> doc;
+	char* name;
+	name = doc.allocate_string("skeletalAnimation");
+	//rapidxml::xml_node<>* docNode = doc.allocate_node(rapidxml::node_document); // document
+	//doc.append_node(docNode);
+
+	//for(unsigned int i = 0; i < m_keyframes.size(); i++) {
+	rapidxml::xml_node<>* node = doc.allocate_node(rapidxml::node_element, name);
+	doc.append_node(node);
+
+	anim.write(node);
+	//}
+
+	std::cout << "XML is as follows: \n\n";
+	rapidxml::print(std::cout, doc, 0);
+	std::cout << "\n\nEnd" << std::endl;
+
+	std::ofstream file(filepath);
+	file << doc;
 }
 
 void MainScreen::importFromFile(std::string filepath) {
 	std::cout << "Import from file: " << filepath << std::endl;
+
+	std::ifstream file(filepath);
+
+	std::string line;
+	std::string text;
+	while(getline(file, line)) {
+		text += line;
+	}
+
+	rapidxml::xml_document<> doc;
+	char* txt = const_cast<char*>(text.c_str());
+	doc.parse<0>(txt);
+
+	XMLModule::SkeletalAnimationData anim;
+	anim.init(doc.first_node());
+
+	m_limbs.clear();
+	m_limbsVisibility.clear();
+	m_keyframes.clear();
+
+	for(unsigned int i = 0; i < anim.numLimbs; i++) {
+		m_limbs.emplace_back(i);
+		m_limbsVisibility.emplace_back(true);
+	}
+	m_keyframes.resize(anim.angles.size() / anim.numLimbs);
+
+	for(unsigned int i = 0; i < m_keyframes.size(); i++) {
+		m_keyframes[i].angles.resize(m_limbs.size());
+		m_keyframes[i].offsets.resize(m_limbs.size());
+		for(unsigned int j = 0; j < m_limbs.size(); j++) {
+			m_keyframes[i].angles[j] = anim.angles[j + i * anim.numLimbs];
+			m_keyframes[i].offsets[j] = anim.offsets[j + i * anim.numLimbs];
+		}
+	}
+
+	m_keyframesList->resetList();
+
+	for(unsigned int i = 0; i < m_keyframes.size(); i++) {
+		unsigned int ms = 1000 / TICK_RATE;
+
+		CEGUI::ListboxTextItem* item = new CEGUI::ListboxTextItem("Keyframe (" + std::to_string(ms) + "ms)");
+
+		item->setTextColours(CEGUI::Colour(0.0f, 0.0f, 0.0f, 1.0f));
+		item->setSelectionBrushImage("WindowsLook/Background");
+		item->setSelectionColours(CEGUI::Colour(0.7f, 0.7f, 0.7f, 1.0f));
+		item->setAutoDeleted(true);
+
+		m_keyframesList->addItem(item);
+		m_keyframesList->ensureItemIsVisible(item);
+	}
+
 }
 
 /// CEGUI Event Functions
@@ -595,9 +668,7 @@ bool MainScreen::EventPlayPauseButtonClicked(const CEGUI::EventArgs& e) {
 	return true;
 }
 
-bool MainScreen::EventAddFrameButtonClicked(const CEGUI::EventArgs& e) {
-	std::cout << "Add Frame" << std::endl;
-
+void MainScreen::addFrame() {
 	KeyFrame kf;
 	kf.angles.resize(m_limbs.size());
 	kf.offsets.resize(m_limbs.size());
@@ -616,9 +687,16 @@ bool MainScreen::EventAddFrameButtonClicked(const CEGUI::EventArgs& e) {
 	item->setTextColours(CEGUI::Colour(0.0f, 0.0f, 0.0f, 1.0f));
 	item->setSelectionBrushImage("WindowsLook/Background");
 	item->setSelectionColours(CEGUI::Colour(0.7f, 0.7f, 0.7f, 1.0f));
+	item->setAutoDeleted(true);
 
 	m_keyframesList->addItem(item);
 	m_keyframesList->ensureItemIsVisible(item);
+}
+
+bool MainScreen::EventAddFrameButtonClicked(const CEGUI::EventArgs& e) {
+	std::cout << "Add Frame" << std::endl;
+
+	addFrame();
 
 	return true;
 }

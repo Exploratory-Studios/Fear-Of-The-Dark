@@ -1,0 +1,13 @@
+<skeletalAnimation id="0" name="Animation_Name">
+	<repeats>1</repeats>
+	<numLimbs>1</numLimbs>
+	<offsets>
+		<offset>0.000000,0.000000</offset>
+		<offset>64.000000,34.000000</offset>
+	</offsets>
+	<angles>
+		<angle>0.000000</angle>
+		<angle>-1.049857</angle>
+	</angles>
+</skeletalAnimation>
+

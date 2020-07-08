@@ -279,9 +279,9 @@
         <SearchPaths/>
       </Completion>
     </Configuration>
-    <Configuration Name="Release - Windows" CompilerType="GCC" DebuggerType="GNU gdb debugger" Type="Executable" BuildCmpWithGlobalSettings="append" BuildLnkWithGlobalSettings="append" BuildResWithGlobalSettings="append">
+    <Configuration Name="Release - Windows" CompilerType="Cross GCC ( x86_64-linux-gnu ) (Needs fixin)" DebuggerType="GNU gdb debugger" Type="Executable" BuildCmpWithGlobalSettings="append" BuildLnkWithGlobalSettings="append" BuildResWithGlobalSettings="append">
       <Compiler Options="-fexpensive-optimizations -flto -O3 -fPIC -m64 -DWINDOWS -std=c++1z -fexceptions -DLUA_APICHECK " C_Options="-fexpensive-optimizations -flto -O3 -fPIC -m64 -DWINDOWS -std=c++1z -fexceptions -DLUA_APICHECK " Assembler="" Required="yes" PreCompiledHeader="" PCHInCommandLine="no" PCHFlags="" PCHFlagsPolicy="0">
-        <IncludePath Value="/usr/x86_64-w64-mingw32/lib"/>
+        <IncludePath Value="/usr/x86_64-w64-mingw32/include"/>
         <IncludePath Value="Code"/>
         <IncludePath Value="Code/"/>
         <IncludePath Value="../../GLEngine"/>

@@ -6,26 +6,21 @@
   <BuildMatrix>
     <WorkspaceConfiguration Name="Linux Release" Selected="no">
       <Environment/>
+      <Project Name="AnimationTool" ConfigName="Release - Linux"/>
       <Project Name="Fear-Of-The-Dark" ConfigName="Release - Linux"/>
-      <Project Name="Fear-Of-The-Dark" ConfigName="Release - Windows"/>
-      <Project Name="" ConfigName="Debug"/>
       <Project Name="GLEngine" ConfigName="Release"/>
-      <Project Name="AnimationTool" ConfigName="Debug"/>
     </WorkspaceConfiguration>
-    <WorkspaceConfiguration Name="Linux Debug" Selected="yes">
+    <WorkspaceConfiguration Name="Linux Debug" Selected="no">
       <Environment/>
-      <Project Name="Fear-Of-The-Dark" ConfigName="Debug"/>
-      <Project Name="Fear-Of-The-Dark" ConfigName="DebugVB"/>
-      <Project Name="" ConfigName="Debug"/>
-      <Project Name="GLEngine" ConfigName="Release"/>
       <Project Name="AnimationTool" ConfigName="Debug"/>
+      <Project Name="Fear-Of-The-Dark" ConfigName="Debug"/>
+      <Project Name="GLEngine" ConfigName="Release"/>
     </WorkspaceConfiguration>
     <WorkspaceConfiguration Name="Windows Release" Selected="yes">
       <Environment/>
+      <Project Name="AnimationTool" ConfigName="Release - Windows"/>
       <Project Name="Fear-Of-The-Dark" ConfigName="Release - Windows"/>
-      <Project Name="" ConfigName="Debug"/>
       <Project Name="GLEngine" ConfigName="Release"/>
-      <Project Name="AnimationTool" ConfigName="Debug"/>
     </WorkspaceConfiguration>
   </BuildMatrix>
 </CodeLite_Workspace>

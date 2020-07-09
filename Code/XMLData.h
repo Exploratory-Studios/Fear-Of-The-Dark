@@ -33,7 +33,12 @@ namespace XMLModule {
 
 	class XMLData {
 		public:
-			static void init();
+			static void init(std::string filepath = ASSETS_FOLDER_PATH);
+			static void write(std::string filepath);
+			static void addData(GenericData* data);
+			
+			static GenericData* createDataFromNodename(std::string& nodename);
+			static std::map<unsigned int, GenericData*>* getMapFromNodename(std::string& nodename);
 
 			static TileData getTileData(unsigned int id);
 			static ParticleData getParticleData(unsigned int id);
@@ -61,6 +66,7 @@ namespace XMLModule {
 
 		private:
 			static void loadXMLData(std::string filepath); // Loads any valid map of GenericData children.
+			static void writeXMLData(std::string filepath, std::string nodeName); // Writes a map (chosen by nodeName) of GenericData children to a file at filepath
 
 			static std::map<unsigned int, GenericData*> m_tileData;
 			static std::map<unsigned int, GenericData*> m_particleData;

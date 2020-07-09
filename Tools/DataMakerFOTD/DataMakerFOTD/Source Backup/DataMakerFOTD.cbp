@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<CodeBlocks_project_file>
+	<FileVersion major="1" minor="6" />
+	<Project>
+		<Option title="DataMakerFOTD" />
+		<Option pch_mode="2" />
+		<Option compiler="gcc" />
+		<Build>
+			<Target title="Debug">
+				<Option platforms="Unix;" />
+				<Option output="bin/Debug/DataMakerFOTD" prefix_auto="1" extension_auto="1" />
+				<Option object_output="obj/Debug/" />
+				<Option type="1" />
+				<Option compiler="gcc" />
+				<Compiler>
+					<Add option="-std=c++1z" />
+					<Add option="-g3" />
+					<Add option="-g" />
+					<Add option="-DLINUX" />
+					<Add directory="../../../CodingGithub/GLEngine" />
+				</Compiler>
+				<Linker>
+					<Add option="-Wl,-Bdynamic" />
+					<Add option="../../../CodingGithub/GLEngine/bin/Release/libGLEngine.a" />
+					<Add option="-lCEGUIBase-0" />
+					<Add option="-lCEGUIOpenGLRenderer-0" />
+					<Add option="-lSDL2" />
+					<Add option="-lSDL2_mixer" />
+					<Add option="-lSDL2_ttf" />
+					<Add option="-lGL" />
+					<Add option="-lGLU" />
+					<Add option="-lGLEW" />
+					<Add option="-Wl,-Bstatic" />
+					<Add option="-lboost_thread" />
+					<Add option="-lboost_filesystem" />
+					<Add option="-lboost_system" />
+					<Add option="-Wl,-Bdynamic" />
+					<Add directory="../../../CodingGithub/GLEngine" />
+				</Linker>
+			</Target>
+			<Target title="Release (Windows64 OpenGL3)">
+				<Option output="bin/Release (Win64 OpenGL3)/DataMakerFOTD" prefix_auto="1" extension_auto="1" />
+				<Option object_output="obj/ReleaseWin64GL3" />
+				<Option type="1" />
+				<Option compiler="gnu_gcc_compiler_mingw" />
+				<Compiler>
+					<Add option="-O3" />
+					<Add option="-std=c++17" />
+					<Add option="-fPIC" />
+					<Add option="-g" />
+					<Add option="-Wl,--entry=mainCRTStartup" />
+					<Add option="-DWINDOWS" />
+					<Add directory="/usr/x86_64-w64-mingw32/lib" />
+					<Add directory="../../../CodingGithub/GLEngine" />
+				</Compiler>
+				<Linker>
+					<Add option="-L/usr/x86_64-w64-mingw32/include/" />
+					<Add option="../../../CodingGithub/GLEngine/bin/ReleaseWindows/libGLEngine.a" />
+					<Add option="-Wl,-Bdynamic" />
+					<Add option="-lCEGUIBase-0" />
+					<Add option="-lCEGUIOpenGLRenderer-0" />
+					<Add option="-lSDL2" />
+					<Add option="-lSDL2_mixer" />
+					<Add option="-lSDL2_ttf" />
+					<Add option="-lopengl32" />
+					<Add option="-lglu32" />
+					<Add option="-lglew32" />
+					<Add option="-Wl,-Bstatic" />
+					<Add option="-static" />
+					<Add option="-static-libstdc++" />
+					<Add option="-static-libgcc" />
+					<Add option="-lboost_system" />
+					<Add option="-lboost_filesystem" />
+					<Add option="-lboost_thread" />
+					<Add directory="/usr/x86_64-w64-mingw32/lib" />
+					<Add directory="../../../CodingGithub/GLEngine" />
+				</Linker>
+			</Target>
+			<Target title="Release (Windows64 OpenGL)">
+				<Option output="bin/Release (Win64 OpenGL)/DataMakerFOTD" prefix_auto="1" extension_auto="1" />
+				<Option object_output="obj/ReleaseWin64GL" />
+				<Option type="1" />
+				<Option compiler="gnu_gcc_compiler_mingw" />
+				<Compiler>
+					<Add option="-O3" />
+					<Add option="-std=c++17" />
+					<Add option="-fPIC" />
+					<Add option="-g" />
+					<Add option="-Wl,--entry=mainCRTStartup" />
+					<Add option="-DWINDOWS" />
+					<Add directory="/usr/x86_64-w64-mingw32/lib" />
+					<Add directory="../../../CodingGithub/GLEngine" />
+				</Compiler>
+				<Linker>
+					<Add option="-L/usr/x86_64-w64-mingw32/include/" />
+					<Add option="../../../CodingGithub/GLEngine/bin/ReleaseWindows/libGLEngine.a" />
+					<Add option="-Wl,-Bdynamic" />
+					<Add option="-lCEGUIBase-0" />
+					<Add option="-lCEGUIOpenGLRenderer-0" />
+					<Add option="-lSDL2" />
+					<Add option="-lSDL2_mixer" />
+					<Add option="-lSDL2_ttf" />
+					<Add option="-lopengl32" />
+					<Add option="-lglu32" />
+					<Add option="-lglew32" />
+					<Add option="-Wl,-Bstatic" />
+					<Add option="-static" />
+					<Add option="-static-libstdc++" />
+					<Add option="-static-libgcc" />
+					<Add option="-lboost_system" />
+					<Add option="-lboost_filesystem" />
+					<Add option="-lboost_thread" />
+					<Add directory="/usr/x86_64-w64-mingw32/lib" />
+					<Add directory="../../../CodingGithub/GLEngine" />
+				</Linker>
+			</Target>
+		</Build>
+		<Compiler>
+			<Add option="-fexceptions" />
+		</Compiler>
+		<Unit filename="App.cpp" />
+		<Unit filename="App.h" />
+		<Unit filename="MainScreen.cpp" />
+		<Unit filename="MainScreen.h" />
+		<Unit filename="Objects.cpp" />
+		<Unit filename="Objects.h" />
+		<Unit filename="XMLData.cpp" />
+		<Unit filename="XMLData.h" />
+		<Unit filename="XMLDataTypes.h" />
+		<Unit filename="main.cpp" />
+		<Extensions>
+			<code_completion />
+			<debugger />
+		</Extensions>
+	</Project>
+</CodeBlocks_project_file>

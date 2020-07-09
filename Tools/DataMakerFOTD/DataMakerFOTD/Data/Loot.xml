@@ -1,0 +1,31 @@
+<lootDrop id="0" name="DirtDrop">
+	<itemID>1</itemID>
+	<minDrop>1</minDrop>
+	<maxDrop>3</maxDrop>
+	<chance>0.800000</chance>
+</lootDrop>
+<lootDrop id="1" name="TorchDrop">
+	<itemID>2</itemID>
+	<minDrop>1</minDrop>
+	<maxDrop>1</maxDrop>
+	<chance>0.200000</chance>
+</lootDrop>
+
+<lootTable id="0" name="DirtOnlyTable">
+	<drops>
+		<dropID>0</dropID>
+	</drops>
+</lootTable>
+<lootTable id="1" name="TorchOnlyTable">
+	<drops>
+		<dropID>1</dropID>
+	</drops>
+</lootTable>
+<lootTable id="2" name="MixedTable">
+	<drops>
+		<dropID>0</dropID>
+		<dropID>1</dropID>
+	</drops>
+</lootTable>
+<lootTable id="3" name="EmptyTable"/>
+

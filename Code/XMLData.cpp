@@ -196,19 +196,6 @@ namespace XMLModule {
 		mdVar = md;
 	}
 
-	void XMLData::init() {
-		Logger::getInstance()->log("Beginning to load data...");
-
-		std::vector<std::string> files{ "Blocks", "Particles", "NPCs", "Projectiles", "ItemEntities", "Items", "Biomes", "Eras", "Loot", "Structures", "Quests", "Dialogue", "Animations", "Attacks" };
-
-		for(std::string& s : files) {
-			loadXMLData(ASSETS_FOLDER_PATH + "/Data/" + s + ".xml");
-			Logger::getInstance()->log("Loaded data (" + s + ")...");
-		}
-
-		Logger::getInstance()->log("Loaded all data successfully!");
-	}
-
 	std::map<unsigned int, GenericData*> XMLData::m_tileData;
 	std::map<unsigned int, GenericData*> XMLData::m_particleData;
 	std::map<unsigned int, GenericData*> XMLData::m_entityNPCData;
@@ -226,6 +213,148 @@ namespace XMLModule {
 	std::map<unsigned int, GenericData*> XMLData::m_dialogueResponseData;
 	std::map<unsigned int, GenericData*> XMLData::m_animationData;
 	std::map<unsigned int, GenericData*> XMLData::m_attackData;
+
+
+	void XMLData::init(std::string filepath) {
+		Logger::getInstance()->log("Beginning to load data...");
+
+		std::vector<std::string> files{ "Blocks", "Particles", "NPCs", "Projectiles", "ItemEntities", "Items", "Biomes", "Eras", "Loot", "Structures", "Quests", "Dialogue", "Animations", "Attacks" };
+
+		for(std::string& s : files) {
+			loadXMLData(filepath + "/Data/" + s + ".xml");
+			Logger::getInstance()->log("Loaded data (" + s + ")...");
+		}
+
+		Logger::getInstance()->log("Loaded all data successfully!");
+	}
+	
+	void XMLData::write(std::string filepath) {
+		Logger::getInstance()->log("Beginning to write data...");
+
+		// files and nodeNames should have equal size. That much is assumed to be true at runtime
+		std::vector<std::string> files   { "Blocks", "Particles", "NPCs", "Projectiles", "ItemEntities", "Items", "Biomes", "Eras", "Loot", "Loot", "Structures", "Quests", "Dialogue", "Dialogue", "Dialogue", "Animations", "Animations", "Attacks", "Attacks", "Attacks" };
+		std::vector<std::string> nodeNames{ "tile",  "particle",  "npc",  "projectile",  "itemEntity",   "item",  "biome",   "era", "lootDrop", "lootTable", "structure", "quest", "questObjective", "question", "response", "animation", "skeletalAnimation", "meleeAttack", "rangedAttack", "magicAttack" };
+		
+		for(unsigned int i = 0; i < files.size(); i++) {
+			writeXMLData(filepath + "/Data/" + files[i] + ".xml", nodeNames[i]);
+			Logger::getInstance()->log("Wrote data (" + files[i] + ": " + nodeNames[i] + ")...");
+		}
+
+		Logger::getInstance()->log("Wrote all data successfully!");
+	}
+	
+	void XMLData::addData(GenericData* data, std::string& nodename) {
+		// First, retrieve the correct node name and map.
+		std::map<unsigned int, GenericData*>* mapForWrite = getMapFromNodename(nodename);
+		
+		if(mapForWrite) {
+			// Actually add the data
+			
+			mapForWrite.insert(std::pair<unsigned int, GenericData*>(data->id, data));
+			
+		} else {
+			Logger::getInstance()->log("ERROR: Could not add data with node name: " + nodename + " to XML data singleton.", true);
+		}
+	}
+	
+	GenericData* XMLData::createDataFromNodename(std::string& name) {
+		GenericData* d = nullptr;
+		
+		if(name == "tile") {
+				d = new TileData();
+			} else if(name == "particle") {
+				d = new ParticleData();
+			} else if(name == "npc") {
+				d = new EntityNPCData();
+			} else if(name == "projectile") {
+				d = new EntityProjectileData();
+			} else if(name == "itemEntity") {
+				d = new EntityItemData();
+			} else if(name == "item") {
+				d = new ItemData();
+			} else if(name == "biome") {
+				d = new BiomeData();
+			} else if(name == "era") {
+				d = new EraData();
+			} else if(name == "lootDrop") {
+				d = new LootDropData();
+			} else if(name == "lootTable") {
+				d = new LootTableData();
+			} else if(name == "structure") {
+				d = new StructureData();
+			} else if(name == "quest") {
+				d = new QuestData();
+			} else if(name == "objective") {
+				d = new QuestObjectiveData();
+			} else if(name == "question") {
+				d = new DialogueQuestionData();
+			} else if(name == "response") {
+				d = new DialogueResponseData();
+			} else if(name == "animation") {
+				d = new AnimationData();
+			} else if(name == "skeletalAnimation") {
+				d = new SkeletalAnimationData();
+			} else if(name == "meleeAttack") {
+				d = new MeleeAttackData();
+			} else if(name == "rangedAttack") {
+				d = new RangedAttackData();
+			} else if(name == "magicAttack") {
+				d = new MagicAttackData();
+			} else {
+				Logger::getInstance()->log("ERROR: Type '" + name + "' not supported!", true);
+			}
+			
+			return d;
+	}
+	
+	std::map<unsigned int, GenericData*>* XMLData::getMapFromNodename(std::string& name) {
+		std::map<unsigned int, GenericData*>* mapForWrite = nullptr;
+		
+		if(name == "tile") {
+			mapForWrite = &m_tileData;
+		} else if(name == "particle") {
+			mapForWrite = &m_particleData;
+		} else if(name == "npc") {
+			mapForWrite = &m_entityNPCData;
+		} else if(name == "projectile") {
+			mapForWrite = &m_entityProjectileData;
+		} else if(name == "itemEntity") {
+			mapForWrite = &m_entityItemData;
+		} else if(name == "item") {
+			mapForWrite = &m_itemData;
+		} else if(name == "biome") {
+			mapForWrite = &m_biomeData;
+		} else if(name == "era") {
+			mapForWrite = &m_eraData;
+		} else if(name == "lootDrop") {
+			mapForWrite = &m_lootDropData;
+		} else if(name == "lootTable") {
+			mapForWrite = &m_lootTableData;
+		} else if(name == "structure") {
+			mapForWrite = &m_structureData;
+		} else if(name == "quest") {
+			mapForWrite = &m_questData;
+		} else if(name == "objective") {
+			mapForWrite = &m_questObjectiveData;
+		} else if(name == "question") {
+			mapForWrite = &m_dialogueQuestionData;
+		} else if(name == "response") {
+			mapForWrite = &m_dialogueResponseData;
+		} else if(name == "animation") {
+			mapForWrite = &m_animationData;
+		} else if(name == "skeletalAnimation") {
+			mapForWrite = &m_animationData;
+		} else if(name == "meleeAttack") {
+			mapForWrite = &m_attackData;
+		} else if(name == "rangedAttack") {
+			mapForWrite = &m_attackData;
+		} else if(name == "magicAttack") {
+			mapForWrite = &m_attackData;
+		} else {
+			Logger::getInstance()->log("ERROR: Type '" + name + "' not supported!", true);
+		}
+		return mapForWrite;
+	}
 
 	void XMLData::loadXMLData(std::string filepath) {
 		/** Loads all XML data into the map **/
@@ -252,80 +381,44 @@ namespace XMLModule {
 		std::map<unsigned int, GenericData*>* mapForWrite = nullptr;
 
 		for(rapidxml::xml_node<>* node = doc.first_node(); node; node = node->next_sibling()) {
-			GenericData* d = nullptr;
-
 			std::string name = node->name();
+			
+			mapForWrite = getMapFromNodename(name);
 
-			if(name == "tile") {
-				d = new TileData();
-				mapForWrite = &m_tileData;
-			} else if(name == "particle") {
-				d = new ParticleData();
-				mapForWrite = &m_particleData;
-			} else if(name == "npc") {
-				d = new EntityNPCData();
-				mapForWrite = &m_entityNPCData;
-			} else if(name == "projectile") {
-				d = new EntityProjectileData();
-				mapForWrite = &m_entityProjectileData;
-			} else if(name == "itemEntity") {
-				d = new EntityItemData();
-				mapForWrite = &m_entityItemData;
-			} else if(name == "item") {
-				d = new ItemData();
-				mapForWrite = &m_itemData;
-			} else if(name == "biome") {
-				d = new BiomeData();
-				mapForWrite = &m_biomeData;
-			} else if(name == "era") {
-				d = new EraData();
-				mapForWrite = &m_eraData;
-			} else if(name == "lootDrop") {
-				d = new LootDropData();
-				mapForWrite = &m_lootDropData;
-			} else if(name == "lootTable") {
-				d = new LootTableData();
-				mapForWrite = &m_lootTableData;
-			} else if(name == "structure") {
-				d = new StructureData();
-				mapForWrite = &m_structureData;
-			} else if(name == "quest") {
-				d = new QuestData();
-				mapForWrite = &m_questData;
-			} else if(name == "objective") {
-				d = new QuestObjectiveData();
-				mapForWrite = &m_questObjectiveData;
-			} else if(name == "question") {
-				d = new DialogueQuestionData();
-				mapForWrite = &m_dialogueQuestionData;
-			} else if(name == "response") {
-				d = new DialogueResponseData();
-				mapForWrite = &m_dialogueResponseData;
-			} else if(name == "animation") {
-				d = new AnimationData();
-				mapForWrite = &m_animationData;
-			} else if(name == "skeletalAnimation") {
-				d = new SkeletalAnimationData();
-				mapForWrite = &m_animationData;
-			} else if(name == "meleeAttack") {
-				d = new MeleeAttackData();
-				mapForWrite = &m_attackData;
-			} else if(name == "rangedAttack") {
-				d = new RangedAttackData();
-				mapForWrite = &m_attackData;
-			} else if(name == "magicAttack") {
-				d = new MagicAttackData();
-				mapForWrite = &m_attackData;
-			} else {
-				Logger::getInstance()->log("ERROR: Type '" + name + "' not supported!", true);
-			}
-
-
+			GenericData* d = createDataFromNodename(name);
 			d->init(node); // Actually do the read.
 
 			unsigned int id = d->id;
 
 			mapForWrite->insert(std::pair<unsigned int, GenericData*>(id, d));
+		}
+	}
+	
+	void XMLData::writeXMLData(std::string filepath, std::string nodeName) {
+		/** Writes all XML data into the file at filepath **/
+
+		// Open file at filepath
+		std::ofstream file;
+		file.open(filepath);
+
+		if(file.fail()) { // Handle exceptions
+			Logger::getInstance()->log("ERROR: XML file unable to be opened or created: " + filepath, true);
+			return;
+		}
+		
+		// Figure out which map we're writing from
+		std::map<unsigned int, GenericData*>* mapForWrite = getMapFromNodename(nodeName);
+		
+		// Create the document to write into the file.
+		rapidxml::xml_document<> doc;
+		char* name; // Allocate a string for the node type
+		name = doc.allocate_string(nodeName.c_str());
+
+		for(auto element : *mapForWrite) {
+			rapidxml::xml_node<>* node = doc.allocate_node(rapidxml::node_element, name);
+			doc.append_node(node);
+			
+			element.second->write(node);
 		}
 	}
 

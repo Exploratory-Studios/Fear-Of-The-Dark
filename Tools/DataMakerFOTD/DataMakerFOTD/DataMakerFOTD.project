@@ -1,0 +1,204 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CodeLite_Project Name="DataMakerFOTD" Version="11000">
+  <VirtualDirectory Name="FOTD">
+    <File Name="../../../Code/XMLDataTypes.tpp"/>
+    <File Name="../../../Code/XMLDataTypes.h"/>
+    <File Name="../../../Code/XMLDataTypes.cpp"/>
+    <File Name="../../../Code/XMLData.h"/>
+    <File Name="../../../Code/XMLData.cpp"/>
+    <File Name="../../../Code/ScriptQueue.h"/>
+    <File Name="../../../Code/ScriptQueue.cpp"/>
+    <File Name="../../../Code/MetaData.h"/>
+    <File Name="../../../Code/MetaData.cpp"/>
+    <File Name="../../../Code/Logging.h"/>
+    <File Name="../../../Code/Logging.cpp"/>
+  </VirtualDirectory>
+  <Plugins>
+    <Plugin Name="qmake">
+      <![CDATA[00030001N0005Debug0000000000000001N0026Release (Windows64 OpenGL)0000000000000001N0027Release (Windows64 OpenGL3)000000000000]]>
+    </Plugin>
+  </Plugins>
+  <VirtualDirectory Name="include">
+    <File Name="MainScreen.h"/>
+    <File Name="App.h"/>
+  </VirtualDirectory>
+  <VirtualDirectory Name="src">
+    <File Name="main.cpp"/>
+    <File Name="Objects.cpp"/>
+    <File Name="MainScreen.cpp"/>
+    <File Name="App.cpp"/>
+  </VirtualDirectory>
+  <Description/>
+  <Dependencies/>
+  <Settings Type="Executable">
+    <GlobalSettings>
+      <Compiler Options="" C_Options="" Assembler="">
+        <IncludePath Value="."/>
+      </Compiler>
+      <Linker Options="">
+        <LibraryPath Value="."/>
+      </Linker>
+      <ResourceCompiler Options=""/>
+    </GlobalSettings>
+    <Configuration Name="Debug" CompilerType="GCC" DebuggerType="GNU gdb debugger" Type="Executable" BuildCmpWithGlobalSettings="append" BuildLnkWithGlobalSettings="append" BuildResWithGlobalSettings="append">
+      <Compiler Options="-std=c++17 -g3 -g -DLINUX -fexceptions " C_Options="" Assembler="" Required="yes" PreCompiledHeader="" PCHInCommandLine="no" PCHFlags="" PCHFlagsPolicy="0">
+        <IncludePath Value="../../../Code"/>
+        <IncludePath Value="include"/>
+        <IncludePath Value="../../../../GLEngine"/>
+        <IncludePath Value="/usr/include/x86_64-linux-gnu/cegui-0.8.7"/>
+      </Compiler>
+      <Linker Options="" Required="yes">
+        <LibraryPath Value="../../../../GLEngine/bin/Release/"/>
+        <LibraryPath Value="/usr/lib/x86_64-linux-gnu/"/>
+        <LibraryPath Value="./"/>
+        <LibraryPath Value="../../../"/>
+        <Library Value="libGLEngine.a"/>
+        <Library Value="libboost_thread.a"/>
+        <Library Value="libboost_filesystem.a"/>
+        <Library Value="libboost_system.a"/>
+        <Library Value="lua5.3"/>
+        <Library Value="CEGUIBase-0"/>
+        <Library Value="CEGUIOpenGLRenderer-0"/>
+        <Library Value="SDL2"/>
+        <Library Value="SDL2_mixer"/>
+        <Library Value="SDL2_ttf"/>
+        <Library Value="GL"/>
+        <Library Value="GLU"/>
+        <Library Value="GLEW"/>
+        <Library Value="pthread"/>
+      </Linker>
+      <ResourceCompiler Options="" Required="no"/>
+      <General OutputFile="bin/Debug/DataMakerFOTD" IntermediateDirectory="./Debug" Command="$(OutputFile)" CommandArguments="" UseSeparateDebugArgs="no" DebugArguments="" WorkingDirectory="/home/davis-dev/Documents/Programming/C++/CodingGithub/Fear-Of-The-Dark/Tools/DataMakerFOTD/DataMakerFOTD" PauseExecWhenProcTerminates="yes" IsGUIProgram="no" IsEnabled="yes"/>
+      <BuildSystem Name="Default"/>
+      <Environment EnvVarSetName="&lt;Use Defaults&gt;" DbgSetName="&lt;Use Defaults&gt;">
+        <![CDATA[]]>
+      </Environment>
+      <Debugger IsRemote="no" RemoteHostName="" RemoteHostPort="" DebuggerPath="" IsExtended="no">
+        <DebuggerSearchPaths/>
+        <PostConnectCommands/>
+        <StartupCommands/>
+      </Debugger>
+      <PreBuild/>
+      <PostBuild/>
+      <CustomBuild Enabled="no">
+        <RebuildCommand/>
+        <CleanCommand/>
+        <BuildCommand/>
+        <PreprocessFileCommand/>
+        <SingleFileCommand/>
+        <MakefileGenerationCommand/>
+        <ThirdPartyToolName/>
+        <WorkingDirectory/>
+      </CustomBuild>
+      <AdditionalRules>
+        <CustomPostBuild/>
+        <CustomPreBuild/>
+      </AdditionalRules>
+      <Completion EnableCpp11="no" EnableCpp14="no">
+        <ClangCmpFlagsC/>
+        <ClangCmpFlags/>
+        <ClangPP/>
+        <SearchPaths/>
+      </Completion>
+    </Configuration>
+    <Configuration Name="Release (Windows64 OpenGL)" CompilerType="Cross MinGW (x64)" DebuggerType="GNU gdb debugger" Type="Executable" BuildCmpWithGlobalSettings="append" BuildLnkWithGlobalSettings="append" BuildResWithGlobalSettings="append">
+      <Compiler Options="-O3 -std=c++17 -fPIC -g -Wl,--entry=mainCRTStartup -DWINDOWS -fexceptions " C_Options="-O3 -std=c++17 -fPIC -g -Wl,--entry=mainCRTStartup -DWINDOWS -fexceptions " Assembler="" Required="yes" PreCompiledHeader="" PCHInCommandLine="no" PCHFlags="" PCHFlagsPolicy="0">
+        <IncludePath Value="/usr/x86_64-w64-mingw32/lib"/>
+        <IncludePath Value="../../../CodingGithub/GLEngine"/>
+      </Compiler>
+      <Linker Options="-L/usr/x86_64-w64-mingw32/include/ ../../../CodingGithub/GLEngine/bin/ReleaseWindows/libGLEngine.a -Wl,-Bdynamic -lCEGUIBase-0 -lCEGUIOpenGLRenderer-0 -lSDL2 -lSDL2_mixer -lSDL2_ttf -lopengl32 -lglu32 -lglew32 -Wl,-Bstatic -static -static-libstdc++ -static-libgcc -lboost_system -lboost_filesystem -lboost_thread " Required="yes">
+        <LibraryPath Value="/usr/x86_64-w64-mingw32/lib"/>
+        <LibraryPath Value="../../../CodingGithub/GLEngine"/>
+      </Linker>
+      <ResourceCompiler Options="" Required="no"/>
+      <General OutputFile="bin/Release (Win64 OpenGL)/DataMakerFOTD" IntermediateDirectory="./Debug" Command="./DataMakerFOTD" CommandArguments="" UseSeparateDebugArgs="no" DebugArguments="" WorkingDirectory="bin/Release (Win64 OpenGL)" PauseExecWhenProcTerminates="yes" IsGUIProgram="no" IsEnabled="yes"/>
+      <BuildSystem Name="Default"/>
+      <Environment EnvVarSetName="&lt;Use Defaults&gt;" DbgSetName="&lt;Use Defaults&gt;">
+        <![CDATA[]]>
+      </Environment>
+      <Debugger IsRemote="no" RemoteHostName="" RemoteHostPort="" DebuggerPath="" IsExtended="no">
+        <DebuggerSearchPaths/>
+        <PostConnectCommands/>
+        <StartupCommands/>
+      </Debugger>
+      <PreBuild/>
+      <PostBuild/>
+      <CustomBuild Enabled="no">
+        <RebuildCommand/>
+        <CleanCommand/>
+        <BuildCommand/>
+        <PreprocessFileCommand/>
+        <SingleFileCommand/>
+        <MakefileGenerationCommand/>
+        <ThirdPartyToolName/>
+        <WorkingDirectory/>
+      </CustomBuild>
+      <AdditionalRules>
+        <CustomPostBuild/>
+        <CustomPreBuild/>
+      </AdditionalRules>
+      <Completion EnableCpp11="no" EnableCpp14="no">
+        <ClangCmpFlagsC/>
+        <ClangCmpFlags/>
+        <ClangPP/>
+        <SearchPaths/>
+      </Completion>
+    </Configuration>
+    <Configuration Name="Release (Windows64 OpenGL3)" CompilerType="Cross MinGW (x64)" DebuggerType="GNU gdb debugger" Type="Executable" BuildCmpWithGlobalSettings="append" BuildLnkWithGlobalSettings="append" BuildResWithGlobalSettings="append">
+      <Compiler Options="-O3 -std=c++17 -fPIC -g -Wl,--entry=mainCRTStartup -DWINDOWS -fexceptions " C_Options="" Assembler="" Required="yes" PreCompiledHeader="" PCHInCommandLine="no" PCHFlags="" PCHFlagsPolicy="0">
+        <IncludePath Value="../../../Code"/>
+        <IncludePath Value="../../../../GLEngine"/>
+        <IncludePath Value="/usr/include/x86_64-linux-gnu/cegui-0.8.7"/>
+      </Compiler>
+      <Linker Options="-flto;-static-libstdc++;-static-libgcc" Required="yes">
+        <LibraryPath Value="/usr/x86_64-w64-mingw32/lib"/>
+        <LibraryPath Value="../../../CodingGithub/GLEngine"/>
+        <Library Value="GLEngine"/>
+        <Library Value="CEGUIBase-0"/>
+        <Library Value="CEGUIOpenGLRenderer-0"/>
+        <Library Value="SDL2"/>
+        <Library Value="SDL2_mixer"/>
+        <Library Value="SDL2_ttf"/>
+        <Library Value="opengl32"/>
+        <Library Value="glu32"/>
+        <Library Value="glew32"/>
+        <Library Value="boost_system"/>
+        <Library Value="boost_filesystem"/>
+        <Library Value="boost_thread"/>
+      </Linker>
+      <ResourceCompiler Options="" Required="no"/>
+      <General OutputFile="bin/ReleaseWin64GL3/DataMakerFOTD" IntermediateDirectory="./ReleaseWin64GL3" Command="./DataMakerFOTD" CommandArguments="" UseSeparateDebugArgs="no" DebugArguments="" WorkingDirectory="bin/ReleaseWin64GL3" PauseExecWhenProcTerminates="no" IsGUIProgram="no" IsEnabled="yes"/>
+      <BuildSystem Name="Default"/>
+      <Environment EnvVarSetName="&lt;Use Defaults&gt;" DbgSetName="&lt;Use Defaults&gt;">
+        <![CDATA[]]>
+      </Environment>
+      <Debugger IsRemote="no" RemoteHostName="" RemoteHostPort="" DebuggerPath="" IsExtended="no">
+        <DebuggerSearchPaths/>
+        <PostConnectCommands/>
+        <StartupCommands/>
+      </Debugger>
+      <PreBuild/>
+      <PostBuild/>
+      <CustomBuild Enabled="no">
+        <RebuildCommand/>
+        <CleanCommand/>
+        <BuildCommand/>
+        <PreprocessFileCommand/>
+        <SingleFileCommand/>
+        <MakefileGenerationCommand/>
+        <ThirdPartyToolName/>
+        <WorkingDirectory/>
+      </CustomBuild>
+      <AdditionalRules>
+        <CustomPostBuild/>
+        <CustomPreBuild/>
+      </AdditionalRules>
+      <Completion EnableCpp11="no" EnableCpp14="no">
+        <ClangCmpFlagsC/>
+        <ClangCmpFlags/>
+        <ClangPP/>
+        <SearchPaths/>
+      </Completion>
+    </Configuration>
+  </Settings>
+</CodeLite_Project>

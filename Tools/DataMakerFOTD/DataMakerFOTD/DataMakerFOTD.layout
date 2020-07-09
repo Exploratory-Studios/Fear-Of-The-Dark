@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<CodeBlocks_layout_file>
+	<FileVersion major="1" minor="0" />
+	<ActiveTarget name="Release (Windows64 OpenGL3)" />
+	<File name="XMLData.h" open="1" top="0" tabpos="2" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="1018" topLine="0" />
+		</Cursor>
+		<Folding>
+			<Collapse line="9" />
+			<Collapse line="35" />
+		</Folding>
+	</File>
+	<File name="XMLDataTypes.h" open="1" top="0" tabpos="5" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="4537" topLine="7" />
+		</Cursor>
+		<Folding>
+			<Collapse line="18" />
+			<Collapse line="39" />
+			<Collapse line="49" />
+			<Collapse line="77" />
+			<Collapse line="95" />
+			<Collapse line="109" />
+			<Collapse line="157" />
+			<Collapse line="164" />
+		</Folding>
+	</File>
+	<File name="MainScreen.h" open="1" top="0" tabpos="3" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="3507" topLine="0" />
+		</Cursor>
+		<Folding>
+			<Collapse line="12" />
+			<Collapse line="43" />
+		</Folding>
+	</File>
+	<File name="App.h" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="188" topLine="0" />
+		</Cursor>
+	</File>
+	<File name="XMLData.cpp" open="1" top="0" tabpos="6" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="26588" topLine="103" />
+		</Cursor>
+		<Folding>
+			<Collapse line="4" />
+			<Collapse line="31" />
+			<Collapse line="42" />
+			<Collapse line="53" />
+			<Collapse line="64" />
+			<Collapse line="76" />
+			<Collapse line="89" />
+			<Collapse line="102" />
+			<Collapse line="115" />
+			<Collapse line="128" />
+			<Collapse line="159" />
+			<Collapse line="183" />
+			<Collapse line="216" />
+			<Collapse line="227" />
+			<Collapse line="264" />
+			<Collapse line="296" />
+			<Collapse line="307" />
+			<Collapse line="320" />
+			<Collapse line="353" />
+			<Collapse line="364" />
+			<Collapse line="401" />
+			<Collapse line="433" />
+			<Collapse line="444" />
+			<Collapse line="470" />
+			<Collapse line="502" />
+			<Collapse line="513" />
+			<Collapse line="536" />
+			<Collapse line="568" />
+			<Collapse line="579" />
+			<Collapse line="594" />
+			<Collapse line="627" />
+			<Collapse line="638" />
+			<Collapse line="656" />
+			<Collapse line="662" />
+			<Collapse line="694" />
+			<Collapse line="705" />
+			<Collapse line="716" />
+			<Collapse line="748" />
+			<Collapse line="759" />
+			<Collapse line="773" />
+			<Collapse line="805" />
+			<Collapse line="816" />
+			<Collapse line="832" />
+			<Collapse line="864" />
+			<Collapse line="875" />
+		</Folding>
+	</File>
+	<File name="main.cpp" open="0" top="0" tabpos="4" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="18" topLine="0" />
+		</Cursor>
+		<Folding>
+			<Collapse line="5" />
+			<Collapse line="12" />
+		</Folding>
+	</File>
+	<File name="App.cpp" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="165" topLine="0" />
+		</Cursor>
+	</File>
+	<File name="Objects.h" open="1" top="0" tabpos="4" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="7780" topLine="0" />
+		</Cursor>
+		<Folding>
+			<Collapse line="2" />
+			<Collapse line="10" />
+			<Collapse line="45" />
+			<Collapse line="60" />
+			<Collapse line="75" />
+			<Collapse line="82" />
+			<Collapse line="104" />
+			<Collapse line="113" />
+			<Collapse line="131" />
+			<Collapse line="146" />
+			<Collapse line="153" />
+			<Collapse line="163" />
+			<Collapse line="170" />
+		</Folding>
+	</File>
+	<File name="MainScreen.cpp" open="1" top="1" tabpos="1" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="207" topLine="6" />
+		</Cursor>
+		<Folding>
+			<Collapse line="9" />
+			<Collapse line="18" />
+			<Collapse line="278" />
+			<Collapse line="448" />
+			<Collapse line="492" />
+			<Collapse line="533" />
+			<Collapse line="547" />
+			<Collapse line="561" />
+			<Collapse line="575" />
+			<Collapse line="589" />
+			<Collapse line="603" />
+			<Collapse line="617" />
+			<Collapse line="631" />
+			<Collapse line="645" />
+			<Collapse line="659" />
+			<Collapse line="673" />
+			<Collapse line="687" />
+			<Collapse line="730" />
+			<Collapse line="760" />
+			<Collapse line="795" />
+		</Folding>
+	</File>
+</CodeBlocks_layout_file>

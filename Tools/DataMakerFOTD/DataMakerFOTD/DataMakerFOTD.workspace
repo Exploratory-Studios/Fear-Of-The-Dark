@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CodeLite_Workspace Name="DataMakerFOTD" Database="" Version="10000">
+  <Project Name="DataMakerFOTD" Path="DataMakerFOTD.project" Active="Yes"/>
+  <BuildMatrix>
+    <WorkspaceConfiguration Name="Debug" Selected="yes">
+      <Environment/>
+      <Project Name="DataMakerFOTD" ConfigName="Debug"/>
+    </WorkspaceConfiguration>
+    <WorkspaceConfiguration Name="Release" Selected="yes">
+      <Environment/>
+      <Project Name="DataMakerFOTD" ConfigName="Release (Windows64 OpenGL3)"/>
+      <Project Name="DataMakerFOTD" ConfigName="Release (Windows64 OpenGL)"/>
+    </WorkspaceConfiguration>
+  </BuildMatrix>
+</CodeLite_Workspace>

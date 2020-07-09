@@ -1,24 +1,28 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <CodeLite_Workspace Name="Fear-Of-The-Dark" Database="" Version="10.0.0">
-  <Project Name="Fear-Of-The-Dark" Path="Fear-Of-The-Dark.project" Active="Yes"/>
+  <Project Name="Fear-Of-The-Dark" Path="Fear-Of-The-Dark.project" Active="No"/>
   <Project Name="GLEngine" Path="../../GLEngine/GLEngine.project" Active="No"/>
   <Project Name="AnimationTool" Path="../Tools/AnimationTool/AnimationTool/AnimationTool.project" Active="No"/>
+  <Project Name="DataMakerFOTD" Path="../Tools/DataMakerFOTD/DataMakerFOTD/DataMakerFOTD.project" Active="Yes"/>
   <BuildMatrix>
     <WorkspaceConfiguration Name="Linux Release" Selected="no">
       <Environment/>
       <Project Name="AnimationTool" ConfigName="Release - Linux"/>
       <Project Name="Fear-Of-The-Dark" ConfigName="Release - Linux"/>
       <Project Name="GLEngine" ConfigName="Release"/>
+      <Project Name="DataMakerFOTD" ConfigName="Debug"/>
     </WorkspaceConfiguration>
     <WorkspaceConfiguration Name="Linux Debug" Selected="yes">
       <Environment/>
       <Project Name="AnimationTool" ConfigName="Debug"/>
       <Project Name="Fear-Of-The-Dark" ConfigName="Debug"/>
       <Project Name="GLEngine" ConfigName="Release"/>
+      <Project Name="DataMakerFOTD" ConfigName="Debug"/>
     </WorkspaceConfiguration>
     <WorkspaceConfiguration Name="Windows Release" Selected="no">
       <Environment/>
       <Project Name="AnimationTool" ConfigName="Release - Windows"/>
+      <Project Name="DataMakerFOTD" ConfigName="Release (Windows64 OpenGL3)"/>
       <Project Name="Fear-Of-The-Dark" ConfigName="Release - Windows"/>
       <Project Name="GLEngine" ConfigName="Release (Windows)"/>
     </WorkspaceConfiguration>

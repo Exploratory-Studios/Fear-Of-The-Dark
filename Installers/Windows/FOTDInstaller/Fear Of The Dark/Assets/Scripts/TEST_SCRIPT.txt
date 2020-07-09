@@ -1,0 +1,12 @@
+local args = ...
+
+local speed = (math.random() - 0.5) / 4.0;
+
+local angle = math.rad(math.random()*360)
+local xVel = math.cos(angle) * speed
+local yVel = math.sin(angle) * speed
+
+local x = args["blockX"] + math.random()
+local y = args["blockY"] + math.random()
+
+createParticle(0, x, y, xVel, yVel, 0.3)

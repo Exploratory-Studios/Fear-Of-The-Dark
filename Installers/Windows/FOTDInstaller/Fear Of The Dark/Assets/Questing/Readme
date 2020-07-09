@@ -1,0 +1,42 @@
+Dialogue files are composed of any number of dialogue paths. Each NPC that you can speak to uses one of these paths, and each path can modify flags, require flags, or run scripts
+
+Each path has 2 repeating parts:
+1. The question
+2. Answer(s)
+
+The question is what the NPC is saying, the answer(s) is what the player has the choice to say, and it can modify flags when chosen, require certain flags to be in a certain state to be chosen, and/or run scripts when chosen
+
+Questions have two parts:
+1. The text shown
+2. The list of answers
+
+Answers have 4 parts:
+1. The text shown
+2. Flags required to see the answer
+3. Flags that will be changed after choosing
+4. Scripts that will be run after choosing
+
+Questions can be written as such: ("//" indicates a comment; it should not be written in the actual dialogue file)
+You can indent to make dialogue more readable
+
+#BEGIN 										// This tells the interpreter that this is a new question
+Hello, this is the NPC's text
+#BEGIN 										// This tells the interpreter that this is a new answer
+Hey, that's pretty cool, I'm the player
+1 0 										// This means that the flag with an ID of 1 must be false to see this answer
+3 0 										// This means that the flag with an ID of 3 must be false to see this answer
+#FLAGS_END 									// Anything before this (other than the text) will be interpreted as a flag requirement
+2 1											// This means that the flag with an ID of 2 will be true once the player chooses this answer
+#FLAGS_END									// Anything before this will be interpreted as flag modifications
+/Path/To/Script/From/Assets/Folder.txt		// This will run a script from the path (ASSETS_FILEPATH/WhateverYouWrite)
+#SCRIPTS_END								// Anything before this will be interpreted as paths to scripts to be run on choosing
+#END 										// Close the 1st answer
+#BEGIN 										// This tells the interpreter that this is a new answer
+I am in fact the player, and I'll only say this once at a time!
+2 1 										// This means that the flag with an ID of 2 must be true to see this answer
+#FLAGS_END 									// Anything before this (other than the text) will be interpreted as a flag requirement
+2 0											// This means that the flag with an ID of 2 will be false once the player chooses this answer
+#FLAGS_END									// Anything before this will be interpreted as flag modifications
+#SCRIPTS_END								// Anything before this will be interpreted as paths to scripts to be run on choosing (Since there is nothing before, no script is run)
+#END 										// Close the 1st answer
+#END 										// Close the question

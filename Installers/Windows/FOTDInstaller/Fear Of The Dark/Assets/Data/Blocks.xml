@@ -1,0 +1,74 @@
+<tile id="0" name="Air">
+	<emittedLight>0.000000</emittedLight>
+	<emittedHeat>0.000000</emittedHeat>
+	<sizeX>1.000000</sizeX>
+	<sizeY>1.000000</sizeY>
+	<isSolid>0</isSolid>
+	<isDrawn>0</isDrawn>
+	<isNatural>1</isNatural>
+	<isTransparent>1</isTransparent>
+</tile>
+<tile id="1" name="Dirt">
+	<texture>Blocks/Log.png</texture>
+	<bumpMap>LogMapR.png</bumpMap>
+	<emittedLight>0.000000</emittedLight>
+	<emittedHeat>0.000000</emittedHeat>
+	<sizeX>1.000000</sizeX>
+	<sizeY>1.000000</sizeY>
+	<isSolid>1</isSolid>
+	<isDrawn>1</isDrawn>
+	<isNatural>1</isNatural>
+	<isTransparent>0</isTransparent>
+</tile>
+<tile id="2" name="Grass">
+	<texture>Blocks/Grass.png</texture>
+	<bumpMap>Grass.png</bumpMap>
+	<emittedLight>0.000000</emittedLight>
+	<emittedHeat>0.000000</emittedHeat>
+	<sizeX>1.000000</sizeX>
+	<sizeY>1.000000</sizeY>
+	<isSolid>1</isSolid>
+	<isDrawn>1</isDrawn>
+	<isNatural>1</isNatural>
+	<isTransparent>0</isTransparent>
+	<interactScript_walkedOn><script>TEST_SCRIPT.txt</script><isFile>1</isFile></interactScript_walkedOn>
+</tile>
+<tile id="4" name="Stone">
+	<texture>Blocks/Stone.png</texture>
+	<bumpMap>Stone.png</bumpMap>
+	<emittedLight>0.000000</emittedLight>
+	<emittedHeat>0.000000</emittedHeat>
+	<sizeX>1.000000</sizeX>
+	<sizeY>1.000000</sizeY>
+	<isSolid>1</isSolid>
+	<isDrawn>1</isDrawn>
+	<isNatural>1</isNatural>
+	<isTransparent>0</isTransparent>
+</tile>
+<tile id="6" name="Torch">
+	<texture>Blocks/Torch.png</texture>
+	<bumpMap>Torch.png</bumpMap>
+	<emittedLight>1.500000</emittedLight>
+	<emittedHeat>0.000000</emittedHeat>
+	<sizeX>1.000000</sizeX>
+	<sizeY>1.000000</sizeY>
+	<isSolid>0</isSolid>
+	<isDrawn>1</isDrawn>
+	<isNatural>0</isNatural>
+	<isTransparent>1</isTransparent>
+	<tickScript><isFile>1</isFile><script>TorchTick.lua</script></tickScript>
+</tile>
+<tile id="11" name="Water">
+	<texture>Blocks/Water.png</texture>
+	<bumpMap>Water.png</bumpMap>
+	<emittedLight>0.000000</emittedLight>
+	<emittedHeat>0.000000</emittedHeat>
+	<sizeX>1.000000</sizeX>
+	<sizeY>1.000000</sizeY>
+	<isSolid>0</isSolid>
+	<isDrawn>1</isDrawn>
+	<isNatural>1</isNatural>
+	<isTransparent>1</isTransparent>
+	<updateScript><script>WaterUpdate.lua</script><isFile>1</isFile></updateScript>
+</tile>
+

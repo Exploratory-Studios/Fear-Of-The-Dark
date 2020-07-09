@@ -279,14 +279,13 @@
         <SearchPaths/>
       </Completion>
     </Configuration>
-    <Configuration Name="Release - Windows" CompilerType="Cross GCC (mingw-w64)" DebuggerType="GNU gdb debugger" Type="Executable" BuildCmpWithGlobalSettings="append" BuildLnkWithGlobalSettings="append" BuildResWithGlobalSettings="append">
-      <Compiler Options="-fexpensive-optimizations -flto -O3 -fPIC -m64 -DWINDOWS -std=c++1z -fexceptions -DLUA_APICHECK " C_Options="" Assembler="" Required="yes" PreCompiledHeader="" PCHInCommandLine="no" PCHFlags="" PCHFlagsPolicy="0">
-        <IncludePath Value="/usr/x86_64-w64-mingw32/include"/>
+    <Configuration Name="Release - Windows" CompilerType="Cross MinGW (x64)" DebuggerType="GNU gdb debugger" Type="Executable" BuildCmpWithGlobalSettings="append" BuildLnkWithGlobalSettings="append" BuildResWithGlobalSettings="append">
+      <Compiler Options="-DWINDOWS -fexceptions -DLUA_APICHECK" C_Options="" Assembler="" Required="yes" PreCompiledHeader="" PCHInCommandLine="no" PCHFlags="" PCHFlagsPolicy="0">
         <IncludePath Value="Code/"/>
         <IncludePath Value="../../GLEngine"/>
+        <IncludePath Value="/usr/share/mingw-w64/include/"/>
       </Compiler>
-      <Linker Options="-flto -s -m64" Required="yes">
-        <LibraryPath Value="/usr/x86_64-w64-mingw32/lib"/>
+      <Linker Options="-flto" Required="yes">
         <LibraryPath Value="../../GLEngine/bin/ReleaseWindows"/>
         <Library Value="GLEngine"/>
         <Library Value="CEGUIBase-0"/>
@@ -297,9 +296,9 @@
         <Library Value="opengl32"/>
         <Library Value="glu32"/>
         <Library Value="glew32"/>
-        <Library Value="boost_system"/>
-        <Library Value="boost_filesystem"/>
-        <Library Value="boost_thread"/>
+        <Library Value="libboost_filesystem.a"/>
+        <Library Value="libboost_thread.a"/>
+        <Library Value="libboost_system.a"/>
         <Library Value="lua53"/>
         <Library Value="pthread"/>
       </Linker>

@@ -1,8 +1,7 @@
 <tile id="0" name="Air">
 	<emittedLight>0.000000</emittedLight>
 	<emittedHeat>0.000000</emittedHeat>
-	<sizeX>1.000000</sizeX>
-	<sizeY>1.000000</sizeY>
+	<size>1.0,1.0</size>
 	<isSolid>0</isSolid>
 	<isDrawn>0</isDrawn>
 	<isNatural>1</isNatural>
@@ -13,8 +12,7 @@
 	<bumpMap>LogMapR.png</bumpMap>
 	<emittedLight>0.000000</emittedLight>
 	<emittedHeat>0.000000</emittedHeat>
-	<sizeX>1.000000</sizeX>
-	<sizeY>1.000000</sizeY>
+	<size>1.0,1.0</size>
 	<isSolid>1</isSolid>
 	<isDrawn>1</isDrawn>
 	<isNatural>1</isNatural>
@@ -25,8 +23,7 @@
 	<bumpMap>Grass.png</bumpMap>
 	<emittedLight>0.000000</emittedLight>
 	<emittedHeat>0.000000</emittedHeat>
-	<sizeX>1.000000</sizeX>
-	<sizeY>1.000000</sizeY>
+	<size>1.0,1.0</size>
 	<isSolid>1</isSolid>
 	<isDrawn>1</isDrawn>
 	<isNatural>1</isNatural>
@@ -38,8 +35,7 @@
 	<bumpMap>Stone.png</bumpMap>
 	<emittedLight>0.000000</emittedLight>
 	<emittedHeat>0.000000</emittedHeat>
-	<sizeX>1.000000</sizeX>
-	<sizeY>1.000000</sizeY>
+	<size>1.0,1.0</size>
 	<isSolid>1</isSolid>
 	<isDrawn>1</isDrawn>
 	<isNatural>1</isNatural>
@@ -50,8 +46,7 @@
 	<bumpMap>Torch.png</bumpMap>
 	<emittedLight>1.500000</emittedLight>
 	<emittedHeat>0.000000</emittedHeat>
-	<sizeX>1.000000</sizeX>
-	<sizeY>1.000000</sizeY>
+	<size>1.0,1.0</size>
 	<isSolid>0</isSolid>
 	<isDrawn>1</isDrawn>
 	<isNatural>0</isNatural>
@@ -63,8 +58,7 @@
 	<bumpMap>Water.png</bumpMap>
 	<emittedLight>0.000000</emittedLight>
 	<emittedHeat>0.000000</emittedHeat>
-	<sizeX>1.000000</sizeX>
-	<sizeY>1.000000</sizeY>
+	<size>1.0,1.0</size>
 	<isSolid>0</isSolid>
 	<isDrawn>1</isDrawn>
 	<isNatural>1</isNatural>

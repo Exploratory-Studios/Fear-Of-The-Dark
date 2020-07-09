@@ -79,7 +79,7 @@ objSPEC/main.cpp.o: main.cpp ../../../../GLEngine/IMainGame.h \
  /usr/include/x86_64-linux-gnu/cegui-0.8.7/CEGUI/InputEvent.h \
  /usr/include/x86_64-linux-gnu/cegui-0.8.7/CEGUI/System.h \
  /usr/include/x86_64-linux-gnu/cegui-0.8.7/CEGUI/Renderer.h \
- /usr/include/x86_64-linux-gnu/cegui-0.8.7/CEGUI/Win32StringTranscoder.h \
+ /usr/include/x86_64-linux-gnu/cegui-0.8.7/CEGUI/IconvStringTranscoder.h \
  /usr/include/x86_64-linux-gnu/cegui-0.8.7/CEGUI/StringTranscoder.h \
  /usr/include/x86_64-linux-gnu/cegui-0.8.7/CEGUI/Font_xmlHandler.h \
  /usr/include/x86_64-linux-gnu/cegui-0.8.7/CEGUI/GeometryBuffer.h \
@@ -453,7 +453,7 @@ MainScreen.h:
 
 /usr/include/x86_64-linux-gnu/cegui-0.8.7/CEGUI/Renderer.h:
 
-/usr/include/x86_64-linux-gnu/cegui-0.8.7/CEGUI/Win32StringTranscoder.h:
+/usr/include/x86_64-linux-gnu/cegui-0.8.7/CEGUI/IconvStringTranscoder.h:
 
 /usr/include/x86_64-linux-gnu/cegui-0.8.7/CEGUI/StringTranscoder.h:
 

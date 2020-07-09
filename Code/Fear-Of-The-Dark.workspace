@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <CodeLite_Workspace Name="Fear-Of-The-Dark" Database="" Version="10.0.0">
   <Project Name="Fear-Of-The-Dark" Path="Fear-Of-The-Dark.project" Active="No"/>
-  <Project Name="GLEngine" Path="../../GLEngine/GLEngine.project" Active="No"/>
-  <Project Name="AnimationTool" Path="../Tools/AnimationTool/AnimationTool/AnimationTool.project" Active="Yes"/>
+  <Project Name="GLEngine" Path="../../GLEngine/GLEngine.project" Active="Yes"/>
+  <Project Name="AnimationTool" Path="../Tools/AnimationTool/AnimationTool/AnimationTool.project" Active="No"/>
   <BuildMatrix>
     <WorkspaceConfiguration Name="Linux Release" Selected="no">
       <Environment/>
@@ -10,13 +10,13 @@
       <Project Name="Fear-Of-The-Dark" ConfigName="Release - Linux"/>
       <Project Name="GLEngine" ConfigName="Release"/>
     </WorkspaceConfiguration>
-    <WorkspaceConfiguration Name="Linux Debug" Selected="no">
+    <WorkspaceConfiguration Name="Linux Debug" Selected="yes">
       <Environment/>
       <Project Name="AnimationTool" ConfigName="Debug"/>
       <Project Name="Fear-Of-The-Dark" ConfigName="Debug"/>
       <Project Name="GLEngine" ConfigName="Release"/>
     </WorkspaceConfiguration>
-    <WorkspaceConfiguration Name="Windows Release" Selected="yes">
+    <WorkspaceConfiguration Name="Windows Release" Selected="no">
       <Environment/>
       <Project Name="AnimationTool" ConfigName="Release - Windows"/>
       <Project Name="Fear-Of-The-Dark" ConfigName="Release - Windows"/>

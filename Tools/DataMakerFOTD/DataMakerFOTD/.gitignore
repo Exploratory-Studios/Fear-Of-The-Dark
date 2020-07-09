@@ -2,3 +2,10 @@ bin
 obj
 .objs
 "Source Backup"
+GUI/**
+Debug/**
+ReleaseWin64GL3/**
+Deprecated/**
+bin/**
+Data/**
+obj/**

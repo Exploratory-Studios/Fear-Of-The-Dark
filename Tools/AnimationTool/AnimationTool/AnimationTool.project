@@ -223,5 +223,63 @@
         <SearchPaths/>
       </Completion>
     </Configuration>
+    <Configuration Name="Release - Windows32" CompilerType="Cross MinGW (x64)" DebuggerType="GNU gdb debugger" Type="Executable" BuildCmpWithGlobalSettings="append" BuildLnkWithGlobalSettings="append" BuildResWithGlobalSettings="append">
+      <Compiler Options="-DWINDOWS -fexceptions -DLUA_APICHECK" C_Options="" Assembler="" Required="yes" PreCompiledHeader="" PCHInCommandLine="no" PCHFlags="" PCHFlagsPolicy="0">
+        <IncludePath Value="../../../Code"/>
+        <IncludePath Value="include"/>
+        <IncludePath Value="../../../../GLEngine"/>
+        <IncludePath Value="/usr/include/x86_64-linux-gnu/cegui-0.8.7"/>
+      </Compiler>
+      <Linker Options="-flto -static-libgcc -static-libstdc++" Required="yes">
+        <LibraryPath Value="../../../../GLEngine/bin/ReleaseWindows/"/>
+        <Library Value="GLEngine"/>
+        <Library Value="CEGUIBase-0"/>
+        <Library Value="CEGUIOpenGLRenderer-0"/>
+        <Library Value="SDL2"/>
+        <Library Value="SDL2_mixer"/>
+        <Library Value="SDL2_ttf"/>
+        <Library Value="opengl32"/>
+        <Library Value="glu32"/>
+        <Library Value="glew32"/>
+        <Library Value="libboost_filesystem.a"/>
+        <Library Value="libboost_thread.a"/>
+        <Library Value="libboost_system.a"/>
+        <Library Value="lua53"/>
+        <Library Value="pthread"/>
+      </Linker>
+      <ResourceCompiler Options="" Required="no"/>
+      <General OutputFile="ReleaseWin/Tesst" IntermediateDirectory="objSPEC" Command="$(OutputFile)" CommandArguments="" UseSeparateDebugArgs="no" DebugArguments="" WorkingDirectory="/home/davis-dev/Documents/Programming/C++/CodingGithub/Fear-Of-The-Dark/Tools/AnimationTool/AnimationTool" PauseExecWhenProcTerminates="yes" IsGUIProgram="no" IsEnabled="yes"/>
+      <BuildSystem Name="Default"/>
+      <Environment EnvVarSetName="&lt;Use Defaults&gt;" DbgSetName="&lt;Use Defaults&gt;">
+        <![CDATA[]]>
+      </Environment>
+      <Debugger IsRemote="no" RemoteHostName="" RemoteHostPort="" DebuggerPath="" IsExtended="no">
+        <DebuggerSearchPaths/>
+        <PostConnectCommands/>
+        <StartupCommands/>
+      </Debugger>
+      <PreBuild/>
+      <PostBuild/>
+      <CustomBuild Enabled="no">
+        <RebuildCommand/>
+        <CleanCommand/>
+        <BuildCommand/>
+        <PreprocessFileCommand/>
+        <SingleFileCommand/>
+        <MakefileGenerationCommand/>
+        <ThirdPartyToolName/>
+        <WorkingDirectory/>
+      </CustomBuild>
+      <AdditionalRules>
+        <CustomPostBuild/>
+        <CustomPreBuild/>
+      </AdditionalRules>
+      <Completion EnableCpp11="no" EnableCpp14="no">
+        <ClangCmpFlagsC/>
+        <ClangCmpFlags/>
+        <ClangPP/>
+        <SearchPaths/>
+      </Completion>
+    </Configuration>
   </Settings>
 </CodeLite_Project>

@@ -1,5 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <CodeLite_Project Name="DataMakerFOTD" Version="11000">
+  <Plugins>
+    <Plugin Name="qmake">
+      <![CDATA[00030001N0005Debug0000000000000001N0026Release (Windows64 OpenGL)0000000000000001N0027Release (Windows64 OpenGL3)000000000000]]>
+    </Plugin>
+  </Plugins>
   <VirtualDirectory Name="FOTD">
     <File Name="../../../Code/XMLDataTypes.tpp"/>
     <File Name="../../../Code/XMLDataTypes.h"/>
@@ -13,11 +18,6 @@
     <File Name="../../../Code/Logging.h"/>
     <File Name="../../../Code/Logging.cpp"/>
   </VirtualDirectory>
-  <Plugins>
-    <Plugin Name="qmake">
-      <![CDATA[00030001N0005Debug0000000000000001N0026Release (Windows64 OpenGL)0000000000000001N0027Release (Windows64 OpenGL3)000000000000]]>
-    </Plugin>
-  </Plugins>
   <VirtualDirectory Name="include">
     <File Name="MainScreen.h"/>
     <File Name="App.h"/>
@@ -69,6 +69,62 @@
       </Linker>
       <ResourceCompiler Options="" Required="no"/>
       <General OutputFile="bin/Debug/DataMakerFOTD" IntermediateDirectory="./Debug" Command="$(OutputFile)" CommandArguments="" UseSeparateDebugArgs="no" DebugArguments="" WorkingDirectory="/home/davis-dev/Documents/Programming/C++/CodingGithub/Fear-Of-The-Dark/Tools/DataMakerFOTD/DataMakerFOTD" PauseExecWhenProcTerminates="yes" IsGUIProgram="no" IsEnabled="yes"/>
+      <BuildSystem Name="Default"/>
+      <Environment EnvVarSetName="&lt;Use Defaults&gt;" DbgSetName="&lt;Use Defaults&gt;">
+        <![CDATA[]]>
+      </Environment>
+      <Debugger IsRemote="no" RemoteHostName="" RemoteHostPort="" DebuggerPath="" IsExtended="no">
+        <DebuggerSearchPaths/>
+        <PostConnectCommands/>
+        <StartupCommands/>
+      </Debugger>
+      <PreBuild/>
+      <PostBuild/>
+      <CustomBuild Enabled="no">
+        <RebuildCommand/>
+        <CleanCommand/>
+        <BuildCommand/>
+        <PreprocessFileCommand/>
+        <SingleFileCommand/>
+        <MakefileGenerationCommand/>
+        <ThirdPartyToolName/>
+        <WorkingDirectory/>
+      </CustomBuild>
+      <AdditionalRules>
+        <CustomPostBuild/>
+        <CustomPreBuild/>
+      </AdditionalRules>
+      <Completion EnableCpp11="no" EnableCpp14="no">
+        <ClangCmpFlagsC/>
+        <ClangCmpFlags/>
+        <ClangPP/>
+        <SearchPaths/>
+      </Completion>
+    </Configuration>
+    <Configuration Name="Release (Windows 32)" CompilerType="Cross MinGW (x64)" DebuggerType="GNU gdb debugger" Type="Executable" BuildCmpWithGlobalSettings="append" BuildLnkWithGlobalSettings="append" BuildResWithGlobalSettings="append">
+      <Compiler Options="-O3 -std=c++17 -fPIC -g -Wl,--entry=mainCRTStartup -DWINDOWS -fexceptions " C_Options="" Assembler="" Required="yes" PreCompiledHeader="" PCHInCommandLine="no" PCHFlags="" PCHFlagsPolicy="0">
+        <IncludePath Value="../../../Code"/>
+        <IncludePath Value="../../../../GLEngine"/>
+        <IncludePath Value="/usr/include/x86_64-linux-gnu/cegui-0.8.7"/>
+      </Compiler>
+      <Linker Options="-flto;-static-libstdc++;-static-libgcc" Required="yes">
+        <LibraryPath Value="/usr/x86_64-w64-mingw32/lib"/>
+        <LibraryPath Value="../../../CodingGithub/GLEngine"/>
+        <Library Value="GLEngine"/>
+        <Library Value="CEGUIBase-0"/>
+        <Library Value="CEGUIOpenGLRenderer-0"/>
+        <Library Value="SDL2"/>
+        <Library Value="SDL2_mixer"/>
+        <Library Value="SDL2_ttf"/>
+        <Library Value="opengl32"/>
+        <Library Value="glu32"/>
+        <Library Value="glew32"/>
+        <Library Value="boost_system"/>
+        <Library Value="boost_filesystem"/>
+        <Library Value="boost_thread"/>
+      </Linker>
+      <ResourceCompiler Options="" Required="no"/>
+      <General OutputFile="bin/ReleaseWin64GL3/DataMakerFOTD" IntermediateDirectory="./ReleaseWin64GL3" Command="./DataMakerFOTD" CommandArguments="" UseSeparateDebugArgs="no" DebugArguments="" WorkingDirectory="bin/ReleaseWin64GL3" PauseExecWhenProcTerminates="no" IsGUIProgram="no" IsEnabled="yes"/>
       <BuildSystem Name="Default"/>
       <Environment EnvVarSetName="&lt;Use Defaults&gt;" DbgSetName="&lt;Use Defaults&gt;">
         <![CDATA[]]>

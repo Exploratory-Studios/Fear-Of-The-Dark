@@ -245,7 +245,9 @@ namespace XMLModule {
 					new Attribute<float>("maxHealth", AttributeType::FLOAT, &maxHealth),
 					new Attribute<unsigned int>("faction", AttributeType::STRING_FACTION, &faction),
 					new Attribute<bool>("isDamagedByFalls", AttributeType::BOOL, &isDamagedByFalls),
-					new Attribute<bool>("isInvincible", AttributeType::BOOL, &isInvincible)
+					new Attribute<bool>("isInvincible", AttributeType::BOOL, &isInvincible),
+					new Attribute<unsigned int>("idleAnimationID", AttributeType::UNSIGNED_INT, &idleAnimationID),
+					new Attribute<std::vector<unsigned int>>("skinAnimationIDs/skinAnimationID", AttributeType::VECTOR_UNSIGNED_INT, &skinAnimationIDs)
 				};
 
 				addAttributes(attrs);
@@ -256,6 +258,8 @@ namespace XMLModule {
 			float speed, jumpHeight, maxHealth;
 			unsigned int faction;
 			bool isDamagedByFalls, isInvincible;
+			unsigned int idleAnimationID;
+			std::vector<unsigned int> skinAnimationIDs;
 	};
 
 	class EntityProjectileData : public EntityData {

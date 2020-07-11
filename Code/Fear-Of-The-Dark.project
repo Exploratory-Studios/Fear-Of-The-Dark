@@ -5,14 +5,7 @@
       <![CDATA[00040001N0005Debug0000000000000001N0007DebugVB0000000000000001N0015Release - Linux0000000000000001N0017Release - Windows000000000000]]>
     </Plugin>
   </Plugins>
-  <VirtualDirectory Name="include">
-    <File Name="MetaData.h"/>
-    <File Name="Animation.h"/>
-    <File Name="EntityManager.h"/>
-    <File Name="Factory.h"/>
-    <File Name="Attack.h"/>
-    <File Name="DialogueManager.h"/>
-    <File Name="Options.h"/>
+  <VirtualDirectory Name="src">
     <File Name="XMLDataTypes.h"/>
     <File Name="XMLData.h"/>
     <File Name="WorldIOManager.h"/>
@@ -20,9 +13,9 @@
     <File Name="WaitScreen.h"/>
     <File Name="Tile.h"/>
     <File Name="StartupScreen.h"/>
+    <File Name="ScriptQueue.h"/>
     <File Name="ScriptingHelperFunctions.h"/>
     <File Name="ScripterMain.h"/>
-    <File Name="ScriptQueue.h"/>
     <File Name="ScreenIndices.h"/>
     <File Name="SaveDataTypes.h"/>
     <File Name="QuestTypes.h"/>
@@ -31,6 +24,8 @@
     <File Name="PerlinNoise/ppm.h"/>
     <File Name="PerlinNoise/PerlinNoise.h"/>
     <File Name="OptionsMenuScreen.h"/>
+    <File Name="Options.h"/>
+    <File Name="MetaData.h"/>
     <File Name="MainMenuScreen.h"/>
     <File Name="Main.h"/>
     <File Name="LuaScript.h"/>
@@ -40,21 +35,24 @@
     <File Name="Item.h"/>
     <File Name="Inventory.h"/>
     <File Name="GameplayScreen.h"/>
+    <File Name="Factory.h"/>
     <File Name="ExtraFunctions.h"/>
     <File Name="EventQueue.h"/>
     <File Name="EntityProjectile.h"/>
     <File Name="EntityPlayer.h"/>
     <File Name="EntityNPC.h"/>
+    <File Name="EntityManager.h"/>
     <File Name="EntityItem.h"/>
-    <File Name="Entity.h"/>
     <File Name="Entities/EntityFunctions.h"/>
+    <File Name="Entity.h"/>
+    <File Name="DialogueManager.h"/>
     <File Name="Console.h"/>
     <File Name="Categories.h"/>
     <File Name="BuffData.h"/>
     <File Name="AudioManager.h"/>
+    <File Name="Attack.h"/>
     <File Name="App.h"/>
-  </VirtualDirectory>
-  <VirtualDirectory Name="src">
+    <File Name="Animation.h"/>
     <File Name="MetaData.cpp"/>
     <File Name="Animation.cpp"/>
     <File Name="Factory.cpp"/>

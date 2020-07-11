@@ -26,14 +26,14 @@ namespace AnimationModule {
 		float height = tex.height;
 		float y = d.y;
 		m_frameWidth = d.width;
-		float frameHeight = d.height;
+		m_frameHeight = d.height;
 
-		float framesVert = height / frameHeight;
+		float framesVert = height / m_frameHeight;
 
 		m_uv.x = 0.0f;
-		m_uv.y = (((framesVert - 1 - y) * frameHeight) / height);
+		m_uv.y = (((framesVert - 1 - y) * m_frameHeight) / height);
 		m_uv.z = (float)(m_frameWidth) / (float)(m_width);
-		m_uv.w = (float)(frameHeight) / (float)(height);
+		m_uv.w = (float)(m_frameHeight) / (float)(height);
 		//m_uv.y = (float)(y * frameHeight) / (float)(height);
 		//m_uv.z = (float)(m_frameWidth) / (float)(m_width);
 		//m_uv.z = (float)(frameHeight) / (float)(height);
@@ -92,31 +92,37 @@ namespace AnimationModule {
 			unsigned int elementI = m_currentFrame * m_numLimbs + limb->getIndex();
 			unsigned int nextElementI = ((m_currentFrame + 1) % m_angles.size()) * m_numLimbs + limb->getIndex();
 
-			glm::vec2 diffPos = m_offsets[nextElementI] - m_offsets[elementI];
-			float diffAngle = m_angles[nextElementI] - m_angles[elementI];
+			if(m_lastFrame == m_currentFrame) { // Continue interpolation
+				glm::vec2 diffPos = m_offsets[nextElementI] - m_offsets[elementI];
+				float diffAngle = m_angles[nextElementI] - m_angles[elementI];
 
-			glm::vec2 integralPos = diffPos / glm::vec2(FRAME_RATE / TICK_RATE);
-			float integralAngle = diffAngle / (FRAME_RATE / TICK_RATE);
+				glm::vec2 integralPos = diffPos / glm::vec2(FRAME_RATE / TICK_RATE);
+				float integralAngle = diffAngle / (FRAME_RATE / TICK_RATE);
 
-			glm::vec2 newOffset = limb->getOffset() + integralPos;
-			float newAngle = limb->getAngle() + integralAngle;
+				glm::vec2 newOffset = limb->getOffset() + integralPos;
+				float newAngle = limb->getAngle() + integralAngle;
 
-			limb->setOffset(newOffset);
-			limb->setAngle(newAngle);
+				limb->setOffset(newOffset);
+				limb->setAngle(newAngle);
+			} else { // We're on a new frame. Make sure to set the angle
+				limb->setOffset(m_offsets[elementI]);
+				limb->setAngle(m_angles[elementI]);
+			}
+
+			m_lastFrame = m_currentFrame;
 
 		}
 	}
 
 	void SkeletalAnimation::tick() {
 		if(!isFinished()) {
-			m_currentFrame++;
-		} else if(m_repeats) {
-			m_currentFrame = 0;
+			m_currentFrame = (m_currentFrame + 1) % (m_offsets.size() / m_numLimbs - 1);
 		}
 	}
 
 	bool SkeletalAnimation::isFinished() {
-		return (m_currentFrame >= m_angles.size() - 1);
+		if(m_repeats) return false;
+		return (m_currentFrame >= m_angles.size() - 1); // This only returns if it doesn't repeat
 	}
 
 	void SkeletalAnimation::restart() {
@@ -155,7 +161,9 @@ namespace AnimationModule {
 	}
 
 	void Limb::update() {
-		if(isAnimationActive()) m_activeAnimation.updateLimb(this);
+		if(isAnimationActive()) {
+			m_activeAnimation.updateLimb(this);
+		}
 	}
 
 	void Limb::draw(GLEngine::SpriteBatch& sb, GLEngine::ColourRGBA8 colour, glm::vec4 destRect, float& depth) {

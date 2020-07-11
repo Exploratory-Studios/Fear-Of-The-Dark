@@ -1,8 +1,8 @@
 <animation name="Test" id="0">
-	<texture>/Entities/NPCs/Mob0.png</texture>
+	<texture>/Entities/NPCs/Player.png</texture>
 	<y>0</y>
-	<width>32</width>
-	<height>64</height>
+	<width>48</width>
+	<height>128</height>
 </animation>
 <skeletalAnimation name="testSkel" id="1">
 	<repeats>1</repeats>
@@ -25,4 +25,26 @@
 		<offset>0.0,0.0</offset>
 		<offset>0.0,0.0</offset>
 	</offsets>
+</skeletalAnimation>
+<skeletalAnimation id="2" name="TestAnimationName">
+	<repeats>1</repeats>
+	<numLimbs>1</numLimbs>
+	<offsets>
+		<offset>0.000000,0.000000</offset>
+		<offset>0.000000,0.000000</offset>
+		<offset>0.000000,0.000000</offset>
+		<offset>0.000000,0.000000</offset>
+		<offset>0.000000,0.000000</offset>
+		<offset>0.000000,0.000000</offset>
+		<offset>0.000000,0.000000</offset>
+	</offsets>
+	<angles>
+		<angle>0.000000</angle>
+		<angle>-0.652669</angle>
+		<angle>-2.522617</angle>
+		<angle>-3.835032</angle>
+		<angle>-4.926701</angle>
+		<angle>-5.621644</angle>
+		<angle>-6.283556</angle>
+	</angles>
 </skeletalAnimation>

@@ -1,8 +1,8 @@
 .PHONY: clean All
 
 All:
-	@echo "----------Building project:[ GLEngine - Release (Windows32) ]----------"
-	@cd "/home/davis-dev/Documents/Programming/C++/CodingGithub/GLEngine" && "$(MAKE)" -f  "GLEngine.mk"
+	@echo "----------Building project:[ AnimationTool - Debug ]----------"
+	@cd "/home/davis-dev/Documents/Programming/C++/CodingGithub/Fear-Of-The-Dark/Tools/AnimationTool/AnimationTool" && "$(MAKE)" -f  "AnimationTool.mk"
 clean:
-	@echo "----------Cleaning project:[ GLEngine - Release (Windows32) ]----------"
-	@cd "/home/davis-dev/Documents/Programming/C++/CodingGithub/GLEngine" && "$(MAKE)" -f  "GLEngine.mk" clean
+	@echo "----------Cleaning project:[ AnimationTool - Debug ]----------"
+	@cd "/home/davis-dev/Documents/Programming/C++/CodingGithub/Fear-Of-The-Dark/Tools/AnimationTool/AnimationTool" && "$(MAKE)" -f  "AnimationTool.mk" clean

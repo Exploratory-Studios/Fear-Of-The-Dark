@@ -157,6 +157,9 @@ void MainScreen::checkInput() {
 	if(m_limbSelected) {
 		if(m_game->inputManager.isKeyDown(SDL_BUTTON_LEFT)) {
 			if(m_tool == ToolType::OFFSET) {
+				if(m_game->inputManager.isKeyPressed(SDL_BUTTON_LEFT)) {
+					m_initialGrabPosition = m_cam.convertScreenToWorld(m_game->inputManager.getMouseCoords());
+				}
 				glm::vec2 change = m_cam.convertScreenToWorld(m_game->inputManager.getMouseCoords()) - m_grabPosition;
 
 				glm::vec2 newOffset = m_limbs[m_selectedLimb].getOffset() + change;
@@ -166,6 +169,23 @@ void MainScreen::checkInput() {
 				m_limbs[m_selectedLimb].setOffset(newOffset);
 
 				m_grabPosition = m_cam.convertScreenToWorld(m_game->inputManager.getMouseCoords());
+
+				glm::vec2 overallChange = m_grabPosition - m_initialGrabPosition;
+				std::string changeXStr, changeYStr;
+				if(overallChange.x > 0) {
+					changeXStr = "(+";
+				} else {
+					changeXStr = "(-";
+				}
+				changeXStr += std::to_string(std::abs((int)overallChange.x)) + ")";
+				if(overallChange.y > 0) {
+					changeYStr = "(+";
+				} else {
+					changeYStr = "(-";
+				}
+				changeYStr += std::to_string(std::abs((int)overallChange.y)) + ")";
+
+				m_textLabel->setText("Position: X=" + std::to_string((int)newOffset.x) + changeXStr + ", Y=" + std::to_string((int)newOffset.y) + changeYStr);
 
 				if(m_keyframesList->getFirstSelectedItem()) {
 					m_keyframes[m_selectedFrame].offsets[m_selectedLimb] = m_limbs[m_selectedLimb].getOffset();
@@ -182,6 +202,10 @@ void MainScreen::checkInput() {
 				float newAngle = (m_limbs[m_selectedLimb].getAngle() + std::atan2(det, dot));
 
 				m_limbs[m_selectedLimb].setAngle(newAngle);
+
+				float newDegree = newAngle * 180.0f / 3.141592653589793238f;
+
+				m_textLabel->setText("Angle: " + std::to_string(-newDegree) + " Degrees");
 
 				if(m_keyframesList->getFirstSelectedItem()) {
 					m_keyframes[m_selectedFrame].angles[m_selectedLimb] = m_limbs[m_selectedLimb].getAngle();
@@ -329,6 +353,11 @@ void MainScreen::initUI() {
 		m_removeFrameButton->setText("-");
 		m_removeFrameButton->subscribeEvent(CEGUI::PushButton::EventClicked, CEGUI::Event::Subscriber(&MainScreen::EventRemoveFrameButtonClicked, this));
 	}
+
+	m_textLabel = static_cast<CEGUI::DefaultWindow*>(m_gui.createWidget("WindowsLook/Label", glm::vec4(0.01f, 0.97f, 0.23f, 0.02f), glm::vec4(0.0f), "fileframeTextbox"));
+	m_textLabel->setProperty("HorzFormatting", "LeftAligned");
+	m_textLabel->setFont("DejaVuSans-10");
+	m_textLabel->setAlwaysOnTop(true);
 }
 
 void MainScreen::initShaders() {

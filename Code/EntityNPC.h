@@ -68,8 +68,9 @@ class EntityNPC : public Entity {
 
 		// Animation (TODO: Add animation to entity XML)
 		AnimationModule::Limb m_test;
-		
-		std::vector<AnimationModule::Limb> m_limbs;
+
+		std::vector<AnimationModule::Limb> m_limbs; // Limbs to show skeletal animation.
+		AnimationModule::SkeletalAnimation m_attackAnimation; // This changes as the entity acts.
 		AnimationModule::SkeletalAnimation m_idleAnimation, m_lowVelAnimation, m_highVelAnimation, m_upAnimation, m_downAnimation;
 
 		// Fall damage

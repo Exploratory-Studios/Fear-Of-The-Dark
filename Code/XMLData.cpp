@@ -227,14 +227,14 @@ namespace XMLModule {
 
 		Logger::getInstance()->log("Loaded all data successfully!");
 	}
-	
+
 	void XMLData::write(std::string filepath) {
 		Logger::getInstance()->log("Beginning to write data...");
 
 		// files and nodeNames should have equal size. That much is assumed to be true at runtime
 		std::vector<std::string> files   { "Blocks", "Particles", "NPCs", "Projectiles", "ItemEntities", "Items", "Biomes", "Eras", "Loot", "Loot", "Structures", "Quests", "Dialogue", "Dialogue", "Dialogue", "Animations", "Animations", "Attacks", "Attacks", "Attacks" };
 		std::vector<std::string> nodeNames{ "tile",  "particle",  "npc",  "projectile",  "itemEntity",   "item",  "biome",   "era", "lootDrop", "lootTable", "structure", "quest", "questObjective", "question", "response", "animation", "skeletalAnimation", "meleeAttack", "rangedAttack", "magicAttack" };
-		
+
 		for(unsigned int i = 0; i < files.size(); i++) {
 			writeXMLData(filepath + "/Data/" + files[i] + ".xml", nodeNames[i]);
 			Logger::getInstance()->log("Wrote data (" + files[i] + ": " + nodeNames[i] + ")...");
@@ -242,74 +242,74 @@ namespace XMLModule {
 
 		Logger::getInstance()->log("Wrote all data successfully!");
 	}
-	
+
 	void XMLData::addData(GenericData* data, std::string& nodename) {
 		// First, retrieve the correct node name and map.
 		std::map<unsigned int, GenericData*>* mapForWrite = getMapFromNodename(nodename);
-		
+
 		if(mapForWrite) {
 			// Actually add the data
-			
-			mapForWrite.insert(std::pair<unsigned int, GenericData*>(data->id, data));
-			
+
+			//mapForWrite.insert(std::pair<unsigned int, GenericData*>(data->id, data));
+
 		} else {
 			Logger::getInstance()->log("ERROR: Could not add data with node name: " + nodename + " to XML data singleton.", true);
 		}
 	}
-	
+
 	GenericData* XMLData::createDataFromNodename(std::string& name) {
 		GenericData* d = nullptr;
-		
+
 		if(name == "tile") {
-				d = new TileData();
-			} else if(name == "particle") {
-				d = new ParticleData();
-			} else if(name == "npc") {
-				d = new EntityNPCData();
-			} else if(name == "projectile") {
-				d = new EntityProjectileData();
-			} else if(name == "itemEntity") {
-				d = new EntityItemData();
-			} else if(name == "item") {
-				d = new ItemData();
-			} else if(name == "biome") {
-				d = new BiomeData();
-			} else if(name == "era") {
-				d = new EraData();
-			} else if(name == "lootDrop") {
-				d = new LootDropData();
-			} else if(name == "lootTable") {
-				d = new LootTableData();
-			} else if(name == "structure") {
-				d = new StructureData();
-			} else if(name == "quest") {
-				d = new QuestData();
-			} else if(name == "objective") {
-				d = new QuestObjectiveData();
-			} else if(name == "question") {
-				d = new DialogueQuestionData();
-			} else if(name == "response") {
-				d = new DialogueResponseData();
-			} else if(name == "animation") {
-				d = new AnimationData();
-			} else if(name == "skeletalAnimation") {
-				d = new SkeletalAnimationData();
-			} else if(name == "meleeAttack") {
-				d = new MeleeAttackData();
-			} else if(name == "rangedAttack") {
-				d = new RangedAttackData();
-			} else if(name == "magicAttack") {
-				d = new MagicAttackData();
-			} else {
-				Logger::getInstance()->log("ERROR: Type '" + name + "' not supported!", true);
-			}
-			
-			return d;
+			d = new TileData();
+		} else if(name == "particle") {
+			d = new ParticleData();
+		} else if(name == "npc") {
+			d = new EntityNPCData();
+		} else if(name == "projectile") {
+			d = new EntityProjectileData();
+		} else if(name == "itemEntity") {
+			d = new EntityItemData();
+		} else if(name == "item") {
+			d = new ItemData();
+		} else if(name == "biome") {
+			d = new BiomeData();
+		} else if(name == "era") {
+			d = new EraData();
+		} else if(name == "lootDrop") {
+			d = new LootDropData();
+		} else if(name == "lootTable") {
+			d = new LootTableData();
+		} else if(name == "structure") {
+			d = new StructureData();
+		} else if(name == "quest") {
+			d = new QuestData();
+		} else if(name == "objective") {
+			d = new QuestObjectiveData();
+		} else if(name == "question") {
+			d = new DialogueQuestionData();
+		} else if(name == "response") {
+			d = new DialogueResponseData();
+		} else if(name == "animation") {
+			d = new AnimationData();
+		} else if(name == "skeletalAnimation") {
+			d = new SkeletalAnimationData();
+		} else if(name == "meleeAttack") {
+			d = new MeleeAttackData();
+		} else if(name == "rangedAttack") {
+			d = new RangedAttackData();
+		} else if(name == "magicAttack") {
+			d = new MagicAttackData();
+		} else {
+			Logger::getInstance()->log("ERROR: Type '" + name + "' not supported!", true);
+		}
+
+		return d;
 	}
-	
+
 	std::map<unsigned int, GenericData*>* XMLData::getMapFromNodename(std::string& name) {
 		std::map<unsigned int, GenericData*>* mapForWrite = nullptr;
-		
+
 		if(name == "tile") {
 			mapForWrite = &m_tileData;
 		} else if(name == "particle") {
@@ -382,7 +382,7 @@ namespace XMLModule {
 
 		for(rapidxml::xml_node<>* node = doc.first_node(); node; node = node->next_sibling()) {
 			std::string name = node->name();
-			
+
 			mapForWrite = getMapFromNodename(name);
 
 			GenericData* d = createDataFromNodename(name);
@@ -393,7 +393,7 @@ namespace XMLModule {
 			mapForWrite->insert(std::pair<unsigned int, GenericData*>(id, d));
 		}
 	}
-	
+
 	void XMLData::writeXMLData(std::string filepath, std::string nodeName) {
 		/** Writes all XML data into the file at filepath **/
 
@@ -405,10 +405,10 @@ namespace XMLModule {
 			Logger::getInstance()->log("ERROR: XML file unable to be opened or created: " + filepath, true);
 			return;
 		}
-		
+
 		// Figure out which map we're writing from
 		std::map<unsigned int, GenericData*>* mapForWrite = getMapFromNodename(nodeName);
-		
+
 		// Create the document to write into the file.
 		rapidxml::xml_document<> doc;
 		char* name; // Allocate a string for the node type
@@ -417,7 +417,7 @@ namespace XMLModule {
 		for(auto element : *mapForWrite) {
 			rapidxml::xml_node<>* node = doc.allocate_node(rapidxml::node_element, name);
 			doc.append_node(node);
-			
+
 			element.second->write(node);
 		}
 	}

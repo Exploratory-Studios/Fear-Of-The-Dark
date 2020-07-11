@@ -72,16 +72,31 @@ EntityNPC::EntityNPC(glm::vec2 pos, unsigned int layer, EntityIDs id, SaveDataTy
 }
 
 void EntityNPC::initLimbs() {
-	/// TODO: Construct from XML
+	/// TODO: Expand XML a bit
 
+	// Load XML:
+	XMLModule::EntityNPCData data = XMLModule::XMLData::getEntityNPCData(m_id);
 
+	// Create limbs with animations. (Loads animations as it goes)
+	for(unsigned int i = 0; i < data.skinAnimationIDs.size(); i++) {
+		m_limbs.emplace_back(AnimationModule::Animation(data.skinAnimationIDs[i]), i);
+	}
 
+	// Load skeletal animations
+	m_idleAnimation.init(data.idleAnimationID);
+	m_idleAnimation.setToLoop(true);
+	// Load the rest...
+
+	// Activate idle animation to start
+	for(unsigned int i = 0;  i < m_limbs.size(); i++) {
+		m_limbs[i].activateSkeletalAnimation(m_idleAnimation);
+	}
 
 
 
 	//////// For debugging purposes
 
-	AnimationModule::Animation torsoIdle;
+	/*AnimationModule::Animation torsoIdle;
 	torsoIdle.init(0);
 
 	AnimationModule::Limb torso;
@@ -92,7 +107,7 @@ void EntityNPC::initLimbs() {
 
 	torso.activateSkeletalAnimation(m_idleAnimation);
 
-	m_limbs.push_back(torso);
+	m_limbs.push_back(torso);*/
 
 	//////// XXXXXXXXXXXXXXXXXXXXXX
 }
@@ -302,6 +317,10 @@ void EntityNPC::collide(World* world, unsigned int entityIndex) {
 }
 
 void EntityNPC::onUpdate(World* world, float timeStep, unsigned int selfIndex) {
+	for(unsigned int i = 0; i < m_limbs.size(); i++) {
+		m_limbs[i].update();
+	}
+
 	if(m_takesFallDamage) {
 		if(m_velocity.y < 0.0f) {
 			m_fallenDistance += -m_velocity.y * timeStep;

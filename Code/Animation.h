@@ -82,7 +82,7 @@ namespace AnimationModule {
 			}
 
 		protected:
-			int m_currentFrame = 0;
+			int m_currentFrame = 0, m_lastFrame = 0;
 			bool m_repeats = false;
 
 			unsigned int m_numLimbs = 5;

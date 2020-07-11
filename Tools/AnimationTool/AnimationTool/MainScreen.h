@@ -64,6 +64,7 @@ class MainScreen : public GLEngine::IGameScreen {
 		unsigned int m_selectedLimb = 0;
 		bool m_limbSelected = false;
 		glm::vec2 m_grabPosition = glm::vec2(0.0f);
+		glm::vec2 m_initialGrabPosition = glm::vec2(0.0f);
 		unsigned int m_selectedFrame = 0;
 
 		unsigned int m_frame = 0;
@@ -83,6 +84,8 @@ class MainScreen : public GLEngine::IGameScreen {
 
 		// GUI
 		GLEngine::GUI m_gui;
+
+		CEGUI::DefaultWindow* m_textLabel = nullptr;
 
 		CEGUI::FrameWindow* m_fileFrame = nullptr;
 		CEGUI::PushButton* m_exportButton = nullptr;

@@ -98,15 +98,19 @@ void MainScreen::draw() {
 		destRect.y = height / 2;
 		destRect.z = m_limbs[m_selectedLimb].getAnimation().getFrameWidth();
 		destRect.w = m_limbs[m_selectedLimb].getAnimation().getFrameHeight();
-		
+
 		// Transform based on centre of rotation
-		float xDist = m_limbs[m_selectedLimb].getOffset().x;
-		float yDist = m_limbs[m_selectedLimb].getOffset().y;
-		
+		float xDist = (m_limbs[m_selectedLimb].getOffset().x + destRect.z / 2.0f) - m_limbs[m_selectedLimb].getCentreOfRotation().x * destRect.z;
+		float yDist = (m_limbs[m_selectedLimb].getOffset().y + destRect.w / 2.0f) - m_limbs[m_selectedLimb].getCentreOfRotation().y * destRect.w;
+
 		float angle = m_limbs[m_selectedLimb].getAngle();
-		destRect.x += std::cos(angle) * xDist - std::sin(angle) * yDist + ((m_limbs[m_selectedLimb].getCentreOfRotation().x - 0.5f) * destRect.z);
-		destRect.y += std::sin(angle) * xDist + std::cos(angle) * yDist + ((m_limbs[m_selectedLimb].getCentreOfRotation().y - 0.5f) * destRect.w);
-		
+
+		destRect.x += xDist * std::cos(angle) - yDist * std::sin(angle) + m_limbs[m_selectedLimb].getCentreOfRotation().x * destRect.z;
+		destRect.y += xDist * std::sin(angle) + yDist * std::cos(angle) + m_limbs[m_selectedLimb].getCentreOfRotation().y * destRect.w;
+
+		destRect.x -= destRect.z / 2.0f;
+		destRect.y -= destRect.w / 2.0f;
+
 		m_debugRenderer.drawBox(destRect, GLEngine::ColourRGBA8(0, 0, 0, 255), m_limbs[m_selectedLimb].getAngle());
 	}
 
@@ -226,10 +230,10 @@ void MainScreen::checkInput() {
 				glm::vec2 change = m_cam.convertScreenToWorld(m_game->inputManager.getMouseCoords()) - m_grabPosition;
 
 				glm::vec2 newCentre = m_limbs[m_selectedLimb].getCentreOfRotation() + change / glm::vec2(m_limbs[m_selectedLimb].getAnimation().getFrameWidth(), m_limbs[m_selectedLimb].getAnimation().getFrameHeight());
-				glm::vec2 newOffset = m_limbs[m_selectedLimb].getOffset() - change;
-				
+				//glm::vec2 newOffset = m_limbs[m_selectedLimb].getOffset() - change;
+
 				m_limbs[m_selectedLimb].setCentreOfRotation(newCentre);
-				m_limbs[m_selectedLimb].setOffset(newOffset);
+				//m_limbs[m_selectedLimb].setOffset(newOffset);
 
 				m_grabPosition = m_cam.convertScreenToWorld(m_game->inputManager.getMouseCoords());
 
@@ -252,7 +256,7 @@ void MainScreen::checkInput() {
 
 				if(m_keyframesList->getFirstSelectedItem()) {
 					m_keyframes[m_selectedFrame].centres[m_selectedLimb] = m_limbs[m_selectedLimb].getCentreOfRotation();
-					m_keyframes[m_selectedFrame].offsets[m_selectedLimb] = m_limbs[m_selectedLimb].getOffset();
+					//m_keyframes[m_selectedFrame].offsets[m_selectedLimb] = m_limbs[m_selectedLimb].getOffset();
 				}
 			}
 		}
@@ -280,46 +284,51 @@ void MainScreen::checkInput() {
 bool MainScreen::selectLimb(glm::vec2& mouseCoords) {
 	float width = m_window->getScreenWidth();
 	float height = m_window->getScreenHeight();
-	
-	glm::vec2 trans = mouseCoords;
 
 	for(int i = m_limbs.size() - 1; i >= 0; i--) {
 		if(m_limbsVisibility[i]) {
 			// Get copies of each position
 			glm::vec2 size = glm::vec2(m_limbs[i].getAnimation().getFrameWidth(), m_limbs[i].getAnimation().getFrameHeight());
-			glm::vec2 mousePos = m_cam.convertScreenToWorld(mouseCoords) - glm::vec2(width / 2, height / 2) - size * glm::vec2(0.5f);
-			glm::vec2 limbOffset = m_limbs[i].getOffset() + size * glm::vec2(0.5f);
-			
+			glm::vec2 mousePos = m_cam.convertScreenToWorld(mouseCoords) - glm::vec2(width / 2, height / 2);
+			glm::vec2 limbOffset = m_limbs[i].getOffset();
+			float angle = -m_limbs[i].getAngle();
+
 			//(xcosθ−ysinθ ,xsinθ+ycosθ)
-			glm::vec2 mouseTrans, centreTrans;
-			
-			// Translate the mouse so it's rotated with the centre of rotation for this limb
-			glm::vec2 COR = m_limbs[i].getCentreOfRotation();
-			float angle = m_limbs[i].getAngle();
-			glm::vec2 diff = mousePos - (COR - glm::vec2(0.5f)) * size;
-			mouseTrans.x = diff.x * std::cos(-angle) - diff.y * std::sin(-angle) + (COR.x - 0.5f) * size.x;
-			mouseTrans.y = diff.x * std::sin(-angle) + diff.y * std::cos(-angle) + (COR.y - 0.5f) * size.y;
-			
-			// Translate the centre of the limb (rotate centre point around the centre of rotation)
-			glm::vec2 offsetFromCOR = limbOffset - (COR - glm::vec2(0.5f)) * size;
-			centreTrans.x = offsetFromCOR.x * std::cos(-angle) - offsetFromCOR.y * std::sin(-angle);
-			centreTrans.y = offsetFromCOR.x * std::sin(-angle) + offsetFromCOR.y * std::cos(-angle);
-			
-			glm::vec2 limbPosBL = size * glm::vec2(-0.5f) + centreTrans;
-			glm::vec2 limbPosTR = size * glm::vec2(0.5f) + centreTrans;
-			
-			std::cout << limbPosBL.x << ", " << mouseTrans.x << ", " << diff.x << std::endl;
-			
-			// Check for intersection
-			if(mouseTrans.x > limbPosBL.x && mouseTrans.x < limbPosTR.x) {
-				if(mouseTrans.y > limbPosBL.y && mouseTrans.y < limbPosTR.y) {
+			// Define some stuff
+			glm::vec2 COR = m_limbs[i].getCentreOfRotation() * size;
+			glm::vec2 mouseTrans, centreLimbTrans;
+
+			// Un-rotate mouse
+			// Apply rotation matrix (xcos a-ysin a, xsin a+ycos a)
+			glm::vec2 distToCOR = mousePos - COR;
+			mouseTrans.x = distToCOR.x * std::cos(angle) - distToCOR.y * std::sin(angle) + COR.x;
+			mouseTrans.y = distToCOR.x * std::sin(angle) + distToCOR.y * std::cos(angle) + COR.y;
+			// Mouse is fully translated, just rotated.
+
+			/*distToCOR = (limbOffset + size / glm::vec2(2.0f)) - COR; // Reset distToCOR for limb this time
+			std::cout << "LEN: X" << distToCOR.x << ", Y" << distToCOR.y << std::endl;
+			std::cout << "OFF: X" << limbOffset.x << ", Y" << limbOffset.y << std::endl;
+			centreLimbTrans.x = distToCOR.x * std::cos(angle) - distToCOR.y * std::sin(angle) + COR.x;
+			centreLimbTrans.y = distToCOR.x * std::sin(angle) + distToCOR.y * std::cos(angle) + COR.y;
+			// Centre of the limb should be fully translated so its angle is 0, but its offset is still existent (simply rotated)
+
+			std::cout << "Centre: X" << COR.x << ", Y" << COR.y << std::endl;
+			std::cout << "Mouse: X" << mouseTrans.x << ", Y" << mouseTrans.y << std::endl;
+			std::cout << "Limb: X" << centreLimbTrans.x << ", Y" << centreLimbTrans.y << std::endl;*/
+
+			centreLimbTrans = limbOffset + size / glm::vec2(2.0f);
+
+			// Both of our variables, mouseTrans and centreLimbTrans, should be rotated to 0 degrees. Now we can do regular intersection checking
+			if(mouseTrans.x > centreLimbTrans.x - size.x / 2.0f && mouseTrans.x < centreLimbTrans.x + size.x / 2.0f) {
+				if(mouseTrans.y > centreLimbTrans.y - size.y / 2.0f && mouseTrans.y < centreLimbTrans.y + size.y / 2.0f) {
 					m_selectedLimb = i;
 					return true;
 				}
 			}
+
 		}
 	}
-	
+
 	return false;
 }
 
@@ -772,10 +781,12 @@ void MainScreen::addFrame() {
 	KeyFrame kf;
 	kf.angles.resize(m_limbs.size());
 	kf.offsets.resize(m_limbs.size());
+	kf.centres.resize(m_limbs.size());
 
 	for(unsigned int i = 0; i < m_limbs.size(); i++) {
 		kf.angles[i] = m_limbs[i].getAngle();
 		kf.offsets[i] = m_limbs[i].getOffset();
+		kf.centres[i] = m_limbs[i].getCentreOfRotation();
 	}
 
 	m_keyframes.push_back(kf);

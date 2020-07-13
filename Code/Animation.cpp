@@ -174,14 +174,18 @@ namespace AnimationModule {
 
 	void Limb::draw(GLEngine::SpriteBatch& sb, GLEngine::ColourRGBA8 colour, glm::vec4 destRect, float& depth) {
 		// Transform based on centre of rotation
-		float xDist = m_offset.x;
-		float yDist = m_offset.y;
-		
-		destRect.x += std::cos(m_angle) * xDist - std::sin(m_angle) * yDist + ((m_centreOfRotation.x - 0.5f) * destRect.z);
-		destRect.y += std::sin(m_angle) * xDist + std::cos(m_angle) * yDist + ((m_centreOfRotation.y - 0.5f) * destRect.w);
-		
+
+		float xDist = (m_offset.x + destRect.z / 2.0f) - m_centreOfRotation.x * destRect.z;
+		float yDist = (m_offset.y + destRect.w / 2.0f) - m_centreOfRotation.y * destRect.w;
+
+		destRect.x += xDist * std::cos(m_angle) - yDist * std::sin(m_angle) + m_centreOfRotation.x * destRect.z;
+		destRect.y += xDist * std::sin(m_angle) + yDist * std::cos(m_angle) + m_centreOfRotation.y * destRect.w;
+
+		destRect.x -= destRect.z / 2.0f;
+		destRect.y -= destRect.w / 2.0f;
+
 		glm::vec2 c(0.5f, 0.5f);
-		
+
 		m_idleAnimation.draw(sb, colour, destRect, depth, m_angle, c);
 	}
 
@@ -203,7 +207,7 @@ namespace AnimationModule {
 	glm::vec2 Limb::getOffset() {
 		return m_offset;
 	}
-	
+
 	glm::vec2 Limb::getCentreOfRotation() {
 		return m_centreOfRotation;
 	}

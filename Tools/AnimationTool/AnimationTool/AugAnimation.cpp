@@ -21,6 +21,7 @@ namespace AnimationModule {
 		m_index = index;
 
 		m_offset = glm::vec2(0.0f);
+		m_centreOfRotation = glm::vec2(0.5f);
 	}
 
 }

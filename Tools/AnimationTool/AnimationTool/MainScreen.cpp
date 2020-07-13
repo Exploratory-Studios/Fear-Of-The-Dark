@@ -75,8 +75,10 @@ void MainScreen::draw() {
 			if(m_limbsVisibility[i]) {
 				float depth = 0.0f;
 				GLEngine::ColourRGBA8 col(255, 255, 255, 255);
-				if(m_selectedLimb == i && m_limbSelected)
+				if(m_selectedLimb == i && m_limbSelected) {
 					col = GLEngine::ColourRGBA8(128, 128, 128, 255);
+					m_debugRenderer.drawCircle(m_limbs[m_selectedLimb].getCentreOfRotation() * m_skinSize + glm::vec2(destRect.x, destRect.y), GLEngine::ColourRGBA8(255, 0, 255, 255), 2.0f);
+				}
 				m_limbs[i].draw(m_spriteBatch, col, destRect, depth);
 			} else {
 				float angle = m_limbs[i].getAngle();
@@ -92,10 +94,19 @@ void MainScreen::draw() {
 
 	if(m_limbs.size() > m_selectedLimb && m_limbSelected) {
 		glm::vec4 destRect;
-		destRect.x = width / 2 + m_limbs[m_selectedLimb].getOffset().x;
-		destRect.y = height / 2 + m_limbs[m_selectedLimb].getOffset().y;
+		destRect.x = width / 2;
+		destRect.y = height / 2;
 		destRect.z = m_limbs[m_selectedLimb].getAnimation().getFrameWidth();
 		destRect.w = m_limbs[m_selectedLimb].getAnimation().getFrameHeight();
+		
+		// Transform based on centre of rotation
+		float xDist = m_limbs[m_selectedLimb].getOffset().x;
+		float yDist = m_limbs[m_selectedLimb].getOffset().y;
+		
+		float angle = m_limbs[m_selectedLimb].getAngle();
+		destRect.x += std::cos(angle) * xDist - std::sin(angle) * yDist + ((m_limbs[m_selectedLimb].getCentreOfRotation().x - 0.5f) * destRect.z);
+		destRect.y += std::sin(angle) * xDist + std::cos(angle) * yDist + ((m_limbs[m_selectedLimb].getCentreOfRotation().y - 0.5f) * destRect.w);
+		
 		m_debugRenderer.drawBox(destRect, GLEngine::ColourRGBA8(0, 0, 0, 255), m_limbs[m_selectedLimb].getAngle());
 	}
 
@@ -163,8 +174,6 @@ void MainScreen::checkInput() {
 				glm::vec2 change = m_cam.convertScreenToWorld(m_game->inputManager.getMouseCoords()) - m_grabPosition;
 
 				glm::vec2 newOffset = m_limbs[m_selectedLimb].getOffset() + change;
-				newOffset.x = newOffset.x;
-				newOffset.y = newOffset.y;
 
 				m_limbs[m_selectedLimb].setOffset(newOffset);
 
@@ -210,6 +219,41 @@ void MainScreen::checkInput() {
 				if(m_keyframesList->getFirstSelectedItem()) {
 					m_keyframes[m_selectedFrame].angles[m_selectedLimb] = m_limbs[m_selectedLimb].getAngle();
 				}
+			} else if(m_tool == ToolType::OFFSET_CENTRE) {
+				if(m_game->inputManager.isKeyPressed(SDL_BUTTON_LEFT)) {
+					m_initialGrabPosition = m_cam.convertScreenToWorld(m_game->inputManager.getMouseCoords());
+				}
+				glm::vec2 change = m_cam.convertScreenToWorld(m_game->inputManager.getMouseCoords()) - m_grabPosition;
+
+				glm::vec2 newCentre = m_limbs[m_selectedLimb].getCentreOfRotation() + change / glm::vec2(m_limbs[m_selectedLimb].getAnimation().getFrameWidth(), m_limbs[m_selectedLimb].getAnimation().getFrameHeight());
+				glm::vec2 newOffset = m_limbs[m_selectedLimb].getOffset() - change;
+				
+				m_limbs[m_selectedLimb].setCentreOfRotation(newCentre);
+				m_limbs[m_selectedLimb].setOffset(newOffset);
+
+				m_grabPosition = m_cam.convertScreenToWorld(m_game->inputManager.getMouseCoords());
+
+				glm::vec2 overallChange = m_grabPosition - m_initialGrabPosition;
+				std::string changeXStr, changeYStr;
+				if(overallChange.x > 0) {
+					changeXStr = "(+";
+				} else {
+					changeXStr = "(-";
+				}
+				changeXStr += std::to_string(std::abs((int)overallChange.x)) + ")";
+				if(overallChange.y > 0) {
+					changeYStr = "(+";
+				} else {
+					changeYStr = "(-";
+				}
+				changeYStr += std::to_string(std::abs((int)overallChange.y)) + ")";
+
+				m_textLabel->setText("Position: X=" + std::to_string((int)newCentre.x) + changeXStr + ", Y=" + std::to_string((int)newCentre.y) + changeYStr);
+
+				if(m_keyframesList->getFirstSelectedItem()) {
+					m_keyframes[m_selectedFrame].centres[m_selectedLimb] = m_limbs[m_selectedLimb].getCentreOfRotation();
+					m_keyframes[m_selectedFrame].offsets[m_selectedLimb] = m_limbs[m_selectedLimb].getOffset();
+				}
 			}
 		}
 	}
@@ -236,22 +280,36 @@ void MainScreen::checkInput() {
 bool MainScreen::selectLimb(glm::vec2& mouseCoords) {
 	float width = m_window->getScreenWidth();
 	float height = m_window->getScreenHeight();
+	
+	glm::vec2 trans = mouseCoords;
 
 	for(int i = m_limbs.size() - 1; i >= 0; i--) {
 		if(m_limbsVisibility[i]) {
 			// Get copies of each position
 			glm::vec2 size = glm::vec2(m_limbs[i].getAnimation().getFrameWidth(), m_limbs[i].getAnimation().getFrameHeight());
-			glm::vec2 mousePos = m_cam.convertScreenToWorld(mouseCoords) - glm::vec2(width / 2, height / 2) - size * glm::vec2(0.5f) - m_limbs[i].getOffset();
-			glm::vec2 limbPosBL = -size * glm::vec2(0.5f);
-			glm::vec2 limbPosTR = size * glm::vec2(0.5f);
-
+			glm::vec2 mousePos = m_cam.convertScreenToWorld(mouseCoords) - glm::vec2(width / 2, height / 2) - size * glm::vec2(0.5f);
+			glm::vec2 limbOffset = m_limbs[i].getOffset() + size * glm::vec2(0.5f);
+			
 			//(xcosθ−ysinθ ,xsinθ+ycosθ)
-			float theta = -m_limbs[i].getAngle(); // radians
-			glm::vec2 mouseTrans = glm::vec2(mousePos.x * std::cos(theta) - mousePos.y * std::sin(theta), mousePos.x * std::sin(theta) + mousePos.y * std::cos(theta));
-
-			//glm::vec2 BLTrans = limbPosBL;//glm::vec2(limbPosBL.x * std::cos(theta) - limbPosBL.y * std::sin(theta), limbPosBL.x * std::sin(theta) + limbPosBL.y * std::cos(theta));
-			//glm::vec2 TRTrans = BLTrans + glm::vec2(m_limbs[i].getAnimation().getFrameWidth(), m_limbs[i].getAnimation().getFrameHeight());
-
+			glm::vec2 mouseTrans, centreTrans;
+			
+			// Translate the mouse so it's rotated with the centre of rotation for this limb
+			glm::vec2 COR = m_limbs[i].getCentreOfRotation();
+			float angle = m_limbs[i].getAngle();
+			glm::vec2 diff = mousePos - (COR - glm::vec2(0.5f)) * size;
+			mouseTrans.x = diff.x * std::cos(-angle) - diff.y * std::sin(-angle) + (COR.x - 0.5f) * size.x;
+			mouseTrans.y = diff.x * std::sin(-angle) + diff.y * std::cos(-angle) + (COR.y - 0.5f) * size.y;
+			
+			// Translate the centre of the limb (rotate centre point around the centre of rotation)
+			glm::vec2 offsetFromCOR = limbOffset - (COR - glm::vec2(0.5f)) * size;
+			centreTrans.x = offsetFromCOR.x * std::cos(-angle) - offsetFromCOR.y * std::sin(-angle);
+			centreTrans.y = offsetFromCOR.x * std::sin(-angle) + offsetFromCOR.y * std::cos(-angle);
+			
+			glm::vec2 limbPosBL = size * glm::vec2(-0.5f) + centreTrans;
+			glm::vec2 limbPosTR = size * glm::vec2(0.5f) + centreTrans;
+			
+			std::cout << limbPosBL.x << ", " << mouseTrans.x << ", " << diff.x << std::endl;
+			
 			// Check for intersection
 			if(mouseTrans.x > limbPosBL.x && mouseTrans.x < limbPosTR.x) {
 				if(mouseTrans.y > limbPosBL.y && mouseTrans.y < limbPosTR.y) {
@@ -261,6 +319,7 @@ bool MainScreen::selectLimb(glm::vec2& mouseCoords) {
 			}
 		}
 	}
+	
 	return false;
 }
 
@@ -555,6 +614,7 @@ bool MainScreen::EventLoadSkinButtonClicked(const CEGUI::EventArgs& e) {
 		// find the y, framewidth, frameheight
 		unsigned int frameWidth = m_skinX->getCurrentValue();
 		unsigned int frameHeight = m_skinY->getCurrentValue();
+		m_skinSize = glm::vec2(frameWidth, frameHeight);
 		for(unsigned int y = 0; y < tex.height / frameHeight; y++) {
 			AnimationModule::AugAnimation anim(tex, y, frameWidth, frameHeight);
 			anim.setToLoop(true);
@@ -579,18 +639,22 @@ AnimationModule::SkeletalAnimation MainScreen::getSkeletal() {
 	angles.resize(m_keyframes.size() * m_limbs.size());
 	std::vector<glm::vec2> offsets;
 	offsets.resize(m_keyframes.size() * m_limbs.size());
+	std::vector<glm::vec2> centres;
+	centres.resize(m_keyframes.size() * m_limbs.size());
 
 	// Convert 2d vectors (vector of keyframes * vectors of angles/offsets) to 1d
 	for(unsigned int i = 0; i < m_keyframes.size(); i++) {
 		for(unsigned int j = 0; j < m_limbs.size(); j++) {
 			angles[j + m_limbs.size() * i] = m_keyframes[i].angles[j];
 			offsets[j + m_limbs.size() * i] = m_keyframes[i].offsets[j];
+			centres[j + m_limbs.size() * i] = m_keyframes[i].centres[j];
 		}
 	}
 
 	// Set values
 	anim.setAngles(angles);
 	anim.setOffsets(offsets);
+	anim.setCentres(centres);
 	anim.setNumLimbs(m_limbs.size());
 
 	return anim;
@@ -609,6 +673,7 @@ bool MainScreen::EventNewLimbButtonClicked(const CEGUI::EventArgs& e) {
 	for(unsigned int i = 0; i < m_keyframes.size(); i++) {
 		m_keyframes[i].angles.push_back(0.0f);
 		m_keyframes[i].offsets.push_back(glm::vec2(0.0f));
+		m_keyframes[i].centres.push_back(glm::vec2(0.5f));
 	}
 
 	return true;
@@ -633,9 +698,11 @@ bool MainScreen::EventRemoveLimbButtonClicked(const CEGUI::EventArgs& e) {
 			for(unsigned int k = m_selectedLimb; k < m_keyframes[j].angles.size() - 1; k++) {
 				m_keyframes[j].angles[k] = m_keyframes[j].angles[k + 1];
 				m_keyframes[j].offsets[k] = m_keyframes[j].offsets[k + 1];
+				m_keyframes[j].centres[k] = m_keyframes[j].centres[k + 1];
 			}
 			m_keyframes[j].angles.pop_back();
 			m_keyframes[j].offsets.pop_back();
+			m_keyframes[j].centres.pop_back();
 		}
 		m_limbs.pop_back();
 		m_limbsVisibility.pop_back();
@@ -651,6 +718,9 @@ bool MainScreen::EventRotateOffsetLimbButtonClicked(const CEGUI::EventArgs& e) {
 		m_tool = ToolType::ROTATE;
 		m_rotateOffsetButton->setText("Rotating");
 	} else if(m_tool == ToolType::ROTATE) {
+		m_tool = ToolType::OFFSET_CENTRE;
+		m_rotateOffsetButton->setText("Moving POR");
+	} else if(m_tool == ToolType::OFFSET_CENTRE) {
 		m_tool = ToolType::OFFSET;
 		m_rotateOffsetButton->setText("Moving");
 	}
@@ -670,6 +740,7 @@ bool MainScreen::EventKeyFrameClicked(const CEGUI::EventArgs& e) {
 		for(unsigned int i = 0; i < m_limbs.size(); i++) {
 			m_limbs[i].setAngle(m_keyframes[index].angles[i]);
 			m_limbs[i].setOffset(m_keyframes[index].offsets[i]);
+			m_limbs[i].setCentreOfRotation(m_keyframes[index].centres[i]);
 			m_limbs[i].getAnimation().setFrame(index);
 			m_limbs[i].getSkeletalAnimation().setFrame(index);
 		}

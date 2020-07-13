@@ -23,6 +23,10 @@ namespace AnimationModule {
 				m_angles = angles;
 			}
 
+			void setCentres(std::vector<glm::vec2>& centres) {
+				m_centresOfRotation = centres;
+			}
+
 			void setNumLimbs(unsigned int limbs) {
 				m_numLimbs = limbs;
 			}

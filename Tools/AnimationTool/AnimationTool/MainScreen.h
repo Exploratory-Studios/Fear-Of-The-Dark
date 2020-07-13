@@ -14,12 +14,14 @@
 
 enum class ToolType {
 	ROTATE,
-	OFFSET
+	OFFSET,
+	OFFSET_CENTRE
 };
 
 struct KeyFrame {
 	std::vector<glm::vec2> offsets;
 	std::vector<float> angles;
+	std::vector<glm::vec2> centres; // Centres of rotation
 };
 
 class MainScreen : public GLEngine::IGameScreen {
@@ -66,6 +68,7 @@ class MainScreen : public GLEngine::IGameScreen {
 		glm::vec2 m_grabPosition = glm::vec2(0.0f);
 		glm::vec2 m_initialGrabPosition = glm::vec2(0.0f);
 		unsigned int m_selectedFrame = 0;
+		glm::vec2 m_skinSize = glm::vec2(32.0f, 64.0f);
 
 		unsigned int m_frame = 0;
 

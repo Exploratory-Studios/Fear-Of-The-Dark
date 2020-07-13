@@ -39,12 +39,10 @@ namespace AnimationModule {
 		//m_uv.z = (float)(frameHeight) / (float)(height);
 	}
 
-	void Animation::draw(::GLEngine::SpriteBatch& sb, GLEngine::ColourRGBA8 colour, glm::vec4& destRect, float& depth, float& angle) {
+	void Animation::draw(::GLEngine::SpriteBatch& sb, GLEngine::ColourRGBA8 colour, glm::vec4& destRect, float& depth, float& angle, glm::vec2& COR) {
 		m_uv.x = (float)(m_currentFrame * m_frameWidth) / (float)(m_width);
 
-		glm::vec2 centre(0.5f, 0.5f);
-
-		sb.draw(destRect, m_uv, m_textureID, depth, colour, angle, centre);
+		sb.draw(destRect, m_uv, m_textureID, depth, colour, angle, COR);
 	}
 
 	void Animation::tick() {
@@ -80,6 +78,7 @@ namespace AnimationModule {
 
 		m_angles = d.angles;
 		m_offsets = d.offsets;
+		m_centresOfRotation = d.centresOfRotation;
 		m_numLimbs = d.numLimbs;
 		m_repeats = d.repeats;
 	}
@@ -95,18 +94,23 @@ namespace AnimationModule {
 			if(m_lastFrame == m_currentFrame) { // Continue interpolation
 				glm::vec2 diffPos = m_offsets[nextElementI] - m_offsets[elementI];
 				float diffAngle = m_angles[nextElementI] - m_angles[elementI];
+				glm::vec2 diffCentre = m_centresOfRotation[nextElementI] - m_centresOfRotation[elementI];
 
 				glm::vec2 integralPos = diffPos / glm::vec2(FRAME_RATE / TICK_RATE);
 				float integralAngle = diffAngle / (FRAME_RATE / TICK_RATE);
+				glm::vec2 integralCentre = diffCentre / glm::vec2(FRAME_RATE / TICK_RATE);
 
 				glm::vec2 newOffset = limb->getOffset() + integralPos;
 				float newAngle = limb->getAngle() + integralAngle;
+				glm::vec2 newCentre = limb->getCentreOfRotation() + integralCentre;
 
 				limb->setOffset(newOffset);
 				limb->setAngle(newAngle);
+				limb->setCentreOfRotation(newCentre);
 			} else { // We're on a new frame. Make sure to set the angle
 				limb->setOffset(m_offsets[elementI]);
 				limb->setAngle(m_angles[elementI]);
+				limb->setCentreOfRotation(m_centresOfRotation[elementI]);
 			}
 
 			m_lastFrame = m_currentFrame;
@@ -141,6 +145,7 @@ namespace AnimationModule {
 	void Limb::init(Animation idleAnimation, unsigned int index) {
 		m_idleAnimation = idleAnimation;
 		m_index = index;
+		m_centreOfRotation = glm::vec2(0.5f);
 	}
 
 	void Limb::activateSkeletalAnimation(SkeletalAnimation anim) {
@@ -150,6 +155,7 @@ namespace AnimationModule {
 
 		m_offset = anim.getOffset(m_index);
 		m_angle = anim.getAngle(m_index);
+		m_centreOfRotation = anim.getCentreOfRotation(m_index);
 	}
 
 	void Limb::tick() {
@@ -167,11 +173,16 @@ namespace AnimationModule {
 	}
 
 	void Limb::draw(GLEngine::SpriteBatch& sb, GLEngine::ColourRGBA8 colour, glm::vec4 destRect, float& depth) {
-		// Draws based on the owner.
-		destRect.x += m_offset.x;
-		destRect.y += m_offset.y;
-		float angle = m_angle;//glm::radians(m_angle);
-		m_idleAnimation.draw(sb, colour, destRect, depth, angle);
+		// Transform based on centre of rotation
+		float xDist = m_offset.x;
+		float yDist = m_offset.y;
+		
+		destRect.x += std::cos(m_angle) * xDist - std::sin(m_angle) * yDist + ((m_centreOfRotation.x - 0.5f) * destRect.z);
+		destRect.y += std::sin(m_angle) * xDist + std::cos(m_angle) * yDist + ((m_centreOfRotation.y - 0.5f) * destRect.w);
+		
+		glm::vec2 c(0.5f, 0.5f);
+		
+		m_idleAnimation.draw(sb, colour, destRect, depth, m_angle, c);
 	}
 
 	bool Limb::isAnimationActive() {
@@ -192,6 +203,10 @@ namespace AnimationModule {
 	glm::vec2 Limb::getOffset() {
 		return m_offset;
 	}
+	
+	glm::vec2 Limb::getCentreOfRotation() {
+		return m_centreOfRotation;
+	}
 
 	void Limb::setAngle(float& angle) {
 		m_angle = angle;
@@ -199,6 +214,10 @@ namespace AnimationModule {
 
 	void Limb::setOffset(glm::vec2& offset) {
 		m_offset = offset;
+	}
+
+	void Limb::setCentreOfRotation(glm::vec2& centre) {
+		m_centreOfRotation = centre;
 	}
 
 

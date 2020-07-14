@@ -377,12 +377,25 @@ namespace XMLModule {
 					std::string nodeName, valueName;
 					unsigned int slashIndex = attr.first.find("/");
 
-					nodeName = attr.first.substr(0, slashIndex); // Left half (excluding the slash)
-					valueName = attr.first.substr(slashIndex + 1); // Right half (excluding the slash)
+					nodeName = attr.first.substr(0, slashIndex);
+					valueName = attr.first.substr(slashIndex + 1);
 
-					std::vector<unsigned int> vec;
-					getVector(node, nodeName, valueName, vec);
-					attr.second->setData(vec);
+					std::vector<unsigned int> value = attr.second->getData<std::vector<unsigned int>>();
+
+					const char* temp = nodeName.c_str();
+					char* val = node->document()->allocate_string(temp);
+					rapidxml::xml_node<>* newNode = node->document()->allocate_node(rapidxml::node_element, val);
+					node->append_node(newNode);
+
+					const char* temp0 = valueName.c_str();
+					char* nodeNameV = node->document()->allocate_string(temp0);
+
+					for(unsigned int i = 0; i < value.size(); i++) {
+						const char* temp1 = std::to_string(value[i]).c_str();
+						char* val1 = node->document()->allocate_string(temp1);
+						rapidxml::xml_node<>* newNode1 = node->document()->allocate_node(rapidxml::node_element, nodeNameV, val1);
+						newNode->append_node(newNode1);
+					}
 
 					break;
 				}

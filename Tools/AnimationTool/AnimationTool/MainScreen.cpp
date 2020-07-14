@@ -1,7 +1,7 @@
 #include "MainScreen.h"
 
-#include <filesystem>
 #include <ResourceManager.h>
+#include <filesystem>
 
 #include "Presets.h"
 
@@ -9,14 +9,14 @@
 
 #include <rapidxml/rapidxml_print.hpp>
 
-MainScreen::MainScreen(GLEngine::Window* window) : m_window(window) {
+MainScreen::MainScreen(GLEngine::Window* window)
+	: m_window(window) {
 }
 
 MainScreen::~MainScreen() {
 }
 
 void MainScreen::build() {
-
 }
 
 void MainScreen::onEntry() {
@@ -50,7 +50,8 @@ void MainScreen::draw() {
 		glUniformMatrix4fv(pUniform, 1, GL_FALSE, &projectionMatrix[0][0]);
 
 		m_spriteBatch.begin();
-		m_spriteBatch.draw(glm::vec4(0.0f, 0.0f, width, height), glm::vec4(0.0f, 0.0f, 1.0f, 1.0f), 0, 0.0f, GLEngine::ColourRGBA8(255, 255, 255, 255));
+		m_spriteBatch.draw(glm::vec4(0.0f, 0.0f, width, height), glm::vec4(0.0f, 0.0f, 1.0f, 1.0f), 0, 0.0f,
+		                   GLEngine::ColourRGBA8(255, 255, 255, 255));
 		m_spriteBatch.end();
 		m_spriteBatch.renderBatch();
 
@@ -69,15 +70,17 @@ void MainScreen::draw() {
 
 		m_spriteBatch.begin();
 
-
 		for(unsigned int i = 0; i < m_limbs.size(); i++) {
-			glm::vec4 destRect(width / 2, height / 2, m_limbs[i].getAnimation().getFrameWidth(), m_limbs[i].getAnimation().getFrameHeight());
+			glm::vec4 destRect(width / 2, height / 2, m_limbs[i].getAnimation().getFrameWidth(),
+			                   m_limbs[i].getAnimation().getFrameHeight());
 			if(m_limbsVisibility[i]) {
 				float depth = 0.0f;
 				GLEngine::ColourRGBA8 col(255, 255, 255, 255);
 				if(m_selectedLimb == i && m_limbSelected) {
 					col = GLEngine::ColourRGBA8(128, 128, 128, 255);
-					m_debugRenderer.drawCircle(m_limbs[m_selectedLimb].getCentreOfRotation() * m_skinSize + glm::vec2(destRect.x, destRect.y), GLEngine::ColourRGBA8(255, 0, 255, 255), 2.0f);
+					m_debugRenderer.drawCircle(
+					    m_limbs[m_selectedLimb].getCentreOfRotation() * m_skinSize + glm::vec2(destRect.x, destRect.y),
+					    GLEngine::ColourRGBA8(255, 0, 255, 255), 2.0f);
 				}
 				m_limbs[i].draw(m_spriteBatch, col, destRect, depth);
 			} else {
@@ -100,13 +103,17 @@ void MainScreen::draw() {
 		destRect.w = m_limbs[m_selectedLimb].getAnimation().getFrameHeight();
 
 		// Transform based on centre of rotation
-		float xDist = (m_limbs[m_selectedLimb].getOffset().x + destRect.z / 2.0f) - m_limbs[m_selectedLimb].getCentreOfRotation().x * destRect.z;
-		float yDist = (m_limbs[m_selectedLimb].getOffset().y + destRect.w / 2.0f) - m_limbs[m_selectedLimb].getCentreOfRotation().y * destRect.w;
+		float xDist = (m_limbs[m_selectedLimb].getOffset().x + destRect.z / 2.0f) -
+		              m_limbs[m_selectedLimb].getCentreOfRotation().x * destRect.z;
+		float yDist = (m_limbs[m_selectedLimb].getOffset().y + destRect.w / 2.0f) -
+		              m_limbs[m_selectedLimb].getCentreOfRotation().y * destRect.w;
 
 		float angle = m_limbs[m_selectedLimb].getAngle();
 
-		destRect.x += xDist * std::cos(angle) - yDist * std::sin(angle) + m_limbs[m_selectedLimb].getCentreOfRotation().x * destRect.z;
-		destRect.y += xDist * std::sin(angle) + yDist * std::cos(angle) + m_limbs[m_selectedLimb].getCentreOfRotation().y * destRect.w;
+		destRect.x += xDist * std::cos(angle) - yDist * std::sin(angle) +
+		              m_limbs[m_selectedLimb].getCentreOfRotation().x * destRect.z;
+		destRect.y += xDist * std::sin(angle) + yDist * std::cos(angle) +
+		              m_limbs[m_selectedLimb].getCentreOfRotation().y * destRect.w;
 
 		destRect.x -= destRect.z / 2.0f;
 		destRect.y -= destRect.w / 2.0f;
@@ -154,8 +161,10 @@ void MainScreen::checkInput() {
 
 			case SDL_MOUSEWHEEL:
 				m_scale += (float)m_game->inputManager.getMouseScrollPosition() * m_scale / 20.0f;
-				if(m_scale > 100.0f) m_scale = 100.0f;
-				if(m_scale < 1.0f) m_scale = 1.0f;
+				if(m_scale > 100.0f)
+					m_scale = 100.0f;
+				if(m_scale < 1.0f)
+					m_scale = 1.0f;
 				m_cam.setScale(m_scale);
 				break;
 
@@ -198,13 +207,16 @@ void MainScreen::checkInput() {
 				}
 				changeYStr += std::to_string(std::abs((int)overallChange.y)) + ")";
 
-				m_textLabel->setText("Position: X=" + std::to_string((int)newOffset.x) + changeXStr + ", Y=" + std::to_string((int)newOffset.y) + changeYStr);
+				m_textLabel->setText("Position: X=" + std::to_string((int)newOffset.x) + changeXStr +
+				                     ", Y=" + std::to_string((int)newOffset.y) + changeYStr);
 
 				if(m_keyframesList->getFirstSelectedItem()) {
 					m_keyframes[m_selectedFrame].offsets[m_selectedLimb] = m_limbs[m_selectedLimb].getOffset();
 				}
 			} else if(m_tool == ToolType::ROTATE) {
-				glm::vec2 centre = m_limbs[m_selectedLimb].getOffset() + glm::vec2(m_limbs[m_selectedLimb].getAnimation().getFrameWidth() / 2, m_limbs[m_selectedLimb].getAnimation().getFrameHeight() / 2);
+				glm::vec2 centre = m_limbs[m_selectedLimb].getOffset() +
+				                   glm::vec2(m_limbs[m_selectedLimb].getAnimation().getFrameWidth() / 2,
+				                             m_limbs[m_selectedLimb].getAnimation().getFrameHeight() / 2);
 				glm::vec2 screenSize = glm::vec2(m_window->getScreenWidth() / 2, m_window->getScreenHeight() / 2);
 				glm::vec2 old = glm::normalize(m_grabPosition - centre - screenSize);
 				m_grabPosition = m_cam.convertScreenToWorld(m_game->inputManager.getMouseCoords());
@@ -229,11 +241,14 @@ void MainScreen::checkInput() {
 				}
 				glm::vec2 change = m_cam.convertScreenToWorld(m_game->inputManager.getMouseCoords()) - m_grabPosition;
 
-				glm::vec2 newCentre = m_limbs[m_selectedLimb].getCentreOfRotation() + change / glm::vec2(m_limbs[m_selectedLimb].getAnimation().getFrameWidth(), m_limbs[m_selectedLimb].getAnimation().getFrameHeight());
-				//glm::vec2 newOffset = m_limbs[m_selectedLimb].getOffset() - change;
+				glm::vec2 newCentre = m_limbs[m_selectedLimb].getCentreOfRotation() +
+				                      change /
+				                      glm::vec2(m_limbs[m_selectedLimb].getAnimation().getFrameWidth(),
+				                                m_limbs[m_selectedLimb].getAnimation().getFrameHeight());
+				// glm::vec2 newOffset = m_limbs[m_selectedLimb].getOffset() - change;
 
 				m_limbs[m_selectedLimb].setCentreOfRotation(newCentre);
-				//m_limbs[m_selectedLimb].setOffset(newOffset);
+				// m_limbs[m_selectedLimb].setOffset(newOffset);
 
 				m_grabPosition = m_cam.convertScreenToWorld(m_game->inputManager.getMouseCoords());
 
@@ -252,11 +267,13 @@ void MainScreen::checkInput() {
 				}
 				changeYStr += std::to_string(std::abs((int)overallChange.y)) + ")";
 
-				m_textLabel->setText("Position: X=" + std::to_string((int)newCentre.x) + changeXStr + ", Y=" + std::to_string((int)newCentre.y) + changeYStr);
+				m_textLabel->setText("Position: X=" + std::to_string((int)newCentre.x) + changeXStr +
+				                     ", Y=" + std::to_string((int)newCentre.y) + changeYStr);
 
 				if(m_keyframesList->getFirstSelectedItem()) {
-					m_keyframes[m_selectedFrame].centres[m_selectedLimb] = m_limbs[m_selectedLimb].getCentreOfRotation();
-					//m_keyframes[m_selectedFrame].offsets[m_selectedLimb] = m_limbs[m_selectedLimb].getOffset();
+					m_keyframes[m_selectedFrame].centres[m_selectedLimb] =
+					    m_limbs[m_selectedLimb].getCentreOfRotation();
+					// m_keyframes[m_selectedFrame].offsets[m_selectedLimb] = m_limbs[m_selectedLimb].getOffset();
 				}
 			}
 		}
@@ -288,7 +305,8 @@ bool MainScreen::selectLimb(glm::vec2& mouseCoords) {
 	for(int i = m_limbs.size() - 1; i >= 0; i--) {
 		if(m_limbsVisibility[i]) {
 			// Get copies of each position
-			glm::vec2 size = glm::vec2(m_limbs[i].getAnimation().getFrameWidth(), m_limbs[i].getAnimation().getFrameHeight());
+			glm::vec2 size =
+			    glm::vec2(m_limbs[i].getAnimation().getFrameWidth(), m_limbs[i].getAnimation().getFrameHeight());
 			glm::vec2 mousePos = m_cam.convertScreenToWorld(mouseCoords) - glm::vec2(width / 2, height / 2);
 			glm::vec2 limbOffset = m_limbs[i].getOffset();
 			float angle = -m_limbs[i].getAngle();
@@ -310,7 +328,8 @@ bool MainScreen::selectLimb(glm::vec2& mouseCoords) {
 			std::cout << "OFF: X" << limbOffset.x << ", Y" << limbOffset.y << std::endl;
 			centreLimbTrans.x = distToCOR.x * std::cos(angle) - distToCOR.y * std::sin(angle) + COR.x;
 			centreLimbTrans.y = distToCOR.x * std::sin(angle) + distToCOR.y * std::cos(angle) + COR.y;
-			// Centre of the limb should be fully translated so its angle is 0, but its offset is still existent (simply rotated)
+			// Centre of the limb should be fully translated so its angle is 0, but its offset is still existent (simply
+			rotated)
 
 			std::cout << "Centre: X" << COR.x << ", Y" << COR.y << std::endl;
 			std::cout << "Mouse: X" << mouseTrans.x << ", Y" << mouseTrans.y << std::endl;
@@ -318,14 +337,15 @@ bool MainScreen::selectLimb(glm::vec2& mouseCoords) {
 
 			centreLimbTrans = limbOffset + size / glm::vec2(2.0f);
 
-			// Both of our variables, mouseTrans and centreLimbTrans, should be rotated to 0 degrees. Now we can do regular intersection checking
+			// Both of our variables, mouseTrans and centreLimbTrans, should be rotated to 0 degrees. Now we can do
+			// regular intersection checking
 			if(mouseTrans.x > centreLimbTrans.x - size.x / 2.0f && mouseTrans.x < centreLimbTrans.x + size.x / 2.0f) {
-				if(mouseTrans.y > centreLimbTrans.y - size.y / 2.0f && mouseTrans.y < centreLimbTrans.y + size.y / 2.0f) {
+				if(mouseTrans.y > centreLimbTrans.y - size.y / 2.0f &&
+				        mouseTrans.y < centreLimbTrans.y + size.y / 2.0f) {
 					m_selectedLimb = i;
 					return true;
 				}
 			}
-
 		}
 	}
 
@@ -339,90 +359,121 @@ void MainScreen::initUI() {
 	m_gui.hideMouseCursor();
 
 	{
-		m_fileFrame = static_cast<CEGUI::FrameWindow*>(m_gui.createWidget("WindowsLook/FrameWindow", glm::vec4(0.25f, 0.85f, 0.75f, 0.15f), glm::vec4(0.0f), "fileframe"));
+		m_fileFrame = static_cast<CEGUI::FrameWindow*>(m_gui.createWidget(
+		                  "WindowsLook/FrameWindow", glm::vec4(0.25f, 0.85f, 0.75f, 0.15f), glm::vec4(0.0f), "fileframe"));
 		m_fileFrame->setCloseButtonEnabled(false);
 		m_fileFrame->setDragMovingEnabled(false);
 		m_fileFrame->setRollupEnabled(false);
 		m_fileFrame->setTitleBarEnabled(false);
 
-		m_exportButton = static_cast<CEGUI::PushButton*>(m_gui.createWidget(m_fileFrame, "WindowsLook/Button", glm::vec4(0.55f, 0.55f, 0.175f, 0.4f), glm::vec4(0.0f), "fileframeExport"));
+		m_exportButton = static_cast<CEGUI::PushButton*>(m_gui.createWidget(m_fileFrame, "WindowsLook/Button",
+		                 glm::vec4(0.55f, 0.55f, 0.175f, 0.4f), glm::vec4(0.0f), "fileframeExport"));
 		m_exportButton->setText("Export");
-		m_exportButton->subscribeEvent(CEGUI::PushButton::EventClicked, CEGUI::Event::Subscriber(&MainScreen::EventExportButtonClicked, this));
+		m_exportButton->subscribeEvent(
+		    CEGUI::PushButton::EventClicked, CEGUI::Event::Subscriber(&MainScreen::EventExportButtonClicked, this));
 
-		m_importButton = static_cast<CEGUI::PushButton*>(m_gui.createWidget(m_fileFrame, "WindowsLook/Button", glm::vec4(0.775f, 0.55f, 0.175f, 0.4f), glm::vec4(0.0f), "fileframeImport"));
+		m_importButton = static_cast<CEGUI::PushButton*>(m_gui.createWidget(m_fileFrame, "WindowsLook/Button",
+		                 glm::vec4(0.775f, 0.55f, 0.175f, 0.4f), glm::vec4(0.0f), "fileframeImport"));
 		m_importButton->setText("Import");
-		m_importButton->subscribeEvent(CEGUI::PushButton::EventClicked, CEGUI::Event::Subscriber(&MainScreen::EventImportButtonClicked, this));
+		m_importButton->subscribeEvent(
+		    CEGUI::PushButton::EventClicked, CEGUI::Event::Subscriber(&MainScreen::EventImportButtonClicked, this));
 
-		m_nameBox = static_cast<CEGUI::Editbox*>(m_gui.createWidget(m_fileFrame, "WindowsLook/Editbox", glm::vec4(0.55f, 0.05f, 0.4f, 0.4f), glm::vec4(0.0f), "fileframeName"));
+		m_nameBox = static_cast<CEGUI::Editbox*>(m_gui.createWidget(
+		                m_fileFrame, "WindowsLook/Editbox", glm::vec4(0.55f, 0.05f, 0.4f, 0.4f), glm::vec4(0.0f), "fileframeName"));
 
-		//m_loadSkinButton m_skinBox m_importButton m_skinX m_skinY
-		m_skinBox = static_cast<CEGUI::Editbox*>(m_gui.createWidget(m_fileFrame, "WindowsLook/Editbox", glm::vec4(0.05f, 0.05f, 0.4f, 0.4f), glm::vec4(0.0f), "fileframeskinbox"));
+		// m_loadSkinButton m_skinBox m_importButton m_skinX m_skinY
+		m_skinBox = static_cast<CEGUI::Editbox*>(m_gui.createWidget(m_fileFrame, "WindowsLook/Editbox",
+		            glm::vec4(0.05f, 0.05f, 0.4f, 0.4f), glm::vec4(0.0f), "fileframeskinbox"));
 
-		m_loadSkinButton = static_cast<CEGUI::PushButton*>(m_gui.createWidget(m_fileFrame, "WindowsLook/Button", glm::vec4(0.05f, 0.55f, 0.2f, 0.4f), glm::vec4(0.0f), "fileframeloadskin"));
+		m_loadSkinButton = static_cast<CEGUI::PushButton*>(m_gui.createWidget(m_fileFrame, "WindowsLook/Button",
+		                   glm::vec4(0.05f, 0.55f, 0.2f, 0.4f), glm::vec4(0.0f), "fileframeloadskin"));
 		m_loadSkinButton->setText("Load Skin");
-		m_loadSkinButton->subscribeEvent(CEGUI::PushButton::EventClicked, CEGUI::Event::Subscriber(&MainScreen::EventLoadSkinButtonClicked, this));
+		m_loadSkinButton->subscribeEvent(
+		    CEGUI::PushButton::EventClicked, CEGUI::Event::Subscriber(&MainScreen::EventLoadSkinButtonClicked, this));
 
-		m_skinX = static_cast<CEGUI::Spinner*>(m_gui.createWidget(m_fileFrame, "WindowsLook/Spinner", glm::vec4(0.275f, 0.55f, 0.075f, 0.4f), glm::vec4(0.0f), "fileframeskinXSpinner"));
-		CEGUI::DefaultWindow* lx = static_cast<CEGUI::DefaultWindow*>(m_gui.createWidget(m_fileFrame, "WindowsLook/Label", glm::vec4(0.225f, 0.55f, 0.075f, 0.4f), glm::vec4(0.0f), "fileframeXSpinnerLabel"));
+		m_skinX = static_cast<CEGUI::Spinner*>(m_gui.createWidget(m_fileFrame, "WindowsLook/Spinner",
+		                                       glm::vec4(0.275f, 0.55f, 0.075f, 0.4f), glm::vec4(0.0f), "fileframeskinXSpinner"));
+		CEGUI::DefaultWindow* lx = static_cast<CEGUI::DefaultWindow*>(m_gui.createWidget(m_fileFrame,
+		                           "WindowsLook/Label", glm::vec4(0.225f, 0.55f, 0.075f, 0.4f), glm::vec4(0.0f), "fileframeXSpinnerLabel"));
 		lx->setText("W:");
 		lx->setMousePassThroughEnabled(true);
-		m_skinY = static_cast<CEGUI::Spinner*>(m_gui.createWidget(m_fileFrame, "WindowsLook/Spinner", glm::vec4(0.375f, 0.55f, 0.075f, 0.4f), glm::vec4(0.0f), "fileframeskinYSpinner"));
-		CEGUI::DefaultWindow* ly = static_cast<CEGUI::DefaultWindow*>(m_gui.createWidget(m_fileFrame, "WindowsLook/Label", glm::vec4(0.325f, 0.55f, 0.075f, 0.4f), glm::vec4(0.0f), "fileframeYSpinnerLabel"));
+		m_skinY = static_cast<CEGUI::Spinner*>(m_gui.createWidget(m_fileFrame, "WindowsLook/Spinner",
+		                                       glm::vec4(0.375f, 0.55f, 0.075f, 0.4f), glm::vec4(0.0f), "fileframeskinYSpinner"));
+		CEGUI::DefaultWindow* ly = static_cast<CEGUI::DefaultWindow*>(m_gui.createWidget(m_fileFrame,
+		                           "WindowsLook/Label", glm::vec4(0.325f, 0.55f, 0.075f, 0.4f), glm::vec4(0.0f), "fileframeYSpinnerLabel"));
 		ly->setText("H:");
 		ly->setMousePassThroughEnabled(true);
-
 	}
 
 	{
-		m_toolFrame = static_cast<CEGUI::FrameWindow*>(m_gui.createWidget("WindowsLook/FrameWindow", glm::vec4(0.25f, 0.0f, 0.75f, 0.1f), glm::vec4(0.0f), "toolframe"));
+		m_toolFrame = static_cast<CEGUI::FrameWindow*>(m_gui.createWidget(
+		                  "WindowsLook/FrameWindow", glm::vec4(0.25f, 0.0f, 0.75f, 0.1f), glm::vec4(0.0f), "toolframe"));
 		m_toolFrame->setCloseButtonEnabled(false);
 		m_toolFrame->setDragMovingEnabled(false);
 		m_toolFrame->setRollupEnabled(false);
 		m_toolFrame->setTitleBarEnabled(false);
 
-		m_newLimbButton = static_cast<CEGUI::PushButton*>(m_gui.createWidget(m_toolFrame, "WindowsLook/Button", glm::vec4(0.7f, 0.05f, 0.1f, 0.9f), glm::vec4(0.0f), "toolframeNewLimb"));
+		m_newLimbButton = static_cast<CEGUI::PushButton*>(m_gui.createWidget(m_toolFrame, "WindowsLook/Button",
+		                  glm::vec4(0.7f, 0.05f, 0.1f, 0.9f), glm::vec4(0.0f), "toolframeNewLimb"));
 		m_newLimbButton->setText("Add Limb");
-		m_newLimbButton->subscribeEvent(CEGUI::PushButton::EventClicked, CEGUI::Event::Subscriber(&MainScreen::EventNewLimbButtonClicked, this));
+		m_newLimbButton->subscribeEvent(
+		    CEGUI::PushButton::EventClicked, CEGUI::Event::Subscriber(&MainScreen::EventNewLimbButtonClicked, this));
 
-		m_removeLimbButton = static_cast<CEGUI::PushButton*>(m_gui.createWidget(m_toolFrame, "WindowsLook/Button", glm::vec4(0.85f, 0.05f, 0.1f, 0.9f), glm::vec4(0.0f), "toolframeRemoveLimb"));
+		m_removeLimbButton = static_cast<CEGUI::PushButton*>(m_gui.createWidget(m_toolFrame, "WindowsLook/Button",
+		                     glm::vec4(0.85f, 0.05f, 0.1f, 0.9f), glm::vec4(0.0f), "toolframeRemoveLimb"));
 		m_removeLimbButton->setText("Remove Limb");
-		m_removeLimbButton->subscribeEvent(CEGUI::PushButton::EventClicked, CEGUI::Event::Subscriber(&MainScreen::EventRemoveLimbButtonClicked, this));
+		m_removeLimbButton->subscribeEvent(
+		    CEGUI::PushButton::EventClicked, CEGUI::Event::Subscriber(&MainScreen::EventRemoveLimbButtonClicked, this));
 
-		m_rotateOffsetButton = static_cast<CEGUI::PushButton*>(m_gui.createWidget(m_toolFrame, "WindowsLook/Button", glm::vec4(0.05f, 0.05f, 0.3f, 0.9f), glm::vec4(0.0f), "toolframeToolSwitcher"));
+		m_rotateOffsetButton = static_cast<CEGUI::PushButton*>(m_gui.createWidget(m_toolFrame, "WindowsLook/Button",
+		                       glm::vec4(0.05f, 0.05f, 0.3f, 0.9f), glm::vec4(0.0f), "toolframeToolSwitcher"));
 		m_rotateOffsetButton->setText("Rotating");
 		m_tool = ToolType::ROTATE;
-		m_rotateOffsetButton->subscribeEvent(CEGUI::PushButton::EventClicked, CEGUI::Event::Subscriber(&MainScreen::EventRotateOffsetLimbButtonClicked, this));
+		m_rotateOffsetButton->subscribeEvent(CEGUI::PushButton::EventClicked,
+		                                     CEGUI::Event::Subscriber(&MainScreen::EventRotateOffsetLimbButtonClicked, this));
 
-		m_makeAllVisibleButton = static_cast<CEGUI::PushButton*>(m_gui.createWidget(m_toolFrame, "WindowsLook/Button", glm::vec4(0.375f, 0.05f, 0.3f, 0.9f), glm::vec4(0.0f), "toolframemakeallvisible"));
+		m_makeAllVisibleButton = static_cast<CEGUI::PushButton*>(m_gui.createWidget(m_toolFrame, "WindowsLook/Button",
+		                         glm::vec4(0.375f, 0.05f, 0.3f, 0.9f), glm::vec4(0.0f), "toolframemakeallvisible"));
 		m_makeAllVisibleButton->setText("Make all visible");
-		m_makeAllVisibleButton->subscribeEvent(CEGUI::PushButton::EventClicked, CEGUI::Event::Subscriber(&MainScreen::EventMakeAllVisibleButtonClicked, this));
+		m_makeAllVisibleButton->subscribeEvent(CEGUI::PushButton::EventClicked,
+		                                       CEGUI::Event::Subscriber(&MainScreen::EventMakeAllVisibleButtonClicked, this));
 	}
 
 	{
-		m_keyframesFrame = static_cast<CEGUI::FrameWindow*>(m_gui.createWidget("WindowsLook/FrameWindow", glm::vec4(0.0f, 0.0f, 0.25f, 1.0f), glm::vec4(0.0f), "keyframeframe"));
+		m_keyframesFrame = static_cast<CEGUI::FrameWindow*>(m_gui.createWidget(
+		                       "WindowsLook/FrameWindow", glm::vec4(0.0f, 0.0f, 0.25f, 1.0f), glm::vec4(0.0f), "keyframeframe"));
 		m_keyframesFrame->setCloseButtonEnabled(false);
 		m_keyframesFrame->setDragMovingEnabled(false);
 		m_keyframesFrame->setRollupEnabled(false);
 		m_keyframesFrame->setTitleBarEnabled(false);
 
-		m_keyframesList = static_cast<CEGUI::Listbox*>(m_gui.createWidget(m_keyframesFrame, "WindowsLook/Listbox", glm::vec4(0.05f, 0.05f, 0.9f, 0.8f), glm::vec4(0.0f), "keyframeframeList"));
-		m_keyframesList->subscribeEvent(CEGUI::Listbox::EventSelectionChanged, CEGUI::Event::Subscriber(&MainScreen::EventKeyFrameClicked, this));
+		m_keyframesList = static_cast<CEGUI::Listbox*>(m_gui.createWidget(m_keyframesFrame, "WindowsLook/Listbox",
+		                  glm::vec4(0.05f, 0.05f, 0.9f, 0.8f), glm::vec4(0.0f), "keyframeframeList"));
+		m_keyframesList->subscribeEvent(
+		    CEGUI::Listbox::EventSelectionChanged, CEGUI::Event::Subscriber(&MainScreen::EventKeyFrameClicked, this));
 		m_keyframesList->setMultiselectEnabled(false);
 
-		m_playPauseButton = static_cast<CEGUI::PushButton*>(m_gui.createWidget(m_keyframesFrame, "WindowsLook/Button", glm::vec4(0.75f, 0.9f, 0.2f, 0.05f), glm::vec4(0.0f), "keyframeframePlayPause"));
+		m_playPauseButton = static_cast<CEGUI::PushButton*>(m_gui.createWidget(m_keyframesFrame, "WindowsLook/Button",
+		                    glm::vec4(0.75f, 0.9f, 0.2f, 0.05f), glm::vec4(0.0f), "keyframeframePlayPause"));
 		m_playPauseButton->setText("Play");
-		m_playPauseButton->subscribeEvent(CEGUI::PushButton::EventClicked, CEGUI::Event::Subscriber(&MainScreen::EventPlayPauseButtonClicked, this));
+		m_playPauseButton->subscribeEvent(
+		    CEGUI::PushButton::EventClicked, CEGUI::Event::Subscriber(&MainScreen::EventPlayPauseButtonClicked, this));
 
-		m_addFrameButton = static_cast<CEGUI::PushButton*>(m_gui.createWidget(m_keyframesFrame, "WindowsLook/Button", glm::vec4(0.05f, 0.9f, 0.15f, 0.05f), glm::vec4(0.0f), "keyframeframeAddFrame"));
+		m_addFrameButton = static_cast<CEGUI::PushButton*>(m_gui.createWidget(m_keyframesFrame, "WindowsLook/Button",
+		                   glm::vec4(0.05f, 0.9f, 0.15f, 0.05f), glm::vec4(0.0f), "keyframeframeAddFrame"));
 		m_addFrameButton->setText("+");
-		m_addFrameButton->subscribeEvent(CEGUI::PushButton::EventClicked, CEGUI::Event::Subscriber(&MainScreen::EventAddFrameButtonClicked, this));
+		m_addFrameButton->subscribeEvent(
+		    CEGUI::PushButton::EventClicked, CEGUI::Event::Subscriber(&MainScreen::EventAddFrameButtonClicked, this));
 
-		m_removeFrameButton = static_cast<CEGUI::PushButton*>(m_gui.createWidget(m_keyframesFrame, "WindowsLook/Button", glm::vec4(0.25f, 0.9f, 0.15f, 0.05f), glm::vec4(0.0f), "keyframeframeRemoveFrame"));
+		m_removeFrameButton = static_cast<CEGUI::PushButton*>(m_gui.createWidget(m_keyframesFrame, "WindowsLook/Button",
+		                      glm::vec4(0.25f, 0.9f, 0.15f, 0.05f), glm::vec4(0.0f), "keyframeframeRemoveFrame"));
 		m_removeFrameButton->setText("-");
-		m_removeFrameButton->subscribeEvent(CEGUI::PushButton::EventClicked, CEGUI::Event::Subscriber(&MainScreen::EventRemoveFrameButtonClicked, this));
+		m_removeFrameButton->subscribeEvent(CEGUI::PushButton::EventClicked,
+		                                    CEGUI::Event::Subscriber(&MainScreen::EventRemoveFrameButtonClicked, this));
 	}
 
-	m_textLabel = static_cast<CEGUI::DefaultWindow*>(m_gui.createWidget("WindowsLook/Label", glm::vec4(0.01f, 0.97f, 0.23f, 0.02f), glm::vec4(0.0f), "fileframeTextbox"));
+	m_textLabel = static_cast<CEGUI::DefaultWindow*>(m_gui.createWidget(
+	                  "WindowsLook/Label", glm::vec4(0.01f, 0.97f, 0.23f, 0.02f), glm::vec4(0.0f), "fileframeTextbox"));
 	m_textLabel->setProperty("HorzFormatting", "LeftAligned");
 	m_textLabel->setFont("DejaVuSans-10");
 	m_textLabel->setAlwaysOnTop(true);
@@ -499,15 +550,17 @@ void MainScreen::exportToFile(std::string filepath) {
 
 	anim.angles.resize(m_limbs.size() * m_keyframes.size());
 	anim.offsets.resize(m_limbs.size() * m_keyframes.size());
+	anim.centresOfRotation.resize(m_limbs.size() * m_keyframes.size());
 
 	for(unsigned int i = 0; i < m_keyframes.size(); i++) {
 		for(unsigned int j = 0; j < m_limbs.size(); j++) {
 			anim.angles[j + i * m_limbs.size()] = m_keyframes[i].angles[j];
 			anim.offsets[j + i * m_limbs.size()] = m_keyframes[i].offsets[j];
+			anim.centresOfRotation[j + i * m_limbs.size()] = m_keyframes[i].centres[j];
 		}
 	}
 
-	anim.numLimbs = m_limbs.size();
+	anim.limbIndices = m_limbIndices;
 	anim.repeats = true;
 	anim.id = 0;
 	anim.name = "Animation_Name";
@@ -515,10 +568,10 @@ void MainScreen::exportToFile(std::string filepath) {
 	rapidxml::xml_document<> doc;
 	char* name;
 	name = doc.allocate_string("skeletalAnimation");
-	//rapidxml::xml_node<>* docNode = doc.allocate_node(rapidxml::node_document); // document
-	//doc.append_node(docNode);
+	// rapidxml::xml_node<>* docNode = doc.allocate_node(rapidxml::node_document); // document
+	// doc.append_node(docNode);
 
-	//for(unsigned int i = 0; i < m_keyframes.size(); i++) {
+	// for(unsigned int i = 0; i < m_keyframes.size(); i++) {
 	rapidxml::xml_node<>* node = doc.allocate_node(rapidxml::node_element, name);
 	doc.append_node(node);
 
@@ -555,18 +608,21 @@ void MainScreen::importFromFile(std::string filepath) {
 	m_limbsVisibility.clear();
 	m_keyframes.clear();
 
-	for(unsigned int i = 0; i < anim.numLimbs; i++) {
+	for(unsigned int i = 0; i < anim.limbIndices.size(); i++) {
 		m_limbs.emplace_back(i);
 		m_limbsVisibility.emplace_back(true);
 	}
-	m_keyframes.resize(anim.angles.size() / anim.numLimbs);
+	m_limbIndices = anim.limbIndices;
+	m_keyframes.resize(anim.angles.size() / anim.limbIndices.size());
 
 	for(unsigned int i = 0; i < m_keyframes.size(); i++) {
 		m_keyframes[i].angles.resize(m_limbs.size());
 		m_keyframes[i].offsets.resize(m_limbs.size());
+		m_keyframes[i].centres.resize(m_limbs.size());
 		for(unsigned int j = 0; j < m_limbs.size(); j++) {
-			m_keyframes[i].angles[j] = anim.angles[j + i * anim.numLimbs];
-			m_keyframes[i].offsets[j] = anim.offsets[j + i * anim.numLimbs];
+			m_keyframes[i].angles[j] = anim.angles[j + i * anim.limbIndices.size()];
+			m_keyframes[i].offsets[j] = anim.offsets[j + i * anim.limbIndices.size()];
+			m_keyframes[i].centres[j] = anim.centresOfRotation[j + i * anim.limbIndices.size()];
 		}
 	}
 
@@ -585,14 +641,14 @@ void MainScreen::importFromFile(std::string filepath) {
 		m_keyframesList->addItem(item);
 		m_keyframesList->ensureItemIsVisible(item);
 	}
-
 }
 
 /// CEGUI Event Functions
 bool MainScreen::EventExportButtonClicked(const CEGUI::EventArgs& e) {
 	std::cout << "Export" << std::endl;
 
-	std::string filepath = std::filesystem::current_path().generic_string() + "/" + std::string(m_nameBox->getText().c_str());
+	std::string filepath =
+	    std::filesystem::current_path().generic_string() + "/" + std::string(m_nameBox->getText().c_str());
 
 	exportToFile(filepath);
 
@@ -602,7 +658,8 @@ bool MainScreen::EventExportButtonClicked(const CEGUI::EventArgs& e) {
 bool MainScreen::EventImportButtonClicked(const CEGUI::EventArgs& e) {
 	std::cout << "Import" << std::endl;
 
-	std::string filepath = std::filesystem::current_path().generic_string() + "/" + std::string(m_nameBox->getText().c_str());
+	std::string filepath =
+	    std::filesystem::current_path().generic_string() + "/" + std::string(m_nameBox->getText().c_str());
 
 	importFromFile(filepath);
 
@@ -612,7 +669,8 @@ bool MainScreen::EventImportButtonClicked(const CEGUI::EventArgs& e) {
 bool MainScreen::EventLoadSkinButtonClicked(const CEGUI::EventArgs& e) {
 	std::cout << "Load Skin" << std::endl;
 
-	std::string filepath = std::filesystem::current_path().generic_string() + "/" + std::string(m_skinBox->getText().c_str());
+	std::string filepath =
+	    std::filesystem::current_path().generic_string() + "/" + std::string(m_skinBox->getText().c_str());
 
 	std::cout << "Filepath: " << filepath << std::endl;
 
@@ -634,7 +692,7 @@ bool MainScreen::EventLoadSkinButtonClicked(const CEGUI::EventArgs& e) {
 
 	for(unsigned int i = 0; i < m_limbs.size(); i++) {
 		if(i < m_skins.size())
-			m_limbs[i].setSkin(m_skins[i]);
+			m_limbs[i].setSkin(m_skins[m_limbIndices[i]]);
 	}
 
 	return true;
@@ -664,20 +722,25 @@ AnimationModule::SkeletalAnimation MainScreen::getSkeletal() {
 	anim.setAngles(angles);
 	anim.setOffsets(offsets);
 	anim.setCentres(centres);
-	anim.setNumLimbs(m_limbs.size());
+	anim.setLimbIndices(m_limbIndices);
 
 	return anim;
-
 }
 
 bool MainScreen::EventNewLimbButtonClicked(const CEGUI::EventArgs& e) {
 	std::cout << "New Limb" << std::endl;
 
 	AnimationModule::AugLimb limb(m_limbs.size());
-	if(m_skins.size() >= m_limbs.size() + 1) limb.setSkin(m_skins[m_limbs.size()]);
+	if(m_skins.size() >= m_limbs.size() + 1)
+		limb.setSkin(m_skins[m_limbs.size()]);
 
 	m_limbs.push_back(limb);
 	m_limbsVisibility.push_back(true);
+	if(m_limbIndices.size() > 0) {
+		m_limbIndices.push_back(m_limbIndices[m_limbIndices.size() - 1] + 1);
+	} else {
+		m_limbIndices.push_back(0);
+	}
 
 	for(unsigned int i = 0; i < m_keyframes.size(); i++) {
 		m_keyframes[i].angles.push_back(0.0f);
@@ -702,6 +765,7 @@ bool MainScreen::EventRemoveLimbButtonClicked(const CEGUI::EventArgs& e) {
 		for(unsigned int i = m_selectedLimb; i < m_limbs.size() - 1; i++) {
 			m_limbs[i] = m_limbs[i + 1];
 			m_limbsVisibility[i] = m_limbsVisibility[i + 1];
+			m_limbIndices[i] = m_limbIndices[i + 1];
 		}
 		for(unsigned int j = 0; j < m_keyframes.size(); j++) {
 			for(unsigned int k = m_selectedLimb; k < m_keyframes[j].angles.size() - 1; k++) {
@@ -715,6 +779,7 @@ bool MainScreen::EventRemoveLimbButtonClicked(const CEGUI::EventArgs& e) {
 		}
 		m_limbs.pop_back();
 		m_limbsVisibility.pop_back();
+		m_limbIndices.pop_back();
 	}
 
 	return true;
@@ -757,7 +822,6 @@ bool MainScreen::EventKeyFrameClicked(const CEGUI::EventArgs& e) {
 
 	return false;
 }
-
 
 bool MainScreen::EventPlayPauseButtonClicked(const CEGUI::EventArgs& e) {
 	std::cout << "Play/Pause" << std::endl;

@@ -83,6 +83,17 @@ namespace XMLModule {
 			}
 		}
 	}
+	
+	void getVector(rapidxml::xml_node<>* parent, std::string valueName, std::string childName, std::vector<GenericData>& vec) {
+		rapidxml::xml_node<>* n = parent->first_node((char*)valueName.c_str()); // Gets <entities> in the example.
+
+		if(n) {
+			GenericData temp;
+			while(getValue(n, childName, temp)) {
+				vec.push_back(temp);
+			}
+		}
+	}
 
 
 	bool getValue(rapidxml::xml_node<>* parent, std::string valueName, std::string& variable) {
@@ -173,6 +184,19 @@ namespace XMLModule {
 		return false;
 	}
 
+	bool getValue(rapidxml::xml_node<>* parent, std::string valueName, GenericData& variable) {
+		/// Places value of node with name `valueName` into `variable` and removes the node from the doc. Returns true on successful value find
+		rapidxml::xml_node<>* n = parent->first_node((char*)valueName.c_str());
+		if(n) {
+			if(std::string(n->value()) != std::string("")) {
+				variable.init(n);
+			}
+			parent->remove_node(n);
+			return true;
+		}
+		return false;
+	}
+
 	void getMetaData(rapidxml::xml_node<>* parent, SaveDataTypes::MetaData& mdVar) {
 		/// Retrieves ALL existing children from `parent`, then sets their names as the keys, with their values as the values in a MetaData object, stored in `mdVar`. Removes each node systematically from parent after adding them to mdVar.
 
@@ -212,6 +236,7 @@ namespace XMLModule {
 	std::map<unsigned int, GenericData*> XMLData::m_dialogueQuestionData;
 	std::map<unsigned int, GenericData*> XMLData::m_dialogueResponseData;
 	std::map<unsigned int, GenericData*> XMLData::m_animationData;
+	std::map<unsigned int, GenericData*> XMLData::m_skeletalAnimationData;
 	std::map<unsigned int, GenericData*> XMLData::m_attackData;
 
 
@@ -343,7 +368,7 @@ namespace XMLModule {
 		} else if(name == "animation") {
 			mapForWrite = &m_animationData;
 		} else if(name == "skeletalAnimation") {
-			mapForWrite = &m_animationData;
+			mapForWrite = &m_skeletalAnimationData;
 		} else if(name == "meleeAttack") {
 			mapForWrite = &m_attackData;
 		} else if(name == "rangedAttack") {
@@ -654,9 +679,9 @@ namespace XMLModule {
 /// Skeletal Animations
 
 	SkeletalAnimationData XMLData::getSkeletalAnimationData(unsigned int id) {
-		auto index = m_animationData.find(id);
+		auto index = m_skeletalAnimationData.find(id);
 
-		if(index == m_animationData.end()) {
+		if(index == m_skeletalAnimationData.end()) {
 			Logger::getInstance()->log("ERROR: Couldn't find animation data with ID: " + std::to_string(id), true);
 			SkeletalAnimationData s;
 			return s;

@@ -21,6 +21,7 @@ namespace XMLModule {
 	void getVector(rapidxml::xml_node<>* parent, std::string valueName, std::string childName, std::vector<unsigned int>& vec); // Retrieves an unsigned int vector from a node
 	void getVector(rapidxml::xml_node<>* parent, std::string valueName, std::string childName, std::vector<glm::vec2>& vec); // Retrieves an unsigned int vector from a node
 	void getVector(rapidxml::xml_node<>* parent, std::string valueName, std::string childName, std::vector<bool>& vec); // Retrieves a bool vector from a node
+	void getVector(rapidxml::xml_node<>* parent, std::string valueName, std::string childName, std::vector<GenericData>& vec); // Retrieves a bool vector from a node
 
 	bool getValue(rapidxml::xml_node<>* parent, std::string valueName, std::string& variable);
 	bool getValue(rapidxml::xml_node<>* parent, std::string valueName, float& variable);
@@ -28,6 +29,7 @@ namespace XMLModule {
 	bool getValue(rapidxml::xml_node<>* parent, std::string valueName, unsigned int& variable);
 	bool getValue(rapidxml::xml_node<>* parent, std::string valueName, glm::vec2& variable);
 	bool getValue(rapidxml::xml_node<>* parent, std::string valueName, bool& variable);
+	bool getValue(rapidxml::xml_node<>* parent, std::string valueName, GenericData& variable);
 
 	void getMetaData(rapidxml::xml_node<>* parent, SaveDataTypes::MetaData& mdVar);
 
@@ -84,6 +86,7 @@ namespace XMLModule {
 			static std::map<unsigned int, GenericData*> m_dialogueQuestionData;
 			static std::map<unsigned int, GenericData*> m_dialogueResponseData;
 			static std::map<unsigned int, GenericData*> m_animationData;
+			static std::map<unsigned int, GenericData*> m_skeletalAnimationData;
 			static std::map<unsigned int, GenericData*> m_attackData;
 	};
 

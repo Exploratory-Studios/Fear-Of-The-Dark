@@ -1,5 +1,5 @@
 <npc id="0" name="Player">
-	<texture>Entities/NPCs/Player.png</texture>
+	<texture>Entities/NPCs/PlayerLimbs.png</texture>
 	<bumpMap>BushGreen.png</bumpMap>
 	<size>1.5,4.0</size>
 	<isDamagedByFalls>1</isDamagedByFalls>
@@ -8,13 +8,20 @@
 	<jumpHeight>4.500000</jumpHeight>
 	<maxHealth>100.000000</maxHealth>
 	<faction>good</faction>
-	<idleAnimationID>2</idleAnimationID>
+	<idleAnimationID>0</idleAnimationID>
+	<lowVelAnimationID>0</lowVelAnimationID>
 	<skinAnimationIDs>
 		<skinAnimationID>0</skinAnimationID>
+		<skinAnimationID>1</skinAnimationID>
+		<skinAnimationID>2</skinAnimationID>
+		<skinAnimationID>3</skinAnimationID>
 	</skinAnimationIDs>
+	<attackIDs>
+		<attackID>0</attackID>
+	</attackIDs>
 </npc>
 <npc id="1" name="QuestGiverA">
-	<texture>Entities/NPCs/Mob0.png</texture>
+	<texture>Entities/NPCs/PlayerLimbs.png</texture>
 	<bumpMap>Mob0.png</bumpMap>
 	<size>1.5,4.0</size>
 	<isDamagedByFalls>1</isDamagedByFalls>

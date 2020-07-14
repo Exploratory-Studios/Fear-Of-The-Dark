@@ -42,7 +42,7 @@ class Entity {
 		void update(World* world, float timeStep, unsigned int selfIndex);
 		void tick(World* world);
 		virtual void draw(GLEngine::SpriteBatch& sb, float time, int layerDifference, float xOffset);
-		void drawNormal(GLEngine::SpriteBatch& sb, float time, int layerDifference, float xOffset);
+		virtual void drawNormal(GLEngine::SpriteBatch& sb, float time, int layerDifference, float xOffset);
 		void debugDraw(GLEngine::DebugRenderer& dr, float xOffset);
 		void move(float timeStepVariable);
 

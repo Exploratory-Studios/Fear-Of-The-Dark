@@ -13,6 +13,14 @@ struct NavTile { // Pretty much the same thing as a navmesh
 	bool visited = false;
 };
 
+enum class MovementState {
+	IDLE,
+	LOW_VEL,
+	HIGH_VEL,
+	UP,
+	DOWN
+};
+
 class Item;
 class Inventory;
 class Tile;
@@ -23,7 +31,10 @@ class EntityNPC : public Entity {
 		EntityNPC(glm::vec2 pos, unsigned int layer, EntityIDs id, SaveDataTypes::MetaData data, bool loadTex);
 		virtual ~EntityNPC();
 
+		void init(unsigned int id);
+
 		virtual void draw(GLEngine::SpriteBatch& sb, float time, int layerDifference, float xOffset) override;
+		virtual void drawNormal(GLEngine::SpriteBatch& sb, float time, int layerDifference, float xOffset) override;
 
 		void onTalk() {}
 		void onTrade() {}
@@ -62,6 +73,12 @@ class EntityNPC : public Entity {
 		std::vector<glm::vec3> m_targets;
 		unsigned int m_curTarget = 0;
 
+		void activateAttack(unsigned int attackID);
+		void updateAttack();
+		int m_currentAttackID = -1;
+		AnimationModule::SkeletalAnimation m_currentAttackAnim;
+		bool m_leadingIntoAttack = true;
+
 		virtual void onTick(World* world) override;
 
 		void initLimbs(); // Initializes limbs and animations.
@@ -70,7 +87,6 @@ class EntityNPC : public Entity {
 		AnimationModule::Limb m_test;
 
 		std::vector<AnimationModule::Limb> m_limbs; // Limbs to show skeletal animation.
-		AnimationModule::SkeletalAnimation m_attackAnimation; // This changes as the entity acts.
 		AnimationModule::SkeletalAnimation m_idleAnimation, m_lowVelAnimation, m_highVelAnimation, m_upAnimation, m_downAnimation;
 
 		// Fall damage

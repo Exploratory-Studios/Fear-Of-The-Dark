@@ -15,4 +15,8 @@ void main() {
 	gl_FragDepth = fragmentPosition.z;
 
 	color = texture(textureSampler, fragmentUV.xy);
+
+	if(color.a < 0.05) {
+		discard;
+	}
 }

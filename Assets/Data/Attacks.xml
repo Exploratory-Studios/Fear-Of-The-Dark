@@ -1,6 +1,6 @@
 <meleeAttack name="Melee Test" id="0">
-	<leadInAnimation>0</leadInAnimation>
-	<leadOutAnimation>0</leadOutAnimation>
+	<leadInAnimation>2</leadInAnimation>
+	<leadOutAnimation>1</leadOutAnimation>
 	<projectileID>0</projectileID>
 </meleeAttack>
 

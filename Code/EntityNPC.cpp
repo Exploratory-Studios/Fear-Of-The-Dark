@@ -16,42 +16,22 @@
 #include "Factory.h"
 
 EntityNPC::EntityNPC(glm::vec2 pos, unsigned int layer, unsigned int id, SaveDataTypes::MetaData data, bool loadTex) : Entity(pos, layer, SaveDataTypes::MetaData()) {
-	m_type = EntityTypes::NPC;
-
 	m_id = id;
 
-	XMLModule::EntityNPCData d = XMLModule::XMLData::getEntityNPCData(id);
-
-	m_texturePath = d.texture;
-	m_bumpMapPath = d.bumpMap;
-	m_size = d.size;
-	m_takesFallDamage = d.isDamagedByFalls;
-	m_canDie = !d.isInvincible;
-	m_runSpeed = d.speed;
-	m_jumpHeight = std::sqrt(d.jumpHeight * 2.0f * (1.225f / 60.0f)); // Converts # of blocks to actual acceleration required.
-	m_maxHealth = d.maxHealth;
-	m_faction = (Categories::Faction)d.faction;
-
-	m_metaData = d.getMetaData();
-
-	m_health = m_maxHealth;
-
-	if(loadTex) {
-		loadTexture();
-	}
-
-	initLimbs();
+	init(m_id);
 }
 
 EntityNPC::EntityNPC(glm::vec2 pos, unsigned int layer, EntityIDs id, SaveDataTypes::MetaData data, bool loadTex) : Entity(pos, layer, SaveDataTypes::MetaData()) {
-	m_type = EntityTypes::NPC;
-
 	m_id = (unsigned int)id;
+
+	init(m_id);
+}
+
+void EntityNPC::init(unsigned int id) {
+	m_type = EntityTypes::NPC;
 
 	XMLModule::EntityNPCData d = XMLModule::XMLData::getEntityNPCData(m_id);
 
-	m_texturePath = d.texture;
-	m_bumpMapPath = d.bumpMap;
 	m_size = d.size;
 	m_takesFallDamage = d.isDamagedByFalls;
 	m_canDie = !d.isInvincible;
@@ -63,10 +43,6 @@ EntityNPC::EntityNPC(glm::vec2 pos, unsigned int layer, EntityIDs id, SaveDataTy
 	m_metaData = d.getMetaData();
 
 	m_health = m_maxHealth;
-
-	if(loadTex) {
-		loadTexture();
-	}
 
 	initLimbs();
 }
@@ -83,8 +59,11 @@ void EntityNPC::initLimbs() {
 	}
 
 	// Load skeletal animations
-	m_idleAnimation.init(data.idleAnimationID);
-	m_idleAnimation.setToLoop(true);
+	//m_idleAnimation.init(data.idleAnimationID);
+	//m_idleAnimation.setToLoop(true);
+
+	m_lowVelAnimation.init(data.idleAnimationID);
+	m_lowVelAnimation.setToLoop(true);
 	// Load the rest...
 
 	// Activate idle animation to start
@@ -118,10 +97,6 @@ EntityNPC::~EntityNPC() {
 
 void EntityNPC::draw(GLEngine::SpriteBatch& sb, float time, int layerDifference, float xOffset) {
 	if(m_draw) {
-		if(m_textureId == (GLuint) - 1) {
-			loadTexture();
-		}
-
 		glm::vec4 destRect = glm::vec4(m_position.x + (xOffset * CHUNK_SIZE), m_position.y, m_size.x, m_size.y);
 
 		float depth = getDepth();
@@ -130,6 +105,17 @@ void EntityNPC::draw(GLEngine::SpriteBatch& sb, float time, int layerDifference,
 		}
 
 		onDraw(sb, time, layerDifference, xOffset);
+	}
+}
+
+void EntityNPC::drawNormal(GLEngine::SpriteBatch& sb, float time, int layerDifference, float xOffset) {
+	if(m_draw) {
+		glm::vec4 destRect = glm::vec4(m_position.x + (xOffset * CHUNK_SIZE), m_position.y, m_size.x, m_size.y);
+
+		float depth = getDepth();
+		for(unsigned int i = 0; i < m_limbs.size(); i++) {
+			//m_limbs[i].drawNormal(sb, GLEngine::ColourRGBA8(255, 255, 255, 255), destRect, depth);
+		}
 	}
 }
 
@@ -332,6 +318,7 @@ void EntityNPC::onUpdate(World* world, float timeStep, unsigned int selfIndex) {
 		}
 	}
 
+	updateAttack();
 	updateMovement(world);
 	updateLightLevel(world);
 
@@ -750,6 +737,48 @@ void EntityNPC::setAITarget(World* world, unsigned int selfIndex) {
 			pathfindToTarget(world, glm::vec3((int)targetL->getPosition().x, (int)targetL->getPosition().y, targetL->getLayer()), true);
 		} else {
 			pathfindToTarget(world, glm::vec3((int)targetR->getPosition().x, (int)targetR->getPosition().y, targetR->getLayer()), false);
+		}
+	}
+}
+
+void EntityNPC::activateAttack(unsigned int attackID) {
+	// This needs to set the m_curAttack variable, as well as start the lead in animation.
+	// The update function will make sure that, once the lead in is done, the attack is executed and the lead out is started.
+	XMLModule::AttackData attackData = XMLModule::XMLData::getAttackData(attackID);
+
+	m_currentAttackAnim.init(attackData.leadInAnimationID);
+	m_currentAttackAnim.setToLoop(false); // If it loops, then we'll never actually execute the attack
+
+	for(unsigned int i = 0; i < m_limbs.size(); i++) {
+		m_limbs[i].activateSkeletalAnimation(m_currentAttackAnim); // The limb will only replace its current animation if the leadInAnim defines its index as "used"
+	}
+
+	m_currentAttackID = attackID;
+	m_leadingIntoAttack = true; // This tells the program that we're executing the first(!) animation, and haven't executed the attack yet.
+}
+
+void EntityNPC::updateAttack() {
+	// This needs to check if there's an attack "running" and exit if not
+	// If there is an attack, it needs to check if the lead in is finished. If so, execute the attack and set m_leadingIntoAttack. If not, exit
+	// If the lead out is finished, then reset m_currentAttackID and set the skeletal animation to the idle animation for all limbs
+
+	// Check if attack is running
+	if(m_currentAttackID >= 0) {
+		// It is. Now check if the lead-in is finished:
+		if(m_currentAttackAnim.isFinished()) {
+			// It is. Now check if we're leading in, or out
+			if(m_leadingIntoAttack) {
+				// We are. Now, execute the attack and start the lead in, while setting m_leadingIntoAttack.
+				XMLModule::AttackData attackData = XMLModule::XMLData::getAttackData(m_currentAttackID);
+				m_currentAttackAnim.init(attackData.leadOutAnimationID);
+				m_leadingIntoAttack = false;
+			} else {
+				// We're not. So, set all limbs to idle and m_currentAttackID to -1 (not attacking)
+				for(unsigned int i = 0; i < m_limbs.size(); i++) {
+					m_limbs[i].activateSkeletalAnimation(m_idleAnimation);
+				}
+				m_currentAttackID = -1;
+			}
 		}
 	}
 }

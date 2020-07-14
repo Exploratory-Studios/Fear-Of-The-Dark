@@ -1,0 +1,11 @@
+<skeletalAnimation id="0" name="Animation_Name">
+	<repeats>1</repeats>
+	<limbIndices>
+		<limbIndex>0</limbIndex>
+		<limbIndex>2</limbIndex>
+	</limbIndices>
+	<centresOfRotation/>
+	<offsets/>
+	<angles/>
+</skeletalAnimation>
+

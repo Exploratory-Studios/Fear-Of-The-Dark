@@ -66,6 +66,15 @@ namespace AnimationModule {
 			bool isFinished();
 			void restart();
 
+			bool affectsLimb(unsigned int index) {
+				for(unsigned int i = 0; i < m_limbIndices.size(); i++) {
+					if(m_limbIndices[i] == index) {
+						return true;
+					}
+				}
+				return false;
+			}
+
 			void setToLoop(bool loops) {
 				m_repeats = loops;
 			}
@@ -81,14 +90,14 @@ namespace AnimationModule {
 			}
 
 			void setFrame(unsigned int frame) {
-				if(m_angles.size() > 0) m_currentFrame = frame % (m_angles.size() / m_numLimbs);
+				if(m_angles.size() > 0) m_currentFrame = frame % (m_angles.size() / m_limbIndices.size());
 			}
 
 		protected:
 			int m_currentFrame = 0, m_lastFrame = 0;
 			bool m_repeats = false;
 
-			unsigned int m_numLimbs = 5;
+			std::vector<unsigned int> m_limbIndices;
 
 			// Uses a one dimensional vector. Pattern: Limb0 Angle0, Limb1 Angle0, Limb2 Angle0, Limb0 Angle1, Limb1 Angle1, Limb2 Angle1, etc.
 			std::vector<float> m_angles; // Relative to the centre of the limb.

@@ -22,11 +22,11 @@ namespace AnimationModule {
 		GLEngine::GLTexture tex = GLEngine::ResourceManager::getTexture(d.texture);
 
 		m_textureID = tex.id;
-		m_width = tex.width;
 		float height = tex.height;
 		float y = d.y;
 		m_frameWidth = d.width;
 		m_frameHeight = d.height;
+		m_width = d.frames * m_frameWidth;
 
 		float framesVert = height / m_frameHeight;
 
@@ -79,7 +79,7 @@ namespace AnimationModule {
 		m_angles = d.angles;
 		m_offsets = d.offsets;
 		m_centresOfRotation = d.centresOfRotation;
-		m_numLimbs = d.numLimbs;
+		m_limbIndices = d.limbIndices;
 		m_repeats = d.repeats;
 	}
 
@@ -87,9 +87,19 @@ namespace AnimationModule {
 		// Interpolate betweem this keypoint and next point. One can assume that this is called every frame,
 		// so a constant value (an integral from one angle/place to the next) can be added each frame.
 
+		{
+			bool found = false;
+			for(unsigned int i = 0; i < m_limbIndices.size(); i++) {
+				if(m_limbIndices[i] == limb->getIndex()) {
+					found = true;
+				}
+			}
+			if(!found) return;
+		}
+
 		if(m_currentFrame < m_angles.size() - 1) {
-			unsigned int elementI = m_currentFrame * m_numLimbs + limb->getIndex();
-			unsigned int nextElementI = ((m_currentFrame + 1) % m_angles.size()) * m_numLimbs + limb->getIndex();
+			unsigned int elementI = m_currentFrame * m_limbIndices.size() + limb->getIndex();
+			unsigned int nextElementI = (((m_currentFrame + 1) * m_limbIndices.size()) % m_angles.size()) + limb->getIndex();
 
 			if(m_lastFrame == m_currentFrame) { // Continue interpolation
 				glm::vec2 diffPos = m_offsets[nextElementI] - m_offsets[elementI];
@@ -120,7 +130,7 @@ namespace AnimationModule {
 
 	void SkeletalAnimation::tick() {
 		if(!isFinished()) {
-			m_currentFrame = (m_currentFrame + 1) % (m_offsets.size() / m_numLimbs - 1);
+			m_currentFrame = (m_currentFrame + 1) % (m_offsets.size() / m_limbIndices.size() - 1);
 		}
 	}
 
@@ -150,6 +160,9 @@ namespace AnimationModule {
 
 	void Limb::activateSkeletalAnimation(SkeletalAnimation anim) {
 		// Sets current m_activeAnimation and sets m_animationTime to 0.0f
+		if(!anim.affectsLimb(m_index)) {
+			return;
+		}
 		m_activeAnimation = anim;
 		m_isAnimated = true;
 

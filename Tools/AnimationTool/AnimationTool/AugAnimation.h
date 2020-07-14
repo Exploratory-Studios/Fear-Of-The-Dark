@@ -27,8 +27,8 @@ namespace AnimationModule {
 				m_centresOfRotation = centres;
 			}
 
-			void setNumLimbs(unsigned int limbs) {
-				m_numLimbs = limbs;
+			void setLimbIndices(std::vector<unsigned int> indices) {
+				m_limbIndices = indices;
 			}
 	};
 

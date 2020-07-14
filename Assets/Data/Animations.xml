@@ -1,35 +1,70 @@
-<animation name="Test" id="0">
-	<texture>/Entities/NPCs/Player.png</texture>
+<animation name="Test_Torso" id="0">
+	<texture>/Entities/NPCs/PlayerLimbs.png</texture>
 	<y>0</y>
 	<width>48</width>
 	<height>128</height>
+	<frames>1</frames>
 </animation>
-<skeletalAnimation name="testSkel" id="1">
+<animation name="Test_Arm" id="1">
+	<texture>/Entities/NPCs/PlayerLimbs.png</texture>
+	<y>1</y>
+	<width>48</width>
+	<height>128</height>
+	<frames>1</frames>
+</animation>
+<animation name="Test_Leg0" id="2">
+	<texture>/Entities/NPCs/PlayerLimbs.png</texture>
+	<y>2</y>
+	<width>48</width>
+	<height>128</height>
+	<frames>1</frames>
+</animation>
+<animation name="Test_Leg1" id="3">
+	<texture>/Entities/NPCs/PlayerLimbs.png</texture>
+	<y>3</y>
+	<width>48</width>
+	<height>128</height>
+	<frames>1</frames>
+</animation>
+<skeletalAnimation id="0" name="WalkAnim">
 	<repeats>1</repeats>
-	<numLimbs>1</numLimbs>
-	<angles>
-		<angle>0</angle>
-		<angle>15</angle>
-		<angle>30</angle>
-		<angle>45</angle>
-		<angle>30</angle>
-		<angle>15</angle>
-		<angle>0</angle>
-	</angles>
+	<numLimbs>4</numLimbs>
+	<centresOfRotation>
+		<centreOfRotation>0.500000,0.500000</centreOfRotation>
+		<centreOfRotation>0.491322,0.789641</centreOfRotation>
+		<centreOfRotation>0.500000,0.473965</centreOfRotation>
+		<centreOfRotation>0.527479,0.473965</centreOfRotation>
+		<centreOfRotation>0.500000,0.500000</centreOfRotation>
+		<centreOfRotation>0.491322,0.789641</centreOfRotation>
+		<centreOfRotation>0.500000,0.473965</centreOfRotation>
+		<centreOfRotation>0.527479,0.473965</centreOfRotation>
+		<centreOfRotation>0.500000,0.500000</centreOfRotation>
+		<centreOfRotation>0.491322,0.789641</centreOfRotation>
+		<centreOfRotation>0.500000,0.473965</centreOfRotation>
+		<centreOfRotation>0.527479,0.473965</centreOfRotation>
+		<centreOfRotation>0.500000,0.500000</centreOfRotation>
+		<centreOfRotation>0.491322,0.789641</centreOfRotation>
+		<centreOfRotation>0.500000,0.473965</centreOfRotation>
+		<centreOfRotation>0.527479,0.473965</centreOfRotation>
+		<centreOfRotation>0.500000,0.500000</centreOfRotation>
+		<centreOfRotation>0.491322,0.789641</centreOfRotation>
+		<centreOfRotation>0.500000,0.473965</centreOfRotation>
+		<centreOfRotation>0.527479,0.473965</centreOfRotation>
+	</centresOfRotation>
 	<offsets>
-		<offset>0.0,0.0</offset>
-		<offset>0.0,0.0</offset>
-		<offset>0.0,0.0</offset>
-		<offset>0.0,0.0</offset>
-		<offset>0.0,0.0</offset>
-		<offset>0.0,0.0</offset>
-		<offset>0.0,0.0</offset>
-	</offsets>
-</skeletalAnimation>
-<skeletalAnimation id="2" name="TestAnimationName">
-	<repeats>1</repeats>
-	<numLimbs>1</numLimbs>
-	<offsets>
+		<offset>0.000000,0.000000</offset>
+		<offset>0.000000,0.000000</offset>
+		<offset>0.000000,0.000000</offset>
+		<offset>0.000000,0.000000</offset>
+		<offset>0.000000,0.000000</offset>
+		<offset>0.000000,0.000000</offset>
+		<offset>0.000000,0.000000</offset>
+		<offset>0.000000,0.000000</offset>
+		<offset>0.000000,0.000000</offset>
+		<offset>0.000000,0.000000</offset>
+		<offset>0.000000,0.000000</offset>
+		<offset>0.000000,0.000000</offset>
+		<offset>0.000000,0.000000</offset>
 		<offset>0.000000,0.000000</offset>
 		<offset>0.000000,0.000000</offset>
 		<offset>0.000000,0.000000</offset>
@@ -40,11 +75,76 @@
 	</offsets>
 	<angles>
 		<angle>0.000000</angle>
-		<angle>-0.652669</angle>
-		<angle>-2.522617</angle>
-		<angle>-3.835032</angle>
-		<angle>-4.926701</angle>
-		<angle>-5.621644</angle>
-		<angle>-6.283556</angle>
+		<angle>0.220105</angle>
+		<angle>-0.220347</angle>
+		<angle>0.191330</angle>
+		<angle>0.000000</angle>
+		<angle>0.465762</angle>
+		<angle>-0.359281</angle>
+		<angle>0.316349</angle>
+		<angle>0.000000</angle>
+		<angle>0.095468</angle>
+		<angle>-0.001770</angle>
+		<angle>-0.027361</angle>
+		<angle>0.000000</angle>
+		<angle>-0.424943</angle>
+		<angle>0.327283</angle>
+		<angle>-0.266777</angle>
+		<angle>0.000000</angle>
+		<angle>-0.165351</angle>
+		<angle>0.076757</angle>
+		<angle>-0.089861</angle>
 	</angles>
 </skeletalAnimation>
+
+<skeletalAnimation id="1" name="MeleeAttack">
+	<repeats>1</repeats>
+	<limbIndices>
+		<limbIndex>1</limbIndex>
+	</limbIndices>
+	<centresOfRotation>
+		<centreOfRotation>0.500000,0.500000</centreOfRotation>
+		<centreOfRotation>0.500000,0.788560</centreOfRotation>
+		<centreOfRotation>0.500000,0.500000</centreOfRotation>
+		<centreOfRotation>0.500000,0.788560</centreOfRotation>
+	</centresOfRotation>
+	<offsets>
+		<offset>0.000000,0.000000</offset>
+		<offset>0.000000,0.000000</offset>
+		<offset>0.000000,0.000000</offset>
+		<offset>0.000000,0.000000</offset>
+	</offsets>
+	<angles>
+		<angle>0.000000</angle>
+		<angle>2.663781</angle>
+		<angle>0.000000</angle>
+		<angle>-0.460501</angle>
+	</angles>
+</skeletalAnimation>
+
+<skeletalAnimation id="2" name="FleshHammer">
+	<repeats>1</repeats>
+	<limbIndices>
+		<limbIndex>1</limbIndex>
+		<limbIndex>2</limbIndex>
+	</limbIndices>
+	<centresOfRotation>
+		<centreOfRotation>0.597113,0.348936</centreOfRotation>
+		<centreOfRotation>0.586323,0.354331</centreOfRotation>
+		<centreOfRotation>0.597113,0.348936</centreOfRotation>
+		<centreOfRotation>0.575533,0.343541</centreOfRotation>
+	</centresOfRotation>
+	<offsets>
+		<offset>3.798218,-18.990936</offset>
+		<offset>-10.703979,10.703979</offset>
+		<offset>3.798218,-18.990936</offset>
+		<offset>-12.775696,10.013428</offset>
+	</offsets>
+	<angles>
+		<angle>-0.001445</angle>
+		<angle>1.574387</angle>
+		<angle>2.583704</angle>
+		<angle>4.193392</angle>
+	</angles>
+</skeletalAnimation>
+

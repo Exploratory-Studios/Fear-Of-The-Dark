@@ -1,0 +1,26 @@
+<skeletalAnimation id="0" name="Animation_Name">
+	<repeats>1</repeats>
+	<limbIndices>
+		<limbIndex>0</limbIndex>
+		<limbIndex>1</limbIndex>
+	</limbIndices>
+	<centresOfRotation>
+		<centreOfRotation>0.500000,0.500000</centreOfRotation>
+		<centreOfRotation>0.500000,0.788560</centreOfRotation>
+		<centreOfRotation>0.500000,0.500000</centreOfRotation>
+		<centreOfRotation>0.500000,0.788560</centreOfRotation>
+	</centresOfRotation>
+	<offsets>
+		<offset>0.000000,0.000000</offset>
+		<offset>0.000000,0.000000</offset>
+		<offset>0.000000,0.000000</offset>
+		<offset>0.000000,0.000000</offset>
+	</offsets>
+	<angles>
+		<angle>0.000000</angle>
+		<angle>2.663781</angle>
+		<angle>0.000000</angle>
+		<angle>-0.460501</angle>
+	</angles>
+</skeletalAnimation>
+

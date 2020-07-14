@@ -114,35 +114,16 @@ void Entity::drawNormal(GLEngine::SpriteBatch& sb, float time, int layerDifferen
 		}
 
 		glm::vec4 destRect = glm::vec4(m_position.x + (xOffset * CHUNK_SIZE), m_position.y, m_size.x, m_size.y);
-		/*glm::vec4 lighting = m_cornerLight;
 
 		int x = 0, y = 0;
 
-		animate(x, y, m_flippedTexture, time);
-
-		float finalX = (x / m_animationFramesX);
-		float finalY = (y / m_animationFramesY);
-
-		glm::vec4 uvRect;
-
-		if(!m_flippedTexture) {
-			uvRect = glm::vec4(finalX,
-			                   finalY,
-			                   1.0f / m_animationFramesX,
-			                   1.0f / m_animationFramesY);
-		} else if(m_flippedTexture) {
-			uvRect = glm::vec4(finalX + 1.0f / m_animationFramesX,
-			                   finalY,
-			                   1.0f / -m_animationFramesX,
-			                   1.0f / m_animationFramesY);
-			lighting = glm::vec4(lighting.y, lighting.x, lighting.w, lighting.z);
-		}
+		glm::vec4 uvRect(0.0f, 0.0f, 1.0f, 1.0f);
 
 		GLEngine::ColourRGBA8 colour(255, 255, 255, 255);
 
-		float depth = 0.1f + (m_layer * (1.0f / (float)(WORLD_DEPTH)) * 0.9f);
+		float depth = getDepth();
 
-		sb.draw(destRect, uvRect, m_bumpMapId, depth, colour, lighting);*/
+		sb.draw(destRect, uvRect, m_bumpMapId, depth, colour);
 	}
 }
 

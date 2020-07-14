@@ -213,16 +213,11 @@ namespace XMLModule {
 	class EntityData : public GenericData {
 		public:
 			EntityData() {
-				Attribute<std::string>* texA = new Attribute<std::string>("texture", AttributeType::FILEPATH_TEXTURE, &texture);
-				Attribute<std::string>* bumpA = new Attribute<std::string>("bumpMap", AttributeType::FILEPATH_BUMPMAP, &bumpMap);
-
 				Attribute<glm::vec2>* sizeA = new Attribute<glm::vec2>("size", AttributeType::VEC2, &size);
 
 				Attribute<unsigned int>* updateA = new Attribute<unsigned int>("updateScript", AttributeType::SCRIPT, &updateScript);
 				Attribute<unsigned int>* tickA = new Attribute<unsigned int>("tickScript", AttributeType::SCRIPT, &tickScript);
 
-				addAttribute(texA);
-				addAttribute(bumpA);
 				addAttribute(sizeA);
 				addAttribute(updateA);
 				addAttribute(tickA);
@@ -230,7 +225,6 @@ namespace XMLModule {
 
 			~EntityData() {}
 
-			std::string texture, bumpMap;
 			glm::vec2 size;
 			unsigned int updateScript, tickScript;
 
@@ -247,6 +241,7 @@ namespace XMLModule {
 					new Attribute<bool>("isDamagedByFalls", AttributeType::BOOL, &isDamagedByFalls),
 					new Attribute<bool>("isInvincible", AttributeType::BOOL, &isInvincible),
 					new Attribute<unsigned int>("idleAnimationID", AttributeType::UNSIGNED_INT, &idleAnimationID),
+					new Attribute<unsigned int>("lowVelAnimationID", AttributeType::UNSIGNED_INT, &lowVelAnimationID),
 					new Attribute<std::vector<unsigned int>>("skinAnimationIDs/skinAnimationID", AttributeType::VECTOR_UNSIGNED_INT, &skinAnimationIDs)
 				};
 
@@ -258,7 +253,7 @@ namespace XMLModule {
 			float speed, jumpHeight, maxHealth;
 			unsigned int faction;
 			bool isDamagedByFalls, isInvincible;
-			unsigned int idleAnimationID;
+			unsigned int idleAnimationID, lowVelAnimationID;
 			std::vector<unsigned int> skinAnimationIDs;
 	};
 
@@ -266,6 +261,8 @@ namespace XMLModule {
 		public:
 			EntityProjectileData() {
 				std::vector<AttributeBase*> attrs = {
+					new Attribute<std::string>("texture", AttributeType::FILEPATH_TEXTURE, &texture),
+					new Attribute<std::string>("bumpMap", AttributeType::FILEPATH_BUMPMAP, &bumpMap),
 					new Attribute<float>("speed", AttributeType::FLOAT, &speed),
 					new Attribute<bool>("collides", AttributeType::BOOL, &collides),
 					new Attribute<float>("damage", AttributeType::FLOAT, &damage)
@@ -278,12 +275,15 @@ namespace XMLModule {
 
 			float speed, damage;
 			bool collides;
+			std::string texture, bumpMap;
 	};
 
 	class EntityItemData : public EntityData {
 		public:
 			EntityItemData() {
 				std::vector<AttributeBase*> attrs = {
+					new Attribute<std::string>("texture", AttributeType::FILEPATH_TEXTURE, &texture),
+					new Attribute<std::string>("bumpMap", AttributeType::FILEPATH_BUMPMAP, &bumpMap),
 					new Attribute<unsigned int>("item", AttributeType::UNSIGNED_INT, &item)
 				};
 
@@ -291,6 +291,7 @@ namespace XMLModule {
 			}
 
 			unsigned int item;
+			std::string texture, bumpMap;
 	};
 
 	class ItemData : public GenericData {
@@ -466,14 +467,15 @@ namespace XMLModule {
 					new Attribute<std::string>("texture", AttributeType::FILEPATH_TEXTURE, &texture),
 					new Attribute<unsigned int>("y", AttributeType::UNSIGNED_INT, &y),
 					new Attribute<unsigned int>("width", AttributeType::UNSIGNED_INT, &width),
-					new Attribute<unsigned int>("height", AttributeType::UNSIGNED_INT, &height)
+					new Attribute<unsigned int>("height", AttributeType::UNSIGNED_INT, &height),
+					new Attribute<unsigned int>("frames", AttributeType::UNSIGNED_INT, &frames)
 				};
 
 				addAttributes(attrs);
 			};
 
 			std::string texture;
-			unsigned int y, width, height;
+			unsigned int y, width, height, frames;
 	};
 
 	class SkeletalAnimationData : public GenericData {
@@ -483,7 +485,7 @@ namespace XMLModule {
 					new Attribute<std::vector<float>>("angles/angle", AttributeType::VECTOR_FLOAT, &angles),
 					                               new Attribute<std::vector<glm::vec2>>("offsets/offset", AttributeType::VECTOR_VEC2, &offsets),
 					                               new Attribute<std::vector<glm::vec2>>("centresOfRotation/centreOfRotation", AttributeType::VECTOR_VEC2, &centresOfRotation),
-					                               new Attribute<unsigned int>("numLimbs", AttributeType::UNSIGNED_INT, &numLimbs),
+					                               new Attribute<std::vector<unsigned int>>("limbIndices/limbIndex", AttributeType::VECTOR_UNSIGNED_INT, &limbIndices),
 					                               new Attribute<bool>("repeats", AttributeType::BOOL, &repeats)
 				};
 
@@ -493,7 +495,7 @@ namespace XMLModule {
 			std::vector<float> angles;
 			std::vector<glm::vec2> offsets;
 			std::vector<glm::vec2> centresOfRotation;
-			unsigned int numLimbs;
+			std::vector<unsigned int> limbIndices;
 			bool repeats;
 	};
 
@@ -501,8 +503,8 @@ namespace XMLModule {
 		public:
 			AttackData() {
 				std::vector<AttributeBase*> attrs = {
-					new Attribute<unsigned int>("leadInAnimationID", AttributeType::UNSIGNED_INT, &leadInAnimationID),
-					new Attribute<unsigned int>("leadOutAnimationID", AttributeType::UNSIGNED_INT, &leadOutAnimationID)
+					new Attribute<unsigned int>("leadInSkeletalAnimationID", AttributeType::UNSIGNED_INT, &leadInAnimationID),
+					new Attribute<unsigned int>("leadOutSkeletalAnimationID", AttributeType::UNSIGNED_INT, &leadOutAnimationID)
 				};
 
 				addAttributes(attrs);

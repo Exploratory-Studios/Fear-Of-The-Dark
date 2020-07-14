@@ -12,6 +12,10 @@ namespace CombatModule {
 		FAR
 	};
 
+	class Attack;
+
+	Attack* createAttack(unsigned int attackID, ::Entity* owner);
+
 	class Attack {
 		public:
 			Attack(unsigned int attackID, ::Entity* owner); // Uses the ID to fill in various fields (exclusive to each type of attack)
@@ -19,18 +23,18 @@ namespace CombatModule {
 
 			virtual void execute() {} // Spawns the projectile or starts the script
 
-			::AnimationModule::Animation getLeadIn() const {
+			::AnimationModule::SkeletalAnimation getLeadIn() const {
 				return m_leadIn;
 			}
-			::AnimationModule::Animation getLeadOut() const {
+			::AnimationModule::SkeletalAnimation getLeadOut() const {
 				return m_leadOut;
 			}
 
 		protected:
 			::Entity* m_owner;
 
-			::AnimationModule::Animation m_leadIn;
-			::AnimationModule::Animation m_leadOut;
+			::AnimationModule::SkeletalAnimation m_leadIn;
+			::AnimationModule::SkeletalAnimation m_leadOut;
 	};
 
 	class MeleeAttack : public Attack {

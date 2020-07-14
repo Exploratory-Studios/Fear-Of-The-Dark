@@ -30,6 +30,7 @@ class EntityNPC : public Entity {
 		EntityNPC(glm::vec2 pos, unsigned int layer, unsigned int id, SaveDataTypes::MetaData data, bool loadTex);
 		EntityNPC(glm::vec2 pos, unsigned int layer, EntityIDs id, SaveDataTypes::MetaData data, bool loadTex);
 		virtual ~EntityNPC();
+		void dispose(); // Deletes some stuff that shouldn't be deleted if a copy operation takes place!
 
 		void init(unsigned int id);
 
@@ -76,7 +77,7 @@ class EntityNPC : public Entity {
 		void activateAttack(unsigned int attackID);
 		void updateAttack();
 		int m_currentAttackID = -1;
-		AnimationModule::SkeletalAnimation m_currentAttackAnim;
+		AnimationModule::SkeletalAnimation* m_currentAttackAnim = nullptr;
 		bool m_leadingIntoAttack = true;
 
 		virtual void onTick(World* world) override;
@@ -84,10 +85,8 @@ class EntityNPC : public Entity {
 		void initLimbs(); // Initializes limbs and animations.
 
 		// Animation (TODO: Add animation to entity XML)
-		AnimationModule::Limb m_test;
-
-		std::vector<AnimationModule::Limb> m_limbs; // Limbs to show skeletal animation.
-		AnimationModule::SkeletalAnimation m_idleAnimation, m_lowVelAnimation, m_highVelAnimation, m_upAnimation, m_downAnimation;
+		AnimationModule::Body m_body;
+		AnimationModule::SkeletalAnimation* m_idleAnimation = nullptr, *m_lowVelAnimation = nullptr, *m_highVelAnimation = nullptr, *m_upAnimation = nullptr, *m_downAnimation = nullptr;
 
 		// Fall damage
 		float m_fallenDistance = 0.0f;

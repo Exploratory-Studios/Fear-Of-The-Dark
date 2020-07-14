@@ -83,7 +83,7 @@ namespace XMLModule {
 			}
 		}
 	}
-	
+
 	void getVector(rapidxml::xml_node<>* parent, std::string valueName, std::string childName, std::vector<GenericData>& vec) {
 		rapidxml::xml_node<>* n = parent->first_node((char*)valueName.c_str()); // Gets <entities> in the example.
 
@@ -222,9 +222,7 @@ namespace XMLModule {
 
 	std::map<unsigned int, GenericData*> XMLData::m_tileData;
 	std::map<unsigned int, GenericData*> XMLData::m_particleData;
-	std::map<unsigned int, GenericData*> XMLData::m_entityNPCData;
-	std::map<unsigned int, GenericData*> XMLData::m_entityProjectileData;
-	std::map<unsigned int, GenericData*> XMLData::m_entityItemData;
+	std::map<unsigned int, GenericData*> XMLData::m_entityData;
 	std::map<unsigned int, GenericData*> XMLData::m_itemData;
 	std::map<unsigned int, GenericData*> XMLData::m_biomeData;
 	std::map<unsigned int, GenericData*> XMLData::m_eraData;
@@ -243,7 +241,7 @@ namespace XMLModule {
 	void XMLData::init(std::string filepath) {
 		Logger::getInstance()->log("Beginning to load data...");
 
-		std::vector<std::string> files{ "Blocks", "Particles", "NPCs", "Projectiles", "ItemEntities", "Items", "Biomes", "Eras", "Loot", "Structures", "Quests", "Dialogue", "Animations", "Attacks" };
+		std::vector<std::string> files{ "Blocks", "Particles", "Entities", "Items", "Biomes", "Eras", "Loot", "Structures", "Quests", "Dialogue", "Animations", "Attacks" };
 
 		for(std::string& s : files) {
 			loadXMLData(filepath + "/Data/" + s + ".xml");
@@ -257,7 +255,7 @@ namespace XMLModule {
 		Logger::getInstance()->log("Beginning to write data...");
 
 		// files and nodeNames should have equal size. That much is assumed to be true at runtime
-		std::vector<std::string> files   { "Blocks", "Particles", "NPCs", "Projectiles", "ItemEntities", "Items", "Biomes", "Eras", "Loot", "Loot", "Structures", "Quests", "Dialogue", "Dialogue", "Dialogue", "Animations", "Animations", "Attacks", "Attacks", "Attacks" };
+		std::vector<std::string> files   { "Blocks", "Particles", "Entities", "Entities", "Entities", "Items", "Biomes", "Eras", "Loot", "Loot", "Structures", "Quests", "Dialogue", "Dialogue", "Dialogue", "Animations", "Animations", "Attacks", "Attacks", "Attacks" };
 		std::vector<std::string> nodeNames{ "tile",  "particle",  "npc",  "projectile",  "itemEntity",   "item",  "biome",   "era", "lootDrop", "lootTable", "structure", "quest", "questObjective", "question", "response", "animation", "skeletalAnimation", "meleeAttack", "rangedAttack", "magicAttack" };
 
 		for(unsigned int i = 0; i < files.size(); i++) {
@@ -340,11 +338,11 @@ namespace XMLModule {
 		} else if(name == "particle") {
 			mapForWrite = &m_particleData;
 		} else if(name == "npc") {
-			mapForWrite = &m_entityNPCData;
+			mapForWrite = &m_entityData;
 		} else if(name == "projectile") {
-			mapForWrite = &m_entityProjectileData;
+			mapForWrite = &m_entityData;
 		} else if(name == "itemEntity") {
-			mapForWrite = &m_entityItemData;
+			mapForWrite = &m_entityData;
 		} else if(name == "item") {
 			mapForWrite = &m_itemData;
 		} else if(name == "biome") {
@@ -406,16 +404,18 @@ namespace XMLModule {
 		std::map<unsigned int, GenericData*>* mapForWrite = nullptr;
 
 		for(rapidxml::xml_node<>* node = doc.first_node(); node; node = node->next_sibling()) {
-			std::string name = node->name();
+			if(node->type() != rapidxml::node_comment) {
+				std::string name = node->name();
 
-			mapForWrite = getMapFromNodename(name);
+				mapForWrite = getMapFromNodename(name);
 
-			GenericData* d = createDataFromNodename(name);
-			d->init(node); // Actually do the read.
+				GenericData* d = createDataFromNodename(name);
+				d->init(node); // Actually do the read.
 
-			unsigned int id = d->id;
+				unsigned int id = d->id;
 
-			mapForWrite->insert(std::pair<unsigned int, GenericData*>(id, d));
+				mapForWrite->insert(std::pair<unsigned int, GenericData*>(id, d));
+			}
 		}
 	}
 
@@ -475,12 +475,24 @@ namespace XMLModule {
 		return *static_cast<ParticleData*>(index->second);
 	}
 
+	EntityData XMLData::getEntityData(unsigned int id) {
+		auto index = m_entityData.find(id);
+
+		if(index == m_entityData.end()) {
+			Logger::getInstance()->log("ERROR: Couldn't find entity data with ID: " + std::to_string(id), true);
+			EntityData t;
+			return t;
+		}
+
+		return *static_cast<EntityData*>(index->second);
+	}
+
 /// Entities: NPCS
 
 	EntityNPCData XMLData::getEntityNPCData(unsigned int id) {
-		auto index = m_entityNPCData.find(id);
+		auto index = m_entityData.find(id);
 
-		if(index == m_entityNPCData.end()) {
+		if(index == m_entityData.end()) {
 			Logger::getInstance()->log("ERROR: Couldn't find entity (NPC) data with ID: " + std::to_string(id), true);
 			EntityNPCData t;
 			return t;
@@ -492,9 +504,9 @@ namespace XMLModule {
 /// Entities: Projectiles
 
 	EntityProjectileData XMLData::getEntityProjectileData(unsigned int id) {
-		auto index = m_entityProjectileData.find(id);
+		auto index = m_entityData.find(id);
 
-		if(index == m_entityProjectileData.end()) {
+		if(index == m_entityData.end()) {
 			Logger::getInstance()->log("ERROR: Couldn't find entity (Projectile) data with ID: " + std::to_string(id), true);
 			EntityProjectileData t;
 			return t;
@@ -506,9 +518,9 @@ namespace XMLModule {
 /// Entities: Items
 
 	EntityItemData XMLData::getEntityItemData(unsigned int id) {
-		auto index = m_entityItemData.find(id);
+		auto index = m_entityData.find(id);
 
-		if(index == m_entityItemData.end()) {
+		if(index == m_entityData.end()) {
 			Logger::getInstance()->log("ERROR: Couldn't find entity (Item) data with ID: " + std::to_string(id), true);
 			EntityItemData t;
 			return t;
@@ -682,7 +694,7 @@ namespace XMLModule {
 		auto index = m_skeletalAnimationData.find(id);
 
 		if(index == m_skeletalAnimationData.end()) {
-			Logger::getInstance()->log("ERROR: Couldn't find animation data with ID: " + std::to_string(id), true);
+			Logger::getInstance()->log("ERROR: Couldn't find skeletal animation data with ID: " + std::to_string(id), true);
 			SkeletalAnimationData s;
 			return s;
 		}

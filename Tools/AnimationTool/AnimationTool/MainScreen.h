@@ -64,6 +64,7 @@ class MainScreen : public GLEngine::IGameScreen {
 		std::vector<bool> m_limbsVisibility;
 		std::vector<unsigned int> m_limbIndices;
 		std::vector<AnimationModule::AugAnimation> m_skins;
+		AnimationModule::SkeletalAnimation m_currentSkeletal;
 		unsigned int m_selectedLimb = 0;
 		bool m_limbSelected = false;
 		glm::vec2 m_grabPosition = glm::vec2(0.0f);

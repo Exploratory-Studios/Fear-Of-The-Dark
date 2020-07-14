@@ -292,7 +292,7 @@ void EntityPlayer::updateInput(GLEngine::InputManager* input, World* world) {
 			m_inventory->addItem(new Item(1, ItemIDs::BLOCK_WOOD, true));
 		}
 
-		if(input->isKeyPressed(SDL_BUTTON_LEFT) && m_selectedBlock) {
+		if(input->isKeyPressed(SDL_BUTTON_LEFT) && (m_selectedBlock || true)) {
 			//if(m_favouriteItems[m_selectedHotbox]) m_favouriteItems[m_selectedHotbox]->onLeftClick(m_selectedBlock, world);
 			/*if(!m_favouriteItems[m_selectedHotbox]) {
 				Tile* t = new Tile(m_selectedBlock->getPosition(), m_selectedBlock->getLayer(), 0, SaveDataTypes::MetaData(), false);

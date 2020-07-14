@@ -44,6 +44,7 @@ namespace XMLModule {
 
 			static TileData getTileData(unsigned int id);
 			static ParticleData getParticleData(unsigned int id);
+			static EntityData getEntityData(unsigned int id);
 			static EntityNPCData getEntityNPCData(unsigned int id);
 			static EntityProjectileData getEntityProjectileData(unsigned int id);
 			static EntityItemData getEntityItemData(unsigned int id);
@@ -72,9 +73,7 @@ namespace XMLModule {
 
 			static std::map<unsigned int, GenericData*> m_tileData;
 			static std::map<unsigned int, GenericData*> m_particleData;
-			static std::map<unsigned int, GenericData*> m_entityNPCData;
-			static std::map<unsigned int, GenericData*> m_entityProjectileData;
-			static std::map<unsigned int, GenericData*> m_entityItemData;
+			static std::map<unsigned int, GenericData*> m_entityData;
 			static std::map<unsigned int, GenericData*> m_itemData;
 			static std::map<unsigned int, GenericData*> m_biomeData;
 			static std::map<unsigned int, GenericData*> m_eraData;

@@ -12,6 +12,18 @@ namespace XMLModule {
 	class GenericData;
 	class TileData;
 
+	enum class AttackType {
+		MELEE,
+		RANGED,
+		MAGIC
+	};
+
+	enum class EntityType {
+		NPC,
+		PROJECTILE,
+		ITEM
+	};
+
 	enum class AttributeType {
 		STRING,
 		UNSIGNED_INT,
@@ -227,12 +239,14 @@ namespace XMLModule {
 
 			glm::vec2 size;
 			unsigned int updateScript, tickScript;
-
+			EntityType type;
 	};
 
 	class EntityNPCData : public EntityData {
 		public:
 			EntityNPCData() {
+				type = EntityType::NPC;
+
 				std::vector<AttributeBase*> attrs = {
 					new Attribute<float>("speed", AttributeType::FLOAT, &speed),
 					new Attribute<float>("jumpHeight", AttributeType::FLOAT, &jumpHeight),
@@ -260,6 +274,8 @@ namespace XMLModule {
 	class EntityProjectileData : public EntityData {
 		public:
 			EntityProjectileData() {
+				type = EntityType::PROJECTILE;
+
 				std::vector<AttributeBase*> attrs = {
 					new Attribute<std::string>("texture", AttributeType::FILEPATH_TEXTURE, &texture),
 					new Attribute<std::string>("bumpMap", AttributeType::FILEPATH_BUMPMAP, &bumpMap),
@@ -281,6 +297,8 @@ namespace XMLModule {
 	class EntityItemData : public EntityData {
 		public:
 			EntityItemData() {
+				type = EntityType::ITEM;
+
 				std::vector<AttributeBase*> attrs = {
 					new Attribute<std::string>("texture", AttributeType::FILEPATH_TEXTURE, &texture),
 					new Attribute<std::string>("bumpMap", AttributeType::FILEPATH_BUMPMAP, &bumpMap),
@@ -511,11 +529,14 @@ namespace XMLModule {
 			};
 
 			unsigned int leadInAnimationID, leadOutAnimationID;
+			AttackType type;
 	};
 
 	class MeleeAttackData : public AttackData {
 		public:
 			MeleeAttackData() {
+				type = AttackType::MELEE;
+
 				std::vector<AttributeBase*> attrs = {
 					new Attribute<unsigned int>("projectileID", AttributeType::UNSIGNED_INT, &projectileID)
 				};
@@ -529,6 +550,8 @@ namespace XMLModule {
 	class RangedAttackData : public AttackData {
 		public:
 			RangedAttackData() {
+				type = AttackType::RANGED;
+
 				std::vector<AttributeBase*> attrs = {
 					new Attribute<unsigned int>("projectileID", AttributeType::UNSIGNED_INT, &projectileID),
 					new Attribute<unsigned int>("numProjectiles", AttributeType::UNSIGNED_INT, &numProjectiles),
@@ -546,6 +569,8 @@ namespace XMLModule {
 	class MagicAttackData : public AttackData {
 		public:
 			MagicAttackData() {
+				type = AttackType::MAGIC;
+
 				std::vector<AttributeBase*> attrs = {
 					new Attribute<unsigned int>("script", AttributeType::SCRIPT, &script)
 				};

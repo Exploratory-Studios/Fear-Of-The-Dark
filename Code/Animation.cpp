@@ -130,13 +130,14 @@ namespace AnimationModule {
 
 	void SkeletalAnimation::tick() {
 		if(!isFinished()) {
-			m_currentFrame = (m_currentFrame + 1) % (m_offsets.size() / m_limbIndices.size() - 1);
+			m_currentFrame = (m_currentFrame + 1) % (m_offsets.size() / m_limbIndices.size());
 		}
 	}
 
 	bool SkeletalAnimation::isFinished() {
 		if(m_repeats) return false;
-		return (m_currentFrame >= m_angles.size() - 1); // This only returns if it doesn't repeat
+		if(m_angles.size() == 0) return true;
+		return (m_currentFrame + 1 >= (m_angles.size() / m_limbIndices.size())); // This only returns if it doesn't repeat
 	}
 
 	void SkeletalAnimation::restart() {
@@ -158,30 +159,28 @@ namespace AnimationModule {
 		m_centreOfRotation = glm::vec2(0.5f);
 	}
 
-	void Limb::activateSkeletalAnimation(SkeletalAnimation anim) {
+	void Limb::activateSkeletalAnimation(SkeletalAnimation* anim) {
 		// Sets current m_activeAnimation and sets m_animationTime to 0.0f
-		if(!anim.affectsLimb(m_index)) {
+		if(!anim->affectsLimb(m_index)) {
 			return;
 		}
 		m_activeAnimation = anim;
-		m_isAnimated = true;
 
-		m_offset = anim.getOffset(m_index);
-		m_angle = anim.getAngle(m_index);
-		m_centreOfRotation = anim.getCentreOfRotation(m_index);
+		if(m_activeAnimation->getFrames() > m_index) {
+			m_offset = anim->getOffset(m_index);
+			m_angle = anim->getAngle(m_index);
+			m_centreOfRotation = anim->getCentreOfRotation(m_index);
+		}
 	}
 
 	void Limb::tick() {
 		// Sets the idle animation to the next state. If active, continues the skeletal animation too. If the skeletal animation finishes, set m_animationTime to -1.0f;
 		m_idleAnimation.tick();
-		if(m_isAnimated) {
-			m_activeAnimation.tick();
-		}
 	}
 
 	void Limb::update() {
 		if(isAnimationActive()) {
-			m_activeAnimation.updateLimb(this);
+			m_activeAnimation->updateLimb(this);
 		}
 	}
 
@@ -203,8 +202,8 @@ namespace AnimationModule {
 	}
 
 	bool Limb::isAnimationActive() {
-		if(m_isAnimated) {
-			return !m_activeAnimation.isFinished();
+		if(m_activeAnimation) {
+			return !m_activeAnimation->isFinished();
 		}
 		return false;
 	};

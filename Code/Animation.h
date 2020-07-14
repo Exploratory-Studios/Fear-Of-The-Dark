@@ -16,6 +16,8 @@ namespace AnimationModule {
 		public:
 			Animation();
 			Animation(unsigned int id);
+			~Animation() {}
+
 			void init(unsigned int id);
 
 			void draw(::GLEngine::SpriteBatch& sb, GLEngine::ColourRGBA8 colour, glm::vec4& destRect, float& depth, float& angle, glm::vec2& COR);
@@ -57,6 +59,7 @@ namespace AnimationModule {
 		public:
 			SkeletalAnimation();
 			SkeletalAnimation(unsigned int id);
+			~SkeletalAnimation() {};
 
 			void init(unsigned int id);
 
@@ -88,6 +91,9 @@ namespace AnimationModule {
 			glm::vec2 getCentreOfRotation(unsigned int index) {
 				return m_centresOfRotation[index];
 			}
+			unsigned int getFrames() {
+				return m_angles.size();
+			}
 
 			void setFrame(unsigned int frame) {
 				if(m_angles.size() > 0) m_currentFrame = frame % (m_angles.size() / m_limbIndices.size());
@@ -110,9 +116,10 @@ namespace AnimationModule {
 		public:
 			Limb();
 			Limb(Animation idleAnimation, unsigned int index); // The idleAnimation is the animation that constantly runs. Most of the time, this is just a single-textured sprite which supplies the texture
+			~Limb() {}
 
 			void init(Animation idleAnimation, unsigned int index);
-			void activateSkeletalAnimation(SkeletalAnimation anim);
+			void activateSkeletalAnimation(SkeletalAnimation* anim);
 
 			void tick();
 			void update();
@@ -129,14 +136,73 @@ namespace AnimationModule {
 			void setCentreOfRotation(glm::vec2& centre);
 
 		protected:
-			SkeletalAnimation m_activeAnimation; // This is what actually moves the limb. This is changeable
+			SkeletalAnimation* m_activeAnimation = nullptr; // This is what actually moves the limb. This is changeable
 			Animation m_idleAnimation; // This is the "skin"
-			bool m_isAnimated = false; // Does it have an active skeletal animation?
 			unsigned int m_index; // This is used to make sure that each arm/leg follows the correct skeletal animation's limb (right leg might be 0, left leg might be 1, etc.)
 
 			float m_angle = 0.0f;
 			glm::vec2 m_centreOfRotation = glm::vec2(0.0f);
 			glm::vec2 m_offset = glm::vec2(0.0f);
+	};
+
+	class Body {
+			// Basically just a wrapper class for a skeletal animation, a vector of limbs
+		public:
+			Body() {}
+			Body(std::vector<Limb> limbs) : m_limbs(limbs) {}
+			~Body() {
+				m_animation = nullptr;
+				m_limbs.clear();
+			};
+
+			void update() {
+				for(unsigned int i = 0; i < m_limbs.size(); i++) {
+					m_limbs[i].update();
+				}
+			}
+
+			void tick() {
+				if(m_animation) m_animation->tick();
+			}
+
+			void draw(GLEngine::SpriteBatch& sb, GLEngine::ColourRGBA8 colour, glm::vec4 destRect, float& depth) {
+				for(unsigned int i = 0; i < m_limbs.size(); i++) {
+					m_limbs[i].draw(sb, colour, destRect, depth);
+				}
+			}
+
+			void drawNormal(GLEngine::SpriteBatch& sb, GLEngine::ColourRGBA8 colour, glm::vec4 destRect, float& depth) {
+				for(unsigned int i = 0; i < m_limbs.size(); i++) {
+					//m_limbs[i].drawNormal(sb, colour, destRect, depth);
+				}
+			}
+
+			void addLimb(Limb limb) {
+				if(m_animation) limb.activateSkeletalAnimation(m_animation);
+
+				m_limbs.push_back(limb);
+			}
+
+			Limb* getLimb(unsigned int index) {
+				return index < m_limbs.size() ? &m_limbs[index] : nullptr;
+			}
+
+			void activateAnimation(SkeletalAnimation* skelly) {
+				m_animation = skelly;
+
+				for(unsigned int i = 0; i < m_limbs.size(); i++) {
+					m_limbs[i].activateSkeletalAnimation(skelly);
+				}
+
+			}
+
+			SkeletalAnimation* getAnimation() {
+				return m_animation;
+			}
+
+		private:
+			std::vector<Limb> m_limbs; // Contain individual skins.
+			SkeletalAnimation* m_animation = nullptr;
 	};
 
 }

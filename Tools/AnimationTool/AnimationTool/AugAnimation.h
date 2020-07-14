@@ -46,7 +46,7 @@ namespace AnimationModule {
 			Animation& getAnimation() {
 				return m_idleAnimation;
 			}
-			SkeletalAnimation& getSkeletalAnimation() {
+			SkeletalAnimation* getSkeletalAnimation() {
 				return m_activeAnimation;
 			}
 	};

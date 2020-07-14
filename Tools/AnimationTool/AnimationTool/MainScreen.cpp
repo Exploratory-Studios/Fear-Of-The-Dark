@@ -748,6 +748,10 @@ bool MainScreen::EventNewLimbButtonClicked(const CEGUI::EventArgs& e) {
 		m_keyframes[i].centres.push_back(glm::vec2(0.5f));
 	}
 
+	m_currentSkeletal = getSkeletal();
+
+	m_limbs[m_limbs.size()-1].activateSkeletalAnimation(&m_currentSkeletal);
+
 	return true;
 }
 
@@ -816,7 +820,7 @@ bool MainScreen::EventKeyFrameClicked(const CEGUI::EventArgs& e) {
 			m_limbs[i].setOffset(m_keyframes[index].offsets[i]);
 			m_limbs[i].setCentreOfRotation(m_keyframes[index].centres[i]);
 			m_limbs[i].getAnimation().setFrame(index);
-			m_limbs[i].getSkeletalAnimation().setFrame(index);
+			m_limbs[i].getSkeletalAnimation()->setFrame(index);
 		}
 	}
 
@@ -834,8 +838,10 @@ bool MainScreen::EventPlayPauseButtonClicked(const CEGUI::EventArgs& e) {
 		m_playPauseButton->setText("Play");
 	}
 
+	m_currentSkeletal = getSkeletal();
+
 	for(unsigned int i = 0; i < m_limbs.size(); i++) {
-		m_limbs[i].activateSkeletalAnimation(getSkeletal());
+		m_limbs[i].activateSkeletalAnimation(&m_currentSkeletal);
 	}
 
 	return true;

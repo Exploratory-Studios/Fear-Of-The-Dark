@@ -1,7 +1,7 @@
 <meleeAttack name="Melee Test" id="0">
-	<leadInAnimation>2</leadInAnimation>
-	<leadOutAnimation>1</leadOutAnimation>
-	<projectileID>0</projectileID>
+	<leadInSkeletalAnimationID>1</leadInSkeletalAnimationID>
+	<leadOutSkeletalAnimationID>0</leadOutSkeletalAnimationID>
+	<projectileID>5</projectileID>
 </meleeAttack>
 
 <rangedAttack name="Shotgun Test" id="1">

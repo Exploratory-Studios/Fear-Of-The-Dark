@@ -1,18 +1,16 @@
 #include "EntityNPC.h"
 
 #include "World.h"
-
 #include "Tile.h"
 
 #include "EntityItem.h"
 #include "EntityProjectile.h"
-
 #include "Entities/EntityFunctions.h"
 
 #include "Inventory.h"
+#include "Attack.h"
 
 #include "XMLData.h"
-
 #include "Factory.h"
 
 EntityNPC::EntityNPC(glm::vec2 pos, unsigned int layer, unsigned int id, SaveDataTypes::MetaData data, bool loadTex) : Entity(pos, layer, SaveDataTypes::MetaData()) {
@@ -36,7 +34,7 @@ void EntityNPC::init(unsigned int id) {
 	m_takesFallDamage = d.isDamagedByFalls;
 	m_canDie = !d.isInvincible;
 	m_runSpeed = d.speed;
-	m_jumpHeight = d.jumpHeight;
+	m_jumpHeight = std::sqrt(d.jumpHeight * 2.0f * (1.225f / 60.0f));
 	m_maxHealth = d.maxHealth;
 	m_faction = (Categories::Faction)d.faction;
 
@@ -55,21 +53,21 @@ void EntityNPC::initLimbs() {
 
 	// Create limbs with animations. (Loads animations as it goes)
 	for(unsigned int i = 0; i < data.skinAnimationIDs.size(); i++) {
-		m_limbs.emplace_back(AnimationModule::Animation(data.skinAnimationIDs[i]), i);
+		m_body.addLimb(AnimationModule::Limb(AnimationModule::Animation(data.skinAnimationIDs[i]), i));
 	}
 
 	// Load skeletal animations
-	//m_idleAnimation.init(data.idleAnimationID);
-	//m_idleAnimation.setToLoop(true);
+	m_currentAttackAnim = new AnimationModule::SkeletalAnimation(); // Just allocate the memory.
 
-	m_lowVelAnimation.init(data.idleAnimationID);
-	m_lowVelAnimation.setToLoop(true);
+	m_idleAnimation = new AnimationModule::SkeletalAnimation(data.idleAnimationID);
+	m_idleAnimation->setToLoop(true);
+
+	m_lowVelAnimation = new AnimationModule::SkeletalAnimation(data.lowVelAnimationID);
+	m_lowVelAnimation->setToLoop(true);
 	// Load the rest...
 
 	// Activate idle animation to start
-	for(unsigned int i = 0;  i < m_limbs.size(); i++) {
-		m_limbs[i].activateSkeletalAnimation(m_idleAnimation);
-	}
+	m_body.activateAnimation(m_idleAnimation);
 
 
 
@@ -95,14 +93,21 @@ EntityNPC::~EntityNPC() {
 	delete m_inventory;
 }
 
+void EntityNPC::dispose() {
+	if(m_idleAnimation) delete m_idleAnimation; // These must be deleted only when a copy operation doesn't take place. These pointers are also stored in the m_body, so we need to be careful with how we delete em.
+	if(m_lowVelAnimation) delete m_lowVelAnimation; // (Copying the body object copies the pointers into it, but if the pointers are deleted, then they point to a weird place)
+	if(m_highVelAnimation) delete m_highVelAnimation;
+	if(m_upAnimation) delete m_upAnimation;
+	if(m_downAnimation) delete m_downAnimation;
+}
+
 void EntityNPC::draw(GLEngine::SpriteBatch& sb, float time, int layerDifference, float xOffset) {
 	if(m_draw) {
 		glm::vec4 destRect = glm::vec4(m_position.x + (xOffset * CHUNK_SIZE), m_position.y, m_size.x, m_size.y);
 
 		float depth = getDepth();
-		for(unsigned int i = 0; i < m_limbs.size(); i++) {
-			m_limbs[i].draw(sb, GLEngine::ColourRGBA8(255, 255, 255, 255), destRect, depth);
-		}
+
+		m_body.draw(sb, GLEngine::ColourRGBA8(255, 255, 255, 255), destRect, depth);
 
 		onDraw(sb, time, layerDifference, xOffset);
 	}
@@ -113,9 +118,7 @@ void EntityNPC::drawNormal(GLEngine::SpriteBatch& sb, float time, int layerDiffe
 		glm::vec4 destRect = glm::vec4(m_position.x + (xOffset * CHUNK_SIZE), m_position.y, m_size.x, m_size.y);
 
 		float depth = getDepth();
-		for(unsigned int i = 0; i < m_limbs.size(); i++) {
-			//m_limbs[i].drawNormal(sb, GLEngine::ColourRGBA8(255, 255, 255, 255), destRect, depth);
-		}
+		m_body.drawNormal(sb, GLEngine::ColourRGBA8(255, 255, 255, 255), destRect, depth);
 	}
 }
 
@@ -303,9 +306,7 @@ void EntityNPC::collide(World* world, unsigned int entityIndex) {
 }
 
 void EntityNPC::onUpdate(World* world, float timeStep, unsigned int selfIndex) {
-	for(unsigned int i = 0; i < m_limbs.size(); i++) {
-		m_limbs[i].update();
-	}
+	m_body.update();
 
 	if(m_takesFallDamage) {
 		if(m_velocity.y < 0.0f) {
@@ -341,9 +342,7 @@ void EntityNPC::onUpdate(World* world, float timeStep, unsigned int selfIndex) {
 }
 
 void EntityNPC::onTick(World* world) {
-	for(unsigned int i = 0; i < m_limbs.size(); i++) {
-		m_limbs[i].tick();
-	}
+	m_body.tick();
 }
 
 SaveDataTypes::EntityNPCData EntityNPC::getNPCSaveData() {
@@ -744,14 +743,13 @@ void EntityNPC::setAITarget(World* world, unsigned int selfIndex) {
 void EntityNPC::activateAttack(unsigned int attackID) {
 	// This needs to set the m_curAttack variable, as well as start the lead in animation.
 	// The update function will make sure that, once the lead in is done, the attack is executed and the lead out is started.
-	XMLModule::AttackData attackData = XMLModule::XMLData::getAttackData(attackID);
+	CombatModule::Attack attack(attackID, this);
 
-	m_currentAttackAnim.init(attackData.leadInAnimationID);
-	m_currentAttackAnim.setToLoop(false); // If it loops, then we'll never actually execute the attack
+	*m_currentAttackAnim = attack.getLeadIn();
+	m_currentAttackAnim->setToLoop(false); // If it loops, then we'll never actually execute the attack
+	m_currentAttackAnim->restart();
 
-	for(unsigned int i = 0; i < m_limbs.size(); i++) {
-		m_limbs[i].activateSkeletalAnimation(m_currentAttackAnim); // The limb will only replace its current animation if the leadInAnim defines its index as "used"
-	}
+	m_body.activateAnimation(m_currentAttackAnim);
 
 	m_currentAttackID = attackID;
 	m_leadingIntoAttack = true; // This tells the program that we're executing the first(!) animation, and haven't executed the attack yet.
@@ -765,18 +763,24 @@ void EntityNPC::updateAttack() {
 	// Check if attack is running
 	if(m_currentAttackID >= 0) {
 		// It is. Now check if the lead-in is finished:
-		if(m_currentAttackAnim.isFinished()) {
+		if(m_currentAttackAnim->isFinished()) {
 			// It is. Now check if we're leading in, or out
 			if(m_leadingIntoAttack) {
 				// We are. Now, execute the attack and start the lead in, while setting m_leadingIntoAttack.
-				XMLModule::AttackData attackData = XMLModule::XMLData::getAttackData(m_currentAttackID);
-				m_currentAttackAnim.init(attackData.leadOutAnimationID);
+				CombatModule::Attack* attack = CombatModule::createAttack(m_currentAttackID, this);
+
+				attack->execute();
+
+				*m_currentAttackAnim = attack->getLeadOut();
+				m_currentAttackAnim->setToLoop(false);
+				m_currentAttackAnim->restart();
+
+				m_body.activateAnimation(m_currentAttackAnim);
+
 				m_leadingIntoAttack = false;
 			} else {
 				// We're not. So, set all limbs to idle and m_currentAttackID to -1 (not attacking)
-				for(unsigned int i = 0; i < m_limbs.size(); i++) {
-					m_limbs[i].activateSkeletalAnimation(m_idleAnimation);
-				}
+				m_body.activateAnimation(m_idleAnimation);
 				m_currentAttackID = -1;
 			}
 		}

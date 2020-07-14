@@ -28,23 +28,19 @@ Entity::Entity(SaveDataTypes::EntityData& saveData) {
 }
 
 Entity* createEntity(glm::vec2 pos, unsigned int layer, unsigned int id, SaveDataTypes::MetaData data, bool loadTex) {
-	unsigned int idTest = XMLModule::XMLData::getEntityNPCData(id).id;
+	XMLModule::EntityData e = XMLModule::XMLData::getEntityData(id);
 
-	if(idTest != (unsigned int) - 1) {
+	if(e.type == XMLModule::EntityType::NPC) {
 		// An NPC
 		return new EntityNPC(pos, layer, id, data, loadTex);
-	}
-	idTest = XMLModule::XMLData::getEntityItemData(id).id;
-	if(idTest != (unsigned int) - 1) {
+	} else if(e.type == XMLModule::EntityType::ITEM) {
 		// An Item
 		return new EntityItem(pos, layer, id, data, loadTex);
-	}
-	idTest = XMLModule::XMLData::getEntityProjectileData(id).id;
-	if(idTest != (unsigned int) - 1) {
+	} else if(e.type == XMLModule::EntityType::PROJECTILE) {
 		// An Projectile
 		return new EntityProjectile(pos, layer, id, data, loadTex);
 	} else {
-		Logger::getInstance()->log("Failed to create entity with ID: " + std::to_string(id), true);
+		Logger::getInstance()->log("ERROR: Failed to create entity with ID: " + std::to_string(id), true);
 		return nullptr;
 	}
 }
@@ -246,10 +242,10 @@ void Entity::updateLightLevel(World* world) {
 	// Find actual values at each of the tiles
 	float Light_TR, Light_TL, Light_BR, Light_BL;
 
-	Light_TR = Tile_TR->getLightAtPoint(Pos_TR - Tile_TR->getPosition());
-	Light_TL = Tile_TL->getLightAtPoint(Pos_TL - Tile_TL->getPosition());
-	Light_BR = Tile_BR->getLightAtPoint(Pos_BR - Tile_BR->getPosition());
-	Light_BL = Tile_BL->getLightAtPoint(Pos_BL - Tile_BL->getPosition());
+	Light_TR = Tile_TR ? Tile_TR->getLightAtPoint(Pos_TR - Tile_TR->getPosition()) : 0.0f;
+	Light_TL = Tile_TL ? Tile_TL->getLightAtPoint(Pos_TL - Tile_TL->getPosition()) : 0.0f;
+	Light_BR = Tile_BR ? Tile_BR->getLightAtPoint(Pos_BR - Tile_BR->getPosition()) : 0.0f;
+	Light_BL = Tile_BL ? Tile_BL->getLightAtPoint(Pos_BL - Tile_BL->getPosition()) : 0.0f;
 
 	m_cornerLight = glm::vec4(Light_TL, Light_TR, Light_BR, Light_BL);
 

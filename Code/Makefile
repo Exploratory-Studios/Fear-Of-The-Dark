@@ -1,8 +1,8 @@
 .PHONY: clean All
 
 All:
-	@echo "----------Building project:[ AnimationTool - Debug ]----------"
-	@cd "/home/davis-dev/Documents/Programming/C++/CodingGithub/Fear-Of-The-Dark/Tools/AnimationTool/AnimationTool" && "$(MAKE)" -f  "AnimationTool.mk"
+	@echo "----------Building project:[ Fear-Of-The-Dark - Debug ]----------"
+	@"$(MAKE)" -f  "Fear-Of-The-Dark.mk"
 clean:
-	@echo "----------Cleaning project:[ AnimationTool - Debug ]----------"
-	@cd "/home/davis-dev/Documents/Programming/C++/CodingGithub/Fear-Of-The-Dark/Tools/AnimationTool/AnimationTool" && "$(MAKE)" -f  "AnimationTool.mk" clean
+	@echo "----------Cleaning project:[ Fear-Of-The-Dark - Debug ]----------"
+	@"$(MAKE)" -f  "Fear-Of-The-Dark.mk" clean

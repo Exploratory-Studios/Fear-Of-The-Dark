@@ -8,6 +8,17 @@
 
 namespace CombatModule {
 
+	Attack* createAttack(unsigned int attackID, ::Entity* owner) {
+		XMLModule::AttackData d = XMLModule::XMLData::getAttackData(attackID);
+		if(d.type == XMLModule::AttackType::MELEE) {
+			return new MeleeAttack(attackID, owner);
+		} else if(d.type == XMLModule::AttackType::RANGED) {
+			return new RangedAttack(attackID, owner);
+		} else if(d.type == XMLModule::AttackType::MAGIC) {
+			return new MagicAttack(attackID, owner);
+		}
+	}
+
 	Attack::Attack(unsigned int attackID, ::Entity* owner) : m_owner(owner) {
 		XMLModule::AttackData d = XMLModule::XMLData::getAttackData(attackID);
 

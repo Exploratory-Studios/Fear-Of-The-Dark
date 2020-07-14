@@ -37,6 +37,7 @@ void EntityNPC::init(unsigned int id) {
 	m_jumpHeight = std::sqrt(d.jumpHeight * 2.0f * (1.225f / 60.0f));
 	m_maxHealth = d.maxHealth;
 	m_faction = (Categories::Faction)d.faction;
+	m_gravity = d.gravity;
 
 	m_metaData = d.getMetaData();
 

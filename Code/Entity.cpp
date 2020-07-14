@@ -145,7 +145,7 @@ void Entity::move(float timeStepVariable) {
 		m_position.x += WORLD_SIZE;
 	}
 
-	m_velocity.y -= 1.225f / 60.0f * timeStepVariable; // Earth gravity is far too harsh for games. We use about 1/8th
+	if(m_gravity) m_velocity.y -= 1.225f / 60.0f * timeStepVariable; // Earth gravity is far too harsh for games. We use about 1/8th
 }
 
 /// PRIVATE FUNCTIONS

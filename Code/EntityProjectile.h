@@ -8,6 +8,8 @@ class EntityProjectile : public Entity {
 		EntityProjectile(glm::vec2 pos, unsigned int layer, EntityIDs id, SaveDataTypes::MetaData data, bool loadTex);
 		virtual ~EntityProjectile();
 
+		void init();
+
 		void setDirection(glm::vec2& direction) {
 			m_velocity = direction * glm::vec2(m_speed);
 		}

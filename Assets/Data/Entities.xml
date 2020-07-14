@@ -79,6 +79,7 @@
 <projectile name="TestProjectile" id="5">
 	<texture>Entities/Projectiles/ProjectileBase.png</texture>
 	<bumpMap>ProjectileBase.png</bumpMap>
+	<gravity>false</gravity>
 	<speed>0.0</speed>
 	<collides>1</collides>
 	<damage>10</damage>

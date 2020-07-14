@@ -198,8 +198,8 @@ namespace XMLModule {
 
 			std::string texture = "", bumpMap = "";
 			float emittedLight = 0.0f, emittedHeat = 0.0f;
-			glm::vec2 size;
-			bool isSolid, isDrawn, isNatural, isTransparent;
+			glm::vec2 size = glm::vec2(1.0f);
+			bool isSolid = true, isDrawn = true, isNatural = false, isTransparent = false;
 			unsigned int updateScript, tickScript, destructionScript, interactScript_walkedOn, interactScript_used;
 	};
 
@@ -219,7 +219,7 @@ namespace XMLModule {
 
 			std::string texture, bumpMap;
 			unsigned int script;
-			float decayRate;
+			float decayRate = 1.0f;
 	};
 
 	class EntityData : public GenericData {
@@ -229,17 +229,20 @@ namespace XMLModule {
 
 				Attribute<unsigned int>* updateA = new Attribute<unsigned int>("updateScript", AttributeType::SCRIPT, &updateScript);
 				Attribute<unsigned int>* tickA = new Attribute<unsigned int>("tickScript", AttributeType::SCRIPT, &tickScript);
+				Attribute<bool>* gravityA = new Attribute<bool>("gravity", AttributeType::BOOL, &gravity);
 
 				addAttribute(sizeA);
 				addAttribute(updateA);
 				addAttribute(tickA);
+				addAttribute(gravityA);
 			}
 
 			~EntityData() {}
 
-			glm::vec2 size;
+			glm::vec2 size = glm::vec2(1.0f);
 			unsigned int updateScript, tickScript;
 			EntityType type;
+			bool gravity = true;
 	};
 
 	class EntityNPCData : public EntityData {
@@ -264,9 +267,9 @@ namespace XMLModule {
 
 			virtual ~EntityNPCData() {}
 
-			float speed, jumpHeight, maxHealth;
+			float speed = 0.1f, jumpHeight = 1.0f, maxHealth = 100.0f;
 			unsigned int faction;
-			bool isDamagedByFalls, isInvincible;
+			bool isDamagedByFalls = true, isInvincible = false;
 			unsigned int idleAnimationID, lowVelAnimationID;
 			std::vector<unsigned int> skinAnimationIDs;
 	};
@@ -289,8 +292,8 @@ namespace XMLModule {
 
 			virtual ~EntityProjectileData() {}
 
-			float speed, damage;
-			bool collides;
+			float speed = 0.1f, damage = 1.0f;
+			bool collides = false;
 			std::string texture, bumpMap;
 	};
 
@@ -325,8 +328,8 @@ namespace XMLModule {
 			}
 
 			std::string texture;
-			float weight;
-			unsigned int useScript;
+			float weight = 0.0f;
+			unsigned int useScript = (unsigned int) - 1;
 	};
 
 	class BiomeData : public GenericData {
@@ -347,7 +350,7 @@ namespace XMLModule {
 
 			std::string backgroundTexture;
 			unsigned int baseHeight, maxHeightDiff;
-			float maxTemperature, baseTemperature, flatness;
+			float maxTemperature = 0.0f, baseTemperature = 0.0f, flatness = 1.0f;
 			std::vector<unsigned int> entities;
 
 			/// TODO:
@@ -382,7 +385,7 @@ namespace XMLModule {
 				addAttributes(attrs);
 			}
 
-			unsigned int itemID, minDrop, maxDrop;
+			unsigned int itemID, minDrop = 1, maxDrop = 1;
 			float chance;
 	};
 
@@ -412,7 +415,7 @@ namespace XMLModule {
 				addAttributes(attrs);
 			}
 
-			unsigned int structureID, biomeID, maxAmnt, minAmnt;
+			unsigned int structureID, biomeID, maxAmnt = 1, minAmnt = 1;
 			float chance;
 	};
 
@@ -457,7 +460,7 @@ namespace XMLModule {
 				addAttributes(attrs);
 			}
 
-			std::string text;
+			std::string text = "UNDEFINED";
 			std::vector<unsigned int> nextResponses;
 	};
 
@@ -473,9 +476,9 @@ namespace XMLModule {
 				addAttributes(attrs);
 			}
 
-			std::string text;
+			std::string text = "UNDEFINED";
 			std::vector<unsigned int> requiredFlags;
-			unsigned int nextQuestion;
+			unsigned int nextQuestion = (unsigned int) - 1;
 	};
 
 	class AnimationData : public GenericData {
@@ -493,7 +496,7 @@ namespace XMLModule {
 			};
 
 			std::string texture;
-			unsigned int y, width, height, frames;
+			unsigned int y = 0, width, height, frames;
 	};
 
 	class SkeletalAnimationData : public GenericData {
@@ -514,7 +517,7 @@ namespace XMLModule {
 			std::vector<glm::vec2> offsets;
 			std::vector<glm::vec2> centresOfRotation;
 			std::vector<unsigned int> limbIndices;
-			bool repeats;
+			bool repeats = false;
 	};
 
 	class AttackData : public GenericData {
@@ -562,7 +565,7 @@ namespace XMLModule {
 			};
 
 			unsigned int projectileID;
-			unsigned int numProjectiles;
+			unsigned int numProjectiles = 1;
 			float angleWidth; // 6 degrees default IN RADIANS!
 	};
 

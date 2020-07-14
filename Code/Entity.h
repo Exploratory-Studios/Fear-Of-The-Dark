@@ -162,6 +162,8 @@ class Entity {
 		int m_updateScriptId = -1;
 		int m_tickScriptId = -1;
 
+		bool m_gravity = true;
+
 		EntityTypes m_type;
 
 		// UUID

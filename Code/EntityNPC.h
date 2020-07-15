@@ -60,6 +60,7 @@ class EntityNPC : public Entity {
 		// Combat
 		void die(World* world);
 		void attack();
+		void applyDamage(float damage); // This takes armour into account
 
 		// AI
 		void setAITarget(World* world, unsigned int selfIndex); /// TODO: Make this work with certain quests, etc.
@@ -102,6 +103,7 @@ class EntityNPC : public Entity {
 		//DropDatum m_lootTableStart = DropDatum(0, (ItemIDs)(0), 0, 0, -1.0f);
 		unsigned int m_lootRolls = 0; // How many times the table is rolled on death
 		/// TODO: Re-enable loot/drops
+
 		// Combat
 		int m_attackScript = -1;
 		float m_maxHealth = 100.0f;
@@ -109,6 +111,7 @@ class EntityNPC : public Entity {
 		bool m_isDead = false;
 		bool m_canDie = true;
 		bool m_flying = false; // Can it fly?
+		glm::vec2 m_aimingDirection = glm::vec2(1.0f, 0.0f); // normalized vector pointing in the direction of fire.
 
 		// Movement
 		float m_runSpeed;

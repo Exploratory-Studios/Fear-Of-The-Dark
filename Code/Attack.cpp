@@ -6,6 +6,8 @@
 
 #include "Factory.h"
 
+#include <iostream>
+
 namespace CombatModule {
 
 	Attack* createAttack(unsigned int attackID, ::Entity* owner) {
@@ -32,21 +34,19 @@ namespace CombatModule {
 		m_projectileID = d.projectileID;
 	}
 
-	void MeleeAttack::execute() {
+	void MeleeAttack::execute(glm::vec2 direction) {
 		glm::vec2 pos = m_owner->getPosition();
 		unsigned int layer = m_owner->getLayer();
 
 		EntityProjectile* e = static_cast<EntityProjectile*>(createEntity(pos, layer, m_projectileID, SaveDataTypes::MetaData(), true));
 		e->setOwner(m_owner);
 
-		// Take the direction into account.
-		glm::vec2 directionVector(0.0f, 1.0f); // Normalized
-
-		// Get direction from owner
-
-		e->setPosition(m_owner->getPosition() + directionVector * e->getSize());
+		e->setPosition(m_owner->getPosition() + m_owner->getSize() / glm::vec2(2.0f) + direction);
+		e->setDirection(direction);
 
 		Factory::getEntityManager()->addEntity(e);
+
+		std::cout << e->getVelocity().x << std::endl;
 	}
 
 	RangedAttack::RangedAttack(unsigned int attackID, ::Entity* owner) : Attack(attackID, owner) {
@@ -57,17 +57,15 @@ namespace CombatModule {
 		m_angleWidth = glm::radians(d.angleWidth);
 	}
 
-	void RangedAttack::execute() {
+	void RangedAttack::execute(glm::vec2 direction) {
 		glm::vec2 pos = m_owner->getPosition();
 		unsigned int layer = m_owner->getLayer();
 
 		EntityProjectile* e = static_cast<EntityProjectile*>(createEntity(pos, layer, m_projectileID, SaveDataTypes::MetaData(), true));
 		e->setOwner(m_owner);
 
-		// Take the direction into account.
-		glm::vec2 directionVector(0.0f, 1.0f); // Normalized
-
-		e->setDirection(directionVector);
+		e->setPosition(m_owner->getPosition() + direction * e->getSize());
+		e->setDirection(direction);
 
 		Factory::getEntityManager()->addEntity(e);
 	}
@@ -78,7 +76,7 @@ namespace CombatModule {
 		m_scriptID = d.script;
 	}
 
-	void MagicAttack::execute() {
+	void MagicAttack::execute(glm::vec2 direction) {
 		ScriptingModule::ScriptQueue::activateScript(m_scriptID, m_owner->generateLuaValues());
 	}
 

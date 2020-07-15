@@ -759,7 +759,7 @@ void EntityNPC::updateAttack() {
 				// We are. Now, execute the attack and start the lead in, while setting m_leadingIntoAttack.
 				CombatModule::Attack* attack = CombatModule::createAttack(m_currentAttackID, this);
 
-				attack->execute();
+				attack->execute(m_aimingDirection);
 
 				*m_currentAttackAnim = attack->getLeadOut();
 				m_currentAttackAnim->setToLoop(false);
@@ -775,4 +775,8 @@ void EntityNPC::updateAttack() {
 			}
 		}
 	}
+}
+
+void EntityNPC::applyDamage(float damage) {
+	m_health -= damage;
 }

@@ -8,6 +8,9 @@ class EntityProjectile : public Entity {
 		EntityProjectile(glm::vec2 pos, unsigned int layer, EntityIDs id, SaveDataTypes::MetaData data, bool loadTex);
 		virtual ~EntityProjectile();
 
+		virtual void collideWithTiles(World* world) override;
+		virtual bool collideWithOther(Entity* other) override;
+
 		void init();
 
 		void setDirection(glm::vec2& direction) {
@@ -18,6 +21,9 @@ class EntityProjectile : public Entity {
 		}
 		Entity* getOwner() {
 			return m_owner;
+		}
+		float getDamage() {
+			return m_damage;
 		}
 
 	protected:

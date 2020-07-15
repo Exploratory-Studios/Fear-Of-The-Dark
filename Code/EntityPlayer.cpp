@@ -207,6 +207,8 @@ void EntityPlayer::updateStats(World* world, float timeStep) {
 
 void EntityPlayer::updateMouse(World* world, glm::vec2 mouseCoords) {
 
+	m_aimingDirection = glm::normalize(mouseCoords - (m_position + m_size / glm::vec2(2.0f)));
+
 	if(m_canInteract) {
 		m_selectedBlock = nullptr;
 

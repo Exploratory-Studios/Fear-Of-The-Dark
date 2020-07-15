@@ -2,6 +2,8 @@
 
 #include "XMLData.h"
 
+#include "Factory.h"
+
 EntityProjectile::EntityProjectile(glm::vec2 pos, unsigned int layer, unsigned int id, SaveDataTypes::MetaData data, bool loadTex) : Entity(pos, layer, SaveDataTypes::MetaData()) {
 	m_id = id;
 
@@ -42,4 +44,23 @@ void EntityProjectile::init() {
 
 EntityProjectile::~EntityProjectile() {
 	//dtor
+}
+
+void EntityProjectile::collideWithTiles(World* world) {
+	if(m_collideWithBlocks) {
+		std::vector<glm::vec2> positions;
+
+		checkTilePosition(world, positions,
+		                  m_position.x + m_size.x / 2.0f,
+		                  m_position.y + m_size.y / 2.0f);
+
+		if(positions.size() > 0) {
+			// We did collide, destroy this
+			Factory::getEntityManager()->removeEntity(getUUID());
+		}
+	}
+}
+
+bool EntityProjectile::collideWithOther(Entity* other) {
+	return false;
 }

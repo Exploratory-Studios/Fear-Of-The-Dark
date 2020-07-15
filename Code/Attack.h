@@ -21,7 +21,7 @@ namespace CombatModule {
 			Attack(unsigned int attackID, ::Entity* owner); // Uses the ID to fill in various fields (exclusive to each type of attack)
 			virtual ~Attack() {};
 
-			virtual void execute() {} // Spawns the projectile or starts the script
+			virtual void execute(glm::vec2 direction) {} // Spawns the projectile or starts the script
 
 			::AnimationModule::SkeletalAnimation getLeadIn() const {
 				return m_leadIn;
@@ -42,7 +42,7 @@ namespace CombatModule {
 			MeleeAttack(unsigned int attackID, ::Entity* owner);
 			~MeleeAttack() {};
 
-			virtual void execute() override;
+			virtual void execute(glm::vec2 direction) override;
 
 		protected:
 			unsigned int m_projectileID;
@@ -53,7 +53,7 @@ namespace CombatModule {
 			RangedAttack(unsigned int attackID, ::Entity* owner);
 			~RangedAttack() {};
 
-			virtual void execute() override;
+			virtual void execute(glm::vec2 direction) override;
 
 		protected:
 			unsigned int m_projectileID;
@@ -66,7 +66,7 @@ namespace CombatModule {
 			MagicAttack(unsigned int attackID, ::Entity* owner);
 			~MagicAttack() {};
 
-			virtual void execute() override;
+			virtual void execute(glm::vec2 direction) override;
 
 		protected:
 			unsigned int m_scriptID = 0;

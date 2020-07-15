@@ -75,6 +75,10 @@ void EntityManager::addEntity(Entity* e) {
 	    Repeat until the entity with a lower index's x pos is less than e's
 	*/
 
+	if(e->getUUID() == "NO_UUID") {
+		e->generateUUID(m_world);
+	}
+
 	m_entities.push_back(e);
 	for(int i = m_entities.size() - 1; i > 0; i--) {
 		if(m_entities[i]->getPosition().x > e->getPosition().x) {

@@ -26,7 +26,7 @@ EntityNPC::EntityNPC(glm::vec2 pos, unsigned int layer, EntityIDs id, SaveDataTy
 }
 
 void EntityNPC::init(unsigned int id) {
-	m_type = EntityTypes::NPC;
+	m_type = XMLModule::EntityType::NPC;
 
 	XMLModule::EntityNPCData d = XMLModule::XMLData::getEntityNPCData(m_id);
 
@@ -123,66 +123,55 @@ void EntityNPC::drawNormal(GLEngine::SpriteBatch& sb, float time, int layerDiffe
 	}
 }
 
-void EntityNPC::collide(World* world, unsigned int entityIndex) {
-	std::vector<Entity*> entities = Factory::getEntityManager()->getEntities();
+bool EntityNPC::collideWithOther(Entity* other) {
 
-	/// Entity collision
-	for(unsigned int i = entityIndex + 1; i < entities.size(); i++) { /// To the right
-		if(entities[i]->getType() == EntityTypes::NPC) {
-			EntityNPC* ent = dynamic_cast<EntityNPC*>(entities[i]);
+	bool collisionPossible = false;
 
-			float xDist = (m_position.x + m_size.x / 2.0f) - (ent->getPosition().x + ent->getSize().x / 2.0f);
-			float yDist = (m_position.y + m_size.y / 2.0f) - (ent->getPosition().y + ent->getSize().y / 2.0f);
-			if(abs(xDist) < abs(m_size.x / 2.0f + ent->getSize().x / 2.0f)) {
-				if(abs(yDist) < abs(m_size.y / 2.0f + ent->getSize().y / 2.0f)) {
+	glm::vec2 otherPos = other->getPosition();
+	glm::vec2 otherSize = other->getSize();
 
-					float depth = xDist - (m_size.x / 2.0f + ent->getSize().x / 2.0f);
-					float force = (depth / 2.0f) * (depth / 2.0f) / ((m_size.x / 2.0f + ent->getSize().x / 2.0f) * 512.0f);
+	float xDist = (otherPos.x - otherSize.x / 2.0f) - (m_position.x + m_size.x / 2.0f);
 
-
-					m_position.x -= force;
-					ent->setPosition(glm::vec2(ent->getPosition().x + force, ent->getPosition().y));
-					continue;
-				}
-			}
-		} else if(entities[i]->getType() == EntityTypes::ITEM) {
-			EntityItem* ent = dynamic_cast<EntityItem*>(entities[i]);
-
-			float xDist = std::abs(ent->getPosition().x - m_position.x);
-			float yDist = std::abs(ent->getPosition().y - m_position.y);
-			float dist = std::sqrt(xDist * xDist + yDist * yDist);
-
-			if(dist <= 3.0f) {
-				//m_inventory->addItem(ent->getItem());
-				///world->removeEntity(i); /// TODO: Implement this
-			}
-			continue;
-		}
-		break;
+	if(std::abs(xDist) > (otherSize.x + m_size.x) / 2.0f) {
+		return false; // Collision will no longer be
 	}
 
-	for(int i = entityIndex - 1; i >= 0; i--) { /// To the left
-		if(entities[i]->getType() == EntityTypes::NPC) {
-			EntityNPC* ent = dynamic_cast<EntityNPC*>(entities[i]);
+	float yDist = (otherPos.y - otherSize.y / 2.0f) - (m_position.y + m_size.y / 2.0f);
 
-			float xDist = (m_position.x + m_size.x / 2.0f) - (ent->getPosition().x + ent->getSize().x / 2.0f);
-			float yDist = (m_position.y + m_size.y / 2.0f) - (ent->getPosition().y + ent->getSize().y / 2.0f);
-			if(abs(xDist) < abs(m_size.x / 2.0f + ent->getSize().x / 2.0f)) {
-				if(abs(yDist) < abs(m_size.y / 2.0f + ent->getSize().y / 2.0f)) {
+	if(std::abs(yDist) > (otherSize.y + m_size.y) / 2.0f) {
+		return true; // As shown above, collision would be possible on the X axis, so return true.
+	} // Else, we are colliding.
 
-					float depth = xDist - (m_size.x / 2.0f + ent->getSize().x / 2.0f);
-					float force = (depth / 2.0f) * (depth / 2.0f) / ((m_size.x / 2.0f + ent->getSize().x / 2.0f) * 512.0f);
+	if(other->getType() == XMLModule::EntityType::NPC) {
+		EntityNPC* ent = dynamic_cast<EntityNPC*>(other);
 
+		float depth = xDist - (m_size.x / 2.0f + otherSize.x / 2.0f);
+		float force = (depth / 2.0f) * (depth / 2.0f) / ((m_size.x / 2.0f + otherSize.x / 2.0f) * 512.0f);
 
-					m_position.x -= force;
-					ent->setPosition(glm::vec2(ent->getPosition().x + force, ent->getPosition().y));
-					continue;
-				}
-			}
+		m_position.x -= force;
+		ent->setPosition(glm::vec2(ent->getPosition().x + force, ent->getPosition().y));
+	} else if(other->getType() == XMLModule::EntityType::ITEM) {
+		EntityItem* ent = dynamic_cast<EntityItem*>(other);
+
+		float dist = std::sqrt(xDist * xDist + yDist * yDist);
+
+		if(dist <= 3.0f) { // Move to NPC
+			other->setPosition(other->getPosition() + glm::vec2(xDist / 2, yDist / 2));
 		}
-		break;
+		if(dist <= 1.0f) { // Add to inventoryx
+			//m_inventory->addItem(ent->getItem());
+			///world->removeEntity(i); /// TODO: Implement this
+		}
+	} else if(other->getType() == XMLModule::EntityType::PROJECTILE) {
+		EntityProjectile* ent = dynamic_cast<EntityProjectile*>(other);
+
+		applyDamage(ent->getDamage()); // This will process armour and stuff.
 	}
 
+	return true;
+}
+
+void EntityNPC::collideWithTiles(World* world) {
 	/// Tile collision
 	{
 		/// Many thanks to Ben Arnold. He taught me almost everything I know about programming through his Youtube channel, "Makinggameswithben"
@@ -701,7 +690,7 @@ void EntityNPC::setAITarget(World* world, unsigned int selfIndex) {
 		if(normalized == selfIndex) continue;
 
 		Entity* target = Factory::getEntityManager()->getEntities()[normalized];
-		if(target->getType() == EntityTypes::NPC) {
+		if(target->getType() == XMLModule::EntityType::NPC) {
 			EntityNPC* targetNPC = dynamic_cast<EntityNPC*>(target);
 
 			if(getFaction() > Categories::Faction::NEUTRAL &&
@@ -718,7 +707,7 @@ void EntityNPC::setAITarget(World* world, unsigned int selfIndex) {
 		if(normalized == selfIndex) continue;
 
 		Entity* target = Factory::getEntityManager()->getEntities()[normalized];
-		if(target->getType() == EntityTypes::NPC) {
+		if(target->getType() == XMLModule::EntityType::NPC) {
 			EntityNPC* targetNPC = dynamic_cast<EntityNPC*>(target);
 
 			if(getFaction() > Categories::Faction::NEUTRAL &&

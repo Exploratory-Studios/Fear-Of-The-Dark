@@ -37,6 +37,7 @@ namespace CombatModule {
 		unsigned int layer = m_owner->getLayer();
 
 		EntityProjectile* e = static_cast<EntityProjectile*>(createEntity(pos, layer, m_projectileID, SaveDataTypes::MetaData(), true));
+		e->setOwner(m_owner);
 
 		// Take the direction into account.
 		glm::vec2 directionVector(0.0f, 1.0f); // Normalized
@@ -61,6 +62,7 @@ namespace CombatModule {
 		unsigned int layer = m_owner->getLayer();
 
 		EntityProjectile* e = static_cast<EntityProjectile*>(createEntity(pos, layer, m_projectileID, SaveDataTypes::MetaData(), true));
+		e->setOwner(m_owner);
 
 		// Take the direction into account.
 		glm::vec2 directionVector(0.0f, 1.0f); // Normalized

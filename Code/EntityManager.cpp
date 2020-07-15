@@ -200,7 +200,9 @@ void EntityManager::updateEntities(float timeStep) {
 
 	for(unsigned int i = 0; i < m_entities.size(); i++) {
 		m_entities[i]->update(m_world, timeStep, i);
-		m_entities[i]->collide(m_world, i);
+		m_entities[i]->collideWithTiles(m_world);
+		for(unsigned int j = i + 1; i != (j % m_entities.size()) && m_entities[i]->collideWithOther(m_entities[j % m_entities.size()]) == true; j++);
+		for(unsigned int j = i - 1; i != ((j + m_entities.size()) % m_entities.size()) && m_entities[i]->collideWithOther(m_entities[(j + m_entities.size()) % m_entities.size()]) == true; j--);
 	}
 }
 

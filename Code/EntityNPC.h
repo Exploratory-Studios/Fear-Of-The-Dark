@@ -40,7 +40,8 @@ class EntityNPC : public Entity {
 		void onTalk() {}
 		void onTrade() {}
 
-		virtual void collide(World* world, unsigned int entityIndex);
+		virtual void collideWithTiles(World* world) override;
+		virtual bool collideWithOther(Entity* other) override;
 		virtual void onUpdate(World* world, float timeStep, unsigned int selfIndex);
 
 		/// Getters

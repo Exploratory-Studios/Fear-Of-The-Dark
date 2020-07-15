@@ -25,7 +25,7 @@
 #define VIEW_DIST 5
 
 // How many ticks per second?
-#define TICK_RATE 4
+#define TICK_RATE 15
 // How many frames per second?
 #define FRAME_RATE 60
 

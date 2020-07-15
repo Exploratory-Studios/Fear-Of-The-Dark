@@ -276,13 +276,13 @@ void EntityPlayer::updateInput(GLEngine::InputManager* input, World* world) {
 	if(m_canInteract) {
 		if(input->isKeyPressed(SDLK_r)) {
 			if(m_selectedEntity) { // must hover mouse over entity and press 'e'
-				if(m_selectedEntity->getType() == EntityTypes::NPC) {
+				if(m_selectedEntity->getType() == XMLModule::EntityType::NPC) {
 					dynamic_cast<EntityNPC*>(m_selectedEntity)->onTalk();
 				}
 			}
 		} else if(input->isKeyPressed(SDLK_t)) {
 			if(m_selectedEntity) {
-				if(m_selectedEntity->getType() == EntityTypes::NPC) {
+				if(m_selectedEntity->getType() == XMLModule::EntityType::NPC) {
 					dynamic_cast<EntityNPC*>(m_selectedEntity)->onTrade();
 				}
 			}

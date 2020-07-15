@@ -23,7 +23,7 @@ EntityProjectile::EntityProjectile(glm::vec2 pos, unsigned int layer, EntityIDs 
 }
 
 void EntityProjectile::init() {
-	m_type = EntityTypes::PROJECTILE;
+	m_type = XMLModule::EntityType::PROJECTILE;
 
 	XMLModule::EntityProjectileData d = XMLModule::XMLData::getEntityProjectileData(m_id);
 

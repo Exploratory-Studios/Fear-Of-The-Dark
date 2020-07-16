@@ -45,6 +45,12 @@ namespace AnimationModule {
 		sb.draw(destRect, m_uv, m_textureID, depth, colour, angle, COR);
 	}
 
+	void Animation::draw(::GLEngine::SpriteBatch& sb, GLEngine::ColourRGBA8 colour, glm::vec4& destRect, float& depth, glm::vec2 direction) {
+		m_uv.x = (float)(m_currentFrame * m_frameWidth) / (float)(m_width);
+
+		sb.draw(destRect, m_uv, m_textureID, depth, colour, direction);
+	}
+
 	void Animation::tick() {
 		if(!isFinished()) {
 			m_currentFrame++;

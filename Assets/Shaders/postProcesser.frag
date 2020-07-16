@@ -12,7 +12,7 @@ uniform sampler2D sunlightMap;
 
 const int MAX_LIGHTS = 30; // This is the max amnt of lights a scene can manage (MAX_LIGHTS_RENDERED)
 
-uniform vec3 lights[MAX_LIGHTS]; // First three components are XYZ, 4th is intensity
+uniform vec3 lights[MAX_LIGHTS]; // First two components are XY, 3th is intensity
 
 uniform float playerDepth;
 
@@ -72,7 +72,7 @@ float getSunlight() {
 
 void main() 
 { 
-	if(fragmentColour.a <= 0.01f) {
+	if(fragmentColour.a <= 0.05f) {
 		discard;
 	}
 
@@ -88,4 +88,18 @@ void main()
 	float c = 1.0 / map(depth-0.1, 0.0, 0.9, 1.0, 4.0);
 	colour.rgb *= c;
 	colour.rgb *= getLightLevel() + getSunlight();
+
+	//float size = 0.0012; // S i m p l e  "Ambient Occlusion"
+	//for(float x = -size; x <= size; x += size) {
+	//	for(float y = -size; y <= size; y += size) {
+	//		if(x != y) {
+	//			if(texture(depthMap, fragmentUV.xy + vec2(x, y)).r > depth) {
+	//				colour.rgb = vec3(0.0);
+	//				colour.a = 0.5;
+	//
+	//				break;
+	//			}
+	//		}
+	//	}
+	//}
 }

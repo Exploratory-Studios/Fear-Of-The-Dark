@@ -26,7 +26,13 @@
 	<height>128</height>
 	<frames>1</frames>
 </animation>
-
+<animation name="Bullet0" id="4">
+	<texture>/Entities/Projectiles/ProjectileTestAnim.png</texture>
+	<y>0</y>
+	<width>16</width>
+	<height>16</height>
+	<frames>4</frames>
+</animation>
 <skeletalAnimation id="0" name="MeleeAttack">
 	<repeats>1</repeats>
 	<limbIndices>

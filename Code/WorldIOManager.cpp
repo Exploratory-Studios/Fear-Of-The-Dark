@@ -89,7 +89,8 @@ void WorldIOManager::P_loadWorld(std::string worldName, World* world) {
 	{
 		// PLAYER
 
-		Factory::getEntityManager()->m_player = new EntityPlayer(glm::vec2(0.0f), 0, SaveDataTypes::MetaData(), false);
+		EntityPlayer newP = EntityPlayer(glm::vec2(0.0f), 0, SaveDataTypes::MetaData(), false);
+		Factory::getEntityManager()->setPlayer(newP);
 
 		SaveDataTypes::EntityPlayerData pod;
 		pod.read(file);

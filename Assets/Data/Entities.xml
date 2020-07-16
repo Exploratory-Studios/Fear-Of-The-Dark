@@ -77,11 +77,12 @@
 <!-- Projectiles -->
 
 <projectile name="TestProjectile" id="5">
-	<texture>Entities/Projectiles/ProjectileBase.png</texture>
+	<animationID>4</animationID>
 	<bumpMap>ProjectileBase.png</bumpMap>
 	<gravity>false</gravity>
 	<speed>0.1</speed>
 	<collides>1</collides>
 	<damage>10</damage>
+	<lifeTime>60</lifeTime>
 	<size>0.5,0.5</size>
 </projectile>

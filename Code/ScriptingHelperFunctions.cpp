@@ -107,13 +107,13 @@ namespace ScriptingModule {
 	}
 
 	unsigned int addEntity(World* world, unsigned int id, glm::vec2 position, unsigned int layer) {
-		Factory::getEntityManager()->addEntity(createEntity(position, layer, id, SaveDataTypes::MetaData(), true));
+		Factory::getEntityManager()->queueEntityToAdd(createEntity(position, layer, id, SaveDataTypes::MetaData(), true));
 
 		return 0;
 	}
 
 	void removeEntity(World* world, std::string UUID) { // index retrieved from entityTarget
-		Factory::getEntityManager()->removeEntity(UUID);
+		Factory::getEntityManager()->queueEntityToRemove(UUID);
 	}
 
 	void showEntity(World* world, std::string UUID) {

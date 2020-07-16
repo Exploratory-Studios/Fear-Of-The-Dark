@@ -21,6 +21,7 @@ namespace AnimationModule {
 			void init(unsigned int id);
 
 			void draw(::GLEngine::SpriteBatch& sb, GLEngine::ColourRGBA8 colour, glm::vec4& destRect, float& depth, float& angle, glm::vec2& COR);
+			void draw(::GLEngine::SpriteBatch& sb, GLEngine::ColourRGBA8 colour, glm::vec4& destRect, float& depth, glm::vec2 direction);
 			void tick();
 
 			void setToLoop(bool loops) {

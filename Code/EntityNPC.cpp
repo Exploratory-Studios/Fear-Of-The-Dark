@@ -160,7 +160,7 @@ bool EntityNPC::collideWithOther(Entity* other) {
 		}
 		if(dist <= 1.0f) { // Add to inventoryx
 			//m_inventory->addItem(ent->getItem());
-			///world->removeEntity(i); /// TODO: Implement this
+			///world->queueEntityToRemove(i); /// TODO: Implement this
 		}
 	} else if(other->getType() == XMLModule::EntityType::PROJECTILE) {
 		EntityProjectile* ent = dynamic_cast<EntityProjectile*>(other);
@@ -366,7 +366,7 @@ void EntityNPC::die(World* world) {
 		/* if(m_lootTableStart.getRarity() != -1.0f) {
 		     for(int i = 0; i < m_lootRolls; i++) {
 		         // (unsigned int)m_lootTableStart.roll()
-		         //world->addEntity(item);
+		         //world->queueEntityToAdd(item);
 		     }
 		 }*/ /// TODO: Re-enable Drops
 		m_isDead = true;

@@ -280,11 +280,12 @@ namespace XMLModule {
 				type = EntityType::PROJECTILE;
 
 				std::vector<AttributeBase*> attrs = {
-					new Attribute<std::string>("texture", AttributeType::FILEPATH_TEXTURE, &texture),
-					new Attribute<std::string>("bumpMap", AttributeType::FILEPATH_BUMPMAP, &bumpMap),
+					new Attribute<unsigned int>("animationID", AttributeType::UNSIGNED_INT, &animationID),
+					//new Attribute<std::string>("bumpMap", AttributeType::FILEPATH_BUMPMAP, &bumpMap),
 					new Attribute<float>("speed", AttributeType::FLOAT, &speed),
 					new Attribute<bool>("collides", AttributeType::BOOL, &collides),
-					new Attribute<float>("damage", AttributeType::FLOAT, &damage)
+					new Attribute<float>("damage", AttributeType::FLOAT, &damage),
+					new Attribute<float>("lifeTime", AttributeType::FLOAT, &lifeTime)
 				};
 
 				addAttributes(attrs);
@@ -292,9 +293,9 @@ namespace XMLModule {
 
 			virtual ~EntityProjectileData() {}
 
-			float speed = 0.1f, damage = 1.0f;
+			float speed = 0.1f, damage = 1.0f, lifeTime = -1.0f;
 			bool collides = false;
-			std::string texture, bumpMap;
+			unsigned int animationID;
 	};
 
 	class EntityItemData : public EntityData {

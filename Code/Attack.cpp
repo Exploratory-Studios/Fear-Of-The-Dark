@@ -44,9 +44,7 @@ namespace CombatModule {
 		e->setPosition(m_owner->getPosition() + m_owner->getSize() / glm::vec2(2.0f) + direction);
 		e->setDirection(direction);
 
-		Factory::getEntityManager()->addEntity(e);
-
-		std::cout << e->getVelocity().x << std::endl;
+		Factory::getEntityManager()->queueEntityToAdd(e);
 	}
 
 	RangedAttack::RangedAttack(unsigned int attackID, ::Entity* owner) : Attack(attackID, owner) {
@@ -67,7 +65,7 @@ namespace CombatModule {
 		e->setPosition(m_owner->getPosition() + direction * e->getSize());
 		e->setDirection(direction);
 
-		Factory::getEntityManager()->addEntity(e);
+		Factory::getEntityManager()->queueEntityToAdd(e);
 	}
 
 	MagicAttack::MagicAttack(unsigned int attackID, ::Entity* owner) : Attack(attackID, owner) {

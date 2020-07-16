@@ -13,6 +13,21 @@ EntityManager::EntityManager() {
 	Logger::getInstance()->log("EntityManager constructed");
 }
 
+unsigned int EntityManager::getEntityIndex(Entity* entity) {
+	float horizontalPercentage = entity->getPosition().x / (float)WORLD_SIZE;
+	for(unsigned int i = 0; i < std::ceil(m_entities.size() / 2) + 1; i++) {
+		int l = horizontalPercentage * (m_entities.size() - 1) - i;
+		int r = horizontalPercentage * (m_entities.size() - 1) + i;
+
+		if(l >= 0) {
+			if(m_entities[l] == entity) return l;
+		}
+		if(r < m_entities.size()) {
+			if(m_entities[r] == entity) return r;
+		}
+	}
+}
+
 EntityManager::~EntityManager() {
 	dispose();
 }
@@ -43,11 +58,11 @@ void EntityManager::setPlayer(EntityPlayer& p) {
 	if(!m_player) {
 		m_player = new EntityPlayer(glm::vec2(0.0f), 0.0f, SaveDataTypes::MetaData(), false);
 		*m_player = p;
-		addEntity(m_player);
+		queueEntityToAdd(m_player);
 	} else {
-		removeEntity(m_player->getUUID());
+		queueEntityToRemove(m_player->getUUID());
 		m_player = &p;
-		addEntity(&p);
+		queueEntityToAdd(&p);
 	}
 }
 
@@ -64,6 +79,27 @@ void EntityManager::sortEntities() {
 			}
 		}
 	}
+}
+
+void EntityManager::queueEntityToAdd(Entity* entity) {
+	// Check for duplicates
+	for(unsigned int i = 0; i < m_entitiesToAdd.size(); i++) {
+		if(m_entitiesToAdd[i] == entity) return;
+	}
+	m_entitiesToAdd.push_back(entity);
+}
+
+void EntityManager::queueEntityToRemove(Entity* entity) {
+	unsigned int index = getEntityIndex(entity);
+
+	for(unsigned int i = 0; i < m_entitiesToRemove.size(); i++) {
+		if(m_entitiesToRemove[i] == index) return;
+	}
+	m_entitiesToRemove.push_back(index);
+}
+
+void EntityManager::queueEntityToRemove(std::string UUID) {
+	queueEntityToRemove(getEntityByUUID(UUID)); // The UUID system assumes that you are in fact using a UUID that was created by and is managed by the entity manager
 }
 
 void EntityManager::addEntity(Entity* e) {
@@ -86,11 +122,10 @@ void EntityManager::addEntity(Entity* e) {
 			m_entities[i] = e;
 			m_entities[i + 1] = temp;
 		} else {
-			return;
+			break;
 		}
 	}
 
-	e->generateUUID(m_world);
 	m_entitiesByUUID.insert(std::pair<std::string, Entity*>(e->getUUID(), e));
 
 	std::vector<ScriptingModule::Argument> args = { ScriptingModule::Argument("entityUUID", e->getUUID()),
@@ -116,38 +151,6 @@ void EntityManager::removeEntity(unsigned int index) {
 
 	auto a = m_entitiesByUUID.find(m_entities[index]->getUUID());
 	m_entitiesByUUID.erase(a);
-
-	delete m_entities[index];
-
-	for(unsigned int i = index; i < m_entities.size() - 1; i++) {
-		m_entities[i] = m_entities[i + 1];
-	}
-
-	m_entities.pop_back();
-}
-
-void EntityManager::removeEntity(std::string UUID) {
-	/** REMOVES AND DELETES ENTITY, COMPLETELY HANDLING MEMORY MANAGEMENT
-	*/
-
-	unsigned int index;
-
-	for(int i = 0; i < m_entities.size(); i++) {
-		if(m_entities[i] == m_entitiesByUUID[UUID]) {
-			index = i;
-			break;
-		}
-	}
-
-	std::vector<ScriptingModule::Argument> args = { ScriptingModule::Argument("entityUUID", m_entities[index]->getUUID()),
-	                                                ScriptingModule::Argument("entityID", std::to_string(m_entities[index]->getID())),
-	                                                ScriptingModule::Argument("entityX", std::to_string(m_entities[index]->getPosition().x)),
-	                                                ScriptingModule::Argument("entityY", std::to_string(m_entities[index]->getPosition().y)),
-	                                                ScriptingModule::Argument("entityLayer", std::to_string(m_entities[index]->getLayer()))
-	                                              };
-	EventModule::EventQueue::triggerEvent("removeEntity", args);
-
-	m_entitiesByUUID.erase(UUID);
 
 	delete m_entities[index];
 
@@ -208,6 +211,16 @@ void EntityManager::updateEntities(float timeStep) {
 		for(unsigned int j = i + 1; i != (j % m_entities.size()) && m_entities[i]->collideWithOther(m_entities[j % m_entities.size()]) == true; j++);
 		for(unsigned int j = i - 1; i != ((j + m_entities.size()) % m_entities.size()) && m_entities[i]->collideWithOther(m_entities[(j + m_entities.size()) % m_entities.size()]) == true; j--);
 	}
+
+	for(unsigned int i = 0; i < m_entitiesToRemove.size(); i++) {
+		removeEntity(m_entitiesToRemove[i]);
+	}
+	m_entitiesToRemove.clear();
+
+	for(unsigned int i = 0; i < m_entitiesToAdd.size(); i++) {
+		addEntity(m_entitiesToAdd[i]);
+	}
+	m_entitiesToAdd.clear();
 }
 
 void EntityManager::tickEntities() {
@@ -282,6 +295,6 @@ void EntityManager::spawnEntities() {
 	}
 
 	for(int i = 0; i < positions.size(); i++) {
-		addEntity(createEntity(glm::vec2(positions[i].x, positions[i].y), (int)positions[i].z, EntityIDs::NPC_NEUTRAL_COMPANIONCUBE, SaveDataTypes::MetaData(), true));
+		queueEntityToAdd(createEntity(glm::vec2(positions[i].x, positions[i].y), (int)positions[i].z, EntityIDs::NPC_NEUTRAL_COMPANIONCUBE, SaveDataTypes::MetaData(), true));
 	}
 }

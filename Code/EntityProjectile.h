@@ -8,6 +8,9 @@ class EntityProjectile : public Entity {
 		EntityProjectile(glm::vec2 pos, unsigned int layer, EntityIDs id, SaveDataTypes::MetaData data, bool loadTex);
 		virtual ~EntityProjectile();
 
+		virtual void draw(GLEngine::SpriteBatch& sb, float time, int layerDifference, float xOffset) override;
+		virtual void drawNormal(GLEngine::SpriteBatch& sb, float time, int layerDifference, float xOffset) override;
+
 		virtual void collideWithTiles(World* world) override;
 		virtual bool collideWithOther(Entity* other) override;
 
@@ -27,7 +30,11 @@ class EntityProjectile : public Entity {
 		}
 
 	protected:
+		virtual void onUpdate(World* world, float timeStep, unsigned int selfIndex) override;
+		virtual void onTick(World* world) override;
+
 		Entity* m_owner = nullptr;
+		AnimationModule::Animation m_anim; // This is the animation that plays from creation onwards.
 
 		// Movement
 		float m_speed;
@@ -35,5 +42,6 @@ class EntityProjectile : public Entity {
 
 		// Combat
 		float m_damage;
+		float m_lifeTime = -1.0f;
 
 };

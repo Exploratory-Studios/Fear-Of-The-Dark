@@ -10,7 +10,7 @@ EntityProjectile::EntityProjectile(glm::vec2 pos, unsigned int layer, unsigned i
 	init();
 
 	if(loadTex) {
-		loadTexture();
+		//loadTexture();
 	}
 }
 
@@ -20,7 +20,7 @@ EntityProjectile::EntityProjectile(glm::vec2 pos, unsigned int layer, EntityIDs 
 	init();
 
 	if(loadTex) {
-		loadTexture();
+		//loadTexture();
 	}
 }
 
@@ -29,8 +29,6 @@ void EntityProjectile::init() {
 
 	XMLModule::EntityProjectileData d = XMLModule::XMLData::getEntityProjectileData(m_id);
 
-	m_texturePath = d.texture;
-	m_bumpMapPath = d.bumpMap;
 	m_size = d.size;
 	m_updateScriptId = d.updateScript;
 	m_tickScriptId = d.tickScript;
@@ -38,8 +36,11 @@ void EntityProjectile::init() {
 	m_damage = d.damage;
 	m_collideWithBlocks = d.collides;
 	m_gravity = d.gravity;
+	m_lifeTime = d.lifeTime;
 
 	m_metaData = d.getMetaData();
+
+	m_anim.init(d.animationID);
 }
 
 EntityProjectile::~EntityProjectile() {
@@ -56,11 +57,37 @@ void EntityProjectile::collideWithTiles(World* world) {
 
 		if(positions.size() > 0) {
 			// We did collide, destroy this
-			Factory::getEntityManager()->removeEntity(getUUID());
+			Factory::getEntityManager()->queueEntityToRemove(getUUID());
 		}
 	}
 }
 
 bool EntityProjectile::collideWithOther(Entity* other) {
 	return false;
+}
+
+void EntityProjectile::draw(GLEngine::SpriteBatch& sb, float time, int layerDifference, float xOffset) {
+	if(m_draw) {
+		glm::vec4 destRect = glm::vec4(m_position.x + (xOffset * CHUNK_SIZE), m_position.y, m_size.x, m_size.y);
+
+		float depth = getDepth();
+
+		m_anim.draw(sb, GLEngine::ColourRGBA8(255, 255, 255, 255), destRect, depth, glm::normalize(m_velocity));
+	}
+}
+
+void EntityProjectile::drawNormal(GLEngine::SpriteBatch& sb, float time, int layerDifference, float xOffset) {
+	// Do nothing for right now
+	/// TODO: Add normal maps to animations.
+}
+
+void EntityProjectile::onUpdate(World* world, float timeStep, unsigned int selfIndex) {
+	if(m_lifeTime > 0.0f) {
+		m_lifeTime -= timeStep;
+		if(m_lifeTime <= 0.0f) Factory::getEntityManager()->queueEntityToRemove(this);
+	}
+}
+
+void EntityProjectile::onTick(World* world) {
+	m_anim.tick();
 }

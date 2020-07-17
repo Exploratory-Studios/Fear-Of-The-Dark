@@ -24,7 +24,6 @@
   <Description/>
   <Dependencies/>
   <VirtualDirectory Name="src">
-    <File Name="Presets.h"/>
     <File Name="AugAnimation.h"/>
     <File Name="AugAnimation.cpp"/>
     <File Name="MainScreen.h"/>

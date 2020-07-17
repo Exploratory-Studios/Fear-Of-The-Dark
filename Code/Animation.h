@@ -65,6 +65,7 @@ namespace AnimationModule {
 			void init(unsigned int id);
 
 			void updateLimb(Limb* limb);
+			void transitionLimb(Limb* limb);
 			void tick();
 
 			bool isFinished();
@@ -99,10 +100,17 @@ namespace AnimationModule {
 			void setFrame(unsigned int frame) {
 				if(m_angles.size() > 0) m_currentFrame = frame % (m_angles.size() / m_limbIndices.size());
 			}
+			bool isChanging() {
+				return m_changing;
+			}
+			void setChanging(bool setting) {
+				m_changing = setting;
+			}
 
 		protected:
 			int m_currentFrame = 0, m_lastFrame = 0;
 			bool m_repeats = false;
+			bool m_changing = false;
 
 			std::vector<unsigned int> m_limbIndices;
 
@@ -121,6 +129,7 @@ namespace AnimationModule {
 
 			void init(Animation idleAnimation, unsigned int index);
 			void activateSkeletalAnimation(SkeletalAnimation* anim);
+			void changeSkeletalAnimation(SkeletalAnimation* anim); // blends last one with this one, so we get a smooth start.
 
 			void tick();
 			void update();
@@ -138,6 +147,7 @@ namespace AnimationModule {
 
 		protected:
 			SkeletalAnimation* m_activeAnimation = nullptr; // This is what actually moves the limb. This is changeable
+			SkeletalAnimation* m_nextAnimation = nullptr; // For "blending" from an attack to a flinch, let's say.
 			Animation m_idleAnimation; // This is the "skin"
 			unsigned int m_index; // This is used to make sure that each arm/leg follows the correct skeletal animation's limb (right leg might be 0, left leg might be 1, etc.)
 
@@ -163,7 +173,11 @@ namespace AnimationModule {
 			}
 
 			void tick() {
-				if(m_animation) m_animation->tick();
+				if(m_animation) {
+					if(!m_animation->isChanging()) {
+						m_animation->tick();
+					}
+				}
 			}
 
 			void draw(GLEngine::SpriteBatch& sb, GLEngine::ColourRGBA8 colour, glm::vec4 destRect, float& depth) {
@@ -189,12 +203,20 @@ namespace AnimationModule {
 			}
 
 			void activateAnimation(SkeletalAnimation* skelly) {
-				m_animation = skelly;
-
 				for(unsigned int i = 0; i < m_limbs.size(); i++) {
 					m_limbs[i].activateSkeletalAnimation(skelly);
 				}
 
+				m_animation = skelly;
+			}
+
+			void changeAnimation(SkeletalAnimation* skelly) {
+				for(unsigned int i = 0; i < m_limbs.size(); i++) {
+					m_limbs[i].changeSkeletalAnimation(skelly);
+				}
+
+				m_animation = skelly;
+				skelly->setChanging(true);
 			}
 
 			SkeletalAnimation* getAnimation() {

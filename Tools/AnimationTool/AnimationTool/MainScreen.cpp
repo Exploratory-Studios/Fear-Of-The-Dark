@@ -3,7 +3,7 @@
 #include <ResourceManager.h>
 #include <filesystem>
 
-#include "Presets.h"
+#include "PresetValues.h"
 
 #include <iostream>
 
@@ -640,6 +640,12 @@ void MainScreen::importFromFile(std::string filepath) {
 
 		m_keyframesList->addItem(item);
 		m_keyframesList->ensureItemIsVisible(item);
+	}
+
+	m_currentSkeletal = getSkeletal();
+
+	for(unsigned int i = 0; i < m_limbs.size(); i++) {
+		m_limbs[i].activateSkeletalAnimation(&m_currentSkeletal);
 	}
 }
 

@@ -11,7 +11,7 @@
 	<maxHealth>100.000000</maxHealth>
 	<faction>good</faction>
 	<idleAnimationID>2</idleAnimationID>
-	<lowVelAnimationID>0</lowVelAnimationID>
+	<lowVelAnimationID>3</lowVelAnimationID>
 	<skinAnimationIDs>
 		<skinAnimationID>0</skinAnimationID>
 		<skinAnimationID>1</skinAnimationID>

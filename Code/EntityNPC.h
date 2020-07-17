@@ -119,6 +119,7 @@ class EntityNPC : public Entity {
 		// Movement
 		float m_runSpeed;
 		float m_jumpHeight; // Maximum height = (m_jumpHeight^2)/(2*1.225/60)
+		MovementState m_state = MovementState::IDLE;
 		// m_jumpHeight = sqrt(2*(1.225/60)*(maximum height))
 
 		// Inventory

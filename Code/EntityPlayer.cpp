@@ -263,15 +263,29 @@ void EntityPlayer::updateInput(GLEngine::InputManager* input, World* world) {
 		if(m_velocity.x < MAX_SPEED) {
 			m_velocity.x += m_runSpeed * m_inventory->getSpeedMultiplier() * std::pow(m_stamina, 0.4f);
 		}
+		if(m_state != MovementState::LOW_VEL) {
+			m_state = MovementState::LOW_VEL;
+			m_body.changeAnimation(m_lowVelAnimation);
+		}
 		m_stamina *= 0.999f;
 	} else if(input->isKeyDown(SDLK_a) && (m_stamina > 0.0f)) {
 		if(m_velocity.x > 0.0f) m_velocity.x /= 5.0f;
 		if(m_velocity.x > -MAX_SPEED)
 			m_velocity.x -= m_runSpeed * m_inventory->getSpeedMultiplier() * std::pow(m_stamina, 0.4f);
+		if(m_state != MovementState::LOW_VEL) {
+			m_state = MovementState::LOW_VEL;
+			m_body.changeAnimation(m_lowVelAnimation);
+		}
 		m_stamina *= 0.999f;
 	}
 
-	if(m_velocity.x < 0.001f && m_velocity.x > -0.001f && m_onGround && m_stamina * 1.003f <= 1.000000f) m_stamina *= 1.003f;
+	if(m_velocity.x < 0.001f && m_velocity.x > -0.001f && m_onGround && m_stamina * 1.003f <= 1.000000f) {
+		m_stamina *= 1.003f;
+		if(m_state != MovementState::IDLE) {
+			m_state = MovementState::IDLE;
+			m_body.changeAnimation(m_idleAnimation);
+		}
+	}
 
 	if(m_canInteract) {
 		if(input->isKeyPressed(SDLK_r)) {

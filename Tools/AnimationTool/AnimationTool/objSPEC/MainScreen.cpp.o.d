@@ -276,7 +276,7 @@ objSPEC/MainScreen.cpp.o: MainScreen.cpp MainScreen.h \
  ../../../../GLEngine/TextureCache.h ../../../../GLEngine/GLTexture.h \
  ../../../Code/Categories.h ../../../Code/SaveDataTypes.h \
  ../../../Code/MetaData.h ../../../Code/LuaHeaders.h \
- ../../../Code/XMLDataTypes.h ../../../Code/XMLDataTypes.tpp Presets.h
+ ../../../Code/XMLDataTypes.h ../../../Code/XMLDataTypes.tpp
 
 MainScreen.h:
 
@@ -863,5 +863,3 @@ AugAnimation.h:
 ../../../Code/XMLDataTypes.h:
 
 ../../../Code/XMLDataTypes.tpp:
-
-Presets.h:

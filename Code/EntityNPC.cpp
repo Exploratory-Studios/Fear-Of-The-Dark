@@ -407,8 +407,18 @@ void EntityNPC::updateMovement(World* world) {
 		if(std::abs(m_velocity.x) < MAX_SPEED) {
 			m_velocity.x += m_runSpeed;
 		}
+		if(m_state != MovementState::LOW_VEL) {
+			m_state = MovementState::LOW_VEL;
+			m_body.activateAnimation(m_lowVelAnimation);
+		}
 	} else {
 		m_velocity.x *= 0.9f;
+		if(m_velocity.x < 0.1f) {
+			if(m_state != MovementState::IDLE) {
+				m_state = MovementState::IDLE;
+				m_body.activateAnimation(m_idleAnimation);
+			}
+		}
 	}
 	if(m_controls[4]) { // Backwards (layer++)
 		moveDownLayer(world);

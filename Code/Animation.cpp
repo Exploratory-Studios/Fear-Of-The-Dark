@@ -123,14 +123,45 @@ namespace AnimationModule {
 				limb->setOffset(newOffset);
 				limb->setAngle(newAngle);
 				limb->setCentreOfRotation(newCentre);
-			} else { // We're on a new frame. Make sure to set the angle
+			} else { // We're on a new frame. Make sure to set the angle, etc.
 				limb->setOffset(m_offsets[elementI]);
 				limb->setAngle(m_angles[elementI]);
 				limb->setCentreOfRotation(m_centresOfRotation[elementI]);
+
+				m_lastFrame = m_currentFrame;
 			}
+		}
+	}
 
-			m_lastFrame = m_currentFrame;
+	void SkeletalAnimation::transitionLimb(Limb* limb) {
+		// Move the limb from where it is to where the first frame of this animation is. This has to be done in some arbitrary amount of frames. This function is called every frame.
+		const float maxMovement = 0.0625f; // (.0625 tiles) How far anything can move in one frame MAXIMUM
+		const float maxAngle = M_PI_4 / 8.0f; // (1/16 pi, 11.25 degrees) How far anything can rotate in one frame MAXIMUM
 
+		glm::vec2 diffPos = m_offsets[limb->getIndex()] - limb->getOffset();
+		float diffAngle = m_angles[limb->getIndex()] - limb->getAngle();
+		glm::vec2 diffCentre = m_centresOfRotation[limb->getIndex()] - limb->getCentreOfRotation();
+
+		glm::vec2 integralPos = glm::clamp(diffPos, glm::vec2(-maxMovement), glm::vec2(maxMovement));
+		float integralAngle = glm::clamp(diffAngle, -maxAngle, maxAngle);
+		glm::vec2 integralCentre = glm::clamp(diffCentre, glm::vec2(-maxMovement), glm::vec2(maxMovement));
+
+		glm::vec2 newOffset = limb->getOffset() + integralPos;
+		float newAngle = limb->getAngle() + integralAngle;
+		glm::vec2 newCentre = limb->getCentreOfRotation() + integralCentre;
+
+		limb->setOffset(newOffset);
+		limb->setAngle(newAngle);
+		limb->setCentreOfRotation(newCentre);
+
+		if(glm::distance(limb->getOffset(), m_offsets[limb->getIndex()]) <= 0.001f) { // Check if we're done
+			if(std::abs(limb->getAngle() - m_angles[limb->getIndex()]) <= 0.001f) {
+				if(glm::distance(limb->getCentreOfRotation(), m_centresOfRotation[limb->getIndex()]) <= 0.001f) {
+					// Everything is within an unnoticable distance, so we can continue with regular updating.
+					limb->activateSkeletalAnimation(this);
+					m_changing = false;
+				}
+			}
 		}
 	}
 
@@ -170,13 +201,22 @@ namespace AnimationModule {
 		if(!anim->affectsLimb(m_index)) {
 			return;
 		}
-		m_activeAnimation = anim;
 
-		if(m_activeAnimation->getFrames() > m_index) {
-			m_offset = anim->getOffset(m_index);
-			m_angle = anim->getAngle(m_index);
-			m_centreOfRotation = anim->getCentreOfRotation(m_index);
+		m_activeAnimation = anim;
+		m_nextAnimation = nullptr; // Make sure that this animation is the one we're actually using now.
+
+		m_offset = anim->getOffset(m_index);
+		m_angle = anim->getAngle(m_index);
+		m_centreOfRotation = anim->getCentreOfRotation(m_index);
+	}
+
+	void Limb::changeSkeletalAnimation(SkeletalAnimation* anim) {
+		// Sets current m_activeAnimation and sets m_animationTime to 0.0f
+		if(!anim->affectsLimb(m_index)) {
+			return;
 		}
+
+		m_nextAnimation = anim;
 	}
 
 	void Limb::tick() {
@@ -185,7 +225,9 @@ namespace AnimationModule {
 	}
 
 	void Limb::update() {
-		if(isAnimationActive()) {
+		if(m_nextAnimation) {
+			m_nextAnimation->transitionLimb(this);
+		} else if(isAnimationActive()) {
 			m_activeAnimation->updateLimb(this);
 		}
 	}

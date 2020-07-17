@@ -124,19 +124,18 @@ void EntityNPC::drawNormal(GLEngine::SpriteBatch& sb, float time, int layerDiffe
 }
 
 bool EntityNPC::collideWithOther(Entity* other) {
-
 	bool collisionPossible = false;
 
 	glm::vec2 otherPos = other->getPosition();
 	glm::vec2 otherSize = other->getSize();
 
-	float xDist = (otherPos.x - otherSize.x / 2.0f) - (m_position.x + m_size.x / 2.0f);
+	float xDist = (otherPos.x + otherSize.x / 2.0f) - (m_position.x + m_size.x / 2.0f);
 
 	if(std::abs(xDist) > (otherSize.x + m_size.x) / 2.0f) {
-		return false; // Collision will no longer be
+		return false; // Collision will no longer be possible
 	}
 
-	float yDist = (otherPos.y - otherSize.y / 2.0f) - (m_position.y + m_size.y / 2.0f);
+	float yDist = (otherPos.y + otherSize.y / 2.0f) - (m_position.y + m_size.y / 2.0f);
 
 	if(std::abs(yDist) > (otherSize.y + m_size.y) / 2.0f) {
 		return true; // As shown above, collision would be possible on the X axis, so return true.
@@ -165,7 +164,14 @@ bool EntityNPC::collideWithOther(Entity* other) {
 	} else if(other->getType() == XMLModule::EntityType::PROJECTILE) {
 		EntityProjectile* ent = dynamic_cast<EntityProjectile*>(other);
 
-		applyDamage(ent->getDamage()); // This will process armour and stuff.
+		if(ent->isActive()) {
+			applyDamage(ent->getDamage()); // This will process armour and stuff.
+			applyKnockback(ent->getKnockback(), ent->getPosition());
+			for(unsigned int i = 0; i < ent->getBuffs().size(); i++) {
+				applyBuff(ent->getBuffs()[i]);
+			}
+			ent->setActive(false);
+		}
 	}
 
 	return true;
@@ -186,7 +192,7 @@ void EntityNPC::collideWithTiles(World* world) {
 		glm::vec2 posTL(x, y + height);
 		glm::vec2 posTR(x + width, y + height);
 
-		const float testVar = 1.0f / 16.0f;
+		const float testVar = 1.0f / 8.0f;
 
 		// Check for ground/ceiling
 
@@ -214,8 +220,8 @@ void EntityNPC::collideWithTiles(World* world) {
 		                  posTL.y);
 
 		// Top/Bottom sides
-		for(float yMod = 0; yMod < height; yMod += height) {
-			for(float xMod = 0; xMod < width - (2 * testVar); xMod += 1.0f) {
+		for(float yMod = 0.0f; yMod < height; yMod += height) {
+			for(float xMod = 0.0f; xMod < width - (2 * testVar); xMod += 1.0f) {
 				checkTilePosition(world, groundTilePositions,
 				                  posBL.x + xMod + testVar,
 				                  posBL.y + yMod);
@@ -243,7 +249,7 @@ void EntityNPC::collideWithTiles(World* world) {
 
 		// Sides
 		for(float xMod = 0; xMod <= width; xMod += width) {
-			for(float yMod = 0; yMod < height - (2 * testVar); yMod += 1.0f) {
+			for(float yMod = 0.0f; yMod < height - (2 * testVar); yMod += 1.0f) {
 				checkTilePosition(world, collideTilePositions,
 				                  posBL.x + xMod,
 				                  posBL.y + yMod + testVar);
@@ -252,7 +258,7 @@ void EntityNPC::collideWithTiles(World* world) {
 
 		/// Collision prediction time!
 
-		float increment = 0.1f;
+		/*float increment = 0.1f;
 		int signX = (m_velocity.x > 0.0f) ? 1 : -1;
 		int signY = (m_velocity.y > 0.0f) ? 1 : -1;
 
@@ -281,13 +287,13 @@ void EntityNPC::collideWithTiles(World* world) {
 				                  p_posTR.x,
 				                  p_posTR.y);
 			}
-		}
+		}*/
 
 		for(unsigned int i = 0; i < collideTilePositions.size(); i++) {
 			collideWithTile(collideTilePositions[i], false);
 		}
 
-		if(predictiveTiles.size() > 0) collideWithTile(predictiveTiles[0], false);
+		//if(predictiveTiles.size() > 0) collideWithTile(predictiveTiles[0], false);
 
 		for(unsigned int i = 0; i < groundTilePositions.size(); i++) {
 			collideWithTile(groundTilePositions[i], true);
@@ -333,6 +339,10 @@ void EntityNPC::onUpdate(World* world, float timeStep, unsigned int selfIndex) {
 
 void EntityNPC::onTick(World* world) {
 	m_body.tick();
+
+	for(unsigned int i = 0; i < m_buffs.size(); i++) {
+		m_buffs[i].tick();
+	}
 }
 
 SaveDataTypes::EntityNPCData EntityNPC::getNPCSaveData() {
@@ -375,12 +385,6 @@ void EntityNPC::die(World* world) {
 	}
 }
 
-void EntityNPC::attack() {
-	if(m_attackScript != -1) {
-		ScriptingModule::ScriptQueue::activateScript(m_attackScript, generateLuaValues());
-	}
-}
-
 void EntityNPC::updateMovement(World* world) {
 	if(!m_flying) {
 		EntityFunctions::WalkingAI(m_controls, m_targets, m_curTarget, m_velocity, m_size, glm::vec3(m_position.x, m_position.y, m_layer));
@@ -404,7 +408,7 @@ void EntityNPC::updateMovement(World* world) {
 			m_velocity.x += m_runSpeed;
 		}
 	} else {
-		m_velocity.x /= 5.0f;
+		m_velocity.x *= 0.9f;
 	}
 	if(m_controls[4]) { // Backwards (layer++)
 		moveDownLayer(world);
@@ -779,4 +783,12 @@ void EntityNPC::updateAttack() {
 
 void EntityNPC::applyDamage(float damage) {
 	m_health -= damage;
+}
+
+void EntityNPC::applyKnockback(float knockback, glm::vec2 origin) {
+	m_velocity += glm::vec2(knockback) * glm::normalize(m_position + m_size / glm::vec2(2.0f) - origin);
+}
+
+void EntityNPC::applyBuff(unsigned int id) {
+	m_buffs.emplace_back(this, id);
 }

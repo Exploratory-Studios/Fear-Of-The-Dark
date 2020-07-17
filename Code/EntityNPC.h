@@ -4,6 +4,8 @@
 
 #include "XMLDataTypes.h"
 
+#include "Buff.h"
+
 struct NavTile { // Pretty much the same thing as a navmesh
 	NavTile() {}
 	NavTile* parent = nullptr;
@@ -59,8 +61,9 @@ class EntityNPC : public Entity {
 
 		// Combat
 		void die(World* world);
-		void attack();
 		void applyDamage(float damage); // This takes armour into account
+		void applyKnockback(float knockback, glm::vec2 origin);
+		void applyBuff(unsigned int id); // This constructs a new debuff and adds it to the vector.
 
 		// AI
 		void setAITarget(World* world, unsigned int selfIndex); /// TODO: Make this work with certain quests, etc.
@@ -105,13 +108,13 @@ class EntityNPC : public Entity {
 		/// TODO: Re-enable loot/drops
 
 		// Combat
-		int m_attackScript = -1;
 		float m_maxHealth = 100.0f;
 		float m_health = m_maxHealth;
 		bool m_isDead = false;
 		bool m_canDie = true;
 		bool m_flying = false; // Can it fly?
 		glm::vec2 m_aimingDirection = glm::vec2(1.0f, 0.0f); // normalized vector pointing in the direction of fire.
+		std::vector<Buff> m_buffs;
 
 		// Movement
 		float m_runSpeed;

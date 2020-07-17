@@ -236,12 +236,13 @@ namespace XMLModule {
 	std::map<unsigned int, GenericData*> XMLData::m_animationData;
 	std::map<unsigned int, GenericData*> XMLData::m_skeletalAnimationData;
 	std::map<unsigned int, GenericData*> XMLData::m_attackData;
+	std::map<unsigned int, GenericData*> XMLData::m_buffData;
 
 
 	void XMLData::init(std::string filepath) {
 		Logger::getInstance()->log("Beginning to load data...");
 
-		std::vector<std::string> files{ "Blocks", "Particles", "Entities", "Items", "Biomes", "Eras", "Loot", "Structures", "Quests", "Dialogue", "Animations", "Attacks" };
+		std::vector<std::string> files{ "Blocks", "Particles", "Entities", "Items", "Biomes", "Eras", "Loot", "Structures", "Quests", "Dialogue", "Animations", "Attacks", "Buffs" };
 
 		for(std::string& s : files) {
 			loadXMLData(filepath + "/Data/" + s + ".xml");
@@ -255,8 +256,8 @@ namespace XMLModule {
 		Logger::getInstance()->log("Beginning to write data...");
 
 		// files and nodeNames should have equal size. That much is assumed to be true at runtime
-		std::vector<std::string> files   { "Blocks", "Particles", "Entities", "Entities", "Entities", "Items", "Biomes", "Eras", "Loot", "Loot", "Structures", "Quests", "Dialogue", "Dialogue", "Dialogue", "Animations", "Animations", "Attacks", "Attacks", "Attacks" };
-		std::vector<std::string> nodeNames{ "tile",  "particle",  "npc",  "projectile",  "itemEntity",   "item",  "biome",   "era", "lootDrop", "lootTable", "structure", "quest", "questObjective", "question", "response", "animation", "skeletalAnimation", "meleeAttack", "rangedAttack", "magicAttack" };
+		std::vector<std::string> files   { "Blocks", "Particles", "Entities", "Entities", "Entities", "Items", "Biomes", "Eras", "Loot", "Loot", "Structures", "Quests", "Dialogue", "Dialogue", "Dialogue", "Animations", "Animations", "Attacks", "Attacks", "Attacks", "Buffs" };
+		std::vector<std::string> nodeNames{ "tile",  "particle",  "npc",  "projectile",  "itemEntity",   "item",  "biome",   "era", "lootDrop", "lootTable", "structure", "quest", "questObjective", "question", "response", "animation", "skeletalAnimation", "meleeAttack", "rangedAttack", "magicAttack", "buff" };
 
 		for(unsigned int i = 0; i < files.size(); i++) {
 			writeXMLData(filepath + "/Data/" + files[i] + ".xml", nodeNames[i]);
@@ -323,6 +324,8 @@ namespace XMLModule {
 			d = new RangedAttackData();
 		} else if(name == "magicAttack") {
 			d = new MagicAttackData();
+		} else if(name == "buff") {
+			d = new BuffData();
 		} else {
 			Logger::getInstance()->log("ERROR: Type '" + name + "' not supported!", true);
 		}
@@ -373,6 +376,8 @@ namespace XMLModule {
 			mapForWrite = &m_attackData;
 		} else if(name == "magicAttack") {
 			mapForWrite = &m_attackData;
+		} else if(name == "buff") {
+			mapForWrite = &m_buffData;
 		} else {
 			Logger::getInstance()->log("ERROR: Type '" + name + "' not supported!", true);
 		}
@@ -750,6 +755,18 @@ namespace XMLModule {
 		}
 
 		return *static_cast<MagicAttackData*>(index->second);
+	}
+
+	BuffData XMLData::getBuffData(unsigned int id) {
+		auto index = m_buffData.find(id);
+
+		if(index == m_buffData.end()) {
+			Logger::getInstance()->log("ERROR: Couldn't find buff data with ID: " + std::to_string(id), true);
+			BuffData s;
+			return s;
+		}
+
+		return *static_cast<BuffData*>(index->second);
 	}
 
 }

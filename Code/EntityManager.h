@@ -49,13 +49,14 @@ class EntityManager {
 		void addEntity(Entity* e);
 		void removeEntity(unsigned int index);
 		void removeEntity(std::string UUID);
+		void removeEntity(Entity* entity);
 
 		void spawnEntities();
 
 		EntityPlayer* m_player = nullptr;
 		std::vector<Entity*> m_entities; // entities by x value
 
-		std::vector<unsigned int> m_entitiesToRemove; // All will be removed/added at once at the end of each update, to prevent weird processing errors.
+		std::vector<Entity*> m_entitiesToRemove; // All will be removed/added at once at the end of each update, to prevent weird processing errors.
 		std::vector<Entity*> m_entitiesToAdd;
 
 		World* m_world = nullptr;

@@ -70,7 +70,7 @@ void EntityManager::sortEntities() {
 	bool changed = true;
 	while(changed) {
 		changed = false;
-		for(unsigned int i = 0; i < m_entities.size() - 1; i++) {
+		for(unsigned int i = 0; i < m_entities.size() - 1 && m_entities.size() > 1; i++) {
 			if(m_entities[i]->getPosition().x > m_entities[i + 1]->getPosition().x) {
 				Entity* temp = m_entities[i];
 				m_entities[i] = m_entities[i + 1];
@@ -90,12 +90,10 @@ void EntityManager::queueEntityToAdd(Entity* entity) {
 }
 
 void EntityManager::queueEntityToRemove(Entity* entity) {
-	unsigned int index = getEntityIndex(entity);
-
 	for(unsigned int i = 0; i < m_entitiesToRemove.size(); i++) {
-		if(m_entitiesToRemove[i] == index) return;
+		if(m_entitiesToRemove[i] == entity) return;
 	}
-	m_entitiesToRemove.push_back(index);
+	m_entitiesToRemove.push_back(entity);
 }
 
 void EntityManager::queueEntityToRemove(std::string UUID) {
@@ -161,6 +159,10 @@ void EntityManager::removeEntity(unsigned int index) {
 	m_entities.pop_back();
 }
 
+void EntityManager::removeEntity(Entity* entity) {
+	removeEntity(getEntityIndex(entity));
+}
+
 void EntityManager::drawEntities(GLEngine::SpriteBatch& sb, GLEngine::SpriteFont& sf, GLEngine::DebugRenderer& dr, glm::vec4 destRect) {
 	/**
 	    Draws an area of tiles at position destRect.xy, with width and height of destRect.z and destRect.w respectively.
@@ -206,8 +208,15 @@ void EntityManager::updateEntities(float timeStep) {
 	*/
 
 	for(unsigned int i = 0; i < m_entities.size(); i++) {
-		m_entities[i]->update(m_world, timeStep, i);
+		m_entities[i]->update(m_world, timeStep, i); // Make sure we update everything first so positions are set and collisions aren't weird
+	}
+
+	sortEntities();
+
+	for(unsigned int i = 0; i < m_entities.size(); i++) {
 		m_entities[i]->collideWithTiles(m_world);
+		/// Please note: Entities will collide twice with each other if they are the only two entities in the world.
+		/** This won't change actual gameplay at all, but it could have an effect on debugging. **/
 		for(unsigned int j = i + 1; i != (j % m_entities.size()) && m_entities[i]->collideWithOther(m_entities[j % m_entities.size()]) == true; j++);
 		for(unsigned int j = i - 1; i != ((j + m_entities.size()) % m_entities.size()) && m_entities[i]->collideWithOther(m_entities[(j + m_entities.size()) % m_entities.size()]) == true; j--);
 	}

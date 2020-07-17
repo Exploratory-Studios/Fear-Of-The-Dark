@@ -6,6 +6,8 @@
     </Plugin>
   </Plugins>
   <VirtualDirectory Name="src">
+    <File Name="Buff.cpp"/>
+    <File Name="Buff.h"/>
     <File Name="XMLDataTypes.h"/>
     <File Name="XMLData.h"/>
     <File Name="WorldIOManager.h"/>
@@ -48,7 +50,6 @@
     <File Name="DialogueManager.h"/>
     <File Name="Console.h"/>
     <File Name="Categories.h"/>
-    <File Name="BuffData.h"/>
     <File Name="AudioManager.h"/>
     <File Name="Attack.h"/>
     <File Name="App.h"/>

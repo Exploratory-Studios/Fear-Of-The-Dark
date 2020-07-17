@@ -28,6 +28,18 @@ class EntityProjectile : public Entity {
 		float getDamage() {
 			return m_damage;
 		}
+		float getKnockback() {
+			return m_knockback;
+		}
+		std::vector<unsigned int> getBuffs() {
+			return m_buffIDs;
+		}
+		bool isActive() {
+			return m_active;
+		}
+		void setActive(bool setting) {
+			m_active = setting;
+		}
 
 	protected:
 		virtual void onUpdate(World* world, float timeStep, unsigned int selfIndex) override;
@@ -42,6 +54,10 @@ class EntityProjectile : public Entity {
 
 		// Combat
 		float m_damage;
+		float m_knockback = 0.0f;
 		float m_lifeTime = -1.0f;
+		std::vector<unsigned int> m_buffIDs;
+
+		bool m_active = true;
 
 };

@@ -349,27 +349,27 @@ namespace XMLModule {
 				}
 				case(unsigned int)AttributeType::STRING_FACTION: {
 					std::string factionString;
-					Categories::Faction faction;
+					unsigned int faction = attr.second->getData<unsigned int>();
 
-					/// TODO: Write
-
-					getValue(node, attr.first, factionString);
-
-					if(factionString == "evil") {
-						faction = Categories::Faction::EVIL;
-					} else if(factionString == "bad") {
-						faction = Categories::Faction::BAD;
-					} else if(factionString == "neutral") {
-						faction = Categories::Faction::NEUTRAL;
-					} else if(factionString == "good") {
-						faction = Categories::Faction::GOOD;
-					} else if(factionString == "benign") {
-						faction = Categories::Faction::BENIGN;
-					} else {
-						faction = Categories::Faction::NEUTRAL;
+					if(faction == (unsigned int)Categories::Faction::EVIL) {
+						factionString = "evil";
+					} else if(faction == (unsigned int)Categories::Faction::BAD) {
+						factionString = "bad";
+					} else if(faction == (unsigned int)Categories::Faction::NEUTRAL) {
+						factionString = "neutral";
+					} else if(faction == (unsigned int)Categories::Faction::GOOD) {
+						factionString = "good";
+					} else if(faction == (unsigned int)Categories::Faction::BENIGN) {
+						factionString = "benign";
 					}
 
-					attr.second->setData((unsigned int)faction);
+					// Allocate faction string
+					const char* tempName = attr.first.c_str();
+					const char* tempVal = factionString.c_str();
+					char* nameStringAllocated = node->document()->allocate_string(tempName);
+					char* facStringAllocated = node->document()->allocate_string(tempVal);
+					rapidxml::xml_node<>* newNode = node->document()->allocate_node(rapidxml::node_element, nameStringAllocated, facStringAllocated);
+					node->append_node(newNode);
 
 					break;
 				}

@@ -1,0 +1,12 @@
+<buff name="Poison" id="0">
+	<tickScript>
+		<isFile>0</isFile>
+		<script>
+args = ...
+print("Test")
+		</script>
+	</tickScript>
+	<texture>Blocks/DoorBoi.png</texture>
+	<description>This is a description!</description>
+	<duration>15</duration>
+</buff>

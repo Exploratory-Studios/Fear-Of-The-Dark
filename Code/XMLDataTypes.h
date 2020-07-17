@@ -285,7 +285,9 @@ namespace XMLModule {
 					new Attribute<float>("speed", AttributeType::FLOAT, &speed),
 					new Attribute<bool>("collides", AttributeType::BOOL, &collides),
 					new Attribute<float>("damage", AttributeType::FLOAT, &damage),
-					new Attribute<float>("lifeTime", AttributeType::FLOAT, &lifeTime)
+					new Attribute<float>("lifeTime", AttributeType::FLOAT, &lifeTime),
+					new Attribute<float>("knockback", AttributeType::FLOAT, &knockback),
+					new Attribute<std::vector<unsigned int>>("buffIDs/buffID", AttributeType::VECTOR_UNSIGNED_INT, &buffIDs)
 				};
 
 				addAttributes(attrs);
@@ -293,9 +295,10 @@ namespace XMLModule {
 
 			virtual ~EntityProjectileData() {}
 
-			float speed = 0.1f, damage = 1.0f, lifeTime = -1.0f;
+			float speed = 0.1f, damage = 1.0f, lifeTime = -1.0f, knockback = 0.0f;
 			bool collides = false;
 			unsigned int animationID;
+			std::vector<unsigned int> buffIDs;
 	};
 
 	class EntityItemData : public EntityData {
@@ -583,6 +586,25 @@ namespace XMLModule {
 			};
 
 			unsigned int script;
+	};
+
+	class BuffData : public GenericData {
+		public:
+			BuffData() {
+				std::vector<AttributeBase*> attrs = {
+					new Attribute<unsigned int>("tickScript", AttributeType::SCRIPT, &tickScript),
+					new Attribute<std::string>("texture", AttributeType::FILEPATH_TEXTURE, &texture),
+					new Attribute<std::string>("description", AttributeType::STRING, &description),
+					new Attribute<unsigned int>("duration", AttributeType::UNSIGNED_INT, &duration)
+				};
+
+				addAttributes(attrs);
+			}
+
+			unsigned int tickScript = -1;
+			std::string texture;
+			std::string description;
+			unsigned int duration = 15;
 	};
 }
 

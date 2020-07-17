@@ -64,6 +64,7 @@ namespace XMLModule {
 			static MeleeAttackData getMeleeAttackData(unsigned int id);
 			static RangedAttackData getRangedAttackData(unsigned int id);
 			static MagicAttackData getMagicAttackData(unsigned int id);
+			static BuffData getBuffData(unsigned int id);
 
 			static unsigned int getTotalBiomes(); // Returns the number of biomes
 
@@ -87,6 +88,7 @@ namespace XMLModule {
 			static std::map<unsigned int, GenericData*> m_animationData;
 			static std::map<unsigned int, GenericData*> m_skeletalAnimationData;
 			static std::map<unsigned int, GenericData*> m_attackData;
+			static std::map<unsigned int, GenericData*> m_buffData;
 	};
 
 }

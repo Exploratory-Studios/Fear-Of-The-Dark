@@ -37,6 +37,8 @@ void EntityProjectile::init() {
 	m_collideWithBlocks = d.collides;
 	m_gravity = d.gravity;
 	m_lifeTime = d.lifeTime;
+	m_knockback = d.knockback;
+	m_buffIDs = d.buffIDs;
 
 	m_metaData = d.getMetaData();
 
@@ -58,12 +60,37 @@ void EntityProjectile::collideWithTiles(World* world) {
 		if(positions.size() > 0) {
 			// We did collide, destroy this
 			Factory::getEntityManager()->queueEntityToRemove(getUUID());
+			m_active = false;
 		}
 	}
 }
 
 bool EntityProjectile::collideWithOther(Entity* other) {
-	return false;
+	bool collisionPossible = false;
+
+	glm::vec2 otherPos = other->getPosition();
+	glm::vec2 otherSize = other->getSize();
+
+	float xDist = (otherPos.x + otherSize.x / 2.0f) - (m_position.x + m_size.x / 2.0f);
+
+	if(std::abs(xDist) > (otherSize.x + m_size.x) / 2.0f) {
+		return false; // Collision will no longer be possible
+	}
+
+	if(m_active) {
+		float yDist = (otherPos.y + otherSize.y / 2.0f) - (m_position.y + m_size.y / 2.0f);
+
+		if(std::abs(yDist) > (otherSize.y + m_size.y) / 2.0f) {
+			return true; // As shown above, collision would be possible on the X axis, so return true.
+		} // Else, we are colliding.
+
+		if(other->getType() == XMLModule::EntityType::NPC || other->getType() == XMLModule::EntityType::PROJECTILE) {
+			Factory::getEntityManager()->queueEntityToRemove(this);
+			m_active = false;
+		}
+	}
+
+	return true;
 }
 
 void EntityProjectile::draw(GLEngine::SpriteBatch& sb, float time, int layerDifference, float xOffset) {

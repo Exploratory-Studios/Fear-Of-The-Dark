@@ -6,7 +6,7 @@
 	<size>1.5,4.0</size>
 	<isDamagedByFalls>1</isDamagedByFalls>
 	<isInvincible>1</isInvincible>
-	<speed>0.200000</speed>
+	<speed>0.030000</speed>
 	<jumpHeight>4.500000</jumpHeight>
 	<maxHealth>100.000000</maxHealth>
 	<faction>good</faction>
@@ -85,4 +85,8 @@
 	<damage>10</damage>
 	<lifeTime>60</lifeTime>
 	<size>0.5,0.5</size>
+	<knockback>0.25</knockback>
+	<buffIDs>
+		<buffID>0</buffID>
+	</buffIDs>
 </projectile>

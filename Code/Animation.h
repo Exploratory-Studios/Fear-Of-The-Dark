@@ -128,8 +128,11 @@ namespace AnimationModule {
 			~Limb() {}
 
 			void init(Animation idleAnimation, unsigned int index);
+
 			void activateSkeletalAnimation(SkeletalAnimation* anim);
 			void changeSkeletalAnimation(SkeletalAnimation* anim); // blends last one with this one, so we get a smooth start.
+
+			void setAnimation(Animation& anim); // Sets the idleAnimation
 
 			void tick();
 			void update();

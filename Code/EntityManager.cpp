@@ -5,6 +5,8 @@
 #include "World.h"
 #include "Tile.h"
 
+#include "Inventory.h"
+
 #include "Entity.h"
 #include "EntityPlayer.h"
 
@@ -58,9 +60,10 @@ void EntityManager::setPlayer(EntityPlayer& p) {
 	if(!m_player) {
 		m_player = new EntityPlayer(glm::vec2(0.0f), 0.0f, SaveDataTypes::MetaData(), false);
 		*m_player = p;
+		m_player->setInventory(*(p.getInventory()));
 		queueEntityToAdd(m_player);
 	} else {
-		queueEntityToRemove(m_player->getUUID());
+		queueEntityToRemove(m_player);
 		m_player = &p;
 		queueEntityToAdd(&p);
 	}

@@ -15,7 +15,7 @@ class EntityItem : public Entity {
 		virtual bool collideWithOther(Entity* other) override;
 
 		/// Getters
-		Item* getItem(); /// TODO: Do this
+		Item* getItem();
 		unsigned int getItemID() {
 			return m_itemId;
 		}

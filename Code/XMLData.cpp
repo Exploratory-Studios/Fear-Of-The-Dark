@@ -256,8 +256,8 @@ namespace XMLModule {
 		Logger::getInstance()->log("Beginning to write data...");
 
 		// files and nodeNames should have equal size. That much is assumed to be true at runtime
-		std::vector<std::string> files   { "Blocks", "Particles", "Entities", "Entities", "Entities", "Items", "Biomes", "Eras", "Loot", "Loot", "Structures", "Quests", "Dialogue", "Dialogue", "Dialogue", "Animations", "Animations", "Attacks", "Attacks", "Attacks", "Buffs" };
-		std::vector<std::string> nodeNames{ "tile",  "particle",  "npc",  "projectile",  "itemEntity",   "item",  "biome",   "era", "lootDrop", "lootTable", "structure", "quest", "questObjective", "question", "response", "animation", "skeletalAnimation", "meleeAttack", "rangedAttack", "magicAttack", "buff" };
+		std::vector<std::string> files   { "Blocks", "Particles", "Entities", "Entities", "Entities", "Items", "Items", "Items", "Biomes", "Eras", "Loot", "Loot", "Structures", "Quests", "Dialogue", "Dialogue", "Dialogue", "Animations", "Animations", "Attacks", "Attacks", "Attacks", "Buffs" };
+		std::vector<std::string> nodeNames{ "tile",  "particle",  "npc",  "projectile",  "itemEntity",   "consumable", "armour", "weapon",  "biome",   "era", "lootDrop", "lootTable", "structure", "quest", "questObjective", "question", "response", "animation", "skeletalAnimation", "meleeAttack", "rangedAttack", "magicAttack", "buff" };
 
 		for(unsigned int i = 0; i < files.size(); i++) {
 			writeXMLData(filepath + "/Data/" + files[i] + ".xml", nodeNames[i]);
@@ -547,6 +547,42 @@ namespace XMLModule {
 		}
 
 		return *static_cast<ItemData*>(index->second);
+	}
+
+	ItemArmourData XMLData::getItemArmourData(unsigned int id) {
+		auto index = m_itemData.find(id);
+
+		if(index == m_itemData.end()) {
+			Logger::getInstance()->log("ERROR: Couldn't find item armour data with ID: " + std::to_string(id), true);
+			ItemArmourData t;
+			return t;
+		}
+
+		return *static_cast<ItemArmourData*>(index->second);
+	}
+
+	ItemConsumableData XMLData::getItemConsumableData(unsigned int id) {
+		auto index = m_itemData.find(id);
+
+		if(index == m_itemData.end()) {
+			Logger::getInstance()->log("ERROR: Couldn't find item consumable data with ID: " + std::to_string(id), true);
+			ItemConsumableData t;
+			return t;
+		}
+
+		return *static_cast<ItemConsumableData*>(index->second);
+	}
+
+	ItemWeaponData XMLData::getItemWeaponData(unsigned int id) {
+		auto index = m_itemData.find(id);
+
+		if(index == m_itemData.end()) {
+			Logger::getInstance()->log("ERROR: Couldn't find item weapon data with ID: " + std::to_string(id), true);
+			ItemWeaponData t;
+			return t;
+		}
+
+		return *static_cast<ItemWeaponData*>(index->second);
 	}
 
 /// Biomes

@@ -58,12 +58,14 @@ class EntityNPC : public Entity {
 		// Inventory
 		void giveItem(Item* item);
 		Inventory* getInventory();
+		void setInventory(Inventory inventory);
 
 		// Combat
 		void die(World* world);
 		void applyDamage(float damage); // This takes armour into account
 		void applyKnockback(float knockback, glm::vec2 origin);
 		void applyBuff(unsigned int id); // This constructs a new debuff and adds it to the vector.
+		void applyFlinch(); // Applies flinch animation and sets current attack to -1 if current attack is active. (!= -1)
 
 		// AI
 		void setAITarget(World* world, unsigned int selfIndex); /// TODO: Make this work with certain quests, etc.
@@ -91,7 +93,7 @@ class EntityNPC : public Entity {
 
 		// Animation (TODO: Add animation to entity XML)
 		AnimationModule::Body m_body;
-		AnimationModule::SkeletalAnimation* m_idleAnimation = nullptr, *m_lowVelAnimation = nullptr, *m_highVelAnimation = nullptr, *m_upAnimation = nullptr, *m_downAnimation = nullptr;
+		AnimationModule::SkeletalAnimation* m_idleAnimation = nullptr, *m_lowVelAnimation = nullptr, *m_highVelAnimation = nullptr, *m_upAnimation = nullptr, *m_downAnimation = nullptr, *m_flinchAnimation = nullptr;
 
 		// Fall damage
 		float m_fallenDistance = 0.0f;

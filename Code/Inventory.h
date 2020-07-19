@@ -29,7 +29,7 @@ class Inventory {
 					if(m_items[i]->getID() == item->getID() && m_items[i]->getQuantity() >= item->getQuantity()) return i;
 				}
 			}
-			return (unsigned int)-1;
+			return (unsigned int) - 1;
 		}
 		std::vector<Item*> getItems() {
 			return m_items;
@@ -47,5 +47,5 @@ class Inventory {
 		float m_weight = 0.0f; // The average person can carry about 40-45lbs of weight and still walk normally
 		// The max weight at which you can still walk the normal speed, defined in PRESETS file. Called MAX_WEIGHT
 		float m_absMaxWeight = 75.0f; // The weight at which you can't walk anymore (around 70-75lbs). 2x the max weight at normal walking speed
-		std::vector<Item*> m_items = {};
+		std::vector<Item*> m_items;
 };

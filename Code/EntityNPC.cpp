@@ -44,6 +44,8 @@ void EntityNPC::init(unsigned int id) {
 	m_health = m_maxHealth;
 
 	initLimbs();
+
+	m_inventory = new Inventory();
 }
 
 void EntityNPC::initLimbs() {
@@ -60,11 +62,20 @@ void EntityNPC::initLimbs() {
 	// Load skeletal animations
 	m_currentAttackAnim = new AnimationModule::SkeletalAnimation(); // Just allocate the memory.
 
-	m_idleAnimation = new AnimationModule::SkeletalAnimation(data.idleAnimationID);
-	m_idleAnimation->setToLoop(true);
+	if(data.idleAnimationID != -1) {
+		m_idleAnimation = new AnimationModule::SkeletalAnimation(data.idleAnimationID);
+		m_idleAnimation->setToLoop(true);
+	}
 
-	m_lowVelAnimation = new AnimationModule::SkeletalAnimation(data.lowVelAnimationID);
-	m_lowVelAnimation->setToLoop(true);
+	if(data.lowVelAnimationID != -1) {
+		m_lowVelAnimation = new AnimationModule::SkeletalAnimation(data.lowVelAnimationID);
+		m_lowVelAnimation->setToLoop(true);
+	}
+
+	if(data.flinchAnimationID != -1) {
+		m_flinchAnimation = new AnimationModule::SkeletalAnimation(data.flinchAnimationID);
+		m_flinchAnimation->setToLoop(true);
+	}
 	// Load the rest...
 
 	// Activate idle animation to start
@@ -156,10 +167,10 @@ bool EntityNPC::collideWithOther(Entity* other) {
 
 		if(dist <= 3.0f) { // Move to NPC
 			other->setPosition(other->getPosition() + glm::vec2(xDist / 2, yDist / 2));
-		}
-		if(dist <= 1.0f) { // Add to inventoryx
-			//m_inventory->addItem(ent->getItem());
-			///world->queueEntityToRemove(i); /// TODO: Implement this
+			if(dist <= 1.0f) { // Add to inventory
+				m_inventory->addItem(ent->getItem());
+				Factory::getEntityManager()->queueEntityToRemove(this);
+			}
 		}
 	} else if(other->getType() == XMLModule::EntityType::PROJECTILE) {
 		EntityProjectile* ent = dynamic_cast<EntityProjectile*>(other);
@@ -170,6 +181,7 @@ bool EntityNPC::collideWithOther(Entity* other) {
 			for(unsigned int i = 0; i < ent->getBuffs().size(); i++) {
 				applyBuff(ent->getBuffs()[i]);
 			}
+			applyFlinch();
 			ent->setActive(false);
 		}
 	}
@@ -321,9 +333,6 @@ void EntityNPC::onUpdate(World* world, float timeStep, unsigned int selfIndex) {
 
 	setAITarget(world, selfIndex);
 
-	if(!m_inventory) {
-		m_inventory = new Inventory();
-	}
 	m_inventory->update();
 
 	if(m_health <= 0.0f) {
@@ -371,6 +380,10 @@ Inventory* EntityNPC::getInventory() {
 	return m_inventory;
 }
 
+void EntityNPC::setInventory(Inventory inventory) {
+	*m_inventory = inventory;
+}
+
 void EntityNPC::die(World* world) {
 	if(m_canDie) {
 		/* if(m_lootTableStart.getRarity() != -1.0f) {
@@ -409,14 +422,14 @@ void EntityNPC::updateMovement(World* world) {
 		}
 		if(m_state != MovementState::LOW_VEL) {
 			m_state = MovementState::LOW_VEL;
-			m_body.activateAnimation(m_lowVelAnimation);
+			m_body.changeAnimation(m_lowVelAnimation);
 		}
 	} else {
 		m_velocity.x *= 0.9f;
 		if(m_velocity.x < 0.1f) {
 			if(m_state != MovementState::IDLE) {
 				m_state = MovementState::IDLE;
-				m_body.activateAnimation(m_idleAnimation);
+				m_body.changeAnimation(m_idleAnimation);
 			}
 		}
 	}
@@ -779,12 +792,12 @@ void EntityNPC::updateAttack() {
 				m_currentAttackAnim->setToLoop(false);
 				m_currentAttackAnim->restart();
 
-				m_body.activateAnimation(m_currentAttackAnim);
+				m_body.changeAnimation(m_currentAttackAnim);
 
 				m_leadingIntoAttack = false;
 			} else {
 				// We're not. So, set all limbs to idle and m_currentAttackID to -1 (not attacking)
-				m_body.activateAnimation(m_idleAnimation);
+				m_body.changeAnimation(m_idleAnimation);
 				m_currentAttackID = -1;
 			}
 		}
@@ -801,4 +814,11 @@ void EntityNPC::applyKnockback(float knockback, glm::vec2 origin) {
 
 void EntityNPC::applyBuff(unsigned int id) {
 	m_buffs.emplace_back(this, id);
+}
+
+void EntityNPC::applyFlinch() {
+	if(m_currentAttackID >= 0) {
+		m_body.changeAnimation(m_flinchAnimation);
+		m_currentAttackID = -1;
+	}
 }

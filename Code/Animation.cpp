@@ -135,8 +135,8 @@ namespace AnimationModule {
 
 	void SkeletalAnimation::transitionLimb(Limb* limb) {
 		// Move the limb from where it is to where the first frame of this animation is. This has to be done in some arbitrary amount of frames. This function is called every frame.
-		const float maxMovement = 0.0625f; // (.0625 tiles) How far anything can move in one frame MAXIMUM
-		const float maxAngle = M_PI_4 / 8.0f; // (1/16 pi, 11.25 degrees) How far anything can rotate in one frame MAXIMUM
+		const float maxMovement = 0.125f; // (.0625 tiles) How far anything can move in one frame MAXIMUM
+		const float maxAngle = M_PI_4 / 16.0f / 2.0f; // (1/128 pi, 1.40625 degrees) How far anything can rotate in one frame MAXIMUM
 
 		glm::vec2 diffPos = m_offsets[limb->getIndex()] - limb->getOffset();
 		float diffAngle = m_angles[limb->getIndex()] - limb->getAngle();
@@ -217,6 +217,10 @@ namespace AnimationModule {
 		}
 
 		m_nextAnimation = anim;
+	}
+
+	void Limb::setAnimation(Animation& anim) {
+		m_idleAnimation = anim;
 	}
 
 	void Limb::tick() {

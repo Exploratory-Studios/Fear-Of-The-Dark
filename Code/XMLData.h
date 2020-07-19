@@ -49,6 +49,9 @@ namespace XMLModule {
 			static EntityProjectileData getEntityProjectileData(unsigned int id);
 			static EntityItemData getEntityItemData(unsigned int id);
 			static ItemData getItemData(unsigned int id);
+			static ItemArmourData getItemArmourData(unsigned int id);
+			static ItemConsumableData getItemConsumableData(unsigned int id);
+			static ItemWeaponData getItemWeaponData(unsigned int id);
 			static BiomeData getBiomeData(unsigned int id);
 			static EraData getEraData(unsigned int id);
 			static LootDropData getLootDropData(unsigned int id);

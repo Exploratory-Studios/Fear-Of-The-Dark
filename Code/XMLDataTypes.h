@@ -24,6 +24,13 @@ namespace XMLModule {
 		ITEM
 	};
 
+	enum class ItemType {
+		CONSUMABLE,
+		ARMOUR,
+		WEAPON,
+		MISC
+	};
+
 	enum class AttributeType {
 		STRING,
 		UNSIGNED_INT,
@@ -259,6 +266,7 @@ namespace XMLModule {
 					new Attribute<bool>("isInvincible", AttributeType::BOOL, &isInvincible),
 					new Attribute<unsigned int>("idleAnimationID", AttributeType::UNSIGNED_INT, &idleAnimationID),
 					new Attribute<unsigned int>("lowVelAnimationID", AttributeType::UNSIGNED_INT, &lowVelAnimationID),
+					new Attribute<unsigned int>("flinchAnimationID", AttributeType::UNSIGNED_INT, &flinchAnimationID),
 					new Attribute<std::vector<unsigned int>>("skinAnimationIDs/skinAnimationID", AttributeType::VECTOR_UNSIGNED_INT, &skinAnimationIDs)
 				};
 
@@ -270,7 +278,7 @@ namespace XMLModule {
 			float speed = 0.1f, jumpHeight = 1.0f, maxHealth = 100.0f;
 			unsigned int faction;
 			bool isDamagedByFalls = true, isInvincible = false;
-			unsigned int idleAnimationID, lowVelAnimationID;
+			unsigned int idleAnimationID = -1, lowVelAnimationID = -1, flinchAnimationID = -1;
 			std::vector<unsigned int> skinAnimationIDs;
 	};
 
@@ -324,16 +332,66 @@ namespace XMLModule {
 			ItemData() {
 				std::vector<AttributeBase*> attrs = {
 					new Attribute<std::string>("texture", AttributeType::FILEPATH_TEXTURE, &texture),
-					new Attribute<float>("weight", AttributeType::FLOAT, &weight),
-					new Attribute<unsigned int>("useScript", AttributeType::SCRIPT, &useScript)
+					new Attribute<std::string>("description", AttributeType::STRING, &description),
+					new Attribute<float>("weight", AttributeType::FLOAT, &weight)
 				};
 
 				addAttributes(attrs);
 			}
 
 			std::string texture;
+			std::string description;
 			float weight = 0.0f;
-			unsigned int useScript = (unsigned int) - 1;
+			ItemType type;
+	};
+
+	class ItemConsumableData : public ItemData {
+		public:
+			ItemConsumableData() {
+				type = ItemType::CONSUMABLE;
+
+				std::vector<AttributeBase*> attrs = {
+					new Attribute<unsigned int>("useScript", AttributeType::SCRIPT, &useScriptID)
+				};
+
+				addAttributes(attrs);
+			}
+
+			unsigned int useScriptID = (unsigned int) - 1;
+	};
+
+	class ItemArmourData : public ItemData {
+		public:
+			ItemArmourData() {
+				type = ItemType::ARMOUR;
+
+				std::vector<AttributeBase*> attrs = {
+					new Attribute<std::vector<unsigned int>>("animationIDs/animationID", AttributeType::VECTOR_UNSIGNED_INT, &animationIDs),
+					                                      new Attribute<std::vector<unsigned int>>("limbIndices/limbIndex", AttributeType::VECTOR_UNSIGNED_INT, &limbIndices),
+					                                      new Attribute<unsigned int>("defence", AttributeType::UNSIGNED_INT, &defence),
+					                                      new Attribute<unsigned int>("tickScript", AttributeType::SCRIPT, &tickScriptID)
+				};
+
+				addAttributes(attrs);
+			}
+
+			std::vector<unsigned int> animationIDs;
+			std::vector<unsigned int> limbIndices;
+			unsigned int defence = 0;
+			unsigned int tickScriptID = (unsigned int) - 1;
+	};
+
+	class ItemWeaponData : public ItemData {
+		public:
+			ItemWeaponData() {
+				type = ItemType::WEAPON;
+
+				std::vector<AttributeBase*> attrs = {
+
+				};
+
+				addAttributes(attrs);
+			}
 	};
 
 	class BiomeData : public GenericData {

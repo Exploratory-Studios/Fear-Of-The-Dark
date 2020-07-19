@@ -34,10 +34,11 @@ class Item
     friend class Inventory;
 
     public:
-        //Item() {}
         Item(short unsigned int quantity, unsigned int id, bool loadTex);
         Item(short unsigned int quantity, ItemIDs id, bool loadTex);
         virtual ~Item() {}
+		
+		void init();
 
         void onRightClick(Tile* selectedBlock);
 

@@ -44,3 +44,7 @@ EntityItem::~EntityItem() {
 bool EntityItem::collideWithOther(Entity* other) {
 
 }
+
+Item* EntityItem::getItem() {
+	return new Item(1, m_itemId, true);
+}

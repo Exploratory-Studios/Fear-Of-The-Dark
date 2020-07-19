@@ -126,4 +126,6 @@ class EntityNPC : public Entity {
 
 		// Inventory
 		Inventory* m_inventory = nullptr;
+		std::vector<ItemArmour*> m_equippedArmour;
+		//std::vector<ItemWeapon*> m_equippedWeapons; TODO: Add weapons!
 };

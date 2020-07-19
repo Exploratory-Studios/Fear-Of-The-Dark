@@ -805,7 +805,23 @@ void EntityNPC::updateAttack() {
 }
 
 void EntityNPC::applyDamage(float damage) {
-	m_health -= damage;
+	float appliedDamage = 0.0f;
+
+	float averageThreshold = 0.0f;
+	float averageResistance = 0.0f;
+
+	for(unsigned int i = 0; i < m_equippedArmour.size(); i++) {
+		averageThreshold += m_equippedArmour[i]->getThreshold();
+		averageResistance += m_equippedArmour[i]->getResistance();
+	}
+
+	averageThreshold /= m_equippedArmour.size();
+	averageResistance /= m_equippedArmour.size();
+
+	appliedDamage = std::max(damage - averageThreshold, 0.0f);
+	appliedDamage *= (1.0f - averageResistance);
+
+	m_health -= appliedDamage;
 }
 
 void EntityNPC::applyKnockback(float knockback, glm::vec2 origin) {

@@ -6,8 +6,8 @@
     </Plugin>
   </Plugins>
   <VirtualDirectory Name="src">
-    <File Name="Armour.h"/>
-    <File Name="Armour.cpp"/>
+    <File Name="ItemArmour.h"/>
+    <File Name="ItemArmour.cpp"/>
     <File Name="Buff.cpp"/>
     <File Name="Buff.h"/>
     <File Name="XMLDataTypes.h"/>

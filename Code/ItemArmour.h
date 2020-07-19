@@ -6,19 +6,20 @@ namespace AnimationModule {
 	class Body;
 }
 
-class Armour : public Item {
+class ItemArmour : public Item {
 		/**
 		 * Responsibilities:
 		 *  - Hold animation IDs for limb(s)
 		 *  - Hold limb indices for limb(s)
-		 *  - Hold defence value
+		 *  - Hold damage threshold value
+		 *  - Hold damage resistance value
 		 *  - Hold an on-tick script
 		 *  - Have functions for onTick, and setLimbAnimations (which takes a reference to a Body)
 		 *  - No draw function needed, the limb objects handle that
 		 **/
 	public:
-		Armour(short unsigned int quantity, unsigned int armourID, bool loadTex);
-		~Armour();
+		ItemArmour(short unsigned int quantity, unsigned int armourID, bool loadTex);
+		~ItemArmour();
 
 		void init();
 
@@ -28,6 +29,7 @@ class Armour : public Item {
 	private:
 		std::vector<unsigned int> m_animationIDs;
 		std::vector<unsigned int> m_limbIndices;
-		unsigned int m_defence = 0;
+		unsigned int m_threshold = 0;
+		float m_resistance = 0.0f;
 		unsigned int m_tickScriptID = (unsigned int) - 1;
 };

@@ -53,22 +53,6 @@ class Tile {
 		}
 #endif
 
-		void operator=(const Tile& other) {
-			m_pos = other.getPosition();
-			m_size = other.getSize();
-			m_textureId = other.getTextureID();
-			m_bumpMapId = other.getBumpMapID();
-			m_colour = GLEngine::ColourRGBA8(255, 255, 255, 255);
-			m_emittedLight = other.getEmittedLight();
-			m_emittedHeat = other.getEmittedHeat();
-			m_needsSunCheck = true;
-			m_solid = other.isSolid();
-			m_draw = other.doDraw();
-			m_transparent = other.isTransparent();
-			m_natural = other.isNatural();
-			m_id = other.getID();
-		}
-
 		virtual std::vector<ScriptingModule::Argument> generateLuaData() {
 			std::vector<ScriptingModule::Argument> args = {
 				{ "blockX", std::to_string(m_pos.x) },
@@ -82,61 +66,59 @@ class Tile {
 			return args;
 		}
 
-		glm::vec2       getPosition()                   const {
+		glm::vec2 getPosition() const {
 			return m_pos;
 		}
-		glm::vec2       getSize()                       const {
+		glm::vec2 getSize() const {
 			return m_size;
 		}
-		GLuint          getTextureID()                  const {
+		GLuint getTextureID() const {
 			return m_textureId;
 		}
-		GLuint          getBumpMapID()                  const {
+		GLuint getBumpMapID() const {
 			return m_bumpMapId;
 		}
-		unsigned int    getID()                         const {
+		unsigned int getID() const {
 			return m_id;
 		}
-		bool            isSolid()                       const {
+		bool isSolid() const {
 			return m_solid;
 		}
-		bool            isNatural()                     const {
+		bool isNatural() const {
 			return m_natural;
 		}
-		float           getLight();
+		float getLight();
 		glm::vec4 getSunlightCorners() {
 			return m_cornerSunlight;
 		}
 		float getSunlight() {
 			return m_sunLight;
 		}
-		float           getAmbientLight()               const {
+		float getAmbientLight() const {
 			return m_ambientLight;
 		}
-		float           getEmittedLight()               const {
+		float getEmittedLight() const {
 			return m_emittedLight;
 		}
-		float           getSurroundingHeat(World* world);
-		bool            isExposedToSunlight()           const {
+		float getSurroundingHeat(World* world);
+		bool isExposedToSunlight() const {
 			return m_exposedToSun;
 		}
-		bool            isTransparent()                 const {
+		bool isTransparent() const {
 			return m_transparent;
 		}
-		float           getHeat(World* world);                      // Used when gameplay mechanics are in play (modifiers in use, not used when tiles are inheriting temperatures)
-		float           getRawHeat();                   // Used whenever two tiles' temperatures are being compared, etc. (No modifiers excepting baseHeat)
-		float           getEmittedHeat()                const {
+		float getHeat(World* world);                      // Used when gameplay mechanics are in play (modifiers in use, not used when tiles are inheriting temperatures)
+		float getRawHeat();                   // Used whenever two tiles' temperatures are being compared, etc. (No modifiers excepting baseHeat)
+		float getEmittedHeat() const {
 			return m_emittedHeat;
 		}
-		bool            doDraw()                        const {
+		bool doDraw() const {
 			return m_draw;
 		}
-		unsigned int    getLayer()                      const {
+		unsigned int getLayer() const {
 			return m_layer;
 		}
-		float           getLightAtPoint(glm::vec2 posFromBL);
-
-		// Don't fuck with my formatting
+		float getLightAtPoint(glm::vec2 posFromBL);
 
 		virtual SaveDataTypes::TileData getSaveData();
 
@@ -296,5 +278,8 @@ class Tile {
 		unsigned int m_id;
 
 		SaveDataTypes::MetaData m_metaData;
+
+	private:
+		void init();
 
 };

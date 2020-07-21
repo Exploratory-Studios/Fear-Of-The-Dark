@@ -1,5 +1,7 @@
 #pragma once
 
+#include <memory>
+
 #include "Entity.h"
 
 #include "XMLDataTypes.h"
@@ -58,8 +60,8 @@ class EntityNPC : public Entity {
 
 		// Inventory
 		void giveItem(Item* item);
-		NPCInventory* getInventory();
-		void setInventory(NPCInventory& inventory);
+		std::shared_ptr<NPCInventory> getInventory();
+		void setInventory(std::shared_ptr<NPCInventory> inventory);
 
 		// Combat
 		void die(World* world);
@@ -126,7 +128,7 @@ class EntityNPC : public Entity {
 		// m_jumpHeight = sqrt(2*(1.225/60)*(maximum height))
 
 		// Inventory
-		NPCInventory* m_inventory = nullptr;
+		std::shared_ptr<NPCInventory> m_inventory;
 		std::vector<ItemArmour*> m_equippedArmour;
 		//std::vector<ItemWeapon*> m_equippedWeapons; TODO: Add weapons!
 };

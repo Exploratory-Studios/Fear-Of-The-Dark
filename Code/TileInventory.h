@@ -11,6 +11,6 @@ class TileInventory : public InventoryBase {
 		unsigned int m_maxNumItems = 1;
 
 		virtual bool operator_canAddItem(Item* item) override;
-		virtual void initGUI(CEGUI::FrameWindow* frame);
+		virtual void initGUI(CEGUI::FrameWindow* frame) override;
 
 };

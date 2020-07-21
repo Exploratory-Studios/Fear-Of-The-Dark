@@ -12,8 +12,15 @@ class InventoryBase {
 		InventoryBase(std::string& name);
 		virtual ~InventoryBase();
 
+		void init();
+
 		bool addItem(Item* newItem); // Returns false if the item didn't pass the test, true otherwise.
 		void subtractItem(Item* item);
+
+		virtual void copyFrom(InventoryBase* other) {
+			m_items = other->getItems();
+			m_weight = other->getCurrentWeight();
+		}
 
 		Item* getItem(unsigned int x) {
 			if(m_items.size() > x) {
@@ -39,6 +46,11 @@ class InventoryBase {
 		void update();
 		void draw(float x, float y, GLEngine::Camera2D& cam); // This moves the position of the CEGUI widgets to the in-game coords given. Useful.
 
+		void setToDraw(bool setting) {
+			m_frameWindow->setEnabled(setting);
+			m_frameWindow->setVisible(setting);
+		}
+
 		SaveDataTypes::InventoryData getInventorySaveData();
 
 	protected:
@@ -53,5 +65,6 @@ class InventoryBase {
 	private:
 		// This should never needed to be touched by derived classes.
 		/// CEGUI Portion
+		glm::vec4 m_destRect; // This is the position & size relative to the x and y given to the draw() function
 		CEGUI::FrameWindow* m_frameWindow = nullptr;
 };

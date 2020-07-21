@@ -47,7 +47,8 @@ void EntityNPC::init(unsigned int id) {
 
 	initLimbs();
 
-	m_inventory = new NPCInventory(15.0f, m_UUID);
+	m_inventory = std::make_shared<NPCInventory>(15.0f, m_UUID);
+	m_inventory->init();
 }
 
 void EntityNPC::initLimbs() {
@@ -104,7 +105,7 @@ void EntityNPC::initLimbs() {
 }
 
 EntityNPC::~EntityNPC() {
-	delete m_inventory;
+
 }
 
 void EntityNPC::dispose() {
@@ -378,12 +379,12 @@ void EntityNPC::giveItem(Item* item) {
 	}
 }
 
-NPCInventory* EntityNPC::getInventory() {
+std::shared_ptr<NPCInventory> EntityNPC::getInventory() {
 	return m_inventory;
 }
 
-void EntityNPC::setInventory(NPCInventory& inventory) {
-	*m_inventory = inventory;
+void EntityNPC::setInventory(std::shared_ptr<NPCInventory> inventory) {
+	m_inventory = inventory;
 }
 
 void EntityNPC::die(World* world) {

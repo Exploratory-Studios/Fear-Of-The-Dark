@@ -1,7 +1,8 @@
 <?xml version="1.0" ?>
 <GUIScheme version="5" name="FOTDSkin">
     <Font filename="DejaVuSans-12.font" />
-	<Font filename="Amatic-38.font" />
+    <Font filename="Amatic-38.font" />
+    <Font filename="AmaticBold-22.font" />
     <Font filename="QuietHorror-22.font" />
     <Font filename="QuietHorror-26.font" />
     <Font filename="QuietHorror-30.font" />

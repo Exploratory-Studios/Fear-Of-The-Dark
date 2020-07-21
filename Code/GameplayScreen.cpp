@@ -6,6 +6,8 @@
 #include "EntityNPC.h"
 #include "EntityPlayer.h"
 
+#include "NPCInventory.h"
+
 #include "Factory.h"
 
 #include <SDL2/SDL_timer.h>
@@ -437,7 +439,7 @@ void GameplayScreen::drawGUIToScreen() {
 	GLint pUniform = m_uiTextureProgram.getUniformLocation("P");
 	glUniformMatrix4fv(pUniform, 1, GL_FALSE, &projectionMatrix[0][0]);
 
-	Factory::getEntityManager()->getPlayer()->drawGUI(m_spriteBatch, m_spriteFont);
+	Factory::getEntityManager()->getPlayer()->drawGUI(m_spriteBatch, m_spriteFont, m_camera);
 
 	Factory::getGUI()->draw();
 

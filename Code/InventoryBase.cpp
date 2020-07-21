@@ -6,14 +6,27 @@
 #include "Factory.h"
 
 InventoryBase::InventoryBase(std::string& name) {
-	//m_frameWindow = static_cast<CEGUI::FrameWindow*>(Factory::getGUI()->createWidget(nullptr, "FOTDSkin/FrameWindow", glm::vec4(0.0f, 0.0f, 0.33f, 0.33f), glm::vec4(0.0f), name + "_NPCInventory"));
+	m_frameWindow = static_cast<CEGUI::FrameWindow*>(Factory::getGUI()->createWidget("FOTDSkin/FrameWindow", glm::vec4(-0.2f, -0.2f, 0.4f, 0.4f), glm::vec4(0.0f), name + "_NPCInventory"));
+	m_frameWindow->setCloseButtonEnabled(false);
+	m_frameWindow->setDragMovingEnabled(false);
+	m_frameWindow->setRollupEnabled(false);
+	m_frameWindow->setSizingEnabled(false);
+	m_frameWindow->setTitleBarEnabled(false);
 
-	initGUI(m_frameWindow);
+	m_destRect = glm::vec4(-0.4f, -0.25f, 0.4f, 0.4f);
+
+	setToDraw(false);
 }
 
 InventoryBase::~InventoryBase() {
 	CEGUI::WindowManager& winMgr = CEGUI::WindowManager::getSingleton();
 	winMgr.destroyWindow(m_frameWindow);
+}
+
+void InventoryBase::init() { // This must be seperate from the constructor due to the virtual, overridden function
+
+
+	initGUI(m_frameWindow);
 }
 
 bool InventoryBase::addItem(Item* newItem) {
@@ -28,9 +41,8 @@ bool InventoryBase::addItem(Item* newItem) {
 
 		m_items.push_back(newItem);
 		return true;
-	} else {
-		return false;
 	}
+	return false;
 }
 
 void InventoryBase::subtractItem(Item* item) {
@@ -71,6 +83,8 @@ void InventoryBase::draw(float x, float y, GLEngine::Camera2D& cam) {
 
 	// Convert screenCoords to percentages
 	glm::vec2 percentages = screenCoords / glm::vec2(cam.getScreenWidth(), cam.getScreenHeight());
+	percentages.x += m_destRect.x;
+	percentages.y += m_destRect.y;
 
 	// Move the frame window
 	m_frameWindow->setPosition(CEGUI::UVector2(CEGUI::UDim(percentages.x, 0.0f), CEGUI::UDim(percentages.y, 0.0f)));

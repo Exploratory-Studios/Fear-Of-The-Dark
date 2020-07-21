@@ -59,7 +59,6 @@ void EntityPlayer::initGUI() {
 
 	m_buffBoxFrame = static_cast<CEGUI::PopupMenu*>(Factory::getGUI()->createWidget("FOTDSkin/StatusBox", glm::vec4(0.725f, 0.025f, 0.055f, 0.4f), glm::vec4(0.0f), "PlayerGUI_BuffBox"));
 	m_buffBoxFrame->openPopupMenu();
-
 }
 
 void EntityPlayer::onDraw(GLEngine::SpriteBatch& sb, float time, int layerDifference, float xOffset) {
@@ -78,7 +77,7 @@ void EntityPlayer::onDraw(GLEngine::SpriteBatch& sb, float time, int layerDiffer
 	}
 }
 
-void EntityPlayer::drawGUI(GLEngine::SpriteBatch& sb, GLEngine::SpriteFont& sf) {
+void EntityPlayer::drawGUI(GLEngine::SpriteBatch& sb, GLEngine::SpriteFont& sf, GLEngine::Camera2D& gameCamera) {
 	glm::vec4 fullUV = glm::vec4(0.0f, 0.0f, 1.0f, 1.0f);
 	GLEngine::ColourRGBA8 fullColour(255, 255, 255, 255);
 
@@ -129,10 +128,8 @@ void EntityPlayer::drawGUI(GLEngine::SpriteBatch& sb, GLEngine::SpriteFont& sf) 
 	} // Hotbar END
 
 
-	{
-		if(m_inventoryOpen) {
-			//m_inventory->draw(0.0f, 0.0f, camera);
-		}
+	if(m_inventoryOpen) {
+		m_inventory->draw(m_position.x, m_position.y, gameCamera);
 	}
 
 	sb.end();
@@ -300,7 +297,7 @@ void EntityPlayer::updateInput(GLEngine::InputManager* input, World* world) {
 			m_inventory->addItem(new Item(1, ItemIDs::BLOCK_WOOD, true));
 		}
 
-		if(input->isKeyPressed(SDL_BUTTON_LEFT) && (m_selectedBlock || true)) {
+		if(input->isKeyPressed(SDL_BUTTON_LEFT) && (m_selectedBlock || true) && !m_inventoryOpen) {
 			//if(m_favouriteItems[m_selectedHotbox]) m_favouriteItems[m_selectedHotbox]->onLeftClick(m_selectedBlock, world);
 			/*if(!m_favouriteItems[m_selectedHotbox]) {
 				Tile* t = new Tile(m_selectedBlock->getPosition(), m_selectedBlock->getLayer(), 0, SaveDataTypes::MetaData(), false);
@@ -311,7 +308,7 @@ void EntityPlayer::updateInput(GLEngine::InputManager* input, World* world) {
 
 			activateAttack(0);
 		}
-		if(input->isKeyPressed(SDL_BUTTON_RIGHT)) {
+		if(input->isKeyPressed(SDL_BUTTON_RIGHT) && !m_inventoryOpen) {
 			if(m_selectedBlock) {
 				if(m_favouriteItems[m_selectedHotbox]) {
 					m_favouriteItems[m_selectedHotbox]->onRightClick(m_selectedBlock);
@@ -338,6 +335,7 @@ void EntityPlayer::updateInput(GLEngine::InputManager* input, World* world) {
 		}
 		if(input->isKeyPressed(SDLK_i)) {
 			m_inventoryOpen = !m_inventoryOpen;
+			m_inventory->setToDraw(m_inventoryOpen);
 		}
 	}
 

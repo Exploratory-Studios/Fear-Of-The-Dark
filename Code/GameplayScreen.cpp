@@ -41,6 +41,8 @@ void GameplayScreen::destroy() {
 
 void GameplayScreen::onEntry() {
 
+	initUI();
+
 	m_hasBeenInited = true;
 
 	std::srand(std::time(NULL));
@@ -82,12 +84,13 @@ void GameplayScreen::onEntry() {
 		EntityPlayer p(glm::vec2(5, 100), 0, SaveDataTypes::MetaData(), true);
 
 		Factory::getEntityManager()->setPlayer(p);
+
+		Factory::getEntityManager()->getPlayer()->initGUI();
 	}
 
-	m_gui = new GLEngine::GUI();
-	initUI();
+	m_console->init(m_scripter, m_world, m_questManager, this);
 
-	m_dialogueManager = new DialogueModule::DialogueManager(m_gui, m_questManager);
+	m_dialogueManager = new DialogueModule::DialogueManager(m_questManager);
 	//m_dialogueManager->activateDialogue(0);
 
 	m_camera.setPosition(Factory::getEntityManager()->getPlayer()->getPosition());
@@ -102,7 +105,7 @@ void GameplayScreen::onExit() {
 	delete m_dialogueManager;
 
 	m_hasBeenInited = false;
-	m_gui->destroy();
+	Factory::getGUI()->destroy();
 	delete m_console;
 
 	m_textureProgram.dispose();
@@ -181,7 +184,7 @@ void GameplayScreen::update() {
 
 		m_frame++;
 	}
-	if(m_currentState != GLEngine::ScreenState::EXIT_APPLICATION) m_gui->update();
+	if(m_currentState != GLEngine::ScreenState::EXIT_APPLICATION) Factory::getGUI()->update();
 }
 
 void GameplayScreen::draw() {
@@ -436,7 +439,7 @@ void GameplayScreen::drawGUIToScreen() {
 
 	Factory::getEntityManager()->getPlayer()->drawGUI(m_spriteBatch, m_spriteFont);
 
-	m_gui->draw();
+	Factory::getGUI()->draw();
 
 	m_dr.end();
 	m_dr.render(projectionMatrix, 3);
@@ -485,7 +488,7 @@ void GameplayScreen::checkInput() {
 	SDL_Event evnt;
 	while(SDL_PollEvent(&evnt)) {
 		if(!m_console->isShown()) m_game->onSDLEvent(evnt);
-		m_gui->onSDLEvent(evnt);
+		Factory::getGUI()->onSDLEvent(evnt);
 		switch(evnt.type) {
 			case SDL_QUIT:
 				m_currentState = GLEngine::ScreenState::EXIT_APPLICATION;
@@ -575,33 +578,33 @@ void GameplayScreen::initShaders() {
 
 void GameplayScreen::initUI() {
 	{
-		m_gui->init(ASSETS_FOLDER_PATH + "GUI");
-		m_gui->loadScheme("FOTDSkin.scheme");
+		Factory::getGUI()->init(ASSETS_FOLDER_PATH + "GUI");
+		Factory::getGUI()->loadScheme("FOTDSkin.scheme");
 
-		m_gui->setFont("Amatic-26");
+		Factory::getGUI()->setFont("Amatic-26");
 
-		m_gui->setMouseCursor("FOTDSkin/MouseArrow");
-		m_gui->showMouseCursor();
+		Factory::getGUI()->setMouseCursor("FOTDSkin/MouseArrow");
+		Factory::getGUI()->showMouseCursor();
 		SDL_ShowCursor(0);
 	}
 
 	{
 		// Pause screen
-		CEGUI::PushButton* resumeButton = static_cast<CEGUI::PushButton*>(m_gui->createWidget("FOTDSkin/Button", glm::vec4(0.3f, 0.3f, 0.4f, 0.1f), glm::vec4(0.0f), "PAUSE_RESUME_BUTTON"));
+		CEGUI::PushButton* resumeButton = static_cast<CEGUI::PushButton*>(Factory::getGUI()->createWidget("FOTDSkin/Button", glm::vec4(0.3f, 0.3f, 0.4f, 0.1f), glm::vec4(0.0f), "PAUSE_RESUME_BUTTON"));
 		resumeButton->subscribeEvent(CEGUI::PushButton::EventClicked, CEGUI::Event::Subscriber(&GameplayScreen::pause_resume_button_clicked, this));
 		resumeButton->setText("Resume Game");
 		resumeButton->disable();
 		resumeButton->hide();
 		m_pauseWidgets.push_back(static_cast<CEGUI::Window*>(resumeButton));
 
-		CEGUI::PushButton* saveButton = static_cast<CEGUI::PushButton*>(m_gui->createWidget("FOTDSkin/Button", glm::vec4(0.3f, 0.45f, 0.4f, 0.1f), glm::vec4(0.0f), "PAUSE_SAVE_BUTTON"));
+		CEGUI::PushButton* saveButton = static_cast<CEGUI::PushButton*>(Factory::getGUI()->createWidget("FOTDSkin/Button", glm::vec4(0.3f, 0.45f, 0.4f, 0.1f), glm::vec4(0.0f), "PAUSE_SAVE_BUTTON"));
 		saveButton->subscribeEvent(CEGUI::PushButton::EventClicked, CEGUI::Event::Subscriber(&GameplayScreen::pause_save_button_clicked, this));
 		saveButton->setText("Save Game");
 		saveButton->disable();
 		saveButton->hide();
 		m_pauseWidgets.push_back(static_cast<CEGUI::Window*>(saveButton));
 
-		CEGUI::PushButton* quitButton = static_cast<CEGUI::PushButton*>(m_gui->createWidget("FOTDSkin/Button", glm::vec4(0.3f, 0.6f, 0.4f, 0.1f), glm::vec4(0.0f), "PAUSE_QUIT_BUTTON"));
+		CEGUI::PushButton* quitButton = static_cast<CEGUI::PushButton*>(Factory::getGUI()->createWidget("FOTDSkin/Button", glm::vec4(0.3f, 0.6f, 0.4f, 0.1f), glm::vec4(0.0f), "PAUSE_QUIT_BUTTON"));
 		quitButton->subscribeEvent(CEGUI::PushButton::EventClicked, CEGUI::Event::Subscriber(&GameplayScreen::pause_quit_button_clicked, this));
 		quitButton->setText("Save & Quit Game");
 		quitButton->disable();
@@ -609,12 +612,9 @@ void GameplayScreen::initUI() {
 		m_pauseWidgets.push_back(static_cast<CEGUI::Window*>(quitButton));
 	}
 
-	Factory::getEntityManager()->getPlayer()->initGUI(m_gui);
-	m_console->init(*m_gui, m_scripter, m_world, m_questManager, this);
-
 #ifdef DEV_CONTROLS
 	{
-		m_fpsWidget = static_cast<CEGUI::DefaultWindow*>(m_gui->createWidget("FOTDSkin/Label", glm::vec4(0.05f, 0.05f, 0.9f, 0.9f), glm::vec4(0.0f), "FPS_STRING_WIDGET"));
+		m_fpsWidget = static_cast<CEGUI::DefaultWindow*>(Factory::getGUI()->createWidget("FOTDSkin/Label", glm::vec4(0.05f, 0.05f, 0.9f, 0.9f), glm::vec4(0.0f), "FPS_STRING_WIDGET"));
 		m_fpsWidget->setHorizontalAlignment(CEGUI::HorizontalAlignment::HA_LEFT);
 		m_fpsWidget->setVerticalAlignment(CEGUI::VerticalAlignment::VA_TOP);
 	}

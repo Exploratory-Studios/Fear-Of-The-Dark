@@ -86,7 +86,7 @@ class Entity {
 			m_metaData = m;
 		}
 
-		void generateUUID(World* world);
+		void generateUUID();
 
 		virtual std::vector<ScriptingModule::Argument> generateLuaValues() {
 			std::vector<ScriptingModule::Argument> args = {

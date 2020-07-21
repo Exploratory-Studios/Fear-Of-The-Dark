@@ -15,7 +15,7 @@
 #include <math.h>
 
 Entity::Entity(glm::vec2 pos, unsigned int layer, SaveDataTypes::MetaData data) : m_position(pos), m_layer(layer), m_metaData(data) {
-
+	generateUUID();
 } // This is more of an abstract class
 
 Entity::Entity(SaveDataTypes::EntityData& saveData) {
@@ -306,11 +306,16 @@ void Entity::loadTexture() {
 	m_bumpMapId = temp.id;
 }
 
-void Entity::generateUUID(World* world) {
+void Entity::generateUUID() {
 	if(m_UUID != "NO_UUID") {
 		return;
 	}
-	std::string timeString = std::to_string(world->getTime());
+
+	double ms = std::chrono::duration_cast<std::chrono::milliseconds>(
+	                std::chrono::system_clock::now().time_since_epoch()
+	            ).count();
+
+	std::string timeString = std::to_string(ms);
 	std::string rand1 = std::to_string(std::rand());
 	std::string rand2 = std::to_string(std::rand());
 	std::string rand3 = std::to_string(std::rand());

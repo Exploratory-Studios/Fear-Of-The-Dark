@@ -24,8 +24,9 @@ enum class MovementState {
 };
 
 class Item;
-class Inventory;
+class NPCInventory;
 class Tile;
+class ItemArmour;
 
 class EntityNPC : public Entity {
 	public:
@@ -57,8 +58,8 @@ class EntityNPC : public Entity {
 
 		// Inventory
 		void giveItem(Item* item);
-		Inventory* getInventory();
-		void setInventory(Inventory inventory);
+		NPCInventory* getInventory();
+		void setInventory(NPCInventory& inventory);
 
 		// Combat
 		void die(World* world);
@@ -125,7 +126,7 @@ class EntityNPC : public Entity {
 		// m_jumpHeight = sqrt(2*(1.225/60)*(maximum height))
 
 		// Inventory
-		Inventory* m_inventory = nullptr;
+		NPCInventory* m_inventory = nullptr;
 		std::vector<ItemArmour*> m_equippedArmour;
 		//std::vector<ItemWeapon*> m_equippedWeapons; TODO: Add weapons!
 };

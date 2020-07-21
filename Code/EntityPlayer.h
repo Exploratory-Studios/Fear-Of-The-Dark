@@ -16,7 +16,7 @@ class EntityPlayer : public EntityNPC
         EntityPlayer(glm::vec2 pos, unsigned int layer, SaveDataTypes::MetaData data, bool loadTex);
         virtual ~EntityPlayer();
 
-        void initGUI(GLEngine::GUI* gui); /// TODO: Move GUI to GameplayScreen
+        void initGUI(); /// TODO: Move GUI to GameplayScreen
 
         virtual void onDraw(GLEngine::SpriteBatch& sb, float time, int layerDifference, float xOffset) override;
         void drawGUI(GLEngine::SpriteBatch& sb, GLEngine::SpriteFont& sf);
@@ -50,7 +50,6 @@ class EntityPlayer : public EntityNPC
         bool m_skillTreeOpen = false;
 
         GLEngine::InputManager* m_input = nullptr; /// TODO: What the hell, past Davis??? Move this shit outta here!
-        GLEngine::GUI* m_gui = nullptr;
 
         CEGUI::PopupMenu* m_statusBoxFrame = nullptr;
         CEGUI::PopupMenu* m_buffBoxFrame = nullptr;

@@ -4,9 +4,11 @@
 
 #include "QuestManager.h"
 
+#include "Factory.h"
+
 namespace DialogueModule {
 
-	ResponseFrame::ResponseFrame(GLEngine::GUI* gui, CEGUI::FrameWindow* parent, unsigned int responseID, unsigned int index) {
+	ResponseFrame::ResponseFrame(CEGUI::FrameWindow* parent, unsigned int responseID, unsigned int index) {
 		// Gets text, and name from XMLData (index is used for placement)
 
 		XMLModule::DialogueResponseData d = XMLModule::XMLData::getDialogueResponseData(responseID);
@@ -14,11 +16,11 @@ namespace DialogueModule {
 		std::string text;
 		text = d.text;
 
-		init(gui, parent, text, index);
+		init(parent, text, index);
 	}
 
-	ResponseFrame::ResponseFrame(GLEngine::GUI* gui, CEGUI::FrameWindow* parent, std::string text, unsigned int index) {
-		init(gui, parent, text, index);
+	ResponseFrame::ResponseFrame(CEGUI::FrameWindow* parent, std::string text, unsigned int index) {
+		init(parent, text, index);
 	}
 
 	ResponseFrame::~ResponseFrame() {
@@ -26,23 +28,23 @@ namespace DialogueModule {
 		CEGUI::WindowManager::getSingleton().destroyWindow(m_button);
 	}
 
-	void ResponseFrame::init(GLEngine::GUI* gui, CEGUI::FrameWindow* parent, std::string text, unsigned int index) {
+	void ResponseFrame::init(CEGUI::FrameWindow* parent, std::string text, unsigned int index) {
 		// Should generate frame widget
 		float height = 0.3f;
 		float padding = 0.05f;
 
-		m_button = static_cast<CEGUI::PushButton*>(gui->createWidget(parent, "FOTDSkin/Button", glm::vec4(0.1f, 0.35f + (height + padding) * index, 0.8f, height), glm::vec4(0.0f), "DialogueResponseFrame" + std::to_string(index)));
+		m_button = static_cast<CEGUI::PushButton*>(Factory::getGUI()->createWidget(parent, "FOTDSkin/Button", glm::vec4(0.1f, 0.35f + (height + padding) * index, 0.8f, height), glm::vec4(0.0f), "DialogueResponseFrame" + std::to_string(index)));
 		m_button->setText(text);
 	}
 
-	DialogueFrame::DialogueFrame(GLEngine::GUI* gui, QuestModule::QuestManager* qm) : m_gui(gui), m_qm(qm) {
-		m_frame = static_cast<CEGUI::FrameWindow*>(m_gui->createWidget("FOTDSkin/FrameWindow", glm::vec4(0.1f, 0.6f, 0.8f, 0.3f), glm::vec4(0.0f), "DialogueMainFrame"));
+	DialogueFrame::DialogueFrame(QuestModule::QuestManager* qm) : m_qm(qm) {
+		m_frame = static_cast<CEGUI::FrameWindow*>(Factory::getGUI()->createWidget("FOTDSkin/FrameWindow", glm::vec4(0.1f, 0.6f, 0.8f, 0.3f), glm::vec4(0.0f), "DialogueMainFrame"));
 		m_frame->setCloseButtonEnabled(false);
 		m_frame->setDragMovingEnabled(false);
 		m_frame->setRollupEnabled(false);
 		m_frame->setTitleBarEnabled(false);
 
-		m_text = static_cast<CEGUI::DefaultWindow*>(m_gui->createWidget(m_frame, "FOTDSkin/Label", glm::vec4(0.1f, 0.1f, 0.8f, 0.3f), glm::vec4(0.0f), "DialogueMainFrameText"));
+		m_text = static_cast<CEGUI::DefaultWindow*>(Factory::getGUI()->createWidget(m_frame, "FOTDSkin/Label", glm::vec4(0.1f, 0.1f, 0.8f, 0.3f), glm::vec4(0.0f), "DialogueMainFrameText"));
 
 		hide();
 	}
@@ -111,7 +113,7 @@ namespace DialogueModule {
 
 		// Init only responses that should be shown
 		for(unsigned int i = 0; i < shownResponses.size(); i++) {
-			ResponseFrame* response = new ResponseFrame(m_gui, m_frame, shownResponses[i], i);
+			ResponseFrame* response = new ResponseFrame(m_frame, shownResponses[i], i);
 
 			m_responses.push_back(response);
 		}
@@ -120,10 +122,10 @@ namespace DialogueModule {
 
 	}
 
-	DialogueManager::DialogueManager(GLEngine::GUI* gui, QuestModule::QuestManager* qm) {
+	DialogueManager::DialogueManager(QuestModule::QuestManager* qm) {
 		// Constructor
 		/// Should create a new DialogueFrame using the GUI.
-		m_dialogueGUI = new DialogueFrame(gui, qm);
+		m_dialogueGUI = new DialogueFrame(qm);
 	}
 
 	DialogueManager::~DialogueManager() {

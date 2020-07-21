@@ -16,7 +16,7 @@ class EntityNPC;
 class EntityProjectile;
 class EntityItem;
 class EntityPlayer;
-class Inventory;
+class InventoryBase;
 class Item;
 
 namespace ScriptingModule {
@@ -50,7 +50,7 @@ namespace SaveDataTypes {
 
 	struct InventoryData {
 		InventoryData() {}
-		InventoryData(Inventory inv);
+		InventoryData(InventoryBase inv);
 
 		void read(std::ifstream& file);
 		void save(std::ofstream& file);

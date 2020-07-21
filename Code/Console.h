@@ -14,7 +14,7 @@ class Console
         Console();
         virtual ~Console();
 
-        void init(GLEngine::GUI& gui, ScriptingModule::Scripter* scripter, World* world, QuestModule::QuestManager* qm, GameplayScreen* gs); /// TODO: Make this not have a world member or qm variable
+        void init(ScriptingModule::Scripter* scripter, World* world, QuestModule::QuestManager* qm, GameplayScreen* gs); /// TODO: Make this not have a world member or qm variable
 
         void show();
         void hide();
@@ -43,6 +43,5 @@ class Console
         bool m_showing = false;
 
         ScriptingModule::Scripter* m_scripter = nullptr;
-        GLEngine::GUI* m_gui = nullptr;
 
 };

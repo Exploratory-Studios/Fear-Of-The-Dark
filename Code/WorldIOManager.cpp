@@ -6,7 +6,7 @@
 
 #include "EntityPlayer.h"
 #include "World.h"
-#include "Inventory.h"
+#include "InventoryBase.h"
 #include "Tile.h"
 
 #include "XMLData.h"

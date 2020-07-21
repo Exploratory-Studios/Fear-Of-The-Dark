@@ -10,12 +10,12 @@ namespace DialogueModule {
 
 	class ResponseFrame {
 		public:
-			ResponseFrame(GLEngine::GUI* gui, CEGUI::FrameWindow* parent, unsigned int responseID, unsigned int index);
-			ResponseFrame(GLEngine::GUI* gui, CEGUI::FrameWindow* parent, std::string text, unsigned int index);
+			ResponseFrame(CEGUI::FrameWindow* parent, unsigned int responseID, unsigned int index);
+			ResponseFrame(CEGUI::FrameWindow* parent, std::string text, unsigned int index);
 			~ResponseFrame();
 
 		private:
-			void init(GLEngine::GUI* gui, CEGUI::FrameWindow* parent, std::string text, unsigned int index);
+			void init(CEGUI::FrameWindow* parent, std::string text, unsigned int index);
 
 			CEGUI::PushButton* m_button = nullptr;
 			//CEGUI::DefaultWindow* m_text = nullptr;
@@ -24,7 +24,7 @@ namespace DialogueModule {
 	class DialogueFrame {
 			/// For GUI
 		public:
-			DialogueFrame(GLEngine::GUI* gui, QuestModule::QuestManager* qm);
+			DialogueFrame(QuestModule::QuestManager* qm);
 			~DialogueFrame();
 
 			void show();
@@ -35,8 +35,6 @@ namespace DialogueModule {
 		private:
 			void deleteResponses();
 			void generateResponses(unsigned int questionID);
-
-			GLEngine::GUI* m_gui = nullptr;
 
 			QuestModule::QuestManager* m_qm = nullptr;
 			CEGUI::FrameWindow* m_frame = nullptr;
@@ -54,7 +52,7 @@ namespace DialogueModule {
 				 - Hold current state (in dialogue, out of dialogue)
 			**/
 		public:
-			DialogueManager(GLEngine::GUI* gui, QuestModule::QuestManager* qm); // Constructor
+			DialogueManager(QuestModule::QuestManager* qm); // Constructor
 			~DialogueManager(); // Destructor
 
 			void activateDialogue(unsigned int questionID);
@@ -62,7 +60,6 @@ namespace DialogueModule {
 		private:
 			DialogueFrame* m_dialogueGUI = nullptr;
 
-			GLEngine::GUI* m_gui = nullptr;
 			QuestModule::QuestManager* m_qm = nullptr;
 
 			bool m_inDialogue = false; // Set by activateDialogue();

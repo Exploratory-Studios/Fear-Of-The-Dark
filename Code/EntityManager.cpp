@@ -5,7 +5,7 @@
 #include "World.h"
 #include "Tile.h"
 
-#include "Inventory.h"
+#include "InventoryBase.h"
 
 #include "Entity.h"
 #include "EntityPlayer.h"
@@ -112,9 +112,7 @@ void EntityManager::addEntity(Entity* e) {
 	    Repeat until the entity with a lower index's x pos is less than e's
 	*/
 
-	if(e->getUUID() == "NO_UUID") {
-		e->generateUUID(m_world);
-	}
+	e->generateUUID();
 
 	m_entities.push_back(e);
 	for(int i = m_entities.size() - 1; i > 0; i--) {

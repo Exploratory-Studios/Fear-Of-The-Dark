@@ -26,6 +26,13 @@ class ItemArmour : public Item {
 		void onTick(EntityNPC* owner); // Runs on-tick script
 		void setLimbAnimations(AnimationModule::Body& body); // Only sets the limbs with indices in m_limbIndices to have animations with IDs in m_animationIDs
 
+		float getResistance() {
+			return m_resistance;
+		}
+		float getThreshold() {
+			return m_threshold;
+		}
+
 	private:
 		std::vector<unsigned int> m_animationIDs;
 		std::vector<unsigned int> m_limbIndices;

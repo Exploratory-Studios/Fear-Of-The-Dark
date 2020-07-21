@@ -12,68 +12,86 @@
 
 class World;
 class Tile;
-namespace SaveDataTypes { class MetaData; }
+namespace SaveDataTypes {
+	class MetaData;
+}
 
 enum class ItemIDs {
-    WEAPON_SWORD,
-    BLOCK_DIRT,
-    BLOCK_TORCH,
-    BLOCK_TORCH_BRIGHT,
-    BLOCK_TORCH_ANTI,
-    BLOCK_GRASS,
-    BLOCK_WOOD,
-    BLOCK_WOOD_POLE,
-    BLOCK_SIGN_WOOD,
-    MISC_BUCKET,
-    MISC_MEAT_RAW,
-    MISC_LEATHER
+	WEAPON_SWORD,
+	BLOCK_DIRT,
+	BLOCK_TORCH,
+	BLOCK_TORCH_BRIGHT,
+	BLOCK_TORCH_ANTI,
+	BLOCK_GRASS,
+	BLOCK_WOOD,
+	BLOCK_WOOD_POLE,
+	BLOCK_SIGN_WOOD,
+	MISC_BUCKET,
+	MISC_MEAT_RAW,
+	MISC_LEATHER
 };
 
-class Item
-{
-    friend class Inventory;
+class Item {
+	public:
+		Item(short unsigned int quantity, unsigned int id, bool loadTex);
+		Item(short unsigned int quantity, ItemIDs id, bool loadTex);
+		virtual ~Item() {}
 
-    public:
-        Item(short unsigned int quantity, unsigned int id, bool loadTex);
-        Item(short unsigned int quantity, ItemIDs id, bool loadTex);
-        virtual ~Item() {}
-		
 		void init();
 
-        void onRightClick(Tile* selectedBlock);
+		void onRightClick(Tile* selectedBlock);
 
-        std::vector<ScriptingModule::Argument> generateLuaData() {
-            std::vector<ScriptingModule::Argument> args = {
-                { "itemID", std::to_string(m_id) },
-                { "itemQuantity", std::to_string(m_quantity) }
-            };
+		std::vector<ScriptingModule::Argument> generateLuaData() {
+			std::vector<ScriptingModule::Argument> args = {
+				{ "itemID", std::to_string(m_id) },
+				{ "itemQuantity", std::to_string(m_quantity) }
+			};
 
-            m_metaData.getLuaArguments(args);
+			m_metaData.getLuaArguments(args);
 
-            return args;
-        }
+			return args;
+		}
 
-        unsigned int getID() const { return m_id; } // (unsigned int)(-1) is equivalent to null
-        unsigned int getTextureId() const { return m_textureId; }
-        short unsigned int getQuantity() const { return m_quantity; }
-        std::string& getName() { return m_name; }
-        SaveDataTypes::MetaData getMetaData() const { return m_metaData; }
+		void addToQuantity(int amnt) {
+			m_quantity += amnt;
+		}
 
-        SaveDataTypes::ItemData getItemSaveData();
-    protected:
-        void loadTexture() { m_textureId = GLEngine::ResourceManager::getTexture(m_texturePath).id; }
+		unsigned int getID() const {
+			return m_id;    // (unsigned int)(-1) is equivalent to null
+		}
+		unsigned int getTextureId() const {
+			return m_textureId;
+		}
+		short unsigned int getQuantity() const {
+			return m_quantity;
+		}
+		std::string& getName() {
+			return m_name;
+		}
+		SaveDataTypes::MetaData getMetaData() const {
+			return m_metaData;
+		}
+		float getWeight() const {
+			return m_weight;
+		}
 
-        unsigned int m_id = (unsigned int)-1; // Block/Non-block id
+		SaveDataTypes::ItemData getItemSaveData();
+	protected:
+		void loadTexture() {
+			m_textureId = GLEngine::ResourceManager::getTexture(m_texturePath).id;
+		}
 
-        float m_weight = 0.0f; // How much it weighs in the inventory (kgs)
-        short unsigned int m_quantity = 0; // How much you have
+		unsigned int m_id = (unsigned int)-1; // Block/Non-block id
 
-        int m_useScriptId = -1;
+		float m_weight = 0.0f; // How much it weighs in the inventory (kgs)
+		short unsigned int m_quantity = 0; // How much you have
 
-        unsigned int m_textureId = (unsigned int)-1;
-        std::string m_texturePath;
+		int m_useScriptId = -1;
 
-        std::string m_name = "UNDEFINED";
+		unsigned int m_textureId = (unsigned int)-1;
+		std::string m_texturePath;
 
-        SaveDataTypes::MetaData m_metaData;
+		std::string m_name = "UNDEFINED";
+
+		SaveDataTypes::MetaData m_metaData;
 };

@@ -4,7 +4,7 @@
 
 #include "World.h"
 #include "Tile.h"
-#include "Inventory.h"
+#include "NPCInventory.h"
 
 #include "Factory.h"
 
@@ -17,12 +17,11 @@ EntityPlayer::~EntityPlayer() {
 	//dtor
 }
 
-void EntityPlayer::initGUI(GLEngine::GUI* gui) {
-	m_gui = gui;
-	m_statusBoxFrame = static_cast<CEGUI::PopupMenu*>(m_gui->createWidget("FOTDSkin/StatusBox", glm::vec4(0.785f, 0.025f, 0.2f, 0.4f), glm::vec4(0.0f), "PlayerGUI_StatusBox"));
+void EntityPlayer::initGUI() {
+	m_statusBoxFrame = static_cast<CEGUI::PopupMenu*>(Factory::getGUI()->createWidget("FOTDSkin/StatusBox", glm::vec4(0.785f, 0.025f, 0.2f, 0.4f), glm::vec4(0.0f), "PlayerGUI_StatusBox"));
 	m_statusBoxFrame->openPopupMenu();
 
-	m_statusBoxLabel = static_cast<CEGUI::DefaultWindow*>(m_gui->createWidget(m_statusBoxFrame, "FOTDSkin/Label", glm::vec4(0.075f, 0.025f, 0.925f, 1.0f), glm::vec4(0.0f), "PlayerGUI_StatusBox_Label"));
+	m_statusBoxLabel = static_cast<CEGUI::DefaultWindow*>(Factory::getGUI()->createWidget(m_statusBoxFrame, "FOTDSkin/Label", glm::vec4(0.075f, 0.025f, 0.925f, 1.0f), glm::vec4(0.0f), "PlayerGUI_StatusBox_Label"));
 	m_statusBoxLabel->setProperty("HorzFormatting", "LeftAligned");
 	m_statusBoxLabel->setProperty("VertFormatting", "TopAligned");
 
@@ -36,12 +35,12 @@ void EntityPlayer::initGUI(GLEngine::GUI* gui) {
 
 	m_statusBoxLabel->setText(labelText);
 
-	m_sanityBar     = static_cast<CEGUI::ProgressBar*>(m_gui->createWidget(m_statusBoxFrame, "FOTDSkin/SanityBar",     glm::vec4(0.25f, 0.10f + 0.066f, 0.65f, 0.1f), glm::vec4(), "PlayerGUI_StatusBox_Sanity"));
-	m_healthBar     = static_cast<CEGUI::ProgressBar*>(m_gui->createWidget(m_statusBoxFrame, "FOTDSkin/HealthBar",     glm::vec4(0.25f, 0.23f + 0.066f, 0.65f, 0.1f), glm::vec4(), "PlayerGUI_StatusBox_Health"));
-	m_thirstBar     = static_cast<CEGUI::ProgressBar*>(m_gui->createWidget(m_statusBoxFrame, "FOTDSkin/ThirstBar",     glm::vec4(0.25f, 0.36f + 0.066f, 0.65f, 0.1f), glm::vec4(), "PlayerGUI_StatusBox_Thirst"));
-	m_hungerBar     = static_cast<CEGUI::ProgressBar*>(m_gui->createWidget(m_statusBoxFrame, "FOTDSkin/HungerBar",     glm::vec4(0.25f, 0.50f + 0.066f, 0.65f, 0.1f), glm::vec4(), "PlayerGUI_StatusBox_Hunger"));
-	m_exhaustionBar = static_cast<CEGUI::ProgressBar*>(m_gui->createWidget(m_statusBoxFrame, "FOTDSkin/ExhaustionBar", glm::vec4(0.25f, 0.63f + 0.066f, 0.65f, 0.1f), glm::vec4(), "PlayerGUI_StatusBox_Exhaustion"));
-	m_staminaBar    = static_cast<CEGUI::ProgressBar*>(m_gui->createWidget(m_statusBoxFrame, "FOTDSkin/StaminaBar",    glm::vec4(0.25f, 0.76f + 0.066f, 0.65f, 0.1f), glm::vec4(), "PlayerGUI_StatusBox_Stamina"));
+	m_sanityBar     = static_cast<CEGUI::ProgressBar*>(Factory::getGUI()->createWidget(m_statusBoxFrame, "FOTDSkin/SanityBar",     glm::vec4(0.25f, 0.10f + 0.066f, 0.65f, 0.1f), glm::vec4(), "PlayerGUI_StatusBox_Sanity"));
+	m_healthBar     = static_cast<CEGUI::ProgressBar*>(Factory::getGUI()->createWidget(m_statusBoxFrame, "FOTDSkin/HealthBar",     glm::vec4(0.25f, 0.23f + 0.066f, 0.65f, 0.1f), glm::vec4(), "PlayerGUI_StatusBox_Health"));
+	m_thirstBar     = static_cast<CEGUI::ProgressBar*>(Factory::getGUI()->createWidget(m_statusBoxFrame, "FOTDSkin/ThirstBar",     glm::vec4(0.25f, 0.36f + 0.066f, 0.65f, 0.1f), glm::vec4(), "PlayerGUI_StatusBox_Thirst"));
+	m_hungerBar     = static_cast<CEGUI::ProgressBar*>(Factory::getGUI()->createWidget(m_statusBoxFrame, "FOTDSkin/HungerBar",     glm::vec4(0.25f, 0.50f + 0.066f, 0.65f, 0.1f), glm::vec4(), "PlayerGUI_StatusBox_Hunger"));
+	m_exhaustionBar = static_cast<CEGUI::ProgressBar*>(Factory::getGUI()->createWidget(m_statusBoxFrame, "FOTDSkin/ExhaustionBar", glm::vec4(0.25f, 0.63f + 0.066f, 0.65f, 0.1f), glm::vec4(), "PlayerGUI_StatusBox_Exhaustion"));
+	m_staminaBar    = static_cast<CEGUI::ProgressBar*>(Factory::getGUI()->createWidget(m_statusBoxFrame, "FOTDSkin/StaminaBar",    glm::vec4(0.25f, 0.76f + 0.066f, 0.65f, 0.1f), glm::vec4(), "PlayerGUI_StatusBox_Stamina"));
 
 	m_sanityBar->setProgress(1.0f);
 	m_healthBar->setProgress(1.0f);
@@ -58,7 +57,7 @@ void EntityPlayer::initGUI(GLEngine::GUI* gui) {
 	m_staminaBar->setStepSize(0.0000005d);
 
 
-	m_buffBoxFrame = static_cast<CEGUI::PopupMenu*>(m_gui->createWidget("FOTDSkin/StatusBox", glm::vec4(0.725f, 0.025f, 0.055f, 0.4f), glm::vec4(0.0f), "PlayerGUI_BuffBox"));
+	m_buffBoxFrame = static_cast<CEGUI::PopupMenu*>(Factory::getGUI()->createWidget("FOTDSkin/StatusBox", glm::vec4(0.725f, 0.025f, 0.055f, 0.4f), glm::vec4(0.0f), "PlayerGUI_BuffBox"));
 	m_buffBoxFrame->openPopupMenu();
 
 }
@@ -80,38 +79,23 @@ void EntityPlayer::onDraw(GLEngine::SpriteBatch& sb, float time, int layerDiffer
 }
 
 void EntityPlayer::drawGUI(GLEngine::SpriteBatch& sb, GLEngine::SpriteFont& sf) {
-	if(m_gui) {
-		glm::vec4 fullUV = glm::vec4(0.0f, 0.0f, 1.0f, 1.0f);
-		GLEngine::ColourRGBA8 fullColour(255, 255, 255, 255);
+	glm::vec4 fullUV = glm::vec4(0.0f, 0.0f, 1.0f, 1.0f);
+	GLEngine::ColourRGBA8 fullColour(255, 255, 255, 255);
 
-		sb.begin();
+	sb.begin();
 
-		{
-			// Hotbar
-			int hotbarImgId = GLEngine::ResourceManager::getTexture(ASSETS_FOLDER_PATH + "GUI/Player/Hotbar.png").id;
-			int hotbarSelectImgId = GLEngine::ResourceManager::getTexture(ASSETS_FOLDER_PATH + "GUI/Player/HotbarSelection.png").id;
+	{
+		// Hotbar
+		int hotbarImgId = GLEngine::ResourceManager::getTexture(ASSETS_FOLDER_PATH + "GUI/Player/Hotbar.png").id;
+		int hotbarSelectImgId = GLEngine::ResourceManager::getTexture(ASSETS_FOLDER_PATH + "GUI/Player/HotbarSelection.png").id;
 
-			for(int i = 0; i < HOTBAR_BOX_NUM; i++) {
+		for(int i = 0; i < HOTBAR_BOX_NUM; i++) {
 
-				glm::vec4 uv(i * (1.0 / HOTBAR_BOX_NUM), 0.0f, (1.0 / HOTBAR_BOX_NUM), 1.0f);
-				glm::vec4 destRect(HOTBAR_BOX_SIZE / 4 + (HOTBAR_BOX_SIZE + HOTBAR_BOX_PADDING) * i, HOTBAR_BOX_SIZE / 4, HOTBAR_BOX_SIZE, HOTBAR_BOX_SIZE);
-				sb.draw(destRect, uv, hotbarImgId, 0.0f, fullColour);
+			glm::vec4 uv(i * (1.0 / HOTBAR_BOX_NUM), 0.0f, (1.0 / HOTBAR_BOX_NUM), 1.0f);
+			glm::vec4 destRect(HOTBAR_BOX_SIZE / 4 + (HOTBAR_BOX_SIZE + HOTBAR_BOX_PADDING) * i, HOTBAR_BOX_SIZE / 4, HOTBAR_BOX_SIZE, HOTBAR_BOX_SIZE);
+			sb.draw(destRect, uv, hotbarImgId, 0.0f, fullColour);
 
-				{
-					if(m_favouriteItems[i]) {
-						glm::vec4 destRect(HOTBAR_BOX_SIZE / 4 + (HOTBAR_BOX_SIZE + HOTBAR_BOX_PADDING) * i,
-						                   HOTBAR_BOX_SIZE / 4,
-						                   HOTBAR_BOX_SIZE,
-						                   HOTBAR_BOX_SIZE);
-						glm::vec4 itemUV(0, 0, 1, 1);
-						int itemImgId = m_favouriteItems[i]->getTextureId();//GLEngine::ResourceManager::getTexture(Category_Data::itemData[m_favouriteItems[i]->getID()].texturePath).id;
-
-						sb.draw(destRect, itemUV, itemImgId, 0.4f, GLEngine::ColourRGBA8(255, 255, 255, 255));
-					}
-				}
-			}
-
-			for(int i = 0; i < HOTBAR_BOX_NUM; i++) {
+			{
 				if(m_favouriteItems[i]) {
 					glm::vec4 destRect(HOTBAR_BOX_SIZE / 4 + (HOTBAR_BOX_SIZE + HOTBAR_BOX_PADDING) * i,
 					                   HOTBAR_BOX_SIZE / 4,
@@ -121,28 +105,38 @@ void EntityPlayer::drawGUI(GLEngine::SpriteBatch& sb, GLEngine::SpriteFont& sf) 
 					int itemImgId = m_favouriteItems[i]->getTextureId();//GLEngine::ResourceManager::getTexture(Category_Data::itemData[m_favouriteItems[i]->getID()].texturePath).id;
 
 					sb.draw(destRect, itemUV, itemImgId, 0.4f, GLEngine::ColourRGBA8(255, 255, 255, 255));
-
-					sf.draw(sb, std::to_string(m_favouriteItems[i]->getQuantity()).c_str(), glm::vec2(destRect.x + INVENTORY_BOX_SIZE * 9 / 10, destRect.y + INVENTORY_BOX_SIZE - 96.0f * 0.35f), glm::vec2(0.35f), 1.0f, GLEngine::ColourRGBA8(255, 255, 255, 255), GLEngine::Justification::RIGHT);
 				}
-			}
-
-			glm::vec4 destRect(HOTBAR_BOX_SIZE / 4 + (HOTBAR_BOX_SIZE + HOTBAR_BOX_PADDING) * m_selectedHotbox, HOTBAR_BOX_SIZE / 4, HOTBAR_BOX_SIZE, HOTBAR_BOX_SIZE);
-			sb.draw(destRect, fullUV, hotbarSelectImgId, 1.1f, fullColour);
-		} // Hotbar END
-
-
-		{
-			if(m_inventoryOpen) {
-				m_inventory->draw(HOTBAR_BOX_SIZE / 4, HOTBAR_BOX_SIZE * 1.5, sb, sf);
 			}
 		}
 
-		sb.end();
-		sb.renderBatch();
+		for(int i = 0; i < HOTBAR_BOX_NUM; i++) {
+			if(m_favouriteItems[i]) {
+				glm::vec4 destRect(HOTBAR_BOX_SIZE / 4 + (HOTBAR_BOX_SIZE + HOTBAR_BOX_PADDING) * i,
+				                   HOTBAR_BOX_SIZE / 4,
+				                   HOTBAR_BOX_SIZE,
+				                   HOTBAR_BOX_SIZE);
+				glm::vec4 itemUV(0, 0, 1, 1);
+				int itemImgId = m_favouriteItems[i]->getTextureId();//GLEngine::ResourceManager::getTexture(Category_Data::itemData[m_favouriteItems[i]->getID()].texturePath).id;
 
-	} else {
-		GLEngine::FatalError("Dumb Programmer Didn't Initialize PlayerGUI... ");
+				sb.draw(destRect, itemUV, itemImgId, 0.4f, GLEngine::ColourRGBA8(255, 255, 255, 255));
+
+				sf.draw(sb, std::to_string(m_favouriteItems[i]->getQuantity()).c_str(), glm::vec2(destRect.x + INVENTORY_BOX_SIZE * 9 / 10, destRect.y + INVENTORY_BOX_SIZE - 96.0f * 0.35f), glm::vec2(0.35f), 1.0f, GLEngine::ColourRGBA8(255, 255, 255, 255), GLEngine::Justification::RIGHT);
+			}
+		}
+
+		glm::vec4 destRect(HOTBAR_BOX_SIZE / 4 + (HOTBAR_BOX_SIZE + HOTBAR_BOX_PADDING) * m_selectedHotbox, HOTBAR_BOX_SIZE / 4, HOTBAR_BOX_SIZE, HOTBAR_BOX_SIZE);
+		sb.draw(destRect, fullUV, hotbarSelectImgId, 1.1f, fullColour);
+	} // Hotbar END
+
+
+	{
+		if(m_inventoryOpen) {
+			//m_inventory->draw(0.0f, 0.0f, camera);
+		}
 	}
+
+	sb.end();
+	sb.renderBatch();
 }
 
 #define cap(x) if(x > 1) x = 1; if(x < 0) x = 0;

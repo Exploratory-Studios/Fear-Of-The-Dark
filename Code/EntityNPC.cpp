@@ -7,8 +7,10 @@
 #include "EntityProjectile.h"
 #include "Entities/EntityFunctions.h"
 
-#include "Inventory.h"
+#include "NPCInventory.h"
+
 #include "Attack.h"
+#include "ItemArmour.h"
 
 #include "XMLData.h"
 #include "Factory.h"
@@ -45,7 +47,7 @@ void EntityNPC::init(unsigned int id) {
 
 	initLimbs();
 
-	m_inventory = new Inventory();
+	m_inventory = new NPCInventory(15.0f, m_UUID);
 }
 
 void EntityNPC::initLimbs() {
@@ -376,11 +378,11 @@ void EntityNPC::giveItem(Item* item) {
 	}
 }
 
-Inventory* EntityNPC::getInventory() {
+NPCInventory* EntityNPC::getInventory() {
 	return m_inventory;
 }
 
-void EntityNPC::setInventory(Inventory inventory) {
+void EntityNPC::setInventory(NPCInventory& inventory) {
 	*m_inventory = inventory;
 }
 

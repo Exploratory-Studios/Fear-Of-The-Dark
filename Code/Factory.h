@@ -1,5 +1,7 @@
 #pragma once
 
+#include <GUI.h>
+
 #include "EntityManager.h"
 #include "AudioManager.h"
 
@@ -17,7 +19,14 @@ class Factory {
 			return m_audioManager;
 		}
 
+		static GLEngine::GUI* getGUI() {
+			if(m_gui) return m_gui;
+			m_gui = new GLEngine::GUI();
+			return m_gui;
+		}
+
 	private:
 		static EntityManager* m_entityManager;
 		static AudioManager* m_audioManager;
+		static GLEngine::GUI* m_gui;
 };

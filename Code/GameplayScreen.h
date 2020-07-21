@@ -100,7 +100,6 @@ class GameplayScreen : public GLEngine::IGameScreen {
 		GLEngine::Camera2D m_camera;
 		GLEngine::Camera2D m_uiCamera;
 		GLEngine::Window* m_window = nullptr;
-		GLEngine::GUI* m_gui = nullptr;
 		GLEngine::SpriteBatch m_spriteBatch;
 		GLEngine::ParticleEngine2D m_particle2d;
 

@@ -179,7 +179,7 @@ namespace XMLModule {
 
 	class TileData : public GenericData {
 		public:
-			TileData() : texture("") {
+			TileData() {
 				std::vector<AttributeBase*> attrs = {
 					new Attribute<std::string>("texture", AttributeType::FILEPATH_TEXTURE, &texture),
 					new Attribute<std::string>("bumpMap", AttributeType::FILEPATH_BUMPMAP, &bumpMap),
@@ -208,6 +208,19 @@ namespace XMLModule {
 			glm::vec2 size = glm::vec2(1.0f);
 			bool isSolid = true, isDrawn = true, isNatural = false, isTransparent = false;
 			unsigned int updateScript, tickScript, destructionScript, interactScript_walkedOn, interactScript_used;
+	};
+
+	class TileContainerData : public TileData {
+		public:
+			TileContainerData() {
+				std::vector<AttributeBase*> attrs = {
+					new Attribute<unsigned int>("maxItems", AttributeType::UNSIGNED_INT, &maxItems)
+				};
+
+				addAttributes(attrs);
+			}
+
+			unsigned int maxItems;
 	};
 
 	class ParticleData : public GenericData {

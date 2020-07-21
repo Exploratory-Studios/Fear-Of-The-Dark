@@ -6,6 +6,12 @@
     </Plugin>
   </Plugins>
   <VirtualDirectory Name="src">
+    <File Name="TileInventory.cpp"/>
+    <File Name="TileInventory.h"/>
+    <File Name="NPCInventory.cpp"/>
+    <File Name="NPCInventory.h"/>
+    <File Name="InventoryBase.h"/>
+    <File Name="InventoryBase.cpp"/>
     <File Name="TileContainer.h"/>
     <File Name="TileContainer.cpp"/>
     <File Name="ItemArmour.h"/>
@@ -39,7 +45,6 @@
     <File Name="Logging.h"/>
     <File Name="LoadScreen.h"/>
     <File Name="Item.h"/>
-    <File Name="Inventory.h"/>
     <File Name="GameplayScreen.h"/>
     <File Name="Factory.h"/>
     <File Name="ExtraFunctions.h"/>
@@ -87,7 +92,6 @@
     <File Name="Logging.cpp"/>
     <File Name="LoadScreen.cpp"/>
     <File Name="Item.cpp"/>
-    <File Name="Inventory.cpp"/>
     <File Name="GameplayScreen.cpp"/>
     <File Name="EventQueue.cpp"/>
     <File Name="EntityProjectile.cpp"/>

@@ -1,5 +1,9 @@
 #include "GameplayScreen.h"
 
+#include "GUI_InventoryReceiver.h"
+#include "GUI_InventoryItem.h"
+#include "GUI_InventoryItemRenderer.h"
+
 #include "ScripterMain.h"
 #include "World.h"
 #include "Tile.h"
@@ -588,6 +592,13 @@ void GameplayScreen::initUI() {
 		Factory::getGUI()->setMouseCursor("FOTDSkin/MouseArrow");
 		Factory::getGUI()->showMouseCursor();
 		SDL_ShowCursor(0);
+	}
+
+	// Register custom objects
+	{
+		CEGUI::WindowFactoryManager::addFactory<CEGUI::TplWindowFactory<CEGUI::GUI_InventoryReceiver>>();
+		CEGUI::WindowFactoryManager::addFactory<CEGUI::TplWindowFactory<CEGUI::GUI_InventoryItem>>();
+		CEGUI::WindowRendererManager::addFactory<CEGUI::TplWindowRendererFactory<CEGUI::GUI_InventoryItemRenderer>>();
 	}
 
 	{

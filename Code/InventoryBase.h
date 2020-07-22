@@ -4,6 +4,8 @@
 #include <Camera2D.h>
 #include <GUI.h>
 
+#include "GUI_InventoryReceiver.h"
+
 #include "PresetValues.h"
 #include "Item.h"
 
@@ -67,4 +69,5 @@ class InventoryBase {
 		/// CEGUI Portion
 		glm::vec4 m_destRect; // This is the position & size relative to the x and y given to the draw() function
 		CEGUI::FrameWindow* m_frameWindow = nullptr;
+		CEGUI::GUI_InventoryReceiver* m_grid = nullptr;
 };

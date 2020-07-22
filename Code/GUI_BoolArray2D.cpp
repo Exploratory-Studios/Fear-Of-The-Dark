@@ -4,19 +4,19 @@
 
 namespace CEGUI {
 
-	GUI_ItemArray2D::GUI_ItemArray2D() : m_width(0), m_height(0), m_content(0) {
+	GUI_BoolArray2D::GUI_BoolArray2D() : m_width(0), m_height(0), m_content(0) {
 
 	}
 
-	GUI_ItemArray2D::GUI_ItemArray2D(unsigned int width, unsigned int height) : m_content(0) {
+	GUI_BoolArray2D::GUI_BoolArray2D(int width, int height) : m_content(0) {
 		resetSize(width, height);
 	}
 
-	GUI_ItemArray2D::~GUI_ItemArray2D() {
+	GUI_BoolArray2D::~GUI_BoolArray2D() {
 		delete[] m_content;
 	}
 
-	bool GUI_ItemArray2D::getElementAtLocation(unsigned int x, unsigned int y) {
+	bool GUI_BoolArray2D::getElementAtLocation(int x, int y) const {
 		if(x < 0 || x >= m_width || y < 0 || y >= m_height) {
 			throw std::out_of_range("ItemArray2D::getElementAtLocation: Location out of range");
 		}
@@ -24,7 +24,7 @@ namespace CEGUI {
 		return m_content[y * m_width + x];
 	}
 
-	void GUI_ItemArray2D::setElementAtLocation(unsigned int x, unsigned int y, bool value) {
+	void GUI_BoolArray2D::setElementAtLocation(int x, int y, bool value) {
 		if(x < 0 || x >= m_width || y < 0 || y >= m_height) {
 			throw std::out_of_range("ItemArray2D::setElementAtLocation: Location out of range");
 		}
@@ -32,18 +32,18 @@ namespace CEGUI {
 		m_content[y * m_width + x] = value;
 	}
 
-	void GUI_ItemArray2D::clear(bool value/*= false*/) {
+	void GUI_BoolArray2D::clear(bool value/*= false*/) {
 		if(!m_content)
 			return;
 
-		const unsigned int size = m_width * m_height;
+		const int size = m_width * m_height;
 
-		for(unsigned int i = 0; i < size; i++) {
+		for(int i = 0; i < size; i++) {
 			m_content[i] = value;
 		}
 	}
 
-	void GUI_ItemArray2D::resetSize(unsigned int width, unsigned int height) {
+	void GUI_BoolArray2D::resetSize(int width, int height) {
 		if(m_width != width || m_height || height) {
 			delete[] m_content;
 			m_width = width;

@@ -3116,8 +3116,8 @@
         </StateImagery>
     </WidgetLook>
 
-	<WidgetLook name="FOTDSkin/StaminaBar">
-	    <Property name="CurrentProgress" value=".01"/>
+    <WidgetLook name="FOTDSkin/StaminaBar">
+        <Property name="CurrentProgress" value=".01"/>
         <Property name="Size" value="{{0, 256}, {0, 32}}" />
         <NamedArea name="ProgressArea"/>
         <ImagerySection name="progress_empty">
@@ -3135,7 +3135,7 @@
         </ImagerySection>
         <ImagerySection name="progress_full">
             <FrameComponent>
-				<Colours topLeft="FFFFDD00" bottomLeft="FFFFDD00" topRight="FFFFDD00" bottomRight="FFFFDD00"/>
+		<Colours topLeft="FFFFDD00" bottomLeft="FFFFDD00" topRight="FFFFDD00" bottomRight="FFFFDD00"/>
                 <Image component="TopLeftCorner" name="FOTDSkin/ProgressFullTL"/>
                 <Image component="TopRightCorner" name="FOTDSkin/ProgressFullTR"/>
                 <Image component="BottomLeftCorner" name="FOTDSkin/ProgressFullBL"/>
@@ -3194,5 +3194,78 @@
             </Layer>
         </StateImagery>
     </WidgetLook>
+
+    <WidgetLook name="FOTDSkin/InventoryReceiver">
+        <PropertyDefinition name="Image" initialValue="" redrawOnWrite="true" type="Image"/>
+        <ImagerySection name="main">
+            <ImageryComponent>
+                <Area>
+			<Dim type="LeftEdge" ><AbsoluteDim value="0" /></Dim>
+			<Dim type="TopEdge" ><AbsoluteDim value="0" /></Dim>
+			<Dim type="Width" ><UnifiedDim scale="1" type="Width" /></Dim>
+			<Dim type="Height" ><UnifiedDim scale="1" type="Height" /></Dim>
+		</Area>
+                <ImageProperty name="Image" />
+            </ImageryComponent>
+        </ImagerySection>
+        <StateImagery name="Enabled">
+            <Layer>
+                <Section section="main" />
+            </Layer>
+        </StateImagery>
+        <StateImagery name="Disabled" />
+    </WidgetLook>
+
+    <WidgetLook name="FOTDSkin/InventoryItem">
+        <PropertyDefinition name="Image" initialValue="" redrawOnWrite="true" type="Image"/>
+        <ImagerySection name="main">
+            <ImageryComponent>
+                <Area>
+                    <Dim type="LeftEdge"><AbsoluteDim value="0" /></Dim>
+                    <Dim type="TopEdge"><AbsoluteDim value="0" /></Dim>
+                    <Dim type="RightEdge"><UnifiedDim scale="1" type="RightEdge" /></Dim>
+                    <Dim type="BottomEdge"><UnifiedDim scale="1" type="BottomEdge" /></Dim>
+                </Area>
+                <ImageProperty name="Image" />
+                <VertFormat type="Stretched" />
+                <HorzFormat type="Stretched" />
+            </ImageryComponent>
+        </ImagerySection>
+        <ImagerySection name="overlay">
+            <ImageryComponent>
+                <Area>
+                    <Dim type="LeftEdge"><AbsoluteDim value="0" /></Dim>
+                    <Dim type="TopEdge"><AbsoluteDim value="0" /></Dim>
+                    <Dim type="RightEdge"><UnifiedDim scale="1" type="RightEdge" /></Dim>
+                    <Dim type="BottomEdge"><UnifiedDim scale="1" type="BottomEdge" /></Dim>
+                </Area>
+                <Image name="TaharezLook/GenericBrush" />
+                <VertFormat type="Stretched" />
+                <HorzFormat type="Stretched" />
+            </ImageryComponent>
+        </ImagerySection>
+        <StateImagery name="Normal">
+            <Layer>
+                <Section section="main" />
+            </Layer>
+        </StateImagery>
+        <StateImagery name="DraggingValidTarget">
+            <Layer>
+                <Section section="main" />
+                <Section section="overlay">
+                    <Colours topLeft="FF00FF00" topRight="FF00FF00" bottomLeft="FF00FF00" bottomRight="FF00FF00" />
+                </Section>
+            </Layer>
+        </StateImagery>
+        <StateImagery name="DraggingInvalidTarget">
+            <Layer>
+                <Section section="main" />
+                <Section section="overlay">
+                    <Colours topLeft="FFFF0000" topRight="FFFF0000" bottomLeft="FFFF0000" bottomRight="FFFF0000" />
+                </Section>
+            </Layer>
+        </StateImagery>
+    </WidgetLook>
+
 
 </Falagard>

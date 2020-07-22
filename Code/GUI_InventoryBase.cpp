@@ -9,38 +9,38 @@ namespace CEGUI {
 		             area.getHeight() / m_content.getHeight());
 	}
 
-	void GUI_InventoryBase::setContentSize(unsigned int width, unsigned int height) {
+	void GUI_InventoryBase::setContentSize(int width, int height) {
 		// Sets the size of the grid and inits it.
 		m_content.resetSize(width, height);
 	}
 
-	unsigned int GUI_InventoryBase::getContentWidth() const {
+	int GUI_InventoryBase::getContentWidth() const {
 		return m_content.getWidth();
 	}
 
-	unsigned int GUI_InventoryBase::getContentHeight() const {
+	int GUI_InventoryBase::getContentHeight() const {
 		return m_content.getHeight();
 	}
 
-	unsigned int GUI_InventoryBase::gridXLocationFromPixelPosition(float pixelX) const {
+	int GUI_InventoryBase::gridXLocationFromPixelPosition(float pixelX) const {
 		// Returns the grid position from a given screen pixel coord
 		const Rectf area(gridBasePixelRect());
 
-		if(pixelX < static_cast<unsigned int>(area.left()) ||
-		        pixelX >= static_cast<unsigned int>(area.right()))
+		if(pixelX < static_cast<int>(area.left()) ||
+		        pixelX >= static_cast<int>(area.right()))
 			return -1;
 
-		return static_cast<unsigned int>((pixelX - area.left()) / (area.getWidth() / m_content.getWidth()));
+		return static_cast<int>((pixelX - area.left()) / (area.getWidth() / m_content.getWidth()));
 	}
-	unsigned int GUI_InventoryBase::gridYLocationFromPixelPosition(float pixelY) const {
+	int GUI_InventoryBase::gridYLocationFromPixelPosition(float pixelY) const {
 		// Returns the grid position from a given screen pixel coord
 		const Rectf area(gridBasePixelRect());
 
-		if(pixelY < static_cast<unsigned int>(area.top()) ||
-		        pixelY >= static_cast<unsigned int>(area.bottom()))
+		if(pixelY < static_cast<int>(area.top()) ||
+		        pixelY >= static_cast<int>(area.bottom()))
 			return -1;
 
-		return static_cast<unsigned int>((pixelY - area.top()) / (area.getHeight() / m_content.getHeight()));
+		return static_cast<int>((pixelY - area.top()) / (area.getHeight() / m_content.getHeight()));
 
 	}
 }

@@ -13,6 +13,15 @@ InventoryBase::InventoryBase(std::string& name) {
 	m_frameWindow->setSizingEnabled(false);
 	m_frameWindow->setTitleBarEnabled(false);
 
+	m_grid = static_cast<CEGUI::GUI_InventoryReceiver*>(Factory::getGUI()->createWidget(m_frameWindow, "InventoryReceiver", glm::vec4(0.05f, 0.25f, 0.9f, 1.8f), glm::vec4(0.0f), name + "_NPCInventory_GRID"));
+	m_grid->setContentSize(5, 10);
+	m_grid->setUserString("BlockImage", "FOTDSkin/InventoryBox");
+
+	CEGUI::GUI_InventoryItem* item = static_cast<CEGUI::GUI_InventoryItem*>(Factory::getGUI()->createWidget(m_frameWindow, "FOTDSkin/InventoryItem", glm::vec4(0.05f, 0.05f, 0.9f, 0.9f), glm::vec4(0.0f), name + "_NPCInventory_GRIDITEM1"));
+	item->setContentSize(1, 1);
+	m_grid->addItemAtLocation(*item, 0, 1);
+	item->setProperty("Image", "FOTDSkin/MouseArrow");
+
 	m_destRect = glm::vec4(-0.4f, -0.25f, 0.4f, 0.4f);
 
 	setToDraw(false);

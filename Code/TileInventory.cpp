@@ -13,10 +13,14 @@ void TileInventory::initGUI(CEGUI::FrameWindow* frame) {
 }
 
 bool TileInventory::operator_canAddItem(Item* item) {
-	// If there's already an item of the same ID in the inventory, return true. Else, if m_items->size() + item->quantity <= m_maxnumItems
-	if(getItemIndex(item) != (unsigned int)-1) {
-		return true;
-	} else {
-		return ((m_items.size() + item->getQuantity()) <= m_maxNumItems);
+	// Count how many total items we have. If count+item->quantity is <= max, return true. False otherwise.
+	unsigned int count = 0;
+	for(unsigned int i = 0; i < m_items.size(); i++) {
+		count += m_items[i]->getQuantity();
 	}
+
+	if(count + item->getQuantity() <= m_maxNumItems) {
+		return true;
+	}
+	return false;
 }

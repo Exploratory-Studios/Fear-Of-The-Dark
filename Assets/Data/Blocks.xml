@@ -8,7 +8,7 @@
 	<isTransparent>1</isTransparent>
 </tile>
 <tile id="1" name="Dirt">
-	<texture>Blocks/Log.png</texture>
+	<texture>Blocks/Dirt.png</texture>
 	<bumpMap>LogMapR.png</bumpMap>
 	<emittedLight>0.000000</emittedLight>
 	<emittedHeat>0.000000</emittedHeat>
@@ -53,6 +53,18 @@
 	<isTransparent>1</isTransparent>
 	<tickScript><isFile>1</isFile><script>TorchTick.lua</script></tickScript>
 </tile>
+<tileContainer id="7" name="Chest">
+	<texture>Blocks/CarePackage.png</texture>
+	<bumpMap>LogMapR.png</bumpMap>
+	<emittedLight>0.000000</emittedLight>
+	<emittedHeat>0.000000</emittedHeat>
+	<size>1.0,1.0</size>
+	<isSolid>1</isSolid>
+	<isDrawn>1</isDrawn>
+	<isNatural>0</isNatural>
+	<isTransparent>1</isTransparent>
+	<maxItems>4</maxItems>
+</tileContainer>
 <tile id="11" name="Water">
 	<texture>Blocks/Water.png</texture>
 	<bumpMap>Water.png</bumpMap>

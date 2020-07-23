@@ -43,4 +43,8 @@ namespace CEGUI {
 		return static_cast<int>((pixelY - area.top()) / (area.getHeight() / m_content.getHeight()));
 
 	}
+
+	Rectf GUI_InventoryBase::getGridBasePixelRect() const {
+		return gridBasePixelRect();
+	}
 }

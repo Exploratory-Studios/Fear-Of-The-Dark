@@ -8,6 +8,29 @@
 
 #include "XMLData.h"
 
+#include "TileContainer.h"
+
+Tile* createTile(unsigned int id, glm::vec2 pos, int layer, bool loadTex, SaveDataTypes::MetaData metaData) {
+	XMLModule::TileData t = XMLModule::XMLData::getTileData(id);
+
+	switch((unsigned int)t.type) {
+		case (unsigned int)XMLModule::TileType::TILE: {
+			return new Tile(pos, layer, id, metaData, loadTex);
+			break;
+		}
+		case (unsigned int)XMLModule::TileType::CONTAINER: {
+			return new TileContainer(pos, layer, id, metaData, loadTex);
+			break;
+		}
+		default: {
+			Logger::getInstance()->log("ERROR: Tile creation failed due to an unknown TileType", true);
+			return nullptr;
+			break;
+		}
+	}
+	return nullptr; // We can't even reach the end.
+}
+
 Tile::Tile() {
 
 }
@@ -216,7 +239,7 @@ void Tile::draw(GLEngine::SpriteBatch& sb, GLEngine::SpriteFont& sf, int xOffset
 		        m_depthForRender,
 		        m_colour);
 
-		//onDraw(sb, sf, pos, depth);
+		onDraw(sb, sf, pos, m_depthForRender);
 	}
 }
 

@@ -181,7 +181,7 @@ void World::removeLight(Tile* t) {
 	}
 }
 
-void World::getRenderedLights(glm::vec4 destRect, float lights[MAX_LIGHTS_RENDERED * 3], GLEngine::Camera2D& cam) {
+void World::getRenderedLights(glm::vec4 destRect, float lights[MAX_LIGHTS_RENDERED * 3]) {
 	/*
 	    Gets all the lights that should be rendered this frame, using a viewport rectangle (destRect). Returns glm::vec3 array of length MAX_LIGHTS_RENDERED
 	    Algorithm:
@@ -251,17 +251,17 @@ void World::getRenderedLights(glm::vec4 destRect, float lights[MAX_LIGHTS_RENDER
 	}
 
 	for(int i = 0; i < MAX_LIGHTS_RENDERED; i++) {
-		glm::vec2 pos = cam.convertWorldToScreen(glm::vec2(returnVal[i].x + 0.5f, returnVal[i].y + 0.5f));
+		glm::vec2 pos = Factory::getGameCamera()->convertWorldToScreen(glm::vec2(returnVal[i].x + 0.5f, returnVal[i].y + 0.5f));
 
 		lights[i * 3] = pos.x;
 		lights[i * 3 + 1] = pos.y;
-		lights[i * 3 + 2] = returnVal[i].z * cam.getScale() * cam.getScale();
+		lights[i * 3 + 2] = returnVal[i].z * Factory::getGameCamera()->getScale() * Factory::getGameCamera()->getScale();
 	}
 }
 
-void World::setLightsUniform(glm::vec4 destRect, GLEngine::GLSLProgram* textureProgram, GLEngine::Camera2D& cam) {
+void World::setLightsUniform(glm::vec4 destRect, GLEngine::GLSLProgram* textureProgram) {
 	float lights[MAX_LIGHTS_RENDERED * 3];
-	getRenderedLights(destRect, lights, cam);
+	getRenderedLights(destRect, lights);
 	GLint textureUniform = textureProgram->getUniformLocation("lights");
 	glUniform3fv(textureUniform, MAX_LIGHTS_RENDERED, lights); /// TODO: Set define directive for 30 lights max.
 }

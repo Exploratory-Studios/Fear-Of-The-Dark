@@ -33,7 +33,7 @@ class World {
 		void addLight(Tile* t);
 		void removeLight(unsigned int index);
 		void removeLight(Tile* t);
-		void getRenderedLights(glm::vec4 destRect, float lights[MAX_LIGHTS_RENDERED], GLEngine::Camera2D& cam);
+		void getRenderedLights(glm::vec4 destRect, float lights[MAX_LIGHTS_RENDERED]);
 
 		unsigned long int getTime() {
 			return m_time;
@@ -59,7 +59,7 @@ class World {
 			m_time = time;
 		}
 
-		void setLightsUniform(glm::vec4 destRect, GLEngine::GLSLProgram* textureProgram, GLEngine::Camera2D& cam);
+		void setLightsUniform(glm::vec4 destRect, GLEngine::GLSLProgram* textureProgram);
 
 		void drawTiles(GLEngine::SpriteBatch& sb, GLEngine::SpriteFont& sf, GLEngine::DebugRenderer& dr, glm::vec4 destRect, GLEngine::GLSLProgram* textureProgram);
 		void drawTilesNormal(GLEngine::SpriteBatch& sb, glm::vec4 destRect, GLEngine::GLSLProgram* textureProgram);

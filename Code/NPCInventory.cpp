@@ -9,9 +9,9 @@ NPCInventory::~NPCInventory() {
 }
 
 void NPCInventory::initGUI(CEGUI::FrameWindow* frame) {
-	frame->setTitleBarEnabled(true);
-	frame->getTitlebar()->setDraggingEnabled(false);
-	frame->getTitlebar()->setText("[font='AmaticBold-22']TEST");
+	//frame->setTitleBarEnabled(true);
+	//frame->getTitlebar()->setDraggingEnabled(true);
+	//frame->getTitlebar()->setText("[font='AmaticBold-22']TEST");
 }
 
 float NPCInventory::getSpeedMultiplier() {

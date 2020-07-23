@@ -31,6 +31,11 @@ namespace XMLModule {
 		MISC
 	};
 
+	enum class TileType {
+		TILE,
+		CONTAINER
+	};
+
 	enum class AttributeType {
 		STRING,
 		UNSIGNED_INT,
@@ -179,7 +184,7 @@ namespace XMLModule {
 
 	class TileData : public GenericData {
 		public:
-			TileData() {
+			TileData() : type(TileType::TILE) {
 				std::vector<AttributeBase*> attrs = {
 					new Attribute<std::string>("texture", AttributeType::FILEPATH_TEXTURE, &texture),
 					new Attribute<std::string>("bumpMap", AttributeType::FILEPATH_BUMPMAP, &bumpMap),
@@ -203,6 +208,7 @@ namespace XMLModule {
 
 			virtual ~TileData() {}
 
+			TileType type;
 			std::string texture = "", bumpMap = "";
 			float emittedLight = 0.0f, emittedHeat = 0.0f;
 			glm::vec2 size = glm::vec2(1.0f);
@@ -212,7 +218,9 @@ namespace XMLModule {
 
 	class TileContainerData : public TileData {
 		public:
-			TileContainerData() {
+			TileContainerData() : TileData() {
+				type = TileType::CONTAINER;
+
 				std::vector<AttributeBase*> attrs = {
 					new Attribute<unsigned int>("maxItems", AttributeType::UNSIGNED_INT, &maxItems)
 				};

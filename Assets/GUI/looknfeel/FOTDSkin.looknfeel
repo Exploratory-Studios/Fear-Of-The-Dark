@@ -775,6 +775,7 @@
         </StateImagery>
     </WidgetLook>
     <WidgetLook name="FOTDSkin/FrameWindow">
+	<PropertyDefinition name="BackgroundColours" initialValue="tl:FFFFFFFF tr:FFFFFFFF bl:FFFFFFFF br:FFFFFFFF" redrawOnWrite="true" />
         <PropertyLinkDefinition targetProperty="CaptionColour" widget="__auto_titlebar__" initialValue="FFFFFFFF" type="ColourRect" name="CaptionColour"/>
         <PropertyLinkDefinition targetProperty="Font" widget="__auto_titlebar__" type="Font" name="TitlebarFont"/>
         <Property name="AutoRenderingSurface" value="true"/>
@@ -884,6 +885,7 @@
                 <Image component="RightEdge" name="FOTDSkin/WindowR"/>
                 <Image component="BottomEdge" name="FOTDSkin/WindowB"/>
                 <Image component="Background" name="FOTDSkin/WindowFill"/>
+	    				<ColourRectProperty name="BackgroundColours" />
             </FrameComponent>
         </ImagerySection>
         <ImagerySection name="notitle_frame">
@@ -897,6 +899,7 @@
                 <Image component="TopEdge" name="FOTDSkin/WindowT"/>
                 <Image component="BottomEdge" name="FOTDSkin/WindowB"/>
                 <Image component="Background" name="FOTDSkin/WindowFill"/>
+	    				<ColourRectProperty name="BackgroundColours" />
             </FrameComponent>
         </ImagerySection>
         <ImagerySection name="withtitle_noframe_client_area">
@@ -906,6 +909,7 @@
                         <ImageDim name="FOTDSkin/WindowClipT" dimension="Height"/>
                     </Dim>
                 </Area>
+	    				<ColourRectProperty name="BackgroundColours" />
                 <Image name="FOTDSkin/WindowFill"/>
                 <VertFormat type="Stretched"/>
                 <HorzFormat type="Stretched"/>
@@ -913,6 +917,7 @@
         </ImagerySection>
         <ImagerySection name="notitle_noframe_client_area">
             <ImageryComponent>
+					<ColourRectProperty name="BackgroundColours" />
                 <Image name="FOTDSkin/WindowFill"/>
                 <VertFormat type="Stretched"/>
                 <HorzFormat type="Stretched"/>
@@ -3196,6 +3201,7 @@
     </WidgetLook>
 
     <WidgetLook name="FOTDSkin/InventoryReceiver">
+	<PropertyDefinition name="BlockColours" initialValue="tl:FFFFFFFF tr:FFFFFFFF bl:FFFFFFFF br:FFFFFFFF" redrawOnWrite="true" />
         <PropertyDefinition name="Image" initialValue="" redrawOnWrite="true" type="Image"/>
         <ImagerySection name="main">
             <ImageryComponent>
@@ -3205,6 +3211,7 @@
 			<Dim type="Width" ><UnifiedDim scale="1" type="Width" /></Dim>
 			<Dim type="Height" ><UnifiedDim scale="1" type="Height" /></Dim>
 		</Area>
+		<ColourRectProperty name="BlockColours" />
                 <ImageProperty name="Image" />
             </ImageryComponent>
         </ImagerySection>

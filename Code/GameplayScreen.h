@@ -48,9 +48,6 @@ class GameplayScreen : public GLEngine::IGameScreen {
 		void setCameraLocked(bool setting) {
 			m_cameraLocked = setting;
 		}
-		GLEngine::Camera2D* getCamera() {
-			return &m_camera;
-		}
 
 		void setSmoothMoveTarget(glm::vec2 target) {
 			m_smoothMoveTarget = target;
@@ -96,8 +93,7 @@ class GameplayScreen : public GLEngine::IGameScreen {
 		bool pause_quit_button_clicked(const CEGUI::EventArgs& e);
 
 		void updateScale();
-
-		GLEngine::Camera2D m_camera;
+		
 		GLEngine::Camera2D m_uiCamera;
 		GLEngine::Window* m_window = nullptr;
 		GLEngine::SpriteBatch m_spriteBatch;

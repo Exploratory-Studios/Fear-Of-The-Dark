@@ -80,7 +80,7 @@ namespace ScriptingModule {
 
 	void setBlock(World* world, unsigned int id, glm::vec2 pos, int layer, SaveDataTypes::MetaData metaData) {
 		float correctedX = ((int)pos.x + WORLD_SIZE) % WORLD_SIZE;
-		world->setTile(new Tile(glm::vec2(correctedX, pos.y), layer, id, SaveDataTypes::MetaData(metaData), false)); // Set the block, of course
+		world->setTile(createTile(id, glm::vec2(correctedX, pos.y), layer, false, metaData)); // Set the block, of course
 		/// TODO: compile array of chunks in init()
 	}
 
@@ -163,18 +163,18 @@ namespace ScriptingModule {
 
 	void camera_setPosition(GameplayScreen* gs, glm::vec2 pos) {
 		camera_setLocked(gs, true);
-		gs->getCamera()->setPosition(pos);
+		Factory::getGameCamera()->setPosition(pos);
 	}
 
 	void camera_move(GameplayScreen* gs, glm::vec2 relPos) {
 		camera_setLocked(gs, true);
-		gs->getCamera()->setPosition(gs->getCamera()->getPosition() + relPos);
+		Factory::getGameCamera()->setPosition(Factory::getGameCamera()->getPosition() + relPos);
 	}
 
 	void camera_smoothMove(GameplayScreen* gs, glm::vec2 relPos, float speed) {
 		camera_setLocked(gs, true);
 
-		glm::vec2 newPos = gs->getCamera()->getPosition() + relPos;
+		glm::vec2 newPos = Factory::getGameCamera()->getPosition() + relPos;
 
 		gs->setSmoothMoveTarget(newPos);
 		gs->setSmoothMoveSpeed(speed);

@@ -18,6 +18,8 @@ namespace CEGUI {
 			int gridXLocationFromPixelPosition(float pixelX) const; // Returns the grid position from a given screen pixel coord
 			int gridYLocationFromPixelPosition(float pixelY) const; // Returns the grid position from a given screen pixel coord
 
+			virtual Rectf getGridBasePixelRect() const;
+
 		protected:
 			virtual Rectf gridBasePixelRect() const = 0; // Return the screen rect where the content is rendered.
 

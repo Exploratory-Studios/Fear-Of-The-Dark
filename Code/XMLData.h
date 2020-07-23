@@ -43,6 +43,7 @@ namespace XMLModule {
 			static std::map<unsigned int, GenericData*>* getMapFromNodename(std::string& nodename);
 
 			static TileData getTileData(unsigned int id);
+			static TileContainerData getTileContainerData(unsigned int id);
 			static ParticleData getParticleData(unsigned int id);
 			static EntityData getEntityData(unsigned int id);
 			static EntityNPCData getEntityNPCData(unsigned int id);

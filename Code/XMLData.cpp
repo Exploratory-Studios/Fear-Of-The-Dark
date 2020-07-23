@@ -256,8 +256,8 @@ namespace XMLModule {
 		Logger::getInstance()->log("Beginning to write data...");
 
 		// files and nodeNames should have equal size. That much is assumed to be true at runtime
-		std::vector<std::string> files   { "Blocks", "Particles", "Entities", "Entities", "Entities", "Items", "Items", "Items", "Biomes", "Eras", "Loot", "Loot", "Structures", "Quests", "Dialogue", "Dialogue", "Dialogue", "Animations", "Animations", "Attacks", "Attacks", "Attacks", "Buffs" };
-		std::vector<std::string> nodeNames{ "tile",  "particle",  "npc",  "projectile",  "itemEntity",   "consumable", "armour", "weapon",  "biome",   "era", "lootDrop", "lootTable", "structure", "quest", "questObjective", "question", "response", "animation", "skeletalAnimation", "meleeAttack", "rangedAttack", "magicAttack", "buff" };
+		std::vector<std::string> files   { "Blocks", "Blocks", "Particles", "Entities", "Entities", "Entities", "Items", "Items", "Items", "Biomes", "Eras", "Loot", "Loot", "Structures", "Quests", "Dialogue", "Dialogue", "Dialogue", "Animations", "Animations", "Attacks", "Attacks", "Attacks", "Buffs" };
+		std::vector<std::string> nodeNames{ "tile", "tileContainer", "particle",  "npc",  "projectile",  "itemEntity",   "consumable", "armour", "weapon",  "biome",   "era", "lootDrop", "lootTable", "structure", "quest", "questObjective", "question", "response", "animation", "skeletalAnimation", "meleeAttack", "rangedAttack", "magicAttack", "buff" };
 
 		for(unsigned int i = 0; i < files.size(); i++) {
 			writeXMLData(filepath + "/Data/" + files[i] + ".xml", nodeNames[i]);
@@ -286,6 +286,8 @@ namespace XMLModule {
 
 		if(name == "tile") {
 			d = new TileData();
+		} else if(name == "tileContainer") {
+			d = new TileContainerData();
 		} else if(name == "particle") {
 			d = new ParticleData();
 		} else if(name == "npc") {
@@ -336,15 +338,11 @@ namespace XMLModule {
 	std::map<unsigned int, GenericData*>* XMLData::getMapFromNodename(std::string& name) {
 		std::map<unsigned int, GenericData*>* mapForWrite = nullptr;
 
-		if(name == "tile") {
+		if(name == "tile" || name == "tileContainer") {
 			mapForWrite = &m_tileData;
 		} else if(name == "particle") {
 			mapForWrite = &m_particleData;
-		} else if(name == "npc") {
-			mapForWrite = &m_entityData;
-		} else if(name == "projectile") {
-			mapForWrite = &m_entityData;
-		} else if(name == "itemEntity") {
+		} else if(name == "npc" || name == "projectile" || name == "itemEntity") {
 			mapForWrite = &m_entityData;
 		} else if(name == "item") {
 			mapForWrite = &m_itemData;
@@ -370,11 +368,7 @@ namespace XMLModule {
 			mapForWrite = &m_animationData;
 		} else if(name == "skeletalAnimation") {
 			mapForWrite = &m_skeletalAnimationData;
-		} else if(name == "meleeAttack") {
-			mapForWrite = &m_attackData;
-		} else if(name == "rangedAttack") {
-			mapForWrite = &m_attackData;
-		} else if(name == "magicAttack") {
+		} else if(name == "meleeAttack" || name == "rangedAttack" || name == "magicAttack") {
 			mapForWrite = &m_attackData;
 		} else if(name == "buff") {
 			mapForWrite = &m_buffData;
@@ -464,6 +458,18 @@ namespace XMLModule {
 		}
 
 		return *static_cast<TileData*>(index->second);
+	}
+
+	TileContainerData XMLData::getTileContainerData(unsigned int id) {
+		auto index = m_tileData.find(id);
+
+		if(index == m_tileData.end()) {
+			Logger::getInstance()->log("ERROR: Couldn't find tile (container) data with ID: " + std::to_string(id), true);
+			TileContainerData t;
+			return t;
+		}
+
+		return *static_cast<TileContainerData*>(index->second);
 	}
 
 /// Particles

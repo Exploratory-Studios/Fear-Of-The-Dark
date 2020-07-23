@@ -77,7 +77,7 @@ void EntityPlayer::onDraw(GLEngine::SpriteBatch& sb, float time, int layerDiffer
 	}
 }
 
-void EntityPlayer::drawGUI(GLEngine::SpriteBatch& sb, GLEngine::SpriteFont& sf, GLEngine::Camera2D& gameCamera) {
+void EntityPlayer::drawGUI(GLEngine::SpriteBatch& sb, GLEngine::SpriteFont& sf) {
 	glm::vec4 fullUV = glm::vec4(0.0f, 0.0f, 1.0f, 1.0f);
 	GLEngine::ColourRGBA8 fullColour(255, 255, 255, 255);
 
@@ -129,7 +129,7 @@ void EntityPlayer::drawGUI(GLEngine::SpriteBatch& sb, GLEngine::SpriteFont& sf, 
 
 
 	if(m_inventoryOpen) {
-		m_inventory->draw(m_position.x, m_position.y, gameCamera);
+		m_inventory->draw(sb, sf, m_position.x, m_position.y);
 	}
 
 	sb.end();

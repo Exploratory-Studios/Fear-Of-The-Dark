@@ -1,6 +1,7 @@
 #pragma once
 
 #include <GUI.h>
+#include <Camera2D.h>
 
 #include "EntityManager.h"
 #include "AudioManager.h"
@@ -25,8 +26,15 @@ class Factory {
 			return m_gui;
 		}
 
+		static GLEngine::Camera2D* getGameCamera() {
+			if(m_gameCamera) return m_gameCamera;
+			m_gameCamera = new GLEngine::Camera2D();
+			return m_gameCamera;
+		}
+
 	private:
 		static EntityManager* m_entityManager;
 		static AudioManager* m_audioManager;
 		static GLEngine::GUI* m_gui;
+		static GLEngine::Camera2D* m_gameCamera;
 };

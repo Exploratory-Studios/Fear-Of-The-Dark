@@ -43,6 +43,15 @@ namespace CEGUI {
 			bool isHit(const Vector2f& position, const bool allow_disabled = false) const;
 			void setContentSize(int width, int height);
 
+			template<class T>
+			T* getData() {
+				return reinterpret_cast<T*>(m_miscData);
+			}
+
+			void setData(void* data) {
+				m_miscData = data;
+			}
+
 		protected:
 			// base class override
 			void onMoved(ElementEventArgs& e);
@@ -54,6 +63,8 @@ namespace CEGUI {
 			bool m_validDropTarget;
 			// Where it is on the reciever's map
 			int m_recieverLocationX, m_recieverLocationY;
+
+			void* m_miscData = nullptr;
 
 	};
 

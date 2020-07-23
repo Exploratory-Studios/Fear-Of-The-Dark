@@ -32,6 +32,10 @@ enum class TileIDs {
 	SIGN_WOOD
 };
 
+class Tile;
+
+Tile* createTile(unsigned int id, glm::vec2 pos, int layer, bool loadTex = true, SaveDataTypes::MetaData metaData = SaveDataTypes::MetaData());
+
 class Tile {
 	public:
 		Tile();
@@ -223,7 +227,7 @@ class Tile {
 		}
 
 		void onUpdate() { }
-		void onDraw(GLEngine::SpriteBatch& sb, GLEngine::SpriteFont& sf, glm::vec4& pos, float& depth) { }
+		virtual void onDraw(GLEngine::SpriteBatch& sb, GLEngine::SpriteFont& sf, glm::vec4& pos, float& depth) { }
 		void onTick() {
 			if(m_tickScriptID != -1) ScriptingModule::ScriptQueue::activateScript(m_tickScriptID, generateLuaData());
 		}

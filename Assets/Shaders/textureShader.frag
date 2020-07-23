@@ -14,7 +14,7 @@ uniform sampler2D textureSampler;
 void main() {
 	gl_FragDepth = fragmentPosition.z;
 
-	color = texture(textureSampler, fragmentUV.xy);
+	color = texture(textureSampler, fragmentUV.xy) * fragmentColour;
 
 	if(color.a < 0.05) {
 		discard;

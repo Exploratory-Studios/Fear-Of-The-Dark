@@ -63,9 +63,9 @@ void GameplayScreen::onEntry() {
 	m_sunlightFBO.init(glm::vec4(0.0f, 0.0f, m_window->getScreenWidth(), m_window->getScreenHeight()));
 
 	m_scale = INITIAL_ZOOM;
-	m_camera.setScale(m_scale);
-	m_camera.init(m_window->getScreenWidth(), m_window->getScreenHeight());
-	m_camera.setPosition((glm::vec2(m_window->getScreenWidth() / 2, m_window->getScreenHeight() / 2)));
+	Factory::getGameCamera()->setScale(m_scale);
+	Factory::getGameCamera()->init(m_window->getScreenWidth(), m_window->getScreenHeight());
+	Factory::getGameCamera()->setPosition((glm::vec2(m_window->getScreenWidth() / 2, m_window->getScreenHeight() / 2)));
 
 	m_uiCamera.init(m_window->getScreenWidth(), m_window->getScreenHeight());
 	m_uiCamera.setPosition((glm::vec2(m_window->getScreenWidth() / 2, m_window->getScreenHeight() / 2)));
@@ -99,7 +99,7 @@ void GameplayScreen::onEntry() {
 	m_dialogueManager = new DialogueModule::DialogueManager(m_questManager);
 	//m_dialogueManager->activateDialogue(0);
 
-	m_camera.setPosition(Factory::getEntityManager()->getPlayer()->getPosition());
+	Factory::getGameCamera()->setPosition(Factory::getEntityManager()->getPlayer()->getPosition());
 
 	tick();
 }
@@ -147,7 +147,7 @@ void GameplayScreen::update() {
 		// Set player caninteract
 
 		if(Factory::getEntityManager()->getPlayer() && !m_cutscenePause) {
-			Factory::getEntityManager()->getPlayer()->updateMouse(m_world, m_camera.convertScreenToWorld(m_game->inputManager.getMouseCoords()));
+			Factory::getEntityManager()->getPlayer()->updateMouse(m_world, Factory::getGameCamera()->convertScreenToWorld(m_game->inputManager.getMouseCoords()));
 			Factory::getEntityManager()->getPlayer()->updateInput(&m_game->inputManager, m_world);
 			/// TODO: Re-enable this -> m_world->getPlayer()->setCanInteract(!m_questManager->isDialogueActive());
 		}
@@ -161,25 +161,25 @@ void GameplayScreen::update() {
 			if(std::abs((player->getPosition().x) - m_lastPlayerPos.x) >= (WORLD_SIZE / 2)) {
 				int sign = ((player->getPosition().x + player->getSize().x / 2.0f) - m_lastPlayerPos.x) / std::abs((player->getPosition().x + player->getSize().x / 2.0f) - m_lastPlayerPos.x);
 				m_lastPlayerPos.x += (float)(WORLD_SIZE) * sign;
-				m_camera.setPosition(m_camera.getPosition() + glm::vec2((float)(WORLD_SIZE) * sign, 0.0f));
+				Factory::getGameCamera()->setPosition(Factory::getGameCamera()->getPosition() + glm::vec2((float)(WORLD_SIZE) * sign, 0.0f));
 			}
 			m_lastPlayerPos = (m_lastPlayerPos + ((player->getPosition() + player->getSize() / glm::vec2(2.0f)) - m_lastPlayerPos) / glm::vec2(4.0f));
-			m_camera.setPosition(m_lastPlayerPos); // If lastplayerpos is never updated, the camera is still 'locked' per say, but we can actually change the lastPlayerPos on purpose to get a smooth movement somewhere.
+			Factory::getGameCamera()->setPosition(m_lastPlayerPos); // If lastplayerpos is never updated, the camera is still 'locked' per say, but we can actually change the lastPlayerPos on purpose to get a smooth movement somewhere.
 		} else {
 			m_lastPlayerPos = (m_lastPlayerPos + (m_smoothMoveTarget - m_lastPlayerPos) * m_smoothMoveSpeed);
-			m_camera.setPosition(m_lastPlayerPos);
+			Factory::getGameCamera()->setPosition(m_lastPlayerPos);
 		}
 
-		if((int)m_camera.getPosition().x > WORLD_SIZE) {
-			m_camera.setPosition(m_camera.getPosition() - glm::vec2((float)(WORLD_SIZE), 0.0f));
-		} else if((int)m_camera.getPosition().x < 0) {
-			m_camera.setPosition(m_camera.getPosition() + glm::vec2((float)(WORLD_SIZE), 0.0f));
+		if((int)Factory::getGameCamera()->getPosition().x > WORLD_SIZE) {
+			Factory::getGameCamera()->setPosition(Factory::getGameCamera()->getPosition() - glm::vec2((float)(WORLD_SIZE), 0.0f));
+		} else if((int)Factory::getGameCamera()->getPosition().x < 0) {
+			Factory::getGameCamera()->setPosition(Factory::getGameCamera()->getPosition() + glm::vec2((float)(WORLD_SIZE), 0.0f));
 		}
 
 		if(m_scale > MIN_ZOOM && m_scale < MAX_ZOOM)
-			m_camera.setScale(m_scale);
+			Factory::getGameCamera()->setScale(m_scale);
 
-		m_camera.update();
+		Factory::getGameCamera()->update();
 		m_uiCamera.update();
 
 		m_time++; /// Change the increment if time is slowed or quicker (potion effects?)
@@ -251,7 +251,7 @@ void GameplayScreen::draw() {
 		float playerDepth = 0.1f + (Factory::getEntityManager()->getPlayer()->getLayer() * (1.0f / (float)(WORLD_DEPTH)) * 0.9f);
 		glUniform1f(playerDepthUniform, playerDepth);
 
-		m_world->setLightsUniform(getScreenBox() + glm::vec4(0.0f, 0.0f, 1.0f, 1.0f), &m_postProcessor, m_camera); // sets "lights" uniform of vec3s
+		m_world->setLightsUniform(getScreenBox() + glm::vec4(0.0f, 0.0f, 1.0f, 1.0f), &m_postProcessor); // sets "lights" uniform of vec3s
 
 		m_mainFBO.draw();
 		m_postProcessor.unuse();
@@ -342,7 +342,7 @@ void GameplayScreen::drawWorldToFBO() {
 		m_textureProgram.use();
 
 		// Camera matrix
-		glm::mat4 projectionMatrix = m_camera.getCameraMatrix();
+		glm::mat4 projectionMatrix = Factory::getGameCamera()->getCameraMatrix();
 		GLint pUniform = m_textureProgram.getUniformLocation("P");
 		glUniformMatrix4fv(pUniform, 1, GL_FALSE, &projectionMatrix[0][0]);
 
@@ -369,7 +369,7 @@ void GameplayScreen::drawWorldNormalToFBO() {
 	m_textureProgram.use();
 
 	// Camera matrix
-	glm::mat4 projectionMatrix = m_camera.getCameraMatrix();
+	glm::mat4 projectionMatrix = Factory::getGameCamera()->getCameraMatrix();
 	GLint pUniform = m_textureProgram.getUniformLocation("P");
 	glUniformMatrix4fv(pUniform, 1, GL_FALSE, &projectionMatrix[0][0]);
 
@@ -394,7 +394,7 @@ void GameplayScreen::drawWorldSunlightToFBO() {
 	m_spriteBatch.begin();
 
 	// Camera matrix
-	glm::mat4 projectionMatrix = m_camera.getCameraMatrix();
+	glm::mat4 projectionMatrix = Factory::getGameCamera()->getCameraMatrix();
 	GLint pUniform = m_sunlightProgram.getUniformLocation("P");
 	glUniformMatrix4fv(pUniform, 1, GL_FALSE, &projectionMatrix[0][0]);
 
@@ -413,7 +413,7 @@ void GameplayScreen::drawParticlesToFBO() {
 		m_textureProgram.use();
 
 		// Camera matrix
-		glm::mat4 projectionMatrix = m_camera.getCameraMatrix();
+		glm::mat4 projectionMatrix = Factory::getGameCamera()->getCameraMatrix();
 		GLint pUniform = m_textureProgram.getUniformLocation("P");
 		glUniformMatrix4fv(pUniform, 1, GL_FALSE, &projectionMatrix[0][0]);
 		GLint textureUniform = m_textureProgram.getUniformLocation("textureSampler");
@@ -443,8 +443,6 @@ void GameplayScreen::drawGUIToScreen() {
 	GLint pUniform = m_uiTextureProgram.getUniformLocation("P");
 	glUniformMatrix4fv(pUniform, 1, GL_FALSE, &projectionMatrix[0][0]);
 
-	Factory::getEntityManager()->getPlayer()->drawGUI(m_spriteBatch, m_spriteFont, m_camera);
-
 	Factory::getGUI()->draw();
 
 	m_dr.end();
@@ -455,6 +453,21 @@ void GameplayScreen::drawGUIToScreen() {
 		drawDebug();
 	}
 #endif // DEV_CONTROLS
+
+	m_uiTextureProgram.unuse();
+
+	m_uiTextureProgram.use();
+
+	textureUniform = m_uiTextureProgram.getUniformLocation("textureSampler");
+	glUniform1i(textureUniform, 0);
+	glActiveTexture(GL_TEXTURE0);
+
+	// Camera matrix
+	projectionMatrix = m_uiCamera.getCameraMatrix();
+	pUniform = m_uiTextureProgram.getUniformLocation("P");
+	glUniformMatrix4fv(pUniform, 1, GL_FALSE, &projectionMatrix[0][0]);
+
+	Factory::getEntityManager()->getPlayer()->drawGUI(m_spriteBatch, m_spriteFont);
 
 	m_uiTextureProgram.unuse();
 }
@@ -738,8 +751,8 @@ glm::vec4 GameplayScreen::getScreenBox() {
 	glm::vec2 topLeft(0.0f, 0.0f);
 	glm::vec2 bottomRight(m_window->getScreenWidth(), m_window->getScreenHeight());
 
-	glm::vec2 gameplayCoordsTL = m_camera.convertScreenToWorld(topLeft);
-	glm::vec2 gameplayCoordsBR = m_camera.convertScreenToWorld(bottomRight);
+	glm::vec2 gameplayCoordsTL = Factory::getGameCamera()->convertScreenToWorld(topLeft);
+	glm::vec2 gameplayCoordsBR = Factory::getGameCamera()->convertScreenToWorld(bottomRight);
 
 	return glm::vec4(gameplayCoordsTL.x, gameplayCoordsBR.y, gameplayCoordsBR.x - gameplayCoordsTL.x, gameplayCoordsTL.y - gameplayCoordsBR.y) + glm::vec4(-1.5f, -1.5f, 1.0f, 1.0f);
 }

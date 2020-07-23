@@ -19,7 +19,7 @@ class EntityPlayer : public EntityNPC {
 		void initGUI(); /// TODO: Move GUI to GameplayScreen
 
 		virtual void onDraw(GLEngine::SpriteBatch& sb, float time, int layerDifference, float xOffset) override;
-		void drawGUI(GLEngine::SpriteBatch& sb, GLEngine::SpriteFont& sf, GLEngine::Camera2D& gameCamera);
+		void drawGUI(GLEngine::SpriteBatch& sb, GLEngine::SpriteFont& sf);
 
 		void updateStats(World* world, float timeStep);
 		void updateMouse(World* world, glm::vec2 mouseCoords);

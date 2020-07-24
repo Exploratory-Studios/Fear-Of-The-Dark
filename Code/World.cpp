@@ -330,6 +330,23 @@ void World::drawTilesNormal(GLEngine::SpriteBatch& sb, glm::vec4 destRect, GLEng
 	}
 }
 
+void World::drawTilesGUI(GLEngine::SpriteBatch& sb, GLEngine::SpriteFont& sf, glm::vec4 destRect) {
+	for(int x = destRect.x; x < destRect.z + destRect.x; x++) {
+		int columnIndex = (int)((x) + (WORLD_SIZE)) % WORLD_SIZE;
+		int offset = (x) - columnIndex;
+
+		for(int y = destRect.y; y < destRect.w + destRect.y; y++) {
+			for(unsigned int layer = 0; layer < WORLD_DEPTH; layer++) {
+				if(y >= 0) {
+					if(y < WORLD_HEIGHT) {
+						m_tiles[y][columnIndex][layer]->drawGUI(sb, sf, offset);
+					}
+				}
+			}
+		}
+	}
+}
+
 void World::updateTiles(glm::vec4 destRect) {
 	/**
 	    Simply updates an area of tiles at position destRect.xy, with width and height of destRect.z and destRect.w respectively.

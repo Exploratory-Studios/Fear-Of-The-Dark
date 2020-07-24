@@ -134,9 +134,9 @@ namespace CEGUI {
 
 		addItemAtLocation(*item, drop_x, drop_y);
 
-		//DragDropEventArgs args(this);
-		//args.dragDropItem = e.dragDropItem;
-		//EventSet::fireEvent(Window::EventDragDropItemDropped, args, EventNamespace);
+		DragDropEventArgs args(this);
+		args.dragDropItem = e.dragDropItem;
+		EventSet::fireEvent(Window::EventDragDropItemDropped, args, EventNamespace);
 	}
 
 	void GUI_InventoryReceiver::populateGeometryBuffer() {

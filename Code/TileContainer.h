@@ -9,7 +9,7 @@ class TileContainer : public Tile {
 		TileContainer(glm::vec2 pos, unsigned int layer, unsigned int id, SaveDataTypes::MetaData data, bool loadTex);
 		~TileContainer();
 
-		virtual void onDraw(GLEngine::SpriteBatch& sb, GLEngine::SpriteFont& sf, glm::vec4& pos, float& depth) override;
+		virtual void drawGUI(GLEngine::SpriteBatch& sb, GLEngine::SpriteFont& sf, int& xOffset) override;
 
 	protected:
 		TileInventory* m_inventory = nullptr;

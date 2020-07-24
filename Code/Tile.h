@@ -198,8 +198,9 @@ class Tile {
 		void update(World* world, float time, bool updateLighting, const float& sunlight);
 		void specialUpdate(World* world, float time); // This is only called when the tile/surrounding tiles are changed. Calls updateScript
 		void tick(World* world, float tickTime, const float& sunlight);
-		void draw(GLEngine::SpriteBatch& sb, GLEngine::SpriteFont& sf, int xOffset, int depthDifference);
-		void drawNormal(GLEngine::SpriteBatch& sb, int xOffset, int depthDifference);
+		void draw(GLEngine::SpriteBatch& sb, GLEngine::SpriteFont& sf, int& xOffset, int& depthDifference);
+		void drawNormal(GLEngine::SpriteBatch& sb, int& xOffset, int& depthDifference);
+		virtual void drawGUI(GLEngine::SpriteBatch& sb, GLEngine::SpriteFont& sf, int& xOffset) {}
 
 		void destroy(World* world);
 

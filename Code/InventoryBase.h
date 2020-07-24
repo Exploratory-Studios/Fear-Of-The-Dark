@@ -66,8 +66,8 @@ class InventoryBase {
 		bool onMouseMove(const CEGUI::EventArgs& e);
 		bool onMouseUp(const CEGUI::EventArgs& e);
 		bool onMouseLeave(const CEGUI::EventArgs& e);
-		bool onDragEnded(const CEGUI::EventArgs& e);
-		bool onDragDropItemDropped(const CEGUI::EventArgs& e);
+		bool onDragDropItemRemoved(const CEGUI::EventArgs& e);
+		bool onDragDropItemAdded(const CEGUI::EventArgs& e);
 
 	protected:
 		float m_weight = 0.0f; // The average person can carry about 40-45lbs of weight and still walk normally

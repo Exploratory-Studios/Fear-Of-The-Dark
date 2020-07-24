@@ -20,6 +20,6 @@ void TileContainer::init() {
 	m_inventory->setToDraw(true);
 }
 
-void TileContainer::onDraw(GLEngine::SpriteBatch& sb, GLEngine::SpriteFont& sf, glm::vec4& pos, float& depth) {
-	m_inventory->draw(sb, sf, pos.x, m_pos.y); // Pos is adjusted so that it works cross-world (chunk 0 <-> chunk [world_size-1])
+void TileContainer::drawGUI(GLEngine::SpriteBatch& sb, GLEngine::SpriteFont& sf, int& xOffset) {
+	m_inventory->draw(sb, sf, m_pos.x + xOffset, m_pos.y); // Pos is adjusted so that it works cross-world (chunk 0 <-> chunk [world_size-1])
 }

@@ -94,6 +94,9 @@ void GameplayScreen::onEntry() {
 		Factory::getEntityManager()->getPlayer()->initGUI();
 	}
 
+	ScriptingModule::Script scr("setBlock(7, 16, 101, 0, \"\")", false);
+	ScriptingModule::ScriptQueue::activateScript(ScriptingModule::ScriptQueue::addScript(scr));
+
 	m_console->init(m_scripter, m_world, m_questManager, this);
 
 	m_dialogueManager = new DialogueModule::DialogueManager(m_questManager);
@@ -468,6 +471,7 @@ void GameplayScreen::drawGUIToScreen() {
 	glUniformMatrix4fv(pUniform, 1, GL_FALSE, &projectionMatrix[0][0]);
 
 	Factory::getEntityManager()->getPlayer()->drawGUI(m_spriteBatch, m_spriteFont);
+	m_world->drawTilesGUI(m_spriteBatch, m_spriteFont, getScreenBox() + glm::vec4(0.0f, 0.0f, 1.0f, 1.0f));
 
 	m_uiTextureProgram.unuse();
 }

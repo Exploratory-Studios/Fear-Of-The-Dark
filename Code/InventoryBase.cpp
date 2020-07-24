@@ -28,7 +28,8 @@ InventoryBase::InventoryBase(std::string& name) {
 	m_grid->setContentSize(INVENTORY_WIDTH, 5);
 	m_grid->setUserString("BlockImage", "FOTDSkin/InventoryBox");
 	m_grid->setMouseInputPropagationEnabled(true);
-	m_grid->subscribeEvent(CEGUI::Window::EventDragDropItemDropped, CEGUI::Event::Subscriber(&InventoryBase::onDragDropItemDropped, this));
+	m_grid->subscribeEvent(CEGUI::Element::EventChildAdded, CEGUI::Event::Subscriber(&InventoryBase::onDragDropItemAdded, this));
+	m_grid->subscribeEvent(CEGUI::Element::EventChildRemoved, CEGUI::Event::Subscriber(&InventoryBase::onDragDropItemRemoved, this));
 
 	m_destRect = glm::vec4(-0.4f, -0.25f, 0.4f, 0.4f);
 
@@ -61,34 +62,34 @@ bool InventoryBase::onMouseLeave(const CEGUI::EventArgs& e) {
 	return false;
 }
 
-bool InventoryBase::onDragEnded(const CEGUI::EventArgs& e) {
+bool InventoryBase::onDragDropItemRemoved(const CEGUI::EventArgs& e) {
 	// This needs to remove the item from this' m_grid and m_items (call subtractItem with the data(item*) from Args::dragDropItem)
 	// IF the item that's called this event has a drop target of !m_grid
 	const CEGUI::WindowEventArgs args = static_cast<const CEGUI::WindowEventArgs&>(e);
 
-	CEGUI::GUI_InventoryItem* gui_item = static_cast<CEGUI::GUI_InventoryItem*>(args.window);
+	CEGUI::GUI_InventoryItem* removed_item = static_cast<CEGUI::GUI_InventoryItem*>(args.window);
 
-	if(!gui_item->getCurrentDropTarget()) {
-		// throw it on the ground.
-	}
-
-	if(gui_item->getCurrentDropTarget() != m_grid) {
-		Item* item = gui_item->getData<Item>();
-		queueSubtraction(item);
-	}
+	Item* item = removed_item->getData<Item>();
+	queueSubtraction(item);
 
 	return false;
 }
 
-bool InventoryBase::onDragDropItemDropped(const CEGUI::EventArgs& e) {
+bool InventoryBase::onDragDropItemAdded(const CEGUI::EventArgs& e) {
 	// Why isn't this getting triggered?
 
-	const CEGUI::DragDropEventArgs args = static_cast<const CEGUI::DragDropEventArgs&>(e);
+	const CEGUI::WindowEventArgs args = static_cast<const CEGUI::WindowEventArgs&>(e);
 
-	CEGUI::GUI_InventoryItem* gui_item = static_cast<CEGUI::GUI_InventoryItem*>(args.dragDropItem);
-	Item* item = gui_item->getData<Item>();
+	CEGUI::GUI_InventoryItem* added_item = static_cast<CEGUI::GUI_InventoryItem*>(args.window);
 
-	addItem(item);
+	Item* item = added_item->getData<Item>();
+
+	for(unsigned int i = 0; i < m_items.size(); i++) {
+		if(m_items[i] == item) {
+			return false;
+		}
+	}
+	m_items.push_back(item); // This should ensure that m_items and m_gridItems have the same indices.
 
 	return false;
 }
@@ -109,11 +110,10 @@ bool InventoryBase::addItem(Item* newItem) {
 		for(unsigned int i = 0; i < m_items.size(); i++) {
 			if(m_items[i]->getID() == newItem->getID()) {
 				m_items[i]->addToQuantity(newItem->getQuantity());
-				//return true;
+				return true;
 			}
 		}
 
-		m_items.push_back(newItem); // This should ensure that m_items and m_gridItems have the same indices.
 		createInventoryItem(newItem);
 		return true;
 	}
@@ -273,10 +273,10 @@ void InventoryBase::createInventoryItem(Item* item) {
 	CEGUI::GUI_InventoryItem* gridItem = static_cast<CEGUI::GUI_InventoryItem*>(Factory::getGUI()->createWidget(m_frameWindow, "FOTDSkin/InventoryItem", glm::vec4(0.05f, 0.05f, 0.9f, 0.9f), glm::vec4(0.0f), std::string(m_frameWindow->getName().c_str()) + "_GRIDITEM" + std::to_string(x) + "." + std::to_string(y)));
 	gridItem->setContentSize(1, 1);
 	gridItem->setData(item);
-	gridItem->subscribeEvent(CEGUI::DragContainer::EventDragEnded, CEGUI::Event::Subscriber(&InventoryBase::onDragEnded, this));
+	//gridItem->subscribeEvent(CEGUI::DragContainer::EventDragEnded, CEGUI::Event::Subscriber(&InventoryBase::onDragEnded, this));
 	gridItem->setProperty("Image", "FOTDSkin/MouseArrow");
-	m_gridItems.push_back(gridItem);
 	m_grid->addItemAtLocation(*gridItem, x, y);
+	m_gridItems.push_back(gridItem);
 
 	if(((m_gridItems.size()-1) / INVENTORY_WIDTH) == m_grid->getContentHeight()-2) {
 		resizeInventoryWidget();

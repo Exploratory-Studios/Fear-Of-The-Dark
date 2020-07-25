@@ -22,8 +22,8 @@ class InventoryBase {
 
 		void init();
 
-		bool addItem(Item* newItem); // Returns false if the item didn't pass the test, true otherwise.
-		void subtractItem(Item* item);
+		bool addItem(Item* newItem); // Returns false if the item didn't pass the test, true otherwise. Adds a gridItem.
+		void subtractItem(Item* item); // removes from both m_items and m_gridItems
 		void queueSubtraction(Item* item);
 
 		virtual void copyFrom(InventoryBase* other) {
@@ -93,4 +93,5 @@ class InventoryBase {
 		void resizeInventoryWidget(); // Resizes the inventory (m_grid) to have the height (necessaryHeight + 1).
 
 		std::vector<Item*> m_itemsToRemove;
+		std::vector<Item*> m_itemsToAdd;
 };

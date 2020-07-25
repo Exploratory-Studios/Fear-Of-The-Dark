@@ -5,6 +5,8 @@
 
 namespace CEGUI {
 
+	class GUI_InventoryReceiver;
+
 	class GUI_InventoryItem : public DragContainer, public GUI_InventoryBase {
 		public:
 			static const String WidgetTypeName;

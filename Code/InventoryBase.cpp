@@ -69,29 +69,28 @@ bool InventoryBase::onDragDropItemRemoved(const CEGUI::EventArgs& e) {
 
 	CEGUI::GUI_InventoryItem* removed_item = static_cast<CEGUI::GUI_InventoryItem*>(args.window);
 
+	if(removed_item->currentDropTargetIsValid()) return false; // This means that it stays in the same receiver
+
 	Item* item = removed_item->getData<Item>();
 	queueSubtraction(item);
 
-	return false;
+	return true;
 }
 
 bool InventoryBase::onDragDropItemAdded(const CEGUI::EventArgs& e) {
-	// Why isn't this getting triggered?
+	if((m_gridItems.size() / INVENTORY_WIDTH) == m_grid->getContentHeight()-2) {
+		resizeInventoryWidget();
+	}
 
 	const CEGUI::WindowEventArgs args = static_cast<const CEGUI::WindowEventArgs&>(e);
-
 	CEGUI::GUI_InventoryItem* added_item = static_cast<CEGUI::GUI_InventoryItem*>(args.window);
 
 	Item* item = added_item->getData<Item>();
 
-	for(unsigned int i = 0; i < m_items.size(); i++) {
-		if(m_items[i] == item) {
-			return false;
-		}
-	}
 	m_items.push_back(item); // This should ensure that m_items and m_gridItems have the same indices.
+	m_gridItems.push_back(added_item);
 
-	return false;
+	return true;
 }
 
 InventoryBase::~InventoryBase() {
@@ -121,6 +120,12 @@ bool InventoryBase::addItem(Item* newItem) {
 }
 
 void InventoryBase::queueSubtraction(Item* item) {
+	for(unsigned int i = 0; i < m_itemsToRemove.size(); i++) {
+		if(m_itemsToRemove[i] == item) {
+			return; // avoid doubles. CEGUI has a bug (I believe), that triggers two remove events and one add event when an item is moved from one reciever to the same reciever.
+		}
+	}
+
 	m_itemsToRemove.push_back(item);
 }
 
@@ -128,7 +133,10 @@ void InventoryBase::subtractItem(Item* item) {
 	unsigned int index = (unsigned int)-1;
 
 	for(unsigned int i = 0; i < m_items.size(); i++) {
-		if(item == m_items[i]) index = i;
+		if(item == m_items[i]) {
+			index = i;
+			break;
+		}
 	}
 
 	if(index != (unsigned int)-1) {
@@ -138,7 +146,7 @@ void InventoryBase::subtractItem(Item* item) {
 			m_gridItems[j] = m_gridItems[j+1];
 		}
 		m_items.pop_back();
-		m_gridItems.pop_back();
+		m_gridItems.pop_back(); // ensure we affect both the m_items and m_gridItems
 	}
 }
 
@@ -153,13 +161,11 @@ void InventoryBase::update() {
 	for(unsigned int i = 0; i < m_itemsToRemove.size(); i++) {
 		subtractItem(m_itemsToRemove[i]);
 	}
+	m_itemsToRemove.clear();
 
 	for(unsigned int i = 0; i < m_items.size(); i++) {
 		if(m_items[i]->getQuantity() <= 0) {
-			for(unsigned int j = i + 1; j < m_items.size(); j++) {
-				m_items[i] = m_items[j];
-			}
-			m_items.pop_back();
+			subtractItem(m_items[i]);
 		}
 	}
 }
@@ -270,17 +276,11 @@ void InventoryBase::createInventoryItem(Item* item) {
 	x = m_gridItems.size() % INVENTORY_WIDTH;
 	y = m_gridItems.size() / INVENTORY_WIDTH;
 
-	CEGUI::GUI_InventoryItem* gridItem = static_cast<CEGUI::GUI_InventoryItem*>(Factory::getGUI()->createWidget(m_frameWindow, "FOTDSkin/InventoryItem", glm::vec4(0.05f, 0.05f, 0.9f, 0.9f), glm::vec4(0.0f), std::string(m_frameWindow->getName().c_str()) + "_GRIDITEM" + std::to_string(x) + "." + std::to_string(y)));
+	CEGUI::GUI_InventoryItem* gridItem = static_cast<CEGUI::GUI_InventoryItem*>(Factory::getGUI()->createWidget("FOTDSkin/InventoryItem", glm::vec4(0.05f, 0.05f, 0.9f, 0.9f), glm::vec4(0.0f), std::string(m_frameWindow->getName().c_str()) + "_GRIDITEM" + std::to_string(x) + "." + std::to_string(y)));
 	gridItem->setContentSize(1, 1);
 	gridItem->setData(item);
-	//gridItem->subscribeEvent(CEGUI::DragContainer::EventDragEnded, CEGUI::Event::Subscriber(&InventoryBase::onDragEnded, this));
 	gridItem->setProperty("Image", "FOTDSkin/MouseArrow");
-	m_grid->addItemAtLocation(*gridItem, x, y);
-	m_gridItems.push_back(gridItem);
-
-	if(((m_gridItems.size()-1) / INVENTORY_WIDTH) == m_grid->getContentHeight()-2) {
-		resizeInventoryWidget();
-	}
+	m_grid->addItemAtLocation(*gridItem, x, y); // This triggers the event to add this to both m_gridItems & m_items
 }
 
 void InventoryBase::resizeInventoryWidget() {

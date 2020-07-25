@@ -471,8 +471,10 @@ void GameplayScreen::drawGUIToScreen() {
 	glUniformMatrix4fv(pUniform, 1, GL_FALSE, &projectionMatrix[0][0]);
 
 	Factory::getEntityManager()->getPlayer()->drawGUI(m_spriteBatch, m_spriteFont);
+	m_spriteBatch.begin();
 	m_world->drawTilesGUI(m_spriteBatch, m_spriteFont, getScreenBox() + glm::vec4(0.0f, 0.0f, 1.0f, 1.0f));
-
+	m_spriteBatch.end();
+	m_spriteBatch.renderBatch();
 	m_uiTextureProgram.unuse();
 }
 

@@ -18,7 +18,7 @@ namespace CEGUI {
 			bool isSolidAtLocation(int x, int y) const;
 
 			// Set the content based on the array. Input array must hold enough data.
-			void setItemLayout(const bool* layout); // Should we use Item*s? And fully merge the systems? Check the rendering method, really look at the sample first.
+			void setItemLayout(const int* layout); // Should we use Item*s? And fully merge the systems? Check the rendering method, really look at the sample first.
 
 			// return current X grid location on InventoryReceiver.  -1 means
 			// invalid / not set.  This is typically set and invalidated by the
@@ -44,6 +44,8 @@ namespace CEGUI {
 			// base class overrides
 			bool isHit(const Vector2f& position, const bool allow_disabled = false) const;
 			void setContentSize(int width, int height);
+			void setID(int id);
+			int getID() const;
 
 			template<class T>
 			T* getData() {
@@ -66,6 +68,7 @@ namespace CEGUI {
 			// Where it is on the reciever's map
 			int m_recieverLocationX, m_recieverLocationY;
 
+			int m_id = -1;
 			void* m_miscData = nullptr;
 
 	};

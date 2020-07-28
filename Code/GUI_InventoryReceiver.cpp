@@ -59,8 +59,12 @@ namespace CEGUI {
 			for (int x = 0; x < item.getContentWidth(); ++x) {
 				const int map_x = item.locationOnReceiverX() + x;
 
-				bool val = m_content.getElementAtLocation(map_x, map_y) |
-				           item.isSolidAtLocation(x, y);
+				int val;
+				if(item.isSolidAtLocation(x, y)) {
+					val = item.getID();
+				} else {
+					val = m_content.getElementAtLocation(map_x, map_y);
+				}
 				m_content.setElementAtLocation(map_x, map_y, val);
 			}
 		}
@@ -78,8 +82,13 @@ namespace CEGUI {
 			for (int x = 0; x < item.getContentWidth(); ++x) {
 				const int map_x = item.locationOnReceiverX() + x;
 
-				bool val = m_content.getElementAtLocation(map_x, map_y) &
-				           !item.isSolidAtLocation(x, y);
+				int val;
+				if(item.isSolidAtLocation(x, y)) {
+					val = -1;
+				} else {
+					val = m_content.getElementAtLocation(map_x, map_y);
+				}
+
 				m_content.setElementAtLocation(map_x, map_y, val);
 			}
 		}
@@ -105,7 +114,7 @@ namespace CEGUI {
 		bool result = true;
 		for (int item_y = 0; item_y < item.getContentHeight() && result; ++item_y) {
 			for (int item_x = 0; item_x < item.getContentWidth() && result; ++item_x) {
-				if (m_content.getElementAtLocation(item_x + x, item_y + y) &&
+				if (m_content.getElementAtLocation(item_x + x, item_y + y) != item.getID() && m_content.getElementAtLocation(item_x + x, item_y + y) != -1 &&
 				        item.isSolidAtLocation(item_x, item_y))
 					result = false;
 			}

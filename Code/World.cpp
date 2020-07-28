@@ -388,10 +388,14 @@ void World::tickTiles(glm::vec4 destRect) {
 			for(unsigned int layer = 0; layer < WORLD_DEPTH; layer++) {
 				if(y >= 0 && y < WORLD_HEIGHT) {
 					(m_tiles[y][(x + WORLD_SIZE) % WORLD_SIZE][layer])->tick(this, m_time, sunlight);
+				} else {
+					goto escape_label; // break out of both loops.
 				}
 			}
 		}
 	}
+escape_label:
+	return;
 }
 
 void World::drawDebug(GLEngine::DebugRenderer& dr, float xOffset) {

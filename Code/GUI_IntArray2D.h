@@ -2,11 +2,11 @@
 
 namespace CEGUI {
 
-	class GUI_BoolArray2D { // Just holds if there's an item at a location
+	class GUI_IntArray2D { // Just holds if there's an item at a location
 		public:
-			GUI_BoolArray2D();
-			GUI_BoolArray2D(int width, int height);
-			~GUI_BoolArray2D();
+			GUI_IntArray2D();
+			GUI_IntArray2D(int width, int height);
+			~GUI_IntArray2D();
 
 			// Getters/setters
 			int getWidth() const {
@@ -16,18 +16,18 @@ namespace CEGUI {
 				return m_height;
 			}
 
-			bool getElementAtLocation(int x, int y) const;
-			void setElementAtLocation(int x, int y, bool value);
+			int getElementAtLocation(int x, int y) const;
+			void setElementAtLocation(int x, int y, int value);
 
 			// Sets all elements to value
-			void clear(bool value = false);
+			void clear(int value = -1);
 
 			// Sets the size, and clear()s
 			void resetSize(int width, int height);
 
 		private:
 			int m_width, m_height;
-			bool* m_content;
+			int* m_content;
 
 	};
 

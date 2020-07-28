@@ -19,14 +19,23 @@ namespace CEGUI {
 
 	void GUI_InventoryItem::setContentSize(int width, int height) {
 		GUI_InventoryBase::setContentSize(width, height);
-		m_content.clear(true);
+		m_content.clear(m_id);
+	}
+
+	void GUI_InventoryItem::setID(int id) {
+		m_id = id;
+		m_content.clear(m_id);
+	}
+
+	int GUI_InventoryItem::getID() const {
+		return m_id;
 	}
 
 	bool GUI_InventoryItem::isSolidAtLocation(int x, int y) const {
-		return m_content.getElementAtLocation(x, y);
+		return m_content.getElementAtLocation(x, y) != -1;
 	}
 
-	void GUI_InventoryItem::setItemLayout(const bool* layout) {
+	void GUI_InventoryItem::setItemLayout(const int* layout) {
 		for(int y = 0; y < m_content.getHeight(); y++) {
 			for(int x = 0; x < m_content.getWidth(); x++) {
 				m_content.setElementAtLocation(x, y, *layout++);
@@ -59,7 +68,7 @@ namespace CEGUI {
 			return false;
 		}
 
-		return m_content.getElementAtLocation(gx, gy);
+		return m_content.getElementAtLocation(gx, gy) == m_id;
 	}
 
 	bool GUI_InventoryItem::currentDropTargetIsValid() const {
@@ -84,7 +93,7 @@ namespace CEGUI {
 
 		for(int y = 0; y < m_content.getHeight(); y++) {
 			for(int x = 0; x < m_content.getWidth(); x++) {
-				if(m_content.getElementAtLocation(x, y)) {
+				if(m_content.getElementAtLocation(x, y) != -1) {
 					img->render(*d_geometry,
 					            Vector2f(x * square_size.d_width + 1, y * square_size.d_height + 1),
 					            Sizef(square_size.d_width - 2, square_size.d_height - 2),

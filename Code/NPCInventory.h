@@ -4,7 +4,7 @@
 
 class NPCInventory : public InventoryBase {
 	public:
-		NPCInventory(float maxWeight, std::string& name);
+		NPCInventory(float maxWeight, std::string& name, bool initGUI = false);
 		~NPCInventory();
 
 		virtual void copyFrom(InventoryBase* other) override {

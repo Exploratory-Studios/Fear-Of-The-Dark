@@ -5,35 +5,43 @@
 
 #include "Factory.h"
 
-InventoryBase::InventoryBase(std::string& name) {
-	m_frameWindow = static_cast<CEGUI::FrameWindow*>(Factory::getGUI()->createWidget("FOTDSkin/FrameWindow", glm::vec4(-0.2f, -0.2f, 0.35f, 0.5f), glm::vec4(0.0f), name + "_NPCInventory"));
-	m_frameWindow->setCloseButtonEnabled(false);
-	m_frameWindow->setDragMovingEnabled(true);
-	m_frameWindow->setRollupEnabled(false);
-	m_frameWindow->setSizingEnabled(false);
-	m_frameWindow->setTitleBarEnabled(false);
-	m_frameWindow->setProperty("BackgroundColours", "tl: 80FFFFFF tr: 80FFFFFF bl: 80FFFFFF br: 80FFFFFF");
-	m_frameWindow->setProperty("CaptionColour", "FF101010");
-	m_frameWindow->subscribeEvent(CEGUI::Window::EventMouseDoubleClick, CEGUI::Event::Subscriber(&InventoryBase::onDoubleClick, this));
-	m_frameWindow->subscribeEvent(CEGUI::Window::EventMouseButtonUp, CEGUI::Event::Subscriber(&InventoryBase::onMouseUp, this));
-	m_frameWindow->subscribeEvent(CEGUI::Window::EventMouseMove, CEGUI::Event::Subscriber(&InventoryBase::onMouseMove, this));
-	m_frameWindow->subscribeEvent(CEGUI::Window::EventMouseLeavesArea, CEGUI::Event::Subscriber(&InventoryBase::onMouseLeave, this));
+InventoryBase::InventoryBase(std::string& name, bool initGUI/* = true*/) {
+	if(initGUI) {
+		Factory::getGUI()->setActiveContext(1); // Set this to the 2nd context (Inventory systems)
 
-	m_pane = static_cast<CEGUI::ScrollablePane*>(Factory::getGUI()->createWidget(m_frameWindow, "FOTDSkin/ScrollablePane", glm::vec4(0.0f, 0.0f, 1.0f, 1.0f), glm::vec4(0.0f), name + "_NPCInventory_PANE"));
-	m_pane->setMouseInputPropagationEnabled(true);
+		m_frameWindow = static_cast<CEGUI::FrameWindow*>(Factory::getGUI()->createWidget("FOTDSkin/FrameWindow", glm::vec4(-0.2f, -0.2f, 0.35f, 0.5f), glm::vec4(0.0f), name + "_Inventory"));
+		m_frameWindow->setCloseButtonEnabled(false);
+		m_frameWindow->setDragMovingEnabled(true);
+		m_frameWindow->setRollupEnabled(false);
+		m_frameWindow->setSizingEnabled(false);
+		m_frameWindow->setTitleBarEnabled(false);
+		m_frameWindow->setProperty("BackgroundColours", "tl: 80FFFFFF tr: 80FFFFFF bl: 80FFFFFF br: 80FFFFFF");
+		m_frameWindow->setProperty("CaptionColour", "FF101010");
+		m_frameWindow->subscribeEvent(CEGUI::Window::EventMouseDoubleClick, CEGUI::Event::Subscriber(&InventoryBase::onDoubleClick, this));
+		m_frameWindow->subscribeEvent(CEGUI::Window::EventMouseButtonUp, CEGUI::Event::Subscriber(&InventoryBase::onMouseUp, this));
+		m_frameWindow->subscribeEvent(CEGUI::Window::EventMouseMove, CEGUI::Event::Subscriber(&InventoryBase::onMouseMove, this));
+		m_frameWindow->subscribeEvent(CEGUI::Window::EventMouseLeavesArea, CEGUI::Event::Subscriber(&InventoryBase::onMouseLeave, this));
 
-	m_gridItems.clear();
+		m_pane = static_cast<CEGUI::ScrollablePane*>(Factory::getGUI()->createWidget(m_frameWindow, "FOTDSkin/ScrollablePane", glm::vec4(0.0f, 0.0f, 1.0f, 1.0f), glm::vec4(0.0f), name + "_Inventory_PANE"));
+		m_pane->setMouseInputPropagationEnabled(true);
 
-	m_grid = static_cast<CEGUI::GUI_InventoryReceiver*>(Factory::getGUI()->createWidget(m_pane, "InventoryReceiver", glm::vec4(0.05f, 0.05f, INVENTORY_BOX_WIDTH * 5.0f, INVENTORY_BOX_HEIGHT * 5.0f), glm::vec4(0.0f), name + "_NPCInventory_GRID"));
-	m_grid->setContentSize(INVENTORY_WIDTH, 5);
-	m_grid->setUserString("BlockImage", "FOTDSkin/InventoryBox");
-	m_grid->setMouseInputPropagationEnabled(true);
-	m_grid->subscribeEvent(CEGUI::Element::EventChildAdded, CEGUI::Event::Subscriber(&InventoryBase::onDragDropItemAdded, this));
-	m_grid->subscribeEvent(CEGUI::Element::EventChildRemoved, CEGUI::Event::Subscriber(&InventoryBase::onDragDropItemRemoved, this));
+		m_gridItems.clear();
 
-	m_destRect = glm::vec4(-0.4f, -0.25f, 0.4f, 0.4f);
+		m_grid = static_cast<CEGUI::GUI_InventoryReceiver*>(Factory::getGUI()->createWidget(m_pane, "InventoryReceiver", glm::vec4(0.05f, 0.05f, INVENTORY_BOX_WIDTH * 5.0f, INVENTORY_BOX_HEIGHT * 5.0f), glm::vec4(0.0f), name + "_Inventory_GRID"));
+		m_grid->setContentSize(INVENTORY_WIDTH, 5);
+		m_grid->setUserString("BlockImage", "FOTDSkin/InventoryBox");
+		m_grid->setMouseInputPropagationEnabled(true);
+		m_grid->subscribeEvent(CEGUI::Element::EventChildAdded, CEGUI::Event::Subscriber(&InventoryBase::onDragDropItemAdded, this));
+		m_grid->subscribeEvent(CEGUI::Element::EventChildRemoved, CEGUI::Event::Subscriber(&InventoryBase::onDragDropItemRemoved, this));
 
-	setToDraw(false);
+		m_destRect = glm::vec4(-0.4f, -0.25f, 0.4f, 0.4f);
+
+		setToDraw(false);
+
+		m_initedGUI = initGUI;
+
+		Factory::getGUI()->setActiveContext(0); // Reset back to normal GUI context.
+	}
 }
 
 bool InventoryBase::onDoubleClick(const CEGUI::EventArgs& e) {
@@ -63,6 +71,8 @@ bool InventoryBase::onMouseLeave(const CEGUI::EventArgs& e) {
 }
 
 bool InventoryBase::onDragDropItemRemoved(const CEGUI::EventArgs& e) {
+	if(m_resizing) return true;
+
 	// This needs to remove the item from this' m_grid and m_items (call subtractItem with the data(item*) from Args::dragDropItem)
 	// IF the item that's called this event has a drop target of !m_grid
 	const CEGUI::WindowEventArgs args = static_cast<const CEGUI::WindowEventArgs&>(e);
@@ -78,6 +88,8 @@ bool InventoryBase::onDragDropItemRemoved(const CEGUI::EventArgs& e) {
 }
 
 bool InventoryBase::onDragDropItemAdded(const CEGUI::EventArgs& e) {
+	if(m_resizing) return true;
+
 	if((m_gridItems.size() / INVENTORY_WIDTH) == m_grid->getContentHeight()-2) {
 		resizeInventoryWidget();
 	}
@@ -99,7 +111,7 @@ InventoryBase::~InventoryBase() {
 }
 
 void InventoryBase::init() { // This must be seperate from the constructor due to the virtual, overridden function
-	initGUI(m_frameWindow);
+	if(m_initedGUI) initGUI(m_frameWindow);
 }
 
 bool InventoryBase::addItem(Item* newItem) {
@@ -113,7 +125,7 @@ bool InventoryBase::addItem(Item* newItem) {
 			}
 		}
 
-		createInventoryItem(newItem);
+		if(m_initedGUI) createInventoryItem(newItem);
 		return true;
 	}
 	return false;
@@ -140,7 +152,7 @@ void InventoryBase::subtractItem(Item* item) {
 	}
 
 	if(index != (unsigned int)-1) {
-		m_grid->removeItem(*m_gridItems[index]);
+		if(m_initedGUI) m_grid->removeItem(*m_gridItems[index]);
 		for(unsigned int j = index; j < m_items.size()-1; j++) {
 			m_items[j] = m_items[j+1];
 			m_gridItems[j] = m_gridItems[j+1];
@@ -148,6 +160,8 @@ void InventoryBase::subtractItem(Item* item) {
 		m_items.pop_back();
 		m_gridItems.pop_back(); // ensure we affect both the m_items and m_gridItems
 	}
+
+	updateWeight();
 }
 
 void InventoryBase::updateWeight() { // Only use if something needs verification or is bugged
@@ -175,91 +189,95 @@ float InventoryBase::getCurrentWeight() {
 }
 
 void InventoryBase::draw(GLEngine::SpriteBatch& sb, GLEngine::SpriteFont& sf, float x, float y) {
-	{
-		// Set m_frameWindow position and size based on camera's convert screen to world and screen dims (retrieved from cam)
+	if(m_initedGUI) {
 
-		// Convert x and y to screen coords
-		// Convert those screen coords to percentages
-		// Move the frame window
+		{
+			// Set m_frameWindow position and size based on camera's convert screen to world and screen dims (retrieved from cam)
 
-		// Convert x and y
-		glm::vec2 screenCoords = Factory::getGameCamera()->convertWorldToScreen(glm::vec2(x, y));
-		screenCoords.y = Factory::getGameCamera()->getScreenHeight() - screenCoords.y;
+			// Convert x and y to screen coords
+			// Convert those screen coords to percentages
+			// Move the frame window
 
-		// Convert screenCoords to percentages
-		glm::vec2 percentages = screenCoords / glm::vec2(Factory::getGameCamera()->getScreenWidth(), Factory::getGameCamera()->getScreenHeight());
-		percentages.x += m_destRect.x;
-		percentages.y += m_destRect.y;
+			// Convert x and y
+			glm::vec2 screenCoords = Factory::getGameCamera()->convertWorldToScreen(glm::vec2(x, y));
+			screenCoords.y = Factory::getGameCamera()->getScreenHeight() - screenCoords.y;
 
-		//glm::vec2 percentagesSize = glm::vec2(m_destRect.z, m_destRect.w) * glm::vec2(1.0f / cam.getScale(), cam.getScale());
+			// Convert screenCoords to percentages
+			glm::vec2 percentages = screenCoords / glm::vec2(Factory::getGameCamera()->getScreenWidth(), Factory::getGameCamera()->getScreenHeight());
+			percentages.x += m_destRect.x;
+			percentages.y += m_destRect.y;
 
-		// Move the frame window
-		m_frameWindow->setPosition(CEGUI::UVector2(cegui_reldim(percentages.x), cegui_reldim(percentages.y)));
-		//m_frameWindow->setSize(CEGUI::USize(cegui_reldim(percentagesSize.x), cegui_reldim(percentages.y)));
-	}
+			//glm::vec2 percentagesSize = glm::vec2(m_destRect.z, m_destRect.w) * glm::vec2(1.0f / cam.getScale(), cam.getScale());
 
-	{
-		// Now draw all items overtop of each m_gridItem (m_items and m_gridItems SHOULD have the same indices)
-		for(unsigned int i = 0; i < m_items.size(); i++) {
-			glm::vec2 screenCoords = glm::vec2(m_gridItems[i]->getGridBasePixelRect().getPosition().d_x, m_gridItems[i]->getGridBasePixelRect().getPosition().d_y);
-			glm::vec2 screenSize = glm::vec2(m_gridItems[i]->getGridBasePixelRect().getWidth(), m_gridItems[i]->getGridBasePixelRect().getHeight());
+			// Move the frame window
+			m_frameWindow->setPosition(CEGUI::UVector2(cegui_reldim(percentages.x), cegui_reldim(percentages.y)));
+			//m_frameWindow->setSize(CEGUI::USize(cegui_reldim(percentagesSize.x), cegui_reldim(percentages.y)));
+		}
 
-			float bottomY = m_pane->getViewableArea().top() + m_frameWindow->getInnerRectClipper().top();
-			float topY = m_pane->getViewableArea().bottom() + m_frameWindow->getInnerRectClipper().top();
+		{
+			// Now draw all items overtop of each m_gridItem (m_items and m_gridItems SHOULD have the same indices)
+			for(unsigned int i = 0; i < m_items.size(); i++) {
+				glm::vec2 screenCoords = glm::vec2(m_gridItems[i]->getGridBasePixelRect().getPosition().d_x, m_gridItems[i]->getGridBasePixelRect().getPosition().d_y);
+				glm::vec2 screenSize = glm::vec2(m_gridItems[i]->getGridBasePixelRect().getWidth(), m_gridItems[i]->getGridBasePixelRect().getHeight());
 
-			glm::vec4 destRect(screenCoords.x, Factory::getGameCamera()->getScreenHeight() - screenCoords.y - screenSize.y, screenSize.x, screenSize.y);
+				float bottomY = m_pane->getViewableArea().top() + m_frameWindow->getInnerRectClipper().top();
+				float topY = m_pane->getViewableArea().bottom() + m_frameWindow->getInnerRectClipper().top();
 
-			std::string quantityStr = std::to_string(m_items[i]->getQuantity());
+				glm::vec4 destRect(screenCoords.x, Factory::getGameCamera()->getScreenHeight() - screenCoords.y - screenSize.y, screenSize.x, screenSize.y);
 
-			if((screenCoords.y >= bottomY && screenCoords.y + screenSize.y < topY) || m_gridItems[i]->isBeingDragged()) {
-				glm::vec4 uvRect(0.0f, 0.0f, 1.0f, 1.0f);
+				std::string quantityStr = std::to_string(m_items[i]->getQuantity());
 
-				GLuint textureID = m_items[i]->getTextureId();
-
-				float depth = 0.0f;
-
-				GLEngine::ColourRGBA8 colour(255, 255, 255, 255);
-
-				sb.draw(destRect, uvRect, textureID, depth, colour);
-				sf.draw(sb, quantityStr.c_str(), destRect * glm::vec4(1.0f, 1.0f, 0.5f, 0.5f) + glm::vec4(screenSize.x * 0.9f, 0.0f, 0.0f, 0.0f), glm::vec2(0.4f), depth, colour, GLEngine::Justification::RIGHT, uvRect);
-			} else if(screenCoords.y < bottomY) {
-				// Cut off the top (set the "position" bit of the UV as well as the "size" bit to match)
-				float amntCutoff = bottomY - screenCoords.y;
-				float portionOfTexture = amntCutoff / screenSize.y;
-				float portionOfText = amntCutoff + 6 < screenSize.y * 0.4f ? 0.0f : ((amntCutoff + 6) - screenSize.y * 0.4f) / (screenSize.y * 0.6f);
-
-				if(portionOfTexture < 1.0f) {
-					glm::vec4 uvRect(0.0f, 0.0f, 1.0f, 1.0f - portionOfTexture);
+				if((screenCoords.y >= bottomY && screenCoords.y + screenSize.y < topY) || m_gridItems[i]->isBeingDragged()) {
+					glm::vec4 uvRect(0.0f, 0.0f, 1.0f, 1.0f);
 
 					GLuint textureID = m_items[i]->getTextureId();
 
 					float depth = 0.0f;
 
-					GLEngine::ColourRGBA8 colour(255, 255, 255, 255 * (1.0f - portionOfTexture));
+					GLEngine::ColourRGBA8 colour(255, 255, 255, 255);
 
-					sb.draw(destRect + glm::vec4(0.0f, 0.0f, 0.0f, -amntCutoff), uvRect, textureID, depth, colour);
-					sf.draw(sb, quantityStr.c_str(), destRect * glm::vec4(1.0f, 1.0f, 0.5f, 0.5f) + glm::vec4(screenSize.x * 0.9f, 0.0f, 0.0f, 0.0f), glm::vec2(0.4f, 0.4f * (1.0f - portionOfText)), depth, colour, GLEngine::Justification::RIGHT, glm::vec4(0.0f, 0.0f, 1.0f, 1.0f - portionOfText));
-				}
-			} else if(screenCoords.y + screenSize.y >= topY) {
-				// Cut off the bottom (set only the "size" bit in the UV)
-				float amntCutoff = (screenCoords.y + screenSize.y) - topY;
-				float portionOfTexture = amntCutoff / screenSize.y;
-				float portionOfText = (amntCutoff) / (screenSize.y * 0.6f);
+					sb.draw(destRect, uvRect, textureID, depth, colour);
+					sf.draw(sb, quantityStr.c_str(), destRect * glm::vec4(1.0f, 1.0f, 0.5f, 0.5f) + glm::vec4(screenSize.x * 0.9f, 0.0f, 0.0f, 0.0f), glm::vec2(0.4f), depth, colour, GLEngine::Justification::RIGHT, uvRect);
+				} else if(screenCoords.y < bottomY) {
+					// Cut off the top (set the "position" bit of the UV as well as the "size" bit to match)
+					float amntCutoff = bottomY - screenCoords.y;
+					float portionOfTexture = amntCutoff / screenSize.y;
+					float portionOfText = amntCutoff + 6 < screenSize.y * 0.4f ? 0.0f : ((amntCutoff + 6) - screenSize.y * 0.4f) / (screenSize.y * 0.6f);
 
-				if(portionOfTexture < 1.0f) {
-					glm::vec4 uvRect(0.0f, portionOfTexture, 1.0f, 1.0f - portionOfTexture);
+					if(portionOfTexture < 1.0f) {
+						glm::vec4 uvRect(0.0f, 0.0f, 1.0f, 1.0f - portionOfTexture);
 
-					GLuint textureID = m_items[i]->getTextureId();
+						GLuint textureID = m_items[i]->getTextureId();
 
-					float depth = 0.0f;
+						float depth = 0.0f;
 
-					GLEngine::ColourRGBA8 colour(255, 255, 255, (int)(255.0f * (1.0f - portionOfTexture)));
+						GLEngine::ColourRGBA8 colour(255, 255, 255, 255 * (1.0f - portionOfTexture));
 
-					sb.draw(destRect + glm::vec4(0.0f, amntCutoff, 0.0f, -amntCutoff), uvRect, textureID, depth, colour);
-					sf.draw(sb, quantityStr.c_str(), destRect * glm::vec4(1.0f, 1.0f, 0.5f, 0.5f) + glm::vec4(screenSize.x * 0.9f, amntCutoff, 0.0f, -amntCutoff), glm::vec2(0.4f, 0.4f * (1.0f - portionOfText)), depth, colour, GLEngine::Justification::RIGHT, glm::vec4(0.0f, portionOfText, 1.0f, 1.0f - portionOfText));
+						sb.draw(destRect + glm::vec4(0.0f, 0.0f, 0.0f, -amntCutoff), uvRect, textureID, depth, colour);
+						sf.draw(sb, quantityStr.c_str(), destRect * glm::vec4(1.0f, 1.0f, 0.5f, 0.5f) + glm::vec4(screenSize.x * 0.9f, 0.0f, 0.0f, 0.0f), glm::vec2(0.4f, 0.4f * (1.0f - portionOfText)), depth, colour, GLEngine::Justification::RIGHT, glm::vec4(0.0f, 0.0f, 1.0f, 1.0f - portionOfText));
+					}
+				} else if(screenCoords.y + screenSize.y >= topY) {
+					// Cut off the bottom (set only the "size" bit in the UV)
+					float amntCutoff = (screenCoords.y + screenSize.y) - topY;
+					float portionOfTexture = amntCutoff / screenSize.y;
+					float portionOfText = (amntCutoff) / (screenSize.y * 0.6f);
+
+					if(portionOfTexture < 1.0f) {
+						glm::vec4 uvRect(0.0f, portionOfTexture, 1.0f, 1.0f - portionOfTexture);
+
+						GLuint textureID = m_items[i]->getTextureId();
+
+						float depth = 0.0f;
+
+						GLEngine::ColourRGBA8 colour(255, 255, 255, (int)(255.0f * (1.0f - portionOfTexture)));
+
+						sb.draw(destRect + glm::vec4(0.0f, amntCutoff, 0.0f, -amntCutoff), uvRect, textureID, depth, colour);
+						sf.draw(sb, quantityStr.c_str(), destRect * glm::vec4(1.0f, 1.0f, 0.5f, 0.5f) + glm::vec4(screenSize.x * 0.9f, amntCutoff, 0.0f, -amntCutoff), glm::vec2(0.4f, 0.4f * (1.0f - portionOfText)), depth, colour, GLEngine::Justification::RIGHT, glm::vec4(0.0f, portionOfText, 1.0f, 1.0f - portionOfText));
+					}
 				}
 			}
 		}
+
 	}
 }
 
@@ -276,10 +294,19 @@ void InventoryBase::createInventoryItem(Item* item) {
 	x = m_gridItems.size() % INVENTORY_WIDTH;
 	y = m_gridItems.size() / INVENTORY_WIDTH;
 
-	CEGUI::GUI_InventoryItem* gridItem = static_cast<CEGUI::GUI_InventoryItem*>(Factory::getGUI()->createWidget("FOTDSkin/InventoryItem", glm::vec4(0.05f, 0.05f, 0.9f, 0.9f), glm::vec4(0.0f), std::string(m_frameWindow->getName().c_str()) + "_GRIDITEM" + std::to_string(x) + "." + std::to_string(y)));
+	// Create the item with no name, so we can set it after.
+	Factory::getGUI()->setActiveContext(1); // Set GUI to inventory context.
+	CEGUI::GUI_InventoryItem* gridItem = static_cast<CEGUI::GUI_InventoryItem*>(Factory::getGUI()->createWidget("FOTDSkin/InventoryItem", glm::vec4(0.05f, 0.05f, 0.9f, 0.9f), glm::vec4(0.0f), ""));
+	Factory::getGUI()->setActiveContext(0); // Reset context to global
+
+	std::ostringstream addressStr;
+	addressStr << (void const*)gridItem; // converts 'this' to a string. This ensures all item windows have a unique ID
+	std::string name = addressStr.str();
+	gridItem->setName(gridItem->getName() + "_" + name);
+
 	gridItem->setContentSize(1, 1);
 	gridItem->setData(item);
-	gridItem->setProperty("Image", "FOTDSkin/MouseArrow");
+	gridItem->setID(item->getID());
 	m_grid->addItemAtLocation(*gridItem, x, y); // This triggers the event to add this to both m_gridItems & m_items
 }
 
@@ -287,6 +314,8 @@ void InventoryBase::resizeInventoryWidget() {
 	int w, h;
 	w = INVENTORY_WIDTH;
 	h = (m_gridItems.size()-1) / INVENTORY_WIDTH + 3;
+
+	m_resizing = true; // disables all events implemented by this class (onItemAdded, etc.)
 
 	m_grid->setContentSize(w, h);
 	m_grid->setSize(CEGUI::USize(cegui_reldim(INVENTORY_BOX_WIDTH * w), cegui_reldim(INVENTORY_BOX_HEIGHT * (h))));
@@ -296,5 +325,7 @@ void InventoryBase::resizeInventoryWidget() {
 			m_grid->addItemAtLocation(*m_gridItems[(y*INVENTORY_WIDTH + x)], x, y);
 		}
 	}
+
+	m_resizing = false; // re-enables all events
 
 }

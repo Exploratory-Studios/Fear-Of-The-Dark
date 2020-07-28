@@ -9,7 +9,8 @@
 #include "Factory.h"
 
 EntityPlayer::EntityPlayer(glm::vec2 pos, unsigned int layer, SaveDataTypes::MetaData data, bool loadTex) : EntityNPC(pos, layer, 0, data, loadTex) {
-
+	m_inventory = std::make_shared<NPCInventory>(15.0f, m_UUID, true); // This makes sure that the player has an inventory with GUI
+	m_inventory->init();
 }
 
 

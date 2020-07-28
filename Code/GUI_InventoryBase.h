@@ -2,7 +2,7 @@
 
 #include <CEGUI/Rect.h>
 
-#include "GUI_BoolArray2D.h"
+#include "GUI_IntArray2D.h"
 
 namespace CEGUI {
 
@@ -23,7 +23,7 @@ namespace CEGUI {
 		protected:
 			virtual Rectf gridBasePixelRect() const = 0; // Return the screen rect where the content is rendered.
 
-			GUI_BoolArray2D m_content; // Holds data.
+			GUI_IntArray2D m_content; // Holds data. (IDs of items)
 	};
 
 }

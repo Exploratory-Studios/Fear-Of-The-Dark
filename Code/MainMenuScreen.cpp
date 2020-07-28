@@ -150,7 +150,7 @@ void MainMenuScreen::draw() {
 
 void MainMenuScreen::initUI() {
 	{
-		m_gui.init(ASSETS_FOLDER_PATH + "GUI");
+		m_gui.init(ASSETS_FOLDER_PATH + "GUI", 1);
 		m_gui.loadScheme("FOTDSkin.scheme");
 
 		m_gui.setFont("QuietHorror-42");

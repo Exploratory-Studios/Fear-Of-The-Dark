@@ -42,6 +42,7 @@
 	<FalagardMapping windowType="FOTDSkin/HungerBar" targetType="CEGUI/ProgressBar" renderer="Core/ProgressBar" lookNFeel="FOTDSkin/HungerBar" />
 	<FalagardMapping windowType="FOTDSkin/ExhaustionBar" targetType="CEGUI/ProgressBar" renderer="Core/ProgressBar" lookNFeel="FOTDSkin/ExhaustionBar" />
 	<FalagardMapping windowType="FOTDSkin/StaminaBar" targetType="CEGUI/ProgressBar" renderer="Core/ProgressBar" lookNFeel="FOTDSkin/StaminaBar" />
+	<FalagardMapping windowType="FOTDSkin/Tooltip" targetType="CEGUI/Tooltip" renderer="Core/Tooltip" lookNFeel="FOTDSkin/Tooltip" />
 
     <FalagardMapping windowType="FOTDSkin/InventoryItem" targetType="InventoryItem" renderer="InventoryItemRenderer" lookNFeel="FOTDSkin/InventoryItem" />
     <FalagardMapping windowType="FOTDSkin/InventoryReceiver" targetType="InventoryReceiver" renderer="Core/Default" lookNFeel="FOTDSkin/InventoryReceiver" />

@@ -17,7 +17,7 @@
 
 class InventoryBase {
 	public:
-		InventoryBase(std::string& name);
+		InventoryBase(std::string& name, bool initGUI = true);
 		virtual ~InventoryBase();
 
 		void init();
@@ -70,7 +70,7 @@ class InventoryBase {
 		bool onDragDropItemAdded(const CEGUI::EventArgs& e);
 
 	protected:
-		float m_weight = 0.0f; // The average person can carry about 40-45lbs of weight and still walk normally
+		float m_weight = 0.0f; // The average person can carry about 20kg of weight and still walk normally
 		virtual void initGUI(CEGUI::FrameWindow* frame) {};
 		std::vector<Item*> m_items{};
 
@@ -88,6 +88,8 @@ class InventoryBase {
 		std::vector<CEGUI::GUI_InventoryItem*> m_gridItems;
 
 		bool m_grabbingGUI = false;
+		bool m_resizing = false;
+		bool m_initedGUI = false;
 
 		void createInventoryItem(Item* item); // Creates and adds a GUI_InventoryItem to the reciever.
 		void resizeInventoryWidget(); // Resizes the inventory (m_grid) to have the height (necessaryHeight + 1).

@@ -1,6 +1,6 @@
 #include "NPCInventory.h"
 
-NPCInventory::NPCInventory(float maxWeight, std::string& name) : InventoryBase(name), m_absMaxWeight(maxWeight) {
+NPCInventory::NPCInventory(float maxWeight, std::string& name, bool initGUI/* = false*/) : InventoryBase(name, initGUI), m_absMaxWeight(maxWeight) {
 
 }
 

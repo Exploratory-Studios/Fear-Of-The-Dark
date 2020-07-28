@@ -434,48 +434,74 @@ void GameplayScreen::drawParticlesToFBO() {
 }
 
 void GameplayScreen::drawGUIToScreen() {
-	// GUI
-	m_uiTextureProgram.use();
+	{
+		/// CEGUI Inventory GUI (Context 1)
+		m_uiTextureProgram.use();
 
-	GLint textureUniform = m_uiTextureProgram.getUniformLocation("textureSampler");
-	glUniform1i(textureUniform, 0);
-	glActiveTexture(GL_TEXTURE0);
+		GLint textureUniform = m_uiTextureProgram.getUniformLocation("textureSampler");
+		glUniform1i(textureUniform, 0);
+		glActiveTexture(GL_TEXTURE0);
 
-	// Camera matrix
-	glm::mat4 projectionMatrix = m_uiCamera.getCameraMatrix();
-	GLint pUniform = m_uiTextureProgram.getUniformLocation("P");
-	glUniformMatrix4fv(pUniform, 1, GL_FALSE, &projectionMatrix[0][0]);
+		// Camera matrix
+		glm::mat4 projectionMatrix = m_uiCamera.getCameraMatrix();
+		GLint pUniform = m_uiTextureProgram.getUniformLocation("P");
+		glUniformMatrix4fv(pUniform, 1, GL_FALSE, &projectionMatrix[0][0]);
 
-	Factory::getGUI()->draw();
+		Factory::getGUI()->setActiveContext(1);
+		Factory::getGUI()->draw();
+		Factory::getGUI()->setActiveContext(0);
 
-	m_dr.end();
-	m_dr.render(projectionMatrix, 3);
+		m_uiTextureProgram.unuse();
+	}
+
+	{
+		/// Inventory Overlays
+		m_uiTextureProgram.use();
+
+		GLint textureUniform = m_uiTextureProgram.getUniformLocation("textureSampler");
+		glUniform1i(textureUniform, 0);
+		glActiveTexture(GL_TEXTURE0);
+
+		// Camera matrix
+		glm::mat4 projectionMatrix = m_uiCamera.getCameraMatrix();
+		GLint pUniform = m_uiTextureProgram.getUniformLocation("P");
+		glUniformMatrix4fv(pUniform, 1, GL_FALSE, &projectionMatrix[0][0]);
+
+		Factory::getEntityManager()->getPlayer()->drawGUI(m_spriteBatch, m_spriteFont);
+		m_spriteBatch.begin();
+		m_world->drawTilesGUI(m_spriteBatch, m_spriteFont, getScreenBox() + glm::vec4(0.0f, 0.0f, 1.0f, 1.0f));
+		m_spriteBatch.end();
+		m_spriteBatch.renderBatch();
+
+		m_uiTextureProgram.unuse();
+	}
+
+	{
+		// General GUI (Context 0)
+		m_uiTextureProgram.use();
+
+		GLint textureUniform = m_uiTextureProgram.getUniformLocation("textureSampler");
+		glUniform1i(textureUniform, 0);
+		glActiveTexture(GL_TEXTURE0);
+
+		// Camera matrix
+		glm::mat4 projectionMatrix = m_uiCamera.getCameraMatrix();
+		GLint pUniform = m_uiTextureProgram.getUniformLocation("P");
+		glUniformMatrix4fv(pUniform, 1, GL_FALSE, &projectionMatrix[0][0]);
+
+		Factory::getGUI()->draw();
+
+		m_dr.end();
+		m_dr.render(projectionMatrix, 3);
 
 #ifdef DEV_CONTROLS
-	if(m_debuggingInfo) {
-		drawDebug();
-	}
+		if(m_debuggingInfo) {
+			drawDebug();
+		}
 #endif // DEV_CONTROLS
 
-	m_uiTextureProgram.unuse();
-
-	m_uiTextureProgram.use();
-
-	textureUniform = m_uiTextureProgram.getUniformLocation("textureSampler");
-	glUniform1i(textureUniform, 0);
-	glActiveTexture(GL_TEXTURE0);
-
-	// Camera matrix
-	projectionMatrix = m_uiCamera.getCameraMatrix();
-	pUniform = m_uiTextureProgram.getUniformLocation("P");
-	glUniformMatrix4fv(pUniform, 1, GL_FALSE, &projectionMatrix[0][0]);
-
-	Factory::getEntityManager()->getPlayer()->drawGUI(m_spriteBatch, m_spriteFont);
-	m_spriteBatch.begin();
-	m_world->drawTilesGUI(m_spriteBatch, m_spriteFont, getScreenBox() + glm::vec4(0.0f, 0.0f, 1.0f, 1.0f));
-	m_spriteBatch.end();
-	m_spriteBatch.renderBatch();
-	m_uiTextureProgram.unuse();
+		m_uiTextureProgram.unuse();
+	}
 }
 
 void GameplayScreen::drawPostToScreen() {
@@ -603,7 +629,20 @@ void GameplayScreen::initShaders() {
 
 void GameplayScreen::initUI() {
 	{
-		Factory::getGUI()->init(ASSETS_FOLDER_PATH + "GUI");
+		Factory::getGUI()->init(ASSETS_FOLDER_PATH + "GUI", 2);
+		/**
+		 * .................. GUI CONTEXTS ...................
+		 *
+		 * #1.....................Basic, overtop of everything
+		 *
+		 * #2....................Inventory Systems,
+		 * ................underneath world->drawTilesUI calls
+		 *
+		 * . . . Continue, every index behind the next
+		 *
+		 *
+		**/
+
 		Factory::getGUI()->loadScheme("FOTDSkin.scheme");
 
 		Factory::getGUI()->setFont("Amatic-26");

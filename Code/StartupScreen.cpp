@@ -69,7 +69,7 @@ void StartupScreen::onEntry() {
 	m_camera.setPosition(glm::vec2(m_window->getScreenWidth() / 2.0f, m_window->getScreenHeight() / 2.0f));
 	m_uiCamera.init(m_window->getScreenWidth(), m_window->getScreenHeight());
 
-	m_gui.init(ASSETS_FOLDER_PATH + "GUI");
+	m_gui.init(ASSETS_FOLDER_PATH + "GUI", 1);
 
 	initAnimations();
 	initUI();

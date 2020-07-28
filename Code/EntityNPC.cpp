@@ -402,9 +402,7 @@ void EntityNPC::die(World* world) {
 }
 
 void EntityNPC::updateMovement(World* world) {
-	if(!m_flying) {
-		EntityFunctions::WalkingAI(m_controls, m_targets, m_curTarget, m_velocity, m_size, glm::vec3(m_position.x, m_position.y, m_layer));
-	}
+	EntityFunctions::basic_straight(m_controls, m_targets, m_curTarget, this); /// TODO: Make entities able to have different AI
 
 	if(m_controls[0]) { // UP
 		if(m_onGround) {

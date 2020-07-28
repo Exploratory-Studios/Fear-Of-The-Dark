@@ -205,8 +205,10 @@ void EntityPlayer::updateMouse(World* world, glm::vec2 mouseCoords) {
 	if(m_canInteract) {
 		m_selectedBlock = nullptr;
 
-		if(world->getTile((int)mouseCoords.x, mouseCoords.y, m_layer)) {
-			m_selectedBlock = world->getTile((int)mouseCoords.x, mouseCoords.y, m_layer);
+		if((int)mouseCoords.x > -WORLD_SIZE) {
+			if(world->getTile((int)mouseCoords.x, mouseCoords.y, m_layer)) {
+				m_selectedBlock = world->getTile((int)mouseCoords.x, mouseCoords.y, m_layer);
+			}
 		}
 
 		//Logger::getInstance()->log("Clicked: " + std::to_string(m_selectedBlock->getPosition().x));

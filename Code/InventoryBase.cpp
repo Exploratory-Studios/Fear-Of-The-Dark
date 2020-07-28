@@ -189,7 +189,7 @@ float InventoryBase::getCurrentWeight() {
 }
 
 void InventoryBase::draw(GLEngine::SpriteBatch& sb, GLEngine::SpriteFont& sf, float x, float y) {
-	if(m_initedGUI) {
+	if(m_initedGUI && m_frameWindow->isVisible()) {
 
 		{
 			// Set m_frameWindow position and size based on camera's convert screen to world and screen dims (retrieved from cam)

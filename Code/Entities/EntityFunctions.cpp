@@ -1,74 +1,97 @@
 #include "EntityFunctions.h"
 
+#include "EntityNPC.h"
+
 namespace EntityFunctions {
 
-        void WalkingAI(bool (&controls)[6], std::vector<glm::vec3>& targets, unsigned int& currentTarget, glm::vec2& velocity, glm::vec2& size, glm::vec3 position) {
+	void basic_straight(bool (&controls)[6], std::vector<glm::vec3>& targets, unsigned int& currentTarget, EntityNPC* entity) {
+		// The targets are aligned to the bottom left corner of each tile (+0), **not** the middle (+size/2)
 
-            if(targets.size() > currentTarget) {
-                float targetXPos = targets[currentTarget].x;
-                float xPos = position.x;
+		// Controls:
+		// +y/-y: 0/1 (up/down)
+		// +x/-x: 3/2 (left/right)
+		// +z/-z: 4/5 (away from cam/towards cam)
 
-                float xDist;
+		/* Algorithm is as follows:
+		 *  - Dumb, basically just move towards the next target in a straight line
+		 *    - If Xt < Xe, move right (-x), else left (+x)
+		 *    - If Yt < Ye, move down (-y), else up (+y)
+		 *    - If Zt < Ze, move -z, else +z
+		 *  - Naturally, if X/Y/Zt == X/Y/Ze, then don't activate those controls and move onto the next target.
+		 *  - Take into account a small threshold (maybe 1/8th of a block?) that an entity can be within to move onto the next target
+		 */
 
-                if(xPos < targetXPos) {
-                    float xDist0 = targetXPos - xPos; // Regular dist not accounting for crossover.
-                    float xDist1 = (xPos) + (WORLD_SIZE - targetXPos); // Distance accounting for crossover.
+		// Make sure we aren't finished already lol
+		if(currentTarget >= targets.size()) {
+			controls[0] = false; // Do nothing
+			controls[1] = false; // Do nothing
+			controls[2] = false; // Do nothing
+			controls[3] = false; // Do nothing
+			controls[4] = false; // Do nothing
+			controls[5] = false; // Do nothing
+			return;
+		}
 
-                    if(xDist0 < xDist1) {
-                        // Go right
-                        controls[3] = true;
-                        controls[2] = false;
+		// Determine X, Y, and Z distances
+		const glm::vec3 curTarget = targets[currentTarget];
+		const float distX = entity->getPosition().x - curTarget.x;
+		const float distY = entity->getPosition().y - curTarget.y;
+		const float distZ = entity->getLayer() - curTarget.z;
+		const float threshold = 1.0f/8.0f; // 1/8th of a block
 
-                        xDist = xDist0;
-                    } else {
-                        // Go left
-                        controls[2] = true;
-                        controls[3] = false;
+		// Declare some variables to check if the entity is close enough to a target to move on to the next one
+		// If all are true, move on.
+		bool XAligned = false;
+		bool YAligned = false;
+		bool ZAligned = false;
 
-                        xDist = xDist1;
-                    }
-                } else if(xPos > targetXPos) {
-                    float xDist0 = xPos - targetXPos; // Regular dist not accounting for crossover.
-                    float xDist1 = (targetXPos) + (WORLD_SIZE - xPos); // Distance accounting for crossover.
+		// Check X direction
+		if(distX > threshold) {
+			// Xentity > Xtarget, move left
+			controls[3] = true;
+			controls[2] = false;
+		} else if(distX < -threshold) {
+			// Other way round, move right
+			controls[2] = true;
+			controls[3] = false;
+		} else {
+			// Within threshold
+			XAligned = true;
+		}
 
-                    if(xDist0 < xDist1) {
-                        // Go left
-                        controls[2] = true;
-                        controls[3] = false;
+		// Check Y direction
+		if(distY > threshold) {
+			// Yentity > Ytarget, move down
+			controls[1] = true;
+			controls[0] = false;
+		} else if(distY < -threshold) {
+			// Other way round, move up
+			controls[0] = true;
+			controls[1] = false;
+		} else {
+			// Within threshold
+			YAligned = true;
+		}
 
-                        xDist = xDist0;
-                    } else {
-                        // Go right
-                        controls[3] = true;
-                        controls[2] = false;
+		// Check Y direction
+		if(distX > threshold) {
+			// Xentity > Xtarget, move toward cam
+			controls[4] = true;
+			controls[5] = false;
+		} else if(distX < -threshold) {
+			// Other way round, move away from cam
+			controls[5] = true;
+			controls[4] = false;
+		} else {
+			// Within threshold
+			ZAligned = true;
+		}
 
-                        xDist = xDist1;
-                    }
-                }
+		if(XAligned && YAligned && ZAligned) {
+			// All aligned, move onto next target
+			currentTarget++;
+		}
 
-                float yDist = std::abs(position.y - targets[currentTarget].y);
-                float zDist = std::abs(position.z - targets[currentTarget].z);
-
-                float totalDist = std::sqrt(xDist*xDist + yDist*yDist + zDist*zDist);
-
-                if((int)targets[currentTarget].y - (int)position.y >= 1.0f/2.0f) {
-                    controls[0] = true; // UP
-                }
-                if(position.z > targets[currentTarget].z) {
-                    controls[5] = true; // FORWARDS
-                } else if(position.z < targets[currentTarget].z) {
-                    controls[4] = true; // BACKWARDS
-                }
-
-                if(totalDist <= 0.75f) {
-                    currentTarget++;
-
-                    if(currentTarget >= targets.size()) {
-                        targets.clear();
-                        currentTarget = 0;
-                    }
-                }
-            }
-        }
+	}
 
 }

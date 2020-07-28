@@ -32,7 +32,7 @@ class Slider {
 
 class OptionsMenuScreen : public GLEngine::IGameScreen {
 	public:
-		OptionsMenuScreen(GLEngine::Window* window, Options* options);
+		OptionsMenuScreen(GLEngine::Window* window);
 		virtual ~OptionsMenuScreen();
 
 		virtual int getNextScreenIndex() const override;
@@ -60,8 +60,6 @@ class OptionsMenuScreen : public GLEngine::IGameScreen {
 		GLEngine::SpriteBatch m_spriteBatch;
 		GLEngine::GLSLProgram m_uiTextureProgram;
 		GLEngine::SpriteFont m_spriteFont;
-
-		Options* m_options = nullptr;
 
 		float m_time = 0.0f;
 

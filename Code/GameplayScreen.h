@@ -33,7 +33,7 @@ class Console;
 
 class GameplayScreen : public GLEngine::IGameScreen {
 	public:
-		GameplayScreen(GLEngine::Window* window, WorldIOManager* WorldIOManager, World* world, Options* options);
+		GameplayScreen(GLEngine::Window* window, WorldIOManager* WorldIOManager, World* world);
 		virtual ~GameplayScreen();
 
 		virtual int getNextScreenIndex() const override;
@@ -93,7 +93,7 @@ class GameplayScreen : public GLEngine::IGameScreen {
 		bool pause_quit_button_clicked(const CEGUI::EventArgs& e);
 
 		void updateScale();
-		
+
 		GLEngine::Camera2D m_uiCamera;
 		GLEngine::Window* m_window = nullptr;
 		GLEngine::SpriteBatch m_spriteBatch;
@@ -159,6 +159,4 @@ class GameplayScreen : public GLEngine::IGameScreen {
 		unsigned int m_nextScreenIndex = SCREEN_INDEX_NO_SCREEN;
 
 		bool m_hasBeenInited = false;
-
-		Options* m_options = nullptr; // A struct that holds all options. A struct is used so that it can be passed from screen to screen.
 };

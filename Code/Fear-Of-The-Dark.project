@@ -18,6 +18,7 @@
     <File Name="GUI_InventoryBase.h"/>
   </VirtualDirectory>
   <VirtualDirectory Name="src">
+    <File Name="Options.cpp"/>
     <File Name="TileInventory.cpp"/>
     <File Name="TileInventory.h"/>
     <File Name="NPCInventory.cpp"/>

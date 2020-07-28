@@ -21,7 +21,7 @@
 #include <regex>
 #endif //DEV_CONTROLS
 
-GameplayScreen::GameplayScreen(GLEngine::Window* window, WorldIOManager* WorldIOManager, World* world, Options* options) : m_window(window), m_WorldIOManager(WorldIOManager), m_world(world), m_options(options) {
+GameplayScreen::GameplayScreen(GLEngine::Window* window, WorldIOManager* WorldIOManager, World* world) : m_window(window), m_WorldIOManager(WorldIOManager), m_world(world) {
 
 }
 
@@ -74,8 +74,8 @@ void GameplayScreen::onEntry() {
 
 	m_audio = new AudioManager();
 	m_audio->init();
-	m_audio->setSoundsVolume(m_options->soundsVolume * m_options->masterVolume);
-	m_audio->setMusicVolume(m_options->musicVolume * m_options->masterVolume);
+	m_audio->setSoundsVolume(Options::soundsVolume * Options::masterVolume);
+	m_audio->setMusicVolume(Options::musicVolume * Options::masterVolume);
 
 	///m_WorldManager.init(m_WorldIOManager, &m_particle2d);
 	m_scripter = new ScriptingModule::Scripter();

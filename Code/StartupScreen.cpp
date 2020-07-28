@@ -1,5 +1,6 @@
 #include "StartupScreen.h"
 
+#include "Options.h"
 
 /// Text FUNCTIONS
 
@@ -60,6 +61,8 @@ void StartupScreen::destroy() {
 }
 
 void StartupScreen::onEntry() {
+	Options::loadFromFile("Options.bin"); // Will never cause an issue; it just creates a file if one doesn't exist
+
 	initShaders();
 
 	m_spriteBatch.init();

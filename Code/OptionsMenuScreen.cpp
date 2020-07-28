@@ -21,7 +21,7 @@ void Slider::setFont(std::string font) {
 	m_label->setFont(font);
 }
 
-OptionsMenuScreen::OptionsMenuScreen(GLEngine::Window* window, Options* options) : m_window(window), m_options(options) {
+OptionsMenuScreen::OptionsMenuScreen(GLEngine::Window* window) : m_window(window) {
 	//ctor
 }
 
@@ -98,9 +98,9 @@ void OptionsMenuScreen::initUI() {
 	m_backButton->setText("[padding='l:0 t:15 r:0 b:0']Back");
 	m_backButton->setFont("QuietHorror-42");
 
-	m_masterVolumeSlider = new Slider(m_gui, &(m_options->masterVolume), glm::vec4(0.1f, 0.1f, 0.3f, 0.11f), "SliderMasterVolume", "Master Volume");
-	m_soundsVolumeSlider = new Slider(m_gui, &(m_options->soundsVolume), glm::vec4(0.1f, 0.22f, 0.3f, 0.11f), "SliderSoundsVolume", "Effects Volume");
-	m_musicVolumeSlider = new Slider(m_gui, &(m_options->musicVolume), glm::vec4(0.1f, 0.34f, 0.3f, 0.11f), "SliderMusicVolume", "Music Volume");
+	m_masterVolumeSlider = new Slider(m_gui, &(Options::masterVolume), glm::vec4(0.1f, 0.1f, 0.3f, 0.11f), "SliderMasterVolume", "Master Volume");
+	m_soundsVolumeSlider = new Slider(m_gui, &(Options::soundsVolume), glm::vec4(0.1f, 0.22f, 0.3f, 0.11f), "SliderSoundsVolume", "Effects Volume");
+	m_musicVolumeSlider = new Slider(m_gui, &(Options::musicVolume), glm::vec4(0.1f, 0.34f, 0.3f, 0.11f), "SliderMusicVolume", "Music Volume");
 }
 
 void OptionsMenuScreen::initShaders() {
@@ -140,5 +140,6 @@ void OptionsMenuScreen::updateMousebuttonDown(SDL_Event& evnt) {
 }
 bool OptionsMenuScreen::EventBackButtonClicked(const CEGUI::EventArgs& e) {
 	m_currentState = GLEngine::ScreenState::CHANGE_PREVIOUS;
+	Options::saveToFile("Options.bin");
 	return true;
 }

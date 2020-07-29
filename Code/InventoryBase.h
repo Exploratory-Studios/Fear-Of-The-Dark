@@ -41,7 +41,7 @@ class InventoryBase {
 		unsigned int getItemIndex(Item* item) const {
 			if(item) {
 				for(unsigned int i = 0; i < m_items.size(); i++) {
-					if(m_items[i]->getID() == item->getID() && m_items[i]->getQuantity() >= item->getQuantity()) return i;
+					if(item == m_items[i]) return i;
 				}
 			}
 			return (unsigned int) - 1;
@@ -50,6 +50,7 @@ class InventoryBase {
 			return m_items;
 		}
 		float getCurrentWeight();
+		unsigned int getCount();
 
 		void updateWeight();
 		void update();
@@ -74,12 +75,7 @@ class InventoryBase {
 		virtual void initGUI(CEGUI::FrameWindow* frame) {};
 		std::vector<Item*> m_items{};
 
-		virtual bool operator_canAddItem(Item* item) {
-			return true;
-		}
-
-		// This should never *HAVE* to be touched by derived classes. The base class should manage everything
-	private:
+		// This should never *HAVE* to be touched by derived classes. The base class ***should*** manage everything
 		/// CEGUI Portion
 		glm::vec4 m_destRect; // This is the position & size relative to the x and y given to the draw() function
 		CEGUI::FrameWindow* m_frameWindow = nullptr;

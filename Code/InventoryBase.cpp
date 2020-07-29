@@ -99,6 +99,8 @@ bool InventoryBase::onDragDropItemAdded(const CEGUI::EventArgs& e) {
 
 	Item* item = added_item->getData<Item>();
 
+	if(getItemIndex(item) != (unsigned int)-1) return false; // It's already in this receiver. Don't do anything.
+
 	m_items.push_back(item); // This should ensure that m_items and m_gridItems have the same indices.
 	m_gridItems.push_back(added_item);
 
@@ -115,20 +117,17 @@ void InventoryBase::init() { // This must be seperate from the constructor due t
 }
 
 bool InventoryBase::addItem(Item* newItem) {
-	if(operator_canAddItem(newItem)) {
-		m_weight += newItem->getWeight() * newItem->getQuantity();
+	m_weight += newItem->getWeight() * newItem->getQuantity();
 
-		for(unsigned int i = 0; i < m_items.size(); i++) {
-			if(m_items[i]->getID() == newItem->getID()) {
-				m_items[i]->addToQuantity(newItem->getQuantity());
-				return true;
-			}
+	for(unsigned int i = 0; i < m_items.size(); i++) {
+		if(m_items[i]->getID() == newItem->getID()) {
+			m_items[i]->addToQuantity(newItem->getQuantity());
+			return true;
 		}
-
-		if(m_initedGUI) createInventoryItem(newItem);
-		return true;
 	}
-	return false;
+
+	if(m_initedGUI) createInventoryItem(newItem);
+	return true;
 }
 
 void InventoryBase::queueSubtraction(Item* item) {
@@ -186,6 +185,16 @@ void InventoryBase::update() {
 
 float InventoryBase::getCurrentWeight() {
 	return m_weight;
+}
+
+unsigned int InventoryBase::getCount() {
+	// Count how many total items we have
+	unsigned int count = 0;
+	for(unsigned int i = 0; i < m_items.size(); i++) {
+		count += m_items[i]->getQuantity();
+	}
+
+	return count;
 }
 
 void InventoryBase::draw(GLEngine::SpriteBatch& sb, GLEngine::SpriteFont& sf, float x, float y) {

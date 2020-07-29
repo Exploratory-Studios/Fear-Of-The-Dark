@@ -8,12 +8,13 @@ namespace CEGUI {
 	const String GUI_InventoryReceiver::EventNamespace("InventoryReceiver");
 
 	GUI_InventoryReceiver::GUI_InventoryReceiver(const String& type, const String& name) :
-		Window(type, name) {
+		Window(type, name),
+		m_verificationFunction([](GUI_InventoryItem& a)->bool{ return true; }) {
 		setDragDropTarget(true);
 	}
 
 	bool GUI_InventoryReceiver::addItemAtLocation(GUI_InventoryItem& item, int x, int y) {
-		if (itemWillFitAtLocation(item, x, y)) {
+		if (itemWillFitAtLocation(item, x, y) && (m_verificationFunction(item) || dynamic_cast<GUI_InventoryReceiver*>(item.getParent()) == this)) {
 			GUI_InventoryReceiver* old_receiver =
 			    dynamic_cast<GUI_InventoryReceiver*>(item.getParent());
 

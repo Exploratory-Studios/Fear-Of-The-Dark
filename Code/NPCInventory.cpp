@@ -27,7 +27,7 @@ float NPCInventory::getSpeedMultiplier() {
 	return 1.0f;
 }
 
-bool NPCInventory::operator_canAddItem(Item* item) {
+/*bool NPCInventory::operator_canAddItem(Item* item) {
 	// Check if the inventory's weight + item's weight*quantity < m_absMaxWeight
 	return ((getCurrentWeight() + item->getWeight() * item->getQuantity()) <= m_absMaxWeight);
-}
+}*/

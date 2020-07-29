@@ -21,7 +21,6 @@ class NPCInventory : public InventoryBase {
 		float getSpeedMultiplier();
 
 	protected:
-		virtual bool operator_canAddItem(Item* item) override;
 		virtual void initGUI(CEGUI::FrameWindow* frame) override;
 
 		// The max weight at which you can still walk the normal speed, defined in PRESETS file. Called MAX_WEIGHT

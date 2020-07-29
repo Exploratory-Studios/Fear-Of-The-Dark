@@ -23,3 +23,7 @@ void TileContainer::init() {
 void TileContainer::drawGUI(GLEngine::SpriteBatch& sb, GLEngine::SpriteFont& sf, int& xOffset) {
 	m_inventory->draw(sb, sf, m_pos.x + xOffset, m_pos.y); // Pos is adjusted so that it works cross-world (chunk 0 <-> chunk [world_size-1])
 }
+
+void TileContainer::onUpdate() {
+	m_inventory->update();
+}

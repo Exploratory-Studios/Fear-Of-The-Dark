@@ -302,10 +302,10 @@ void EntityPlayer::updateInput(GLEngine::InputManager* input, World* world) {
 
 		if(input->isKeyPressed(SDL_BUTTON_LEFT) && (m_selectedBlock || true) && !m_inventoryOpen) {
 			//if(m_favouriteItems[m_selectedHotbox]) m_favouriteItems[m_selectedHotbox]->onLeftClick(m_selectedBlock, world);
-			/*if(!m_favouriteItems[m_selectedHotbox]) {
+			if(!m_favouriteItems[m_selectedHotbox]) {
 				Tile* t = new Tile(m_selectedBlock->getPosition(), m_selectedBlock->getLayer(), 0, SaveDataTypes::MetaData(), false);
 				world->setTile(t);
-			}*/
+			}
 			//if(m_inventory) m_inventory->updateWeight();
 
 

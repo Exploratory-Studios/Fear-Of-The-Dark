@@ -24,6 +24,11 @@ namespace CEGUI {
 			// removes an item
 			void removeItem(GUI_InventoryItem& item);
 
+			// Sets the verification function
+			void setVerificationFunction(std::function<bool(GUI_InventoryItem&)> func) {
+				m_verificationFunction = func;
+			}
+
 		protected:
 			// write the item's layoout data into the content map.
 			void writeItemToContentMap(const GUI_InventoryItem& item);
@@ -34,6 +39,9 @@ namespace CEGUI {
 			void onDragDropItemDropped(DragDropEventArgs& e);
 			void populateGeometryBuffer();
 			Rectf gridBasePixelRect() const;
+
+			// Function to verify if an item can be placed
+			std::function<bool(GUI_InventoryItem&)> m_verificationFunction;
 	};
 
 }

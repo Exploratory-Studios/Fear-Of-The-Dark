@@ -227,7 +227,7 @@ class Tile {
 			return m_metaData;
 		}
 
-		void onUpdate() { }
+		virtual void onUpdate() { }
 		virtual void onDraw(GLEngine::SpriteBatch& sb, GLEngine::SpriteFont& sf, glm::vec4& pos, float& depth) { }
 		void onTick() {
 			if(m_tickScriptID != -1) ScriptingModule::ScriptQueue::activateScript(m_tickScriptID, generateLuaData());

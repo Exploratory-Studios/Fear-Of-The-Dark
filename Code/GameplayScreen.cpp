@@ -245,10 +245,10 @@ void GameplayScreen::draw() {
 		glUniform1i(textureUniform, 2);
 
 		// Normal Map.
-		//glActiveTexture(GL_TEXTURE3);
-		//glBindTexture(GL_TEXTURE_2D, m_normalFBO.getTexture()); // Bind the texture
-		//textureUniform = m_postProcessor.getUniformLocation("normalMap");
-		//glUniform1i(textureUniform, 3);
+		glActiveTexture(GL_TEXTURE3);
+		glBindTexture(GL_TEXTURE_2D, m_normalFBO.getTexture()); // Bind the texture
+		textureUniform = m_postProcessor.getUniformLocation("normalMap");
+		glUniform1i(textureUniform, 3);
 
 		GLint playerDepthUniform = m_postProcessor.getUniformLocation("playerDepth");
 		float playerDepth = 0.1f + (Factory::getEntityManager()->getPlayer()->getLayer() * (1.0f / (float)(WORLD_DEPTH)) * 0.9f);

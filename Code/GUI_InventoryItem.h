@@ -2,6 +2,7 @@
 
 #include "GUI_InventoryBase.h"
 #include <CEGUI/widgets/DragContainer.h>
+#include <functional>
 
 namespace CEGUI {
 

@@ -9,7 +9,7 @@
 </tile>
 <tile id="1" name="Dirt">
 	<texture>Blocks/Dirt.png</texture>
-	<bumpMap>LogMapR.png</bumpMap>
+	<bumpMap>TestMap.png</bumpMap>
 	<emittedLight>0.000000</emittedLight>
 	<emittedHeat>0.000000</emittedHeat>
 	<size>1.0,1.0</size>
@@ -20,7 +20,7 @@
 </tile>
 <tile id="2" name="Grass">
 	<texture>Blocks/Grass.png</texture>
-	<bumpMap>Grass.png</bumpMap>
+	<bumpMap>TestMap1.png</bumpMap>
 	<emittedLight>0.000000</emittedLight>
 	<emittedHeat>0.000000</emittedHeat>
 	<size>1.0,1.0</size>
@@ -32,7 +32,7 @@
 </tile>
 <tile id="4" name="Stone">
 	<texture>Blocks/Stone.png</texture>
-	<bumpMap>Stone.png</bumpMap>
+	<bumpMap>TestMap.png</bumpMap>
 	<emittedLight>0.000000</emittedLight>
 	<emittedHeat>0.000000</emittedHeat>
 	<size>1.0,1.0</size>

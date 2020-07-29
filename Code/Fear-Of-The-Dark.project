@@ -1,5 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <CodeLite_Project Name="Fear-Of-The-Dark" Version="11000">
+  <VirtualDirectory Name="Shaders &amp; Data">
+    <File Name="../Assets/Shaders/vignetteShader.vert"/>
+    <File Name="../Assets/Shaders/vignetteShader.frag"/>
+    <File Name="../Assets/Shaders/textureShader.vert"/>
+    <File Name="../Assets/Shaders/textureShader.frag"/>
+    <File Name="../Assets/Shaders/superBasicShader.vert"/>
+    <File Name="../Assets/Shaders/superBasicShader.frag"/>
+    <File Name="../Assets/Shaders/skyShader.vert"/>
+    <File Name="../Assets/Shaders/skyShader.frag"/>
+    <File Name="../Assets/Shaders/postProcesser.vert"/>
+    <File Name="../Assets/Shaders/postProcesser.frag"/>
+    <File Name="../Assets/Shaders/colourShader.vert"/>
+    <File Name="../Assets/Shaders/colourShader.frag"/>
+  </VirtualDirectory>
   <Plugins>
     <Plugin Name="qmake">
       <![CDATA[00040001N0005Debug0000000000000001N0007DebugVB0000000000000001N0015Release - Linux0000000000000001N0017Release - Windows000000000000]]>

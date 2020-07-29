@@ -54,19 +54,38 @@ float map(float value, float min1, float max1, float min2, float max2) {
   return min2 + (value - min1) * (max2 - min2) / (max1 - min1);
 }
 
-vec4 getLight() { // first 3 are XYZ of average light (normalized), 4th is "average" intensity.
+float getLight(float sun, vec3 fragmentNormal) { // first 3 are XYZ of average light (normalized), 4th is "average" intensity.
 	float lightLevel = 0.0f;
-	vec3 lightPosDiff;
 	for(int i = 0; i < MAX_LIGHTS; i++) {
 		float intensity = lights[i].z / pow(distance(fragmentPosition.xy, lights[i].xy), 2.0); // relative intensity
 
 		if(intensity > 0.01) {
-		    lightLevel += intensity;
-		    lightPosDiff += vec3((fragmentPosition.xy - lights[i].xy) * intensity, 0.0);
+			// We need to add the dotted normals * the relative intensity
+			// Get unit vector from fragment to light
+			vec3 toLight = normalize(lights[i].xyz - vec3(fragmentPosition.xy, 0.0));
+			
+			vec3 normal = normalize(vec3(toLight.xy * vec2(1), (sqrt(pow(toLight.x, 2) + pow(toLight.y, 2))) / -toLight.z));
+			
+			
+			// Dot the fragment to light with the fragment normal. If they face the same direction, intensity multiplier will be 1.0.
+			float intensityMult = clamp(dot(fragmentNormal, normal * vec3(1.0, 1.0, -1.0)), 0, 1); // We must orient the Z coordinate so they match better.
+			
+		    lightLevel += intensity * intensityMult;
 		}
 	}
-	vec4 ret = vec4(normalize(lightPosDiff.xyz), clamp(lightLevel, 0.0, 1.4));
-	return ret;
+	
+	// Now deal with sunlight
+	// We need to add the dotted normals * the relative intensity. Obviously the relative intensity is `sun` and the vector for fragment to sunlight is just up.
+	// Get unit vector from fragment to light
+	//vec3 toLight = normalize(vec3(0.0, 1.0, 0.0));
+	
+	// Dot the fragment to light with the fragment normal. If they face the same direction, intensity multiplier will be 1.0.
+	//float intensityMult = dot(toLight, fragmentNormal);
+	
+	//lightLevel += sun * intensityMult;
+			
+			
+	return lightLevel + sun * 0.000001;
 }
 
 float getSunlight() {
@@ -92,15 +111,11 @@ void main()
 	colour.rgb *= c;
 	
 	// Normal Mapping & Lighting
-	vec4 lighting_vec = getLight();
-	float intensity = lighting_vec.a + getSunlight();
-
 	// Calculate normals
-	vec3 components = ((texture(normalMap, fragmentUV.xy).rgb / vec3(255.0)) * vec3(2.0)) - vec3(1.0);
+	vec3 components = normalize(texture(normalMap, fragmentUV).rgb * 2.0 - 1.0);
 	
-	vec3 surface_unit = normalize(components);
-	vec3 light_unit = lighting_vec.xyz;
+	float sun = getSunlight();
+	float intensity = getLight(sun, components);
 
-	colour.rgb *= dot(surface_unit, light_unit) * (intensity - getSunlight());
-	colour.rgb /= dot(surface_unit, light_unit);
+	colour.rgb *= intensity;
 }

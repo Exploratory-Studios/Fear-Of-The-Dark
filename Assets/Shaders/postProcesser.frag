@@ -54,38 +54,36 @@ float map(float value, float min1, float max1, float min2, float max2) {
   return min2 + (value - min1) * (max2 - min2) / (max1 - min1);
 }
 
+float getIntensity(vec3 lightPos, vec3 surfaceNormal) {
+	// Get unit vector from fragment to light
+	vec3 toLight = normalize(lightPos - vec3(fragmentPosition.xy, 0.0));
+	
+	vec3 normal = normalize(vec3(toLight.xy, (sqrt(pow(toLight.x, 2) + pow(toLight.y, 2))) / -toLight.z));
+	
+	// Dot the fragment to light with the fragment normal. If they face the same direction, intensity multiplier will be 1.0.
+	float intensityMult = clamp(dot(surfaceNormal, normal * vec3(1.0, 1.0, -1.0)), 0, 1); // We must orient the Z coordinate so they match directions a little better.
+	
+	return intensityMult;
+}
+
 float getLight(float sun, vec3 fragmentNormal) { // first 3 are XYZ of average light (normalized), 4th is "average" intensity.
 	float lightLevel = 0.0f;
 	for(int i = 0; i < MAX_LIGHTS; i++) {
 		float intensity = lights[i].z / pow(distance(fragmentPosition.xy, lights[i].xy), 2.0); // relative intensity
 
 		if(intensity > 0.01) {
-			// We need to add the dotted normals * the relative intensity
-			// Get unit vector from fragment to light
-			vec3 toLight = normalize(lights[i].xyz - vec3(fragmentPosition.xy, 0.0));
-			
-			vec3 normal = normalize(vec3(toLight.xy * vec2(1), (sqrt(pow(toLight.x, 2) + pow(toLight.y, 2))) / -toLight.z));
-			
-			
-			// Dot the fragment to light with the fragment normal. If they face the same direction, intensity multiplier will be 1.0.
-			float intensityMult = clamp(dot(fragmentNormal, normal * vec3(1.0, 1.0, -1.0)), 0, 1); // We must orient the Z coordinate so they match better.
+			float intensityMult = getIntensity(lights[i], fragmentNormal);
 			
 		    lightLevel += intensity * intensityMult;
 		}
 	}
 	
-	// Now deal with sunlight
-	// We need to add the dotted normals * the relative intensity. Obviously the relative intensity is `sun` and the vector for fragment to sunlight is just up.
-	// Get unit vector from fragment to light
-	//vec3 toLight = normalize(vec3(0.0, 1.0, 0.0));
+	float intensityMult = getIntensity(vec3(0.0, 1.0, sun) + vec3(fragmentPosition.xy, 0.0), fragmentNormal);
 	
-	// Dot the fragment to light with the fragment normal. If they face the same direction, intensity multiplier will be 1.0.
-	//float intensityMult = dot(toLight, fragmentNormal);
-	
-	//lightLevel += sun * intensityMult;
+	lightLevel += sun * intensityMult;
 			
 			
-	return lightLevel + sun * 0.000001;
+	return lightLevel;
 }
 
 float getSunlight() {

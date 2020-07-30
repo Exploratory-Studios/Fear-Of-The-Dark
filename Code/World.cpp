@@ -406,8 +406,6 @@ void World::drawDebug(GLEngine::DebugRenderer& dr, float xOffset) {
 }
 
 void World::drawSunlight(GLEngine::SpriteBatch& sb, glm::vec4 destRect) {
-	sb.begin();
-
 	for(float y = destRect.y; y < (destRect.y + destRect.w); y++) {
 		if((int)y < 1 || (int)y > WORLD_HEIGHT - 2) {
 			continue;
@@ -429,23 +427,21 @@ void World::drawSunlight(GLEngine::SpriteBatch& sb, glm::vec4 destRect) {
 			int corners = 0; // Describes whether each corner is lit. (G)
 
 			// Determine TL (bit 0)
-			corners |= (t->getSunlightCorners().x > 0.0f);
+			glm::vec4 cornersVec = t->getSunlightCorners();
+			corners |= (cornersVec.x > 0.0f);
 
 			// Determine TR (bit 1)
-			corners |= (t->getSunlightCorners().y > 0.0f) << 1;
+			corners |= (cornersVec.y > 0.0f) << 1;
 
 			// Determine BL (bit 2)
-			corners |= (t->getSunlightCorners().w > 0.0f) << 2;
+			corners |= (cornersVec.w > 0.0f) << 2;
 
 			// Determine BR (bit 3)
-			corners |= (t->getSunlightCorners().z > 0.0f) << 3;
+			corners |= (cornersVec.z > 0.0f) << 3;
 
 			sb.draw(glm::vec4((int)x, (int)y, 1.0f, 1.0f), glm::vec4(0.0f, 0.0f, 1.0f, 1.0f), 0, 0.0f, GLEngine::ColourRGBA8(light, corners, 255, 255));
 		}
 	}
-
-	sb.end();
-	sb.renderBatch();
 }
 
 float World::getDistance(glm::vec2 point0, glm::vec2 point1) {

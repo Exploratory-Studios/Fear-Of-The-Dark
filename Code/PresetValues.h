@@ -15,7 +15,7 @@
 // How many tiles high is the world?
 #define WORLD_HEIGHT 300
 // How many tiles does the world have horizontal?
-#define WORLD_SIZE (10*CHUNK_SIZE)
+#define WORLD_SIZE 320 // 10*CHUNK_SIZE
 #define WORLD_DEPTH 4
 
 // How high does water spawn naturally?

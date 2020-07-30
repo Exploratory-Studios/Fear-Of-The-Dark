@@ -571,6 +571,7 @@ namespace XMLModule {
 			AnimationData() {
 				std::vector<AttributeBase*> attrs = {
 					new Attribute<std::string>("texture", AttributeType::FILEPATH_TEXTURE, &texture),
+					new Attribute<std::string>("normalMap", AttributeType::FILEPATH_BUMPMAP, &normalMap),
 					new Attribute<unsigned int>("y", AttributeType::UNSIGNED_INT, &y),
 					new Attribute<unsigned int>("width", AttributeType::UNSIGNED_INT, &width),
 					new Attribute<unsigned int>("height", AttributeType::UNSIGNED_INT, &height),
@@ -580,7 +581,7 @@ namespace XMLModule {
 				addAttributes(attrs);
 			};
 
-			std::string texture;
+			std::string texture, normalMap;
 			unsigned int y = 0, width, height, frames;
 	};
 

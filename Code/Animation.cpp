@@ -20,6 +20,7 @@ namespace AnimationModule {
 		XMLModule::AnimationData d = XMLModule::XMLData::getAnimationData(id);
 
 		GLEngine::GLTexture tex = GLEngine::ResourceManager::getTexture(d.texture);
+		m_normalMapID = GLEngine::ResourceManager::getTexture(d.normalMap).id;
 
 		m_textureID = tex.id;
 		float height = tex.height;
@@ -49,6 +50,18 @@ namespace AnimationModule {
 		m_uv.x = (float)(m_currentFrame * m_frameWidth) / (float)(m_width);
 
 		sb.draw(destRect, m_uv, m_textureID, depth, colour, direction);
+	}
+
+	void Animation::drawNormal(::GLEngine::SpriteBatch& sb, glm::vec4& destRect, float& depth, float& angle, glm::vec2& COR) {
+		m_uv.x = (float)(m_currentFrame * m_frameWidth) / (float)(m_width);
+
+		sb.draw(destRect, m_uv, m_normalMapID, depth, GLEngine::ColourRGBA8(255, 255, 255, 255), angle, COR);
+	}
+
+	void Animation::drawNormal(::GLEngine::SpriteBatch& sb, glm::vec4& destRect, float& depth, glm::vec2 direction) {
+		m_uv.x = (float)(m_currentFrame * m_frameWidth) / (float)(m_width);
+
+		sb.draw(destRect, m_uv, m_normalMapID, depth, GLEngine::ColourRGBA8(255, 255, 255, 255), direction);
 	}
 
 	void Animation::tick() {
@@ -251,6 +264,23 @@ namespace AnimationModule {
 		glm::vec2 c(0.5f, 0.5f);
 
 		m_idleAnimation.draw(sb, colour, destRect, depth, m_angle, c);
+	}
+
+	void Limb::drawNormal(GLEngine::SpriteBatch& sb, glm::vec4 destRect, float& depth) {
+		// Transform based on centre of rotation
+
+		float xDist = (m_offset.x + destRect.z / 2.0f) - m_centreOfRotation.x * destRect.z;
+		float yDist = (m_offset.y + destRect.w / 2.0f) - m_centreOfRotation.y * destRect.w;
+
+		destRect.x += xDist * std::cos(m_angle) - yDist * std::sin(m_angle) + m_centreOfRotation.x * destRect.z;
+		destRect.y += xDist * std::sin(m_angle) + yDist * std::cos(m_angle) + m_centreOfRotation.y * destRect.w;
+
+		destRect.x -= destRect.z / 2.0f;
+		destRect.y -= destRect.w / 2.0f;
+
+		glm::vec2 c(0.5f, 0.5f);
+
+		m_idleAnimation.drawNormal(sb, destRect, depth, m_angle, c);
 	}
 
 	bool Limb::isAnimationActive() {

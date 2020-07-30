@@ -22,6 +22,10 @@ namespace AnimationModule {
 
 			void draw(::GLEngine::SpriteBatch& sb, GLEngine::ColourRGBA8 colour, glm::vec4& destRect, float& depth, float& angle, glm::vec2& COR);
 			void draw(::GLEngine::SpriteBatch& sb, GLEngine::ColourRGBA8 colour, glm::vec4& destRect, float& depth, glm::vec2 direction);
+
+			void drawNormal(::GLEngine::SpriteBatch& sb, glm::vec4& destRect, float& depth, float& angle, glm::vec2& COR);
+			void drawNormal(::GLEngine::SpriteBatch& sb, glm::vec4& destRect, float& depth, glm::vec2 direction);
+
 			void tick();
 
 			void setToLoop(bool loops) {
@@ -46,6 +50,7 @@ namespace AnimationModule {
 			unsigned int m_currentFrame = 0;
 
 			unsigned int m_textureID;
+			unsigned int m_normalMapID;
 			unsigned int m_width;
 			unsigned int m_frameWidth;
 			unsigned int m_frameHeight;
@@ -137,6 +142,7 @@ namespace AnimationModule {
 			void tick();
 			void update();
 			virtual void draw(GLEngine::SpriteBatch& sb, GLEngine::ColourRGBA8 colour, glm::vec4 destRect, float& depth);
+			virtual void drawNormal(GLEngine::SpriteBatch& sb, glm::vec4 destRect, float& depth);
 
 			bool isAnimationActive();
 			unsigned int getIndex();
@@ -189,9 +195,9 @@ namespace AnimationModule {
 				}
 			}
 
-			void drawNormal(GLEngine::SpriteBatch& sb, GLEngine::ColourRGBA8 colour, glm::vec4 destRect, float& depth) {
+			void drawNormal(GLEngine::SpriteBatch& sb, glm::vec4 destRect, float& depth) {
 				for(unsigned int i = 0; i < m_limbs.size(); i++) {
-					//m_limbs[i].drawNormal(sb, colour, destRect, depth);
+					m_limbs[i].drawNormal(sb, destRect, depth);
 				}
 			}
 

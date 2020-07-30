@@ -133,7 +133,8 @@ void EntityNPC::drawNormal(GLEngine::SpriteBatch& sb, float time, int layerDiffe
 		glm::vec4 destRect = glm::vec4(m_position.x + (xOffset * CHUNK_SIZE), m_position.y, m_size.x, m_size.y);
 
 		float depth = getDepth();
-		m_body.drawNormal(sb, GLEngine::ColourRGBA8(255, 255, 255, 255), destRect, depth);
+		
+		m_body.drawNormal(sb, destRect, depth);
 	}
 }
 

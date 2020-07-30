@@ -8,9 +8,91 @@
 
 #include "Factory.h"
 
+ArmourAttackWrapper::ArmourAttackWrapper(std::string& UUID, std::shared_ptr<NPCInventory> inventory) {
+	// Construct all of our inventories, as well as the GUI
+
+	// Construct inventories:
+	m_inventory = inventory; // Done
+
+	std::string armourName = UUID + "PlayerArmourGrid";
+	std::string attacksName = UUID + "PlayerAttacksGrid";
+	std::string frameName = UUID + "PlayerInventoryFrame";
+
+	Factory::getGUI()->setActiveContext(1);
+
+	m_window = static_cast<CEGUI::FrameWindow*>(Factory::getGUI()->createWidget("FOTDSkin/FrameWindow", glm::vec4(0.0f, 0.0f, 0.65f, 1.0f), glm::vec4(0.0f), frameName));
+	m_window->setCloseButtonEnabled(false);
+	m_window->setDragMovingEnabled(true);
+	m_window->setRollupEnabled(false);
+	m_window->setSizingEnabled(false);
+	m_window->getTitlebar()->setText("Armour & Attacks");
+
+	Factory::getGUI()->setActiveContext(0);
+
+	m_armourGrid = std::make_unique<InventoryBase>(armourName, false, true, m_window);
+	m_armourGrid->init();
+	m_attacksGrid = std::make_unique<InventoryBase>(attacksName, false, true, m_window);
+	m_attacksGrid->init();
+
+	m_window->setVisible(false);
+	m_window->setEnabled(false);
+	m_armourGrid->setToDraw(true);
+	m_attacksGrid->setToDraw(true);
+
+	m_armourGrid->setMovable(false);
+	m_attacksGrid->setMovable(false);
+
+	glm::vec4 armourPos(0.1f, 0.1f, 0.1f, 0.6f); // We need to offset by half dims. 0.0, 0.0 is the centre of the screen for some reason. I'm too lazy to fix it.
+	glm::vec4 attacksPos(0.1f, 0.8f, 0.2f, 0.1f);
+
+	m_armourGrid->setDestRect(armourPos);
+	m_attacksGrid->setDestRect(attacksPos);
+
+	m_armourGrid->setContentSize(1, 3); // vertical
+	m_attacksGrid->setContentSize(3, 1); // horizontal
+}
+
+ArmourAttackWrapper::~ArmourAttackWrapper() {
+
+}
+
+void ArmourAttackWrapper::setToDraw(bool& setting) {
+	if(setting == true) { // Make sure the inventory is in the right position before opening
+		glm::vec4 inventoryPos(0.7f, 0.25f, 0.2f, 0.3f);
+		m_inventory->setDestRect(inventoryPos);
+		m_inventory->setMovable(false);
+	} else {
+		glm::vec4 inventoryPos(-0.2f, -0.2f, 0.35f, 0.5f);
+		m_inventory->setDestRect(inventoryPos);
+		m_inventory->setMovable(true);
+	}
+
+	m_window->setVisible(setting);
+	m_window->setEnabled(setting);
+	//m_armourGrid->setToDraw(setting);
+	//m_attacksGrid->setToDraw(setting);
+	m_inventory->setToDraw(setting);
+}
+
+void ArmourAttackWrapper::draw(GLEngine::SpriteBatch& sb, GLEngine::SpriteFont& sf, float x, float y) {
+	// This draws our armourGrid, attacksGrid, and inventory.
+	m_inventory->draw(sb, sf, x, y, false);
+	m_armourGrid->draw(sb, sf, x, y, false);
+	m_attacksGrid->draw(sb, sf, x, y, false);
+}
+
+void ArmourAttackWrapper::update() {
+	m_inventory->update();
+	m_armourGrid->update();
+	m_attacksGrid->update();
+}
+
+
 EntityPlayer::EntityPlayer(glm::vec2 pos, unsigned int layer, SaveDataTypes::MetaData data, bool loadTex) : EntityNPC(pos, layer, 0, data, loadTex) {
 	m_inventory = std::make_shared<NPCInventory>(15.0f, m_UUID, true); // This makes sure that the player has an inventory with GUI
 	m_inventory->init();
+
+	m_armourAttackWrapper = new ArmourAttackWrapper(m_UUID, m_inventory);
 }
 
 
@@ -84,7 +166,7 @@ void EntityPlayer::drawGUI(GLEngine::SpriteBatch& sb, GLEngine::SpriteFont& sf) 
 
 	sb.begin();
 
-	{
+	/*{
 		// Hotbar
 		int hotbarImgId = GLEngine::ResourceManager::getTexture(ASSETS_FOLDER_PATH + "GUI/Player/Hotbar.png").id;
 		int hotbarSelectImgId = GLEngine::ResourceManager::getTexture(ASSETS_FOLDER_PATH + "GUI/Player/HotbarSelection.png").id;
@@ -126,11 +208,13 @@ void EntityPlayer::drawGUI(GLEngine::SpriteBatch& sb, GLEngine::SpriteFont& sf) 
 
 		glm::vec4 destRect(HOTBAR_BOX_SIZE / 4 + (HOTBAR_BOX_SIZE + HOTBAR_BOX_PADDING) * m_selectedHotbox, HOTBAR_BOX_SIZE / 4, HOTBAR_BOX_SIZE, HOTBAR_BOX_SIZE);
 		sb.draw(destRect, fullUV, hotbarSelectImgId, 1.1f, fullColour);
-	} // Hotbar END
+	} // Hotbar END*/
 
 
-	if(m_inventoryOpen) {
+	if(m_bagOpen) {
 		m_inventory->draw(sb, sf, m_position.x, m_position.y);
+	} else if(m_inventoryOpen) {
+		m_armourAttackWrapper->draw(sb, sf, m_position.x, m_position.y);
 	}
 
 	sb.end();
@@ -281,8 +365,8 @@ void EntityPlayer::updateInput(GLEngine::InputManager* input, World* world) {
 		}
 	}
 
-	if(m_canInteract) {
-		if(input->isKeyPressed(SDLK_r)) {
+	if(canInteract()) {
+		if(input->isKeyPressed(SDLK_e)) {
 			if(m_selectedEntity) { // must hover mouse over entity and press 'e'
 				if(m_selectedEntity->getType() == XMLModule::EntityType::NPC) {
 					dynamic_cast<EntityNPC*>(m_selectedEntity)->onTalk();
@@ -296,74 +380,48 @@ void EntityPlayer::updateInput(GLEngine::InputManager* input, World* world) {
 			}
 		}
 
-		if(input->isKeyDown(SDLK_p)) {
-			m_inventory->addItem(new Item(1, ItemIDs::BLOCK_WOOD, true));
-		}
-
-		if(input->isKeyPressed(SDL_BUTTON_LEFT) && (m_selectedBlock || true) && !m_inventoryOpen) {
+		if(input->isKeyPressed(SDL_BUTTON_LEFT) && m_selectedBlock) {
 			//if(m_favouriteItems[m_selectedHotbox]) m_favouriteItems[m_selectedHotbox]->onLeftClick(m_selectedBlock, world);
-			if(!m_favouriteItems[m_selectedHotbox]) {
+			/*if(!m_favouriteItems[m_selectedHotbox]) {
 				Tile* t = new Tile(m_selectedBlock->getPosition(), m_selectedBlock->getLayer(), 0, SaveDataTypes::MetaData(), false);
 				world->setTile(t);
-			}
+			}*/
 			//if(m_inventory) m_inventory->updateWeight();
 
 
 			activateAttack(0);
-		}
-		if(input->isKeyPressed(SDL_BUTTON_RIGHT) && !m_inventoryOpen) {
+		} else if(input->isKeyPressed(SDL_BUTTON_RIGHT)) {
 			if(m_selectedBlock) {
-				if(m_favouriteItems[m_selectedHotbox]) {
+				/*if(m_favouriteItems[m_selectedHotbox]) {
 					m_favouriteItems[m_selectedHotbox]->onRightClick(m_selectedBlock);
-				}
+				}*/
 				m_inventory->updateWeight();
 				if(m_selectedBlock->getID() != (unsigned int)TileIDs::AIR) {
 					m_selectedBlock->onInteract_RightClicked();
 				}
 			}
 		}
-		if(input->isKeyPressed(SDLK_r)) {
-			Item* newItem = new Item(1, ItemIDs::BLOCK_DIRT, true);
-			m_inventory->addItem(newItem);
-		}
-		if(input->isKeyPressed(SDLK_t)) {
-			if(input->isKeyDown(SDLK_LSHIFT)) {
-				Item* newItem = new Item(1, ItemIDs::BLOCK_TORCH_BRIGHT, true);
-
-				m_inventory->addItem(newItem);
-			} else {
-				Item* newItem = new Item(1, ItemIDs::BLOCK_TORCH, true);
-				m_inventory->addItem(newItem);
-			}
-		}
-		if(input->isKeyPressed(SDLK_i)) {
-			m_inventoryOpen = !m_inventoryOpen;
-			m_inventory->setToDraw(m_inventoryOpen);
-		}
 	}
 
-	if(input->isKeyPressed(SDLK_1)) {
-		m_selectedHotbox = 0;
-		m_favouriteItems[0] = m_inventory->getItem(0);
-	} else if(input->isKeyPressed(SDLK_2)) {
-		m_selectedHotbox = 1;
-		m_favouriteItems[1] = m_inventory->getItem(1);
-	} else if(input->isKeyPressed(SDLK_3)) {
-		m_selectedHotbox = 2;
-	} else if(input->isKeyPressed(SDLK_4)) {
-		m_selectedHotbox = 3;
-	} else if(input->isKeyPressed(SDLK_5)) {
-		m_selectedHotbox = 4;
-	} else if(input->isKeyPressed(SDLK_6)) {
-		m_selectedHotbox = 5;
-	} else if(input->isKeyPressed(SDLK_7)) {
-		m_selectedHotbox = 6;
-	} else if(input->isKeyPressed(SDLK_8)) {
-		m_selectedHotbox = 7;
-	} else if(input->isKeyPressed(SDLK_9)) {
-		m_selectedHotbox = 8;
-	} else if(input->isKeyPressed(SDLK_0)) {
-		m_selectedHotbox = 9;
+	// The inventory and bag should not be opened at the same time. One or the other.
+	if(input->isKeyPressed(SDLK_b) && !m_inventoryOpen) { // Open bag
+		m_bagOpen = !m_bagOpen;
+		m_inventory->setToDraw(m_bagOpen);
+	}
+	if(input->isKeyPressed(SDLK_i) && !m_bagOpen) { // open armour/attack menu
+		m_statusBoxFrame->setVisible(m_inventoryOpen);
+		m_statusBoxFrame->setEnabled(m_inventoryOpen);
+		m_buffBoxFrame->setVisible(m_inventoryOpen);
+		m_buffBoxFrame->setEnabled(m_inventoryOpen);
+		m_inventoryOpen = !m_inventoryOpen;
+		m_armourAttackWrapper->setToDraw(m_inventoryOpen);
+	}
+
+	for(unsigned int i = 1; i < 9; i++) { // Just 1-9
+		if(input->isKeyPressed(SDLK_0 + i)) {
+			m_selectedHotbox = i - 1;
+			//m_favouriteItems[i-1] = m_inventory->getItem(i-1);
+		}
 	}
 }
 

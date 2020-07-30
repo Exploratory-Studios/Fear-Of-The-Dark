@@ -3,11 +3,30 @@
 #include <GUI.h>
 #include <Camera2D.h>
 #include <SpriteFont.h>
+#include <SpriteBatch.h>
 #include <InputManager.h>
 
 #include "EntityNPC.h"
 
 class WorldIOManager;
+
+class ArmourAttackWrapper {
+		// Holds functions and objects for the Armour/Attack changing screen
+	public:
+		ArmourAttackWrapper(std::string& UUID, std::shared_ptr<NPCInventory> inventory);
+		~ArmourAttackWrapper();
+
+		void setToDraw(bool& setting);
+
+		void draw(GLEngine::SpriteBatch& sb, GLEngine::SpriteFont& sf, float x, float y); // This draws our armourGrid, attacksGrid, and inventory.
+		void update();
+
+	private:
+		CEGUI::FrameWindow* m_window = nullptr;
+		std::shared_ptr<InventoryBase> m_armourGrid; // These InventoryBase classes allow us to draw, disable resizing, etc.
+		std::shared_ptr<InventoryBase> m_attacksGrid;
+		std::shared_ptr<NPCInventory> m_inventory;
+};
 
 class EntityPlayer : public EntityNPC {
 		friend class WorldIOManager;
@@ -51,12 +70,12 @@ class EntityPlayer : public EntityNPC {
 			return m_selectedBlock;
 		}
 		bool canInteract() const {
-			return m_canInteract;
+			return m_canInteract && !m_inventoryOpen && !m_bagOpen;
 		}
 
 		/// Setters
 		void showInventory(bool open) {
-			m_inventoryOpen = open;
+			m_bagOpen = open;
 		}
 		void setSanity(float sanity) {
 			m_sanity = sanity;    // I'm running low on this
@@ -69,9 +88,12 @@ class EntityPlayer : public EntityNPC {
 
 	protected:
 		// GUI
-		bool m_inventoryOpen = false;
+		bool m_bagOpen = false; // "Quick inventory"
+		bool m_inventoryOpen = false; // Armour and attacks
 		bool m_questListOpen = false;
 		bool m_skillTreeOpen = false;
+
+		ArmourAttackWrapper* m_armourAttackWrapper = nullptr;
 
 		GLEngine::InputManager* m_input = nullptr; /// TODO: What the hell, past Davis??? Move this shit outta here!
 
@@ -97,7 +119,7 @@ class EntityPlayer : public EntityNPC {
 		// Internal
 		bool m_debuggingInfo = false; // FPS, selectedBlock, etc.
 		bool m_canInteract = true; // Sets if the player can't interact with objects, people, etc. Used when player is in cutscenes, talking, etc.
-		Item* m_favouriteItems[10] = {nullptr};
+		// ItemBlock* m_favouriteBlocks; // For building hotbar
 
 
 		// Stats

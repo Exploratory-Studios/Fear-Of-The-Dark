@@ -5,17 +5,21 @@
 
 #include "Factory.h"
 
-InventoryBase::InventoryBase(std::string& name, bool initGUI/* = true*/) {
+InventoryBase::InventoryBase(std::string& name, bool automaticResizing/* = true*/, bool initGUI/* = true*/, CEGUI::Window* parent/* = nullptr*/) : m_automaticallyResizes(automaticResizing) {
 	if(initGUI) {
 		Factory::getGUI()->setActiveContext(1); // Set this to the 2nd context (Inventory systems)
 
-		m_frameWindow = static_cast<CEGUI::FrameWindow*>(Factory::getGUI()->createWidget("FOTDSkin/FrameWindow", glm::vec4(-0.2f, -0.2f, 0.35f, 0.5f), glm::vec4(0.0f), name + "_Inventory"));
+		if(parent) {
+			m_frameWindow = static_cast<CEGUI::FrameWindow*>(Factory::getGUI()->createWidget(parent, "FOTDSkin/FrameWindow", glm::vec4(0.0f, 0.0f, 1.0f, 1.0f), glm::vec4(0.0f), name + "_Inventory"));
+		} else {
+			m_frameWindow = static_cast<CEGUI::FrameWindow*>(Factory::getGUI()->createWidget("FOTDSkin/FrameWindow", glm::vec4(-0.2f, -0.2f, 0.35f, 0.5f), glm::vec4(0.0f), name + "_Inventory"));
+		}
 		m_frameWindow->setCloseButtonEnabled(false);
 		m_frameWindow->setDragMovingEnabled(true);
 		m_frameWindow->setRollupEnabled(false);
 		m_frameWindow->setSizingEnabled(false);
 		m_frameWindow->setTitleBarEnabled(false);
-		m_frameWindow->setProperty("BackgroundColours", "tl: 80FFFFFF tr: 80FFFFFF bl: 80FFFFFF br: 80FFFFFF");
+		//m_frameWindow->setProperty("BackgroundColours", "tl: 80FFFFFF tr: 80FFFFFF bl: 80FFFFFF br: 80FFFFFF");
 		m_frameWindow->setProperty("CaptionColour", "FF101010");
 		m_frameWindow->subscribeEvent(CEGUI::Window::EventMouseDoubleClick, CEGUI::Event::Subscriber(&InventoryBase::onDoubleClick, this));
 		m_frameWindow->subscribeEvent(CEGUI::Window::EventMouseButtonUp, CEGUI::Event::Subscriber(&InventoryBase::onMouseUp, this));
@@ -46,7 +50,7 @@ InventoryBase::InventoryBase(std::string& name, bool initGUI/* = true*/) {
 
 bool InventoryBase::onDoubleClick(const CEGUI::EventArgs& e) {
 	const CEGUI::MouseEventArgs args = static_cast<const CEGUI::MouseEventArgs&>(e);
-	m_grabbingGUI = true;
+	m_grabbingGUI = m_movable;
 
 	return true;
 }
@@ -90,7 +94,7 @@ bool InventoryBase::onDragDropItemRemoved(const CEGUI::EventArgs& e) {
 bool InventoryBase::onDragDropItemAdded(const CEGUI::EventArgs& e) {
 	if(m_resizing) return true;
 
-	if((m_gridItems.size() / INVENTORY_WIDTH) == m_grid->getContentHeight()-2) {
+	if((m_gridItems.size() / INVENTORY_WIDTH) == m_grid->getContentHeight() - 2 && m_automaticallyResizes) {
 		resizeInventoryWidget();
 	}
 
@@ -99,7 +103,7 @@ bool InventoryBase::onDragDropItemAdded(const CEGUI::EventArgs& e) {
 
 	Item* item = added_item->getData<Item>();
 
-	if(getItemIndex(item) != (unsigned int)-1) return false; // It's already in this receiver. Don't do anything.
+	if(getItemIndex(item) != (unsigned int) - 1) return false; // It's already in this receiver. Don't do anything.
 
 	m_items.push_back(item); // This should ensure that m_items and m_gridItems have the same indices.
 	m_gridItems.push_back(added_item);
@@ -141,7 +145,7 @@ void InventoryBase::queueSubtraction(Item* item) {
 }
 
 void InventoryBase::subtractItem(Item* item) {
-	unsigned int index = (unsigned int)-1;
+	unsigned int index = (unsigned int) - 1;
 
 	for(unsigned int i = 0; i < m_items.size(); i++) {
 		if(item == m_items[i]) {
@@ -150,11 +154,11 @@ void InventoryBase::subtractItem(Item* item) {
 		}
 	}
 
-	if(index != (unsigned int)-1) {
+	if(index != (unsigned int) - 1) {
 		if(m_initedGUI) m_grid->removeItem(*m_gridItems[index]);
-		for(unsigned int j = index; j < m_items.size()-1; j++) {
-			m_items[j] = m_items[j+1];
-			m_gridItems[j] = m_gridItems[j+1];
+		for(unsigned int j = index; j < m_items.size() - 1; j++) {
+			m_items[j] = m_items[j + 1];
+			m_gridItems[j] = m_gridItems[j + 1];
 		}
 		m_items.pop_back();
 		m_gridItems.pop_back(); // ensure we affect both the m_items and m_gridItems
@@ -197,10 +201,10 @@ unsigned int InventoryBase::getCount() {
 	return count;
 }
 
-void InventoryBase::draw(GLEngine::SpriteBatch& sb, GLEngine::SpriteFont& sf, float x, float y) {
+void InventoryBase::draw(GLEngine::SpriteBatch& sb, GLEngine::SpriteFont& sf, float x, float y, bool relative/* = true*/) {
 	if(m_initedGUI && m_frameWindow->isVisible()) {
 
-		{
+		if(relative) {
 			// Set m_frameWindow position and size based on camera's convert screen to world and screen dims (retrieved from cam)
 
 			// Convert x and y to screen coords
@@ -220,6 +224,13 @@ void InventoryBase::draw(GLEngine::SpriteBatch& sb, GLEngine::SpriteFont& sf, fl
 
 			// Move the frame window
 			m_frameWindow->setPosition(CEGUI::UVector2(cegui_reldim(percentages.x), cegui_reldim(percentages.y)));
+
+			if(percentages.x < 0.0f || percentages.x > 1.0f) {
+				setToDraw(false);
+			}
+			if(percentages.y < 0.0f || percentages.y > 1.0f) {
+				setToDraw(false);
+			}
 			//m_frameWindow->setSize(CEGUI::USize(cegui_reldim(percentagesSize.x), cegui_reldim(percentages.y)));
 		}
 
@@ -322,16 +333,16 @@ void InventoryBase::createInventoryItem(Item* item) {
 void InventoryBase::resizeInventoryWidget() {
 	int w, h;
 	w = INVENTORY_WIDTH;
-	h = (m_gridItems.size()-1) / INVENTORY_WIDTH + 3;
+	h = (m_gridItems.size() - 1) / INVENTORY_WIDTH + 3;
 
 	m_resizing = true; // disables all events implemented by this class (onItemAdded, etc.)
 
 	m_grid->setContentSize(w, h);
 	m_grid->setSize(CEGUI::USize(cegui_reldim(INVENTORY_BOX_WIDTH * w), cegui_reldim(INVENTORY_BOX_HEIGHT * (h))));
 
-	for(int y = 0; y < m_gridItems.size()-1 / INVENTORY_WIDTH; y++) {
-		for(int x = 0; x < INVENTORY_WIDTH && (y*INVENTORY_WIDTH + x) < m_gridItems.size(); x++) {
-			m_grid->addItemAtLocation(*m_gridItems[(y*INVENTORY_WIDTH + x)], x, y);
+	for(int y = 0; y < m_gridItems.size() - 1 / INVENTORY_WIDTH; y++) {
+		for(int x = 0; x < INVENTORY_WIDTH && (y * INVENTORY_WIDTH + x) < m_gridItems.size(); x++) {
+			m_grid->addItemAtLocation(*m_gridItems[(y * INVENTORY_WIDTH + x)], x, y);
 		}
 	}
 

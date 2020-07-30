@@ -29,6 +29,10 @@ namespace CEGUI {
 				m_verificationFunction = func;
 			}
 
+			void setReceiving(bool& setting) {
+				m_receiving = setting;
+			}
+
 		protected:
 			// write the item's layoout data into the content map.
 			void writeItemToContentMap(const GUI_InventoryItem& item);
@@ -42,6 +46,9 @@ namespace CEGUI {
 
 			// Function to verify if an item can be placed
 			std::function<bool(GUI_InventoryItem&)> m_verificationFunction;
+
+			// Can this receiver accept new items?
+			bool m_receiving = true;
 	};
 
 }

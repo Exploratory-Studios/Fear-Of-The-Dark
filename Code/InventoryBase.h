@@ -17,7 +17,7 @@
 
 class InventoryBase {
 	public:
-		InventoryBase(std::string& name, bool initGUI = true);
+		InventoryBase(std::string& name, bool automaticResizing = true, bool initGUI = true, CEGUI::Window* parent = nullptr);
 		virtual ~InventoryBase();
 
 		void init();
@@ -54,11 +54,25 @@ class InventoryBase {
 
 		void updateWeight();
 		void update();
-		void draw(GLEngine::SpriteBatch& sb, GLEngine::SpriteFont& sf, float x, float y); // This moves the position of the CEGUI widgets to the in-game coords given. Useful.
+		void draw(GLEngine::SpriteBatch& sb, GLEngine::SpriteFont& sf, float x, float y, bool relative = true); // This moves the position of the CEGUI widgets to the in-game coords given. Useful.
 
 		void setToDraw(bool setting) {
 			m_frameWindow->setEnabled(setting);
 			m_frameWindow->setVisible(setting);
+		}
+
+		void setContentSize(int w, int h) {
+			m_grid->setContentSize(w, h);
+		}
+
+		void setMovable(bool setting) {
+			m_movable = setting;
+		}
+
+		void setDestRect(glm::vec4& destRect) {
+			m_destRect = destRect;
+			m_frameWindow->setPosition(CEGUI::UVector2(cegui_reldim(destRect.x), cegui_reldim(destRect.y)));
+			m_frameWindow->setSize(CEGUI::USize(cegui_reldim(destRect.z), cegui_reldim(destRect.w)));
 		}
 
 		SaveDataTypes::InventoryData getInventorySaveData();
@@ -85,7 +99,9 @@ class InventoryBase {
 
 		bool m_grabbingGUI = false;
 		bool m_resizing = false;
+		bool m_automaticallyResizes = true;
 		bool m_initedGUI = false;
+		bool m_movable = true;
 
 		void createInventoryItem(Item* item); // Creates and adds a GUI_InventoryItem to the reciever.
 		void resizeInventoryWidget(); // Resizes the inventory (m_grid) to have the height (necessaryHeight + 1).

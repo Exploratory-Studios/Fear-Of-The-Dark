@@ -9,16 +9,17 @@ namespace CEGUI {
 
 	GUI_InventoryReceiver::GUI_InventoryReceiver(const String& type, const String& name) :
 		Window(type, name),
-		m_verificationFunction([](GUI_InventoryItem& a)->bool{ return true; }) {
+		m_verificationFunction([](GUI_InventoryItem & a)->bool{ return true; }),
+		m_receiving(true) {
 		setDragDropTarget(true);
 	}
 
 	bool GUI_InventoryReceiver::addItemAtLocation(GUI_InventoryItem& item, int x, int y) {
-		if (itemWillFitAtLocation(item, x, y) && (m_verificationFunction(item) || dynamic_cast<GUI_InventoryReceiver*>(item.getParent()) == this)) {
+		if(itemWillFitAtLocation(item, x, y) && (m_verificationFunction(item) || dynamic_cast<GUI_InventoryReceiver*>(item.getParent()) == this)) {
 			GUI_InventoryReceiver* old_receiver =
 			    dynamic_cast<GUI_InventoryReceiver*>(item.getParent());
 
-			if (old_receiver)
+			if(old_receiver)
 				old_receiver->removeItem(item);
 
 			item.setLocationOnReceiver(x, y);
@@ -40,7 +41,7 @@ namespace CEGUI {
 	}
 
 	void GUI_InventoryReceiver::removeItem(GUI_InventoryItem& item) {
-		if (item.getParent() != this ||
+		if(item.getParent() != this ||
 		        item.locationOnReceiverX() == -1 ||
 		        item.locationOnReceiverY() == -1)
 			return;
@@ -51,13 +52,13 @@ namespace CEGUI {
 	}
 
 	void GUI_InventoryReceiver::writeItemToContentMap(const GUI_InventoryItem& item) {
-		if (item.locationOnReceiverX() == -1 || item.locationOnReceiverY() == -1)
+		if(item.locationOnReceiverX() == -1 || item.locationOnReceiverY() == -1)
 			return;
 
-		for (int y = 0; y < item.getContentHeight(); ++y) {
+		for(int y = 0; y < item.getContentHeight(); ++y) {
 			const int map_y = item.locationOnReceiverY() + y;
 
-			for (int x = 0; x < item.getContentWidth(); ++x) {
+			for(int x = 0; x < item.getContentWidth(); ++x) {
 				const int map_x = item.locationOnReceiverX() + x;
 
 				int val;
@@ -74,13 +75,13 @@ namespace CEGUI {
 	}
 
 	void GUI_InventoryReceiver::eraseItemFromContentMap(const GUI_InventoryItem& item) {
-		if (item.locationOnReceiverX() == -1 || item.locationOnReceiverY() == -1)
+		if(item.locationOnReceiverX() == -1 || item.locationOnReceiverY() == -1)
 			return;
 
-		for (int y = 0; y < item.getContentHeight(); ++y) {
+		for(int y = 0; y < item.getContentHeight(); ++y) {
 			const int map_y = item.locationOnReceiverY() + y;
 
-			for (int x = 0; x < item.getContentWidth(); ++x) {
+			for(int x = 0; x < item.getContentWidth(); ++x) {
 				const int map_x = item.locationOnReceiverX() + x;
 
 				int val;
@@ -99,30 +100,32 @@ namespace CEGUI {
 
 	bool GUI_InventoryReceiver::itemWillFitAtLocation(const GUI_InventoryItem& item,
 	        int x, int y) {
-		if (x < 0 || y < 0)
+		if(x < 0 || y < 0)
 			return false;
 
-		if (x + item.getContentWidth() > m_content.getWidth() ||
+		if(x + item.getContentWidth() > m_content.getWidth() ||
 		        y + item.getContentHeight() > m_content.getHeight())
 			return false;
+
+		if(!m_receiving) return false;
 
 		const bool already_attached = this == item.getParent();
 		// if item is already attatched erase its data from the content map so the
 		// test result is reliable.
-		if (already_attached)
+		if(already_attached)
 			eraseItemFromContentMap(item);
 
 		bool result = true;
-		for (int item_y = 0; item_y < item.getContentHeight() && result; ++item_y) {
-			for (int item_x = 0; item_x < item.getContentWidth() && result; ++item_x) {
-				if (m_content.getElementAtLocation(item_x + x, item_y + y) != item.getID() && m_content.getElementAtLocation(item_x + x, item_y + y) != -1 &&
+		for(int item_y = 0; item_y < item.getContentHeight() && result; ++item_y) {
+			for(int item_x = 0; item_x < item.getContentWidth() && result; ++item_x) {
+				if(m_content.getElementAtLocation(item_x + x, item_y + y) != item.getID() && m_content.getElementAtLocation(item_x + x, item_y + y) != -1 &&
 				        item.isSolidAtLocation(item_x, item_y))
 					result = false;
 			}
 		}
 
 		// re-write item into content map if we erased it earlier.
-		if (already_attached)
+		if(already_attached)
 			writeItemToContentMap(item);
 
 		return result;
@@ -131,7 +134,7 @@ namespace CEGUI {
 	void GUI_InventoryReceiver::onDragDropItemDropped(DragDropEventArgs &e) {
 		GUI_InventoryItem* item = dynamic_cast<GUI_InventoryItem*>(e.dragDropItem);
 
-		if (!item)
+		if(!item)
 			return;
 
 		const Sizef square_size(squarePixelSize());
@@ -146,20 +149,20 @@ namespace CEGUI {
 	}
 
 	void GUI_InventoryReceiver::populateGeometryBuffer() {
-		if (!isUserStringDefined("BlockImage"))
+		if(!isUserStringDefined("BlockImage"))
 			return;
 
 		const Image* img = PropertyHelper<Image*>::fromString(getUserString("BlockImage"));
 
-		if (!img)
+		if(!img)
 			return;
 
 		const Sizef square_size(squarePixelSize());
 
-		for (int y = 0; y < m_content.getHeight(); ++y) {
-			for (int x = 0; x < m_content.getWidth(); ++x) {
+		for(int y = 0; y < m_content.getHeight(); ++y) {
+			for(int x = 0; x < m_content.getWidth(); ++x) {
 				argb_t colour = 0xFFFFFFFF;
-				if (m_content.getElementAtLocation(x, y))
+				if(m_content.getElementAtLocation(x, y))
 					colour = 0xFFFFFFFF;
 
 				img->render(*d_geometry,

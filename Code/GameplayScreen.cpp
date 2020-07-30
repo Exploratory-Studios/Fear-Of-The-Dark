@@ -554,10 +554,10 @@ void GameplayScreen::checkInput() {
 	}
 
 	if(m_game->inputManager.isKeyPressed(SDLK_ESCAPE)) {
-		if(m_gameState == GameState::PLAY) {
-			pauseGame();
-		} else if(m_gameState == GameState::PAUSE) {
+		if(m_gameState == GameState::PAUSE) {
 			continueGame();
+		} else {
+			pauseGame();
 		}
 	}
 
@@ -757,6 +757,7 @@ void GameplayScreen::drawDebug() {
 #endif //DEV_CONTROLS
 
 void GameplayScreen::pauseGame() {
+	m_lastGameState = m_gameState;
 	m_gameState = GameState::PAUSE;
 	for(unsigned int i = 0; i < m_pauseWidgets.size(); i++) {
 		m_pauseWidgets[i]->show();
@@ -766,7 +767,7 @@ void GameplayScreen::pauseGame() {
 }
 
 void GameplayScreen::continueGame() {
-	m_gameState = GameState::PLAY;
+	m_gameState = m_lastGameState;
 	for(unsigned int i = 0; i < m_pauseWidgets.size(); i++) {
 		m_pauseWidgets[i]->hide();
 		m_pauseWidgets[i]->disable();

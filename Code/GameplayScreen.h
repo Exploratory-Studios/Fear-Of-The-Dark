@@ -124,6 +124,7 @@ class GameplayScreen : public GLEngine::IGameScreen {
 		AudioManager* m_audio = nullptr;
 
 		GameState m_gameState = GameState::PLAY;
+		GameState m_lastGameState = GameState::PLAY;
 
 		glm::vec2 m_smoothMoveTarget; // Only used by camera, set only by ScripterMain
 		float m_smoothMoveSpeed = 0.0f; // Only used by camera, set only by ScripterMain

@@ -3,6 +3,8 @@
 #include "PresetValues.h"
 
 #include <fstream>
+#include <Logging.h>
+#include <GLEngineErrors.h>
 
 float Options::masterVolume = 1.0f;
 float Options::musicVolume = 1.0f;

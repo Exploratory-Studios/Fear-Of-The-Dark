@@ -1,5 +1,7 @@
 #include "XMLDataTypes.h"
 
+#include "Categories.h"
+
 #include "MetaData.h"
 #include "XMLData.h"
 #include "ScriptQueue.h"

@@ -14,11 +14,11 @@ Tile* createTile(unsigned int id, glm::vec2 pos, int layer, bool loadTex, SaveDa
 	XMLModule::TileData t = XMLModule::XMLData::getTileData(id);
 
 	switch((unsigned int)t.type) {
-		case (unsigned int)XMLModule::TileType::TILE: {
+		case(unsigned int)XMLModule::TileType::TILE: {
 			return new Tile(pos, layer, id, metaData, loadTex);
 			break;
 		}
-		case (unsigned int)XMLModule::TileType::CONTAINER: {
+		case(unsigned int)XMLModule::TileType::CONTAINER: {
 			return new TileContainer(pos, layer, id, metaData, loadTex);
 			break;
 		}
@@ -114,7 +114,7 @@ float Tile::getLight() {
 }
 
 float Tile::getSurroundingHeat(World* world) {
-	int x = (int)m_pos.x;
+	/*int x = (int)m_pos.x;
 	int y = (int)m_pos.y;
 
 	float temp = 0.0f;
@@ -166,9 +166,9 @@ float Tile::getSurroundingHeat(World* world) {
 		if(down) down->setToUpdate_heat();
 		if(left) left->setToUpdate_heat();
 		if(right) right->setToUpdate_heat();
-	}
+	}*/
 
-	return temp / 4.0f;
+	return 20.0f;//temp / 4.0f;
 }
 
 float Tile::getHeat(World* world) {

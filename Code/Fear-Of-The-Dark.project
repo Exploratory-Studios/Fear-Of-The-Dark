@@ -1,5 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <CodeLite_Project Name="Fear-Of-The-Dark" Version="11000">
+  <Plugins>
+    <Plugin Name="qmake">
+      <![CDATA[00040001N0005Debug0000000000000001N0007DebugVB0000000000000001N0015Release - Linux0000000000000001N0017Release - Windows000000000000]]>
+    </Plugin>
+  </Plugins>
   <VirtualDirectory Name="Shaders &amp; Data">
     <File Name="../Assets/Shaders/vignetteShader.vert"/>
     <File Name="../Assets/Shaders/vignetteShader.frag"/>
@@ -14,11 +19,6 @@
     <File Name="../Assets/Shaders/colourShader.vert"/>
     <File Name="../Assets/Shaders/colourShader.frag"/>
   </VirtualDirectory>
-  <Plugins>
-    <Plugin Name="qmake">
-      <![CDATA[00040001N0005Debug0000000000000001N0007DebugVB0000000000000001N0015Release - Linux0000000000000001N0017Release - Windows000000000000]]>
-    </Plugin>
-  </Plugins>
   <VirtualDirectory Name="GUI">
     <File Name="GUI_IntArray2D.h"/>
     <File Name="GUI_IntArray2D.cpp"/>
@@ -32,6 +32,7 @@
     <File Name="GUI_InventoryBase.h"/>
   </VirtualDirectory>
   <VirtualDirectory Name="src">
+    <File Name="PresetValues.cpp"/>
     <File Name="Options.cpp"/>
     <File Name="TileInventory.cpp"/>
     <File Name="TileInventory.h"/>

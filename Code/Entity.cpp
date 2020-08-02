@@ -14,6 +14,8 @@
 
 #include <math.h>
 
+#include "PresetValues.h"
+
 Entity::Entity(glm::vec2 pos, unsigned int layer, SaveDataTypes::MetaData data) : m_position(pos), m_layer(layer), m_metaData(data) {
 	generateUUID();
 } // This is more of an abstract class

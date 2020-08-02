@@ -42,8 +42,8 @@ ArmourAttackWrapper::ArmourAttackWrapper(std::string& UUID, std::shared_ptr<NPCI
 	m_armourGrid->setMovable(false);
 	m_attacksGrid->setMovable(false);
 
-	glm::vec4 armourPos(0.1f, 0.1f, 0.1f, 0.6f); // We need to offset by half dims. 0.0, 0.0 is the centre of the screen for some reason. I'm too lazy to fix it.
-	glm::vec4 attacksPos(0.1f, 0.8f, 0.2f, 0.1f);
+	glm::vec4 armourPos(0.1f, 0.1f, INVENTORY_BOX_WIDTH, INVENTORY_BOX_HEIGHT * 3); // We need to offset by half dims. 0.0, 0.0 is the centre of the screen for some reason. I'm too lazy to fix it.
+	glm::vec4 attacksPos(0.1f, 0.8f, INVENTORY_BOX_WIDTH * 3, INVENTORY_BOX_HEIGHT);
 
 	m_armourGrid->setDestRect(armourPos);
 	m_attacksGrid->setDestRect(attacksPos);
@@ -58,7 +58,7 @@ ArmourAttackWrapper::~ArmourAttackWrapper() {
 
 void ArmourAttackWrapper::setToDraw(bool& setting) {
 	if(setting == true) { // Make sure the inventory is in the right position before opening
-		glm::vec4 inventoryPos(0.7f, 0.25f, 0.2f, 0.3f);
+		glm::vec4 inventoryPos(0.65f, 0.25f, 0.35f, 0.5f);
 		m_inventory->setDestRect(inventoryPos);
 		m_inventory->setMovable(false);
 	} else {
@@ -317,6 +317,14 @@ void EntityPlayer::updateMouse(World* world, glm::vec2 mouseCoords) {
 }
 
 void EntityPlayer::updateInput(GLEngine::InputManager* input, World* world) {
+
+	/// THESE ARE PURELY FOR DEVELOPMENT
+	if(input->isKeyPressed(SDLK_t)) {
+		m_inventory->addItem(new Item(1, (unsigned int)ItemIDs::BLOCK_TORCH, true));
+	}
+
+
+
 	if(input->isKeyDown(SDLK_w) && m_stamina > 0.0f) {
 		if(m_onGround) {
 			m_velocity.y = m_jumpHeight; // y=(jumpHeight*TILE_SIZE+3/4*TILE_SIZE+-5.88*x^2)  initial jump power is the absolute of the x when y=0. jumpheight is in eights of tiles and you must add 4

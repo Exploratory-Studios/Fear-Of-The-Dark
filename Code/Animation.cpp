@@ -3,7 +3,7 @@
 #include "Entity.h"
 
 #include <string>
-
+#include <ResourceManager.h>
 #include <iostream>
 
 namespace AnimationModule {

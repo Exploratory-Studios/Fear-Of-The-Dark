@@ -2,6 +2,8 @@
 
 #include <memory>
 
+#include "Categories.h"
+
 #include "Entity.h"
 
 #include "XMLDataTypes.h"

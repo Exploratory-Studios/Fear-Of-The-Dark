@@ -1,5 +1,7 @@
 #include "Buff.h"
 
+#include <ResourceManager.h>
+
 #include "ScriptQueue.h"
 #include "XMLDataTypes.h"
 #include "XMLData.h"

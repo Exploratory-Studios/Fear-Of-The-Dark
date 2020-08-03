@@ -6,7 +6,7 @@
 // These must be #defines because the array size is taken at compile time.
 #define CHUNK_SIZE 32
 #define WORLD_HEIGHT 300
-#define WORLD_SIZE CHUNK_SIZE * 10
+#define WORLD_SIZE 320
 #define WORLD_DEPTH 4
 
 // How high does water spawn naturally?

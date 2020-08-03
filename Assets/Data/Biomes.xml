@@ -65,6 +65,7 @@
 	</entities>
 </biome>
 <biome id="6" name="South Africa">
+	<backgroundTexture>BiomeBackgrounds/TestBackground.png</backgroundTexture>
 	<baseHeight>70</baseHeight>
 	<maxHeightDiff>30</maxHeightDiff>
 	<maxTemperature>40.000000</maxTemperature>
@@ -75,6 +76,7 @@
 	</entities>
 </biome>
 <biome id="7" name="Asia">
+	<backgroundTexture>BiomeBackgrounds/TestBackground.png</backgroundTexture>
 	<baseHeight>40</baseHeight>
 	<maxHeightDiff>2</maxHeightDiff>
 	<maxTemperature>25.000000</maxTemperature>

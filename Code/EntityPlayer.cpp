@@ -323,8 +323,6 @@ void EntityPlayer::updateInput(GLEngine::InputManager* input, World* world) {
 		m_inventory->addItem(new Item(1, (unsigned int)ItemIDs::BLOCK_TORCH, true));
 	}
 
-
-
 	if(input->isKeyDown(SDLK_w) && m_stamina > 0.0f) {
 		if(m_onGround) {
 			m_velocity.y = m_jumpHeight; // y=(jumpHeight*TILE_SIZE+3/4*TILE_SIZE+-5.88*x^2)  initial jump power is the absolute of the x when y=0. jumpheight is in eights of tiles and you must add 4

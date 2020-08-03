@@ -39,7 +39,7 @@ class Item {
 
 		void init();
 
-		void onRightClick(Tile* selectedBlock);
+		virtual void onRightClick(Tile* selectedBlock);
 
 		std::vector<ScriptingModule::Argument> generateLuaData() {
 			std::vector<ScriptingModule::Argument> args = {

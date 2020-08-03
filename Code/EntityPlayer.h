@@ -10,6 +10,9 @@
 
 class WorldIOManager;
 
+class ArmourInventory;
+class WeaponInventory;
+
 class ArmourAttackWrapper {
 		// Holds functions and objects for the Armour/Attack changing screen
 	public:
@@ -23,8 +26,8 @@ class ArmourAttackWrapper {
 
 	private:
 		CEGUI::FrameWindow* m_window = nullptr;
-		std::shared_ptr<InventoryBase> m_armourGrid; // These InventoryBase classes allow us to draw, disable resizing, etc.
-		std::shared_ptr<InventoryBase> m_attacksGrid;
+		std::shared_ptr<ArmourInventory> m_armourGrid; // These InventoryBase classes allow us to draw, disable resizing, etc.
+		std::shared_ptr<WeaponInventory> m_attacksGrid;
 		std::shared_ptr<NPCInventory> m_inventory;
 };
 
@@ -40,9 +43,9 @@ class EntityPlayer : public EntityNPC {
 		virtual void onDraw(GLEngine::SpriteBatch& sb, float time, int layerDifference, float xOffset) override;
 		void drawGUI(GLEngine::SpriteBatch& sb, GLEngine::SpriteFont& sf);
 
-		void updateStats(World* world, float timeStep);
-		void updateMouse(World* world, glm::vec2 mouseCoords);
-		void updateInput(GLEngine::InputManager* input, World* world);
+		void updateStats(float timeStep);
+		void updateMouse(glm::vec2 mouseCoords);
+		void updateInput(GLEngine::InputManager* input);
 
 		/// Getters
 		float getSanity() {

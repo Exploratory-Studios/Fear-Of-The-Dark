@@ -2,7 +2,7 @@
 
 /// LoadScreen FUNCTIONS
 
-LoadScreen::LoadScreen(GLEngine::Window* window, WorldIOManager* WorldIOManager, World* world) : m_window(window), m_worldIOManager(WorldIOManager), m_world(world) {
+LoadScreen::LoadScreen(GLEngine::Window* window, WorldIOManager* WorldIOManager) : m_window(window), m_worldIOManager(WorldIOManager) {
 
 }
 
@@ -200,7 +200,7 @@ bool LoadScreen::onNewWorldCreateNewButtonClicked(const CEGUI::EventArgs& e) { /
 		seed += (char)text[i];
 	}
 
-	m_worldIOManager->createWorld(seed, m_newWorldNameEditbox->getText().c_str(), m_newWorldFlatCheckbox->isSelected(), m_world);
+	m_worldIOManager->createWorld(seed, m_newWorldNameEditbox->getText().c_str(), m_newWorldFlatCheckbox->isSelected());
 
 	//m_worldIOManager->createWorld(seed, m_newWorldNameEditbox->getText().c_str(), m_newWorldFlatCheckbox->isSelected(), nullptr);
 
@@ -214,7 +214,7 @@ bool LoadScreen::onLoadWorldLoadButtonClicked(const CEGUI::EventArgs& e) { /// T
 
 	std::string text = m_loadWorldNameListbox->getFirstSelectedItem()->getText().c_str();
 
-	m_worldIOManager->loadWorld(text, m_world);
+	m_worldIOManager->loadWorld(text);
 
 	m_currentState = GLEngine::ScreenState::CHANGE_NEXT;
 	m_nextScreenIndex = SCREEN_INDEX_WAIT;

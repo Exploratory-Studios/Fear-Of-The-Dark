@@ -49,11 +49,11 @@ EntityProjectile::~EntityProjectile() {
 	//dtor
 }
 
-void EntityProjectile::collideWithTiles(World* world) {
+void EntityProjectile::collideWithTiles() {
 	if(m_collideWithBlocks) {
 		std::vector<glm::vec2> positions;
 
-		checkTilePosition(world, positions,
+		checkTilePosition(positions,
 		                  m_position.x + m_size.x / 2.0f,
 		                  m_position.y + m_size.y / 2.0f);
 
@@ -108,13 +108,13 @@ void EntityProjectile::drawNormal(GLEngine::SpriteBatch& sb, float time, int lay
 	/// TODO: Add normal maps to animations.
 }
 
-void EntityProjectile::onUpdate(World* world, float timeStep, unsigned int selfIndex) {
+void EntityProjectile::onUpdate(float timeStep, unsigned int selfIndex) {
 	if(m_lifeTime > 0.0f) {
 		m_lifeTime -= timeStep;
 		if(m_lifeTime <= 0.0f) Factory::getEntityManager()->queueEntityToRemove(this);
 	}
 }
 
-void EntityProjectile::onTick(World* world) {
+void EntityProjectile::onTick() {
 	m_anim.tick();
 }

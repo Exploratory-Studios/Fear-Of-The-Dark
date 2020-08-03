@@ -28,6 +28,7 @@ namespace XMLModule {
 		CONSUMABLE,
 		ARMOUR,
 		WEAPON,
+		BLOCK,
 		MISC
 	};
 
@@ -415,6 +416,21 @@ namespace XMLModule {
 
 				addAttributes(attrs);
 			}
+	};
+
+	class ItemBlockData : public ItemData {
+		public:
+			ItemBlockData() {
+				type = ItemType::BLOCK;
+
+				std::vector<AttributeBase*> attrs = {
+					new Attribute<unsigned int>("blockID", AttributeType::UNSIGNED_INT, &blockID)
+				};
+
+				addAttributes(attrs);
+			}
+
+			unsigned int blockID;
 	};
 
 	class BiomeData : public GenericData {

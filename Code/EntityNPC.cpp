@@ -350,7 +350,7 @@ void EntityNPC::onUpdate(World* world, float timeStep, unsigned int selfIndex) {
 	}*/
 }
 
-void EntityNPC::onTick(World* world) {
+void EntityNPC::onTick() {
 	m_body.tick();
 
 	for(unsigned int i = 0; i < m_buffs.size(); i++) {
@@ -685,7 +685,7 @@ NavTile* EntityNPC::expandTile(World* world, glm::vec3 pos, int jumpHeight, glm:
 	return ret;
 }
 
-void EntityNPC::calculateCost(World* world, NavTile* tile, glm::vec3 target) {
+void EntityNPC::calculateCost(NavTile* tile, glm::vec3 target) {
 	tile->h = world->getDistance(glm::vec2(tile->pos.x, tile->pos.y), glm::vec2(target.x, target.y)) + std::abs(tile->pos.z - target.z); /// TODO: Implement crossover
 	if(tile->parent) tile->h += tile->parent->h / 2.0f; // The distance to the entity is more important than the path. Plus, this improves performance.
 }

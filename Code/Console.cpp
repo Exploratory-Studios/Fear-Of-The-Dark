@@ -10,9 +10,8 @@ Console::~Console() {
 	//dtor
 }
 
-void Console::init(ScriptingModule::Scripter* scripter, World* world, QuestModule::QuestManager* qm, GameplayScreen* gs) {
+void Console::init(ScriptingModule::Scripter* scripter, QuestModule::QuestManager* qm, GameplayScreen* gs) {
 	m_scripter = scripter;
-	m_world = world;
 	m_qm = qm;
 	m_gs = gs;
 
@@ -47,7 +46,7 @@ void Console::hide() {
 	m_showing = false;
 }
 
-void Console::processCommand(World* world, QuestModule::QuestManager* qm, GameplayScreen* gs, std::string& command) {
+void Console::processCommand(QuestModule::QuestManager* qm, GameplayScreen* gs, std::string& command) {
 	m_scripter->executeCommand(command);
 }
 
@@ -57,7 +56,7 @@ bool Console::onEditboxInput(const CEGUI::EventArgs& e) {
 	const CEGUI::KeyEventArgs& newArgs = static_cast<const CEGUI::KeyEventArgs&>(e);
 	if(newArgs.scancode == CEGUI::Key::Return) {
 		std::string command = m_editbox->getText().c_str();
-		processCommand(m_world, m_qm, m_gs, command);
+		processCommand(m_qm, m_gs, command);
 		m_editbox->setText("");
 		m_scrollable->setVerticalScrollPosition(1.0f);
 		return true;

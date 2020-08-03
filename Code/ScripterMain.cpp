@@ -27,12 +27,12 @@ namespace ScriptingModule {
 
 	}
 
-	void Scripter::init(World* world, QuestModule::QuestManager* qm, GameplayScreen* gs, AudioManager* audio, GLEngine::ParticleEngine2D* particleEngine) {
+	void Scripter::init(QuestModule::QuestManager* qm, GameplayScreen* gs, AudioManager* audio, GLEngine::ParticleEngine2D* particleEngine) {
 		m_luaState = luaL_newstate();
 
 		luaL_openlibs(m_luaState);
 
-		pushDepsToRegistry(m_luaState, world, qm, gs, audio, particleEngine);
+		pushDepsToRegistry(m_luaState, qm, gs, audio, particleEngine);
 
 		// Utility
 		pushFunction(m_luaState, LuaScript::l_playSound, "playSound");

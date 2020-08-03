@@ -21,7 +21,7 @@
 #include <regex>
 #endif //DEV_CONTROLS
 
-GameplayScreen::GameplayScreen(GLEngine::Window* window, WorldIOManager* WorldIOManager, World* world) : m_window(window), m_WorldIOManager(WorldIOManager), m_world(world) {
+GameplayScreen::GameplayScreen(GLEngine::Window* window, WorldIOManager* WorldIOManager) : m_window(window), m_WorldIOManager(WorldIOManager) {
 
 }
 
@@ -83,7 +83,7 @@ void GameplayScreen::onEntry() {
 	m_console = new Console();
 	m_questManager = new QuestModule::QuestManager(m_scripter);
 
-	m_scripter->init(m_world, m_questManager, this, m_audio, &m_particle2d); /// TODO: Questmanager
+	m_scripter->init(m_questManager, this, m_audio, &m_particle2d); /// TODO: Questmanager
 
 	if(!Factory::getEntityManager()->getPlayer()) {
 		//Player p(glm::vec2(5.0f, 100.0f), true);
@@ -97,7 +97,7 @@ void GameplayScreen::onEntry() {
 	ScriptingModule::Script scr("setBlock(7, 16, 101, 0, \"\")", false);
 	ScriptingModule::ScriptQueue::activateScript(ScriptingModule::ScriptQueue::addScript(scr));
 
-	m_console->init(m_scripter, m_world, m_questManager, this);
+	m_console->init(m_scripter, m_questManager, this);
 
 	m_dialogueManager = new DialogueModule::DialogueManager(m_questManager);
 	//m_dialogueManager->activateDialogue(0);
@@ -133,13 +133,13 @@ void GameplayScreen::update() {
 	m_deltaTime = std::abs((FRAME_RATE / m_game->getFps()) + -1);
 	m_deltaTime++;
 
-	m_world->incrementTime();
+	Factory::getWorld()->incrementTime();
 	m_particle2d.update(1.0f);
 
 	checkInput();
 
-	if(m_world->getNextEra() != m_world->getEra()) {
-		m_WorldIOManager->setWorldEra(m_world, m_world->getNextEra());
+	if(Factory::getWorld()->getNextEra() != Factory::getWorld()->getEra()) {
+		m_WorldIOManager->setWorldEra(Factory::getWorld()->getNextEra());
 		/// TODO: Move to loading screen for this.
 	}
 
@@ -150,12 +150,12 @@ void GameplayScreen::update() {
 		// Set player caninteract
 
 		if(Factory::getEntityManager()->getPlayer() && !m_cutscenePause) {
-			Factory::getEntityManager()->getPlayer()->updateMouse(m_world, Factory::getGameCamera()->convertScreenToWorld(m_game->inputManager.getMouseCoords()));
-			Factory::getEntityManager()->getPlayer()->updateInput(&m_game->inputManager, m_world);
+			Factory::getEntityManager()->getPlayer()->updateMouse(Factory::getGameCamera()->convertScreenToWorld(m_game->inputManager.getMouseCoords()));
+			Factory::getEntityManager()->getPlayer()->updateInput(&m_game->inputManager);
 			/// TODO: Re-enable this -> m_world->getPlayer()->setCanInteract(!m_questManager->isDialogueActive());
 		}
 
-		m_world->updateTiles(getScreenBox() + glm::vec4(-10.0f, -10.0f, 20.0f, 20.0f));
+		Factory::getWorld()->updateTiles(getScreenBox() + glm::vec4(-10.0f, -10.0f, 20.0f, 20.0f));
 		Factory::getEntityManager()->updateEntities(1.0f); /// TODO: Use timestep
 
 		if(!m_cameraLocked) {
@@ -254,7 +254,7 @@ void GameplayScreen::draw() {
 		float playerDepth = 0.1f + (Factory::getEntityManager()->getPlayer()->getLayer() * (1.0f / (float)(WORLD_DEPTH)) * 0.9f);
 		glUniform1f(playerDepthUniform, playerDepth);
 
-		m_world->setLightsUniform(getScreenBox() + glm::vec4(0.0f, 0.0f, 1.0f, 1.0f), &m_postProcessor); // sets "lights" uniform of vec3s
+		Factory::getWorld()->setLightsUniform(getScreenBox() + glm::vec4(0.0f, 0.0f, 1.0f, 1.0f), &m_postProcessor); // sets "lights" uniform of vec3s
 
 		m_mainFBO.draw();
 		m_postProcessor.unuse();
@@ -286,7 +286,7 @@ void GameplayScreen::draw() {
 
 void GameplayScreen::drawSkyToFBO() {
 
-	float dayLight = cos((float)m_world->getTime() / (DAY_LENGTH / 6.28318f)) / 2.0f + 0.5f;
+	float dayLight = cos((float)Factory::getWorld()->getTime() / (DAY_LENGTH / 6.28318f)) / 2.0f + 0.5f;
 
 	glClearColor(0.3f * dayLight, 0.4f * dayLight, 1.0f * dayLight, 1.0f);
 
@@ -321,7 +321,7 @@ void GameplayScreen::drawSkyToFBO() {
 
 
 	int playerX = (int)Factory::getEntityManager()->getPlayer()->getPosition().x;
-	std::string backgroundPath = m_world->getBiome(playerX).backgroundTexture;
+	std::string backgroundPath = Factory::getWorld()->getBiome(playerX).backgroundTexture;
 
 	GLuint backgroundID = GLEngine::ResourceManager::getTexture(backgroundPath).id;
 
@@ -354,7 +354,7 @@ void GameplayScreen::drawWorldToFBO() {
 
 		m_spriteBatch.begin(GLEngine::GlyphSortType::NONE);
 
-		m_world->drawTiles(m_spriteBatch, m_spriteFont, m_dr, getScreenBox() + glm::vec4(0.0f, 0.0f, 1.0f, 1.0f), &m_textureProgram); // handles spritebatch.begin and end
+		Factory::getWorld()->drawTiles(m_spriteBatch, m_spriteFont, m_dr, getScreenBox() + glm::vec4(0.0f, 0.0f, 1.0f, 1.0f), &m_textureProgram); // handles spritebatch.begin and end
 		Factory::getEntityManager()->drawEntities(m_spriteBatch, m_spriteFont, m_dr, getScreenBox() + glm::vec4(0.0f, 0.0f, 1.0f, 1.0f));
 
 		m_spriteBatch.end();
@@ -381,7 +381,7 @@ void GameplayScreen::drawWorldNormalToFBO() {
 
 	m_spriteBatch.begin(GLEngine::GlyphSortType::NONE);
 
-	m_world->drawTilesNormal(m_spriteBatch, getScreenBox() + glm::vec4(0.0f, 0.0f, 1.0f, 1.0f), &m_textureProgram);
+	Factory::getWorld()->drawTilesNormal(m_spriteBatch, getScreenBox() + glm::vec4(0.0f, 0.0f, 1.0f, 1.0f), &m_textureProgram);
 	Factory::getEntityManager()->drawEntitiesNormal(m_spriteBatch, getScreenBox() + glm::vec4(0.0f, 0.0f, 1.0f, 1.0f));
 
 	m_spriteBatch.end();
@@ -401,7 +401,7 @@ void GameplayScreen::drawWorldSunlightToFBO() {
 	GLint pUniform = m_sunlightProgram.getUniformLocation("P");
 	glUniformMatrix4fv(pUniform, 1, GL_FALSE, &projectionMatrix[0][0]);
 
-	m_world->drawSunlight(m_spriteBatch, getScreenBox() + glm::vec4(0.0f, 0.0f, 1.0f, 1.0f)); // Should probably change screenBox to world coords. ///// NEVERMIND, It already does!
+	Factory::getWorld()->drawSunlight(m_spriteBatch, getScreenBox() + glm::vec4(0.0f, 0.0f, 1.0f, 1.0f)); // Should probably change screenBox to world coords. ///// NEVERMIND, It already does!
 
 	m_spriteBatch.end();
 	m_spriteBatch.renderBatch();
@@ -469,7 +469,7 @@ void GameplayScreen::drawGUIToScreen() {
 
 		Factory::getEntityManager()->getPlayer()->drawGUI(m_spriteBatch, m_spriteFont);
 		m_spriteBatch.begin();
-		m_world->drawTilesGUI(m_spriteBatch, m_spriteFont, getScreenBox() + glm::vec4(0.0f, 0.0f, 1.0f, 1.0f));
+		Factory::getWorld()->drawTilesGUI(m_spriteBatch, m_spriteFont, getScreenBox() + glm::vec4(0.0f, 0.0f, 1.0f, 1.0f));
 		m_spriteBatch.end();
 		m_spriteBatch.renderBatch();
 
@@ -573,9 +573,9 @@ void GameplayScreen::checkInput() {
 
 	if(m_game->inputManager.isKeyPressed(SDLK_F4)) {
 		//m_gameState = GameState::PAUSE;
-		m_WorldIOManager->saveWorld(m_world);
+		m_WorldIOManager->saveWorld();
 	} else if(m_game->inputManager.isKeyPressed(SDLK_F5)) {
-		m_WorldIOManager->loadWorld(m_world->getName(), m_world);
+		m_WorldIOManager->loadWorld(Factory::getWorld()->getName());
 	}
 
 }
@@ -694,7 +694,7 @@ void GameplayScreen::initUI() {
 
 void GameplayScreen::tick() {
 	// Happens not every second, nor each frame, but somewhere in between.
-	m_world->tickTiles(getScreenBox() + glm::vec4(-20.0f, -20.0f, 40.0f, 40.0f));
+	Factory::getWorld()->tickTiles(getScreenBox() + glm::vec4(-20.0f, -20.0f, 40.0f, 40.0f));
 	Factory::getEntityManager()->tickEntities();
 
 	if(!m_audio->isMusicPlaying()) {
@@ -744,11 +744,11 @@ void GameplayScreen::drawDebug() {
 		blockX = p->getSelectedBlock()->getPosition().x;
 		blockY = p->getSelectedBlock()->getPosition().y;
 
-		std::string biomeString = m_world->getBiome(p->getSelectedBlock()->getPosition().x).name;
+		std::string biomeString = Factory::getWorld()->getBiome(p->getSelectedBlock()->getPosition().x).name;
 
 		std::string display = "FPS: " + std::to_string((int)m_game->getFps());
 		display += "\nMouse x,y: " + std::to_string(blockX) + "," + std::to_string(blockY);
-		display += "\nSelected Block: Biome: " + biomeString + ", " + p->getSelectedBlock()->getPrintout(m_world);
+		display += "\nSelected Block: Biome: " + biomeString + ", " + p->getSelectedBlock()->getPrintout();
 
 		m_fpsWidget->setText(display);
 	}
@@ -781,7 +781,7 @@ bool GameplayScreen::pause_resume_button_clicked(const CEGUI::EventArgs& e) {
 }
 
 bool GameplayScreen::pause_save_button_clicked(const CEGUI::EventArgs& e) {
-	m_WorldIOManager->saveWorld(m_world);
+	m_WorldIOManager->saveWorld();
 	return true;
 }
 

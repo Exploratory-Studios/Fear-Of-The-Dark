@@ -21,6 +21,7 @@ class ScriptQueue;
 class World {
 		friend class WorldIOManager;
 		friend class App;
+		friend class Factory;
 
 	public:
 		World();

@@ -5,6 +5,7 @@
 
 #include "EntityManager.h"
 #include "AudioManager.h"
+#include "World.h"
 
 class Factory {
 	public:
@@ -32,9 +33,21 @@ class Factory {
 			return m_gameCamera;
 		}
 
+		static World* getWorld() {
+			if(m_world) return m_world;
+			m_world = new World(true);
+			return m_world;
+		}
+
+		static void createWorld() {
+			if(m_world) delete m_world;
+			m_world = new World(true);
+		}
+
 	private:
 		static EntityManager* m_entityManager;
 		static AudioManager* m_audioManager;
 		static GLEngine::GUI* m_gui;
 		static GLEngine::Camera2D* m_gameCamera;
+		static World* m_world;
 };

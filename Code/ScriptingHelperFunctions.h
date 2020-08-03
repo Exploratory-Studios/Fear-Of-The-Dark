@@ -28,7 +28,7 @@ namespace ScriptingModule {
 
     /// Wrapper functions:
 
-    void pushDepsToRegistry(lua_State* L, World* w, QuestModule::QuestManager* qm, GameplayScreen* gs, AudioManager* am, GLEngine::ParticleEngine2D* p);
+    void pushDepsToRegistry(lua_State* L, QuestModule::QuestManager* qm, GameplayScreen* gs, AudioManager* am, GLEngine::ParticleEngine2D* p);
     void pushFunction(lua_State* L, lua_CFunction func, std::string name);
     void setUpvalue(lua_State* L, const char* key, void* ptr);
     void* getUpvalue(lua_State* L, const char* key);

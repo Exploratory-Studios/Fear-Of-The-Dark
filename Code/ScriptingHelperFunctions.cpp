@@ -23,8 +23,8 @@
 
 namespace ScriptingModule {
 
-	void pushDepsToRegistry(lua_State* L, World* w, QuestModule::QuestManager* qm, GameplayScreen* gs, AudioManager* am, GLEngine::ParticleEngine2D* p) {
-		setUpvalue(L, WORLD_KEY,          static_cast<void*>(w));
+	void pushDepsToRegistry(lua_State* L, QuestModule::QuestManager* qm, GameplayScreen* gs, AudioManager* am, GLEngine::ParticleEngine2D* p) {
+		setUpvalue(L, WORLD_KEY,          static_cast<void*>(Factory::getWorld()));
 		setUpvalue(L, QUESTMANAGER_KEY,   static_cast<void*>(qm));
 		setUpvalue(L, GAMEPLAYSCREEN_KEY, static_cast<void*>(gs));
 		setUpvalue(L, AUDIOMANAGER_KEY,   static_cast<void*>(am));

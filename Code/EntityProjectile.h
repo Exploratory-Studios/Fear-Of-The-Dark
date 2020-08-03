@@ -42,8 +42,8 @@ class EntityProjectile : public Entity {
 		}
 
 	protected:
-		virtual void onUpdate(World* world, float timeStep, unsigned int selfIndex) override;
-		virtual void onTick(World* world) override;
+		virtual void onUpdate(float timeStep, unsigned int selfIndex) override;
+		virtual void onTick() override;
 
 		Entity* m_owner = nullptr;
 		AnimationModule::Animation m_anim; // This is the animation that plays from creation onwards.

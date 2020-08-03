@@ -22,7 +22,7 @@ namespace ScriptingModule {
     class Scripter {
         public:
             Scripter();
-            void init(World* world, QuestModule::QuestManager* qm, GameplayScreen* gs, AudioManager* audio, GLEngine::ParticleEngine2D* particleEngine); // Initialize all lua functions
+            void init(QuestModule::QuestManager* qm, GameplayScreen* gs, AudioManager* audio, GLEngine::ParticleEngine2D* particleEngine); // Initialize all lua functions
 
             /*void showAlert(std::string& title, std::string& text); // Shows an alert window, with custom text, courtesy of CEGUI
             void showPlayerInventory(bool show); // Opens/closes player inventory on screen.

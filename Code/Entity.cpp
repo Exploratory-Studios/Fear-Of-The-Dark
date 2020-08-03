@@ -1,5 +1,7 @@
 #include "Entity.h"
 
+#include "Factory.h"
+
 #include "Categories.h"
 #include "World.h"
 
@@ -58,23 +60,23 @@ Entity::~Entity() {
 
 }
 
-void Entity::update(World* world, float timeStep, unsigned int selfIndex) {
+void Entity::update(float timeStep, unsigned int selfIndex) {
 	if(m_updateScriptId != -1) {
 		ScriptingModule::ScriptQueue::activateScript(m_updateScriptId, generateLuaValues());
 	}
 
 	move(1); /// Fix timestepping, make sure that each step, the entity collides :facepalm:
-	interact(world);
-	updateLightLevel(world);
+	interact();
+	updateLightLevel();
 
-	onUpdate(world, timeStep, selfIndex);
+	onUpdate(timeStep, selfIndex);
 }
 
-void Entity::tick(World* world) {
+void Entity::tick() {
 	if(m_tickScriptId != -1) {
 		ScriptingModule::ScriptQueue::activateScript(m_tickScriptId, generateLuaValues());
 	}
-	onTick(world);
+	onTick();
 }
 
 void Entity::draw(GLEngine::SpriteBatch& sb, float time, int layerDifference, float xOffset) {
@@ -152,13 +154,13 @@ void Entity::move(float timeStepVariable) {
 
 /// PRIVATE FUNCTIONS
 
-bool Entity::checkTilePosition(World* world, std::vector<glm::vec2>& collideTilePositions, float x, float y) {
+bool Entity::checkTilePosition(std::vector<glm::vec2>& collideTilePositions, float x, float y) {
 	// Get the position of this corner in grid-space
 	glm::vec2 gridPos = glm::vec2(floor(x), floor(y)); // grid-space coords
 
 	if(gridPos.y >= 0) {
 		// If this is not an air tile, we should collide with it
-		if(world->getTile(gridPos.x, gridPos.y, m_layer)->isSolid()) {
+		if(Factory::getWorld()->getTile(gridPos.x, gridPos.y, m_layer)->isSolid()) {
 			collideTilePositions.push_back(glm::vec2((float)gridPos.x + 0.500f, (float)gridPos.y + 0.500f)); // CollideTilePositions are put in as gridspace coords
 			return true;
 		}
@@ -219,7 +221,7 @@ void Entity::collideWithTile(glm::vec2 tilePos, bool ground) {
 	}
 }
 
-void Entity::updateLightLevel(World* world) {
+void Entity::updateLightLevel() {
 	m_exposedToSun = false;
 
 
@@ -233,6 +235,9 @@ void Entity::updateLightLevel(World* world) {
 	Pos_TR = glm::vec2(m_position.x + m_size.x, m_position.y + m_size.y);
 	Pos_BR = glm::vec2(m_position.x + m_size.x, m_position.y);
 	Pos_BL = glm::vec2(m_position.x, m_position.y);
+
+	// So we can avoid the one if statement (petty, I know.)
+	World* world = Factory::getWorld();
 
 	// Find tiles
 	Tile *Tile_TR, *Tile_TL, *Tile_BR, *Tile_BL;
@@ -258,21 +263,21 @@ void Entity::updateLightLevel(World* world) {
 	}*/
 }
 
-void Entity::interact(World* world) {
+void Entity::interact() {
 	if(m_onGround && std::abs(m_velocity.x) > 0.1f) {
 		glm::vec2 tileCoordsFloor = glm::vec2((int)(m_position.x + 0.5f), (int)(m_position.y - 0.5f));
-		world->getTile(tileCoordsFloor.x, tileCoordsFloor.y, m_layer)->onInteract_WalkedOn();
+		Factory::getWorld()->getTile(tileCoordsFloor.x, tileCoordsFloor.y, m_layer)->onInteract_WalkedOn();
 	}
 }
 
-void Entity::moveUpLayer(World* world) {
+void Entity::moveUpLayer() {
 	if(m_layer > 0) {
 		m_layer--;
 		std::vector<glm::vec2> tiles;
 
 		for(int i = 0; i < m_size.x; i++) {
 			for(int j = 0; j < m_size.y; j++) {
-				if(checkTilePosition(world, tiles, m_position.x + i, m_position.y + j)) {
+				if(checkTilePosition(tiles, m_position.x + i, m_position.y + j)) {
 					m_layer++;
 					return;
 				}
@@ -281,14 +286,14 @@ void Entity::moveUpLayer(World* world) {
 	}
 }
 
-void Entity::moveDownLayer(World* world) {
+void Entity::moveDownLayer() {
 	if(m_layer < WORLD_DEPTH - 1) {
 		m_layer++;
 		std::vector<glm::vec2> tiles;
 
 		for(int i = 0; i < m_size.x; i++) {
 			for(int j = 0; j < m_size.y; j++) {
-				if(checkTilePosition(world, tiles, m_position.x + i, m_position.y + j)) {
+				if(checkTilePosition(tiles, m_position.x + i, m_position.y + j)) {
 					m_layer--;
 					return;
 				}

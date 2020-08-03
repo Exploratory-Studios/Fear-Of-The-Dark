@@ -13,29 +13,29 @@
 
 #include "Factory.h"
 
-void WorldIOManager::loadWorld(std::string worldName, World* world) {
+void WorldIOManager::loadWorld(std::string worldName) {
 	setProgress(0.0f);
 	boost::thread t([ = ]() {
-		P_loadWorld(worldName, world);
+		P_loadWorld(worldName, Factory::getWorld());
 	});
 	t.detach();
 	//P_loadWorld(worldName);
 	//P_createWorld(1, worldName, false);
 }
 
-void WorldIOManager::saveWorld(World* world) {
+void WorldIOManager::saveWorld() {
 	setProgress(0.0f);
 	boost::thread t([ = ]() {
-		P_saveWorld(world);
+		P_saveWorld(Factory::getWorld());
 	});
 	t.detach();
 	//P_saveWorld(worldName);
 }
 
-void WorldIOManager::createWorld(unsigned int seed, std::string worldName, bool isFlat, World* world) {
+void WorldIOManager::createWorld(unsigned int seed, std::string worldName, bool isFlat) {
 	setProgress(0.0f);
 	boost::thread t([ = ]() {
-		P_createWorld(seed, worldName, isFlat, world);
+		P_createWorld(seed, worldName, isFlat, Factory::getWorld());
 	});
 	t.detach();
 	//P_createWorld(seed, worldName, isFlat);
@@ -469,7 +469,7 @@ void WorldIOManager::P_createWorld(unsigned int seed, std::string worldName, boo
 	//world->player = new Player(glm::vec2(5.0f, (blockHeights[5] + 5)), m_input, m_sq);
 }
 
-void WorldIOManager::setWorldEra(World* world, unsigned int newEraID) {
+void WorldIOManager::setWorldEra(unsigned int newEraID) {
 	/**
 	    This function will affect the entire world in a way that simulates lots of time passing. This may include:
 	        - Buildings collapsing

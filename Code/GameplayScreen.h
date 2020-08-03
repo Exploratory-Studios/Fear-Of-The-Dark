@@ -33,7 +33,7 @@ class Console;
 
 class GameplayScreen : public GLEngine::IGameScreen {
 	public:
-		GameplayScreen(GLEngine::Window* window, WorldIOManager* WorldIOManager, World* world);
+		GameplayScreen(GLEngine::Window* window, WorldIOManager* WorldIOManager);
 		virtual ~GameplayScreen();
 
 		virtual int getNextScreenIndex() const override;
@@ -120,7 +120,6 @@ class GameplayScreen : public GLEngine::IGameScreen {
 		QuestModule::QuestManager* m_questManager = nullptr;
 		DialogueModule::DialogueManager* m_dialogueManager = nullptr;
 		WorldIOManager* m_WorldIOManager = nullptr;
-		World* m_world = nullptr;
 		AudioManager* m_audio = nullptr;
 
 		GameState m_gameState = GameState::PLAY;

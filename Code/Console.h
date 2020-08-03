@@ -14,14 +14,14 @@ class Console
         Console();
         virtual ~Console();
 
-        void init(ScriptingModule::Scripter* scripter, World* world, QuestModule::QuestManager* qm, GameplayScreen* gs); /// TODO: Make this not have a world member or qm variable
+        void init(ScriptingModule::Scripter* scripter, QuestModule::QuestManager* qm, GameplayScreen* gs); /// TODO: Make this not have a world member or qm variable
 
         void show();
         void hide();
 
         bool isShown() { return m_showing; }
 
-        void processCommand(World* world, QuestModule::QuestManager* qm, GameplayScreen* gs, std::string& command);
+        void processCommand(QuestModule::QuestManager* qm, GameplayScreen* gs, std::string& command);
 
     private:
         bool onEditboxInput(const CEGUI::EventArgs& e);
@@ -36,7 +36,6 @@ class Console
 
         CEGUI::Editbox* m_editbox = nullptr;
 
-        World* m_world = nullptr;
         QuestModule::QuestManager* m_qm = nullptr;
         GameplayScreen* m_gs = nullptr;
 

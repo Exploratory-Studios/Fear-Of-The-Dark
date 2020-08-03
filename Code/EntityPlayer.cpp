@@ -5,6 +5,8 @@
 #include "World.h"
 #include "Tile.h"
 #include "NPCInventory.h"
+#include "ArmourInventory.h"
+#include "WeaponInventory.h"
 
 #include "Factory.h"
 
@@ -29,9 +31,9 @@ ArmourAttackWrapper::ArmourAttackWrapper(std::string& UUID, std::shared_ptr<NPCI
 
 	Factory::getGUI()->setActiveContext(0);
 
-	m_armourGrid = std::make_unique<InventoryBase>(armourName, false, true, m_window);
+	m_armourGrid = std::make_unique<ArmourInventory>(armourName, false, true, m_window);
 	m_armourGrid->init();
-	m_attacksGrid = std::make_unique<InventoryBase>(attacksName, false, true, m_window);
+	m_attacksGrid = std::make_unique<WeaponInventory>(attacksName, false, true, m_window);
 	m_attacksGrid->init();
 
 	m_window->setVisible(false);
@@ -223,7 +225,7 @@ void EntityPlayer::drawGUI(GLEngine::SpriteBatch& sb, GLEngine::SpriteFont& sf) 
 
 #define cap(x) if(x > 1) x = 1; if(x < 0) x = 0;
 
-void EntityPlayer::updateStats(World* world, float timeStep) {
+void EntityPlayer::updateStats(float timeStep) {
 	m_sanityBar->setProgress(m_sanity);
 	m_healthBar->setProgress(m_health);
 	m_thirstBar->setProgress(m_thirst);
@@ -282,7 +284,7 @@ void EntityPlayer::updateStats(World* world, float timeStep) {
 	}*/
 }
 
-void EntityPlayer::updateMouse(World* world, glm::vec2 mouseCoords) {
+void EntityPlayer::updateMouse(glm::vec2 mouseCoords) {
 
 	m_aimingDirection = glm::normalize(mouseCoords - (m_position + m_size / glm::vec2(2.0f)));
 
@@ -316,7 +318,7 @@ void EntityPlayer::updateMouse(World* world, glm::vec2 mouseCoords) {
 
 }
 
-void EntityPlayer::updateInput(GLEngine::InputManager* input, World* world) {
+void EntityPlayer::updateInput(GLEngine::InputManager* input) {
 
 	/// THESE ARE PURELY FOR DEVELOPMENT
 	if(input->isKeyPressed(SDLK_t)) {
@@ -335,10 +337,10 @@ void EntityPlayer::updateInput(GLEngine::InputManager* input, World* world) {
 	}
 
 	if(input->isKeyPressed(SDLK_e)) {
-		moveDownLayer(world);
+		moveDownLayer();
 	}
 	if(input->isKeyPressed(SDLK_q)) {
-		moveUpLayer(world);
+		moveUpLayer();
 	}
 	m_layer = (m_layer < 0) ? 0 : (m_layer >= WORLD_DEPTH) ? WORLD_DEPTH - 1 : m_layer;
 

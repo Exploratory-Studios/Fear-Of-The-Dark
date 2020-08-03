@@ -34,14 +34,14 @@ class Entity {
 		Entity(SaveDataTypes::EntityData& saveData);
 		virtual ~Entity();
 
-		void update(World* world, float timeStep, unsigned int selfIndex);
-		void tick(World* world);
+		void update(float timeStep, unsigned int selfIndex);
+		void tick();
 		virtual void draw(GLEngine::SpriteBatch& sb, float time, int layerDifference, float xOffset);
 		virtual void drawNormal(GLEngine::SpriteBatch& sb, float time, int layerDifference, float xOffset);
 		void debugDraw(GLEngine::DebugRenderer& dr, float xOffset);
 		void move(float timeStepVariable);
 
-		virtual void collideWithTiles(World* world) {}
+		virtual void collideWithTiles() {}
 		virtual bool collideWithOther(Entity* other) {} // Returns false if the X distance makes collision impossible
 
 		// Getters
@@ -109,19 +109,19 @@ class Entity {
 
 	protected:
 		// Collision
-		bool checkTilePosition(World* world, std::vector<glm::vec2>& collideTilePositions, float xPos, float yPos);
+		bool checkTilePosition(std::vector<glm::vec2>& collideTilePositions, float xPos, float yPos);
 		virtual void collideWithTile(glm::vec2 tilePos, bool ground = false);
 
-		void updateLightLevel(World* world);
-		virtual void interact(World* world);
+		void updateLightLevel();
+		virtual void interact();
 
-		void moveUpLayer(World* world);
-		void moveDownLayer(World* world);
+		void moveUpLayer();
+		void moveDownLayer();
 
-		void die(World* world);
+		void die();
 
-		virtual void onUpdate(World* world, float timeStep, unsigned int selfIndex) {}
-		virtual void onTick(World* world) {}
+		virtual void onUpdate(float timeStep, unsigned int selfIndex) {}
+		virtual void onTick() {}
 		virtual void onDraw(GLEngine::SpriteBatch& sb, float time, int layerDifference, float xOffset) {}
 
 		virtual void animate(int& x, int& y, bool& flip, float time) {}

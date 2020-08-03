@@ -46,12 +46,12 @@ class Tile {
 		virtual void initParticles(GLEngine::ParticleEngine2D* engine);
 
 #ifdef DEV_CONTROLS
-		std::string getPrintout(World* world) {
+		std::string getPrintout() {
 			std::string ret;
 			ret =  "Position: X=" + std::to_string(m_pos.x) + ", Y=" + std::to_string(m_pos.y) + "\n";
 			ret += "ID=" + std::to_string(m_id) + ", Solid=" + std::to_string(m_solid) + ", " + "LightLevel: Amb=" + std::to_string(m_ambientLight) + ", Sun=" + std::to_string(m_sunLight) + ", Emit=" + std::to_string(m_emittedLight) + "\n";
 			ret += "ExposedToSun: " + std::to_string(m_exposedToSun) + "\n";
-			ret += "Raw Temperature: " + std::to_string(m_temperature) + ", Real Temperature: " + std::to_string(getHeat(world)) + "\n";
+			//ret += "Raw Temperature: " + std::to_string(m_temperature) + ", Real Temperature: " + std::to_string(getHeat(world)) + "\n";
 			ret += "MetaData: " + m_metaData.getElements() + "\n";
 			return ret;
 		}
@@ -139,6 +139,9 @@ class Tile {
 		void setMetaData(SaveDataTypes::MetaData& md) {
 			m_metaData = md;
 		}
+		SaveDataTypes::MetaData getMetaData() {
+			return m_metaData;
+		}
 		void setSize(glm::vec2 s) {
 			m_size = s;
 		}
@@ -223,9 +226,6 @@ class Tile {
 		}
 
 		void handleMetaDataInit(SaveDataTypes::MetaData& data) { };
-		SaveDataTypes::MetaData getMetaData() {
-			return m_metaData;
-		}
 
 		virtual void onUpdate() { }
 		virtual void onDraw(GLEngine::SpriteBatch& sb, GLEngine::SpriteFont& sf, glm::vec4& pos, float& depth) { }

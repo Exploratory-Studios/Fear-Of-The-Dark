@@ -44,30 +44,43 @@ namespace XMLModule {
 
 			static TileData getTileData(unsigned int id);
 			static TileContainerData getTileContainerData(unsigned int id);
+
 			static ParticleData getParticleData(unsigned int id);
+
 			static EntityData getEntityData(unsigned int id);
 			static EntityNPCData getEntityNPCData(unsigned int id);
 			static EntityProjectileData getEntityProjectileData(unsigned int id);
 			static EntityItemData getEntityItemData(unsigned int id);
+
 			static ItemData getItemData(unsigned int id);
 			static ItemArmourData getItemArmourData(unsigned int id);
 			static ItemConsumableData getItemConsumableData(unsigned int id);
 			static ItemWeaponData getItemWeaponData(unsigned int id);
+			static ItemBlockData getItemBlockData(unsigned int id);
+
 			static BiomeData getBiomeData(unsigned int id);
+
 			static EraData getEraData(unsigned int id);
+
 			static LootDropData getLootDropData(unsigned int id);
 			static LootTableData getLootTableData(unsigned int id);
+
 			static StructureData getStructureData(unsigned int id);
+
 			static QuestData getQuestData(unsigned int id);
 			static QuestObjectiveData getQuestObjectiveData(unsigned int id);
+
 			static DialogueQuestionData getDialogueQuestionData(unsigned int id);
 			static DialogueResponseData getDialogueResponseData(unsigned int id);
+
 			static AnimationData getAnimationData(unsigned int id);
 			static SkeletalAnimationData getSkeletalAnimationData(unsigned int id);
+
 			static AttackData getAttackData(unsigned int id);
 			static MeleeAttackData getMeleeAttackData(unsigned int id);
 			static RangedAttackData getRangedAttackData(unsigned int id);
 			static MagicAttackData getMagicAttackData(unsigned int id);
+
 			static BuffData getBuffData(unsigned int id);
 
 			static unsigned int getTotalBiomes(); // Returns the number of biomes

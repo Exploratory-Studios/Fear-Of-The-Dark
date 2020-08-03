@@ -73,15 +73,15 @@ class EntityNPC : public Entity {
 		void applyFlinch(); // Applies flinch animation and sets current attack to -1 if current attack is active. (!= -1)
 
 		// AI
-		void setAITarget(World* world, unsigned int selfIndex); /// TODO: Make this work with certain quests, etc.
+		void setAITarget(unsigned int selfIndex); /// TODO: Make this work with certain quests, etc.
 
 	protected:
 		// Pathfinding
-		void updateMovement(World* world);
-		void pathfindToTarget(World* world, glm::vec3 target, bool goLeft);
-		bool     fitsOnTile(World* world, Tile* t, bool needsFloor = false);
-		NavTile* expandTile(World* world, glm::vec3 pos, int jumpHeight, glm::vec2 size, NavTile* parent, glm::vec3 target);
-		void     calculateCost(World* world, NavTile* tile, glm::vec3 target); // Calculates a cost of a single path from an endnode
+		void updateMovement();
+		void pathfindToTarget(glm::vec3 target, bool goLeft);
+		bool     fitsOnTile(Tile* t, bool needsFloor = false);
+		NavTile* expandTile(glm::vec3 pos, int jumpHeight, glm::vec2 size, NavTile* parent, glm::vec3 target);
+		void     calculateCost(NavTile* tile, glm::vec3 target); // Calculates a cost of a single path from an endnode
 		void     addToFrontier(NavTile* tile, std::vector<NavTile*>& frontier); // Makes sure there are no copies, and handles them if there are.
 		std::vector<glm::vec3> m_targets;
 		unsigned int m_curTarget = 0;
@@ -92,7 +92,7 @@ class EntityNPC : public Entity {
 		AnimationModule::SkeletalAnimation* m_currentAttackAnim = nullptr;
 		bool m_leadingIntoAttack = true;
 
-		virtual void onTick(World* world) override;
+		virtual void onTick() override;
 
 		void initLimbs(); // Initializes limbs and animations.
 

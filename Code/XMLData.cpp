@@ -298,6 +298,14 @@ namespace XMLModule {
 			d = new EntityItemData();
 		} else if(name == "item") {
 			d = new ItemData();
+		} else if(name == "itemArmour") {
+			d = new ItemArmourData();
+		} else if(name == "itemConsumable") {
+			d = new ItemConsumableData();
+		} else if(name == "itemWeapon") {
+			d = new ItemWeaponData();
+		} else if(name == "itemBlock") {
+			d = new ItemBlockData();
 		} else if(name == "biome") {
 			d = new BiomeData();
 		} else if(name == "era") {
@@ -344,7 +352,7 @@ namespace XMLModule {
 			mapForWrite = &m_particleData;
 		} else if(name == "npc" || name == "projectile" || name == "itemEntity") {
 			mapForWrite = &m_entityData;
-		} else if(name == "item") {
+		} else if(name == "item" || name == "itemArmour" || name == "itemConsumable" || name == "itemWeapon" || name == "itemBlock") {
 			mapForWrite = &m_itemData;
 		} else if(name == "biome") {
 			mapForWrite = &m_biomeData;
@@ -589,6 +597,18 @@ namespace XMLModule {
 		}
 
 		return *static_cast<ItemWeaponData*>(index->second);
+	}
+
+	ItemBlockData XMLData::getItemBlockData(unsigned int id) {
+		auto index = m_itemData.find(id);
+
+		if(index == m_itemData.end()) {
+			Logger::getInstance()->log("ERROR: Couldn't find item block data with ID: " + std::to_string(id), true);
+			ItemBlockData t;
+			return t;
+		}
+
+		return *static_cast<ItemBlockData*>(index->second);
 	}
 
 /// Biomes

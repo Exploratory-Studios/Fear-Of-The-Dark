@@ -131,6 +131,6 @@ class EntityNPC : public Entity {
 
 		// Inventory
 		std::shared_ptr<NPCInventory> m_inventory;
-		std::vector<ItemArmour*> m_equippedArmour;
+		std::shared_ptr<ArmourInventory> m_armour;
 		//std::vector<ItemWeapon*> m_equippedWeapons; TODO: Add weapons!
 };

@@ -49,6 +49,9 @@ void EntityNPC::init(unsigned int id) {
 
 	m_inventory = std::make_shared<NPCInventory>(15.0f, m_UUID);
 	m_inventory->init();
+
+	m_armour = std::make_shared<ArmourInventory>(15.0f, m_UUID);
+	m_armour->init();
 }
 
 void EntityNPC::initLimbs() {
@@ -133,7 +136,7 @@ void EntityNPC::drawNormal(GLEngine::SpriteBatch& sb, float time, int layerDiffe
 		glm::vec4 destRect = glm::vec4(m_position.x + (xOffset * CHUNK_SIZE), m_position.y, m_size.x, m_size.y);
 
 		float depth = getDepth();
-		
+
 		m_body.drawNormal(sb, destRect, depth);
 	}
 }

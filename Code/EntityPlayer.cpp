@@ -16,9 +16,9 @@ ArmourAttackWrapper::ArmourAttackWrapper(std::string& UUID, std::shared_ptr<NPCI
 	// Construct inventories:
 	m_inventory = inventory; // Done
 
-	std::string armourName = UUID + "PlayerArmourGrid";
-	std::string attacksName = UUID + "PlayerAttacksGrid";
-	std::string frameName = UUID + "PlayerInventoryFrame";
+	std::string armourName = UUID + "ArmourGrid";
+	std::string attacksName = UUID + "AttacksGrid";
+	std::string frameName = UUID + "ArmourAttacksFrame";
 
 	Factory::getGUI()->setActiveContext(1);
 

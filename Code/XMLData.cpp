@@ -245,8 +245,9 @@ namespace XMLModule {
 		std::vector<std::string> files{ "Blocks", "Particles", "Entities", "Items", "Biomes", "Eras", "Loot", "Structures", "Quests", "Dialogue", "Animations", "Attacks", "Buffs" };
 
 		for(std::string& s : files) {
+			Logger::getInstance()->log("Loading data (" + s + ")...");
 			loadXMLData(filepath + "/Data/" + s + ".xml");
-			Logger::getInstance()->log("Loaded data (" + s + ")...");
+			Logger::getInstance()->log("Loaded data (" + s + ")");
 		}
 
 		Logger::getInstance()->log("Loaded all data successfully!");
@@ -256,12 +257,13 @@ namespace XMLModule {
 		Logger::getInstance()->log("Beginning to write data...");
 
 		// files and nodeNames should have equal size. That much is assumed to be true at runtime
-		std::vector<std::string> files   { "Blocks", "Blocks", "Particles", "Entities", "Entities", "Entities", "Items", "Items", "Items", "Biomes", "Eras", "Loot", "Loot", "Structures", "Quests", "Dialogue", "Dialogue", "Dialogue", "Animations", "Animations", "Attacks", "Attacks", "Attacks", "Buffs" };
-		std::vector<std::string> nodeNames{ "tile", "tileContainer", "particle",  "npc",  "projectile",  "itemEntity",   "consumable", "armour", "weapon",  "biome",   "era", "lootDrop", "lootTable", "structure", "quest", "questObjective", "question", "response", "animation", "skeletalAnimation", "meleeAttack", "rangedAttack", "magicAttack", "buff" };
+		std::vector<std::string> files   { "Blocks", "Blocks", "Particles", "Entities", "Entities", "Entities", "Items", "Items", "Items", "Items", "Items", "Biomes", "Eras", "Loot", "Loot", "Structures", "Quests", "Dialogue", "Dialogue", "Dialogue", "Animations", "Animations", "Attacks", "Attacks", "Attacks", "Buffs" };
+		std::vector<std::string> nodeNames{ "tile", "tileContainer", "particle", "npc", "projectile", "itemEntity", "item", "itemBlock", "itemWeapon", "itemConsumable", "itemArmouritem", "biome", "era", "lootDrop", "lootTable", "structure", "quest", "questObjective", "question", "response", "animation", "skeletalAnimation", "meleeAttack", "rangedAttack", "magicAttack", "buff" };
 
 		for(unsigned int i = 0; i < files.size(); i++) {
+			Logger::getInstance()->log("Writing data (" + files[i] + ": " + nodeNames[i] + ")...");
 			writeXMLData(filepath + "/Data/" + files[i] + ".xml", nodeNames[i]);
-			Logger::getInstance()->log("Wrote data (" + files[i] + ": " + nodeNames[i] + ")...");
+			Logger::getInstance()->log("Wrote data (" + files[i] + ": " + nodeNames[i] + ")");
 		}
 
 		Logger::getInstance()->log("Wrote all data successfully!");
@@ -422,6 +424,7 @@ namespace XMLModule {
 				unsigned int id = d->id;
 
 				mapForWrite->insert(std::pair<unsigned int, GenericData*>(id, d));
+				Logger::getInstance()->log("\tXML Loaded " + name + ": " + d->name + "(" + std::to_string(d->id) + ")");
 			}
 		}
 	}

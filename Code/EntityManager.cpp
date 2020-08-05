@@ -208,13 +208,13 @@ void EntityManager::updateEntities(float timeStep) {
 	*/
 
 	for(unsigned int i = 0; i < m_entities.size(); i++) {
-		m_entities[i]->update(m_world, timeStep, i); // Make sure we update everything first so positions are set and collisions aren't weird
+		m_entities[i]->update(timeStep, i); // Make sure we update everything first so positions are set and collisions aren't weird
 	}
 
 	sortEntities();
 
 	for(unsigned int i = 0; i < m_entities.size(); i++) {
-		m_entities[i]->collideWithTiles(m_world);
+		m_entities[i]->collideWithTiles();
 		/// Please note: Entities will collide twice with each other if they are the only two entities in the world.
 		/** This won't change actual gameplay at all, but it could have an effect on debugging. **/
 		for(unsigned int j = i + 1; i != (j % m_entities.size()) && m_entities[i]->collideWithOther(m_entities[j % m_entities.size()]) == true; j++);
@@ -242,7 +242,7 @@ void EntityManager::tickEntities() {
 	//spawnEntities();
 
 	for(unsigned int i = 0; i < m_entities.size(); i++) {
-		m_entities[i]->tick(m_world);
+		m_entities[i]->tick();
 	}
 }
 

@@ -108,6 +108,8 @@ bool InventoryBase::onDragDropItemAdded(const CEGUI::EventArgs& e) {
 	m_items.push_back(item); // This should ensure that m_items and m_gridItems have the same indices.
 	m_gridItems.push_back(added_item);
 
+	onItemAdded(args);
+
 	return true;
 }
 
@@ -118,6 +120,11 @@ InventoryBase::~InventoryBase() {
 
 void InventoryBase::init() { // This must be seperate from the constructor due to the virtual, overridden function
 	if(m_initedGUI) initGUI(m_frameWindow);
+}
+
+void InventoryBase::destroy() {
+	CEGUI::WindowManager& winMgr = CEGUI::WindowManager::getSingleton();
+	winMgr.destroyWindow(m_frameWindow);
 }
 
 bool InventoryBase::addItem(Item* newItem) {
@@ -142,6 +149,10 @@ void InventoryBase::queueSubtraction(Item* item) {
 	}
 
 	m_itemsToRemove.push_back(item);
+}
+
+void InventoryBase::subscribeEvent(const CEGUI::String& evnt, CEGUI::Event::Subscriber sub) {
+	m_grid->subscribeEvent(evnt, sub);
 }
 
 void InventoryBase::subtractItem(Item* item) {
@@ -247,10 +258,14 @@ void InventoryBase::draw(GLEngine::SpriteBatch& sb, GLEngine::SpriteFont& sf, fl
 
 				std::string quantityStr = std::to_string(m_items[i]->getQuantity());
 
+				GLuint textureID = m_items[i]->getTextureId();
+				if(textureID == (unsigned int)-1) {
+					m_items[i]->loadTexture();
+					textureID = m_items[i]->getTextureId();
+				}
+
 				if((screenCoords.y >= bottomY && screenCoords.y + screenSize.y < topY) || m_gridItems[i]->isBeingDragged()) {
 					glm::vec4 uvRect(0.0f, 0.0f, 1.0f, 1.0f);
-
-					GLuint textureID = m_items[i]->getTextureId();
 
 					float depth = 0.0f;
 
@@ -267,8 +282,6 @@ void InventoryBase::draw(GLEngine::SpriteBatch& sb, GLEngine::SpriteFont& sf, fl
 					if(portionOfTexture < 1.0f) {
 						glm::vec4 uvRect(0.0f, 0.0f, 1.0f, 1.0f - portionOfTexture);
 
-						GLuint textureID = m_items[i]->getTextureId();
-
 						float depth = 0.0f;
 
 						GLEngine::ColourRGBA8 colour(255, 255, 255, 255 * (1.0f - portionOfTexture));
@@ -284,8 +297,6 @@ void InventoryBase::draw(GLEngine::SpriteBatch& sb, GLEngine::SpriteFont& sf, fl
 
 					if(portionOfTexture < 1.0f) {
 						glm::vec4 uvRect(0.0f, portionOfTexture, 1.0f, 1.0f - portionOfTexture);
-
-						GLuint textureID = m_items[i]->getTextureId();
 
 						float depth = 0.0f;
 

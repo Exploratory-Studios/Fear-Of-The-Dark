@@ -129,15 +129,16 @@ namespace AnimationModule {
 			/// The limb will hold all data for limbs: position on the body, angle, texture.
 		public:
 			Limb();
-			Limb(Animation idleAnimation, unsigned int index); // The idleAnimation is the animation that constantly runs. Most of the time, this is just a single-textured sprite which supplies the texture
+			Limb(Animation defaultAnimation, unsigned int index); // The idleAnimation is the animation that constantly runs. Most of the time, this is just a single-textured sprite which supplies the texture
 			~Limb() {}
 
-			void init(Animation idleAnimation, unsigned int index);
+			void init(Animation defaultAnimation, unsigned int index);
 
 			void activateSkeletalAnimation(SkeletalAnimation* anim);
 			void changeSkeletalAnimation(SkeletalAnimation* anim); // blends last one with this one, so we get a smooth start.
 
 			void setAnimation(Animation& anim); // Sets the idleAnimation
+			void resetAnimation(); // Sets the idleAnimation to what it should be according to XML
 
 			void tick();
 			void update();
@@ -158,6 +159,7 @@ namespace AnimationModule {
 			SkeletalAnimation* m_activeAnimation = nullptr; // This is what actually moves the limb. This is changeable
 			SkeletalAnimation* m_nextAnimation = nullptr; // For "blending" from an attack to a flinch, let's say.
 			Animation m_idleAnimation; // This is the "skin"
+			Animation m_defaultAnimation; // This is the defautl skin
 			unsigned int m_index; // This is used to make sure that each arm/leg follows the correct skeletal animation's limb (right leg might be 0, left leg might be 1, etc.)
 
 			float m_angle = 0.0f;
@@ -226,6 +228,12 @@ namespace AnimationModule {
 
 				m_animation = skelly;
 				skelly->setChanging(true);
+			}
+
+			void resetAnimations() {
+				for(unsigned int i = 0; i < m_limbs.size(); i++) {
+					m_limbs[i].resetAnimation();
+				}
 			}
 
 			SkeletalAnimation* getAnimation() {

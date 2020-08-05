@@ -4,97 +4,24 @@
 
 #include "World.h"
 #include "Tile.h"
-#include "NPCInventory.h"
-#include "ArmourInventory.h"
-#include "WeaponInventory.h"
 
 #include "Factory.h"
 
-ArmourAttackWrapper::ArmourAttackWrapper(std::string& UUID, std::shared_ptr<NPCInventory> inventory) {
-	// Construct all of our inventories, as well as the GUI
-
-	// Construct inventories:
-	m_inventory = inventory; // Done
-
-	std::string armourName = UUID + "ArmourGrid";
-	std::string attacksName = UUID + "AttacksGrid";
-	std::string frameName = UUID + "ArmourAttacksFrame";
-
-	Factory::getGUI()->setActiveContext(1);
-
-	m_window = static_cast<CEGUI::FrameWindow*>(Factory::getGUI()->createWidget("FOTDSkin/FrameWindow", glm::vec4(0.0f, 0.0f, 0.65f, 1.0f), glm::vec4(0.0f), frameName));
-	m_window->setCloseButtonEnabled(false);
-	m_window->setDragMovingEnabled(true);
-	m_window->setRollupEnabled(false);
-	m_window->setSizingEnabled(false);
-	m_window->getTitlebar()->setText("Armour & Attacks");
-
-	Factory::getGUI()->setActiveContext(0);
-
-	m_armourGrid = std::make_unique<ArmourInventory>(armourName, false, true, m_window);
-	m_armourGrid->init();
-	m_attacksGrid = std::make_unique<WeaponInventory>(attacksName, false, true, m_window);
-	m_attacksGrid->init();
-
-	m_window->setVisible(false);
-	m_window->setEnabled(false);
-	m_armourGrid->setToDraw(true);
-	m_attacksGrid->setToDraw(true);
-
-	m_armourGrid->setMovable(false);
-	m_attacksGrid->setMovable(false);
-
-	glm::vec4 armourPos(0.1f, 0.1f, INVENTORY_BOX_WIDTH, INVENTORY_BOX_HEIGHT * 3); // We need to offset by half dims. 0.0, 0.0 is the centre of the screen for some reason. I'm too lazy to fix it.
-	glm::vec4 attacksPos(0.1f, 0.8f, INVENTORY_BOX_WIDTH * 3, INVENTORY_BOX_HEIGHT);
-
-	m_armourGrid->setDestRect(armourPos);
-	m_attacksGrid->setDestRect(attacksPos);
-
-	m_armourGrid->setContentSize(1, 3); // vertical
-	m_attacksGrid->setContentSize(3, 1); // horizontal
-}
-
-ArmourAttackWrapper::~ArmourAttackWrapper() {
-
-}
-
-void ArmourAttackWrapper::setToDraw(bool& setting) {
-	if(setting == true) { // Make sure the inventory is in the right position before opening
-		glm::vec4 inventoryPos(0.65f, 0.25f, 0.35f, 0.5f);
-		m_inventory->setDestRect(inventoryPos);
-		m_inventory->setMovable(false);
-	} else {
-		glm::vec4 inventoryPos(-0.2f, -0.2f, 0.35f, 0.5f);
-		m_inventory->setDestRect(inventoryPos);
-		m_inventory->setMovable(true);
-	}
-
-	m_window->setVisible(setting);
-	m_window->setEnabled(setting);
-	//m_armourGrid->setToDraw(setting);
-	//m_attacksGrid->setToDraw(setting);
-	m_inventory->setToDraw(setting);
-}
-
-void ArmourAttackWrapper::draw(GLEngine::SpriteBatch& sb, GLEngine::SpriteFont& sf, float x, float y) {
-	// This draws our armourGrid, attacksGrid, and inventory.
-	m_inventory->draw(sb, sf, x, y, false);
-	m_armourGrid->draw(sb, sf, x, y, false);
-	m_attacksGrid->draw(sb, sf, x, y, false);
-}
-
-void ArmourAttackWrapper::update() {
-	m_inventory->update();
-	m_armourGrid->update();
-	m_attacksGrid->update();
-}
-
+#include "NPCInventory.h"
+#include "ArmourInventory.h"
+#include "WeaponInventory.h"
+#include "EntityNPC.h"
 
 EntityPlayer::EntityPlayer(glm::vec2 pos, unsigned int layer, SaveDataTypes::MetaData data, bool loadTex) : EntityNPC(pos, layer, 0, data, loadTex) {
+	m_inventory->destroy();
+	m_armourWeaponsInventory->m_armourGrid->destroy();
+	m_armourWeaponsInventory->m_attacksGrid->destroy();
+	m_armourWeaponsInventory->destroy();
+
 	m_inventory = std::make_shared<NPCInventory>(15.0f, m_UUID, true); // This makes sure that the player has an inventory with GUI
 	m_inventory->init();
 
-	m_armourAttackWrapper = new ArmourAttackWrapper(m_UUID, m_inventory);
+	m_armourWeaponsInventory = std::make_shared<NPCInventoryWrapper>(m_UUID, m_inventory);
 }
 
 
@@ -216,7 +143,7 @@ void EntityPlayer::drawGUI(GLEngine::SpriteBatch& sb, GLEngine::SpriteFont& sf) 
 	if(m_bagOpen) {
 		m_inventory->draw(sb, sf, m_position.x, m_position.y);
 	} else if(m_inventoryOpen) {
-		m_armourAttackWrapper->draw(sb, sf, m_position.x, m_position.y);
+		m_armourWeaponsInventory->draw(sb, sf, m_position.x, m_position.y);
 	}
 
 	sb.end();
@@ -292,12 +219,8 @@ void EntityPlayer::updateMouse(glm::vec2 mouseCoords) {
 		m_selectedBlock = nullptr;
 
 		if((int)mouseCoords.x > -WORLD_SIZE) {
-			if(world->getTile((int)mouseCoords.x, mouseCoords.y, m_layer)) {
-				m_selectedBlock = world->getTile((int)mouseCoords.x, mouseCoords.y, m_layer);
-			}
+			m_selectedBlock = Factory::getWorld()->getTile((int)mouseCoords.x, mouseCoords.y, m_layer);
 		}
-
-		//Logger::getInstance()->log("Clicked: " + std::to_string(m_selectedBlock->getPosition().x));
 
 		m_selectedEntity = nullptr;
 
@@ -422,7 +345,7 @@ void EntityPlayer::updateInput(GLEngine::InputManager* input) {
 		m_buffBoxFrame->setVisible(m_inventoryOpen);
 		m_buffBoxFrame->setEnabled(m_inventoryOpen);
 		m_inventoryOpen = !m_inventoryOpen;
-		m_armourAttackWrapper->setToDraw(m_inventoryOpen);
+		m_armourWeaponsInventory->setToDraw(m_inventoryOpen);
 	}
 
 	for(unsigned int i = 1; i < 9; i++) { // Just 1-9
@@ -430,6 +353,10 @@ void EntityPlayer::updateInput(GLEngine::InputManager* input) {
 			m_selectedHotbox = i - 1;
 			//m_favouriteItems[i-1] = m_inventory->getItem(i-1);
 		}
+	}
+
+	if(input->isKeyPressed(SDLK_F9)) {
+		m_inventory->addItem(new ItemArmour(1, 9, true));
 	}
 }
 

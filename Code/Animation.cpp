@@ -198,13 +198,14 @@ namespace AnimationModule {
 
 	}
 
-	Limb::Limb(Animation idleAnimation, unsigned int index) {
+	Limb::Limb(Animation defaultAnimation, unsigned int index) {
 		// The idleAnimation is the animation that constantly runs. Most of the time, this is just a single-textured sprite which supplies the texture
-		init(idleAnimation, index);
+		init(defaultAnimation, index);
 	}
 
-	void Limb::init(Animation idleAnimation, unsigned int index) {
-		m_idleAnimation = idleAnimation;
+	void Limb::init(Animation defaultAnimation, unsigned int index) {
+		m_defaultAnimation = defaultAnimation;
+		m_idleAnimation = defaultAnimation;
 		m_index = index;
 		m_centreOfRotation = glm::vec2(0.5f);
 	}
@@ -234,6 +235,10 @@ namespace AnimationModule {
 
 	void Limb::setAnimation(Animation& anim) {
 		m_idleAnimation = anim;
+	}
+
+	void Limb::resetAnimation() {
+		m_idleAnimation = m_defaultAnimation;
 	}
 
 	void Limb::tick() {

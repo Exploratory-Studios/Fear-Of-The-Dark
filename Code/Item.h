@@ -75,12 +75,12 @@ class Item {
 			return m_weight;
 		}
 
-		SaveDataTypes::ItemData getItemSaveData();
-	protected:
 		void loadTexture() {
 			m_textureId = GLEngine::ResourceManager::getTexture(m_texturePath).id;
 		}
 
+		SaveDataTypes::ItemData getItemSaveData();
+	protected:
 		unsigned int m_id = (unsigned int)-1; // Block/Non-block id
 
 		float m_weight = 0.0f; // How much it weighs in the inventory (kgs)

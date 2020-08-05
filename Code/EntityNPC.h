@@ -29,8 +29,38 @@ enum class MovementState {
 
 class Item;
 class NPCInventory;
+class ArmourInventory;
+class WeaponInventory;
 class Tile;
 class ItemArmour;
+
+namespace GLEngine {
+	class SpriteFont;
+}
+
+namespace CEGUI {
+	class EventArgs;
+	class FrameWindow;
+}
+
+class NPCInventoryWrapper {
+		// Holds functions and objects for the Armour/Attack changing screen
+	public:
+		NPCInventoryWrapper(std::string& UUID, std::shared_ptr<NPCInventory> inventory);
+		~NPCInventoryWrapper();
+
+		void destroy();
+
+		void setToDraw(bool& setting);
+
+		void draw(GLEngine::SpriteBatch& sb, GLEngine::SpriteFont& sf, float x, float y); // This draws our armourGrid, attacksGrid, and inventory.
+		void update();
+
+		CEGUI::FrameWindow* m_window = nullptr;
+		std::shared_ptr<ArmourInventory> m_armourGrid; // These InventoryBase classes allow us to draw, disable resizing, etc.
+		std::shared_ptr<WeaponInventory> m_attacksGrid;
+		std::shared_ptr<NPCInventory> m_inventory;
+};
 
 class EntityNPC : public Entity {
 	public:
@@ -47,9 +77,9 @@ class EntityNPC : public Entity {
 		void onTalk() {}
 		void onTrade() {}
 
-		virtual void collideWithTiles(World* world) override;
+		virtual void collideWithTiles() override;
 		virtual bool collideWithOther(Entity* other) override;
-		virtual void onUpdate(World* world, float timeStep, unsigned int selfIndex);
+		virtual void onUpdate(float timeStep, unsigned int selfIndex);
 
 		/// Getters
 		Categories::Faction getFaction() const {
@@ -66,7 +96,7 @@ class EntityNPC : public Entity {
 		void setInventory(std::shared_ptr<NPCInventory> inventory);
 
 		// Combat
-		void die(World* world);
+		void die();
 		void applyDamage(float damage); // This takes armour into account
 		void applyKnockback(float knockback, glm::vec2 origin);
 		void applyBuff(unsigned int id); // This constructs a new debuff and adds it to the vector.
@@ -74,6 +104,9 @@ class EntityNPC : public Entity {
 
 		// AI
 		void setAITarget(unsigned int selfIndex); /// TODO: Make this work with certain quests, etc.
+
+		// Inventory stuff
+		bool event_reskin(const CEGUI::EventArgs& e); // Just calls reskinLimbs, but as a CEGUI Event
 
 	protected:
 		// Pathfinding
@@ -95,6 +128,7 @@ class EntityNPC : public Entity {
 		virtual void onTick() override;
 
 		void initLimbs(); // Initializes limbs and animations.
+		void reskinLimbs(); // Reskins limbs, useful when equipped armour changes.
 
 		// Animation (TODO: Add animation to entity XML)
 		AnimationModule::Body m_body;
@@ -131,6 +165,5 @@ class EntityNPC : public Entity {
 
 		// Inventory
 		std::shared_ptr<NPCInventory> m_inventory;
-		std::shared_ptr<ArmourInventory> m_armour;
-		//std::vector<ItemWeapon*> m_equippedWeapons; TODO: Add weapons!
+		std::shared_ptr<NPCInventoryWrapper> m_armourWeaponsInventory;
 };

@@ -390,8 +390,8 @@ namespace XMLModule {
 				std::vector<AttributeBase*> attrs = {
 					new Attribute<std::vector<unsigned int>>("animationIDs/animationID", AttributeType::VECTOR_UNSIGNED_INT, &animationIDs),
 					                                      new Attribute<std::vector<unsigned int>>("limbIndices/limbIndex", AttributeType::VECTOR_UNSIGNED_INT, &limbIndices),
-					                                      new Attribute<unsigned int>("threshold", AttributeType::UNSIGNED_INT, &threshold),
-					                                      new Attribute<float>("resistance", AttributeType::UNSIGNED_INT, &resistance),
+					                                      new Attribute<float>("threshold", AttributeType::FLOAT, &threshold),
+					                                      new Attribute<float>("resistance", AttributeType::FLOAT, &resistance),
 					                                      new Attribute<unsigned int>("tickScript", AttributeType::SCRIPT, &tickScriptID)
 				};
 
@@ -400,7 +400,7 @@ namespace XMLModule {
 
 			std::vector<unsigned int> animationIDs;
 			std::vector<unsigned int> limbIndices;
-			unsigned int threshold = 0;
+			float threshold = 0;
 			float resistance = 0.0f;
 			unsigned int tickScriptID = (unsigned int) - 1;
 	};

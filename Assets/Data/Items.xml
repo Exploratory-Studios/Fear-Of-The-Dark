@@ -35,4 +35,15 @@
 	<weight>0.000000</weight>
 	<useScript><script>Item_BlockPlacement.lua</script><isFile>1</isFile></useScript> <!-- TODO: Attach string literals to these. Its already implemented, just do it. -->
 </item>
-
+<itemArmour id="9" name="Chestplate">
+	<texture>Items/Map.png</texture>
+	<weight>0.0</weight>
+	<animationIDs>
+		<animationID>4</animationID>
+	</animationIDs>
+	<limbIndices>
+		<limbIndex>0</limbIndex>
+	</limbIndices>
+	<threshold>1.0</threshold>
+	<resistance>2.0</resistance>
+</itemArmour>

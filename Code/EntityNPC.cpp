@@ -1,5 +1,8 @@
 #include "EntityNPC.h"
 
+#include <CEGUI/CEGUI.h>
+#include <SpriteFont.h>
+
 #include "World.h"
 #include "Tile.h"
 
@@ -8,12 +11,100 @@
 #include "Entities/EntityFunctions.h"
 
 #include "NPCInventory.h"
+#include "ArmourInventory.h"
+#include "WeaponInventory.h"
 
 #include "Attack.h"
 #include "ItemArmour.h"
 
 #include "XMLData.h"
 #include "Factory.h"
+
+NPCInventoryWrapper::NPCInventoryWrapper(std::string& UUID, std::shared_ptr<NPCInventory> inventory) {
+	// Construct all of our inventories, as well as the GUI
+
+	// Construct inventories:
+	m_inventory = inventory; // Done
+
+	std::string armourName = UUID + "ArmourGrid";
+	std::string attacksName = UUID + "AttacksGrid";
+	std::string frameName = UUID + "ArmourAttacksFrame";
+
+	Factory::getGUI()->setActiveContext(1);
+
+	m_window = static_cast<CEGUI::FrameWindow*>(Factory::getGUI()->createWidget("FOTDSkin/FrameWindow", glm::vec4(0.0f, 0.0f, 0.65f, 1.0f), glm::vec4(0.0f), frameName));
+	m_window->setCloseButtonEnabled(false);
+	m_window->setDragMovingEnabled(true);
+	m_window->setRollupEnabled(false);
+	m_window->setSizingEnabled(false);
+	m_window->getTitlebar()->setText("Armour & Attacks");
+
+	Factory::getGUI()->setActiveContext(0);
+
+	m_armourGrid = std::make_unique<ArmourInventory>(armourName, false, true, m_window);
+	m_armourGrid->init();
+	m_attacksGrid = std::make_unique<WeaponInventory>(attacksName, false, true, m_window);
+	m_attacksGrid->init();
+
+	m_window->setVisible(false);
+	m_window->setEnabled(false);
+	m_armourGrid->setToDraw(true);
+	m_attacksGrid->setToDraw(true);
+
+	m_armourGrid->setMovable(false);
+	m_attacksGrid->setMovable(false);
+
+	glm::vec4 armourPos(0.1f, 0.1f, INVENTORY_BOX_WIDTH, INVENTORY_BOX_HEIGHT * 3); // We need to offset by half dims. 0.0, 0.0 is the centre of the screen for some reason. I'm too lazy to fix it.
+	glm::vec4 attacksPos(0.1f, 0.8f, INVENTORY_BOX_WIDTH * 3, INVENTORY_BOX_HEIGHT);
+
+	m_armourGrid->setDestRect(armourPos);
+	m_attacksGrid->setDestRect(attacksPos);
+
+	m_armourGrid->setContentSize(1, 3); // vertical
+	m_attacksGrid->setContentSize(3, 1); // horizontal
+}
+
+NPCInventoryWrapper::~NPCInventoryWrapper() {
+	CEGUI::WindowManager& winMgr = CEGUI::WindowManager::getSingleton();
+	winMgr.destroyWindow(m_window);
+}
+
+void NPCInventoryWrapper::destroy() {
+	CEGUI::WindowManager& winMgr = CEGUI::WindowManager::getSingleton();
+	winMgr.destroyWindow(m_window);
+}
+
+void NPCInventoryWrapper::setToDraw(bool& setting) {
+	if(setting == true) { // Make sure the inventory is in the right position before opening
+		glm::vec4 inventoryPos(0.65f, 0.25f, 0.35f, 0.5f);
+		m_inventory->setDestRect(inventoryPos);
+		m_inventory->setMovable(false);
+	} else {
+		glm::vec4 inventoryPos(-0.2f, -0.2f, 0.35f, 0.5f);
+		m_inventory->setDestRect(inventoryPos);
+		m_inventory->setMovable(true);
+	}
+
+	m_window->setVisible(setting);
+	m_window->setEnabled(setting);
+	//m_armourGrid->setToDraw(setting);
+	//m_attacksGrid->setToDraw(setting);
+	m_inventory->setToDraw(setting);
+}
+
+void NPCInventoryWrapper::draw(GLEngine::SpriteBatch& sb, GLEngine::SpriteFont& sf, float x, float y) {
+	// This draws our armourGrid, attacksGrid, and inventory.
+	m_inventory->draw(sb, sf, x, y, false);
+	m_armourGrid->draw(sb, sf, x, y, false);
+	m_attacksGrid->draw(sb, sf, x, y, false);
+}
+
+void NPCInventoryWrapper::update() {
+	m_inventory->update();
+	m_armourGrid->update();
+	m_attacksGrid->update();
+}
+
 
 EntityNPC::EntityNPC(glm::vec2 pos, unsigned int layer, unsigned int id, SaveDataTypes::MetaData data, bool loadTex) : Entity(pos, layer, SaveDataTypes::MetaData()) {
 	m_id = id;
@@ -50,8 +141,8 @@ void EntityNPC::init(unsigned int id) {
 	m_inventory = std::make_shared<NPCInventory>(15.0f, m_UUID);
 	m_inventory->init();
 
-	m_armour = std::make_shared<ArmourInventory>(15.0f, m_UUID);
-	m_armour->init();
+	m_armourWeaponsInventory = std::make_shared<NPCInventoryWrapper>(m_UUID, m_inventory);
+	m_armourWeaponsInventory->m_armourGrid->subscribeEvent(CEGUI::Element::EventChildAdded, CEGUI::Event::Subscriber(&EntityNPC::event_reskin, this));
 }
 
 void EntityNPC::initLimbs() {
@@ -105,6 +196,22 @@ void EntityNPC::initLimbs() {
 	m_limbs.push_back(torso);*/
 
 	//////// XXXXXXXXXXXXXXXXXXXXXX
+}
+
+bool EntityNPC::event_reskin(const CEGUI::EventArgs& e) {
+	reskinLimbs();
+}
+
+void EntityNPC::reskinLimbs() {
+	// Set all limbs to their default skins first, so any that don't have armour just aren't affected
+	m_body.resetAnimations();
+
+	// Loop through all data in m_armour, and apply skins to affected limbs
+	for(unsigned int i = 0; i < m_armourWeaponsInventory->m_armourGrid->getItems().size(); i++) {
+		// static cast to ItemArmour* because that's the only type of item allowed to be added to armourInventories.
+		// That object can setLimbAnimations() on m_body.
+		static_cast<ItemArmour*>(m_armourWeaponsInventory->m_armourGrid->getItems()[i])->setLimbAnimations(m_body);
+	}
 }
 
 EntityNPC::~EntityNPC() {
@@ -196,7 +303,7 @@ bool EntityNPC::collideWithOther(Entity* other) {
 	return true;
 }
 
-void EntityNPC::collideWithTiles(World* world) {
+void EntityNPC::collideWithTiles() {
 	/// Tile collision
 	{
 		/// Many thanks to Ben Arnold. He taught me almost everything I know about programming through his Youtube channel, "Makinggameswithben"
@@ -216,32 +323,32 @@ void EntityNPC::collideWithTiles(World* world) {
 		// Check for ground/ceiling
 
 		// Bottom right corner
-		checkTilePosition(world, groundTilePositions,
+		checkTilePosition(groundTilePositions,
 		                  posBR.x - testVar,
 		                  posBR.y);
 
 
 		// Bottom left corner
-		checkTilePosition(world, groundTilePositions,
+		checkTilePosition(groundTilePositions,
 		                  posBL.x + testVar,
 		                  posBL.y);
 
 
 		// Top right corner
-		checkTilePosition(world, groundTilePositions,
+		checkTilePosition(groundTilePositions,
 		                  posTR.x - testVar,
 		                  posTR.y);
 
 
 		// Top left corner
-		checkTilePosition(world, groundTilePositions,
+		checkTilePosition(groundTilePositions,
 		                  posTL.x + testVar,
 		                  posTL.y);
 
 		// Top/Bottom sides
 		for(float yMod = 0.0f; yMod < height; yMod += height) {
 			for(float xMod = 0.0f; xMod < width - (2 * testVar); xMod += 1.0f) {
-				checkTilePosition(world, groundTilePositions,
+				checkTilePosition(groundTilePositions,
 				                  posBL.x + xMod + testVar,
 				                  posBL.y + yMod);
 			}
@@ -250,26 +357,26 @@ void EntityNPC::collideWithTiles(World* world) {
 
 
 		// Check the sides (not ground)
-		checkTilePosition(world, collideTilePositions,
+		checkTilePosition(collideTilePositions,
 		                  posBR.x,
 		                  posBR.y + testVar);
 
-		checkTilePosition(world, collideTilePositions,
+		checkTilePosition(collideTilePositions,
 		                  posBL.x,
 		                  posBL.y + testVar);
 
-		checkTilePosition(world, collideTilePositions,
+		checkTilePosition(collideTilePositions,
 		                  posTL.x,
 		                  posTL.y - testVar);
 
-		checkTilePosition(world, collideTilePositions,
+		checkTilePosition(collideTilePositions,
 		                  posTR.x,
 		                  posTR.y - testVar);
 
 		// Sides
 		for(float xMod = 0; xMod <= width; xMod += width) {
 			for(float yMod = 0.0f; yMod < height - (2 * testVar); yMod += 1.0f) {
-				checkTilePosition(world, collideTilePositions,
+				checkTilePosition(collideTilePositions,
 				                  posBL.x + xMod,
 				                  posBL.y + yMod + testVar);
 			}
@@ -320,7 +427,7 @@ void EntityNPC::collideWithTiles(World* world) {
 	}
 }
 
-void EntityNPC::onUpdate(World* world, float timeStep, unsigned int selfIndex) {
+void EntityNPC::onUpdate(float timeStep, unsigned int selfIndex) {
 	m_body.update();
 
 	if(m_takesFallDamage) {
@@ -335,15 +442,15 @@ void EntityNPC::onUpdate(World* world, float timeStep, unsigned int selfIndex) {
 	}
 
 	updateAttack();
-	updateMovement(world);
-	updateLightLevel(world);
+	updateMovement();
+	updateLightLevel();
 
-	setAITarget(world, selfIndex);
+	setAITarget(selfIndex);
 
 	m_inventory->update();
 
 	if(m_health <= 0.0f) {
-		die(world);
+		die();
 	}
 
 	/*if(m_velocity.x > MAX_SPEED * m_inventory->getSpeedMultiplier() * std::pow(m_stamina, 0.4f)) {
@@ -391,7 +498,7 @@ void EntityNPC::setInventory(std::shared_ptr<NPCInventory> inventory) {
 	m_inventory = inventory;
 }
 
-void EntityNPC::die(World* world) {
+void EntityNPC::die() {
 	if(m_canDie) {
 		/* if(m_lootTableStart.getRarity() != -1.0f) {
 		     for(int i = 0; i < m_lootRolls; i++) {
@@ -405,7 +512,7 @@ void EntityNPC::die(World* world) {
 	}
 }
 
-void EntityNPC::updateMovement(World* world) {
+void EntityNPC::updateMovement() {
 	EntityFunctions::basic_straight(m_controls, m_targets, m_curTarget, this); /// TODO: Make entities able to have different AI
 
 	if(m_controls[0]) { // UP
@@ -439,9 +546,9 @@ void EntityNPC::updateMovement(World* world) {
 		}
 	}
 	if(m_controls[4]) { // Backwards (layer++)
-		moveDownLayer(world);
+		moveDownLayer();
 	} else if(m_controls[5]) { // Forwards (layer--)
-		moveUpLayer(world);
+		moveUpLayer();
 	}
 
 	if(m_velocity.x > MAX_SPEED) {
@@ -455,7 +562,7 @@ void EntityNPC::updateMovement(World* world) {
 	}
 }
 
-void EntityNPC::pathfindToTarget(World* world, glm::vec3 target, bool goLeft) {
+void EntityNPC::pathfindToTarget(glm::vec3 target, bool goLeft) {
 	/**
 	    1. Set outer bounds (how far away the algorithm will expand before deciding there's no path)
 	    2. 'Link' all accessible tiles as "NavTile"s, effectively creating a system of nodes
@@ -478,7 +585,7 @@ void EntityNPC::pathfindToTarget(World* world, glm::vec3 target, bool goLeft) {
 
 	int jumpHeight = std::floor((60.0f * m_jumpHeight * m_jumpHeight) / 2.45f + 0.1f);
 
-	start = expandTile(world, glm::vec3((int)m_position.x, (int)m_position.y, m_layer), jumpHeight, m_size, nullptr, target);
+	start = expandTile(glm::vec3((int)m_position.x, (int)m_position.y, m_layer), jumpHeight, m_size, nullptr, target);
 
 	// Check to make sure if there's a path:
 	if(!start) {
@@ -526,7 +633,7 @@ void EntityNPC::pathfindToTarget(World* world, glm::vec3 target, bool goLeft) {
 
 		// Expand and remove (if there are no nextNodes, it will simply be removed)
 		for(unsigned int i = 0; i < frontier[lowestIndex]->nextNodes.size(); i++) {
-			addToFrontier(expandTile(world, frontier[lowestIndex]->nextNodes[i], jumpHeight, m_size, frontier[lowestIndex], target), frontier);
+			addToFrontier(expandTile(frontier[lowestIndex]->nextNodes[i], jumpHeight, m_size, frontier[lowestIndex], target), frontier);
 		}
 		for(unsigned int i = lowestIndex; i < frontier.size() - 1; i++) {
 			frontier[i] = frontier[i + 1];
@@ -554,13 +661,13 @@ void EntityNPC::pathfindToTarget(World* world, glm::vec3 target, bool goLeft) {
 	return;
 }
 
-bool EntityNPC::fitsOnTile(World* world, Tile* t, bool needsFloor) {
+bool EntityNPC::fitsOnTile(Tile* t, bool needsFloor) {
 	bool fits = true;
 	int start = needsFloor ? -1 : 0;
 
 	for(int y = start; fits && y < m_size.y; y++) {
 		for(int x = 0; fits && x < m_size.x; x++) {
-			Tile* tmp = world->getTile(t->getPosition().x + x, t->getPosition().y + y, t->getLayer());
+			Tile* tmp = Factory::getWorld()->getTile(t->getPosition().x + x, t->getPosition().y + y, t->getLayer());
 			if(tmp) {
 				if(y >= 0) {
 					if(tmp->isSolid()) fits = false;
@@ -573,15 +680,17 @@ bool EntityNPC::fitsOnTile(World* world, Tile* t, bool needsFloor) {
 	return fits;
 }
 
-NavTile* EntityNPC::expandTile(World* world, glm::vec3 pos, int jumpHeight, glm::vec2 size, NavTile* parent, glm::vec3 target) {
+NavTile* EntityNPC::expandTile(glm::vec3 pos, int jumpHeight, glm::vec2 size, NavTile* parent, glm::vec3 target) {
 
 	NavTile* ret = new NavTile;
 	ret->parent = parent;
 	ret->pos = pos;
 
 	// Check Left
+	World* world = Factory::getWorld();
+
 	Tile* left = world->getTile(pos.x - 1, pos.y, pos.z);
-	if(fitsOnTile(world, left, true)) {
+	if(fitsOnTile(left, true)) {
 		glm::vec3 p(left->getPosition().x, left->getPosition().y, left->getLayer());
 		if(!parent || p != parent->pos) {
 			ret->nextNodes.push_back(p);
@@ -590,7 +699,7 @@ NavTile* EntityNPC::expandTile(World* world, glm::vec3 pos, int jumpHeight, glm:
 		for(int i = 0; i < jumpHeight; i++) { /// TODO: Implement some sort of 'safe' fall distance
 			Tile* leftDown = world->getTile(pos.x - 1, pos.y - i, pos.z); // Check tiles below so that we can fall distances.
 			if(leftDown) {
-				if(fitsOnTile(world, leftDown)) {
+				if(fitsOnTile(leftDown)) {
 					glm::vec3 p(leftDown->getPosition().x, leftDown->getPosition().y, leftDown->getLayer());
 					if(!parent || p != parent->pos) {
 						ret->nextNodes.push_back(p);
@@ -601,7 +710,7 @@ NavTile* EntityNPC::expandTile(World* world, glm::vec3 pos, int jumpHeight, glm:
 	}
 
 	Tile* right = world->getTile(pos.x + 1, pos.y, pos.z);
-	if(fitsOnTile(world, right, true)) {
+	if(fitsOnTile(right, true)) {
 		glm::vec3 p(right->getPosition().x, right->getPosition().y, right->getLayer());
 		if(!parent || p != parent->pos) {
 			ret->nextNodes.push_back(p);
@@ -610,7 +719,7 @@ NavTile* EntityNPC::expandTile(World* world, glm::vec3 pos, int jumpHeight, glm:
 		for(int i = 0; i < jumpHeight; i++) { /// TODO: Implement some sort of 'safe' fall distance
 			Tile* rightDown = world->getTile(pos.x + 1, pos.y - i, pos.z); // Check tiles below so that we can fall distances.
 			if(rightDown) {
-				if(fitsOnTile(world, rightDown)) {
+				if(fitsOnTile(rightDown)) {
 					glm::vec3 p(rightDown->getPosition().x, rightDown->getPosition().y, rightDown->getLayer());
 					if(!parent || p != parent->pos) {
 						ret->nextNodes.push_back(p);
@@ -624,7 +733,7 @@ NavTile* EntityNPC::expandTile(World* world, glm::vec3 pos, int jumpHeight, glm:
 	if(pos.z < WORLD_DEPTH - 1) {
 		// Check Behind
 		Tile* back = world->getTile(pos.x, pos.y, pos.z + 1);
-		if(fitsOnTile(world, back, true)) {
+		if(fitsOnTile(back, true)) {
 			glm::vec3 p(back->getPosition().x, back->getPosition().y, back->getLayer());
 			if(!parent || p != parent->pos) {
 				ret->nextNodes.push_back(p);
@@ -633,7 +742,7 @@ NavTile* EntityNPC::expandTile(World* world, glm::vec3 pos, int jumpHeight, glm:
 			for(int i = 0; i < jumpHeight; i++) { /// TODO: Implement some sort of 'safe' fall distance
 				Tile* backDown = world->getTile(pos.x, pos.y - i, pos.z + 1); // Check tiles below so that we can fall distances.
 				if(backDown) {
-					if(fitsOnTile(world, backDown)) {
+					if(fitsOnTile(backDown)) {
 						glm::vec3 p(backDown->getPosition().x, backDown->getPosition().y, backDown->getLayer());
 						if(!parent || p != parent->pos) {
 							ret->nextNodes.push_back(p);
@@ -648,7 +757,7 @@ NavTile* EntityNPC::expandTile(World* world, glm::vec3 pos, int jumpHeight, glm:
 	if(pos.z > 0) {
 		// Check In Front
 		Tile* front = world->getTile(pos.x, pos.y, pos.z - 1);
-		if(fitsOnTile(world, front, true)) {
+		if(fitsOnTile(front, true)) {
 			glm::vec3 p(front->getPosition().x, front->getPosition().y, front->getLayer());
 			if(!parent || p != parent->pos) {
 				ret->nextNodes.push_back(p);
@@ -657,7 +766,7 @@ NavTile* EntityNPC::expandTile(World* world, glm::vec3 pos, int jumpHeight, glm:
 			for(int i = 0; i < jumpHeight; i++) { /// TODO: Implement some sort of 'safe' fall distance
 				Tile* frontDown = world->getTile(pos.x, pos.y - i, pos.z - 1); // Check tiles below so that we can fall distances.
 				if(frontDown) {
-					if(fitsOnTile(world, frontDown)) {
+					if(fitsOnTile(frontDown)) {
 						glm::vec3 p(frontDown->getPosition().x, frontDown->getPosition().y, frontDown->getLayer());
 						if(!parent || p != parent->pos) {
 							ret->nextNodes.push_back(p);
@@ -672,7 +781,7 @@ NavTile* EntityNPC::expandTile(World* world, glm::vec3 pos, int jumpHeight, glm:
 	for(int i = 0; i < jumpHeight; i++) {
 		Tile* up = world->getTile(pos.x, pos.y + i, pos.z);
 		if(up) {
-			if(fitsOnTile(world, up, false)) {
+			if(fitsOnTile(up, false)) {
 				glm::vec3 p(up->getPosition().x, up->getPosition().y, up->getLayer());
 				if(!parent || p != parent->pos) {
 					ret->nextNodes.push_back(p);
@@ -683,13 +792,13 @@ NavTile* EntityNPC::expandTile(World* world, glm::vec3 pos, int jumpHeight, glm:
 		}
 	}
 
-	calculateCost(world, ret, target);
+	calculateCost(ret, target);
 
 	return ret;
 }
 
 void EntityNPC::calculateCost(NavTile* tile, glm::vec3 target) {
-	tile->h = world->getDistance(glm::vec2(tile->pos.x, tile->pos.y), glm::vec2(target.x, target.y)) + std::abs(tile->pos.z - target.z); /// TODO: Implement crossover
+	tile->h = Factory::getWorld()->getDistance(glm::vec2(tile->pos.x, tile->pos.y), glm::vec2(target.x, target.y)) + std::abs(tile->pos.z - target.z); /// TODO: Implement crossover
 	if(tile->parent) tile->h += tile->parent->h / 2.0f; // The distance to the entity is more important than the path. Plus, this improves performance.
 }
 
@@ -709,7 +818,7 @@ void EntityNPC::addToFrontier(NavTile* tile, std::vector<NavTile*>& frontier) {
 	frontier.push_back(tile);
 }
 
-void EntityNPC::setAITarget(World* world, unsigned int selfIndex) {
+void EntityNPC::setAITarget(unsigned int selfIndex) {
 	unsigned int entCount = Factory::getEntityManager()->getEntities().size();
 
 	EntityNPC* targetL = nullptr;
@@ -751,13 +860,13 @@ void EntityNPC::setAITarget(World* world, unsigned int selfIndex) {
 	}
 
 	if(targetL || targetR) {
-		float distToTargetL = targetL ? world->getDistance(m_position, targetL->getPosition()) : (unsigned int) - 1;
-		float distToTargetR = targetR ? world->getDistance(m_position, targetR->getPosition()) : (unsigned int) - 1;
+		float distToTargetL = targetL ? Factory::getWorld()->getDistance(m_position, targetL->getPosition()) : (unsigned int) - 1;
+		float distToTargetR = targetR ? Factory::getWorld()->getDistance(m_position, targetR->getPosition()) : (unsigned int) - 1;
 
 		if(distToTargetL < distToTargetR) {
-			pathfindToTarget(world, glm::vec3((int)targetL->getPosition().x, (int)targetL->getPosition().y, targetL->getLayer()), true);
+			pathfindToTarget(glm::vec3((int)targetL->getPosition().x, (int)targetL->getPosition().y, targetL->getLayer()), true);
 		} else {
-			pathfindToTarget(world, glm::vec3((int)targetR->getPosition().x, (int)targetR->getPosition().y, targetR->getLayer()), false);
+			pathfindToTarget(glm::vec3((int)targetR->getPosition().x, (int)targetR->getPosition().y, targetR->getLayer()), false);
 		}
 	}
 }
@@ -812,19 +921,16 @@ void EntityNPC::updateAttack() {
 void EntityNPC::applyDamage(float damage) {
 	float appliedDamage = 0.0f;
 
-	float averageThreshold = 0.0f;
-	float averageResistance = 0.0f;
+	float threshold = m_armourWeaponsInventory->m_armourGrid->getTotalDamageThreshold();
+	float resistance = m_armourWeaponsInventory->m_armourGrid->getTotalDamageResistance();
 
-	for(unsigned int i = 0; i < m_equippedArmour.size(); i++) {
-		averageThreshold += m_equippedArmour[i]->getThreshold();
-		averageResistance += m_equippedArmour[i]->getResistance();
+	if(resistance > 1.0f) {
+		// Resistance is >100%. This should be impossible, but it's a balancing thing. This is here just for safety.
+		resistance = 1.0f; // Maybe cap this at like 90% or something?
 	}
 
-	averageThreshold /= m_equippedArmour.size();
-	averageResistance /= m_equippedArmour.size();
-
-	appliedDamage = std::max(damage - averageThreshold, 0.0f);
-	appliedDamage *= (1.0f - averageResistance);
+	appliedDamage = std::max(damage - threshold, 0.0f);
+	appliedDamage *= (1.0f - resistance);
 
 	m_health -= appliedDamage;
 }

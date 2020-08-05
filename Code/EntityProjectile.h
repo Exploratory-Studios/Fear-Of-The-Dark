@@ -11,7 +11,7 @@ class EntityProjectile : public Entity {
 		virtual void draw(GLEngine::SpriteBatch& sb, float time, int layerDifference, float xOffset) override;
 		virtual void drawNormal(GLEngine::SpriteBatch& sb, float time, int layerDifference, float xOffset) override;
 
-		virtual void collideWithTiles(World* world) override;
+		virtual void collideWithTiles() override;
 		virtual bool collideWithOther(Entity* other) override;
 
 		void init();

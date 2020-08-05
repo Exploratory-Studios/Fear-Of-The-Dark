@@ -21,10 +21,13 @@ class InventoryBase {
 		virtual ~InventoryBase();
 
 		void init();
+		void destroy(); // Actually destroys GUI windows used.
 
 		bool addItem(Item* newItem); // Returns false if the item didn't pass the test, true otherwise. Adds a gridItem.
 		void subtractItem(Item* item); // removes from both m_items and m_gridItems
 		void queueSubtraction(Item* item);
+
+		void subscribeEvent(const CEGUI::String& evnt, CEGUI::Event::Subscriber sub);
 
 		virtual void copyFrom(InventoryBase* other) {
 			m_items = other->getItems();
@@ -85,6 +88,8 @@ class InventoryBase {
 		bool onDragDropItemAdded(const CEGUI::EventArgs& e);
 
 	protected:
+		virtual void onItemAdded(const CEGUI::WindowEventArgs& e) {}; // the args are WindowEventArgs
+
 		float m_weight = 0.0f; // The average person can carry about 20kg of weight and still walk normally
 		virtual void initGUI(CEGUI::FrameWindow* frame) {};
 		std::vector<Item*> m_items{};

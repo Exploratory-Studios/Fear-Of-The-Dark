@@ -40,10 +40,17 @@ namespace AnimationModule {
 		//m_uv.z = (float)(frameHeight) / (float)(height);
 	}
 
-	void Animation::draw(::GLEngine::SpriteBatch& sb, GLEngine::ColourRGBA8 colour, glm::vec4& destRect, float& depth, float& angle, glm::vec2& COR) {
-		m_uv.x = (float)(m_currentFrame * m_frameWidth) / (float)(m_width);
+	void Animation::draw(::GLEngine::SpriteBatch& sb, GLEngine::ColourRGBA8 colour, glm::vec4& destRect, float& depth, float& angle, glm::vec2& COR, bool flipped) {
+		glm::vec4 uv = m_uv;
 
-		sb.draw(destRect, m_uv, m_textureID, depth, colour, angle, COR);
+		uv.x = (float)(m_currentFrame * m_frameWidth) / (float)(m_width);
+
+		if(flipped) {
+			uv.y += uv.w;
+			uv.w *= -1;
+		}
+
+		sb.draw(destRect, uv, m_textureID, depth, colour, angle, COR);
 	}
 
 	void Animation::draw(::GLEngine::SpriteBatch& sb, GLEngine::ColourRGBA8 colour, glm::vec4& destRect, float& depth, glm::vec2 direction) {
@@ -52,10 +59,17 @@ namespace AnimationModule {
 		sb.draw(destRect, m_uv, m_textureID, depth, colour, direction);
 	}
 
-	void Animation::drawNormal(::GLEngine::SpriteBatch& sb, glm::vec4& destRect, float& depth, float& angle, glm::vec2& COR) {
-		m_uv.x = (float)(m_currentFrame * m_frameWidth) / (float)(m_width);
+	void Animation::drawNormal(::GLEngine::SpriteBatch& sb, glm::vec4& destRect, float& depth, float& angle, glm::vec2& COR, bool flipped) {
+		glm::vec4 uv = m_uv;
 
-		sb.draw(destRect, m_uv, m_normalMapID, depth, GLEngine::ColourRGBA8(255, 255, 255, 255), angle, COR);
+		uv.x = (float)(m_currentFrame * m_frameWidth) / (float)(m_width);
+
+		if(flipped) {
+			uv.y += uv.w;
+			uv.w *= -1;
+		}
+
+		sb.draw(destRect, uv, m_normalMapID, depth, GLEngine::ColourRGBA8(255, 255, 255, 255), angle, COR);
 	}
 
 	void Animation::drawNormal(::GLEngine::SpriteBatch& sb, glm::vec4& destRect, float& depth, glm::vec2 direction) {
@@ -148,16 +162,19 @@ namespace AnimationModule {
 
 	void SkeletalAnimation::transitionLimb(Limb* limb) {
 		// Move the limb from where it is to where the first frame of this animation is. This has to be done in some arbitrary amount of frames. This function is called every frame.
-		const float maxMovement = 0.125f; // (.0625 tiles) How far anything can move in one frame MAXIMUM
-		const float maxAngle = M_PI_4 / 16.0f / 2.0f; // (1/128 pi, 1.40625 degrees) How far anything can rotate in one frame MAXIMUM
+
+		// We can use m_currentFrame to count up to some arbitrary number. We can calculate how far we need to move each frame, using some arbitrary number of frames, and how far we need to go still
+		const unsigned int framesPerTransition = 3;
+		const unsigned int numFramesLeft = framesPerTransition - m_currentFrame;
+		// If we divide the distance/angle from here to where we need to go by the frames left, we should have our amount to move.
 
 		glm::vec2 diffPos = m_offsets[limb->getIndex()] - limb->getOffset();
 		float diffAngle = m_angles[limb->getIndex()] - limb->getAngle();
 		glm::vec2 diffCentre = m_centresOfRotation[limb->getIndex()] - limb->getCentreOfRotation();
 
-		glm::vec2 integralPos = glm::clamp(diffPos, glm::vec2(-maxMovement), glm::vec2(maxMovement));
-		float integralAngle = glm::clamp(diffAngle, -maxAngle, maxAngle);
-		glm::vec2 integralCentre = glm::clamp(diffCentre, glm::vec2(-maxMovement), glm::vec2(maxMovement));
+		glm::vec2 integralPos = diffPos / glm::vec2(numFramesLeft);
+		float integralAngle = diffAngle / numFramesLeft;
+		glm::vec2 integralCentre = diffCentre / glm::vec2(numFramesLeft);
 
 		glm::vec2 newOffset = limb->getOffset() + integralPos;
 		float newAngle = limb->getAngle() + integralAngle;
@@ -167,9 +184,9 @@ namespace AnimationModule {
 		limb->setAngle(newAngle);
 		limb->setCentreOfRotation(newCentre);
 
-		if(glm::distance(limb->getOffset(), m_offsets[limb->getIndex()]) <= 0.001f) { // Check if we're done
-			if(std::abs(limb->getAngle() - m_angles[limb->getIndex()]) <= 0.001f) {
-				if(glm::distance(limb->getCentreOfRotation(), m_centresOfRotation[limb->getIndex()]) <= 0.001f) {
+		if(glm::distance(limb->getOffset(), m_offsets[limb->getIndex()]) <= 0.01f) { // Check if we're done
+			if(std::abs(limb->getAngle() - m_angles[limb->getIndex()]) <= 0.01f) {
+				if(glm::distance(limb->getCentreOfRotation(), m_centresOfRotation[limb->getIndex()]) <= 0.01f) {
 					// Everything is within an unnoticable distance, so we can continue with regular updating.
 					limb->activateSkeletalAnimation(this);
 					m_changing = false;
@@ -231,6 +248,7 @@ namespace AnimationModule {
 		}
 
 		m_nextAnimation = anim;
+		m_nextAnimation->setFrame(0); // So transitionLimb works properly.
 	}
 
 	void Limb::setAnimation(Animation& anim) {
@@ -254,38 +272,48 @@ namespace AnimationModule {
 		}
 	}
 
-	void Limb::draw(GLEngine::SpriteBatch& sb, GLEngine::ColourRGBA8 colour, glm::vec4 destRect, float& depth) {
+	void Limb::draw(GLEngine::SpriteBatch& sb, GLEngine::ColourRGBA8 colour, glm::vec4 destRect, float& depth, bool flipped) {
 		// Transform based on centre of rotation
+		const glm::vec2 centre = flipped ? glm::vec2(1.0f - m_centreOfRotation.x, m_centreOfRotation.y) : m_centreOfRotation;
+		const glm::vec2 offset = flipped ? glm::vec2(-m_offset.x, m_offset.y) : m_offset;
+		float angle = flipped ? M_PI - m_angle : m_angle;
 
-		float xDist = (m_offset.x + destRect.z / 2.0f) - m_centreOfRotation.x * destRect.z;
-		float yDist = (m_offset.y + destRect.w / 2.0f) - m_centreOfRotation.y * destRect.w;
+		float xDist = (offset.x + destRect.z / 2.0f) - centre.x * destRect.z;
+		float yDist = (offset.y + destRect.w / 2.0f) - centre.y * destRect.w;
 
-		destRect.x += xDist * std::cos(m_angle) - yDist * std::sin(m_angle) + m_centreOfRotation.x * destRect.z;
-		destRect.y += xDist * std::sin(m_angle) + yDist * std::cos(m_angle) + m_centreOfRotation.y * destRect.w;
+		if(flipped) yDist *= -1;
+
+		destRect.x += xDist * std::cos(angle) - yDist * std::sin(angle) + centre.x * destRect.z;
+		destRect.y += xDist * std::sin(angle) + yDist * std::cos(angle) + centre.y * destRect.w;
 
 		destRect.x -= destRect.z / 2.0f;
 		destRect.y -= destRect.w / 2.0f;
 
 		glm::vec2 c(0.5f, 0.5f);
 
-		m_idleAnimation.draw(sb, colour, destRect, depth, m_angle, c);
+		m_idleAnimation.draw(sb, colour, destRect, depth, angle, c, flipped);
 	}
 
-	void Limb::drawNormal(GLEngine::SpriteBatch& sb, glm::vec4 destRect, float& depth) {
+	void Limb::drawNormal(GLEngine::SpriteBatch& sb, glm::vec4 destRect, float& depth, bool flipped) {
 		// Transform based on centre of rotation
+		const glm::vec2 centre = flipped ? glm::vec2(1.0f - m_centreOfRotation.x, m_centreOfRotation.y) : m_centreOfRotation;
+		const glm::vec2 offset = flipped ? glm::vec2(-m_offset.x, m_offset.y) : m_offset;
+		float angle = flipped ? M_PI - m_angle : m_angle;
 
-		float xDist = (m_offset.x + destRect.z / 2.0f) - m_centreOfRotation.x * destRect.z;
-		float yDist = (m_offset.y + destRect.w / 2.0f) - m_centreOfRotation.y * destRect.w;
+		float xDist = (offset.x + destRect.z / 2.0f) - centre.x * destRect.z;
+		float yDist = (offset.y + destRect.w / 2.0f) - centre.y * destRect.w;
 
-		destRect.x += xDist * std::cos(m_angle) - yDist * std::sin(m_angle) + m_centreOfRotation.x * destRect.z;
-		destRect.y += xDist * std::sin(m_angle) + yDist * std::cos(m_angle) + m_centreOfRotation.y * destRect.w;
+		if(flipped) yDist *= -1;
+
+		destRect.x += xDist * std::cos(angle) - yDist * std::sin(angle) + centre.x * destRect.z;
+		destRect.y += xDist * std::sin(angle) + yDist * std::cos(angle) + centre.y * destRect.w;
 
 		destRect.x -= destRect.z / 2.0f;
 		destRect.y -= destRect.w / 2.0f;
 
 		glm::vec2 c(0.5f, 0.5f);
 
-		m_idleAnimation.drawNormal(sb, destRect, depth, m_angle, c);
+		m_idleAnimation.drawNormal(sb, destRect, depth, angle, c, flipped);
 	}
 
 	bool Limb::isAnimationActive() {

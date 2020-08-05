@@ -55,17 +55,10 @@ void EntityManager::dispose() {
 	Logger::getInstance()->log("EntityManager deconstructed");
 }
 
-void EntityManager::setPlayer(EntityPlayer& p) {
-	/// Copies p, creates/updates a pointer to the world-stored player.
-	if(!m_player) {
-		m_player = new EntityPlayer(glm::vec2(0.0f), 0.0f, SaveDataTypes::MetaData(), false);
-		*m_player = p;
-		m_player->setInventory(p.getInventory());
-		queueEntityToAdd(m_player);
-	} else {
-		*m_player = p;
-		m_player->setInventory(p.getInventory());
-	}
+void EntityManager::setPlayer(EntityPlayer* p) {
+	if(m_player) queueEntityToRemove(m_player);
+	queueEntityToAdd(p);
+	m_player = p;
 }
 
 void EntityManager::sortEntities() {

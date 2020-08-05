@@ -38,7 +38,38 @@
 	<height>16</height>
 	<frames>4</frames>
 </animation>
-
+<animation name="Test_Torso" id="5">
+	<texture>/Entities/NPCs/Armour0.png</texture>
+	<normalMap>PlayerLimbsMap.png</normalMap>
+	<y>0</y>
+	<width>48</width>
+	<height>128</height>
+	<frames>1</frames>
+</animation>
+<animation name="Test_Arm" id="6">
+	<texture>/Entities/NPCs/Armour0.png</texture>
+	<normalMap>PlayerLimbsMap.png</normalMap>
+	<y>1</y>
+	<width>48</width>
+	<height>128</height>
+	<frames>1</frames>
+</animation>
+<animation name="Test_Leg0" id="7">
+	<texture>/Entities/NPCs/Armour0.png</texture>
+	<normalMap>PlayerLimbsMap.png</normalMap>
+	<y>2</y>
+	<width>48</width>
+	<height>128</height>
+	<frames>1</frames>
+</animation>
+<animation name="Test_Leg1" id="8">
+	<texture>/Entities/NPCs/Armour0.png</texture>
+	<normalMap>PlayerLimbsMap.png</normalMap>
+	<y>3</y>
+	<width>48</width>
+	<height>128</height>
+	<frames>1</frames>
+</animation>
 
 <skeletalAnimation id="0" name="MeleeAttack">
 	<repeats>1</repeats>

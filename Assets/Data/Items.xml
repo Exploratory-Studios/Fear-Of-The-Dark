@@ -39,10 +39,14 @@
 	<texture>Items/Map.png</texture>
 	<weight>0.0</weight>
 	<animationIDs>
-		<animationID>4</animationID>
+		<animationID>5</animationID>
+		<animationID>7</animationID>
+		<animationID>5</animationID>
 	</animationIDs>
 	<limbIndices>
 		<limbIndex>0</limbIndex>
+		<limbIndex>2</limbIndex>
+		<limbIndex>4</limbIndex>
 	</limbIndices>
 	<threshold>1.0</threshold>
 	<resistance>2.0</resistance>

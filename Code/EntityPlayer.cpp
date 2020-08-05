@@ -22,11 +22,17 @@ EntityPlayer::EntityPlayer(glm::vec2 pos, unsigned int layer, SaveDataTypes::Met
 	m_inventory->init();
 
 	m_armourWeaponsInventory = std::make_shared<NPCInventoryWrapper>(m_UUID, m_inventory);
+
+	std::function<bool(const CEGUI::EventArgs&)> reskin = [=](const CEGUI::EventArgs& e)->bool{ this->reskinLimbs(); };
+	std::function<bool(const CEGUI::EventArgs&)> defaultSkin = [=](const CEGUI::EventArgs& e)->bool{ this->m_body.resetAnimations(); };
+
+	m_armourWeaponsInventory->m_armourGrid->subscribeEvent(CEGUI::Element::EventChildAdded, CEGUI::Event::Subscriber(reskin));
+	m_armourWeaponsInventory->m_armourGrid->subscribeEvent(CEGUI::Element::EventChildRemoved, CEGUI::Event::Subscriber(defaultSkin));
 }
 
 
 EntityPlayer::~EntityPlayer() {
-	//dtor
+
 }
 
 void EntityPlayer::initGUI() {
@@ -275,20 +281,23 @@ void EntityPlayer::updateInput(GLEngine::InputManager* input) {
 		if(m_state != MovementState::LOW_VEL) {
 			m_state = MovementState::LOW_VEL;
 			m_body.changeAnimation(m_lowVelAnimation);
+			m_flippedTexture = false;
 		}
 		m_stamina *= 0.999f;
 	} else if(input->isKeyDown(SDLK_a) && (m_stamina > 0.0f)) {
 		if(m_velocity.x > 0.0f) m_velocity.x /= 5.0f;
-		if(m_velocity.x > -MAX_SPEED)
+		if(m_velocity.x > -MAX_SPEED) {
 			m_velocity.x -= m_runSpeed * m_inventory->getSpeedMultiplier() * std::pow(m_stamina, 0.4f);
+		}
 		if(m_state != MovementState::LOW_VEL) {
 			m_state = MovementState::LOW_VEL;
 			m_body.changeAnimation(m_lowVelAnimation);
+			m_flippedTexture = true;
 		}
 		m_stamina *= 0.999f;
 	}
 
-	if(m_velocity.x < 0.001f && m_velocity.x > -0.001f && m_onGround && m_stamina * 1.003f <= 1.000000f) {
+	if(std::abs(m_velocity.x) < 0.001f && m_onGround && m_stamina * 1.003f <= 1.000000f) {
 		m_stamina *= 1.003f;
 		if(m_state != MovementState::IDLE) {
 			m_state = MovementState::IDLE;
@@ -358,6 +367,10 @@ void EntityPlayer::updateInput(GLEngine::InputManager* input) {
 	if(input->isKeyPressed(SDLK_F9)) {
 		m_inventory->addItem(new ItemArmour(1, 9, true));
 	}
+}
+
+bool EntityPlayer::event_reskin(const CEGUI::EventArgs& e) {
+	reskinLimbs();
 }
 
 SaveDataTypes::EntityPlayerData EntityPlayer::getPlayerSaveData() {

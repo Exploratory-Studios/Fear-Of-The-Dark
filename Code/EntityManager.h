@@ -43,7 +43,7 @@ class EntityManager {
 		EntityPlayer* getPlayer() {
 			return m_player;
 		}
-		void setPlayer(EntityPlayer& p);
+		void setPlayer(EntityPlayer* p);
 
 	private:
 		void addEntity(Entity* e);

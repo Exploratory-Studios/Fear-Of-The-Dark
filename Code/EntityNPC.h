@@ -74,6 +74,8 @@ class EntityNPC : public Entity {
 		virtual void draw(GLEngine::SpriteBatch& sb, float time, int layerDifference, float xOffset) override;
 		virtual void drawNormal(GLEngine::SpriteBatch& sb, float time, int layerDifference, float xOffset) override;
 
+		virtual void display(GLEngine::SpriteBatch& sb, glm::vec2 position, float scale); // Displays the entity in UI style.
+
 		void onTalk() {}
 		void onTrade() {}
 
@@ -92,8 +94,9 @@ class EntityNPC : public Entity {
 
 		// Inventory
 		void giveItem(Item* item);
-		std::shared_ptr<NPCInventory> getInventory();
-		void setInventory(std::shared_ptr<NPCInventory> inventory);
+		std::shared_ptr<NPCInventory>& getInventory();
+		std::shared_ptr<NPCInventoryWrapper>& getInventoryWrapper();
+		void setInventory(std::shared_ptr<NPCInventory>& inventory, std::shared_ptr<NPCInventoryWrapper>& wrapper);
 
 		// Combat
 		void die();
@@ -106,7 +109,7 @@ class EntityNPC : public Entity {
 		void setAITarget(unsigned int selfIndex); /// TODO: Make this work with certain quests, etc.
 
 		// Inventory stuff
-		bool event_reskin(const CEGUI::EventArgs& e); // Just calls reskinLimbs, but as a CEGUI Event
+		virtual bool event_reskin(const CEGUI::EventArgs& e); // Just calls reskinLimbs, but as a CEGUI Event
 
 	protected:
 		// Pathfinding

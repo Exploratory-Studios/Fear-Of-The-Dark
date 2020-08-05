@@ -17,6 +17,7 @@
 		<skinAnimationID>1</skinAnimationID>
 		<skinAnimationID>2</skinAnimationID>
 		<skinAnimationID>3</skinAnimationID>
+		<skinAnimationID>0</skinAnimationID>
 	</skinAnimationIDs>
 	<attackIDs>
 		<attackID>0</attackID>

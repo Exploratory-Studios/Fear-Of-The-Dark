@@ -32,7 +32,7 @@ void ItemArmour::setLimbAnimations(AnimationModule::Body& body) {
 		AnimationModule::Limb* limb = body.getLimb(m_limbIndices[i]);
 		if(limb) {
 			// Make sure it exists, lol
-			AnimationModule::Animation limbAnim(i);
+			AnimationModule::Animation limbAnim(m_animationIDs[i]);
 			limb->setAnimation(limbAnim);
 		}
 	}

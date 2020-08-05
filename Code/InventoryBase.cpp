@@ -114,8 +114,7 @@ bool InventoryBase::onDragDropItemAdded(const CEGUI::EventArgs& e) {
 }
 
 InventoryBase::~InventoryBase() {
-	CEGUI::WindowManager& winMgr = CEGUI::WindowManager::getSingleton();
-	winMgr.destroyWindow(m_frameWindow);
+	destroy();
 }
 
 void InventoryBase::init() { // This must be seperate from the constructor due to the virtual, overridden function
@@ -125,6 +124,11 @@ void InventoryBase::init() { // This must be seperate from the constructor due t
 void InventoryBase::destroy() {
 	CEGUI::WindowManager& winMgr = CEGUI::WindowManager::getSingleton();
 	winMgr.destroyWindow(m_frameWindow);
+
+	m_frameWindow = 0;
+	m_pane = 0;
+	m_grid = 0;
+	m_gridItems.clear();
 }
 
 bool InventoryBase::addItem(Item* newItem) {

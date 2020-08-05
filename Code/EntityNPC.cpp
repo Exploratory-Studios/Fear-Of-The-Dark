@@ -65,13 +65,14 @@ NPCInventoryWrapper::NPCInventoryWrapper(std::string& UUID, std::shared_ptr<NPCI
 }
 
 NPCInventoryWrapper::~NPCInventoryWrapper() {
-	CEGUI::WindowManager& winMgr = CEGUI::WindowManager::getSingleton();
-	winMgr.destroyWindow(m_window);
+	destroy();
 }
 
 void NPCInventoryWrapper::destroy() {
 	CEGUI::WindowManager& winMgr = CEGUI::WindowManager::getSingleton();
 	winMgr.destroyWindow(m_window);
+
+	m_window = 0;
 }
 
 void NPCInventoryWrapper::setToDraw(bool& setting) {
@@ -142,7 +143,12 @@ void EntityNPC::init(unsigned int id) {
 	m_inventory->init();
 
 	m_armourWeaponsInventory = std::make_shared<NPCInventoryWrapper>(m_UUID, m_inventory);
-	m_armourWeaponsInventory->m_armourGrid->subscribeEvent(CEGUI::Element::EventChildAdded, CEGUI::Event::Subscriber(&EntityNPC::event_reskin, this));
+
+	std::function<bool(const CEGUI::EventArgs&)> reskin = [=](const CEGUI::EventArgs& e)->bool{ this->reskinLimbs(); };
+	std::function<bool(const CEGUI::EventArgs&)> defaultSkin = [=](const CEGUI::EventArgs& e)->bool{ this->m_body.resetAnimations(); };
+
+	m_armourWeaponsInventory->m_armourGrid->subscribeEvent(CEGUI::Element::EventChildAdded, CEGUI::Event::Subscriber(reskin));
+	m_armourWeaponsInventory->m_armourGrid->subscribeEvent(CEGUI::Element::EventChildRemoved, CEGUI::Event::Subscriber(defaultSkin));
 }
 
 void EntityNPC::initLimbs() {
@@ -212,6 +218,7 @@ void EntityNPC::reskinLimbs() {
 		// That object can setLimbAnimations() on m_body.
 		static_cast<ItemArmour*>(m_armourWeaponsInventory->m_armourGrid->getItems()[i])->setLimbAnimations(m_body);
 	}
+
 }
 
 EntityNPC::~EntityNPC() {
@@ -232,7 +239,7 @@ void EntityNPC::draw(GLEngine::SpriteBatch& sb, float time, int layerDifference,
 
 		float depth = getDepth();
 
-		m_body.draw(sb, GLEngine::ColourRGBA8(255, 255, 255, 255), destRect, depth);
+		m_body.draw(sb, GLEngine::ColourRGBA8(255, 255, 255, 255), destRect, depth, m_flippedTexture);
 
 		onDraw(sb, time, layerDifference, xOffset);
 	}
@@ -244,8 +251,13 @@ void EntityNPC::drawNormal(GLEngine::SpriteBatch& sb, float time, int layerDiffe
 
 		float depth = getDepth();
 
-		m_body.drawNormal(sb, destRect, depth);
+		m_body.drawNormal(sb, destRect, depth, m_flippedTexture);
 	}
+}
+
+void EntityNPC::display(GLEngine::SpriteBatch& sb, glm::vec2 position, float scale) {
+	float depth = getDepth();
+	m_body.draw(sb, GLEngine::ColourRGBA8(255, 255, 255, 255), glm::vec4(position.x, position.y, scale, scale) * glm::vec4(1.0f, 1.0f, m_size.x, m_size.y), depth, false);
 }
 
 bool EntityNPC::collideWithOther(Entity* other) {
@@ -490,12 +502,17 @@ void EntityNPC::giveItem(Item* item) {
 	}
 }
 
-std::shared_ptr<NPCInventory> EntityNPC::getInventory() {
+std::shared_ptr<NPCInventory>& EntityNPC::getInventory() {
 	return m_inventory;
 }
 
-void EntityNPC::setInventory(std::shared_ptr<NPCInventory> inventory) {
+std::shared_ptr<NPCInventoryWrapper>& EntityNPC::getInventoryWrapper() {
+	return m_armourWeaponsInventory;
+}
+
+void EntityNPC::setInventory(std::shared_ptr<NPCInventory>& inventory, std::shared_ptr<NPCInventoryWrapper>& wrapper) {
 	m_inventory = inventory;
+	m_armourWeaponsInventory = wrapper;
 }
 
 void EntityNPC::die() {
@@ -538,7 +555,7 @@ void EntityNPC::updateMovement() {
 		}
 	} else {
 		m_velocity.x *= 0.9f;
-		if(m_velocity.x < 0.1f) {
+		if(std::abs(m_velocity.x) < 0.001f) {
 			if(m_state != MovementState::IDLE) {
 				m_state = MovementState::IDLE;
 				m_body.changeAnimation(m_idleAnimation);

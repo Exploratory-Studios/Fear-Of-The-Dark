@@ -87,7 +87,7 @@ void GameplayScreen::onEntry() {
 
 	if(!Factory::getEntityManager()->getPlayer()) {
 		//Player p(glm::vec2(5.0f, 100.0f), true);
-		EntityPlayer p(glm::vec2(5, 100), 0, SaveDataTypes::MetaData(), true);
+		EntityPlayer* p = new EntityPlayer(glm::vec2(5, 100), 0, SaveDataTypes::MetaData(), true);
 
 		Factory::getEntityManager()->setPlayer(p);
 
@@ -352,7 +352,7 @@ void GameplayScreen::drawWorldToFBO() {
 		GLint textureUniform = m_textureProgram.getUniformLocation("textureSampler");
 		glUniform1i(textureUniform, 0);
 
-		m_spriteBatch.begin(GLEngine::GlyphSortType::NONE);
+		m_spriteBatch.begin(GLEngine::GlyphSortType::FRONT_TO_BACK);
 
 		Factory::getWorld()->drawTiles(m_spriteBatch, m_spriteFont, m_dr, getScreenBox() + glm::vec4(0.0f, 0.0f, 1.0f, 1.0f), &m_textureProgram); // handles spritebatch.begin and end
 		Factory::getEntityManager()->drawEntities(m_spriteBatch, m_spriteFont, m_dr, getScreenBox() + glm::vec4(0.0f, 0.0f, 1.0f, 1.0f));
@@ -379,7 +379,7 @@ void GameplayScreen::drawWorldNormalToFBO() {
 	GLint textureUniform = m_textureProgram.getUniformLocation("textureSampler");
 	glUniform1i(textureUniform, 0);
 
-	m_spriteBatch.begin(GLEngine::GlyphSortType::NONE);
+	m_spriteBatch.begin(GLEngine::GlyphSortType::FRONT_TO_BACK);
 
 	Factory::getWorld()->drawTilesNormal(m_spriteBatch, getScreenBox() + glm::vec4(0.0f, 0.0f, 1.0f, 1.0f), &m_textureProgram);
 	Factory::getEntityManager()->drawEntitiesNormal(m_spriteBatch, getScreenBox() + glm::vec4(0.0f, 0.0f, 1.0f, 1.0f));
@@ -468,8 +468,9 @@ void GameplayScreen::drawGUIToScreen() {
 		glUniformMatrix4fv(pUniform, 1, GL_FALSE, &projectionMatrix[0][0]);
 
 		Factory::getEntityManager()->getPlayer()->drawGUI(m_spriteBatch, m_spriteFont);
-		m_spriteBatch.begin();
+		m_spriteBatch.begin(GLEngine::GlyphSortType::BACK_TO_FRONT);
 		Factory::getWorld()->drawTilesGUI(m_spriteBatch, m_spriteFont, getScreenBox() + glm::vec4(0.0f, 0.0f, 1.0f, 1.0f));
+		if(Factory::getEntityManager()->getPlayer()->isInventoryOpen()) Factory::getEntityManager()->getPlayer()->display(m_spriteBatch, glm::vec2(0.2f, 0.36f) * glm::vec2(Factory::getGameCamera()->getScreenWidth(), Factory::getGameCamera()->getScreenHeight()), 80.0f);
 		m_spriteBatch.end();
 		m_spriteBatch.renderBatch();
 

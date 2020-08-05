@@ -52,6 +52,9 @@ class EntityPlayer : public EntityNPC {
 		bool canInteract() const {
 			return m_canInteract && !m_inventoryOpen && !m_bagOpen;
 		}
+		bool isInventoryOpen() const {
+			return m_inventoryOpen;
+		}
 
 		/// Setters
 		void showInventory(bool open) {
@@ -65,6 +68,9 @@ class EntityPlayer : public EntityNPC {
 		}
 
 		SaveDataTypes::EntityPlayerData getPlayerSaveData();
+
+		// Inventory stuff
+		virtual bool event_reskin(const CEGUI::EventArgs& e) override; // Just calls reskinLimbs, but as a CEGUI Event
 
 	protected:
 		// GUI

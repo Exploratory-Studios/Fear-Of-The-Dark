@@ -334,6 +334,19 @@ namespace XMLModule {
 		}
 	}
 
+	void XMLData::removeData(GenericData* data, std::string& nodename) {
+		// First, retrieve correct map
+		std::map<unsigned int, GenericData*>* mapForRemoval = getMapFromNodename(nodename);
+
+		if(mapForRemoval) {
+			// Remove the data
+			unsigned int id = data->id;
+			mapForRemoval->erase(id);
+		} else {
+			Logger::getInstance()->log("ERROR: Could not remove data with node name: " + nodename + " from XML data singleton.", true);
+		}
+	}
+
 	GenericData* XMLData::createDataFromNodename(std::string& name) {
 		GenericData* d = nullptr;
 

@@ -102,7 +102,9 @@ void EditWindow::createNewEntry(unsigned int type) {
 	obj->name = "New " + nodeName;
 
 	addEntry(obj, nodeName);
+
 	XMLModule::XMLData::addData(obj, nodeName);
+	m_data.push_back(obj);
 
 	m_itemListBox0->sortList();
 }
@@ -110,56 +112,134 @@ void EditWindow::createNewEntry(unsigned int type) {
 void EditWindow::addEntry(XMLModule::GenericData* obj, std::string& nodeName) {
 	CEGUI::ItemEntry* l = static_cast<CEGUI::ItemEntry*>(m_gui->createWidget(m_itemListBox0, "WindowsLook/ListboxItem", glm::vec4(0.0f, 0.0f, 0.0f, 0.0f), glm::vec4(0.0f), obj->name + m_name + std::to_string(obj->id) + "Entry"));
 
+	std::ostringstream address;
+	address << (void const *)l;
+	std::string entryAddress = address.str();
+
+	l->setName(obj->name + m_name + std::to_string(obj->id) + "Entry" + entryAddress);
+
 	l->setUserString("ID", std::to_string(m_data.size()));
 
 	l->setSelectable(true);
-	std::string a = std::string(nodeName + ":" + std::to_string(obj->id), 1);
+	std::string a = std::string(nodeName + ":" + std::to_string(obj->id));
 	l->setText(a);
 	l->setProperty("TextColour", "00000000");
 	l->setProperty("SelectedTextColour", "00000000");
 
 	CEGUI::DefaultWindow* label = static_cast<CEGUI::DefaultWindow*>(m_gui->createWidget(l, "WindowsLook/Label", glm::vec4(0.0f, 0.0f, 1.0f, 1.0f), glm::vec4(0.0f), obj->name + m_name + std::to_string(obj->id) + "EntryLabel"));
+
+	label->setName(obj->name + m_name + std::to_string(obj->id) + "EntryLabel" + entryAddress);
+
 	label->setText(obj->name + " (ID: " + std::to_string(obj->id) + ", Type: " + nodeName + ")");
 	label->setMousePassThroughEnabled(true);
 	label->setInheritsAlpha(false);
 
 	m_itemListBox0->insertItem(l, nullptr);
 	m_itemListBox0->ensureItemIsVisibleVert(*l);
-
-	m_data.push_back(obj);
 }
 
 void EditWindow::removeEntry() {
-	/// TODO: This
-	if(m_selection != -1) {
-		// Remove from GUI
-		m_itemListBox0->removeItem(m_itemListBox0->getItemFromIndex(m_selection));
+	CEGUI::ItemEntry* selected = m_itemListBox0->getFirstSelectedItem();
+	if(selected) {
+		// Plan:
+		// 1. Remove entry from m_data, and update IDs
+		// 2. Get all nodenames, from itemEntry texts
+		// 3. Remove & destroy all itemEntries and XMLData
+		// 4. Loop through new m_data, adding entries (addEntry), using the nodenames from step 2
+
+		// 1.
+		std::vector<std::string> nodeNames;
+
+		// Remove entry from m_data & XML Data
+		unsigned int index = std::stoi(selected->getUserString("ID").c_str());
+
+		std::string type = std::string(selected->getText().c_str()).substr(0, std::string(selected->getText().c_str()).find(":"));
+		XMLModule::XMLData::removeData(m_data[index], type);
+
+		delete m_data[index];
+		m_data[index] = nullptr;
+		for(unsigned int i = index; i < m_data.size()-1; i++) {
+			m_data[i] = m_data[i+1];
+		}
+		m_data.pop_back();
+
+		// Entry removed and IDs updated. Step 1 complete
+		// 2. get all nodenames
+		nodeNames.resize(m_data.size(), "");
+		for(unsigned int i = 0; i < m_itemListBox0->getItemCount(); i++) {
+			// If the i is less than the removed index, the index is the same. If equal, ignore. If more, minus 1
+			unsigned int dataIndex = std::stoi(m_itemListBox0->getItemFromIndex(i)->getUserString("ID").c_str());
+
+			std::string text = std::string(m_itemListBox0->getItemFromIndex(i)->getText().c_str());
+			std::string nodeName = text.substr(0, text.find(":"));
+
+			if(dataIndex < index) {
+				// Less than removed index
+				nodeNames[dataIndex] = nodeName;
+			} else if(dataIndex > index) {
+				// More than removed index, subtract 1
+				nodeNames[dataIndex-1] = nodeName;
+			}
+		}
+
+		// Step 2 is done, we have all node names
+
+		std::vector<XMLModule::GenericData*> dataCopy;
+
+		// 3. remove and destroy all entries and XML, as well as m_data
+		for(unsigned int i = 0; i < m_data.size(); i++)
+			XMLModule::XMLData::removeData(m_data[i], nodeNames[i]);
+
+		// Reset IDs
+		unsigned int curID = 0;
+		for(unsigned int i = 0; i < m_itemListBox0->getItemCount(); i++) {
+			unsigned int dataIndex = std::stoi(m_itemListBox0->getItemFromIndex(i)->getUserString("ID").c_str());
+
+			if(dataIndex == index) continue;
+			if(dataIndex > index) dataIndex--;
+
+			if(m_data[dataIndex]->id < curID) {
+				curID = 0;
+			}
+			m_data[dataIndex]->id = curID;
+
+			curID++;
+		}
+
+		for(unsigned int i = 0; i < m_data.size(); i++) {
+			dataCopy.push_back(m_data[i]);
+		}
+
+		m_data.clear();
+
+		m_itemListBox0->resetList();
 		m_itemListBox1->resetList();
 
-		// Remove from m_data
-		// First, find the object to remove's index.
-		//unsigned int dataIndex = (unsigned int)-1;
-		//for(unsigned int i = 0; i < m_data.size(); i++) {
-		//	if(m_data[i]->)
-		//}
-		//	XMLModule::XMLData::removeData(obj);
+		// Step 3 is done, everything is gone. Reduced to atoms
 
-		resetIDs();
+		// 4. Reconstruct
+		for(unsigned int i = 0; i < dataCopy.size(); i++) {
+			addEntry(dataCopy[i], nodeNames[i]);
+			XMLModule::XMLData::addData(dataCopy[i], nodeNames[i]);
+			m_data.push_back(dataCopy[i]);
+			m_itemListBox0->sortList();
+		}
+		// All should be reconstructed now.
 	}
 }
 
 void EditWindow::resetIDs() {
 	// Check if the current ID is less than the last. If it is, restart; we're onto a new map (new set of IDs).
 	unsigned int curID = 0;
-	for(unsigned int i = 0; i < m_data.size(); i++) {
+	for(unsigned int i = 0; i < m_itemListBox0->getItemCount(); i++) {
+		unsigned int dataIndex = std::stoi(m_itemListBox0->getItemFromIndex(i)->getUserString("ID").c_str());
 
-		if(m_data[i]->id > curID) {
-			m_data[i]->id = curID;
-			curID++;
-		} else {
+		if(m_data[dataIndex]->id < curID) {
 			curID = 0;
-			m_data[i]->id = curID;
 		}
+		m_data[dataIndex]->id = curID;
+
+		curID++;
 	}
 }
 

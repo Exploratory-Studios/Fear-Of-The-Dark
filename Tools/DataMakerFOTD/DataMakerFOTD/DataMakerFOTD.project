@@ -21,7 +21,6 @@
     <File Name="../../../Code/Logging.cpp"/>
   </VirtualDirectory>
   <VirtualDirectory Name="include">
-    <File Name="ItemEntryMod.h" ExcludeProjConfig="Debug;"/>
     <File Name="MainScreen.h"/>
     <File Name="App.h"/>
   </VirtualDirectory>
@@ -204,7 +203,7 @@
       </Completion>
     </Configuration>
     <Configuration Name="Release (Windows64 OpenGL3)" CompilerType="Cross MinGW (x64)" DebuggerType="GNU gdb debugger" Type="Executable" BuildCmpWithGlobalSettings="append" BuildLnkWithGlobalSettings="append" BuildResWithGlobalSettings="append">
-      <Compiler Options="-DWINDOWS -fexceptions -DLUA_APICHECK -O -O3" C_Options="" Assembler="" Required="yes" PreCompiledHeader="" PCHInCommandLine="no" PCHFlags="" PCHFlagsPolicy="0">
+      <Compiler Options="-DWINDOWS -fexceptions -DLUA_APICHECK " C_Options="" Assembler="" Required="yes" PreCompiledHeader="" PCHInCommandLine="no" PCHFlags="" PCHFlagsPolicy="0">
         <IncludePath Value="../../../Code"/>
         <IncludePath Value="include"/>
         <IncludePath Value="../../../../GLEngine"/>

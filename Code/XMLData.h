@@ -40,6 +40,7 @@ namespace XMLModule {
 			static void init(std::string filepath = ASSETS_FOLDER_PATH);
 			static void write(std::string filepath);
 			static void addData(GenericData* data, std::string& nodename);
+			static void removeData(GenericData* data, std::string& nodename); // Careful, this isn't for regular use.
 
 			static GenericData* createDataFromNodename(std::string& nodename);
 			static std::map<unsigned int, GenericData*>* getMapFromNodename(std::string& nodename);

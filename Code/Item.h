@@ -16,7 +16,7 @@ namespace SaveDataTypes {
 	class MetaData;
 }
 
-enum class ItemIDs {
+enum class ItemIDs { /// DEPRECATED, but still used (dumb, it'll get fixed eventually.)
 	WEAPON_SWORD,
 	BLOCK_DIRT,
 	BLOCK_TORCH,
@@ -34,7 +34,6 @@ enum class ItemIDs {
 class Item {
 	public:
 		Item(short unsigned int quantity, unsigned int id, bool loadTex);
-		Item(short unsigned int quantity, ItemIDs id, bool loadTex);
 		virtual ~Item() {}
 
 		void init();

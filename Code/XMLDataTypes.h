@@ -407,11 +407,13 @@ namespace XMLModule {
 				type = ItemType::WEAPON;
 
 				std::vector<AttributeBase*> attrs = {
-
+					new Attribute<unsigned int>("attackID", AttributeType::UNSIGNED_INT, &attackID)
 				};
 
 				addAttributes(attrs);
 			}
+
+			unsigned int attackID;
 	};
 
 	class ItemBlockData : public ItemData {

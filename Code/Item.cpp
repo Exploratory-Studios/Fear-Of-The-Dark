@@ -9,11 +9,11 @@ Item::Item(short unsigned int quantity, unsigned int id, bool loadTex) : m_id(id
 	if(loadTex) loadTexture();
 }
 
-Item::Item(short unsigned int quantity, ItemIDs id, bool loadTex) : m_id((unsigned int)id), m_quantity(quantity) {
+/*Item::Item(short unsigned int quantity, ItemIDs id, bool loadTex) : m_id((unsigned int)id), m_quantity(quantity) {
 	init();
 
 	if(loadTex) loadTexture();
-}
+}*/
 
 void Item::init() {
 	XMLModule::ItemData d = XMLModule::XMLData::getItemData(m_id);

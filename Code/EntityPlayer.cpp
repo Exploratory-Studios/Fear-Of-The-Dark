@@ -12,6 +12,8 @@
 #include "WeaponInventory.h"
 #include "EntityNPC.h"
 
+#include "ItemBlock.h"
+
 EntityPlayer::EntityPlayer(glm::vec2 pos, unsigned int layer, SaveDataTypes::MetaData data, bool loadTex) : EntityNPC(pos, layer, 0, data, loadTex) {
 	m_inventory->destroy();
 	m_armourWeaponsInventory->m_armourGrid->destroy();
@@ -248,12 +250,6 @@ void EntityPlayer::updateMouse(glm::vec2 mouseCoords) {
 }
 
 void EntityPlayer::updateInput(GLEngine::InputManager* input) {
-
-	/// THESE ARE PURELY FOR DEVELOPMENT
-	if(input->isKeyPressed(SDLK_t)) {
-		m_inventory->addItem(new Item(1, (unsigned int)ItemIDs::BLOCK_TORCH, true));
-	}
-
 	if(input->isKeyDown(SDLK_w) && m_stamina > 0.0f) {
 		if(m_onGround) {
 			m_velocity.y = m_jumpHeight; // y=(jumpHeight*TILE_SIZE+3/4*TILE_SIZE+-5.88*x^2)  initial jump power is the absolute of the x when y=0. jumpheight is in eights of tiles and you must add 4
@@ -366,6 +362,10 @@ void EntityPlayer::updateInput(GLEngine::InputManager* input) {
 
 	if(input->isKeyPressed(SDLK_F9)) {
 		m_inventory->addItem(new ItemArmour(1, 9, true));
+	}
+	/// THESE ARE PURELY FOR DEVELOPMENT
+	if(input->isKeyPressed(SDLK_t)) {
+		m_inventory->addItem(new ItemBlock(1, (unsigned int)ItemIDs::BLOCK_TORCH, true));
 	}
 }
 

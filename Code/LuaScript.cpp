@@ -267,7 +267,7 @@ namespace ScriptingModule {
 
 		XMLModule::ParticleData d = XMLModule::XMLData::getParticleData(id);
 
-		unsigned int scriptID = d.script;
+		unsigned int scriptID = d.script.getID();
 
 		ParticleUpdate updater(scriptID, &m_parent);
 		std::function<void(GLEngine::Particle2D&, float)> boundFunctor = updater.getBoundFunctor();

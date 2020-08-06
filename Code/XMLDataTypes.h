@@ -7,6 +7,20 @@
 #include <rapidxml/rapidxml.hpp>
 #include <initializer_list>
 
+class ScriptData {
+	public:
+		ScriptData() {};
+		~ScriptData() {};
+
+		unsigned int getID();
+
+		bool isFile = false;
+		std::string stringData = "";
+
+	private:
+		unsigned int m_id = (unsigned int)-1;
+};
+
 namespace XMLModule {
 
 	class GenericData;
@@ -53,15 +67,13 @@ namespace XMLModule {
 		VEC2
 	};
 
-	class GenericData; // Forward Dec.
-
 	class AttributeBase { // Just some template acrobatics.
 		public:
-			template<class T>
+			template<typename T>
 			void setData(T data);
-			template<class T>
+			template<typename T>
 			T getData();
-			template<class T>
+			template<typename T>
 			T* getDataPtr();
 			virtual ~AttributeBase() {}
 
@@ -72,7 +84,7 @@ namespace XMLModule {
 			virtual void setDefault() = 0;
 	};
 
-	template<class T>
+	template<typename T>
 	class Attribute : public AttributeBase {
 			friend class GenericData;
 		public:
@@ -108,15 +120,6 @@ namespace XMLModule {
 				return m_data;
 			}
 
-			/*boost::variant<std::string,
-			      unsigned int,
-			      int,
-			      float,
-			      bool,
-			      std::vector<unsigned int>,
-			      std::vector<int>,
-			      glm::vec2> data; // Basically just an easier union.*/
-
 		private:
 			T* m_data = nullptr;
 			void setDefault() {
@@ -143,26 +146,19 @@ namespace XMLModule {
 			     - Provide a function to read map elements.
 			**/
 		public:
-			GenericData() {}
+			GenericData();
 			GenericData(::std::vector<AttributeBase*> attrs); // Children will use the constructor to list attributes in the map.
 			~GenericData() {}
 
 			void init(::rapidxml::xml_node<>* node); // Inits all attribute values. (Read)
 			void write(::rapidxml::xml_node<>* node); // Writes to XML document
 
-			/*void getAttribute(::std::string name, std::string& dataPtr); // Just puts the data into the pointer
-				void getAttribute(::std::string name, unsigned int& dataPtr); // Just puts the data into the pointer
-				void getAttribute(::std::string name, int& dataPtr); // Just puts the data into the pointer
-				void getAttribute(::std::string name, float& dataPtr); // Just puts the data into the pointer
-				void getAttribute(::std::string name, bool& dataPtr); // Just puts the data into the pointer
-				void getAttribute(::std::string name, std::vector<unsigned int>& dataPtr); // Just puts the data into the pointer
-				void getAttribute(::std::string name, glm::vec2& dataPtr); // Just puts the data into the pointer*/
-
 			template<typename T>
 			T getAttributeByName(::std::string name);
 
-			//template<class T> OUT OF USE.
-			//T & getAttributeT(std::string index); // Templated, probably better version of above.
+			std::unordered_map<std::string, AttributeBase*> getAttributes() {
+				return m_attributes;
+			}
 
 			SaveDataTypes::MetaData getMetaData() {
 				return m_metadata;
@@ -173,7 +169,7 @@ namespace XMLModule {
 			unsigned int id;
 
 		protected:
-			template<class T>
+			template<typename T>
 			void addAttribute(std::string name, AttributeType type, T* data);
 			void addAttribute(AttributeBase* a);
 
@@ -196,11 +192,11 @@ namespace XMLModule {
 					new Attribute<bool>("isDrawn", AttributeType::BOOL, &isDrawn),
 					new Attribute<bool>("isNatural", AttributeType::BOOL, &isNatural),
 					new Attribute<bool>("isTransparent", AttributeType::BOOL, &isTransparent),
-					new Attribute<unsigned int>("updateScript", AttributeType::SCRIPT, &updateScript),
-					new Attribute<unsigned int>("tickScript", AttributeType::SCRIPT, &tickScript),
-					new Attribute<unsigned int>("destructionScript", AttributeType::SCRIPT, &destructionScript),
-					new Attribute<unsigned int>("interactScript_walkedOn", AttributeType::SCRIPT, &interactScript_walkedOn),
-					new Attribute<unsigned int>("interactScript_used", AttributeType::SCRIPT, &interactScript_used)
+					new Attribute<ScriptData>("updateScript", AttributeType::SCRIPT, &updateScript),
+					new Attribute<ScriptData>("tickScript", AttributeType::SCRIPT, &tickScript),
+					new Attribute<ScriptData>("destructionScript", AttributeType::SCRIPT, &destructionScript),
+					new Attribute<ScriptData>("interactScript_walkedOn", AttributeType::SCRIPT, &interactScript_walkedOn),
+					new Attribute<ScriptData>("interactScript_used", AttributeType::SCRIPT, &interactScript_used)
 				};
 
 				addAttributes(attrs);
@@ -214,7 +210,7 @@ namespace XMLModule {
 			float emittedLight = 0.0f, emittedHeat = 0.0f;
 			glm::vec2 size = glm::vec2(1.0f);
 			bool isSolid = true, isDrawn = true, isNatural = false, isTransparent = false;
-			unsigned int updateScript, tickScript, destructionScript, interactScript_walkedOn, interactScript_used;
+			ScriptData updateScript, tickScript, destructionScript, interactScript_walkedOn, interactScript_used;
 	};
 
 	class TileContainerData : public TileData {
@@ -238,7 +234,7 @@ namespace XMLModule {
 				std::vector<AttributeBase*> attrs = {
 					new Attribute<std::string>("texture", AttributeType::FILEPATH_TEXTURE, &texture),
 					new Attribute<std::string>("bumpMap", AttributeType::FILEPATH_BUMPMAP, &bumpMap),
-					new Attribute<unsigned int>("script", AttributeType::SCRIPT, &script),
+					new Attribute<ScriptData>("script", AttributeType::SCRIPT, &script),
 					new Attribute<float>("decayRate", AttributeType::FLOAT, &decayRate)
 				};
 
@@ -247,7 +243,7 @@ namespace XMLModule {
 			virtual ~ParticleData() {}
 
 			std::string texture, bumpMap;
-			unsigned int script;
+			ScriptData script;
 			float decayRate = 1.0f;
 	};
 
@@ -256,8 +252,8 @@ namespace XMLModule {
 			EntityData() {
 				Attribute<glm::vec2>* sizeA = new Attribute<glm::vec2>("size", AttributeType::VEC2, &size);
 
-				Attribute<unsigned int>* updateA = new Attribute<unsigned int>("updateScript", AttributeType::SCRIPT, &updateScript);
-				Attribute<unsigned int>* tickA = new Attribute<unsigned int>("tickScript", AttributeType::SCRIPT, &tickScript);
+				Attribute<ScriptData>* updateA = new Attribute<ScriptData>("updateScript", AttributeType::SCRIPT, &updateScript);
+				Attribute<ScriptData>* tickA = new Attribute<ScriptData>("tickScript", AttributeType::SCRIPT, &tickScript);
 				Attribute<bool>* gravityA = new Attribute<bool>("gravity", AttributeType::BOOL, &gravity);
 
 				addAttribute(sizeA);
@@ -269,7 +265,7 @@ namespace XMLModule {
 			~EntityData() {}
 
 			glm::vec2 size = glm::vec2(1.0f);
-			unsigned int updateScript, tickScript;
+			ScriptData updateScript, tickScript;
 			EntityType type;
 			bool gravity = true;
 	};
@@ -373,13 +369,13 @@ namespace XMLModule {
 				type = ItemType::CONSUMABLE;
 
 				std::vector<AttributeBase*> attrs = {
-					new Attribute<unsigned int>("useScript", AttributeType::SCRIPT, &useScriptID)
+					new Attribute<ScriptData>("useScript", AttributeType::SCRIPT, &useScriptID)
 				};
 
 				addAttributes(attrs);
 			}
 
-			unsigned int useScriptID = (unsigned int) - 1;
+			ScriptData useScriptID;
 	};
 
 	class ItemArmourData : public ItemData {
@@ -392,7 +388,7 @@ namespace XMLModule {
 					                                      new Attribute<std::vector<unsigned int>>("limbIndices/limbIndex", AttributeType::VECTOR_UNSIGNED_INT, &limbIndices),
 					                                      new Attribute<float>("threshold", AttributeType::FLOAT, &threshold),
 					                                      new Attribute<float>("resistance", AttributeType::FLOAT, &resistance),
-					                                      new Attribute<unsigned int>("tickScript", AttributeType::SCRIPT, &tickScriptID)
+					                                      new Attribute<ScriptData>("tickScript", AttributeType::SCRIPT, &tickScriptID)
 				};
 
 				addAttributes(attrs);
@@ -402,7 +398,7 @@ namespace XMLModule {
 			std::vector<unsigned int> limbIndices;
 			float threshold = 0;
 			float resistance = 0.0f;
-			unsigned int tickScriptID = (unsigned int) - 1;
+			ScriptData tickScriptID;
 	};
 
 	class ItemWeaponData : public ItemData {
@@ -525,14 +521,14 @@ namespace XMLModule {
 			QuestData() {
 				std::vector<AttributeBase*> attrs = {
 					new Attribute<std::vector<unsigned int>>("objectives/objectiveID", AttributeType::VECTOR_UNSIGNED_INT, &objectives),
-					                                      new Attribute<unsigned int>("completionScript", AttributeType::SCRIPT, &completionScript)
+					                                      new Attribute<ScriptData>("completionScript", AttributeType::SCRIPT, &completionScript)
 				};
 
 				addAttributes(attrs);
 			}
 
 			std::vector<unsigned int> objectives;
-			unsigned int completionScript;
+			ScriptData completionScript;
 	};
 
 	class QuestObjectiveData : public GenericData {
@@ -540,14 +536,14 @@ namespace XMLModule {
 			QuestObjectiveData() {
 				std::vector<AttributeBase*> attrs = {
 					new Attribute<std::string>("text", AttributeType::STRING, &text),
-					new Attribute<unsigned int>("confirmationScript", AttributeType::SCRIPT, &confirmationScript)
+					new Attribute<ScriptData>("confirmationScript", AttributeType::SCRIPT, &confirmationScript)
 				};
 
 				addAttributes(attrs);
 			}
 
 			std::string text;
-			unsigned int confirmationScript;
+			ScriptData confirmationScript;
 	};
 
 	class DialogueQuestionData : public GenericData { // Asked by the NPC.
@@ -677,20 +673,20 @@ namespace XMLModule {
 				type = AttackType::MAGIC;
 
 				std::vector<AttributeBase*> attrs = {
-					new Attribute<unsigned int>("script", AttributeType::SCRIPT, &script)
+					new Attribute<ScriptData>("script", AttributeType::SCRIPT, &script)
 				};
 
 				addAttributes(attrs);
 			};
 
-			unsigned int script;
+			ScriptData script;
 	};
 
 	class BuffData : public GenericData {
 		public:
 			BuffData() {
 				std::vector<AttributeBase*> attrs = {
-					new Attribute<unsigned int>("tickScript", AttributeType::SCRIPT, &tickScript),
+					new Attribute<ScriptData>("tickScript", AttributeType::SCRIPT, &tickScript),
 					new Attribute<std::string>("texture", AttributeType::FILEPATH_TEXTURE, &texture),
 					new Attribute<std::string>("description", AttributeType::STRING, &description),
 					new Attribute<unsigned int>("duration", AttributeType::UNSIGNED_INT, &duration)
@@ -699,7 +695,7 @@ namespace XMLModule {
 				addAttributes(attrs);
 			}
 
-			unsigned int tickScript = -1;
+			ScriptData tickScript;
 			std::string texture;
 			std::string description;
 			unsigned int duration = 15;

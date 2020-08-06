@@ -33,7 +33,7 @@ namespace SaveDataTypes {
 
 			void getLuaArguments(std::vector<::ScriptingModule::Argument>& args);
 
-			void readFromLuaTable(lua_State* state, int tableIndex); // Use the "::" to reference the global namespace
+			void readFromLuaTable(lua_State* state, int tableIndex);
 
 			MetaData& operator+=(MetaData& other) {
 				/// Adds all elements from the other to this.

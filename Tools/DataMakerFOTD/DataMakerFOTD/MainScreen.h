@@ -8,113 +8,86 @@
 
 #include <rapidxml/rapidxml.hpp>
 
-enum class Types {
-	// these represent the different maps, not actual specific types
-	ANIMATION,
-	SKELETAL_ANIMATION,
-	MELEE_ATTACK,
-	RANGED_ATTACK,
-	MAGIC_ATTACK,
-	BIOME,
-	BLOCK,
-	QUESTION,
-	RESPONSE,
-	ERA,
-	ITEM_ENTITY,
-	NPC_ENTITY,
-	PROJECTILE_ENTITY,
-	ITEM,
-	LOOT_DROP,
-	LOOT_TABLE,
-	QUEST,
-	QUEST_OBJECTIVE,
-	STRUCTURE,
-	PARTICLE
-};
-
-std::string getNodenameFromType(Type type);
+#include "XMLData.h"
 
 class EditWindow {
-    public:
-        EditWindow() {}
+	public:
+		EditWindow() {}
 
-        void init(std::string name, GLEngine::GUI& gui);
-        void setActive(bool active);
-        bool isActive() { return m_active; }
+		void finalizeData(); // writes all m_data into XMLModule::XMLData for saving.
 
-        bool onSelectionChanged(const CEGUI::EventArgs& evnt);
-        int m_selection = -1;
-		
-		void addAttribute(XMLModule::Attribute* attr); // Adds an attribute with proper formatting and stuff to the editbox.
+		// constructs numerous add buttons and a remove button, as well as the button to actually open this editWindow.
+		void init(std::string name, GLEngine::GUI& gui, std::vector<CEGUI::PushButton*>& buttons, std::vector<std::string> types); // types is a vector of node names.
+		void setActive(bool active);
+		bool isActive() {
+			return m_active;
+		}
 
-		Type m_type;
-        std::vector<XMLModule::GenericData*> m_data;
+		void createNewEntry(unsigned int type); // `type` is the index of m_types to use to create a new Genericdata object and addEntry
+		void addEntry(XMLModule::GenericData* obj, std::string& nodeName); // Adds some data to the left editbox, giving it ID, name, etc.
+		void removeEntry(); // removes currently selected.
+		void resetIDs(); // Resets all IDs so that they are in order and all-inclusive (all numbers from 0-max)
+		void sortItems(); // Sorts all items, so that all of the items from the same nodeName type are together and in order from least-greatest ID
 
-        GLEngine::GUI* m_gui = nullptr;
+		bool onSelectionChanged(const CEGUI::EventArgs& evnt);
+		int m_selection = -1;
 
-        CEGUI::FrameWindow* m_window = nullptr;
-        CEGUI::ItemListbox* m_itemListBox0 = nullptr;
-        CEGUI::ItemListbox* m_itemListBox1 = nullptr;
+		void addAttributes(std::vector<XMLModule::AttributeBase*> attributes); // calls addAttribute over and over.
+		void addAttribute(XMLModule::AttributeBase* attr); // Adds formatted attribute edit dialogues to the right editbox
 
-        CEGUI::ItemEntry* m_head0 = nullptr;
-        CEGUI::ItemEntry* m_head1 = nullptr;
+		std::vector<std::string> m_types;
+		std::vector<XMLModule::GenericData*> m_data;
 
-        std::string m_name;
-        bool m_active = false;
+		GLEngine::GUI* m_gui = nullptr;
+
+		CEGUI::FrameWindow* m_window = nullptr;
+		CEGUI::ItemListbox* m_itemListBox0 = nullptr;
+		CEGUI::ItemListbox* m_itemListBox1 = nullptr;
+		std::vector<CEGUI::PushButton*> m_buttons;
+
+		CEGUI::ItemEntry* m_head0 = nullptr;
+		CEGUI::ItemEntry* m_head1 = nullptr;
+
+		std::string m_name;
+		bool m_active = false;
 };
 
-class MainScreen : public GLEngine::IGameScreen
-{
-    public:
-        MainScreen(GLEngine::Window* window);
-        ~MainScreen();
+class MainScreen : public GLEngine::IGameScreen {
+	public:
+		MainScreen(GLEngine::Window* window);
+		~MainScreen();
 
-        virtual int getNextScreenIndex() const override { return 0; }
-        virtual int getPreviousScreenIndex() const override { return 0; }
-        virtual void build() override {}
-        virtual void destroy() override {}
-        virtual void onEntry() override {}
-        virtual void onExit() override {}
-        virtual void update() override;
-        virtual void draw() override;
+		virtual int getNextScreenIndex() const override {
+			return 0;
+		}
+		virtual int getPreviousScreenIndex() const override {
+			return 0;
+		}
+		virtual void build() override {}
+		virtual void destroy() override {}
+		virtual void onEntry() override {}
+		virtual void onExit() override {}
+		virtual void update() override;
+		virtual void draw() override;
 
-    private:
-        void setItemEntitiesActive();
-        void setProjectilesActive();
-        void setParticlesActive();
-        void setBlocksActive();
-        void setItemsActive();
-        void setNPCsActive();
-        void setBiomesActive();
-        void setErasActive();
-        void setLootDropsActive();
-        void setLootTablesActive();
-        void setStructuresActive();
+	private:
 		void setAllInactive();
 
-        GLEngine::Window* m_window = nullptr;
+		GLEngine::Window* m_window = nullptr;
 
-        void loadXMLFile(std::string filepath);
-        void saveXMLData(std::string filepath);
+		void loadXMLFile(std::string filepath);
+		void saveXMLData(std::string filepath);
 
-        GLEngine::GLSLProgram m_uiTextureProgram;
-        GLEngine::GUI m_gui;
+		GLEngine::GLSLProgram m_uiTextureProgram;
+		GLEngine::GUI m_gui;
 
-        CEGUI::Editbox* m_loadFileEditbox = nullptr;
-        CEGUI::PushButton* m_loadFileButton = nullptr;
-        CEGUI::PushButton* m_saveFileButton = nullptr;
+		CEGUI::Editbox* m_loadFileEditbox = nullptr;
+		CEGUI::PushButton* m_loadFileButton = nullptr;
+		CEGUI::PushButton* m_saveFileButton = nullptr;
 
-        void addNewObject();
-        void removeObject();
+		int getNextID();
+		EditWindow* getActiveWindow();
 
-        int getNextID();
-        EditWindow* getActiveWindow();
-
-        CEGUI::PushButton* m_addButton = nullptr;
-        CEGUI::PushButton* m_removeButton = nullptr;
-		
-		const unsigned int m_numTypes = 20;
-        EditWindow* m_editWindows[m_numTypes] = {nullptr}; // Use the Types enum to access each element
-		CEGUI::PushButton* m_windowButtons[m_numTypes] = {nullptr}; // Use the Types enum to access each element
-		std::string m_nodenames[m_numTypes];
+		std::vector<EditWindow*> m_editWindows;
+		std::vector<CEGUI::PushButton*> m_windowButtons;
 };

@@ -13,7 +13,7 @@
 	</objectives>
 </quest>
 
-<objective id="0" name="test0Objective">
+<questObjective id="0" name="test0Objective">
 	<text>This is the first test objective (0)</text>
 	<confirmationScript>
 		<script>
@@ -22,9 +22,9 @@
 		</script>
 		<isFile>0</isFile>
 	</confirmationScript>
-</objective>
+</questObjective>
 
-<objective id="1" name="test1Objective">
+<questObjective id="1" name="test1Objective">
 	<text>This is the second test objective (1)</text>
 	<confirmationScript>
 		<script>
@@ -43,4 +43,4 @@
 		</script>
 		<isFile>0</isFile>
 	</confirmationScript>
-</objective>
+</questObjective>

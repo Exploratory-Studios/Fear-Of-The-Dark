@@ -1,5 +1,7 @@
 #include "XMLData.h"
 
+#include <rapidxml/rapidxml_print.hpp>
+
 namespace XMLModule {
 
 	void getVector(rapidxml::xml_node<>* parent, std::string valueName, std::string childName, std::vector<std::string>& vec) {
@@ -78,6 +80,17 @@ namespace XMLModule {
 
 		if(n) {
 			bool temp;
+			while(getValue(n, childName, temp)) {
+				vec.push_back(temp);
+			}
+		}
+	}
+
+	void getVector(rapidxml::xml_node<>* parent, std::string valueName, std::string childName, std::vector<ScriptData>& vec) {
+		rapidxml::xml_node<>* n = parent->first_node((char*)valueName.c_str()); // Gets <entities> in the example.
+
+		if(n) {
+			ScriptData temp;
 			while(getValue(n, childName, temp)) {
 				vec.push_back(temp);
 			}
@@ -184,6 +197,24 @@ namespace XMLModule {
 		return false;
 	}
 
+	bool getValue(rapidxml::xml_node<>* parent, std::string valueName, ScriptData& variable) {
+		/// Places value of node with name `valueName` into `variable` and removes the node from the doc. Returns true on successful value find
+		rapidxml::xml_node<>* n = parent->first_node((char*)valueName.c_str());
+		if(n) {
+			{
+				// Get stringData (<script> tag contents)
+				getValue(n, "script", variable.stringData);
+			}
+			{
+				// Get isFile (<isFile> tag contents)
+				getValue(n, "isFile", variable.isFile);
+			}
+			parent->remove_node(n);
+			return true;
+		}
+		return false;
+	}
+
 	bool getValue(rapidxml::xml_node<>* parent, std::string valueName, GenericData& variable) {
 		/// Places value of node with name `valueName` into `variable` and removes the node from the doc. Returns true on successful value find
 		rapidxml::xml_node<>* n = parent->first_node((char*)valueName.c_str());
@@ -238,11 +269,26 @@ namespace XMLModule {
 	std::map<unsigned int, GenericData*> XMLData::m_attackData;
 	std::map<unsigned int, GenericData*> XMLData::m_buffData;
 
+	// "Blocks", "Particles", "Entities", "Items", "Biomes", "Eras", "LootDrops", "LootTables", "Structures", "Quests", "Objectives", "DialogueQuestions", "DialogueResponses"
+
+	const std::vector<std::string> XMLData::m_loadFileNames{ "Blocks", "Particles", "Entities", "Items", "Biomes", "Eras", "Loot", "Structures", "Quests", "Dialogue", "Animations", "Attacks", "Buffs" };
+	const std::vector<std::string> XMLData::m_saveFileNames{ "Blocks", "Blocks", "Particles", "Entities", "Entities", "Entities", "Items", "Items", "Items", "Items", "Items", "Biomes", "Eras", "Loot", "Loot", "Structures", "Quests", "Quests", "Dialogue", "Dialogue", "Animations", "Animations", "Attacks", "Attacks", "Attacks", "Buffs" };
+	const std::vector<std::string> XMLData::m_saveNodeNames{ "tile", "tileContainer", "particle", "npc", "projectile", "itemEntity", "item", "itemBlock", "itemWeapon", "itemConsumable", "itemArmour", "biome", "era", "lootDrop", "lootTable", "structure", "quest", "questObjective", "question", "response", "animation", "skeletalAnimation", "meleeAttack", "rangedAttack", "magicAttack", "buff" };
+
+	std::vector<std::string> XMLData::getNodeNamesFromFile(std::string file) {
+		std::vector<std::string> ret;
+		for(unsigned int i = 0; i < m_saveFileNames.size(); i++) {
+			if(m_saveFileNames[i] == file) {
+				ret.push_back(m_saveNodeNames[i]);
+			}
+		}
+		return ret;
+	}
 
 	void XMLData::init(std::string filepath) {
 		Logger::getInstance()->log("Beginning to load data...");
 
-		std::vector<std::string> files{ "Blocks", "Particles", "Entities", "Items", "Biomes", "Eras", "Loot", "Structures", "Quests", "Dialogue", "Animations", "Attacks", "Buffs" };
+		std::vector<std::string> files = m_loadFileNames;
 
 		for(std::string& s : files) {
 			Logger::getInstance()->log("Loading data (" + s + ")...");
@@ -257,8 +303,14 @@ namespace XMLModule {
 		Logger::getInstance()->log("Beginning to write data...");
 
 		// files and nodeNames should have equal size. That much is assumed to be true at runtime
-		std::vector<std::string> files   { "Blocks", "Blocks", "Particles", "Entities", "Entities", "Entities", "Items", "Items", "Items", "Items", "Items", "Biomes", "Eras", "Loot", "Loot", "Structures", "Quests", "Dialogue", "Dialogue", "Dialogue", "Animations", "Animations", "Attacks", "Attacks", "Attacks", "Buffs" };
-		std::vector<std::string> nodeNames{ "tile", "tileContainer", "particle", "npc", "projectile", "itemEntity", "item", "itemBlock", "itemWeapon", "itemConsumable", "itemArmouritem", "biome", "era", "lootDrop", "lootTable", "structure", "quest", "questObjective", "question", "response", "animation", "skeletalAnimation", "meleeAttack", "rangedAttack", "magicAttack", "buff" };
+		std::vector<std::string> files = m_saveFileNames;
+		std::vector<std::string> nodeNames = m_saveNodeNames;
+
+		// Delete last contents
+		for(unsigned int i = 0; i < files.size(); i++) {
+			std::ofstream file(filepath + "/Data/" + files[i] + ".xml");
+			file.close();
+		}
 
 		for(unsigned int i = 0; i < files.size(); i++) {
 			Logger::getInstance()->log("Writing data (" + files[i] + ": " + nodeNames[i] + ")...");
@@ -266,7 +318,7 @@ namespace XMLModule {
 			Logger::getInstance()->log("Wrote data (" + files[i] + ": " + nodeNames[i] + ")");
 		}
 
-		Logger::getInstance()->log("Wrote all data successfully!");
+		Logger::getInstance()->log("Saved all data successfully!");
 	}
 
 	void XMLData::addData(GenericData* data, std::string& nodename) {
@@ -275,9 +327,8 @@ namespace XMLModule {
 
 		if(mapForWrite) {
 			// Actually add the data
-
-			//mapForWrite.insert(std::pair<unsigned int, GenericData*>(data->id, data));
-
+			unsigned int id = data->id;
+			mapForWrite->insert(std::make_pair(id, data));
 		} else {
 			Logger::getInstance()->log("ERROR: Could not add data with node name: " + nodename + " to XML data singleton.", true);
 		}
@@ -320,7 +371,7 @@ namespace XMLModule {
 			d = new StructureData();
 		} else if(name == "quest") {
 			d = new QuestData();
-		} else if(name == "objective") {
+		} else if(name == "questObjective") {
 			d = new QuestObjectiveData();
 		} else if(name == "question") {
 			d = new DialogueQuestionData();
@@ -368,7 +419,7 @@ namespace XMLModule {
 			mapForWrite = &m_structureData;
 		} else if(name == "quest") {
 			mapForWrite = &m_questData;
-		} else if(name == "objective") {
+		} else if(name == "questObjective") {
 			mapForWrite = &m_questObjectiveData;
 		} else if(name == "question") {
 			mapForWrite = &m_dialogueQuestionData;
@@ -434,7 +485,7 @@ namespace XMLModule {
 
 		// Open file at filepath
 		std::ofstream file;
-		file.open(filepath);
+		file.open(filepath, std::ios::app);
 
 		if(file.fail()) { // Handle exceptions
 			Logger::getInstance()->log("ERROR: XML file unable to be opened or created: " + filepath, true);
@@ -454,7 +505,11 @@ namespace XMLModule {
 			doc.append_node(node);
 
 			element.second->write(node);
+
+			Logger::getInstance()->log("\tXML Saved " + nodeName + ": " + element.second->name + "(" + std::to_string(element.second->id) + ")");
 		}
+
+		file << doc;
 	}
 
 /// Tiles

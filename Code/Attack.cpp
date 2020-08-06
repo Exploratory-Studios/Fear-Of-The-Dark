@@ -71,7 +71,7 @@ namespace CombatModule {
 	MagicAttack::MagicAttack(unsigned int attackID, ::Entity* owner) : Attack(attackID, owner) {
 		XMLModule::MagicAttackData d = XMLModule::XMLData::getMagicAttackData(attackID);
 
-		m_scriptID = d.script;
+		m_scriptID = d.script.getID();
 	}
 
 	void MagicAttack::execute(glm::vec2 direction) {

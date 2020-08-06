@@ -407,9 +407,15 @@ void World::drawDebug(GLEngine::DebugRenderer& dr, float xOffset) {
 
 void World::drawSunlight(GLEngine::SpriteBatch& sb, glm::vec4 destRect) {
 	for(float y = destRect.y; y < (destRect.y + destRect.w); y++) {
-		if((int)y < 1 || (int)y > WORLD_HEIGHT - 2) {
+		if((int)y < 1) {
+			y = 0;
 			continue;
 		}
+		if((int)y > WORLD_HEIGHT - 2) {
+			y = WORLD_HEIGHT-1;
+			continue;
+		}
+
 		for(float x = destRect.x; x < (destRect.x + destRect.z); x++) {
 			// Loop though all tiles in the destRect.
 

@@ -35,7 +35,7 @@ namespace QuestModule {
 
 		initObjectives(objectives);
 
-		m_completionScript = data.completionScript;
+		m_completionScript = data.completionScript.getID();
 	}
 
 	void Quest::start(ScriptingModule::Scripter* scripter) {
@@ -118,7 +118,7 @@ namespace QuestModule {
 			XMLModule::QuestObjectiveData d = XMLModule::XMLData::getQuestObjectiveData(objectiveData[i]);
 
 			std::string text = d.text;;
-			unsigned int confirmationScript = d.confirmationScript;
+			unsigned int confirmationScript = d.confirmationScript.getID();
 
 			m_objectives.emplace_back(text, confirmationScript);
 			m_objectiveStates.emplace_back(ObjectiveState::HIDDEN);

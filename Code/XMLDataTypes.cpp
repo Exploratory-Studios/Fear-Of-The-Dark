@@ -6,23 +6,31 @@
 #include "XMLData.h"
 #include "ScriptQueue.h"
 
+unsigned int ScriptData::getID() {
+	if(m_id != (unsigned int)-1) return m_id;
+	if(stringData.length() <= 0) return (unsigned int)-1;
+	ScriptingModule::Script scr(stringData, isFile);
+	m_id = ScriptingModule::ScriptQueue::addScript(scr);
+	return m_id;
+}
+
 namespace XMLModule {
 
-	template<class T>
+	template<typename T>
 	T GenericData::getAttributeByName(::std::string name) { /// TODO: Error checking and cleaning!
-		T t = *(m_attributes[name]->getData<T>());
+		T t = m_attributes[name]->getData<T>();
 		return t;
 	}
 
-	template<class T> // Templating acrobatics
+	template<typename T> // Templating acrobatics
 	void AttributeBase::setData(T data) {
 		dynamic_cast<Attribute<T>&>(*this).setData(data);
 	}
-	template<class T>
+	template<typename T>
 	T AttributeBase::getData() {
 		return dynamic_cast<Attribute<T>&>(*this).getData();
 	}
-	template<class T>
+	template<typename T>
 	T* AttributeBase::getDataPtr() {
 		return dynamic_cast<Attribute<T>&>(*this).getDataPtr();
 	}
@@ -53,6 +61,12 @@ namespace XMLModule {
 	}
 
 	template<>
+	void Attribute<ScriptData>::setDefault() {
+		ScriptData scr;
+		setData(scr);
+	}
+
+	template<>
 	std::string Attribute<glm::vec2>::getDataString() {
 		return std::string(std::to_string(m_data->x) + "," + std::to_string(m_data->y));
 	}
@@ -68,16 +82,25 @@ namespace XMLModule {
 	std::string Attribute<std::vector<unsigned int>>::getDataString() {
 		return "";
 	}
+	template<>
+	std::string Attribute<ScriptData>::getDataString() {
+		return "";
+	}
+
+	GenericData::GenericData() : name(""), id(0) {
+		addAttribute("name", AttributeType::STRING, &name);
+		addAttribute("id", AttributeType::UNSIGNED_INT, &id);
+	}
 
 	GenericData::GenericData(std::vector<AttributeBase*> attrs) : name(""), id(0) {
+		addAttribute("name", AttributeType::STRING, &name);
+		addAttribute("id", AttributeType::UNSIGNED_INT, &id);
+
 		addAttributes(attrs);
 	}
 
 	void GenericData::init(rapidxml::xml_node<>* node) {
 		/// The node must be the node of the Data. For example, if one were to load a Block item, we'd need to get the Block node, and pass it to this.
-		addAttribute("name", AttributeType::STRING, &name);
-		addAttribute("id", AttributeType::UNSIGNED_INT, &id);
-
 		m_attributes["id"]->setData((unsigned int)std::stoi(node->first_attribute("id")->value()));
 		m_attributes["name"]->setData((std::string)node->first_attribute("name")->value());
 
@@ -162,8 +185,10 @@ namespace XMLModule {
 							script = ASSETS_FOLDER_PATH + "/Scripts/" + script;
 						}
 
-						ScriptingModule::Script scr(script, isFile);
-						attr.second->setData((unsigned int)ScriptingModule::ScriptQueue::addScript(scr));
+						ScriptData scr;
+						scr.isFile = isFile;
+						scr.stringData = script;
+						attr.second->setData(scr);
 					}
 					break;
 				}
@@ -337,13 +362,13 @@ namespace XMLModule {
 					node->append_node(newNode);
 
 					char* name1 = node->document()->allocate_string("isFile");
-					const char* temp1 = std::to_string(attr.second->getData<ScriptingModule::Script>().isFile()).c_str();
+					const char* temp1 = std::to_string(attr.second->getData<ScriptData>().isFile).c_str();
 					char* val1 = node->document()->allocate_string(temp1);
 					rapidxml::xml_node<>* newNode1 = newNode->document()->allocate_node(rapidxml::node_element, name1, val1);
 					newNode->append_node(newNode1);
 
 					char* name2 = node->document()->allocate_string("script");
-					const char* temp2 = std::string(attr.second->getData<ScriptingModule::Script>().getFileName() + attr.second->getData<ScriptingModule::Script>().getText()).c_str();
+					const char* temp2 = std::string(attr.second->getData<ScriptData>().stringData).c_str();
 					char* val2 = node->document()->allocate_string(temp2);
 					rapidxml::xml_node<>* newNode2 = newNode->document()->allocate_node(rapidxml::node_element, name2, val2);
 					newNode->append_node(newNode2);

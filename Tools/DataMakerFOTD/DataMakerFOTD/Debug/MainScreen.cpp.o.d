@@ -267,14 +267,12 @@ Debug/MainScreen.cpp.o: MainScreen.cpp MainScreen.h \
  /usr/include/x86_64-linux-gnu/cegui-0.8.7/CEGUI/RendererModules/OpenGL/../../Rect.h \
  /usr/include/x86_64-linux-gnu/cegui-0.8.7/CEGUI/RendererModules/OpenGL/../../TextureTarget.h \
  /usr/include/x86_64-linux-gnu/cegui-0.8.7/CEGUI/RendererModules/OpenGL/GL.h \
- ../../../../GLEngine/GLSLProgram.h Objects.h ../../../Code/XMLData.h \
+ ../../../../GLEngine/GLSLProgram.h ../../../Code/XMLData.h \
  ../../../Code/ScriptQueue.h ../../../../GLEngine/GLEngineErrors.h \
  ../../../Code/Logging.h ../../../Code/PresetValues.h \
- ../../../../GLEngine/ResourceManager.h \
- ../../../../GLEngine/TextureCache.h ../../../../GLEngine/GLTexture.h \
- ../../../Code/Categories.h ../../../Code/SaveDataTypes.h \
- ../../../Code/MetaData.h ../../../Code/LuaHeaders.h \
- ../../../Code/XMLDataTypes.h ../../../Code/XMLDataTypes.tpp
+ ../../../Code/SaveDataTypes.h ../../../Code/MetaData.h \
+ ../../../Code/LuaHeaders.h ../../../Code/XMLDataTypes.h \
+ ../../../Code/XMLDataTypes.tpp ../../../Code/Categories.h
 
 MainScreen.h:
 
@@ -822,8 +820,6 @@ MainScreen.h:
 
 ../../../../GLEngine/GLSLProgram.h:
 
-Objects.h:
-
 ../../../Code/XMLData.h:
 
 ../../../Code/ScriptQueue.h:
@@ -834,14 +830,6 @@ Objects.h:
 
 ../../../Code/PresetValues.h:
 
-../../../../GLEngine/ResourceManager.h:
-
-../../../../GLEngine/TextureCache.h:
-
-../../../../GLEngine/GLTexture.h:
-
-../../../Code/Categories.h:
-
 ../../../Code/SaveDataTypes.h:
 
 ../../../Code/MetaData.h:
@@ -851,3 +839,5 @@ Objects.h:
 ../../../Code/XMLDataTypes.h:
 
 ../../../Code/XMLDataTypes.tpp:
+
+../../../Code/Categories.h:

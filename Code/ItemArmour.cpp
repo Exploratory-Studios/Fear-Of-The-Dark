@@ -18,7 +18,7 @@ void ItemArmour::init() {
 	m_limbIndices = d.limbIndices;
 	m_resistance = d.resistance;
 	m_threshold = d.threshold;
-	m_tickScriptID = d.tickScriptID;
+	m_tickScriptID = d.tickScriptID.getID();
 }
 
 void ItemArmour::onTick(EntityNPC* owner) {

@@ -6,11 +6,13 @@
     </Plugin>
   </Plugins>
   <VirtualDirectory Name="FOTD">
-    <File Name="../../../Code/XMLDataTypes.tpp"/>
-    <File Name="../../../Code/XMLDataTypes.h"/>
-    <File Name="../../../Code/XMLDataTypes.cpp"/>
-    <File Name="../../../Code/XMLData.h"/>
-    <File Name="../../../Code/XMLData.cpp"/>
+    <File Name="../../../Code/PresetValues.h"/>
+    <File Name="../../../Code/PresetValues.cpp"/>
+    <File Name="../../../Code/XMLDataTypes.tpp" ExcludeProjConfig=""/>
+    <File Name="../../../Code/XMLDataTypes.h" ExcludeProjConfig=""/>
+    <File Name="../../../Code/XMLDataTypes.cpp" ExcludeProjConfig=""/>
+    <File Name="../../../Code/XMLData.h" ExcludeProjConfig=""/>
+    <File Name="../../../Code/XMLData.cpp" ExcludeProjConfig=""/>
     <File Name="../../../Code/ScriptQueue.h"/>
     <File Name="../../../Code/ScriptQueue.cpp"/>
     <File Name="../../../Code/MetaData.h"/>
@@ -19,6 +21,7 @@
     <File Name="../../../Code/Logging.cpp"/>
   </VirtualDirectory>
   <VirtualDirectory Name="include">
+    <File Name="ItemEntryMod.h" ExcludeProjConfig="Debug;"/>
     <File Name="MainScreen.h"/>
     <File Name="App.h"/>
   </VirtualDirectory>
@@ -201,14 +204,14 @@
       </Completion>
     </Configuration>
     <Configuration Name="Release (Windows64 OpenGL3)" CompilerType="Cross MinGW (x64)" DebuggerType="GNU gdb debugger" Type="Executable" BuildCmpWithGlobalSettings="append" BuildLnkWithGlobalSettings="append" BuildResWithGlobalSettings="append">
-      <Compiler Options="-O3 -std=c++17 -fPIC -g -Wl,--entry=mainCRTStartup -DWINDOWS -fexceptions " C_Options="" Assembler="" Required="yes" PreCompiledHeader="" PCHInCommandLine="no" PCHFlags="" PCHFlagsPolicy="0">
+      <Compiler Options="-DWINDOWS -fexceptions -DLUA_APICHECK -O -O3" C_Options="" Assembler="" Required="yes" PreCompiledHeader="" PCHInCommandLine="no" PCHFlags="" PCHFlagsPolicy="0">
         <IncludePath Value="../../../Code"/>
+        <IncludePath Value="include"/>
         <IncludePath Value="../../../../GLEngine"/>
         <IncludePath Value="/usr/include/x86_64-linux-gnu/cegui-0.8.7"/>
       </Compiler>
-      <Linker Options="-flto;-static-libstdc++;-static-libgcc" Required="yes">
-        <LibraryPath Value="/usr/x86_64-w64-mingw32/lib"/>
-        <LibraryPath Value="../../../CodingGithub/GLEngine"/>
+      <Linker Options="-flto -static-libgcc -static-libstdc++" Required="yes">
+        <LibraryPath Value="../../../../GLEngine/bin/ReleaseWindows/"/>
         <Library Value="GLEngine"/>
         <Library Value="CEGUIBase-0"/>
         <Library Value="CEGUIOpenGLRenderer-0"/>
@@ -218,12 +221,14 @@
         <Library Value="opengl32"/>
         <Library Value="glu32"/>
         <Library Value="glew32"/>
-        <Library Value="boost_system"/>
-        <Library Value="boost_filesystem"/>
-        <Library Value="boost_thread"/>
+        <Library Value="libboost_filesystem.a"/>
+        <Library Value="libboost_thread.a"/>
+        <Library Value="libboost_system.a"/>
+        <Library Value="lua53"/>
+        <Library Value="pthread"/>
       </Linker>
       <ResourceCompiler Options="" Required="no"/>
-      <General OutputFile="bin/ReleaseWin64GL3/DataMakerFOTD" IntermediateDirectory="./ReleaseWin64GL3" Command="./DataMakerFOTD" CommandArguments="" UseSeparateDebugArgs="no" DebugArguments="" WorkingDirectory="bin/ReleaseWin64GL3" PauseExecWhenProcTerminates="no" IsGUIProgram="no" IsEnabled="yes"/>
+      <General OutputFile="bin/ReleaseWin64GL3/DataMakerFOTD" IntermediateDirectory="objSPEC" Command="./DataMakerFOTD" CommandArguments="" UseSeparateDebugArgs="no" DebugArguments="" WorkingDirectory="bin/ReleaseWin64GL3" PauseExecWhenProcTerminates="no" IsGUIProgram="no" IsEnabled="yes"/>
       <BuildSystem Name="Default"/>
       <Environment EnvVarSetName="&lt;Use Defaults&gt;" DbgSetName="&lt;Use Defaults&gt;">
         <![CDATA[]]>

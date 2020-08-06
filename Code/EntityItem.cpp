@@ -30,8 +30,8 @@ void EntityItem::init() {
 	m_texturePath = d.texture;
 	m_bumpMapPath = d.bumpMap;
 	m_size = d.size;
-	m_updateScriptId = d.updateScript;
-	m_tickScriptId = d.tickScript;
+	m_updateScriptId = d.updateScript.getID();
+	m_tickScriptId = d.tickScript.getID();
 	m_itemId = d.item;
 
 	m_metaData = d.getMetaData();

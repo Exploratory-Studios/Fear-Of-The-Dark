@@ -47,10 +47,10 @@ Tile::Tile(glm::vec2 pos, unsigned int layer, unsigned int id, SaveDataTypes::Me
 	m_draw = t.isDrawn;
 	m_natural = t.isNatural;
 	m_transparent = t.isTransparent;
-	m_updateScriptID = t.updateScript;
-	m_tickScriptID = t.tickScript;
-	m_interactScriptID_walkedOn = t.interactScript_walkedOn;
-	m_interactScriptID_used = t.interactScript_used;
+	m_updateScriptID = t.updateScript.getID();
+	m_tickScriptID = t.tickScript.getID();
+	m_interactScriptID_walkedOn = t.interactScript_walkedOn.getID();
+	m_interactScriptID_used = t.interactScript_used.getID();
 
 	m_metaData = t.getMetaData();
 
@@ -75,10 +75,10 @@ Tile::Tile(glm::vec2 pos, unsigned int layer, TileIDs id, SaveDataTypes::MetaDat
 	m_draw = t.isDrawn;
 	m_natural = t.isNatural;
 	m_transparent = t.isTransparent;
-	m_updateScriptID = t.updateScript;
-	m_tickScriptID = t.tickScript;
-	m_interactScriptID_walkedOn = t.interactScript_walkedOn;
-	m_interactScriptID_used = t.interactScript_used;
+	m_updateScriptID = t.updateScript.getID();
+	m_tickScriptID = t.tickScript.getID();
+	m_interactScriptID_walkedOn = t.interactScript_walkedOn.getID();
+	m_interactScriptID_used = t.interactScript_used.getID();
 
 	m_metaData = t.getMetaData();
 

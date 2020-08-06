@@ -21,6 +21,7 @@ namespace XMLModule {
 	void getVector(rapidxml::xml_node<>* parent, std::string valueName, std::string childName, std::vector<unsigned int>& vec); // Retrieves an unsigned int vector from a node
 	void getVector(rapidxml::xml_node<>* parent, std::string valueName, std::string childName, std::vector<glm::vec2>& vec); // Retrieves an unsigned int vector from a node
 	void getVector(rapidxml::xml_node<>* parent, std::string valueName, std::string childName, std::vector<bool>& vec); // Retrieves a bool vector from a node
+	void getVector(rapidxml::xml_node<>* parent, std::string valueName, std::string childName, std::vector<ScriptData>& vec); // Retrieves a bool vector from a node
 	void getVector(rapidxml::xml_node<>* parent, std::string valueName, std::string childName, std::vector<GenericData>& vec); // Retrieves a bool vector from a node
 
 	bool getValue(rapidxml::xml_node<>* parent, std::string valueName, std::string& variable);
@@ -29,6 +30,7 @@ namespace XMLModule {
 	bool getValue(rapidxml::xml_node<>* parent, std::string valueName, unsigned int& variable);
 	bool getValue(rapidxml::xml_node<>* parent, std::string valueName, glm::vec2& variable);
 	bool getValue(rapidxml::xml_node<>* parent, std::string valueName, bool& variable);
+	bool getValue(rapidxml::xml_node<>* parent, std::string valueName, ScriptData& variable);
 	bool getValue(rapidxml::xml_node<>* parent, std::string valueName, GenericData& variable);
 
 	void getMetaData(rapidxml::xml_node<>* parent, SaveDataTypes::MetaData& mdVar);
@@ -84,6 +86,13 @@ namespace XMLModule {
 			static BuffData getBuffData(unsigned int id);
 
 			static unsigned int getTotalBiomes(); // Returns the number of biomes
+
+
+			static std::vector<std::string> getNodeNamesFromFile(std::string file);
+
+			static const std::vector<std::string> m_loadFileNames;
+			static const std::vector<std::string> m_saveFileNames;
+			static const std::vector<std::string> m_saveNodeNames;
 
 		private:
 			static void loadXMLData(std::string filepath); // Loads any valid map of GenericData children.

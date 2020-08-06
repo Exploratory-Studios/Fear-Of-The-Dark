@@ -268,7 +268,12 @@ Debug/App.cpp.o: App.cpp App.h ../../../../GLEngine/IMainGame.h \
  /usr/include/x86_64-linux-gnu/cegui-0.8.7/CEGUI/RendererModules/OpenGL/../../Rect.h \
  /usr/include/x86_64-linux-gnu/cegui-0.8.7/CEGUI/RendererModules/OpenGL/../../TextureTarget.h \
  /usr/include/x86_64-linux-gnu/cegui-0.8.7/CEGUI/RendererModules/OpenGL/GL.h \
- ../../../../GLEngine/GLSLProgram.h Objects.h
+ ../../../../GLEngine/GLSLProgram.h ../../../Code/XMLData.h \
+ ../../../Code/ScriptQueue.h ../../../../GLEngine/GLEngineErrors.h \
+ ../../../Code/Logging.h ../../../Code/PresetValues.h \
+ ../../../Code/SaveDataTypes.h ../../../Code/MetaData.h \
+ ../../../Code/LuaHeaders.h ../../../Code/XMLDataTypes.h \
+ ../../../Code/XMLDataTypes.tpp
 
 App.h:
 
@@ -820,4 +825,22 @@ MainScreen.h:
 
 ../../../../GLEngine/GLSLProgram.h:
 
-Objects.h:
+../../../Code/XMLData.h:
+
+../../../Code/ScriptQueue.h:
+
+../../../../GLEngine/GLEngineErrors.h:
+
+../../../Code/Logging.h:
+
+../../../Code/PresetValues.h:
+
+../../../Code/SaveDataTypes.h:
+
+../../../Code/MetaData.h:
+
+../../../Code/LuaHeaders.h:
+
+../../../Code/XMLDataTypes.h:
+
+../../../Code/XMLDataTypes.tpp:

@@ -23,7 +23,7 @@ void Buff::init() {
 	m_duration = d.duration;
 	m_name = d.name;
 	m_description = d.description;
-	m_tickScript = d.tickScript;
+	m_tickScript = d.tickScript.getID();
 }
 
 void Buff::tick() {

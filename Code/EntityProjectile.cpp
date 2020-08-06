@@ -30,8 +30,8 @@ void EntityProjectile::init() {
 	XMLModule::EntityProjectileData d = XMLModule::XMLData::getEntityProjectileData(m_id);
 
 	m_size = d.size;
-	m_updateScriptId = d.updateScript;
-	m_tickScriptId = d.tickScript;
+	m_updateScriptId = d.updateScript.getID();
+	m_tickScriptId = d.tickScript.getID();
 	m_speed = d.speed;
 	m_damage = d.damage;
 	m_collideWithBlocks = d.collides;

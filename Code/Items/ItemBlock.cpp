@@ -1,6 +1,6 @@
 #include "ItemBlock.h"
 
-#include "Factory.h"
+#include "Singletons.h"
 #include "XMLData.h"
 
 #include "Tile.h"
@@ -33,5 +33,5 @@ void ItemBlock::setTileToPlace(Tile& tile) {
 }
 
 void ItemBlock::placeBlock(Tile* selected) {
-	Factory::getWorld()->setTile(createTile(m_block->getID(), selected->getPosition(), selected->getLayer(), true, m_block->getMetaData()));
+	Singletons::getWorld()->setTile(createTile(m_block->getID(), selected->getPosition(), selected->getLayer(), true, m_block->getMetaData()));
 }

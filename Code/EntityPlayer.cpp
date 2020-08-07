@@ -5,7 +5,7 @@
 #include "World.h"
 #include "Tile.h"
 
-#include "Factory.h"
+#include "Singletons.h"
 
 #include "NPCInventory.h"
 #include "ArmourInventory.h"
@@ -23,8 +23,8 @@ EntityPlayer::EntityPlayer(glm::vec2 pos, unsigned int layer, SaveDataTypes::Met
 
 	m_armourWeaponsInventory = std::make_shared<NPCInventoryWrapper>(m_UUID, m_inventory);
 
-	std::function<bool(const CEGUI::EventArgs&)> reskin = [=](const CEGUI::EventArgs& e)->bool{ this->reskinLimbs(); };
-	std::function<bool(const CEGUI::EventArgs&)> defaultSkin = [=](const CEGUI::EventArgs& e)->bool{ this->m_body.resetAnimations(); };
+	std::function<bool(const CEGUI::EventArgs&)> reskin = [ = ](const CEGUI::EventArgs & e)->bool{ this->reskinLimbs(); };
+	std::function<bool(const CEGUI::EventArgs&)> defaultSkin = [ = ](const CEGUI::EventArgs & e)->bool{ this->m_body.resetAnimations(); };
 
 	m_armourWeaponsInventory->m_armourGrid->subscribeEvent(CEGUI::Element::EventChildAdded, CEGUI::Event::Subscriber(reskin));
 	m_armourWeaponsInventory->m_armourGrid->subscribeEvent(CEGUI::Element::EventChildRemoved, CEGUI::Event::Subscriber(defaultSkin));
@@ -36,10 +36,10 @@ EntityPlayer::~EntityPlayer() {
 }
 
 void EntityPlayer::initGUI() {
-	m_statusBoxFrame = static_cast<CEGUI::PopupMenu*>(Factory::getGUI()->createWidget("FOTDSkin/StatusBox", glm::vec4(0.785f, 0.025f, 0.2f, 0.4f), glm::vec4(0.0f), "PlayerGUI_StatusBox"));
+	m_statusBoxFrame = static_cast<CEGUI::PopupMenu*>(Singletons::getGUI()->createWidget("FOTDSkin/StatusBox", glm::vec4(0.785f, 0.025f, 0.2f, 0.4f), glm::vec4(0.0f), "PlayerGUI_StatusBox"));
 	m_statusBoxFrame->openPopupMenu();
 
-	m_statusBoxLabel = static_cast<CEGUI::DefaultWindow*>(Factory::getGUI()->createWidget(m_statusBoxFrame, "FOTDSkin/Label", glm::vec4(0.075f, 0.025f, 0.925f, 1.0f), glm::vec4(0.0f), "PlayerGUI_StatusBox_Label"));
+	m_statusBoxLabel = static_cast<CEGUI::DefaultWindow*>(Singletons::getGUI()->createWidget(m_statusBoxFrame, "FOTDSkin/Label", glm::vec4(0.075f, 0.025f, 0.925f, 1.0f), glm::vec4(0.0f), "PlayerGUI_StatusBox_Label"));
 	m_statusBoxLabel->setProperty("HorzFormatting", "LeftAligned");
 	m_statusBoxLabel->setProperty("VertFormatting", "TopAligned");
 
@@ -53,12 +53,12 @@ void EntityPlayer::initGUI() {
 
 	m_statusBoxLabel->setText(labelText);
 
-	m_sanityBar     = static_cast<CEGUI::ProgressBar*>(Factory::getGUI()->createWidget(m_statusBoxFrame, "FOTDSkin/SanityBar",     glm::vec4(0.25f, 0.10f + 0.066f, 0.65f, 0.1f), glm::vec4(), "PlayerGUI_StatusBox_Sanity"));
-	m_healthBar     = static_cast<CEGUI::ProgressBar*>(Factory::getGUI()->createWidget(m_statusBoxFrame, "FOTDSkin/HealthBar",     glm::vec4(0.25f, 0.23f + 0.066f, 0.65f, 0.1f), glm::vec4(), "PlayerGUI_StatusBox_Health"));
-	m_thirstBar     = static_cast<CEGUI::ProgressBar*>(Factory::getGUI()->createWidget(m_statusBoxFrame, "FOTDSkin/ThirstBar",     glm::vec4(0.25f, 0.36f + 0.066f, 0.65f, 0.1f), glm::vec4(), "PlayerGUI_StatusBox_Thirst"));
-	m_hungerBar     = static_cast<CEGUI::ProgressBar*>(Factory::getGUI()->createWidget(m_statusBoxFrame, "FOTDSkin/HungerBar",     glm::vec4(0.25f, 0.50f + 0.066f, 0.65f, 0.1f), glm::vec4(), "PlayerGUI_StatusBox_Hunger"));
-	m_exhaustionBar = static_cast<CEGUI::ProgressBar*>(Factory::getGUI()->createWidget(m_statusBoxFrame, "FOTDSkin/ExhaustionBar", glm::vec4(0.25f, 0.63f + 0.066f, 0.65f, 0.1f), glm::vec4(), "PlayerGUI_StatusBox_Exhaustion"));
-	m_staminaBar    = static_cast<CEGUI::ProgressBar*>(Factory::getGUI()->createWidget(m_statusBoxFrame, "FOTDSkin/StaminaBar",    glm::vec4(0.25f, 0.76f + 0.066f, 0.65f, 0.1f), glm::vec4(), "PlayerGUI_StatusBox_Stamina"));
+	m_sanityBar     = static_cast<CEGUI::ProgressBar*>(Singletons::getGUI()->createWidget(m_statusBoxFrame, "FOTDSkin/SanityBar",     glm::vec4(0.25f, 0.10f + 0.066f, 0.65f, 0.1f), glm::vec4(), "PlayerGUI_StatusBox_Sanity"));
+	m_healthBar     = static_cast<CEGUI::ProgressBar*>(Singletons::getGUI()->createWidget(m_statusBoxFrame, "FOTDSkin/HealthBar",     glm::vec4(0.25f, 0.23f + 0.066f, 0.65f, 0.1f), glm::vec4(), "PlayerGUI_StatusBox_Health"));
+	m_thirstBar     = static_cast<CEGUI::ProgressBar*>(Singletons::getGUI()->createWidget(m_statusBoxFrame, "FOTDSkin/ThirstBar",     glm::vec4(0.25f, 0.36f + 0.066f, 0.65f, 0.1f), glm::vec4(), "PlayerGUI_StatusBox_Thirst"));
+	m_hungerBar     = static_cast<CEGUI::ProgressBar*>(Singletons::getGUI()->createWidget(m_statusBoxFrame, "FOTDSkin/HungerBar",     glm::vec4(0.25f, 0.50f + 0.066f, 0.65f, 0.1f), glm::vec4(), "PlayerGUI_StatusBox_Hunger"));
+	m_exhaustionBar = static_cast<CEGUI::ProgressBar*>(Singletons::getGUI()->createWidget(m_statusBoxFrame, "FOTDSkin/ExhaustionBar", glm::vec4(0.25f, 0.63f + 0.066f, 0.65f, 0.1f), glm::vec4(), "PlayerGUI_StatusBox_Exhaustion"));
+	m_staminaBar    = static_cast<CEGUI::ProgressBar*>(Singletons::getGUI()->createWidget(m_statusBoxFrame, "FOTDSkin/StaminaBar",    glm::vec4(0.25f, 0.76f + 0.066f, 0.65f, 0.1f), glm::vec4(), "PlayerGUI_StatusBox_Stamina"));
 
 	m_sanityBar->setProgress(1.0f);
 	m_healthBar->setProgress(1.0f);
@@ -75,7 +75,7 @@ void EntityPlayer::initGUI() {
 	m_staminaBar->setStepSize(0.0000005d);
 
 
-	m_buffBoxFrame = static_cast<CEGUI::PopupMenu*>(Factory::getGUI()->createWidget("FOTDSkin/StatusBox", glm::vec4(0.725f, 0.025f, 0.055f, 0.4f), glm::vec4(0.0f), "PlayerGUI_BuffBox"));
+	m_buffBoxFrame = static_cast<CEGUI::PopupMenu*>(Singletons::getGUI()->createWidget("FOTDSkin/StatusBox", glm::vec4(0.725f, 0.025f, 0.055f, 0.4f), glm::vec4(0.0f), "PlayerGUI_BuffBox"));
 	m_buffBoxFrame->openPopupMenu();
 }
 
@@ -225,21 +225,21 @@ void EntityPlayer::updateMouse(glm::vec2 mouseCoords) {
 		m_selectedBlock = nullptr;
 
 		if((int)mouseCoords.x > -WORLD_SIZE) {
-			m_selectedBlock = Factory::getWorld()->getTile((int)mouseCoords.x, mouseCoords.y, m_layer);
+			m_selectedBlock = Singletons::getWorld()->getTile((int)mouseCoords.x, mouseCoords.y, m_layer);
 		}
 
 		m_selectedEntity = nullptr;
 
-		for(unsigned int i = 0; i < Factory::getEntityManager()->getEntities().size() && !m_selectedEntity; i++) {
-			float sizeX = (Factory::getEntityManager()->getEntities()[i]->getSize().x) / 2.0f;
-			float midX = Factory::getEntityManager()->getEntities()[i]->getPosition().x + sizeX;
+		for(unsigned int i = 0; i < Singletons::getEntityManager()->getEntities().size() && !m_selectedEntity; i++) {
+			float sizeX = (Singletons::getEntityManager()->getEntities()[i]->getSize().x) / 2.0f;
+			float midX = Singletons::getEntityManager()->getEntities()[i]->getPosition().x + sizeX;
 
-			float sizeY = (Factory::getEntityManager()->getEntities()[i]->getSize().y) / 2.0f;
-			float midY = Factory::getEntityManager()->getEntities()[i]->getPosition().y + sizeY;
+			float sizeY = (Singletons::getEntityManager()->getEntities()[i]->getSize().y) / 2.0f;
+			float midY = Singletons::getEntityManager()->getEntities()[i]->getPosition().y + sizeY;
 
 			if(std::abs(midX - mouseCoords.x) <= sizeX / 2.0f) {
 				if(std::abs(midY - mouseCoords.y) <= sizeY / 2.0f) {
-					m_selectedEntity = Factory::getEntityManager()->getEntities()[i];
+					m_selectedEntity = Singletons::getEntityManager()->getEntities()[i];
 				}
 			}
 		}

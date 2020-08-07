@@ -8,7 +8,7 @@
 
 #include "EventQueue.h"
 
-#include "Factory.h"
+#include "Singletons.h"
 
 World::World() {
 	XMLModule::XMLData::init(); /// TODO: Move elsewhere.
@@ -24,7 +24,7 @@ World::World() {
 		}
 	}
 
-	Factory::getEntityManager()->init(this);
+	Singletons::getEntityManager()->init(this);
 }
 
 World::~World() {
@@ -251,11 +251,11 @@ void World::getRenderedLights(glm::vec4 destRect, float lights[MAX_LIGHTS_RENDER
 	}
 
 	for(int i = 0; i < MAX_LIGHTS_RENDERED; i++) {
-		glm::vec2 pos = Factory::getGameCamera()->convertWorldToScreen(glm::vec2(returnVal[i].x + 0.5f, returnVal[i].y + 0.5f));
+		glm::vec2 pos = Singletons::getGameCamera()->convertWorldToScreen(glm::vec2(returnVal[i].x + 0.5f, returnVal[i].y + 0.5f));
 
 		lights[i * 3] = pos.x;
 		lights[i * 3 + 1] = pos.y;
-		lights[i * 3 + 2] = returnVal[i].z * Factory::getGameCamera()->getScale() * Factory::getGameCamera()->getScale();
+		lights[i * 3 + 2] = returnVal[i].z * Singletons::getGameCamera()->getScale() * Singletons::getGameCamera()->getScale();
 	}
 }
 
@@ -273,7 +273,7 @@ void World::drawTiles(GLEngine::SpriteBatch& sb, GLEngine::SpriteFont& sf, GLEng
 	    eg. destRect = (-10, 10, 20, 10) will draw tiles from x=(WORLD_SIZE - 10) to x=(-10 + 20) and y=(10) to y=(10 + 10)
 	*/
 
-	EntityPlayer* player = Factory::getEntityManager()->getPlayer();
+	EntityPlayer* player = Singletons::getEntityManager()->getPlayer();
 
 	int playerLayer = player->getLayer();
 	int diff[WORLD_DEPTH];
@@ -302,7 +302,7 @@ void World::drawTiles(GLEngine::SpriteBatch& sb, GLEngine::SpriteFont& sf, GLEng
 }
 
 void World::drawTilesNormal(GLEngine::SpriteBatch& sb, glm::vec4 destRect, GLEngine::GLSLProgram* textureProgram) {
-	EntityPlayer* player = Factory::getEntityManager()->getPlayer();
+	EntityPlayer* player = Singletons::getEntityManager()->getPlayer();
 
 	int playerLayer = player->getLayer();
 	int diff[WORLD_DEPTH];
@@ -412,7 +412,7 @@ void World::drawSunlight(GLEngine::SpriteBatch& sb, glm::vec4 destRect) {
 			continue;
 		}
 		if((int)y > WORLD_HEIGHT - 2) {
-			y = WORLD_HEIGHT-1;
+			y = WORLD_HEIGHT - 1;
 			continue;
 		}
 

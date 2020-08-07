@@ -21,7 +21,7 @@ class ScriptQueue;
 class World {
 		friend class WorldIOManager;
 		friend class App;
-		friend class Factory;
+		friend class Singletons;
 
 	public:
 		World();

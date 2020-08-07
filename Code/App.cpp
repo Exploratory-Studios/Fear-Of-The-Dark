@@ -1,6 +1,6 @@
 #include "App.h"
 
-#include "Factory.h"
+#include "Singletons.h"
 
 App::App() {
 	m_window.setScreenTitle("Fear Of The Dark");
@@ -16,7 +16,7 @@ void App::onInit() {
 }
 
 void App::addScreens() {
-	Factory::createWorld();
+	Singletons::createWorld();
 
 	m_startupScreen = std::make_unique<StartupScreen>(&m_window);               /// 0
 	m_mainMenuScreen = std::make_unique<MainMenuScreen>(&m_window);             /// 1

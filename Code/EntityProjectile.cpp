@@ -2,7 +2,7 @@
 
 #include "XMLData.h"
 
-#include "Factory.h"
+#include "Singletons.h"
 
 EntityProjectile::EntityProjectile(glm::vec2 pos, unsigned int layer, unsigned int id, SaveDataTypes::MetaData data, bool loadTex) : Entity(pos, layer, SaveDataTypes::MetaData()) {
 	m_id = id;
@@ -59,7 +59,7 @@ void EntityProjectile::collideWithTiles() {
 
 		if(positions.size() > 0) {
 			// We did collide, destroy this
-			Factory::getEntityManager()->queueEntityToRemove(getUUID());
+			Singletons::getEntityManager()->queueEntityToRemove(getUUID());
 			m_active = false;
 		}
 	}
@@ -85,7 +85,7 @@ bool EntityProjectile::collideWithOther(Entity* other) {
 		} // Else, we are colliding.
 
 		if(other->getType() == XMLModule::EntityType::NPC || other->getType() == XMLModule::EntityType::PROJECTILE) {
-			Factory::getEntityManager()->queueEntityToRemove(this);
+			Singletons::getEntityManager()->queueEntityToRemove(this);
 			m_active = false;
 		}
 	}
@@ -111,7 +111,7 @@ void EntityProjectile::drawNormal(GLEngine::SpriteBatch& sb, float time, int lay
 void EntityProjectile::onUpdate(float timeStep, unsigned int selfIndex) {
 	if(m_lifeTime > 0.0f) {
 		m_lifeTime -= timeStep;
-		if(m_lifeTime <= 0.0f) Factory::getEntityManager()->queueEntityToRemove(this);
+		if(m_lifeTime <= 0.0f) Singletons::getEntityManager()->queueEntityToRemove(this);
 	}
 }
 

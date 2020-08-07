@@ -18,7 +18,7 @@
 #include "ItemArmour.h"
 
 #include "XMLData.h"
-#include "Factory.h"
+#include "Singletons.h"
 
 NPCInventoryWrapper::NPCInventoryWrapper(std::string& UUID, std::shared_ptr<NPCInventory> inventory) {
 	// Construct all of our inventories, as well as the GUI
@@ -30,16 +30,16 @@ NPCInventoryWrapper::NPCInventoryWrapper(std::string& UUID, std::shared_ptr<NPCI
 	std::string attacksName = UUID + "AttacksGrid";
 	std::string frameName = UUID + "ArmourAttacksFrame";
 
-	Factory::getGUI()->setActiveContext(1);
+	Singletons::getGUI()->setActiveContext(1);
 
-	m_window = static_cast<CEGUI::FrameWindow*>(Factory::getGUI()->createWidget("FOTDSkin/FrameWindow", glm::vec4(0.0f, 0.0f, 0.65f, 1.0f), glm::vec4(0.0f), frameName));
+	m_window = static_cast<CEGUI::FrameWindow*>(Singletons::getGUI()->createWidget("FOTDSkin/FrameWindow", glm::vec4(0.0f, 0.0f, 0.65f, 1.0f), glm::vec4(0.0f), frameName));
 	m_window->setCloseButtonEnabled(false);
 	m_window->setDragMovingEnabled(true);
 	m_window->setRollupEnabled(false);
 	m_window->setSizingEnabled(false);
 	m_window->getTitlebar()->setText("Armour & Attacks");
 
-	Factory::getGUI()->setActiveContext(0);
+	Singletons::getGUI()->setActiveContext(0);
 
 	m_armourGrid = std::make_unique<ArmourInventory>(armourName, false, true, m_window);
 	m_armourGrid->init();
@@ -144,8 +144,8 @@ void EntityNPC::init(unsigned int id) {
 
 	m_armourWeaponsInventory = std::make_shared<NPCInventoryWrapper>(m_UUID, m_inventory);
 
-	std::function<bool(const CEGUI::EventArgs&)> reskin = [=](const CEGUI::EventArgs& e)->bool{ this->reskinLimbs(); };
-	std::function<bool(const CEGUI::EventArgs&)> defaultSkin = [=](const CEGUI::EventArgs& e)->bool{ this->m_body.resetAnimations(); };
+	std::function<bool(const CEGUI::EventArgs&)> reskin = [ = ](const CEGUI::EventArgs & e)->bool{ this->reskinLimbs(); };
+	std::function<bool(const CEGUI::EventArgs&)> defaultSkin = [ = ](const CEGUI::EventArgs & e)->bool{ this->m_body.resetAnimations(); };
 
 	m_armourWeaponsInventory->m_armourGrid->subscribeEvent(CEGUI::Element::EventChildAdded, CEGUI::Event::Subscriber(reskin));
 	m_armourWeaponsInventory->m_armourGrid->subscribeEvent(CEGUI::Element::EventChildRemoved, CEGUI::Event::Subscriber(defaultSkin));
@@ -295,7 +295,7 @@ bool EntityNPC::collideWithOther(Entity* other) {
 			other->setPosition(other->getPosition() + glm::vec2(xDist / 2, yDist / 2));
 			if(dist <= 1.0f) { // Add to inventory
 				m_inventory->addItem(ent->getItem());
-				Factory::getEntityManager()->queueEntityToRemove(this);
+				Singletons::getEntityManager()->queueEntityToRemove(this);
 			}
 		}
 	} else if(other->getType() == XMLModule::EntityType::PROJECTILE) {
@@ -684,7 +684,7 @@ bool EntityNPC::fitsOnTile(Tile* t, bool needsFloor) {
 
 	for(int y = start; fits && y < m_size.y; y++) {
 		for(int x = 0; fits && x < m_size.x; x++) {
-			Tile* tmp = Factory::getWorld()->getTile(t->getPosition().x + x, t->getPosition().y + y, t->getLayer());
+			Tile* tmp = Singletons::getWorld()->getTile(t->getPosition().x + x, t->getPosition().y + y, t->getLayer());
 			if(tmp) {
 				if(y >= 0) {
 					if(tmp->isSolid()) fits = false;
@@ -704,7 +704,7 @@ NavTile* EntityNPC::expandTile(glm::vec3 pos, int jumpHeight, glm::vec2 size, Na
 	ret->pos = pos;
 
 	// Check Left
-	World* world = Factory::getWorld();
+	World* world = Singletons::getWorld();
 
 	Tile* left = world->getTile(pos.x - 1, pos.y, pos.z);
 	if(fitsOnTile(left, true)) {
@@ -815,7 +815,7 @@ NavTile* EntityNPC::expandTile(glm::vec3 pos, int jumpHeight, glm::vec2 size, Na
 }
 
 void EntityNPC::calculateCost(NavTile* tile, glm::vec3 target) {
-	tile->h = Factory::getWorld()->getDistance(glm::vec2(tile->pos.x, tile->pos.y), glm::vec2(target.x, target.y)) + std::abs(tile->pos.z - target.z); /// TODO: Implement crossover
+	tile->h = Singletons::getWorld()->getDistance(glm::vec2(tile->pos.x, tile->pos.y), glm::vec2(target.x, target.y)) + std::abs(tile->pos.z - target.z); /// TODO: Implement crossover
 	if(tile->parent) tile->h += tile->parent->h / 2.0f; // The distance to the entity is more important than the path. Plus, this improves performance.
 }
 
@@ -836,7 +836,7 @@ void EntityNPC::addToFrontier(NavTile* tile, std::vector<NavTile*>& frontier) {
 }
 
 void EntityNPC::setAITarget(unsigned int selfIndex) {
-	unsigned int entCount = Factory::getEntityManager()->getEntities().size();
+	unsigned int entCount = Singletons::getEntityManager()->getEntities().size();
 
 	EntityNPC* targetL = nullptr;
 	EntityNPC* targetR = nullptr;
@@ -847,7 +847,7 @@ void EntityNPC::setAITarget(unsigned int selfIndex) {
 
 		if(normalized == selfIndex) continue;
 
-		Entity* target = Factory::getEntityManager()->getEntities()[normalized];
+		Entity* target = Singletons::getEntityManager()->getEntities()[normalized];
 		if(target->getType() == XMLModule::EntityType::NPC) {
 			EntityNPC* targetNPC = dynamic_cast<EntityNPC*>(target);
 
@@ -864,7 +864,7 @@ void EntityNPC::setAITarget(unsigned int selfIndex) {
 
 		if(normalized == selfIndex) continue;
 
-		Entity* target = Factory::getEntityManager()->getEntities()[normalized];
+		Entity* target = Singletons::getEntityManager()->getEntities()[normalized];
 		if(target->getType() == XMLModule::EntityType::NPC) {
 			EntityNPC* targetNPC = dynamic_cast<EntityNPC*>(target);
 
@@ -877,8 +877,8 @@ void EntityNPC::setAITarget(unsigned int selfIndex) {
 	}
 
 	if(targetL || targetR) {
-		float distToTargetL = targetL ? Factory::getWorld()->getDistance(m_position, targetL->getPosition()) : (unsigned int) - 1;
-		float distToTargetR = targetR ? Factory::getWorld()->getDistance(m_position, targetR->getPosition()) : (unsigned int) - 1;
+		float distToTargetL = targetL ? Singletons::getWorld()->getDistance(m_position, targetL->getPosition()) : (unsigned int) - 1;
+		float distToTargetR = targetR ? Singletons::getWorld()->getDistance(m_position, targetR->getPosition()) : (unsigned int) - 1;
 
 		if(distToTargetL < distToTargetR) {
 			pathfindToTarget(glm::vec3((int)targetL->getPosition().x, (int)targetL->getPosition().y, targetL->getLayer()), true);

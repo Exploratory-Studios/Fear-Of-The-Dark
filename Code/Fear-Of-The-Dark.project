@@ -1,5 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <CodeLite_Project Name="Fear-Of-The-Dark" Version="11000">
+  <Plugins>
+    <Plugin Name="qmake">
+      <![CDATA[00040001N0005Debug0000000000000001N0007DebugVB0000000000000001N0015Release - Linux0000000000000001N0017Release - Windows000000000000]]>
+    </Plugin>
+  </Plugins>
   <VirtualDirectory Name="Tiles">
     <File Name="TileContainer.h"/>
     <File Name="TileContainer.cpp"/>
@@ -7,6 +12,10 @@
     <File Name="Tile.cpp"/>
   </VirtualDirectory>
   <VirtualDirectory Name="Core">
+    <File Name="Factory.h"/>
+    <File Name="Factory.cpp"/>
+    <File Name="Singletons.cpp"/>
+    <File Name="Singletons.h"/>
     <File Name="PresetValues.h"/>
     <File Name="PresetValues.cpp"/>
     <File Name="PerlinNoise/ppm.h"/>
@@ -19,8 +28,6 @@
     <File Name="Main.cpp"/>
     <File Name="Logging.h"/>
     <File Name="Logging.cpp"/>
-    <File Name="Factory.h"/>
-    <File Name="Factory.cpp"/>
     <File Name="ExtraFunctions.h"/>
     <File Name="Categories.h"/>
     <File Name="AudioManager.h"/>
@@ -90,11 +97,6 @@
     <File Name="NPCInventory.h"/>
     <File Name="NPCInventory.cpp"/>
   </VirtualDirectory>
-  <Plugins>
-    <Plugin Name="qmake">
-      <![CDATA[00040001N0005Debug0000000000000001N0007DebugVB0000000000000001N0015Release - Linux0000000000000001N0017Release - Windows000000000000]]>
-    </Plugin>
-  </Plugins>
   <VirtualDirectory Name="Shaders &amp; Data">
     <File Name="../Assets/Shaders/vignetteShader.vert"/>
     <File Name="../Assets/Shaders/vignetteShader.frag"/>

@@ -157,14 +157,16 @@ void GameplayScreen::update() {
 
 		Singletons::getWorld()->updateTiles(getScreenBox() + glm::vec4(-10.0f, -10.0f, 20.0f, 20.0f));
 		Singletons::getEntityManager()->updateEntities(1.0f); /// TODO: Use timestep
+		
+		unsigned int worldSize = Singletons::getWorld()->getSize();
 
 		if(!m_cameraLocked) {
 			EntityPlayer* player = Singletons::getEntityManager()->getPlayer();
 
-			if(std::abs((player->getPosition().x) - m_lastPlayerPos.x) >= (WORLD_SIZE / 2)) {
+			if(std::abs((player->getPosition().x) - m_lastPlayerPos.x) >= (worldSize / 2)) {
 				int sign = ((player->getPosition().x + player->getSize().x / 2.0f) - m_lastPlayerPos.x) / std::abs((player->getPosition().x + player->getSize().x / 2.0f) - m_lastPlayerPos.x);
-				m_lastPlayerPos.x += (float)(WORLD_SIZE) * sign;
-				Singletons::getGameCamera()->setPosition(Singletons::getGameCamera()->getPosition() + glm::vec2((float)(WORLD_SIZE) * sign, 0.0f));
+				m_lastPlayerPos.x += (float)(worldSize) * sign;
+				Singletons::getGameCamera()->setPosition(Singletons::getGameCamera()->getPosition() + glm::vec2((float)(worldSize) * sign, 0.0f));
 			}
 			m_lastPlayerPos = (m_lastPlayerPos + ((player->getPosition() + player->getSize() / glm::vec2(2.0f)) - m_lastPlayerPos) / glm::vec2(4.0f));
 			Singletons::getGameCamera()->setPosition(m_lastPlayerPos); // If lastplayerpos is never updated, the camera is still 'locked' per say, but we can actually change the lastPlayerPos on purpose to get a smooth movement somewhere.
@@ -173,10 +175,10 @@ void GameplayScreen::update() {
 			Singletons::getGameCamera()->setPosition(m_lastPlayerPos);
 		}
 
-		if((int)Singletons::getGameCamera()->getPosition().x > WORLD_SIZE) {
-			Singletons::getGameCamera()->setPosition(Singletons::getGameCamera()->getPosition() - glm::vec2((float)(WORLD_SIZE), 0.0f));
+		if((int)Singletons::getGameCamera()->getPosition().x > worldSize) {
+			Singletons::getGameCamera()->setPosition(Singletons::getGameCamera()->getPosition() - glm::vec2((float)(worldSize), 0.0f));
 		} else if((int)Singletons::getGameCamera()->getPosition().x < 0) {
-			Singletons::getGameCamera()->setPosition(Singletons::getGameCamera()->getPosition() + glm::vec2((float)(WORLD_SIZE), 0.0f));
+			Singletons::getGameCamera()->setPosition(Singletons::getGameCamera()->getPosition() + glm::vec2((float)(worldSize), 0.0f));
 		}
 
 		if(m_scale > MIN_ZOOM && m_scale < MAX_ZOOM)

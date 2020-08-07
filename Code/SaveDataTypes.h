@@ -111,18 +111,21 @@ namespace SaveDataTypes {
 
 	class ChunkData {
 		public:
+			ChunkData();
 			void save(std::ofstream& file);
 			void read(std::ifstream& file);
 
-			TileData tiles[WORLD_HEIGHT][CHUNK_SIZE][WORLD_DEPTH] {};
+			std::vector<std::vector<std::vector<TileData>>> tiles;
 			unsigned int biomeID;
 	};
 
 	class WorldData {
+		public:
+			WorldData();
 			void save(std::ofstream& file);
 			void read(std::ifstream& file);
 
-			ChunkData chunks[WORLD_SIZE / CHUNK_SIZE] {};
+			std::vector<ChunkData> chunks;
 			std::vector<EntityData> entities;
 	};
 

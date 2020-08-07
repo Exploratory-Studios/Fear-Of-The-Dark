@@ -169,7 +169,7 @@ float Tile::getRawHeat() {
 	return (m_emittedHeat > m_temperature ? m_emittedHeat : m_temperature);
 }
 
-void Tile::update(float time, bool updateLighting, const float& sunlight) {
+void Tile::update(float time, bool updateLighting, float& sunlight) {
 	if(m_emittedLight > 0.0f) {
 		if(!m_setLighting) {
 			setNeighboursLight();
@@ -195,7 +195,7 @@ void Tile::specialUpdate(float time) {
 	if(m_updateScriptID != (unsigned int) - 1) ScriptingModule::ScriptQueue::activateScript(m_updateScriptID, generateLuaData());
 }
 
-void Tile::tick(float tickTime, const float& sunlight) {
+void Tile::tick(float tickTime, float& sunlight) {
 	if(m_updateHeat && m_id != (unsigned int)TileIDs::AIR) {
 		float heat = getSurroundingHeat();
 		m_temperature = heat;

@@ -155,6 +155,12 @@ void LoadScreen::initUI() {
 		m_newWorldFlatCheckbox = static_cast<CEGUI::ToggleButton*>(m_gui.createWidget("FOTDSkin/Checkbox", glm::vec4(0.1f, 0.4f, 0.12f, 0.1f), glm::vec4(0.0f), "WorldFlatToggleButton"));
 		m_newWorldFlatCheckbox->setText("[padding='l:0 t:10 r:0 b:0']Flat World");
 		m_miniScreenEntries.emplace_back(m_newWorldFlatCheckbox, MiniScreen::CREATE);
+
+		m_newWorldSizeSlider = static_cast<CEGUI::Slider*>(m_gui.createWidget("FOTDSkin/HorizontalSlider", glm::vec4(0.6f, 0.1f, 0.3f, 0.1f), glm::vec4(0), "WorldSizeSlider"));
+		m_newWorldSizeSlider->setMaxValue(19.0f);
+		m_newWorldSizeSlider->setClickStep(1.0f);
+		m_newWorldSizeSlider->setCurrentValue(1.0f);
+		m_miniScreenEntries.emplace_back(m_newWorldSizeSlider, MiniScreen::CREATE);
 	}
 
 	{
@@ -200,7 +206,7 @@ bool LoadScreen::onNewWorldCreateNewButtonClicked(const CEGUI::EventArgs& e) { /
 		seed += (char)text[i];
 	}
 
-	m_worldIOManager->createWorld(seed, m_newWorldNameEditbox->getText().c_str(), m_newWorldFlatCheckbox->isSelected());
+	m_worldIOManager->createWorld(seed, m_newWorldNameEditbox->getText().c_str(), m_newWorldFlatCheckbox->isSelected(), (m_newWorldSizeSlider->getCurrentValue() + 1) * 32);
 
 	//m_worldIOManager->createWorld(seed, m_newWorldNameEditbox->getText().c_str(), m_newWorldFlatCheckbox->isSelected(), nullptr);
 

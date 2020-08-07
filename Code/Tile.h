@@ -198,9 +198,9 @@ class Tile {
 			m_cornerSunlight = glm::vec4(0.0f);
 		}
 
-		void update(float time, bool updateLighting, const float& sunlight);
-		void specialUpdate( float time); // This is only called when the tile/surrounding tiles are changed. Calls updateScript
-		void tick(float tickTime, const float& sunlight);
+		void update(float time, bool updateLighting, float& sunlight);
+		void specialUpdate(float time);  // This is only called when the tile/surrounding tiles are changed. Calls updateScript
+		void tick(float tickTime, float& sunlight);
 		virtual void draw(GLEngine::SpriteBatch& sb, GLEngine::SpriteFont& sf, int& xOffset, int& depthDifference);
 		virtual void drawNormal(GLEngine::SpriteBatch& sb, int& xOffset, int& depthDifference);
 		virtual void drawGUI(GLEngine::SpriteBatch& sb, GLEngine::SpriteFont& sf, int& xOffset) {}

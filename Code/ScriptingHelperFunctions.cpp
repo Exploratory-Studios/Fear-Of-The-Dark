@@ -80,7 +80,8 @@ namespace ScriptingModule {
 
 
 	void setBlock(World* world, unsigned int id, glm::vec2 pos, int layer, SaveDataTypes::MetaData metaData) {
-		float correctedX = ((int)pos.x + WORLD_SIZE) % WORLD_SIZE;
+		unsigned int worldSize = Singletons::getWorld()->getSize();
+		float correctedX = ((int)pos.x + worldSize) % worldSize;
 		world->setTile(Factory::createTile(id, glm::vec2(correctedX, pos.y), layer, metaData)); // Set the block, of course
 		/// TODO: compile array of chunks in init()
 	}
@@ -249,8 +250,9 @@ namespace ScriptingModule {
 	}
 
 	std::vector<Entity*> areaEntityTarget(World* world, glm::vec2 pos1, glm::vec2 pos2) {
-		unsigned int chunk1 = std::floor(pos1.x / CHUNK_SIZE) + WORLD_SIZE;
-		unsigned int chunk2 = std::floor(pos2.x / CHUNK_SIZE) + WORLD_SIZE;
+		unsigned int worldSize = Singletons::getWorld()->getSize();
+		unsigned int chunk1 = std::floor(pos1.x / CHUNK_SIZE) + worldSize;
+		unsigned int chunk2 = std::floor(pos2.x / CHUNK_SIZE) + worldSize;
 
 		std::vector<Entity*> ret;
 

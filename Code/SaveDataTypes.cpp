@@ -1,5 +1,7 @@
 #include "SaveDataTypes.h"
 
+#include "Singletons.h"
+
 #include "Entity.h"
 #include "EntityItem.h"
 #include "EntityProjectile.h"
@@ -176,6 +178,20 @@ void SaveDataTypes::EntityPlayerData::read(std::ifstream& file) {
 	file.read(reinterpret_cast<char*>(&hunger), sizeof(float));
 	file.read(reinterpret_cast<char*>(&exhaustion), sizeof(float));
 	file.read(reinterpret_cast<char*>(&stamina), sizeof(float));
+}
+
+SaveDataTypes::ChunkData::ChunkData() {
+	for(unsigned int x = 0; x < Singletons::getWorld()->getSize(); x++) {
+		std::vector<std::vector<TileData>> xData;
+		for(unsigned int y = 0; y < WORLD_HEIGHT; y++) {
+			std::vector<TileData> yData;
+			for(unsigned int z = 0; z < WORLD_DEPTH; z++) {
+				yData.push_back(TileData());
+			}
+			xData.push_back(yData);
+		}
+		tiles.push_back(xData);
+	}
 }
 
 void SaveDataTypes::ChunkData::save(std::ofstream& file) {

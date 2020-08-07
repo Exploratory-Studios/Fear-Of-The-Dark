@@ -118,10 +118,11 @@ void Entity::move(float timeStepVariable) {
 
 	m_position += m_velocity * timeStepVariable;
 
-	if((int)m_position.x > WORLD_SIZE) {
-		m_position.x -= WORLD_SIZE;
+	unsigned int worldSize = Singletons::getWorld()->getSize();
+	if((int)m_position.x > worldSize) {
+		m_position.x -= worldSize;
 	} else if((int)m_position.x < 0) {
-		m_position.x += WORLD_SIZE;
+		m_position.x += worldSize;
 	}
 
 	if(m_gravity) m_velocity.y -= 1.225f / 60.0f * timeStepVariable; // Earth gravity is far too harsh for games. We use about 1/8th

@@ -1,5 +1,7 @@
 #include "EntityManager.h"
 
+#include "Factory.h"
+
 #include "EventQueue.h"
 
 #include "World.h"
@@ -297,6 +299,6 @@ void EntityManager::spawnEntities() {
 	}
 
 	for(int i = 0; i < positions.size(); i++) {
-		queueEntityToAdd(createEntity(glm::vec2(positions[i].x, positions[i].y), (int)positions[i].z, EntityIDs::NPC_NEUTRAL_COMPANIONCUBE, SaveDataTypes::MetaData(), true));
+		queueEntityToAdd(Factory::createEntity((unsigned int)EntityIDs::NPC_NEUTRAL_COMPANIONCUBE, glm::vec2(positions[i].x, positions[i].y), (int)positions[i].z, SaveDataTypes::MetaData(), true));
 	}
 }

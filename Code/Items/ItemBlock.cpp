@@ -1,6 +1,7 @@
 #include "ItemBlock.h"
 
 #include "Singletons.h"
+#include "Factory.h"
 #include "XMLData.h"
 
 #include "Tile.h"
@@ -18,7 +19,7 @@ void ItemBlock::init() {
 
 	unsigned int id = d.blockID;
 
-	m_block = new Tile(glm::vec2(0.0f, 0.0f), 0, id, SaveDataTypes::MetaData(), false);
+	m_block = Factory::createTile(m_id, glm::vec2(0.0f, 0.0f), 0);
 }
 
 void ItemBlock::onRightClick(Tile* selectedBlock) {
@@ -33,5 +34,5 @@ void ItemBlock::setTileToPlace(Tile& tile) {
 }
 
 void ItemBlock::placeBlock(Tile* selected) {
-	Singletons::getWorld()->setTile(createTile(m_block->getID(), selected->getPosition(), selected->getLayer(), true, m_block->getMetaData()));
+	Singletons::getWorld()->setTile(Factory::createTile(m_block->getID(), selected->getPosition(), selected->getLayer(), m_block->getMetaData(), true));
 }

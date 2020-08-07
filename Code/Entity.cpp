@@ -31,31 +31,6 @@ Entity::Entity(SaveDataTypes::EntityData& saveData) {
 	m_metaData = saveData.md;
 }
 
-Entity* createEntity(glm::vec2 pos, unsigned int layer, unsigned int id, SaveDataTypes::MetaData data, bool loadTex) {
-	XMLModule::EntityData e = XMLModule::XMLData::getEntityData(id);
-
-	if(e.type == XMLModule::EntityType::NPC) {
-		// An NPC
-		return new EntityNPC(pos, layer, id, data, loadTex);
-	} else if(e.type == XMLModule::EntityType::ITEM) {
-		// An Item
-		return new EntityItem(pos, layer, id, data, loadTex);
-	} else if(e.type == XMLModule::EntityType::PROJECTILE) {
-		// An Projectile
-		return new EntityProjectile(pos, layer, id, data, loadTex);
-	} else {
-		Logger::getInstance()->log("ERROR: Failed to create entity with ID: " + std::to_string(id), true);
-		return nullptr;
-	}
-}
-
-Entity* createEntity(glm::vec2 pos, unsigned int layer, EntityIDs id, SaveDataTypes::MetaData data, bool loadTex) {
-	unsigned int idV = (unsigned int)id;
-
-	return createEntity(pos, layer, idV, data, loadTex);
-}
-
-
 Entity::~Entity() {
 
 }

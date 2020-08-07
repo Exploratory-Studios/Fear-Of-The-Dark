@@ -17,6 +17,7 @@
 #include "Attack.h"
 #include "ItemArmour.h"
 
+#include "Factory.h"
 #include "XMLData.h"
 #include "Singletons.h"
 
@@ -915,7 +916,7 @@ void EntityNPC::updateAttack() {
 			// It is. Now check if we're leading in, or out
 			if(m_leadingIntoAttack) {
 				// We are. Now, execute the attack and start the lead in, while setting m_leadingIntoAttack.
-				CombatModule::Attack* attack = CombatModule::createAttack(m_currentAttackID, this);
+				CombatModule::Attack* attack = Factory::createAttack(m_currentAttackID, this);
 
 				attack->execute(m_aimingDirection);
 

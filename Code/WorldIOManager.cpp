@@ -10,7 +10,7 @@
 #include "Tile.h"
 
 #include "XMLData.h"
-
+#include "Factory.h"
 #include "Singletons.h"
 
 void WorldIOManager::loadWorld(std::string worldName) {
@@ -119,7 +119,7 @@ void WorldIOManager::P_loadWorld(std::string worldName, World* world) {
 				for(unsigned int x = 0; x < CHUNK_SIZE; x++) {
 					for(unsigned int k = 0; k < WORLD_DEPTH; k++) {
 						SaveDataTypes::TileData* temp = &chunkData[i].tiles[y][x][k];
-						Tile* tile = new Tile(temp->pos, k, temp->id, temp->metaData, false);
+						Tile* tile = Factory::createTile(temp->id, temp->pos, k, temp->metaData);
 						world->setTile_noEvent(tile);
 						setProgress(getProgress() + 1.0f / (CHUNK_SIZE * WORLD_HEIGHT * WORLD_SIZE * WORLD_DEPTH) * 0.2f); // 0.3
 					}
@@ -394,14 +394,15 @@ void WorldIOManager::P_createWorld(unsigned int seed, std::string worldName, boo
 					for(int x = 0; x < CHUNK_SIZE; x++) {
 						unsigned int blockIndex = layer * CHUNK_SIZE + x + chunk * CHUNK_SIZE * WORLD_DEPTH;
 						for(int y = 0; y < blockHeights[blockIndex]; y++) {
+							glm::vec2 pos = glm::vec2(x + chunk * CHUNK_SIZE, y);
 							if(y < blockHeights[blockIndex] - 1 - 5 || y <= WATER_LEVEL) {
-								Tile* tile = new Tile(glm::vec2(x + chunk * CHUNK_SIZE, y), layer, TileIDs::STONE, SaveDataTypes::MetaData(), false);
+								Tile* tile = Factory::createTile((unsigned int)TileIDs::STONE, pos, layer);
 								w->setTile_noEvent(tile);
 							} else if(y < blockHeights[blockIndex] - 1 && y > WATER_LEVEL) {
-								Tile* tile = new Tile(glm::vec2(x + chunk * CHUNK_SIZE, y), layer, TileIDs::DIRT, SaveDataTypes::MetaData(), false);
+								Tile* tile = Factory::createTile((unsigned int)TileIDs::DIRT, pos, layer);
 								w->setTile_noEvent(tile);
 							} else if(y < blockHeights[blockIndex] && y > WATER_LEVEL) {
-								Tile* tile = new Tile(glm::vec2(x + chunk * CHUNK_SIZE, y), layer, TileIDs::GRASS, SaveDataTypes::MetaData(), false);
+								Tile* tile = Factory::createTile((unsigned int)TileIDs::GRASS, pos, layer);
 								w->setTile_noEvent(tile);
 								int r = std::rand(); /// TODO: Re-enable flowers
 								if(r % 2 == 0) {
@@ -413,11 +414,12 @@ void WorldIOManager::P_createWorld(unsigned int seed, std::string worldName, boo
 							//setProgress(0.238f + 0.752f / (WORLD_DEPTH * WORLD_SIZE * WORLD_HEIGHT) * ((WORLD_SIZE * WORLD_HEIGHT * layer) + (WORLD_HEIGHT * x) + (y + 1))); // Ends at 0.99
 						}
 						for(int y = blockHeights[blockIndex]; y < WORLD_HEIGHT; y++) {
+							glm::vec2 pos = glm::vec2(x + chunk * CHUNK_SIZE, y);
 							if(y <= WATER_LEVEL) {
-								Tile* tile = new Tile(glm::vec2(x + chunk * CHUNK_SIZE, y), layer, TileIDs::WATER, SaveDataTypes::MetaData(), false);
+								Tile* tile = Factory::createTile((unsigned int)TileIDs::WATER, pos, layer);
 								w->setTile_noEvent(tile);
 							} else {
-								Tile* tile = new Tile(glm::vec2(x + chunk * CHUNK_SIZE, y), layer, TileIDs::AIR, SaveDataTypes::MetaData(), false);
+								Tile* tile = Factory::createTile((unsigned int)TileIDs::AIR, pos, layer);
 								w->setTile_noEvent(tile);
 							}
 							//setMessage("Placing blocks... (" + std::to_string(layer * WORLD_SIZE * WORLD_HEIGHT + x * WORLD_HEIGHT + y) + "/" + std::to_string((WORLD_DEPTH * WORLD_SIZE * WORLD_HEIGHT)) + ")");
@@ -432,18 +434,18 @@ void WorldIOManager::P_createWorld(unsigned int seed, std::string worldName, boo
 			for(int k = 0; k < WORLD_SIZE; k++) {
 				blockHeights[k + layer * WORLD_SIZE] = 10;
 				for(int j = blockHeights[k + layer * WORLD_SIZE]; j < WORLD_HEIGHT; j++) {
-					Tile* tile = new Tile(glm::vec2(k, j), layer, TileIDs::AIR, SaveDataTypes::MetaData(), false);
+					Tile* tile = Factory::createTile((unsigned int)TileIDs::AIR, glm::vec2(k, j), layer);
 					w->setTile_noEvent(tile);
 				}
 				for(int j = 0; j < blockHeights[k + layer * WORLD_SIZE]; j++) {
 					if(j < blockHeights[k + layer * WORLD_SIZE] - 1 - 5) {
-						Tile* tile = new Tile(glm::vec2(k, j), layer, TileIDs::STONE, SaveDataTypes::MetaData(), false);
+						Tile* tile = Factory::createTile((unsigned int)TileIDs::STONE, glm::vec2(k, j), layer);
 						w->setTile_noEvent(tile);
 					} else if(j < blockHeights[k + layer * WORLD_SIZE] - 1) {
-						Tile* tile = new Tile(glm::vec2(k, j), layer, TileIDs::DIRT, SaveDataTypes::MetaData(), false);
+						Tile* tile = Factory::createTile((unsigned int)TileIDs::DIRT, glm::vec2(k, j), layer);
 						w->setTile_noEvent(tile);
 					} else {
-						Tile* tile = new Tile(glm::vec2(k, j), layer, TileIDs::GRASS, SaveDataTypes::MetaData(), false);
+						Tile* tile = Factory::createTile((unsigned int)TileIDs::GRASS, glm::vec2(k, j), layer);
 						w->setTile_noEvent(tile);
 						int r = std::rand() % 2;
 						if(r == 0) { /// TODO: Re-enable flowers

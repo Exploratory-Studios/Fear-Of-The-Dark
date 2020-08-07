@@ -10,27 +10,6 @@
 
 #include "TileContainer.h"
 
-Tile* createTile(unsigned int id, glm::vec2 pos, int layer, bool loadTex, SaveDataTypes::MetaData metaData) {
-	XMLModule::TileData t = XMLModule::XMLData::getTileData(id);
-
-	switch((unsigned int)t.type) {
-		case(unsigned int)XMLModule::TileType::TILE: {
-			return new Tile(pos, layer, id, metaData, loadTex);
-			break;
-		}
-		case(unsigned int)XMLModule::TileType::CONTAINER: {
-			return new TileContainer(pos, layer, id, metaData, loadTex);
-			break;
-		}
-		default: {
-			Logger::getInstance()->log("ERROR: Tile creation failed due to an unknown TileType", true);
-			return nullptr;
-			break;
-		}
-	}
-	return nullptr; // We can't even reach the end.
-}
-
 Tile::Tile() {
 
 }

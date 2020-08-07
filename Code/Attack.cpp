@@ -5,21 +5,11 @@
 #include "SaveDataTypes.h"
 
 #include "Singletons.h"
+#include "Factory.h"
 
 #include <iostream>
 
 namespace CombatModule {
-
-	Attack* createAttack(unsigned int attackID, ::Entity* owner) {
-		XMLModule::AttackData d = XMLModule::XMLData::getAttackData(attackID);
-		if(d.type == XMLModule::AttackType::MELEE) {
-			return new MeleeAttack(attackID, owner);
-		} else if(d.type == XMLModule::AttackType::RANGED) {
-			return new RangedAttack(attackID, owner);
-		} else if(d.type == XMLModule::AttackType::MAGIC) {
-			return new MagicAttack(attackID, owner);
-		}
-	}
 
 	Attack::Attack(unsigned int attackID, ::Entity* owner) : m_owner(owner) {
 		XMLModule::AttackData d = XMLModule::XMLData::getAttackData(attackID);
@@ -38,7 +28,7 @@ namespace CombatModule {
 		glm::vec2 pos = m_owner->getPosition();
 		unsigned int layer = m_owner->getLayer();
 
-		EntityProjectile* e = static_cast<EntityProjectile*>(createEntity(pos, layer, m_projectileID, SaveDataTypes::MetaData(), true));
+		EntityProjectile* e = static_cast<EntityProjectile*>(Factory::createEntity(m_projectileID, pos, layer, SaveDataTypes::MetaData(), true));
 		e->setOwner(m_owner);
 
 		e->setPosition(m_owner->getPosition() + m_owner->getSize() / glm::vec2(2.0f) - e->getSize() / glm::vec2(2.0f) + direction * e->getSize());
@@ -59,7 +49,7 @@ namespace CombatModule {
 		glm::vec2 pos = m_owner->getPosition();
 		unsigned int layer = m_owner->getLayer();
 
-		EntityProjectile* e = static_cast<EntityProjectile*>(createEntity(pos, layer, m_projectileID, SaveDataTypes::MetaData(), true));
+		EntityProjectile* e = static_cast<EntityProjectile*>(Factory::createEntity(m_projectileID, pos, layer, SaveDataTypes::MetaData(), true));
 		e->setOwner(m_owner);
 
 		e->setPosition(m_owner->getPosition() + direction * e->getSize());

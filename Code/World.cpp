@@ -66,12 +66,12 @@ void World::setTile_noEvent(Tile* tile) {
 
 	if(m_tiles[y][x][layer]->getEmittedLight() > 0.0f) {
 		removeLight(m_tiles[y][x][layer]);
-		m_tiles[y][x][layer]->resetNeighboursLight(this);
+		m_tiles[y][x][layer]->resetNeighboursLight();
 	}
 
 	tile->setAmbientLight(m_tiles[y][x][layer]->getAmbientLight());
 
-	m_tiles[y][x][layer]->destroy(this); // Make sure everything gets cleaned up nicely.
+	m_tiles[y][x][layer]->destroy(); // Make sure everything gets cleaned up nicely.
 
 	m_tiles[y][x][layer] = tile;
 
@@ -366,7 +366,7 @@ void World::updateTiles(glm::vec4 destRect) {
 		for(int x = destRect.x; x < destRect.z + destRect.x; x++) {
 			for(unsigned int layer = 0; layer < WORLD_DEPTH; layer++) {
 				if(y >= 0 && y < WORLD_HEIGHT) {
-					(m_tiles[y][(x + WORLD_SIZE) % WORLD_SIZE][layer])->update(this, m_time, true, s);
+					(m_tiles[y][(x + WORLD_SIZE) % WORLD_SIZE][layer])->update(m_time, true, s);
 				}
 			}
 		}
@@ -387,7 +387,7 @@ void World::tickTiles(glm::vec4 destRect) {
 		for(int x = destRect.x; x < destRect.z + destRect.x; x++) {
 			for(unsigned int layer = 0; layer < WORLD_DEPTH; layer++) {
 				if(y >= 0 && y < WORLD_HEIGHT) {
-					(m_tiles[y][(x + WORLD_SIZE) % WORLD_SIZE][layer])->tick(this, m_time, sunlight);
+					(m_tiles[y][(x + WORLD_SIZE) % WORLD_SIZE][layer])->tick(m_time, sunlight);
 				} else {
 					goto escape_label; // break out of both loops.
 				}
@@ -474,7 +474,7 @@ float World::getDistance(glm::vec2 point0, glm::vec2 point1) {
 /// PRIVATE FUNCTIONS BELOW
 
 void World::specialUpdateTile(Tile* origin) {
-	origin->specialUpdate(this, m_time);
+	origin->specialUpdate(m_time);
 
 	glm::vec2 oPos = origin->getPosition();
 
@@ -486,19 +486,19 @@ void World::specialUpdateTile(Tile* origin) {
 	Tile* b = getTile(oPos.x, oPos.y, origin->getLayer() + 1);
 
 	// left and right will always return a tile
-	l->specialUpdate(this, m_time);
-	r->specialUpdate(this, m_time);
+	l->specialUpdate(m_time);
+	r->specialUpdate(m_time);
 
 
 	if(u)
-		u->specialUpdate(this, m_time);
+		u->specialUpdate(m_time);
 	if(d)
-		d->specialUpdate(this, m_time);
+		d->specialUpdate(m_time);
 
 
 	if(f)
-		f->specialUpdate(this, m_time);
+		f->specialUpdate(m_time);
 	if(b)
-		b->specialUpdate(this, m_time);
+		b->specialUpdate(m_time);
 
 }

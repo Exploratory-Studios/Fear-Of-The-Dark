@@ -104,14 +104,14 @@ class Tile {
 		float getEmittedLight() const {
 			return m_emittedLight;
 		}
-		float getSurroundingHeat(World* world);
+		float getSurroundingHeat();
 		bool isExposedToSunlight() const {
 			return m_exposedToSun;
 		}
 		bool isTransparent() const {
 			return m_transparent;
 		}
-		float getHeat(World* world);                      // Used when gameplay mechanics are in play (modifiers in use, not used when tiles are inheriting temperatures)
+		float getHeat();                      // Used when gameplay mechanics are in play (modifiers in use, not used when tiles are inheriting temperatures)
 		float getRawHeat();                   // Used whenever two tiles' temperatures are being compared, etc. (No modifiers excepting baseHeat)
 		float getEmittedHeat() const {
 			return m_emittedHeat;
@@ -198,14 +198,14 @@ class Tile {
 			m_cornerSunlight = glm::vec4(0.0f);
 		}
 
-		void update(World* world, float time, bool updateLighting, const float& sunlight);
-		void specialUpdate(World* world, float time); // This is only called when the tile/surrounding tiles are changed. Calls updateScript
-		void tick(World* world, float tickTime, const float& sunlight);
-		void draw(GLEngine::SpriteBatch& sb, GLEngine::SpriteFont& sf, int& xOffset, int& depthDifference);
-		void drawNormal(GLEngine::SpriteBatch& sb, int& xOffset, int& depthDifference);
+		void update(float time, bool updateLighting, const float& sunlight);
+		void specialUpdate( float time); // This is only called when the tile/surrounding tiles are changed. Calls updateScript
+		void tick(float tickTime, const float& sunlight);
+		virtual void draw(GLEngine::SpriteBatch& sb, GLEngine::SpriteFont& sf, int& xOffset, int& depthDifference);
+		virtual void drawNormal(GLEngine::SpriteBatch& sb, int& xOffset, int& depthDifference);
 		virtual void drawGUI(GLEngine::SpriteBatch& sb, GLEngine::SpriteFont& sf, int& xOffset) {}
 
-		void destroy(World* world);
+		void destroy();
 
 		void onInteract_WalkedOn() {
 			if(m_interactScriptID_walkedOn != -1) ScriptingModule::ScriptQueue::activateScript(m_interactScriptID_walkedOn, generateLuaData());
@@ -215,10 +215,10 @@ class Tile {
 		}
 		// ... More interact functions
 
-		void resetNeighboursLight(World* world);
-		void setNeighboursLight(World* world);
+		void resetNeighboursLight();
+		void setNeighboursLight();
 
-		void calculateSunlight(World* world, float sunlight); // Determines and sets the sunlight corner values for this tile and surrounding tiles.
+		void calculateSunlight(float sunlight); // Determines and sets the sunlight corner values for this tile and surrounding tiles.
 
 	protected:
 		void setPosition(glm::vec2 pos) {
@@ -243,7 +243,7 @@ class Tile {
 
 		void loadTexture();
 
-		bool exposedToSun(World* world);
+		bool exposedToSun();
 
 		glm::vec2 m_pos = glm::vec2(69.420f, 69.420f);
 		unsigned int m_layer = 0; // Higher numbers are farther behind

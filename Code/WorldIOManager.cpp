@@ -249,7 +249,7 @@ void WorldIOManager::P_saveWorld(World* world) {
 
 	file.close();
 }
-#include <iostream>
+
 void WorldIOManager::P_createWorld(unsigned int seed, std::string worldName, bool isFlat, World* world) {
 
 	World* w = new World();

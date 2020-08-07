@@ -12,6 +12,10 @@
     <File Name="Tile.cpp"/>
   </VirtualDirectory>
   <VirtualDirectory Name="Core">
+    <File Name="Factory.h"/>
+    <File Name="Factory.cpp"/>
+    <File Name="Singletons.cpp"/>
+    <File Name="Singletons.h"/>
     <File Name="PresetValues.h"/>
     <File Name="PresetValues.cpp"/>
     <File Name="PerlinNoise/ppm.h"/>
@@ -24,8 +28,6 @@
     <File Name="Main.cpp"/>
     <File Name="Logging.h"/>
     <File Name="Logging.cpp"/>
-    <File Name="Factory.h"/>
-    <File Name="Factory.cpp"/>
     <File Name="ExtraFunctions.h"/>
     <File Name="Categories.h"/>
     <File Name="AudioManager.h"/>

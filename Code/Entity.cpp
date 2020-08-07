@@ -1,6 +1,6 @@
 #include "Entity.h"
 
-#include "Factory.h"
+#include "Singletons.h"
 
 #include "Categories.h"
 #include "World.h"
@@ -160,7 +160,7 @@ bool Entity::checkTilePosition(std::vector<glm::vec2>& collideTilePositions, flo
 
 	if(gridPos.y >= 0) {
 		// If this is not an air tile, we should collide with it
-		if(Factory::getWorld()->getTile(gridPos.x, gridPos.y, m_layer)->isSolid()) {
+		if(Singletons::getWorld()->getTile(gridPos.x, gridPos.y, m_layer)->isSolid()) {
 			collideTilePositions.push_back(glm::vec2((float)gridPos.x + 0.500f, (float)gridPos.y + 0.500f)); // CollideTilePositions are put in as gridspace coords
 			return true;
 		}
@@ -237,7 +237,7 @@ void Entity::updateLightLevel() {
 	Pos_BL = glm::vec2(m_position.x, m_position.y);
 
 	// So we can avoid the one if statement (petty, I know.)
-	World* world = Factory::getWorld();
+	World* world = Singletons::getWorld();
 
 	// Find tiles
 	Tile *Tile_TR, *Tile_TL, *Tile_BR, *Tile_BL;
@@ -266,7 +266,7 @@ void Entity::updateLightLevel() {
 void Entity::interact() {
 	if(m_onGround && std::abs(m_velocity.x) > 0.1f) {
 		glm::vec2 tileCoordsFloor = glm::vec2((int)(m_position.x + 0.5f), (int)(m_position.y - 0.5f));
-		Factory::getWorld()->getTile(tileCoordsFloor.x, tileCoordsFloor.y, m_layer)->onInteract_WalkedOn();
+		Singletons::getWorld()->getTile(tileCoordsFloor.x, tileCoordsFloor.y, m_layer)->onInteract_WalkedOn();
 	}
 }
 

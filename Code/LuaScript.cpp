@@ -23,7 +23,7 @@
 
 #include "EventQueue.h"
 
-#include "Factory.h"
+#include "Singletons.h"
 
 namespace ScriptingModule {
 
@@ -437,7 +437,7 @@ namespace ScriptingModule {
 
 		lua_pop(L, 1); // Remove table.
 
-		Factory::getEntityManager()->getEntityByUUID(entityUUID)->setMetaData(md);
+		Singletons::getEntityManager()->getEntityByUUID(entityUUID)->setMetaData(md);
 
 		return 0; // no returned values
 	}
@@ -802,7 +802,7 @@ namespace ScriptingModule {
 	}
 
 	int LuaScript::l_getPlayer(lua_State* L) {
-		EntityPlayer* p = Factory::getEntityManager()->getPlayer();
+		EntityPlayer* p = Singletons::getEntityManager()->getPlayer();
 		std::string id = p->getUUID();
 		lua_pushstring(L, (char*)id.c_str());
 
@@ -810,7 +810,7 @@ namespace ScriptingModule {
 	}
 
 	int LuaScript::l_getSpeakingEntity(lua_State* L) {
-		Entity* s = Factory::getEntityManager()->getPlayer()->getSelectedEntity();
+		Entity* s = Singletons::getEntityManager()->getPlayer()->getSelectedEntity();
 		std::string id = s->getUUID();
 		lua_pushstring(L, (char*)id.c_str());
 
@@ -820,7 +820,7 @@ namespace ScriptingModule {
 	int LuaScript::l_getEntityPosition(lua_State* L) {
 		std::string UUID = lua_tostring(L, 1);
 
-		glm::vec2 pos = Factory::getEntityManager()->getEntityByUUID(UUID)->getPosition();
+		glm::vec2 pos = Singletons::getEntityManager()->getEntityByUUID(UUID)->getPosition();
 
 		lua_newtable(L);
 		lua_pushnumbertotable(L, 1, pos.x);

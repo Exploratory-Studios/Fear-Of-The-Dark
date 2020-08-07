@@ -4,7 +4,7 @@
 #include "EntityProjectile.h"
 #include "SaveDataTypes.h"
 
-#include "Factory.h"
+#include "Singletons.h"
 
 #include <iostream>
 
@@ -44,7 +44,7 @@ namespace CombatModule {
 		e->setPosition(m_owner->getPosition() + m_owner->getSize() / glm::vec2(2.0f) - e->getSize() / glm::vec2(2.0f) + direction * e->getSize());
 		e->setDirection(direction);
 
-		Factory::getEntityManager()->queueEntityToAdd(e);
+		Singletons::getEntityManager()->queueEntityToAdd(e);
 	}
 
 	RangedAttack::RangedAttack(unsigned int attackID, ::Entity* owner) : Attack(attackID, owner) {
@@ -65,7 +65,7 @@ namespace CombatModule {
 		e->setPosition(m_owner->getPosition() + direction * e->getSize());
 		e->setDirection(direction);
 
-		Factory::getEntityManager()->queueEntityToAdd(e);
+		Singletons::getEntityManager()->queueEntityToAdd(e);
 	}
 
 	MagicAttack::MagicAttack(unsigned int attackID, ::Entity* owner) : Attack(attackID, owner) {

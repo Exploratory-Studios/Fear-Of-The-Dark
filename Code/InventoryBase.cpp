@@ -3,16 +3,16 @@
 #include <string>
 #include <math.h>
 
-#include "Factory.h"
+#include "Singletons.h"
 
 InventoryBase::InventoryBase(std::string& name, bool automaticResizing/* = true*/, bool initGUI/* = true*/, CEGUI::Window* parent/* = nullptr*/) : m_automaticallyResizes(automaticResizing) {
 	if(initGUI) {
-		Factory::getGUI()->setActiveContext(1); // Set this to the 2nd context (Inventory systems)
+		Singletons::getGUI()->setActiveContext(1); // Set this to the 2nd context (Inventory systems)
 
 		if(parent) {
-			m_frameWindow = static_cast<CEGUI::FrameWindow*>(Factory::getGUI()->createWidget(parent, "FOTDSkin/FrameWindow", glm::vec4(0.0f, 0.0f, 1.0f, 1.0f), glm::vec4(0.0f), name + "_Inventory"));
+			m_frameWindow = static_cast<CEGUI::FrameWindow*>(Singletons::getGUI()->createWidget(parent, "FOTDSkin/FrameWindow", glm::vec4(0.0f, 0.0f, 1.0f, 1.0f), glm::vec4(0.0f), name + "_Inventory"));
 		} else {
-			m_frameWindow = static_cast<CEGUI::FrameWindow*>(Factory::getGUI()->createWidget("FOTDSkin/FrameWindow", glm::vec4(-0.2f, -0.2f, 0.35f, 0.5f), glm::vec4(0.0f), name + "_Inventory"));
+			m_frameWindow = static_cast<CEGUI::FrameWindow*>(Singletons::getGUI()->createWidget("FOTDSkin/FrameWindow", glm::vec4(-0.2f, -0.2f, 0.35f, 0.5f), glm::vec4(0.0f), name + "_Inventory"));
 		}
 		m_frameWindow->setCloseButtonEnabled(false);
 		m_frameWindow->setDragMovingEnabled(true);
@@ -26,12 +26,12 @@ InventoryBase::InventoryBase(std::string& name, bool automaticResizing/* = true*
 		m_frameWindow->subscribeEvent(CEGUI::Window::EventMouseMove, CEGUI::Event::Subscriber(&InventoryBase::onMouseMove, this));
 		m_frameWindow->subscribeEvent(CEGUI::Window::EventMouseLeavesArea, CEGUI::Event::Subscriber(&InventoryBase::onMouseLeave, this));
 
-		m_pane = static_cast<CEGUI::ScrollablePane*>(Factory::getGUI()->createWidget(m_frameWindow, "FOTDSkin/ScrollablePane", glm::vec4(0.0f, 0.0f, 1.0f, 1.0f), glm::vec4(0.0f), name + "_Inventory_PANE"));
+		m_pane = static_cast<CEGUI::ScrollablePane*>(Singletons::getGUI()->createWidget(m_frameWindow, "FOTDSkin/ScrollablePane", glm::vec4(0.0f, 0.0f, 1.0f, 1.0f), glm::vec4(0.0f), name + "_Inventory_PANE"));
 		m_pane->setMouseInputPropagationEnabled(true);
 
 		m_gridItems.clear();
 
-		m_grid = static_cast<CEGUI::GUI_InventoryReceiver*>(Factory::getGUI()->createWidget(m_pane, "InventoryReceiver", glm::vec4(0.05f, 0.05f, INVENTORY_BOX_WIDTH * 5.0f, INVENTORY_BOX_HEIGHT * 5.0f), glm::vec4(0.0f), name + "_Inventory_GRID"));
+		m_grid = static_cast<CEGUI::GUI_InventoryReceiver*>(Singletons::getGUI()->createWidget(m_pane, "InventoryReceiver", glm::vec4(0.05f, 0.05f, INVENTORY_BOX_WIDTH * 5.0f, INVENTORY_BOX_HEIGHT * 5.0f), glm::vec4(0.0f), name + "_Inventory_GRID"));
 		m_grid->setContentSize(INVENTORY_WIDTH, 5);
 		m_grid->setUserString("BlockImage", "FOTDSkin/InventoryBox");
 		m_grid->setMouseInputPropagationEnabled(true);
@@ -44,7 +44,7 @@ InventoryBase::InventoryBase(std::string& name, bool automaticResizing/* = true*
 
 		m_initedGUI = initGUI;
 
-		Factory::getGUI()->setActiveContext(0); // Reset back to normal GUI context.
+		Singletons::getGUI()->setActiveContext(0); // Reset back to normal GUI context.
 	}
 }
 
@@ -58,8 +58,8 @@ bool InventoryBase::onDoubleClick(const CEGUI::EventArgs& e) {
 bool InventoryBase::onMouseMove(const CEGUI::EventArgs& e) {
 	const CEGUI::MouseEventArgs args = static_cast<const CEGUI::MouseEventArgs&>(e);
 	if(m_grabbingGUI) {
-		m_destRect.x += args.moveDelta.d_x / Factory::getGameCamera()->getScreenWidth();
-		m_destRect.y += args.moveDelta.d_y / Factory::getGameCamera()->getScreenHeight();
+		m_destRect.x += args.moveDelta.d_x / Singletons::getGameCamera()->getScreenWidth();
+		m_destRect.y += args.moveDelta.d_y / Singletons::getGameCamera()->getScreenHeight();
 	}
 	return true;
 }
@@ -227,11 +227,11 @@ void InventoryBase::draw(GLEngine::SpriteBatch& sb, GLEngine::SpriteFont& sf, fl
 			// Move the frame window
 
 			// Convert x and y
-			glm::vec2 screenCoords = Factory::getGameCamera()->convertWorldToScreen(glm::vec2(x, y));
-			screenCoords.y = Factory::getGameCamera()->getScreenHeight() - screenCoords.y;
+			glm::vec2 screenCoords = Singletons::getGameCamera()->convertWorldToScreen(glm::vec2(x, y));
+			screenCoords.y = Singletons::getGameCamera()->getScreenHeight() - screenCoords.y;
 
 			// Convert screenCoords to percentages
-			glm::vec2 percentages = screenCoords / glm::vec2(Factory::getGameCamera()->getScreenWidth(), Factory::getGameCamera()->getScreenHeight());
+			glm::vec2 percentages = screenCoords / glm::vec2(Singletons::getGameCamera()->getScreenWidth(), Singletons::getGameCamera()->getScreenHeight());
 			percentages.x += m_destRect.x;
 			percentages.y += m_destRect.y;
 
@@ -258,12 +258,12 @@ void InventoryBase::draw(GLEngine::SpriteBatch& sb, GLEngine::SpriteFont& sf, fl
 				float bottomY = m_pane->getViewableArea().top() + m_frameWindow->getInnerRectClipper().top();
 				float topY = m_pane->getViewableArea().bottom() + m_frameWindow->getInnerRectClipper().top();
 
-				glm::vec4 destRect(screenCoords.x, Factory::getGameCamera()->getScreenHeight() - screenCoords.y - screenSize.y, screenSize.x, screenSize.y);
+				glm::vec4 destRect(screenCoords.x, Singletons::getGameCamera()->getScreenHeight() - screenCoords.y - screenSize.y, screenSize.x, screenSize.y);
 
 				std::string quantityStr = std::to_string(m_items[i]->getQuantity());
 
 				GLuint textureID = m_items[i]->getTextureId();
-				if(textureID == (unsigned int)-1) {
+				if(textureID == (unsigned int) - 1) {
 					m_items[i]->loadTexture();
 					textureID = m_items[i]->getTextureId();
 				}
@@ -330,9 +330,9 @@ void InventoryBase::createInventoryItem(Item* item) {
 	y = m_gridItems.size() / INVENTORY_WIDTH;
 
 	// Create the item with no name, so we can set it after.
-	Factory::getGUI()->setActiveContext(1); // Set GUI to inventory context.
-	CEGUI::GUI_InventoryItem* gridItem = static_cast<CEGUI::GUI_InventoryItem*>(Factory::getGUI()->createWidget("FOTDSkin/InventoryItem", glm::vec4(0.05f, 0.05f, 0.9f, 0.9f), glm::vec4(0.0f), ""));
-	Factory::getGUI()->setActiveContext(0); // Reset context to global
+	Singletons::getGUI()->setActiveContext(1); // Set GUI to inventory context.
+	CEGUI::GUI_InventoryItem* gridItem = static_cast<CEGUI::GUI_InventoryItem*>(Singletons::getGUI()->createWidget("FOTDSkin/InventoryItem", glm::vec4(0.05f, 0.05f, 0.9f, 0.9f), glm::vec4(0.0f), ""));
+	Singletons::getGUI()->setActiveContext(0); // Reset context to global
 
 	std::ostringstream addressStr;
 	addressStr << (void const*)gridItem; // converts 'this' to a string. This ensures all item windows have a unique ID

@@ -11,12 +11,12 @@
 
 #include "XMLData.h"
 
-#include "Factory.h"
+#include "Singletons.h"
 
 void WorldIOManager::loadWorld(std::string worldName) {
 	setProgress(0.0f);
 	boost::thread t([ = ]() {
-		P_loadWorld(worldName, Factory::getWorld());
+		P_loadWorld(worldName, Singletons::getWorld());
 	});
 	t.detach();
 	//P_loadWorld(worldName);
@@ -26,7 +26,7 @@ void WorldIOManager::loadWorld(std::string worldName) {
 void WorldIOManager::saveWorld() {
 	setProgress(0.0f);
 	boost::thread t([ = ]() {
-		P_saveWorld(Factory::getWorld());
+		P_saveWorld(Singletons::getWorld());
 	});
 	t.detach();
 	//P_saveWorld(worldName);
@@ -35,7 +35,7 @@ void WorldIOManager::saveWorld() {
 void WorldIOManager::createWorld(unsigned int seed, std::string worldName, bool isFlat) {
 	setProgress(0.0f);
 	boost::thread t([ = ]() {
-		P_createWorld(seed, worldName, isFlat, Factory::getWorld());
+		P_createWorld(seed, worldName, isFlat, Singletons::getWorld());
 	});
 	t.detach();
 	//P_createWorld(seed, worldName, isFlat);
@@ -90,7 +90,7 @@ void WorldIOManager::P_loadWorld(std::string worldName, World* world) {
 		// PLAYER
 
 		EntityPlayer* newP = new EntityPlayer(glm::vec2(0.0f), 0, SaveDataTypes::MetaData(), false);
-		Factory::getEntityManager()->setPlayer(newP);
+		Singletons::getEntityManager()->setPlayer(newP);
 
 		SaveDataTypes::EntityPlayerData pod;
 		pod.read(file);
@@ -158,7 +158,7 @@ void WorldIOManager::P_saveWorld(World* world) {
 	logger->log("SAVE: Starting World Save to File: " + world->getName() + ".bin");
 	logger->log("SAVE: Starting Save Preparations");
 
-	SaveDataTypes::EntityPlayerData p = Factory::getEntityManager()->getPlayer()->getPlayerSaveData();
+	SaveDataTypes::EntityPlayerData p = Singletons::getEntityManager()->getPlayer()->getPlayerSaveData();
 
 	// POD
 	/*EntityPlayer* playerPtr = world->getPlayer();

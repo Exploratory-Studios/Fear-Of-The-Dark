@@ -19,12 +19,12 @@
 #include "Tile.h"
 #include "Item.h"
 
-#include "Factory.h"
+#include "Singletons.h"
 
 namespace ScriptingModule {
 
 	void pushDepsToRegistry(lua_State* L, QuestModule::QuestManager* qm, GameplayScreen* gs, AudioManager* am, GLEngine::ParticleEngine2D* p) {
-		setUpvalue(L, WORLD_KEY,          static_cast<void*>(Factory::getWorld()));
+		setUpvalue(L, WORLD_KEY,          static_cast<void*>(Singletons::getWorld()));
 		setUpvalue(L, QUESTMANAGER_KEY,   static_cast<void*>(qm));
 		setUpvalue(L, GAMEPLAYSCREEN_KEY, static_cast<void*>(gs));
 		setUpvalue(L, AUDIOMANAGER_KEY,   static_cast<void*>(am));
@@ -107,21 +107,21 @@ namespace ScriptingModule {
 	}
 
 	unsigned int addEntity(World* world, unsigned int id, glm::vec2 position, unsigned int layer) {
-		Factory::getEntityManager()->queueEntityToAdd(createEntity(position, layer, id, SaveDataTypes::MetaData(), true));
+		Singletons::getEntityManager()->queueEntityToAdd(createEntity(position, layer, id, SaveDataTypes::MetaData(), true));
 
 		return 0;
 	}
 
 	void removeEntity(World* world, std::string UUID) { // index retrieved from entityTarget
-		Factory::getEntityManager()->queueEntityToRemove(UUID);
+		Singletons::getEntityManager()->queueEntityToRemove(UUID);
 	}
 
 	void showEntity(World* world, std::string UUID) {
-		Factory::getEntityManager()->getEntityByUUID(UUID)->setToDraw(true);
+		Singletons::getEntityManager()->getEntityByUUID(UUID)->setToDraw(true);
 	}
 
 	void hideEntity(World* world, std::string UUID) {
-		Factory::getEntityManager()->getEntityByUUID(UUID)->setToDraw(false);
+		Singletons::getEntityManager()->getEntityByUUID(UUID)->setToDraw(false);
 	}
 
 	void setTime(World* world, unsigned int time) {
@@ -129,16 +129,16 @@ namespace ScriptingModule {
 	}
 
 	void teleport(World* world, std::string UUID, glm::vec2 pos) {
-		Factory::getEntityManager()->getEntityByUUID(UUID)->setPosition(pos);
+		Singletons::getEntityManager()->getEntityByUUID(UUID)->setPosition(pos);
 	}
 
 	void giveItem(World* world, std::string UUID, unsigned int id, unsigned int quantity) {
-		EntityNPC* e = dynamic_cast<EntityNPC*>(Factory::getEntityManager()->getEntityByUUID(UUID));
+		EntityNPC* e = dynamic_cast<EntityNPC*>(Singletons::getEntityManager()->getEntityByUUID(UUID));
 		if(e) e->giveItem(new Item(quantity, id, true));
 	}
 
 	void setPlayerCanInteract(World* world, bool canInteract) {
-		Factory::getEntityManager()->getPlayer()->setCanInteract(canInteract);
+		Singletons::getEntityManager()->getPlayer()->setCanInteract(canInteract);
 	}
 
 	void setFlag(QuestModule::QuestManager* qm, unsigned int id, bool val) {
@@ -163,18 +163,18 @@ namespace ScriptingModule {
 
 	void camera_setPosition(GameplayScreen* gs, glm::vec2 pos) {
 		camera_setLocked(gs, true);
-		Factory::getGameCamera()->setPosition(pos);
+		Singletons::getGameCamera()->setPosition(pos);
 	}
 
 	void camera_move(GameplayScreen* gs, glm::vec2 relPos) {
 		camera_setLocked(gs, true);
-		Factory::getGameCamera()->setPosition(Factory::getGameCamera()->getPosition() + relPos);
+		Singletons::getGameCamera()->setPosition(Singletons::getGameCamera()->getPosition() + relPos);
 	}
 
 	void camera_smoothMove(GameplayScreen* gs, glm::vec2 relPos, float speed) {
 		camera_setLocked(gs, true);
 
-		glm::vec2 newPos = Factory::getGameCamera()->getPosition() + relPos;
+		glm::vec2 newPos = Singletons::getGameCamera()->getPosition() + relPos;
 
 		gs->setSmoothMoveTarget(newPos);
 		gs->setSmoothMoveSpeed(speed);
@@ -189,7 +189,7 @@ namespace ScriptingModule {
 	}
 
 	void setPlayerStat_sanity(World* world, float sanity) {
-		Factory::getEntityManager()->getPlayer()->setSanity(sanity);
+		Singletons::getEntityManager()->getPlayer()->setSanity(sanity);
 	}
 
 	/*void startTrade(QuestModule::QuestManager* qm, unsigned int tableID) {
@@ -237,10 +237,10 @@ namespace ScriptingModule {
 	std::vector<Entity*> nearEntityTarget(World* world, glm::vec2 nearTo, float minDist) {
 		std::vector<Entity*> ret;
 
-		for(unsigned int i = 0; i < Factory::getEntityManager()->getEntities().size(); i++) { /// TODO: Optimize this
-			float dist = std::sqrt(std::abs(nearTo.x - Factory::getEntityManager()->getEntities()[i]->getPosition().x) + std::abs(nearTo.y - Factory::getEntityManager()->getEntities()[i]->getPosition().y));
+		for(unsigned int i = 0; i < Singletons::getEntityManager()->getEntities().size(); i++) { /// TODO: Optimize this
+			float dist = std::sqrt(std::abs(nearTo.x - Singletons::getEntityManager()->getEntities()[i]->getPosition().x) + std::abs(nearTo.y - Singletons::getEntityManager()->getEntities()[i]->getPosition().y));
 			if(dist < minDist) {
-				ret.push_back(Factory::getEntityManager()->getEntities()[i]);
+				ret.push_back(Singletons::getEntityManager()->getEntities()[i]);
 			}
 		}
 
@@ -254,10 +254,10 @@ namespace ScriptingModule {
 		std::vector<Entity*> ret;
 
 		for(unsigned int i = 0; i <= chunk1 - chunk2; i++) {
-			for(unsigned int j = 0; j < Factory::getEntityManager()->getEntities().size(); j++) {
-				if(Factory::getEntityManager()->getEntities()[j]->getPosition().x >= pos1.x && Factory::getEntityManager()->getEntities()[j]->getPosition().x <= pos2.x) {
-					if(Factory::getEntityManager()->getEntities()[j]->getPosition().y >= pos1.y && Factory::getEntityManager()->getEntities()[j]->getPosition().y <= pos2.y) {
-						ret.push_back(Factory::getEntityManager()->getEntities()[j]);
+			for(unsigned int j = 0; j < Singletons::getEntityManager()->getEntities().size(); j++) {
+				if(Singletons::getEntityManager()->getEntities()[j]->getPosition().x >= pos1.x && Singletons::getEntityManager()->getEntities()[j]->getPosition().x <= pos2.x) {
+					if(Singletons::getEntityManager()->getEntities()[j]->getPosition().y >= pos1.y && Singletons::getEntityManager()->getEntities()[j]->getPosition().y <= pos2.y) {
+						ret.push_back(Singletons::getEntityManager()->getEntities()[j]);
 					}
 				}
 			}
@@ -271,9 +271,9 @@ namespace ScriptingModule {
 
 		unsigned int p = 0;
 
-		for(unsigned int i = 0; i < Factory::getEntityManager()->getEntities().size(); i++) {
-			Entity* ent = Factory::getEntityManager()->getEntities()[i];
-			if(dynamic_cast<EntityPlayer*>(ent) == Factory::getEntityManager()->getPlayer()) {
+		for(unsigned int i = 0; i < Singletons::getEntityManager()->getEntities().size(); i++) {
+			Entity* ent = Singletons::getEntityManager()->getEntities()[i];
+			if(dynamic_cast<EntityPlayer*>(ent) == Singletons::getEntityManager()->getPlayer()) {
 				p = i;
 				break;
 			}
@@ -289,8 +289,8 @@ namespace ScriptingModule {
 
 		unsigned int s = 0;
 
-		for(unsigned int i = 0; i < Factory::getEntityManager()->getEntities().size(); i++) {
-			if(Factory::getEntityManager()->getEntities()[i] == Factory::getEntityManager()->getPlayer()->getSelectedEntity()) {
+		for(unsigned int i = 0; i < Singletons::getEntityManager()->getEntities().size(); i++) {
+			if(Singletons::getEntityManager()->getEntities()[i] == Singletons::getEntityManager()->getPlayer()->getSelectedEntity()) {
 				s = i;
 				break;
 			}

@@ -4,7 +4,7 @@
 
 #include "QuestManager.h"
 
-#include "Factory.h"
+#include "Singletons.h"
 
 namespace DialogueModule {
 
@@ -33,18 +33,18 @@ namespace DialogueModule {
 		float height = 0.3f;
 		float padding = 0.05f;
 
-		m_button = static_cast<CEGUI::PushButton*>(Factory::getGUI()->createWidget(parent, "FOTDSkin/Button", glm::vec4(0.1f, 0.35f + (height + padding) * index, 0.8f, height), glm::vec4(0.0f), "DialogueResponseFrame" + std::to_string(index)));
+		m_button = static_cast<CEGUI::PushButton*>(Singletons::getGUI()->createWidget(parent, "FOTDSkin/Button", glm::vec4(0.1f, 0.35f + (height + padding) * index, 0.8f, height), glm::vec4(0.0f), "DialogueResponseFrame" + std::to_string(index)));
 		m_button->setText(text);
 	}
 
 	DialogueFrame::DialogueFrame(QuestModule::QuestManager* qm) : m_qm(qm) {
-		m_frame = static_cast<CEGUI::FrameWindow*>(Factory::getGUI()->createWidget("FOTDSkin/FrameWindow", glm::vec4(0.1f, 0.6f, 0.8f, 0.3f), glm::vec4(0.0f), "DialogueMainFrame"));
+		m_frame = static_cast<CEGUI::FrameWindow*>(Singletons::getGUI()->createWidget("FOTDSkin/FrameWindow", glm::vec4(0.1f, 0.6f, 0.8f, 0.3f), glm::vec4(0.0f), "DialogueMainFrame"));
 		m_frame->setCloseButtonEnabled(false);
 		m_frame->setDragMovingEnabled(false);
 		m_frame->setRollupEnabled(false);
 		m_frame->setTitleBarEnabled(false);
 
-		m_text = static_cast<CEGUI::DefaultWindow*>(Factory::getGUI()->createWidget(m_frame, "FOTDSkin/Label", glm::vec4(0.1f, 0.1f, 0.8f, 0.3f), glm::vec4(0.0f), "DialogueMainFrameText"));
+		m_text = static_cast<CEGUI::DefaultWindow*>(Singletons::getGUI()->createWidget(m_frame, "FOTDSkin/Label", glm::vec4(0.1f, 0.1f, 0.8f, 0.3f), glm::vec4(0.0f), "DialogueMainFrameText"));
 
 		hide();
 	}

@@ -1,7 +1,5 @@
 #include "Factory.h"
 
-EntityManager* Factory::m_entityManager = nullptr;
-AudioManager* Factory::m_audioManager = nullptr;
-GLEngine::GUI* Factory::m_gui = nullptr;
-GLEngine::Camera2D* Factory::m_gameCamera = nullptr;
-World* Factory::m_world = nullptr;
+#include "Item.h"
+#include "ItemArmour.h"
+#include "ItemBlock.h"

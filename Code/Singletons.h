@@ -44,6 +44,11 @@ class Singletons {
 			m_world = new World(true);
 		}
 
+		static void setWorld(World* w) {
+			if(m_world) delete m_world;
+			m_world = w;
+		}
+
 	private:
 		static EntityManager* m_entityManager;
 		static AudioManager* m_audioManager;

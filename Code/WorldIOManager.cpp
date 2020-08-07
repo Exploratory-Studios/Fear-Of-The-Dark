@@ -35,7 +35,7 @@ void WorldIOManager::saveWorld() {
 void WorldIOManager::createWorld(unsigned int seed, std::string worldName, bool isFlat) {
 	setProgress(0.0f);
 	boost::thread t([ = ]() {
-		P_createWorld(seed, worldName, isFlat, Singletons::getWorld());
+		P_createWorld(seed, worldName, isFlat);
 	});
 	t.detach();
 	//P_createWorld(seed, worldName, isFlat);
@@ -250,9 +250,10 @@ void WorldIOManager::P_saveWorld(World* world) {
 	file.close();
 }
 
-void WorldIOManager::P_createWorld(unsigned int seed, std::string worldName, bool isFlat, World* world) {
+void WorldIOManager::P_createWorld(unsigned int seed, std::string worldName, bool isFlat) {
 
 	World* w = new World();
+	Singletons::setWorld(w);
 
 	float startTime = (float)(std::clock()) / (float)(CLOCKS_PER_SEC / 1000);
 	logger->log("CREATE: Starting world creation at time: " + std::to_string(startTime));
@@ -458,8 +459,6 @@ void WorldIOManager::P_createWorld(unsigned int seed, std::string worldName, boo
 			}
 		}
 	}
-
-	*world = *w;
 
 	setProgress(1.0f);
 

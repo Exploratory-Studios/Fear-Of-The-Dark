@@ -92,6 +92,7 @@ namespace XMLModule {
 			static std::vector<std::string> getNodeNamesFromFile(std::string file);
 
 			static const std::vector<std::string> m_loadFileNames;
+			static const std::vector<std::string> m_loadNodeNames; // One for each map
 			static const std::vector<std::string> m_saveFileNames;
 			static const std::vector<std::string> m_saveNodeNames;
 

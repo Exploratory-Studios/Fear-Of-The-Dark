@@ -1,5 +1,7 @@
 #include "ItemWeapon.h"
 
+#include "XMLData.h"
+
 ItemWeapon::ItemWeapon(short unsigned int quantity, unsigned int id, bool loadTex) : Item(quantity, id, loadTex) {
 	init();
 }

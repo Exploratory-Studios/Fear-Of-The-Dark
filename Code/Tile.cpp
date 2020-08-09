@@ -18,8 +18,8 @@ Tile::Tile() {
 Tile::Tile(glm::vec2 pos, unsigned int layer, unsigned int id, SaveDataTypes::MetaData data, bool loadTex) : m_pos(pos), m_layer(layer), m_id(id) {
 	XMLModule::TileData t = XMLModule::XMLData::getTileData(id);
 
-	m_texturePath = t.texture;
-	m_bumpMapPath = t.bumpMap;
+	m_texturePath = ASSETS_FOLDER_PATH + "/Textures/" + t.texture;
+	m_bumpMapPath = ASSETS_FOLDER_PATH + "/Textures/BumpMaps/" + t.bumpMap;
 	m_emittedLight = t.emittedLight;
 	m_emittedHeat = t.emittedHeat;
 	m_size = t.size;
@@ -46,8 +46,8 @@ Tile::Tile(glm::vec2 pos, unsigned int layer, unsigned int id, SaveDataTypes::Me
 Tile::Tile(glm::vec2 pos, unsigned int layer, TileIDs id, SaveDataTypes::MetaData data, bool loadTex) : m_pos(pos), m_layer(layer), m_id((unsigned int)id) {
 	XMLModule::TileData t = XMLModule::XMLData::getTileData((unsigned int)id);
 
-	m_texturePath = t.texture;
-	m_bumpMapPath = t.bumpMap;
+	m_texturePath = ASSETS_FOLDER_PATH + "/Textures/" + t.texture;
+	m_bumpMapPath = ASSETS_FOLDER_PATH + "/Textures/BumpMaps/" + t.bumpMap;
 	m_emittedLight = t.emittedLight;
 	m_emittedHeat = t.emittedHeat;
 	m_size = t.size;

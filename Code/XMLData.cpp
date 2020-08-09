@@ -269,56 +269,76 @@ namespace XMLModule {
 	std::map<unsigned int, GenericData*> XMLData::m_attackData;
 	std::map<unsigned int, GenericData*> XMLData::m_buffData;
 
-	// "Blocks", "Particles", "Entities", "Items", "Biomes", "Eras", "LootDrops", "LootTables", "Structures", "Quests", "Objectives", "DialogueQuestions", "DialogueResponses"
+	XMLDataFile::XMLDataFile(std::string filename, std::initializer_list<std::string> nodeNames) : m_filename(filename), m_nodeNames(nodeNames) {
+		// We need to construct m_maps. No copies allowed!
+		for(unsigned int i = 0; i < m_nodeNames.size(); i++) {
+			std::map<unsigned int, GenericData*>* mapCandidate = XMLData::getMapFromNodename(m_nodeNames[i]);
+			for(unsigned int j = 0; j < m_maps.size(); j++) {
+				if(m_maps[j] == mapCandidate) mapCandidate = nullptr;
+			}
+			if(mapCandidate) m_maps.push_back(mapCandidate);
+		}
+	}
 
-	const std::vector<std::string> XMLData::m_loadFileNames{ "Blocks", "Particles", "Entities", "Items", "Biomes", "Eras", "Loot", "Structures", "Quests", "Dialogue", "Animations", "Attacks", "Buffs" };
-	const std::vector<std::string> XMLData::m_saveFileNames{ "Blocks", "Blocks", "Particles", "Entities", "Entities", "Entities", "Items", "Items", "Items", "Items", "Items", "Biomes", "Eras", "Loot", "Loot", "Structures", "Quests", "Quests", "Dialogue", "Dialogue", "Animations", "Animations", "Attacks", "Attacks", "Attacks", "Buffs" };
-	const std::vector<std::string> XMLData::m_saveNodeNames{ "tile", "tileContainer", "particle", "npc", "projectile", "itemEntity", "item", "itemBlock", "itemWeapon", "itemConsumable", "itemArmour", "biome", "era", "lootDrop", "lootTable", "structure", "quest", "questObjective", "question", "response", "animation", "skeletalAnimation", "meleeAttack", "rangedAttack", "magicAttack", "buff" };
+	const std::vector<XMLDataFile> XMLData::m_fileNames{
+		XMLDataFile("Blocks", { "tile", "tileContainer" }),
+		XMLDataFile("Particles", { "particle" }),
+		XMLDataFile("Entities", { "npc", "itemEntity", "projectile" }),
+		XMLDataFile("Items", { "item", "itemConsumable", "itemWeapon", "itemArmour", "itemBlock" }),
+		XMLDataFile("Biomes", { "biome" }),
+		XMLDataFile("Eras", { "era" }),
+		XMLDataFile("Loot", { "lootDrop", "lootTable" }),
+		XMLDataFile("Structures", { "structure" }),
+		XMLDataFile("Quests", { "quest", "questObjective" }),
+		XMLDataFile("Dialogue", { "question", "response" }),
+		XMLDataFile("Animations", { "animation", "skeletalAnimation" }),
+		XMLDataFile("Attacks", { "meleeAttack", "rangedAttack", "magicAttack" }),
+		XMLDataFile("Buffs", { "buff" })
+	};
 
 	std::vector<std::string> XMLData::getNodeNamesFromFile(std::string file) {
 		std::vector<std::string> ret;
-		for(unsigned int i = 0; i < m_saveFileNames.size(); i++) {
-			if(m_saveFileNames[i] == file) {
-				ret.push_back(m_saveNodeNames[i]);
-			}
-		}
+		//for(unsigned int i = 0; i < m_saveFileNames.size(); i++) {
+		//	if(m_saveFileNames[i] == file) {
+		//		ret.push_back(m_saveNodeNames[i]);
+		//	}
+		//}
+
+		Logger::getInstance()->log("\n\n\n\n\n\nIMPORTANT: This function (getNodeNamesFromFile) has been deprecated. I suppose.\n\n\n\n\n\n", true);
+
 		return ret;
 	}
 
 	void XMLData::init(std::string filepath) {
-		Logger::getInstance()->log("Beginning to load data...");
+		Logger::getInstance()->log("\nXML Data beginning read");
 
-		std::vector<std::string> files = m_loadFileNames;
+		std::vector<XMLDataFile> files = m_fileNames;
 
-		for(std::string& s : files) {
-			Logger::getInstance()->log("Loading data (" + s + ")...");
-			loadXMLData(filepath + "/Data/" + s + ".xml");
-			Logger::getInstance()->log("Loaded data (" + s + ")");
+		for(XMLDataFile& s : files) {
+			Logger::getInstance()->log("Loading data (" + s.m_filename + ")...");
+			loadXMLData(filepath + "/Data/" + s.m_filename + ".xml");
+			Logger::getInstance()->log("Loaded data (" + s.m_filename + ")");
 		}
 
-		Logger::getInstance()->log("Loaded all data successfully!");
+		Logger::getInstance()->log("XML Data read complete.\n");
 	}
 
 	void XMLData::write(std::string filepath) {
-		Logger::getInstance()->log("Beginning to write data...");
+		Logger::getInstance()->log("\nXML Data beginning write.");
 
-		// files and nodeNames should have equal size. That much is assumed to be true at runtime
-		std::vector<std::string> files = m_saveFileNames;
-		std::vector<std::string> nodeNames = m_saveNodeNames;
+		std::vector<XMLDataFile> files = m_fileNames;
 
 		// Delete last contents
 		for(unsigned int i = 0; i < files.size(); i++) {
-			std::ofstream file(filepath + "/Data/" + files[i] + ".xml");
+			std::ofstream file(filepath + "/Data/" + files[i].m_filename + ".xml");
 			file.close();
 		}
 
-		for(unsigned int i = 0; i < files.size(); i++) {
-			Logger::getInstance()->log("Writing data (" + files[i] + ": " + nodeNames[i] + ")...");
-			writeXMLData(filepath + "/Data/" + files[i] + ".xml", nodeNames[i]);
-			Logger::getInstance()->log("Wrote data (" + files[i] + ": " + nodeNames[i] + ")");
-		}
+		for(unsigned int i = 0; i < files.size(); i++)
+			for(unsigned int j = 0; j < files[i].m_maps.size(); j++)
+				writeXMLData(filepath + "/Data/" + files[i].m_filename + ".xml", files[i].m_maps[j]);
 
-		Logger::getInstance()->log("Saved all data successfully!");
+		Logger::getInstance()->log("XML Data write complete.\n");
 	}
 
 	void XMLData::addData(GenericData* data, std::string& nodename) {
@@ -493,7 +513,7 @@ namespace XMLModule {
 		}
 	}
 
-	void XMLData::writeXMLData(std::string filepath, std::string nodeName) {
+	void XMLData::writeXMLData(std::string filepath, std::map<unsigned int, GenericData*>* mapToWrite) {
 		/** Writes all XML data into the file at filepath **/
 
 		// Open file at filepath
@@ -505,24 +525,20 @@ namespace XMLModule {
 			return;
 		}
 
-		// Figure out which map we're writing from
-		std::map<unsigned int, GenericData*>* mapForWrite = getMapFromNodename(nodeName);
+		Logger::getInstance()->log("Opened file, beginning XML map write.");
 
 		// Create the document to write into the file.
 		rapidxml::xml_document<> doc;
-		char* name; // Allocate a string for the node type
-		name = doc.allocate_string(nodeName.c_str());
 
-		for(auto element : *mapForWrite) {
-			rapidxml::xml_node<>* node = doc.allocate_node(rapidxml::node_element, name);
-			doc.append_node(node);
+		for(auto element : *mapToWrite) {
+			element.second->write(&doc);
 
-			element.second->write(node);
-
-			Logger::getInstance()->log("\tXML Saved " + nodeName + ": " + element.second->name + "(" + std::to_string(element.second->id) + ")");
+			Logger::getInstance()->log("\tXML Saved " + element.second->getNodeName() + ": " + element.second->name + "(" + std::to_string(element.second->id) + ")");
 		}
 
 		file << doc;
+
+		Logger::getInstance()->log("Wrote to file, XML map write complete.");
 	}
 
 /// Tiles
@@ -773,9 +789,9 @@ namespace XMLModule {
 /// QuestObjectives
 
 	QuestObjectiveData XMLData::getQuestObjectiveData(unsigned int id) {
-		auto index = m_questObjectiveData.find(id);
+		auto index = m_questData.find(id);
 
-		if(index == m_questObjectiveData.end()) {
+		if(index == m_questData.end()) {
 			Logger::getInstance()->log("ERROR: Couldn't find quest objective data with ID: " + std::to_string(id), true);
 			QuestObjectiveData s;
 			return s;

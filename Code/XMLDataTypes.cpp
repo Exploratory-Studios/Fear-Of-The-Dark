@@ -9,7 +9,7 @@
 unsigned int ScriptData::getID() {
 	if(m_id != (unsigned int) - 1) return m_id;
 	if(stringData.length() <= 0) return (unsigned int) - 1;
-	ScriptingModule::Script scr(stringData, isFile);
+	ScriptingModule::Script scr(ASSETS_FOLDER_PATH + "/Scripts/" + stringData, isFile);
 	m_id = ScriptingModule::ScriptQueue::addScript(scr);
 	return m_id;
 }
@@ -87,12 +87,12 @@ namespace XMLModule {
 		return "";
 	}
 
-	GenericData::GenericData(std::string nodeName) : m_nodeName(nodeName), name(""), id(0) {
+	GenericData::GenericData() : name(""), id(0) {
 		addAttribute("name", AttributeType::STRING, &name);
 		addAttribute("id", AttributeType::UNSIGNED_INT, &id);
 	}
 
-	GenericData::GenericData(std::vector<AttributeBase*> attrs, std::string nodeName) : m_nodeName(nodeName), name(""), id(0) {
+	GenericData::GenericData(std::vector<AttributeBase*> attrs) : name(""), id(0) {
 		addAttribute("name", AttributeType::STRING, &name);
 		addAttribute("id", AttributeType::UNSIGNED_INT, &id);
 
@@ -156,13 +156,13 @@ namespace XMLModule {
 				case(unsigned int)AttributeType::FILEPATH_TEXTURE: {
 					std::string data;
 					getValue(node, attr.first, data);
-					attr.second->setData((std::string)(ASSETS_FOLDER_PATH + "/Textures/" + data));
+					attr.second->setData((std::string)(data));
 					break;
 				}
 				case(unsigned int)AttributeType::FILEPATH_BUMPMAP: {
 					std::string data;
 					getValue(node, attr.first, data);
-					attr.second->setData((std::string)(ASSETS_FOLDER_PATH + "/Textures/BumpMaps/" + data));
+					attr.second->setData((std::string)(data));
 					break;
 				}
 				case(unsigned int)AttributeType::SCRIPT: {
@@ -181,13 +181,10 @@ namespace XMLModule {
 							break;
 						}
 
-						if(isFile) {
-							script = ASSETS_FOLDER_PATH + "/Scripts/" + script;
-						}
-
 						ScriptData scr;
 						scr.isFile = isFile;
 						scr.stringData = script;
+
 						attr.second->setData(scr);
 					}
 					break;
@@ -267,7 +264,12 @@ namespace XMLModule {
 		::XMLModule::getMetaData(node, m_metadata); //
 	}
 
-	void GenericData::write(rapidxml::xml_node<>* node) {
+	void GenericData::write(::rapidxml::xml_document<>* doc) {
+
+		char* nodeName_allocated = doc->allocate_string(nodeName.c_str());
+
+		rapidxml::xml_node<>* node = doc->allocate_node(rapidxml::node_element, nodeName_allocated);
+		doc->append_node(node);
 
 		{
 			const char* temp = std::to_string(id).c_str();
@@ -338,8 +340,9 @@ namespace XMLModule {
 					break;
 				}
 				case(unsigned int)AttributeType::FILEPATH_TEXTURE: {
-					const char* temp = std::string(ASSETS_FOLDER_PATH + "/Textures/" + attr.second->getData<std::string>()).c_str();
-					if(attr.second->getData<std::string>().length() == 0) temp = "\0";
+					std::string valueString = attr.second->getData<std::string>();
+					if(attr.second->getData<std::string>().length() == 0) valueString = "";
+					const char* temp = valueString.c_str();
 					char* val = node->document()->allocate_string(temp);
 					const char* temp0 = attr.first.c_str();
 					rapidxml::xml_node<>* newNode = node->document()->allocate_node(rapidxml::node_element, temp0, val);
@@ -347,7 +350,7 @@ namespace XMLModule {
 					break;
 				}
 				case(unsigned int)AttributeType::FILEPATH_BUMPMAP: {
-					std::string valueString = ASSETS_FOLDER_PATH + "/Textures/BumpMaps" + attr.second->getData<std::string>();
+					std::string valueString = attr.second->getData<std::string>();
 					if(attr.second->getData<std::string>().length() == 0) valueString = "";
 					const char* temp = valueString.c_str();
 					char* val = node->document()->allocate_string(temp);

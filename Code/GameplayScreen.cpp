@@ -157,7 +157,7 @@ void GameplayScreen::update() {
 
 		Singletons::getWorld()->updateTiles(getScreenBox() + glm::vec4(-10.0f, -10.0f, 20.0f, 20.0f));
 		Singletons::getEntityManager()->updateEntities(1.0f); /// TODO: Use timestep
-		
+
 		unsigned int worldSize = Singletons::getWorld()->getSize();
 
 		if(!m_cameraLocked) {
@@ -323,7 +323,7 @@ void GameplayScreen::drawSkyToFBO() {
 
 
 	int playerX = (int)Singletons::getEntityManager()->getPlayer()->getPosition().x;
-	std::string backgroundPath = Singletons::getWorld()->getBiome(playerX).backgroundTexture;
+	std::string backgroundPath = ASSETS_FOLDER_PATH + "/Textures/" + Singletons::getWorld()->getBiome(playerX).backgroundTexture;
 
 	GLuint backgroundID = GLEngine::ResourceManager::getTexture(backgroundPath).id;
 

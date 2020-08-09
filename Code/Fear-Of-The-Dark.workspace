@@ -12,14 +12,14 @@
       <Project Name="GLEngine" ConfigName="Release"/>
       <Project Name="DataMakerFOTD" ConfigName="Debug"/>
     </WorkspaceConfiguration>
-    <WorkspaceConfiguration Name="Linux Debug" Selected="yes">
+    <WorkspaceConfiguration Name="Linux Debug" Selected="no">
       <Environment/>
       <Project Name="AnimationTool" ConfigName="Debug"/>
       <Project Name="Fear-Of-The-Dark" ConfigName="Debug"/>
       <Project Name="GLEngine" ConfigName="Release"/>
       <Project Name="DataMakerFOTD" ConfigName="Debug"/>
     </WorkspaceConfiguration>
-    <WorkspaceConfiguration Name="Windows Release" Selected="no">
+    <WorkspaceConfiguration Name="Windows Release" Selected="yes">
       <Environment/>
       <Project Name="AnimationTool" ConfigName="Release - Windows"/>
       <Project Name="DataMakerFOTD" ConfigName="Release (Windows64 OpenGL3)"/>

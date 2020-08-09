@@ -19,8 +19,8 @@ namespace AnimationModule {
 	void Animation::init(unsigned int id) {
 		XMLModule::AnimationData d = XMLModule::XMLData::getAnimationData(id);
 
-		GLEngine::GLTexture tex = GLEngine::ResourceManager::getTexture(d.texture);
-		m_normalMapID = GLEngine::ResourceManager::getTexture(d.normalMap).id;
+		GLEngine::GLTexture tex = GLEngine::ResourceManager::getTexture(ASSETS_FOLDER_PATH + "/Textures/" + d.texture);
+		m_normalMapID = GLEngine::ResourceManager::getTexture(ASSETS_FOLDER_PATH + "/Textures/BumpMaps/" + d.normalMap).id;
 
 		m_textureID = tex.id;
 		float height = tex.height;

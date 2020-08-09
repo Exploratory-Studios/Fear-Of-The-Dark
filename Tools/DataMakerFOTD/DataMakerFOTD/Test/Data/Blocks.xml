@@ -1,55 +1,25 @@
 <tile id="0" name="New tile">
 	<interactScript_used>
-		<isFile>0</isFile>
-		<script/>
+		<isFile>1</isFile>
+		<script>asd
+</script>
 	</interactScript_used>
 	<interactScript_walkedOn>
-		<isFile>0</isFile>
+		<isFile>1</isFile>
 		<script/>
 	</interactScript_walkedOn>
 	<destructionScript>
 		<isFile>0</isFile>
-		<script/>
+		<script>asd2
+</script>
 	</destructionScript>
 	<updateScript>
 		<isFile>0</isFile>
 		<script/>
 	</updateScript>
-	<texture>05•ÅU</texture>
+	<texture>UNDEF</texture>
 	<emittedHeat>-1.000000</emittedHeat>
-	<bumpMap>/home/davis-dev/.exploratory/Fear Of The Dark/Assets//Textures/BumpMapsUNDEF</bumpMap>
-	<emittedLight>-1.000000</emittedLight>
-	<isSolid>1</isSolid>
-	<isDrawn>1</isDrawn>
-	<tickScript>
-		<isFile>0</isFile>
-		<script/>
-	</tickScript>
-	<size>0.000000,0.000000</size>
-	<isNatural>1</isNatural>
-	<isTransparent>1</isTransparent>
-</tile>
-<tile id="1" name="New tileContainer">
-	<maxItems>4294967295</maxItems>
-	<interactScript_used>
-		<isFile>0</isFile>
-		<script/>
-	</interactScript_used>
-	<interactScript_walkedOn>
-		<isFile>0</isFile>
-		<script/>
-	</interactScript_walkedOn>
-	<destructionScript>
-		<isFile>0</isFile>
-		<script/>
-	</destructionScript>
-	<updateScript>
-		<isFile>0</isFile>
-		<script/>
-	</updateScript>
-	<texture>05•ÅU</texture>
-	<emittedHeat>-1.000000</emittedHeat>
-	<bumpMap>/home/davis-dev/.exploratory/Fear Of The Dark/Assets//Textures/BumpMapsUNDEF</bumpMap>
+	<bumpMap>UNDEF</bumpMap>
 	<emittedLight>-1.000000</emittedLight>
 	<isSolid>1</isSolid>
 	<isDrawn>1</isDrawn>

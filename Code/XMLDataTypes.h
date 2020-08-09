@@ -151,13 +151,13 @@ namespace XMLModule {
 			~GenericData() {}
 
 			void init(::rapidxml::xml_node<>* node); // Inits all attribute values. (Read)
-			void write(::rapidxml::xml_node<>* node); // Writes to XML document
+			void write(::rapidxml::xml_document<>* doc); // Writes to XML document
 
 			template<typename T>
 			T getAttributeByName(::std::string name);
 
 			std::string getNodeName() {
-				return m_nodeName;
+				return nodeName;
 			}
 
 			std::unordered_map<std::string, AttributeBase*> getAttributes() {
@@ -187,7 +187,8 @@ namespace XMLModule {
 
 	class TileData : public GenericData {
 		public:
-			TileData() : type(TileType::TILE), nodeName("tile") {
+			TileData() : type(TileType::TILE) {
+				nodeName = "tile";
 				std::vector<AttributeBase*> attrs = {
 					new Attribute<std::string>("texture", AttributeType::FILEPATH_TEXTURE, &texture),
 					new Attribute<std::string>("bumpMap", AttributeType::FILEPATH_BUMPMAP, &bumpMap),
@@ -221,7 +222,8 @@ namespace XMLModule {
 
 	class TileContainerData : public TileData {
 		public:
-			TileContainerData() : TileData(), nodeName("tileContainer") {
+			TileContainerData() : TileData() {
+				nodeName = "tileContainer";
 				type = TileType::CONTAINER;
 
 				std::vector<AttributeBase*> attrs = {
@@ -236,7 +238,8 @@ namespace XMLModule {
 
 	class ParticleData : public GenericData {
 		public:
-			ParticleData() : nodeName("particle") {
+			ParticleData() {
+				nodeName = "particle";
 				std::vector<AttributeBase*> attrs = {
 					new Attribute<std::string>("texture", AttributeType::FILEPATH_TEXTURE, &texture),
 					new Attribute<std::string>("bumpMap", AttributeType::FILEPATH_BUMPMAP, &bumpMap),
@@ -256,6 +259,7 @@ namespace XMLModule {
 	class EntityData : public GenericData {
 		public:
 			EntityData() {
+				nodeName = "entity";
 				Attribute<glm::vec2>* sizeA = new Attribute<glm::vec2>("size", AttributeType::VEC2, &size);
 
 				Attribute<ScriptData>* updateA = new Attribute<ScriptData>("updateScript", AttributeType::SCRIPT, &updateScript);
@@ -279,6 +283,7 @@ namespace XMLModule {
 	class EntityNPCData : public EntityData {
 		public:
 			EntityNPCData() {
+				nodeName = "npc";
 				type = EntityType::NPC;
 
 				std::vector<AttributeBase*> attrs = {
@@ -309,6 +314,7 @@ namespace XMLModule {
 	class EntityProjectileData : public EntityData {
 		public:
 			EntityProjectileData() {
+				nodeName = "projectile";
 				type = EntityType::PROJECTILE;
 
 				std::vector<AttributeBase*> attrs = {
@@ -336,6 +342,7 @@ namespace XMLModule {
 	class EntityItemData : public EntityData {
 		public:
 			EntityItemData() {
+				nodeName = "itemEntity";
 				type = EntityType::ITEM;
 
 				std::vector<AttributeBase*> attrs = {
@@ -354,6 +361,7 @@ namespace XMLModule {
 	class ItemData : public GenericData {
 		public:
 			ItemData() {
+				nodeName = "item";
 				std::vector<AttributeBase*> attrs = {
 					new Attribute<std::string>("texture", AttributeType::FILEPATH_TEXTURE, &texture),
 					new Attribute<std::string>("description", AttributeType::STRING, &description),
@@ -372,6 +380,7 @@ namespace XMLModule {
 	class ItemConsumableData : public ItemData {
 		public:
 			ItemConsumableData() {
+				nodeName = "itemConsumable";
 				type = ItemType::CONSUMABLE;
 
 				std::vector<AttributeBase*> attrs = {
@@ -387,6 +396,7 @@ namespace XMLModule {
 	class ItemArmourData : public ItemData {
 		public:
 			ItemArmourData() {
+				nodeName = "itemArmour";
 				type = ItemType::ARMOUR;
 
 				std::vector<AttributeBase*> attrs = {
@@ -410,6 +420,7 @@ namespace XMLModule {
 	class ItemWeaponData : public ItemData {
 		public:
 			ItemWeaponData() {
+				nodeName = "itemWeapon";
 				type = ItemType::WEAPON;
 
 				std::vector<AttributeBase*> attrs = {
@@ -425,6 +436,7 @@ namespace XMLModule {
 	class ItemBlockData : public ItemData {
 		public:
 			ItemBlockData() {
+				nodeName = "itemBlock";
 				type = ItemType::BLOCK;
 
 				std::vector<AttributeBase*> attrs = {
@@ -440,6 +452,7 @@ namespace XMLModule {
 	class BiomeData : public GenericData {
 		public:
 			BiomeData() {
+				nodeName = "biome";
 				std::vector<AttributeBase*> attrs = {
 					new Attribute<std::string>("backgroundTexture", AttributeType::FILEPATH_TEXTURE, &backgroundTexture),
 					new Attribute<unsigned int>("baseHeight", AttributeType::UNSIGNED_INT, &baseHeight),
@@ -468,6 +481,7 @@ namespace XMLModule {
 	class EraData : public GenericData {
 		public:
 			EraData() {
+				nodeName = "era";
 				std::vector<AttributeBase*> attrs = {
 					new Attribute<std::vector<unsigned int>>("biomes/biomeID", AttributeType::VECTOR_UNSIGNED_INT, &biomes)
 				};
@@ -480,6 +494,7 @@ namespace XMLModule {
 	class LootDropData : public GenericData {
 		public:
 			LootDropData() {
+				nodeName = "lootDrop";
 				std::vector<AttributeBase*> attrs = {
 					new Attribute<unsigned int>("itemID", AttributeType::UNSIGNED_INT, &itemID),
 					new Attribute<unsigned int>("minDrop", AttributeType::UNSIGNED_INT, &minDrop),
@@ -497,6 +512,7 @@ namespace XMLModule {
 	class LootTableData : public GenericData {
 		public:
 			LootTableData() {
+				nodeName = "lootTable";
 				std::vector<AttributeBase*> attrs = {
 					new Attribute<std::vector<unsigned int>>("drops/dropID", AttributeType::VECTOR_UNSIGNED_INT, &drops)
 				};
@@ -510,6 +526,7 @@ namespace XMLModule {
 	class StructureData : public GenericData {
 		public:
 			StructureData() {
+				nodeName = "structure";
 				std::vector<AttributeBase*> attrs = {
 					new Attribute<unsigned int>("structureID", AttributeType::UNSIGNED_INT, &structureID),
 					new Attribute<unsigned int>("biomeID", AttributeType::UNSIGNED_INT, &biomeID),
@@ -527,6 +544,7 @@ namespace XMLModule {
 	class QuestData : public GenericData {
 		public:
 			QuestData() {
+				nodeName = "quest";
 				std::vector<AttributeBase*> attrs = {
 					new Attribute<std::vector<unsigned int>>("objectives/objectiveID", AttributeType::VECTOR_UNSIGNED_INT, &objectives),
 					                                      new Attribute<ScriptData>("completionScript", AttributeType::SCRIPT, &completionScript)
@@ -542,6 +560,7 @@ namespace XMLModule {
 	class QuestObjectiveData : public GenericData {
 		public:
 			QuestObjectiveData() {
+				nodeName = "questObjective";
 				std::vector<AttributeBase*> attrs = {
 					new Attribute<std::string>("text", AttributeType::STRING, &text),
 					new Attribute<ScriptData>("confirmationScript", AttributeType::SCRIPT, &confirmationScript)
@@ -557,6 +576,7 @@ namespace XMLModule {
 	class DialogueQuestionData : public GenericData { // Asked by the NPC.
 		public:
 			DialogueQuestionData() {
+				nodeName = "question";
 				std::vector<AttributeBase*> attrs = {
 					new Attribute<std::string>("text", AttributeType::STRING, &text),
 					new Attribute<std::vector<unsigned int>>("nextResponses/responseID", AttributeType::VECTOR_UNSIGNED_INT, &nextResponses) // List of possible responses. Shown iff all required flags are true.
@@ -572,6 +592,7 @@ namespace XMLModule {
 	class DialogueResponseData : public GenericData { // Said by the player.
 		public:
 			DialogueResponseData() {
+				nodeName = "response";
 				std::vector<AttributeBase*> attrs = {
 					new Attribute<std::string>("text", AttributeType::STRING, &text),
 					new Attribute<std::vector<unsigned int>>("requiredFlags/flagID", AttributeType::VECTOR_UNSIGNED_INT, &requiredFlags), // Requires all to be true
@@ -589,6 +610,7 @@ namespace XMLModule {
 	class AnimationData : public GenericData {
 		public:
 			AnimationData() {
+				nodeName = "animation";
 				std::vector<AttributeBase*> attrs = {
 					new Attribute<std::string>("texture", AttributeType::FILEPATH_TEXTURE, &texture),
 					new Attribute<std::string>("normalMap", AttributeType::FILEPATH_BUMPMAP, &normalMap),
@@ -608,6 +630,7 @@ namespace XMLModule {
 	class SkeletalAnimationData : public GenericData {
 		public:
 			SkeletalAnimationData() {
+				nodeName = "skeletalAnimation";
 				std::vector<AttributeBase*> attrs = {
 					new Attribute<std::vector<float>>("angles/angle", AttributeType::VECTOR_FLOAT, &angles),
 					                               new Attribute<std::vector<glm::vec2>>("offsets/offset", AttributeType::VECTOR_VEC2, &offsets),
@@ -629,6 +652,7 @@ namespace XMLModule {
 	class AttackData : public GenericData {
 		public:
 			AttackData() {
+				nodeName = "attack";
 				std::vector<AttributeBase*> attrs = {
 					new Attribute<unsigned int>("leadInSkeletalAnimationID", AttributeType::UNSIGNED_INT, &leadInAnimationID),
 					new Attribute<unsigned int>("leadOutSkeletalAnimationID", AttributeType::UNSIGNED_INT, &leadOutAnimationID)
@@ -644,6 +668,7 @@ namespace XMLModule {
 	class MeleeAttackData : public AttackData {
 		public:
 			MeleeAttackData() {
+				nodeName = "meleeAttack";
 				type = AttackType::MELEE;
 
 				std::vector<AttributeBase*> attrs = {
@@ -659,6 +684,7 @@ namespace XMLModule {
 	class RangedAttackData : public AttackData {
 		public:
 			RangedAttackData() {
+				nodeName = "rangedAttack";
 				type = AttackType::RANGED;
 
 				std::vector<AttributeBase*> attrs = {
@@ -678,6 +704,7 @@ namespace XMLModule {
 	class MagicAttackData : public AttackData {
 		public:
 			MagicAttackData() {
+				nodeName = "magicAttack";
 				type = AttackType::MAGIC;
 
 				std::vector<AttributeBase*> attrs = {
@@ -693,6 +720,7 @@ namespace XMLModule {
 	class BuffData : public GenericData {
 		public:
 			BuffData() {
+				nodeName = "buff";
 				std::vector<AttributeBase*> attrs = {
 					new Attribute<ScriptData>("tickScript", AttributeType::SCRIPT, &tickScript),
 					new Attribute<std::string>("texture", AttributeType::FILEPATH_TEXTURE, &texture),

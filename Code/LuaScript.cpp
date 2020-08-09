@@ -273,7 +273,7 @@ namespace ScriptingModule {
 		std::function<void(GLEngine::Particle2D&, float)> boundFunctor = updater.getBoundFunctor();
 
 		float decayRate = d.decayRate;
-		std::string textureFilepath = d.texture, bumpMapFilepath = d.bumpMap;
+		std::string textureFilepath = ASSETS_FOLDER_PATH + "/Textures/" + d.texture, bumpMapFilepath = ASSETS_FOLDER_PATH + "/Textures/BumpMaps/" + d.bumpMap;
 
 		GLEngine::ParticleBatch2D* batch = particles->getParticleBatch(MAX_TYPE_PARTICLES, decayRate, textureFilepath, bumpMapFilepath, boundFunctor);
 

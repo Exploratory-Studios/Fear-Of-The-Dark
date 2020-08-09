@@ -18,7 +18,7 @@ Item::Item(short unsigned int quantity, unsigned int id, bool loadTex) : m_id(id
 void Item::init() {
 	XMLModule::ItemData d = XMLModule::XMLData::getItemData(m_id);
 
-	m_texturePath = d.texture;
+	m_texturePath = ASSETS_FOLDER_PATH + "/Textures/" + d.texture;
 	m_weight = d.weight;
 	m_name = d.name;
 

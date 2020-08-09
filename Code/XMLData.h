@@ -35,12 +35,21 @@ namespace XMLModule {
 
 	void getMetaData(rapidxml::xml_node<>* parent, SaveDataTypes::MetaData& mdVar);
 
+	struct XMLDataFile {
+		// Literally just a wrapper to put a map and filename together.
+		XMLDataFile(std::string filename, std::initializer_list<std::string> nodeNames);
+		std::string m_filename;
+		std::vector<std::string> m_nodeNames;
+		std::vector<std::map<unsigned int, GenericData*>*> m_maps;
+	};
+
 	class XMLData {
 		public:
 			static void init(std::string filepath = ASSETS_FOLDER_PATH);
 			static void write(std::string filepath);
-			static void addData(GenericData* data, std::string& nodename);
-			static void removeData(GenericData* data, std::string& nodename); // Careful, this isn't for regular use.
+
+			static void addData(GenericData* data, std::string& nodename); // Careful, this isn't for regular use.
+			static void removeData(GenericData* data, std::string& nodename); // Nor is this
 
 			static GenericData* createDataFromNodename(std::string& nodename);
 			static std::map<unsigned int, GenericData*>* getMapFromNodename(std::string& nodename);
@@ -91,14 +100,11 @@ namespace XMLModule {
 
 			static std::vector<std::string> getNodeNamesFromFile(std::string file);
 
-			static const std::vector<std::string> m_loadFileNames;
-			static const std::vector<std::string> m_loadNodeNames; // One for each map
-			static const std::vector<std::string> m_saveFileNames;
-			static const std::vector<std::string> m_saveNodeNames;
+			static const std::vector<XMLDataFile> m_fileNames;
 
 		private:
 			static void loadXMLData(std::string filepath); // Loads any valid map of GenericData children.
-			static void writeXMLData(std::string filepath, std::string nodeName); // Writes a map (chosen by nodeName) of GenericData children to a file at filepath
+			static void writeXMLData(std::string filepath, std::map<unsigned int, GenericData*>* mapToWrite); // Writes a map (chosen by nodeName) of GenericData children to a file at filepath
 
 			static std::map<unsigned int, GenericData*> m_tileData;
 			static std::map<unsigned int, GenericData*> m_particleData;

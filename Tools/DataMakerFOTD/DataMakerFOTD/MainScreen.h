@@ -25,6 +25,7 @@ class EditWindow {
 
 		void createNewEntry(unsigned int type); // `type` is the index of m_types to use to create a new Genericdata object and addEntry
 		void addEntry(XMLModule::GenericData* obj, std::string& nodeName); // Adds some data to the left editbox, giving it ID, name, etc.
+		void removeAllEntries(); // removes all entries.
 		void removeEntry(); // removes currently selected.
 		void resetIDs(); // Resets all IDs so that they are in order and all-inclusive (all numbers from 0-max)
 		void sortItems(); // Sorts all items, so that all of the items from the same nodeName type are together and in order from least-greatest ID
@@ -71,6 +72,8 @@ class MainScreen : public GLEngine::IGameScreen {
 		virtual void draw() override;
 
 	private:
+		void clearData();
+
 		void setAllInactive();
 
 		GLEngine::Window* m_window = nullptr;

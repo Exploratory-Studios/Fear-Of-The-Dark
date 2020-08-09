@@ -104,9 +104,6 @@ void EditWindow::createNewEntry(unsigned int type) {
 	addEntry(obj, nodeName);
 
 	XMLModule::XMLData::addData(obj, nodeName);
-	m_data.push_back(obj);
-
-	m_itemListBox0->sortList();
 }
 
 void EditWindow::addEntry(XMLModule::GenericData* obj, std::string& nodeName) {
@@ -136,6 +133,25 @@ void EditWindow::addEntry(XMLModule::GenericData* obj, std::string& nodeName) {
 
 	m_itemListBox0->insertItem(l, nullptr);
 	m_itemListBox0->ensureItemIsVisibleVert(*l);
+
+	m_data.push_back(obj);
+
+	m_itemListBox0->sortList();
+}
+
+void EditWindow::removeAllEntries() {
+	// Clear XML
+	for(unsigned int i = 0; i < m_data.size(); i++) {
+		std::string nodeName = m_data[i]->getNodeName();
+		XMLModule::XMLData::removeData(m_data[i], nodeName);
+	}
+
+	// Clear local data (m_data)
+	m_data.clear();
+
+	// Clear CEGUI data (listboxes)
+	m_itemListBox0->resetList();
+	m_itemListBox1->resetList();
 }
 
 void EditWindow::removeEntry() {
@@ -363,9 +379,11 @@ void EditWindow::addAttribute(XMLModule::AttributeBase* attr) {
 	} else if(attr->type == XMLModule::AttributeType::FLOAT) {
 		CEGUI::Editbox* eb = static_cast<CEGUI::Editbox*>(m_gui->createWidget(l, "WindowsLook/Editbox", glm::vec4(0.5f, 0.0f, 0.5f, 1.0f), glm::vec4(0.0f), attr->name + m_name + "AttributeEntryEBFLOAT"));
 		eb->setText(std::to_string(attr->getData<float>()));
-		eb->setValidationString("[\\d]+[.]?[\\d]+$");
+		eb->setValidationString("((\\d*)(.?)(\\d*))$");
 		eb->subscribeEvent(CEGUI::Editbox::EventTextChanged, CEGUI::Event::Subscriber([ = ](const CEGUI::EventArgs & args)->bool{
-			attr->setData(std::stof(eb->getText().c_str()));
+			if(eb->getText().length() > 0)
+				attr->setData(std::stof(eb->getText().c_str()));
+			return false;
 		}));
 	} else if(attr->type == XMLModule::AttributeType::INT) {
 		CEGUI::Editbox* eb = static_cast<CEGUI::Editbox*>(m_gui->createWidget(l, "WindowsLook/Editbox", glm::vec4(0.5f, 0.0f, 0.5f, 1.0f), glm::vec4(0.0f), attr->name + m_name + "AttributeEntryEBINT"));
@@ -507,27 +525,31 @@ void EditWindow::addAttribute(XMLModule::AttributeBase* attr) {
 		eb_x->setText(dataString_x);
 		eb_y->setText(dataString_y);
 
-		eb_x->setValidationString("[\\d]+([.][\\d]+)?$");
-		eb_y->setValidationString("[\\d]+([.][\\d]+)?$");
+		eb_x->setValidationString("((\\d*)(.?)(\\d*))$");
+		eb_y->setValidationString("((\\d*)(.?)(\\d*))$");
 
 		eb_x->subscribeEvent(CEGUI::Editbox::EventTextChanged, CEGUI::Event::Subscriber([ = ](const CEGUI::EventArgs & args)->bool{
 			std::string dataStr = eb_x->getText().c_str();
+			if(dataStr.length() == 0) return false;
 			float x = std::stof(dataStr);
 
 			glm::vec2 finalData = attr->getData<glm::vec2>();
 			finalData.x = x;
 
 			attr->setData(finalData);
+			return false;
 		}));
 
 		eb_y->subscribeEvent(CEGUI::Editbox::EventTextChanged, CEGUI::Event::Subscriber([ = ](const CEGUI::EventArgs & args)->bool{
 			std::string dataStr = eb_y->getText().c_str();
+			if(dataStr.length() == 0) return false;
 			float y = std::stof(dataStr);
 
 			glm::vec2 finalData = attr->getData<glm::vec2>();
 			finalData.y = y;
 
 			attr->setData(finalData);
+			return false;
 		}));
 	}
 
@@ -568,6 +590,7 @@ MainScreen::MainScreen(GLEngine::Window* window) {
 	m_loadFileButton  = static_cast<CEGUI::PushButton*>(m_gui.createWidget("WindowsLook/Button", glm::vec4(0.275f, 0.9f, 0.1f, 0.075f), glm::vec4(0.0f), "loadFileButton"));
 	m_loadFileButton->setText("Load Files");
 	m_loadFileButton->subscribeEvent(CEGUI::PushButton::EventClicked, CEGUI::Event::Subscriber([ = ](const CEGUI::EventArgs & args)->bool{
+		clearData();
 		std::string path = GetCurrentDirectory() + "/" + (std::string)m_loadFileEditbox->getText().c_str();
 		loadXMLFile(path);
 	}));
@@ -579,9 +602,9 @@ MainScreen::MainScreen(GLEngine::Window* window) {
 		saveXMLData(path);
 	}));
 
-	for(unsigned int i = 0; i < XMLModule::XMLData::m_loadFileNames.size(); i++) {
+	for(unsigned int i = 0; i < XMLModule::XMLData::m_fileNames.size(); i++) {
 		m_editWindows.push_back(new EditWindow());
-		m_editWindows[i]->init(XMLModule::XMLData::m_loadFileNames[i], m_gui, m_windowButtons, XMLModule::XMLData::getNodeNamesFromFile(XMLModule::XMLData::m_loadFileNames[i]));
+		m_editWindows[i]->init(XMLModule::XMLData::m_fileNames[i].m_filename, m_gui, m_windowButtons, XMLModule::XMLData::m_fileNames[i].m_nodeNames);
 	}
 
 	for(unsigned int i = 0; i < m_windowButtons.size(); i++) {
@@ -628,18 +651,33 @@ void MainScreen::update() {
 
 void MainScreen::loadXMLFile(std::string filepath) {
 	XMLModule::XMLData::init(filepath);
+
+	// Get all data and enter it
+	// Loop over all XMLDataFiles
+	for(unsigned int i = 0; i < XMLModule::XMLData::m_fileNames.size(); i++) {
+		// Loop over each map in each XMLDataFile
+		for(unsigned int j = 0; j < XMLModule::XMLData::m_fileNames[i].m_maps.size(); j++) {
+			// Loop over each piece of data in each map
+			for(auto data : *XMLModule::XMLData::m_fileNames[i].m_maps[j]) {
+				std::string nodeName = data.second->getNodeName();
+				m_editWindows[i]->addEntry(data.second, nodeName);
+			}
+		}
+	}
 }
 
 void MainScreen::saveXMLData(std::string filepath) {
-	for(unsigned int i = 0; i < m_editWindows.size(); i++) {
-		//m_editWindows[i]->finalizeData();
-	}
-
 	XMLModule::XMLData::write(filepath);
 }
 
 void MainScreen::setAllInactive() {
 	for(unsigned int i = 0; i < m_editWindows.size(); i++) {
 		m_editWindows[i]->setActive(false);
+	}
+}
+
+void MainScreen::clearData() {
+	for(unsigned int i = 0; i < m_editWindows.size(); i++) {
+		m_editWindows[i]->removeAllEntries();
 	}
 }

@@ -29,8 +29,8 @@ void EntityItem::init() {
 
 	XMLModule::EntityItemData d = XMLModule::XMLData::getEntityItemData(m_id);
 
-	m_texturePath = d.texture;
-	m_bumpMapPath = d.bumpMap;
+	m_texturePath = ASSETS_FOLDER_PATH + "/Textures/" + d.texture;
+	m_bumpMapPath = ASSETS_FOLDER_PATH + "/Textures/BumpMaps/" + d.bumpMap;
 	m_size = d.size;
 	m_updateScriptId = d.updateScript.getID();
 	m_tickScriptId = d.tickScript.getID();

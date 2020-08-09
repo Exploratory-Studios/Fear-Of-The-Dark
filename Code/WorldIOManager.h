@@ -36,7 +36,7 @@ class WorldIOManager {
 
 		void loadWorld(std::string worldName); // These public versions of the functions are multi-threading versions for anybody to use
 		void saveWorld();
-		void createWorld(unsigned int seed, std::string worldName, bool isFlat);
+		void createWorld(unsigned int seed, std::string worldName, bool isFlat, unsigned int width);
 
 		void setWorldEra(unsigned int newEraID);
 
@@ -68,7 +68,7 @@ class WorldIOManager {
 	private:
 		void P_loadWorld(std::string worldName, World* world); /// TODO: Make multi-threaded so that we can view progress and load at the same time
 		void P_saveWorld(World* world); /// TODO: Make multi-threaded so that we can view progress and save at the same time
-		void P_createWorld(unsigned int seed, std::string worldName, bool isFlat, World* world);
+		void P_createWorld(unsigned int seed, std::string worldName, bool isFlat, unsigned int width);
 		/*
 		    Seed will govern where the biomes are (random engine #1) and it will also seed the random engine for
 		    all of the world (random engine #2)

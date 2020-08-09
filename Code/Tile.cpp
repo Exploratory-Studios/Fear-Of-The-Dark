@@ -7,29 +7,9 @@
 #include <ResourceManager.h>
 
 #include "XMLData.h"
+#include "Singletons.h"
 
 #include "TileContainer.h"
-
-Tile* createTile(unsigned int id, glm::vec2 pos, int layer, bool loadTex, SaveDataTypes::MetaData metaData) {
-	XMLModule::TileData t = XMLModule::XMLData::getTileData(id);
-
-	switch((unsigned int)t.type) {
-		case(unsigned int)XMLModule::TileType::TILE: {
-			return new Tile(pos, layer, id, metaData, loadTex);
-			break;
-		}
-		case(unsigned int)XMLModule::TileType::CONTAINER: {
-			return new TileContainer(pos, layer, id, metaData, loadTex);
-			break;
-		}
-		default: {
-			Logger::getInstance()->log("ERROR: Tile creation failed due to an unknown TileType", true);
-			return nullptr;
-			break;
-		}
-	}
-	return nullptr; // We can't even reach the end.
-}
 
 Tile::Tile() {
 
@@ -113,7 +93,7 @@ float Tile::getLight() {
 	return m_ambientLight;
 }
 
-float Tile::getSurroundingHeat(World* world) {
+float Tile::getSurroundingHeat() {
 	/*int x = (int)m_pos.x;
 	int y = (int)m_pos.y;
 
@@ -171,7 +151,9 @@ float Tile::getSurroundingHeat(World* world) {
 	return 20.0f;//temp / 4.0f;
 }
 
-float Tile::getHeat(World* world) {
+float Tile::getHeat() {
+	World* world = Singletons::getWorld();
+
 	float baseHeat = world->getBiome(m_pos.x).baseTemperature;
 	float highHeat = world->getBiome(m_pos.x).maxTemperature;
 
@@ -187,10 +169,10 @@ float Tile::getRawHeat() {
 	return (m_emittedHeat > m_temperature ? m_emittedHeat : m_temperature);
 }
 
-void Tile::update(World* world, float time, bool updateLighting, const float& sunlight) {
+void Tile::update(float time, bool updateLighting, float& sunlight) {
 	if(m_emittedLight > 0.0f) {
 		if(!m_setLighting) {
-			setNeighboursLight(world);
+			setNeighboursLight();
 			m_setLighting = true;
 		}
 	}
@@ -200,27 +182,27 @@ void Tile::update(World* world, float time, bool updateLighting, const float& su
 			resetSunlightCorners();
 
 			m_needsSunCheck = false;
-			m_exposedToSun = exposedToSun(world);
+			m_exposedToSun = exposedToSun();
 
-			calculateSunlight(world, sunlight);
+			calculateSunlight(sunlight);
 		}
 	}
 
 	onUpdate();
 }
 
-void Tile::specialUpdate(World* world, float time) {
+void Tile::specialUpdate(float time) {
 	if(m_updateScriptID != (unsigned int) - 1) ScriptingModule::ScriptQueue::activateScript(m_updateScriptID, generateLuaData());
 }
 
-void Tile::tick(World* world, float tickTime, const float& sunlight) {
+void Tile::tick(float tickTime, float& sunlight) {
 	if(m_updateHeat && m_id != (unsigned int)TileIDs::AIR) {
-		float heat = getSurroundingHeat(world);
+		float heat = getSurroundingHeat();
 		m_temperature = heat;
 		m_updateHeat = false;
 	}
 
-	calculateSunlight(world, sunlight);
+	calculateSunlight(sunlight);
 
 	onTick();
 }
@@ -250,15 +232,12 @@ void Tile::drawNormal(GLEngine::SpriteBatch& sb, int& xOffset, int& depthDiffere
 			loadTexture();
 		}
 
-		GLEngine::ColourRGBA8 colour = m_colour;
-
 		glm::vec4 pos = glm::vec4(m_pos.x + xOffset, m_pos.y, m_size.x, m_size.y);
-		float depth = 0.1f + (m_layer * (1.0f / (float)(WORLD_DEPTH)) * 0.9f);
 		sb.draw(pos,
 		        glm::vec4(0.0f, 0.0f, 1.0f, 1.0f),
 		        m_bumpMapId,
-		        depth,
-		        colour);
+		        m_depthForRender,
+		        m_colour);
 
 		//onDraw(sb, sf, pos, depth);
 	}
@@ -296,8 +275,9 @@ float Tile::getLightAtPoint(glm::vec2 posFromBL) {
 	return light;
 }
 
-void Tile::destroy(World* world) {
+void Tile::destroy() {
 	{
+		World* world = Singletons::getWorld();
 		world->getTile(m_pos.x, m_pos.y, m_layer)->setNeedsSunCheck();
 		Tile* R = world->getTile(m_pos.x + 1, m_pos.y, m_layer);
 		if(R) R->setNeedsSunCheck();
@@ -310,7 +290,7 @@ void Tile::destroy(World* world) {
 	}
 }
 
-bool Tile::exposedToSun(World* world) {
+bool Tile::exposedToSun() {
 	if(!m_transparent) {
 		/*Tile* left = world->getTile(m_pos.x-1, m_pos.y, m_layer);
 		if(left) {
@@ -358,6 +338,7 @@ bool Tile::exposedToSun(World* world) {
 		    }
 		}*/
 	}
+	World* world = Singletons::getWorld();
 	for(int i = m_pos.y + 1; i < WORLD_HEIGHT; i++) {
 		if(!(world->getTile(m_pos.x, i, m_layer)->isTransparent())) {
 			return false;
@@ -366,9 +347,10 @@ bool Tile::exposedToSun(World* world) {
 	return true;
 }
 
-void Tile::calculateSunlight(World* world, float sunlight) {
+void Tile::calculateSunlight(float sunlight) {
 	if(m_exposedToSun) {
 		bool left = true, right = true;
+		World* world = Singletons::getWorld();
 		if(!m_transparent) {
 			Tile* leftT = world->getTile(m_pos.x - 1, m_pos.y, m_layer);
 			if(leftT) {
@@ -408,10 +390,12 @@ SaveDataTypes::TileData Tile::getSaveData() {
 	return d;
 }
 
-void Tile::resetNeighboursLight(World* world) {
+void Tile::resetNeighboursLight() {
 	float range = std::sqrt(std::abs(m_emittedLight)) * 4.0f;
 
 	float TL, TR, BL, BR;
+
+	World* world = Singletons::getWorld();
 
 	for(int y = -std::ceil(range); y <= std::ceil(range); y++) {
 		for(int x = -std::ceil(range); x <= std::ceil(range); x++) {
@@ -454,10 +438,12 @@ void Tile::resetNeighboursLight(World* world) {
 	}
 }
 
-void Tile::setNeighboursLight(World* world) {
+void Tile::setNeighboursLight() {
 	float range = m_emittedLight * 3.0;
 
 	float TL, TR, BL, BR;
+
+	World* world = Singletons::getWorld();
 
 	for(int y = -std::ceil(range); y <= std::ceil(range); y++) {
 		for(int x = -std::ceil(range); x <= std::ceil(range); x++) {

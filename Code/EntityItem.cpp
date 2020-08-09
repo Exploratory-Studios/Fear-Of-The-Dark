@@ -2,6 +2,8 @@
 
 #include "XMLData.h"
 
+#include "Factory.h"
+
 EntityItem::EntityItem(glm::vec2 pos, unsigned int layer, unsigned int id, SaveDataTypes::MetaData data, bool loadTex) : Entity(pos, layer, SaveDataTypes::MetaData()) {
 	m_id = id;
 
@@ -46,5 +48,5 @@ bool EntityItem::collideWithOther(Entity* other) {
 }
 
 Item* EntityItem::getItem() {
-	return new Item(1, m_itemId, true);
+	return Factory::createItem(m_itemId, 1, true);
 }

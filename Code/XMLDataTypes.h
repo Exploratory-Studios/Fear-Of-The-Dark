@@ -18,7 +18,7 @@ class ScriptData {
 		std::string stringData = "";
 
 	private:
-		unsigned int m_id = (unsigned int)-1;
+		unsigned int m_id = (unsigned int) - 1;
 };
 
 namespace XMLModule {
@@ -156,6 +156,10 @@ namespace XMLModule {
 			template<typename T>
 			T getAttributeByName(::std::string name);
 
+			std::string getNodeName() {
+				return m_nodeName;
+			}
+
 			std::unordered_map<std::string, AttributeBase*> getAttributes() {
 				return m_attributes;
 			}
@@ -177,11 +181,13 @@ namespace XMLModule {
 
 			std::unordered_map<std::string, AttributeBase*> m_attributes;
 			SaveDataTypes::MetaData m_metadata;
+
+			std::string nodeName;
 	};
 
 	class TileData : public GenericData {
 		public:
-			TileData() : type(TileType::TILE) {
+			TileData() : type(TileType::TILE), nodeName("tile") {
 				std::vector<AttributeBase*> attrs = {
 					new Attribute<std::string>("texture", AttributeType::FILEPATH_TEXTURE, &texture),
 					new Attribute<std::string>("bumpMap", AttributeType::FILEPATH_BUMPMAP, &bumpMap),
@@ -215,7 +221,7 @@ namespace XMLModule {
 
 	class TileContainerData : public TileData {
 		public:
-			TileContainerData() : TileData() {
+			TileContainerData() : TileData(), nodeName("tileContainer") {
 				type = TileType::CONTAINER;
 
 				std::vector<AttributeBase*> attrs = {
@@ -230,7 +236,7 @@ namespace XMLModule {
 
 	class ParticleData : public GenericData {
 		public:
-			ParticleData() {
+			ParticleData() : nodeName("particle") {
 				std::vector<AttributeBase*> attrs = {
 					new Attribute<std::string>("texture", AttributeType::FILEPATH_TEXTURE, &texture),
 					new Attribute<std::string>("bumpMap", AttributeType::FILEPATH_BUMPMAP, &bumpMap),

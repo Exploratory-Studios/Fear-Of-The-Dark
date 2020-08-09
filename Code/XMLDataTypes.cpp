@@ -7,8 +7,8 @@
 #include "ScriptQueue.h"
 
 unsigned int ScriptData::getID() {
-	if(m_id != (unsigned int)-1) return m_id;
-	if(stringData.length() <= 0) return (unsigned int)-1;
+	if(m_id != (unsigned int) - 1) return m_id;
+	if(stringData.length() <= 0) return (unsigned int) - 1;
 	ScriptingModule::Script scr(stringData, isFile);
 	m_id = ScriptingModule::ScriptQueue::addScript(scr);
 	return m_id;
@@ -87,12 +87,12 @@ namespace XMLModule {
 		return "";
 	}
 
-	GenericData::GenericData() : name(""), id(0) {
+	GenericData::GenericData(std::string nodeName) : m_nodeName(nodeName), name(""), id(0) {
 		addAttribute("name", AttributeType::STRING, &name);
 		addAttribute("id", AttributeType::UNSIGNED_INT, &id);
 	}
 
-	GenericData::GenericData(std::vector<AttributeBase*> attrs) : name(""), id(0) {
+	GenericData::GenericData(std::vector<AttributeBase*> attrs, std::string nodeName) : m_nodeName(nodeName), name(""), id(0) {
 		addAttribute("name", AttributeType::STRING, &name);
 		addAttribute("id", AttributeType::UNSIGNED_INT, &id);
 
@@ -319,7 +319,10 @@ namespace XMLModule {
 					break;
 				}
 				case(unsigned int)AttributeType::VEC2: {
-					const char* temp = (std::to_string(attr.second->getData<glm::vec2>().x) + "," + std::to_string(attr.second->getData<glm::vec2>().y)).c_str();
+					glm::vec2 value = attr.second->getData<glm::vec2>();
+					std::string XYValueString = std::to_string(value.x) + "," + std::to_string(value.y);
+
+					const char* temp = XYValueString.c_str();
 					char* val = node->document()->allocate_string(temp);
 					const char* temp0 = attr.first.c_str();
 					rapidxml::xml_node<>* newNode = node->document()->allocate_node(rapidxml::node_element, temp0, val);
@@ -335,8 +338,8 @@ namespace XMLModule {
 					break;
 				}
 				case(unsigned int)AttributeType::FILEPATH_TEXTURE: {
-					unsigned int beginIndex = std::string(ASSETS_FOLDER_PATH + "/Textures/").length() + 1;
-					const char* temp = attr.second->getData<std::string>().substr(beginIndex).c_str();
+					const char* temp = std::string(ASSETS_FOLDER_PATH + "/Textures/" + attr.second->getData<std::string>()).c_str();
+					if(attr.second->getData<std::string>().length() == 0) temp = "\0";
 					char* val = node->document()->allocate_string(temp);
 					const char* temp0 = attr.first.c_str();
 					rapidxml::xml_node<>* newNode = node->document()->allocate_node(rapidxml::node_element, temp0, val);
@@ -344,8 +347,9 @@ namespace XMLModule {
 					break;
 				}
 				case(unsigned int)AttributeType::FILEPATH_BUMPMAP: {
-					unsigned int beginIndex = std::string(ASSETS_FOLDER_PATH + "/Textures/BumpMaps").length() + 1;
-					const char* temp = attr.second->getData<std::string>().substr(beginIndex).c_str();
+					std::string valueString = ASSETS_FOLDER_PATH + "/Textures/BumpMaps" + attr.second->getData<std::string>();
+					if(attr.second->getData<std::string>().length() == 0) valueString = "";
+					const char* temp = valueString.c_str();
 					char* val = node->document()->allocate_string(temp);
 					const char* temp0 = attr.first.c_str();
 					rapidxml::xml_node<>* newNode = node->document()->allocate_node(rapidxml::node_element, temp0, val);
@@ -353,8 +357,7 @@ namespace XMLModule {
 					break;
 				}
 				case(unsigned int)AttributeType::SCRIPT: {
-
-					/// TODO: deal with the fact that the """Entire""" filepath will be there if its a gile
+					if(attr.first.length() == 0) break;
 
 					const char* temp = attr.first.c_str();
 					char* val = node->document()->allocate_string(temp);

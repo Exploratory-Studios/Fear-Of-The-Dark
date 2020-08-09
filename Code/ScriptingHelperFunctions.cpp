@@ -12,6 +12,7 @@
 #include "ExtraFunctions.h"
 
 #include "XMLData.h"
+#include "Factory.h"
 
 #include "EntityNPC.h"
 #include "EntityPlayer.h"
@@ -79,15 +80,16 @@ namespace ScriptingModule {
 
 
 	void setBlock(World* world, unsigned int id, glm::vec2 pos, int layer, SaveDataTypes::MetaData metaData) {
-		float correctedX = ((int)pos.x + WORLD_SIZE) % WORLD_SIZE;
-		world->setTile(createTile(id, glm::vec2(correctedX, pos.y), layer, false, metaData)); // Set the block, of course
+		unsigned int worldSize = Singletons::getWorld()->getSize();
+		float correctedX = ((int)pos.x + worldSize) % worldSize;
+		world->setTile(Factory::createTile(id, glm::vec2(correctedX, pos.y), layer, metaData)); // Set the block, of course
 		/// TODO: compile array of chunks in init()
 	}
 
 	void removeBlock(World* world, int x, int y, unsigned int layer) {
 		//int chunk = std::floor(x / CHUNK_SIZE); // What chunk index it belongs to
 
-		world->setTile(new Tile(glm::vec2(x, y), layer, 0, SaveDataTypes::MetaData(), false)); /// TODO: Constant for air
+		world->setTile(Factory::createTile(0, glm::vec2(x, y), layer)); /// TODO: Constant for air
 	}
 
 	void showBlock(World* world, int x, int y, unsigned int layer) {
@@ -107,7 +109,7 @@ namespace ScriptingModule {
 	}
 
 	unsigned int addEntity(World* world, unsigned int id, glm::vec2 position, unsigned int layer) {
-		Singletons::getEntityManager()->queueEntityToAdd(createEntity(position, layer, id, SaveDataTypes::MetaData(), true));
+		Singletons::getEntityManager()->queueEntityToAdd(Factory::createEntity(id, position, layer, SaveDataTypes::MetaData(), true));
 
 		return 0;
 	}
@@ -134,7 +136,7 @@ namespace ScriptingModule {
 
 	void giveItem(World* world, std::string UUID, unsigned int id, unsigned int quantity) {
 		EntityNPC* e = dynamic_cast<EntityNPC*>(Singletons::getEntityManager()->getEntityByUUID(UUID));
-		if(e) e->giveItem(new Item(quantity, id, true));
+		if(e) e->giveItem(Factory::createItem(id, quantity, false));
 	}
 
 	void setPlayerCanInteract(World* world, bool canInteract) {
@@ -248,8 +250,9 @@ namespace ScriptingModule {
 	}
 
 	std::vector<Entity*> areaEntityTarget(World* world, glm::vec2 pos1, glm::vec2 pos2) {
-		unsigned int chunk1 = std::floor(pos1.x / CHUNK_SIZE) + WORLD_SIZE;
-		unsigned int chunk2 = std::floor(pos2.x / CHUNK_SIZE) + WORLD_SIZE;
+		unsigned int worldSize = Singletons::getWorld()->getSize();
+		unsigned int chunk1 = std::floor(pos1.x / CHUNK_SIZE) + worldSize;
+		unsigned int chunk2 = std::floor(pos2.x / CHUNK_SIZE) + worldSize;
 
 		std::vector<Entity*> ret;
 

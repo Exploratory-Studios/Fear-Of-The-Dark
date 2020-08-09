@@ -21,9 +21,9 @@
 
 #define BUTTONS_HORIZONTAL 8 // number of buttons that fit horizontally.
 
-std::string GetCurrentDirectory( void ) {
+std::string GetCurrentDirectory(void) {
 	char buff[FILENAME_MAX];
-	GCD( buff, FILENAME_MAX );
+	GCD(buff, FILENAME_MAX);
 	std::string current_working_dir(buff);
 	return current_working_dir;
 }
@@ -48,7 +48,7 @@ void EditWindow::init(std::string name, GLEngine::GUI& gui, std::vector<CEGUI::P
 	m_itemListBox0->setMultiSelectEnabled(false);
 	m_itemListBox0->setSortMode(CEGUI::ItemListBase::SortMode::Ascending);
 	m_itemListBox0->setSortEnabled(false);
-	m_itemListBox0->subscribeEvent(CEGUI::ItemListbox::EventSelectionChanged, CEGUI::Event::Subscriber([=](const CEGUI::EventArgs& evnt)->bool{return onSelectionChanged(evnt);}));
+	m_itemListBox0->subscribeEvent(CEGUI::ItemListbox::EventSelectionChanged, CEGUI::Event::Subscriber([ = ](const CEGUI::EventArgs & evnt)->bool{return onSelectionChanged(evnt);}));
 
 	m_itemListBox1 = static_cast<CEGUI::ItemListbox*>(m_gui->createWidget(m_window, "WindowsLook/ItemListbox", glm::vec4(0.5f, 0.1f, 0.49f, 0.88f), glm::vec4(0.0f), name + "LB1"));
 	m_itemListBox1->setMultiSelectEnabled(false);
@@ -58,9 +58,9 @@ void EditWindow::init(std::string name, GLEngine::GUI& gui, std::vector<CEGUI::P
 
 	// Make add buttons
 	for(unsigned int i = 0; i < m_types.size(); i++) {
-		CEGUI::PushButton* addButton = static_cast<CEGUI::PushButton*>(m_gui->createWidget("WindowsLook/Button", glm::vec4(0.025f, 0.1f * (i+1) + 0.025f, 0.15f, 0.1f), glm::vec4(0.0f), name + "ADD_" + std::to_string(i)));
+		CEGUI::PushButton* addButton = static_cast<CEGUI::PushButton*>(m_gui->createWidget("WindowsLook/Button", glm::vec4(0.025f, 0.1f * (i + 1) + 0.025f, 0.15f, 0.1f), glm::vec4(0.0f), name + "ADD_" + std::to_string(i)));
 		addButton->setText("New\n" + m_types[i]);
-		addButton->subscribeEvent(CEGUI::PushButton::EventClicked, CEGUI::Event::Subscriber([=](const CEGUI::EventArgs& evnt)->bool{
+		addButton->subscribeEvent(CEGUI::PushButton::EventClicked, CEGUI::Event::Subscriber([ = ](const CEGUI::EventArgs & evnt)->bool{
 			createNewEntry(i);
 		}));
 		m_buttons.push_back(addButton);
@@ -68,7 +68,7 @@ void EditWindow::init(std::string name, GLEngine::GUI& gui, std::vector<CEGUI::P
 	// Make remove button
 	CEGUI::PushButton* removeButton = static_cast<CEGUI::PushButton*>(m_gui->createWidget("WindowsLook/Button", glm::vec4(0.025f, 0.025f, 0.15f, 0.1f), glm::vec4(0.0f), name + "REMOVE"));
 	removeButton->setText("Remove");
-	removeButton->subscribeEvent(CEGUI::PushButton::EventClicked, CEGUI::Event::Subscriber([=](const CEGUI::EventArgs& evnt)->bool{
+	removeButton->subscribeEvent(CEGUI::PushButton::EventClicked, CEGUI::Event::Subscriber([ = ](const CEGUI::EventArgs & evnt)->bool{
 		removeEntry();
 	}));
 	m_buttons.push_back(removeButton);
@@ -151,15 +151,16 @@ void EditWindow::removeEntry() {
 		std::vector<std::string> nodeNames;
 
 		// Remove entry from m_data & XML Data
-		unsigned int index = std::stoi(selected->getUserString("ID").c_str());
+		std::string userString = selected->getUserString("ID").c_str();
+		unsigned int index = std::stoi(userString);
 
 		std::string type = std::string(selected->getText().c_str()).substr(0, std::string(selected->getText().c_str()).find(":"));
 		XMLModule::XMLData::removeData(m_data[index], type);
 
-		delete m_data[index];
+		//delete m_data[index];
 		m_data[index] = nullptr;
-		for(unsigned int i = index; i < m_data.size()-1; i++) {
-			m_data[i] = m_data[i+1];
+		for(int i = index; i < m_data.size() - 1; i++) {
+			m_data[i] = m_data[i + 1];
 		}
 		m_data.pop_back();
 
@@ -178,7 +179,7 @@ void EditWindow::removeEntry() {
 				nodeNames[dataIndex] = nodeName;
 			} else if(dataIndex > index) {
 				// More than removed index, subtract 1
-				nodeNames[dataIndex-1] = nodeName;
+				nodeNames[dataIndex - 1] = nodeName;
 			}
 		}
 
@@ -267,7 +268,7 @@ void EditWindow::addAttribute(XMLModule::AttributeBase* attr) {
 	if(attr->type == XMLModule::AttributeType::STRING || attr->type == XMLModule::AttributeType::FILEPATH_TEXTURE || attr->type == XMLModule::AttributeType::FILEPATH_BUMPMAP) {
 		CEGUI::Editbox* eb = static_cast<CEGUI::Editbox*>(m_gui->createWidget(l, "WindowsLook/Editbox", glm::vec4(0.5f, 0.0f, 0.5f, 1.0f), glm::vec4(0.0f), attr->name + m_name + "AttributeEntryEBSTRING"));
 		eb->setText(attr->getData<std::string>());
-		eb->subscribeEvent(CEGUI::Editbox::EventTextChanged, CEGUI::Event::Subscriber([=](const CEGUI::EventArgs& args)->bool{
+		eb->subscribeEvent(CEGUI::Editbox::EventTextChanged, CEGUI::Event::Subscriber([ = ](const CEGUI::EventArgs & args)->bool{
 			attr->setData((std::string)eb->getText().c_str());
 			if(attr->name == "name") {
 				CEGUI::DefaultWindow* thisLabel = static_cast<CEGUI::DefaultWindow*>(m_itemListBox0->getFirstSelectedItem()->getChildAtIdx(0));
@@ -296,7 +297,7 @@ void EditWindow::addAttribute(XMLModule::AttributeBase* attr) {
 		}
 
 		eb->setText(factionString);
-		eb->subscribeEvent(CEGUI::Editbox::EventTextChanged, CEGUI::Event::Subscriber([=](const CEGUI::EventArgs& args)->bool{
+		eb->subscribeEvent(CEGUI::Editbox::EventTextChanged, CEGUI::Event::Subscriber([ = ](const CEGUI::EventArgs & args)->bool{
 			std::string factionString = eb->getText().c_str();
 			unsigned int faction = 0;
 
@@ -338,7 +339,7 @@ void EditWindow::addAttribute(XMLModule::AttributeBase* attr) {
 
 		CEGUI::MultiLineEditbox* eb = static_cast<CEGUI::MultiLineEditbox*>(m_gui->createWidget(l, "WindowsLook/MultiLineEditbox", glm::vec4(0.5f, 0.0f, 0.4f, 2.0f), glm::vec4(0.0f), attr->name + m_name + "AttributeEntryEBSCRIPT"));
 		eb->setText(script.stringData);
-		eb->subscribeEvent(CEGUI::MultiLineEditbox::EventTextChanged, CEGUI::Event::Subscriber([=](const CEGUI::EventArgs& args)->bool{
+		eb->subscribeEvent(CEGUI::MultiLineEditbox::EventTextChanged, CEGUI::Event::Subscriber([ = ](const CEGUI::EventArgs & args)->bool{
 			ScriptData scr = at->getData();
 			scr.stringData = eb->getText().c_str();
 			at->setData(scr);
@@ -346,7 +347,7 @@ void EditWindow::addAttribute(XMLModule::AttributeBase* attr) {
 
 		CEGUI::ToggleButton* cb = static_cast<CEGUI::ToggleButton*>(m_gui->createWidget(l, "WindowsLook/Checkbox", glm::vec4(0.94f, 0.0f, 0.1f, 1.0f), glm::vec4(0.0f), attr->name + m_name + "AttributeEntryCBSCRIPT"));
 		cb->setSelected(script.isFile);
-		cb->subscribeEvent(CEGUI::ToggleButton::EventSelectStateChanged, CEGUI::Event::Subscriber([=](const CEGUI::EventArgs& args)->bool{
+		cb->subscribeEvent(CEGUI::ToggleButton::EventSelectStateChanged, CEGUI::Event::Subscriber([ = ](const CEGUI::EventArgs & args)->bool{
 			ScriptData scr = at->getData();
 			scr.isFile = cb->isSelected();
 			at->setData(scr);
@@ -355,29 +356,29 @@ void EditWindow::addAttribute(XMLModule::AttributeBase* attr) {
 		CEGUI::ToggleButton* eb = static_cast<CEGUI::ToggleButton*>(m_gui->createWidget(l, "WindowsLook/Checkbox", glm::vec4(0.735f, 0.0f, 1.2f, 1.2f), glm::vec4(0.0f), attr->name + m_name + "AttributeEntryEBBOOL"));
 		bool b = attr->getData<bool>();
 		eb->setSelected(b);
-		eb->subscribeEvent(CEGUI::ToggleButton::EventSelectStateChanged, CEGUI::Event::Subscriber([=](const CEGUI::EventArgs& args)->bool{
+		eb->subscribeEvent(CEGUI::ToggleButton::EventSelectStateChanged, CEGUI::Event::Subscriber([ = ](const CEGUI::EventArgs & args)->bool{
 			bool val = eb->isSelected();
 			attr->setData(val);
 		}));
 	} else if(attr->type == XMLModule::AttributeType::FLOAT) {
 		CEGUI::Editbox* eb = static_cast<CEGUI::Editbox*>(m_gui->createWidget(l, "WindowsLook/Editbox", glm::vec4(0.5f, 0.0f, 0.5f, 1.0f), glm::vec4(0.0f), attr->name + m_name + "AttributeEntryEBFLOAT"));
 		eb->setText(std::to_string(attr->getData<float>()));
-		eb->setValidationString("[\\d]+([.][\\d]+)?$");
-		eb->subscribeEvent(CEGUI::Editbox::EventTextChanged, CEGUI::Event::Subscriber([=](const CEGUI::EventArgs& args)->bool{
+		eb->setValidationString("[\\d]+[.]?[\\d]+$");
+		eb->subscribeEvent(CEGUI::Editbox::EventTextChanged, CEGUI::Event::Subscriber([ = ](const CEGUI::EventArgs & args)->bool{
 			attr->setData(std::stof(eb->getText().c_str()));
 		}));
 	} else if(attr->type == XMLModule::AttributeType::INT) {
 		CEGUI::Editbox* eb = static_cast<CEGUI::Editbox*>(m_gui->createWidget(l, "WindowsLook/Editbox", glm::vec4(0.5f, 0.0f, 0.5f, 1.0f), glm::vec4(0.0f), attr->name + m_name + "AttributeEntryEBINT"));
 		eb->setText(std::to_string(attr->getData<int>()));
 		eb->setValidationString("[\-]?[\\d]*");
-		eb->subscribeEvent(CEGUI::Editbox::EventTextChanged, CEGUI::Event::Subscriber([=](const CEGUI::EventArgs& args)->bool{
+		eb->subscribeEvent(CEGUI::Editbox::EventTextChanged, CEGUI::Event::Subscriber([ = ](const CEGUI::EventArgs & args)->bool{
 			if(eb->getText().length() > 0 && eb->getText() != "-") attr->setData(std::stoi(eb->getText().c_str()));
 		}));
 	} else if(attr->type == XMLModule::AttributeType::UNSIGNED_INT) {
 		CEGUI::Editbox* eb = static_cast<CEGUI::Editbox*>(m_gui->createWidget(l, "WindowsLook/Editbox", glm::vec4(0.5f, 0.0f, 0.5f, 1.0f), glm::vec4(0.0f), attr->name + m_name + "AttributeEntryEBINT"));
 		eb->setText(std::to_string(attr->getData<unsigned int>()));
 		eb->setValidationString("[\-]?[\\d]*");
-		eb->subscribeEvent(CEGUI::Editbox::EventTextChanged, CEGUI::Event::Subscriber([=](const CEGUI::EventArgs& args)->bool{
+		eb->subscribeEvent(CEGUI::Editbox::EventTextChanged, CEGUI::Event::Subscriber([ = ](const CEGUI::EventArgs & args)->bool{
 			if(eb->getText().length() > 0 && eb->getText() != "-") attr->setData((unsigned int)std::stoi(eb->getText().c_str()));
 		}));
 	} else if(attr->type == XMLModule::AttributeType::VECTOR_UNSIGNED_INT) {
@@ -394,8 +395,8 @@ void EditWindow::addAttribute(XMLModule::AttributeBase* attr) {
 		}
 
 		eb->setText(dataString);
-		eb->setValidationString("(((\\d)+)(,{1}(\\d)+)*)?$"); // One or 0 items, it must have a number, then 0 or more commas followed by a number.
-		eb->subscribeEvent(CEGUI::Editbox::EventTextChanged, CEGUI::Event::Subscriber([=](const CEGUI::EventArgs& args)->bool{
+		eb->setValidationString("(\\d+)(,?\\d*)*$"); // One or 0 items, it must have a number, then 0 or more commas followed by a number.
+		eb->subscribeEvent(CEGUI::Editbox::EventTextChanged, CEGUI::Event::Subscriber([ = ](const CEGUI::EventArgs & args)->bool{
 			std::string dataStr = eb->getText().c_str();
 			std::vector<unsigned int> data;
 
@@ -412,7 +413,7 @@ void EditWindow::addAttribute(XMLModule::AttributeBase* attr) {
 					found = false;
 				} else {
 					data.push_back(std::stoi(dataStr.substr(0, pos)));
-					dataStr.erase(0, pos+1);
+					dataStr.erase(0, pos + 1);
 				}
 			}
 
@@ -433,7 +434,7 @@ void EditWindow::addAttribute(XMLModule::AttributeBase* attr) {
 
 		eb->setText(dataString);
 		eb->setValidationString("(([\\d]*([.][\\d]+)?$\\D{0})(,{1}[\\d]+([.][\\d]+)?)*)?$"); // One or 0 items, it must have a number, then 0 or more commas followed by a number.
-		eb->subscribeEvent(CEGUI::Editbox::EventTextChanged, CEGUI::Event::Subscriber([=](const CEGUI::EventArgs& args)->bool{
+		eb->subscribeEvent(CEGUI::Editbox::EventTextChanged, CEGUI::Event::Subscriber([ = ](const CEGUI::EventArgs & args)->bool{
 			std::string dataStr = eb->getText().c_str();
 			std::vector<float> data;
 
@@ -450,7 +451,7 @@ void EditWindow::addAttribute(XMLModule::AttributeBase* attr) {
 					found = false;
 				} else {
 					data.push_back(std::stoi(dataStr.substr(0, pos)));
-					dataStr.erase(0, pos+1);
+					dataStr.erase(0, pos + 1);
 				}
 			}
 
@@ -509,7 +510,7 @@ void EditWindow::addAttribute(XMLModule::AttributeBase* attr) {
 		eb_x->setValidationString("[\\d]+([.][\\d]+)?$");
 		eb_y->setValidationString("[\\d]+([.][\\d]+)?$");
 
-		eb_x->subscribeEvent(CEGUI::Editbox::EventTextChanged, CEGUI::Event::Subscriber([=](const CEGUI::EventArgs& args)->bool{
+		eb_x->subscribeEvent(CEGUI::Editbox::EventTextChanged, CEGUI::Event::Subscriber([ = ](const CEGUI::EventArgs & args)->bool{
 			std::string dataStr = eb_x->getText().c_str();
 			float x = std::stof(dataStr);
 
@@ -519,7 +520,7 @@ void EditWindow::addAttribute(XMLModule::AttributeBase* attr) {
 			attr->setData(finalData);
 		}));
 
-		eb_y->subscribeEvent(CEGUI::Editbox::EventTextChanged, CEGUI::Event::Subscriber([=](const CEGUI::EventArgs& args)->bool{
+		eb_y->subscribeEvent(CEGUI::Editbox::EventTextChanged, CEGUI::Event::Subscriber([ = ](const CEGUI::EventArgs & args)->bool{
 			std::string dataStr = eb_y->getText().c_str();
 			float y = std::stof(dataStr);
 
@@ -566,14 +567,14 @@ MainScreen::MainScreen(GLEngine::Window* window) {
 	m_loadFileEditbox = static_cast<CEGUI::Editbox*>(m_gui.createWidget("WindowsLook/Editbox", glm::vec4(0.05f, 0.9f, 0.2f, 0.075f), glm::vec4(0.0f), "loadFileEditbox"));
 	m_loadFileButton  = static_cast<CEGUI::PushButton*>(m_gui.createWidget("WindowsLook/Button", glm::vec4(0.275f, 0.9f, 0.1f, 0.075f), glm::vec4(0.0f), "loadFileButton"));
 	m_loadFileButton->setText("Load Files");
-	m_loadFileButton->subscribeEvent(CEGUI::PushButton::EventClicked, CEGUI::Event::Subscriber([=](const CEGUI::EventArgs& args)->bool{
+	m_loadFileButton->subscribeEvent(CEGUI::PushButton::EventClicked, CEGUI::Event::Subscriber([ = ](const CEGUI::EventArgs & args)->bool{
 		std::string path = GetCurrentDirectory() + "/" + (std::string)m_loadFileEditbox->getText().c_str();
 		loadXMLFile(path);
 	}));
 
 	m_saveFileButton = static_cast<CEGUI::PushButton*>(m_gui.createWidget("WindowsLook/Button", glm::vec4(0.4f, 0.9f, 0.1f, 0.075f), glm::vec4(0.0f), "saveFileButton"));
 	m_saveFileButton->setText("Save Files");
-	m_saveFileButton->subscribeEvent(CEGUI::PushButton::EventClicked, CEGUI::Event::Subscriber([=](const CEGUI::EventArgs&)->bool{
+	m_saveFileButton->subscribeEvent(CEGUI::PushButton::EventClicked, CEGUI::Event::Subscriber([ = ](const CEGUI::EventArgs&)->bool{
 		std::string path = GetCurrentDirectory() + "/" + (std::string)m_loadFileEditbox->getText().c_str();
 		saveXMLData(path);
 	}));
@@ -584,7 +585,7 @@ MainScreen::MainScreen(GLEngine::Window* window) {
 	}
 
 	for(unsigned int i = 0; i < m_windowButtons.size(); i++) {
-		m_windowButtons[i]->subscribeEvent(CEGUI::PushButton::EventClicked, CEGUI::Event::Subscriber([=](const CEGUI::EventArgs& args)->bool{
+		m_windowButtons[i]->subscribeEvent(CEGUI::PushButton::EventClicked, CEGUI::Event::Subscriber([ = ](const CEGUI::EventArgs & args)->bool{
 			setAllInactive();
 			m_editWindows[i]->setActive(true);
 		}));
@@ -614,7 +615,7 @@ void MainScreen::draw() {
 
 void MainScreen::update() {
 	SDL_Event evnt;
-	while (SDL_PollEvent(&evnt)) {
+	while(SDL_PollEvent(&evnt)) {
 		m_game->onSDLEvent(evnt);
 		m_gui.onSDLEvent(evnt);
 		switch(evnt.type) {

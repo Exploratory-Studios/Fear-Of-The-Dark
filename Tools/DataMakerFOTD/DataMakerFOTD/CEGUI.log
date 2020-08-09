@@ -1,386 +1,386 @@
-06/08/2020 18:19:46 (Std) 	+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-06/08/2020 18:19:46 (Std) 	+                     Crazy Eddie's GUI System - Event log                    +
-06/08/2020 18:19:46 (Std) 	+                          (http://www.cegui.org.uk/)                         +
-06/08/2020 18:19:46 (Std) 	+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+08/08/2020 18:25:02 (Std) 	+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+08/08/2020 18:25:02 (Std) 	+                     Crazy Eddie's GUI System - Event log                    +
+08/08/2020 18:25:02 (Std) 	+                          (http://www.cegui.org.uk/)                         +
+08/08/2020 18:25:02 (Std) 	+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 
-06/08/2020 18:19:46 (Std) 	CEGUI::Logger singleton created. (0x55c15972ee30)
-06/08/2020 18:19:46 (Std) 	
-06/08/2020 18:19:46 (Std) 	********************************************************************************
-06/08/2020 18:19:46 (Std) 	* Important:                                                                   *
-06/08/2020 18:19:46 (Std) 	*     To get support at the CEGUI forums, you must post _at least_ the section *
-06/08/2020 18:19:46 (Std) 	*     of this log file indicated below.  Failure to do this will result in no  *
-06/08/2020 18:19:46 (Std) 	*     support being given; please do not waste our time.                       *
-06/08/2020 18:19:46 (Std) 	********************************************************************************
-06/08/2020 18:19:46 (Std) 	********************************************************************************
-06/08/2020 18:19:46 (Std) 	* -------- START OF ESSENTIAL SECTION TO BE POSTED ON THE FORUM       -------- *
-06/08/2020 18:19:46 (Std) 	********************************************************************************
-06/08/2020 18:19:46 (Std) 	---- Version: 0.8.7 (Build: Feb 19 2020 Debug GNU/Linux g++ 9.2.1 20200203 64 bit) ----
-06/08/2020 18:19:46 (Std) 	---- Renderer module is: CEGUI::OpenGL3Renderer - Official OpenGL 3.2 core based renderer module.  TextureTarget support enabled via FBO OGL 3.2 core implementation. ----
-06/08/2020 18:19:46 (Std) 	---- XML Parser module is: CEGUI::ExpatParser - Official expat based parser module for CEGUI ----
-06/08/2020 18:19:46 (Std) 	---- Image Codec module is: SILLYImageCodec - Official SILLY based image codec ----
-06/08/2020 18:19:46 (Std) 	---- Scripting module is: None ----
-06/08/2020 18:19:46 (Std) 	********************************************************************************
-06/08/2020 18:19:46 (Std) 	* -------- END OF ESSENTIAL SECTION TO BE POSTED ON THE FORUM         -------- *
-06/08/2020 18:19:46 (Std) 	********************************************************************************
-06/08/2020 18:19:46 (Std) 	
-06/08/2020 18:19:46 (Std) 	---- Begining CEGUI System initialisation ----
-06/08/2020 18:19:46 (Std) 	[CEGUI::ImageManager] Singleton created (0x55c159cd90d0)
-06/08/2020 18:19:46 (Std) 	[CEGUI::ImageManager] Registered Image type: BasicImage
-06/08/2020 18:19:46 (Std) 	CEGUI::FontManager singleton created. (0x55c159cdad30)
-06/08/2020 18:19:46 (Std) 	CEGUI::WindowFactoryManager singleton created
-06/08/2020 18:19:46 (Std) 	CEGUI::WindowManager singleton created (0x55c159cd5240)
-06/08/2020 18:19:46 (Std) 	CEGUI::SchemeManager singleton created. (0x55c159cdae60)
-06/08/2020 18:19:46 (Std) 	CEGUI::GlobalEventSet singleton created. (0x55c159cd5660)
-06/08/2020 18:19:46 (Std) 	CEGUI::AnimationManager singleton created (0x55c159cdaab0)
-06/08/2020 18:19:46 (Std) 	CEGUI::WidgetLookManager singleton created. (0x55c159cd6770)
-06/08/2020 18:19:46 (Std) 	CEGUI::WindowRendererManager singleton created (0x55c159cd40f0)
-06/08/2020 18:19:46 (Std) 	CEGUI::RenderEffectManager singleton created (0x55c159cdab70)
-06/08/2020 18:19:46 (Std) 	Created WindowFactory for 'DefaultWindow' windows.
-06/08/2020 18:19:46 (Std) 	WindowFactory for 'DefaultWindow' windows added. (0x55c159cdcb70)
-06/08/2020 18:19:46 (Std) 	Created WindowFactory for 'DragContainer' windows.
-06/08/2020 18:19:46 (Std) 	WindowFactory for 'DragContainer' windows added. (0x55c159cdde80)
-06/08/2020 18:19:46 (Std) 	Created WindowFactory for 'ScrolledContainer' windows.
-06/08/2020 18:19:46 (Std) 	WindowFactory for 'ScrolledContainer' windows added. (0x55c159cde040)
-06/08/2020 18:19:46 (Std) 	Created WindowFactory for 'ClippedContainer' windows.
-06/08/2020 18:19:46 (Std) 	WindowFactory for 'ClippedContainer' windows added. (0x55c159cde100)
-06/08/2020 18:19:46 (Std) 	Created WindowFactory for 'CEGUI/PushButton' windows.
-06/08/2020 18:19:46 (Std) 	WindowFactory for 'CEGUI/PushButton' windows added. (0x55c159cde1c0)
-06/08/2020 18:19:46 (Std) 	Created WindowFactory for 'CEGUI/RadioButton' windows.
-06/08/2020 18:19:46 (Std) 	WindowFactory for 'CEGUI/RadioButton' windows added. (0x55c159cde780)
-06/08/2020 18:19:46 (Std) 	Created WindowFactory for 'CEGUI/Combobox' windows.
-06/08/2020 18:19:46 (Std) 	WindowFactory for 'CEGUI/Combobox' windows added. (0x55c159cde920)
-06/08/2020 18:19:46 (Std) 	Created WindowFactory for 'CEGUI/ComboDropList' windows.
-06/08/2020 18:19:46 (Std) 	WindowFactory for 'CEGUI/ComboDropList' windows added. (0x55c159cdeac0)
-06/08/2020 18:19:46 (Std) 	Created WindowFactory for 'CEGUI/Editbox' windows.
-06/08/2020 18:19:46 (Std) 	WindowFactory for 'CEGUI/Editbox' windows added. (0x55c159cdefb0)
-06/08/2020 18:19:46 (Std) 	Created WindowFactory for 'CEGUI/FrameWindow' windows.
-06/08/2020 18:19:46 (Std) 	WindowFactory for 'CEGUI/FrameWindow' windows added. (0x55c159cdf070)
-06/08/2020 18:19:46 (Std) 	Created WindowFactory for 'CEGUI/ItemEntry' windows.
-06/08/2020 18:19:46 (Std) 	WindowFactory for 'CEGUI/ItemEntry' windows added. (0x55c159cdf130)
-06/08/2020 18:19:46 (Std) 	Created WindowFactory for 'CEGUI/Listbox' windows.
-06/08/2020 18:19:46 (Std) 	WindowFactory for 'CEGUI/Listbox' windows added. (0x55c159cdf1f0)
-06/08/2020 18:19:46 (Std) 	Created WindowFactory for 'CEGUI/ListHeader' windows.
-06/08/2020 18:19:46 (Std) 	WindowFactory for 'CEGUI/ListHeader' windows added. (0x55c159cdf550)
-06/08/2020 18:19:46 (Std) 	Created WindowFactory for 'CEGUI/ListHeaderSegment' windows.
-06/08/2020 18:19:46 (Std) 	WindowFactory for 'CEGUI/ListHeaderSegment' windows added. (0x55c159cdf780)
-06/08/2020 18:19:46 (Std) 	Created WindowFactory for 'CEGUI/Menubar' windows.
-06/08/2020 18:19:46 (Std) 	WindowFactory for 'CEGUI/Menubar' windows added. (0x55c159cdf840)
-06/08/2020 18:19:46 (Std) 	Created WindowFactory for 'CEGUI/PopupMenu' windows.
-06/08/2020 18:19:46 (Std) 	WindowFactory for 'CEGUI/PopupMenu' windows added. (0x55c159cdfac0)
-06/08/2020 18:19:46 (Std) 	Created WindowFactory for 'CEGUI/MenuItem' windows.
-06/08/2020 18:19:46 (Std) 	WindowFactory for 'CEGUI/MenuItem' windows added. (0x55c159cdfc80)
-06/08/2020 18:19:46 (Std) 	Created WindowFactory for 'CEGUI/MultiColumnList' windows.
-06/08/2020 18:19:46 (Std) 	WindowFactory for 'CEGUI/MultiColumnList' windows added. (0x55c159cdfd40)
-06/08/2020 18:19:46 (Std) 	Created WindowFactory for 'CEGUI/MultiLineEditbox' windows.
-06/08/2020 18:19:46 (Std) 	WindowFactory for 'CEGUI/MultiLineEditbox' windows added. (0x55c159ce0180)
-06/08/2020 18:19:46 (Std) 	Created WindowFactory for 'CEGUI/ProgressBar' windows.
-06/08/2020 18:19:46 (Std) 	WindowFactory for 'CEGUI/ProgressBar' windows added. (0x55c159ce0240)
-06/08/2020 18:19:46 (Std) 	Created WindowFactory for 'CEGUI/ScrollablePane' windows.
-06/08/2020 18:19:46 (Std) 	WindowFactory for 'CEGUI/ScrollablePane' windows added. (0x55c159ce0300)
-06/08/2020 18:19:46 (Std) 	Created WindowFactory for 'CEGUI/Scrollbar' windows.
-06/08/2020 18:19:46 (Std) 	WindowFactory for 'CEGUI/Scrollbar' windows added. (0x55c159ce03c0)
-06/08/2020 18:19:46 (Std) 	Created WindowFactory for 'CEGUI/Slider' windows.
-06/08/2020 18:19:46 (Std) 	WindowFactory for 'CEGUI/Slider' windows added. (0x55c159ce0720)
-06/08/2020 18:19:46 (Std) 	Created WindowFactory for 'CEGUI/Spinner' windows.
-06/08/2020 18:19:46 (Std) 	WindowFactory for 'CEGUI/Spinner' windows added. (0x55c159ce07e0)
-06/08/2020 18:19:46 (Std) 	Created WindowFactory for 'CEGUI/TabButton' windows.
-06/08/2020 18:19:46 (Std) 	WindowFactory for 'CEGUI/TabButton' windows added. (0x55c159ce0a60)
-06/08/2020 18:19:46 (Std) 	Created WindowFactory for 'CEGUI/TabControl' windows.
-06/08/2020 18:19:46 (Std) 	WindowFactory for 'CEGUI/TabControl' windows added. (0x55c159ce0b20)
-06/08/2020 18:19:46 (Std) 	Created WindowFactory for 'CEGUI/Thumb' windows.
-06/08/2020 18:19:46 (Std) 	WindowFactory for 'CEGUI/Thumb' windows added. (0x55c159ce0be0)
-06/08/2020 18:19:46 (Std) 	Created WindowFactory for 'CEGUI/Titlebar' windows.
-06/08/2020 18:19:46 (Std) 	WindowFactory for 'CEGUI/Titlebar' windows added. (0x55c159ce0f40)
-06/08/2020 18:19:46 (Std) 	Created WindowFactory for 'CEGUI/ToggleButton' windows.
-06/08/2020 18:19:46 (Std) 	WindowFactory for 'CEGUI/ToggleButton' windows added. (0x55c159ce12a0)
-06/08/2020 18:19:46 (Std) 	Created WindowFactory for 'CEGUI/Tooltip' windows.
-06/08/2020 18:19:46 (Std) 	WindowFactory for 'CEGUI/Tooltip' windows added. (0x55c159ce1360)
-06/08/2020 18:19:46 (Std) 	Created WindowFactory for 'CEGUI/ItemListbox' windows.
-06/08/2020 18:19:46 (Std) 	WindowFactory for 'CEGUI/ItemListbox' windows added. (0x55c159ce1420)
-06/08/2020 18:19:46 (Std) 	Created WindowFactory for 'CEGUI/GroupBox' windows.
-06/08/2020 18:19:46 (Std) 	WindowFactory for 'CEGUI/GroupBox' windows added. (0x55c159ce14e0)
-06/08/2020 18:19:46 (Std) 	Created WindowFactory for 'CEGUI/Tree' windows.
-06/08/2020 18:19:46 (Std) 	WindowFactory for 'CEGUI/Tree' windows added. (0x55c159ce15a0)
-06/08/2020 18:19:46 (Std) 	Created WindowFactory for 'LayoutCell' windows.
-06/08/2020 18:19:46 (Std) 	WindowFactory for 'LayoutCell' windows added. (0x55c159ce19e0)
-06/08/2020 18:19:46 (Std) 	Created WindowFactory for 'HorizontalLayoutContainer' windows.
-06/08/2020 18:19:46 (Std) 	WindowFactory for 'HorizontalLayoutContainer' windows added. (0x55c159ce1aa0)
-06/08/2020 18:19:46 (Std) 	Created WindowFactory for 'VerticalLayoutContainer' windows.
-06/08/2020 18:19:46 (Std) 	WindowFactory for 'VerticalLayoutContainer' windows added. (0x55c159ce1d20)
-06/08/2020 18:19:46 (Std) 	Created WindowFactory for 'GridLayoutContainer' windows.
-06/08/2020 18:19:46 (Std) 	WindowFactory for 'GridLayoutContainer' windows added. (0x55c159ce1de0)
-06/08/2020 18:19:46 (Std) 	CEGUI::System singleton created. (0x55c1595131f0)
-06/08/2020 18:19:46 (Std) 	---- CEGUI System initialisation completed ----
-06/08/2020 18:19:46 (Std) 	
-06/08/2020 18:19:46 (Std) 	Started creation of Scheme from XML specification:
-06/08/2020 18:19:46 (Std) 	---- CEGUI GUIScheme name: WindowsLookSkin
-06/08/2020 18:19:46 (Std) 	[ImageManager] Started creation of Imageset from XML specification:
-06/08/2020 18:19:46 (Std) 	[ImageManager] ---- CEGUI Imageset name: WindowsLook
-06/08/2020 18:19:46 (Std) 	[ImageManager] ---- Source texture file: WindowsLook.png
-06/08/2020 18:19:46 (Std) 	[ImageManager] ---- Source texture resource group: (Default)
-06/08/2020 18:19:46 (Std) 	[OpenGLRenderer] Created texture: WindowsLook
-06/08/2020 18:19:46 (Std) 	[ImageManager] Created image: 'WindowsLook/Background' (0x55c159d438a0) of type: BasicImage
-06/08/2020 18:19:46 (Std) 	[ImageManager] Created image: 'WindowsLook/WindowFrameLeft' (0x55c159d46b50) of type: BasicImage
-06/08/2020 18:19:46 (Std) 	[ImageManager] Created image: 'WindowsLook/WindowFrameRight' (0x55c159d491e0) of type: BasicImage
-06/08/2020 18:19:46 (Std) 	[ImageManager] Created image: 'WindowsLook/WindowFrameTop' (0x55c159d493a0) of type: BasicImage
-06/08/2020 18:19:46 (Std) 	[ImageManager] Created image: 'WindowsLook/WindowFrameBottom' (0x55c159d3e1d0) of type: BasicImage
-06/08/2020 18:19:46 (Std) 	[ImageManager] Created image: 'WindowsLook/WindowFrameTopLeft' (0x55c159d55450) of type: BasicImage
-06/08/2020 18:19:46 (Std) 	[ImageManager] Created image: 'WindowsLook/WindowFrameTopRight' (0x55c159d4c0d0) of type: BasicImage
-06/08/2020 18:19:46 (Std) 	[ImageManager] Created image: 'WindowsLook/WindowFrameBottomLeft' (0x55c159d48e30) of type: BasicImage
-06/08/2020 18:19:46 (Std) 	[ImageManager] Created image: 'WindowsLook/WindowFrameBottomRight' (0x55c159d59f30) of type: BasicImage
-06/08/2020 18:19:46 (Std) 	[ImageManager] Created image: 'WindowsLook/ButtonNormalLeft' (0x55c159d56610) of type: BasicImage
-06/08/2020 18:19:46 (Std) 	[ImageManager] Created image: 'WindowsLook/ButtonNormalRight' (0x55c159d41840) of type: BasicImage
-06/08/2020 18:19:46 (Std) 	[ImageManager] Created image: 'WindowsLook/ButtonNormalTop' (0x55c159d4e250) of type: BasicImage
-06/08/2020 18:19:46 (Std) 	[ImageManager] Created image: 'WindowsLook/ButtonNormalBottom' (0x55c159d47af0) of type: BasicImage
-06/08/2020 18:19:46 (Std) 	[ImageManager] Created image: 'WindowsLook/ButtonNormalTopLeft' (0x55c159d3e6b0) of type: BasicImage
-06/08/2020 18:19:46 (Std) 	[ImageManager] Created image: 'WindowsLook/ButtonNormalTopRight' (0x55c159d48b60) of type: BasicImage
-06/08/2020 18:19:46 (Std) 	[ImageManager] Created image: 'WindowsLook/ButtonNormalBottomLeft' (0x55c159d4bbd0) of type: BasicImage
-06/08/2020 18:19:46 (Std) 	[ImageManager] Created image: 'WindowsLook/ButtonNormalBottomRight' (0x55c15952e050) of type: BasicImage
-06/08/2020 18:19:46 (Std) 	[ImageManager] Created image: 'WindowsLook/ButtonPushedLeft' (0x55c159d40680) of type: BasicImage
-06/08/2020 18:19:46 (Std) 	[ImageManager] Created image: 'WindowsLook/ButtonPushedRight' (0x55c159d53bb0) of type: BasicImage
-06/08/2020 18:19:46 (Std) 	[ImageManager] Created image: 'WindowsLook/ButtonPushedTop' (0x55c159d4df90) of type: BasicImage
-06/08/2020 18:19:46 (Std) 	[ImageManager] Created image: 'WindowsLook/ButtonPushedBottom' (0x55c159735de0) of type: BasicImage
-06/08/2020 18:19:46 (Std) 	[ImageManager] Created image: 'WindowsLook/ButtonPushedTopLeft' (0x55c159d4a9e0) of type: BasicImage
-06/08/2020 18:19:46 (Std) 	[ImageManager] Created image: 'WindowsLook/ButtonPushedTopRight' (0x55c159ce9d40) of type: BasicImage
-06/08/2020 18:19:46 (Std) 	[ImageManager] Created image: 'WindowsLook/ButtonPushedBottomLeft' (0x55c159d4ffc0) of type: BasicImage
-06/08/2020 18:19:46 (Std) 	[ImageManager] Created image: 'WindowsLook/ButtonPushedBottomRight' (0x55c159d500e0) of type: BasicImage
-06/08/2020 18:19:46 (Std) 	[ImageManager] Created image: 'WindowsLook/ButtonHoverLeft' (0x55c159d5a350) of type: BasicImage
-06/08/2020 18:19:46 (Std) 	[ImageManager] Created image: 'WindowsLook/ButtonHoverRight' (0x55c159d4fc80) of type: BasicImage
-06/08/2020 18:19:46 (Std) 	[ImageManager] Created image: 'WindowsLook/ButtonHoverTop' (0x55c159d4fb60) of type: BasicImage
-06/08/2020 18:19:46 (Std) 	[ImageManager] Created image: 'WindowsLook/ButtonHoverBottom' (0x55c1594c9050) of type: BasicImage
-06/08/2020 18:19:46 (Std) 	[ImageManager] Created image: 'WindowsLook/ButtonHoverTopLeft' (0x55c159d50970) of type: BasicImage
-06/08/2020 18:19:46 (Std) 	[ImageManager] Created image: 'WindowsLook/ButtonHoverTopRight' (0x55c159d50a90) of type: BasicImage
-06/08/2020 18:19:46 (Std) 	[ImageManager] Created image: 'WindowsLook/ButtonHoverBottomLeft' (0x55c159d50ca0) of type: BasicImage
-06/08/2020 18:19:46 (Std) 	[ImageManager] Created image: 'WindowsLook/ButtonHoverBottomRight' (0x55c159d53520) of type: BasicImage
-06/08/2020 18:19:46 (Std) 	[ImageManager] Created image: 'WindowsLook/EditFrameLeft' (0x55c159d53640) of type: BasicImage
-06/08/2020 18:19:46 (Std) 	[ImageManager] Created image: 'WindowsLook/EditFrameRight' (0x55c159d54e00) of type: BasicImage
-06/08/2020 18:19:46 (Std) 	[ImageManager] Created image: 'WindowsLook/EditFrameTop' (0x55c159d499b0) of type: BasicImage
-06/08/2020 18:19:46 (Std) 	[ImageManager] Created image: 'WindowsLook/EditFrameBottom' (0x55c159d595b0) of type: BasicImage
-06/08/2020 18:19:46 (Std) 	[ImageManager] Created image: 'WindowsLook/EditFrameTopLeft' (0x55c159d50200) of type: BasicImage
-06/08/2020 18:19:46 (Std) 	[ImageManager] Created image: 'WindowsLook/EditFrameTopRight' (0x55c159cec230) of type: BasicImage
-06/08/2020 18:19:46 (Std) 	[ImageManager] Created image: 'WindowsLook/EditFrameBottomLeft' (0x55c159ceb660) of type: BasicImage
-06/08/2020 18:19:46 (Std) 	[ImageManager] Created image: 'WindowsLook/EditFrameBottomRight' (0x55c159ceb870) of type: BasicImage
-06/08/2020 18:19:46 (Std) 	[ImageManager] Created image: 'WindowsLook/StaticFrameLeft' (0x55c159d55bd0) of type: BasicImage
-06/08/2020 18:19:46 (Std) 	[ImageManager] Created image: 'WindowsLook/StaticFrameRight' (0x55c159d55cf0) of type: BasicImage
-06/08/2020 18:19:46 (Std) 	[ImageManager] Created image: 'WindowsLook/StaticFrameTop' (0x55c159d59860) of type: BasicImage
-06/08/2020 18:19:46 (Std) 	[ImageManager] Created image: 'WindowsLook/StaticFrameBottom' (0x55c159d537f0) of type: BasicImage
-06/08/2020 18:19:46 (Std) 	[ImageManager] Created image: 'WindowsLook/StaticFrameTopLeft' (0x55c159d54770) of type: BasicImage
-06/08/2020 18:19:46 (Std) 	[ImageManager] Created image: 'WindowsLook/StaticFrameTopRight' (0x55c159d54980) of type: BasicImage
-06/08/2020 18:19:46 (Std) 	[ImageManager] Created image: 'WindowsLook/StaticFrameBottomLeft' (0x55c159d56030) of type: BasicImage
-06/08/2020 18:19:46 (Std) 	[ImageManager] Created image: 'WindowsLook/StaticFrameBottomRight' (0x55c159d3fac0) of type: BasicImage
-06/08/2020 18:19:46 (Std) 	[ImageManager] Created image: 'WindowsLook/CloseButtonNormal' (0x55c159d3fbe0) of type: BasicImage
-06/08/2020 18:19:46 (Std) 	[ImageManager] Created image: 'WindowsLook/CloseButtonHover' (0x55c159d3ff20) of type: BasicImage
-06/08/2020 18:19:46 (Std) 	[ImageManager] Created image: 'WindowsLook/CloseButtonPushed' (0x55c159d4b710) of type: BasicImage
-06/08/2020 18:19:46 (Std) 	[ImageManager] Created image: 'WindowsLook/TitlebarTopLeft' (0x55c159d66f00) of type: BasicImage
-06/08/2020 18:19:46 (Std) 	[ImageManager] Created image: 'WindowsLook/TitlebarTopRight' (0x55c159d40220) of type: BasicImage
-06/08/2020 18:19:46 (Std) 	[ImageManager] Created image: 'WindowsLook/TitlebarBottomLeft' (0x55c159d54b90) of type: BasicImage
-06/08/2020 18:19:46 (Std) 	[ImageManager] Created image: 'WindowsLook/TitlebarBottomRight' (0x55c159d67520) of type: BasicImage
-06/08/2020 18:19:46 (Std) 	[ImageManager] Created image: 'WindowsLook/TitlebarLeft' (0x55c159d67730) of type: BasicImage
-06/08/2020 18:19:46 (Std) 	[ImageManager] Created image: 'WindowsLook/TitlebarRight' (0x55c159d521a0) of type: BasicImage
-06/08/2020 18:19:46 (Std) 	[ImageManager] Created image: 'WindowsLook/TitlebarTop' (0x55c159d672a0) of type: BasicImage
-06/08/2020 18:19:46 (Std) 	[ImageManager] Created image: 'WindowsLook/TitlebarBottom' (0x55c159d52720) of type: BasicImage
-06/08/2020 18:19:46 (Std) 	[ImageManager] Created image: 'WindowsLook/TitlebarFill' (0x55c159d529d0) of type: BasicImage
-06/08/2020 18:19:46 (Std) 	[ImageManager] Created image: 'WindowsLook/CheckboxNormal' (0x55c159d43ab0) of type: BasicImage
-06/08/2020 18:19:46 (Std) 	[ImageManager] Created image: 'WindowsLook/CheckboxHover' (0x55c159d52e60) of type: BasicImage
-06/08/2020 18:19:46 (Std) 	[ImageManager] Created image: 'WindowsLook/CheckboxMark' (0x55c159d53070) of type: BasicImage
-06/08/2020 18:19:46 (Std) 	[ImageManager] Created image: 'WindowsLook/RadioButtonNormal' (0x55c159cec580) of type: BasicImage
-06/08/2020 18:19:46 (Std) 	[ImageManager] Created image: 'WindowsLook/RadioButtonHover' (0x55c159cec6a0) of type: BasicImage
-06/08/2020 18:19:46 (Std) 	[ImageManager] Created image: 'WindowsLook/RadioButtonMark' (0x55c159cec8b0) of type: BasicImage
-06/08/2020 18:19:46 (Std) 	[ImageManager] Created image: 'WindowsLook/SliderThumbNormal' (0x55c159cecac0) of type: BasicImage
-06/08/2020 18:19:46 (Std) 	[ImageManager] Created image: 'WindowsLook/SliderThumbHover' (0x55c159ceccd0) of type: BasicImage
-06/08/2020 18:19:46 (Std) 	[ImageManager] Created image: 'WindowsLook/SliderTrackLeft' (0x55c159cecee0) of type: BasicImage
-06/08/2020 18:19:46 (Std) 	[ImageManager] Created image: 'WindowsLook/SlidertrackMiddle' (0x55c159ced0f0) of type: BasicImage
-06/08/2020 18:19:46 (Std) 	[ImageManager] Created image: 'WindowsLook/SliderTrackRight' (0x55c159ced300) of type: BasicImage
-06/08/2020 18:19:46 (Std) 	[ImageManager] Created image: 'WindowsLook/SliderTick' (0x55c159ced510) of type: BasicImage
-06/08/2020 18:19:46 (Std) 	[ImageManager] Created image: 'WindowsLook/HeaderMainBrush' (0x55c159ced900) of type: BasicImage
-06/08/2020 18:19:46 (Std) 	[ImageManager] Created image: 'WindowsLook/HeaderBottomEdge' (0x55c159ceda20) of type: BasicImage
-06/08/2020 18:19:46 (Std) 	[ImageManager] Created image: 'WindowsLook/HeaderSplitter' (0x55c159cedb40) of type: BasicImage
-06/08/2020 18:19:46 (Std) 	[ImageManager] Created image: 'WindowsLook/VertScrollbarGrip' (0x55c159cedf30) of type: BasicImage
-06/08/2020 18:19:46 (Std) 	[ImageManager] Created image: 'WindowsLook/HorzScrollbarGrip' (0x55c159cee050) of type: BasicImage
-06/08/2020 18:19:46 (Std) 	[ImageManager] Created image: 'WindowsLook/LargeLeftArrow' (0x55c159cee170) of type: BasicImage
-06/08/2020 18:19:46 (Std) 	[ImageManager] Created image: 'WindowsLook/LargeRightArrow' (0x55c159d568a0) of type: BasicImage
-06/08/2020 18:19:46 (Std) 	[ImageManager] Created image: 'WindowsLook/LargeUpArrow' (0x55c159d569c0) of type: BasicImage
-06/08/2020 18:19:46 (Std) 	[ImageManager] Created image: 'WindowsLook/LargeDownArrow' (0x55c159d56db0) of type: BasicImage
-06/08/2020 18:19:46 (Std) 	[ImageManager] Created image: 'WindowsLook/SmallLeftArrow' (0x55c159d56fc0) of type: BasicImage
-06/08/2020 18:19:46 (Std) 	[ImageManager] Created image: 'WindowsLook/SmallRightArrow' (0x55c159d571d0) of type: BasicImage
-06/08/2020 18:19:46 (Std) 	[ImageManager] Created image: 'WindowsLook/SmallUpArrow' (0x55c159d572f0) of type: BasicImage
-06/08/2020 18:19:46 (Std) 	[ImageManager] Created image: 'WindowsLook/SmallDownArrow' (0x55c159d575f0) of type: BasicImage
-06/08/2020 18:19:46 (Std) 	[ImageManager] Created image: 'WindowsLook/EditBoxCaret' (0x55c159d57800) of type: BasicImage
-06/08/2020 18:19:46 (Std) 	[ImageManager] Created image: 'WindowsLook/MouseArrow' (0x55c159d57ec0) of type: BasicImage
-06/08/2020 18:19:46 (Std) 	[ImageManager] Created image: 'WindowsLook/MouseMoveCursor' (0x55c159d580d0) of type: BasicImage
-06/08/2020 18:19:46 (Std) 	[ImageManager] Created image: 'WindowsLook/MouseNoSoCursor' (0x55c159d57d30) of type: BasicImage
-06/08/2020 18:19:46 (Std) 	[ImageManager] Created image: 'WindowsLook/MouseEsWeCursor' (0x55c159d58510) of type: BasicImage
-06/08/2020 18:19:46 (Std) 	[ImageManager] Created image: 'WindowsLook/MouseNeSwCursor' (0x55c159d57ba0) of type: BasicImage
-06/08/2020 18:19:46 (Std) 	[ImageManager] Created image: 'WindowsLook/MouseNwSeCursor' (0x55c159d588b0) of type: BasicImage
-06/08/2020 18:19:46 (Std) 	[ImageManager] Created image: 'WindowsLook/MouseTextBar' (0x55c159d58ac0) of type: BasicImage
-06/08/2020 18:19:46 (Std) 	[ImageManager] Created image: 'WindowsLook/TabHorizontalTopFiller' (0x55c159cea9d0) of type: BasicImage
-06/08/2020 18:19:46 (Std) 	[ImageManager] Created image: 'WindowsLook/TabHorizontalBottomFiller' (0x55c159cea510) of type: BasicImage
-06/08/2020 18:19:46 (Std) 	[ImageManager] Created image: 'WindowsLook/TabContentPaneUpperLeft' (0x55c159d52cd0) of type: BasicImage
-06/08/2020 18:19:46 (Std) 	[ImageManager] Created image: 'WindowsLook/TabContentPaneTop' (0x55c159cf5fa0) of type: BasicImage
-06/08/2020 18:19:46 (Std) 	[ImageManager] Created image: 'WindowsLook/TabContentPaneUpperRight' (0x55c159cf61e0) of type: BasicImage
-06/08/2020 18:19:46 (Std) 	[ImageManager] Created image: 'WindowsLook/TabContentPaneLeft' (0x55c159cf60c0) of type: BasicImage
-06/08/2020 18:19:46 (Std) 	[ImageManager] Created image: 'WindowsLook/TabContentPaneMiddle' (0x55c159cf6490) of type: BasicImage
-06/08/2020 18:19:46 (Std) 	[ImageManager] Created image: 'WindowsLook/TabContentPaneRight' (0x55c159cf69c0) of type: BasicImage
-06/08/2020 18:19:46 (Std) 	[ImageManager] Created image: 'WindowsLook/TabContentPaneLower' (0x55c159cf6ae0) of type: BasicImage
-06/08/2020 18:19:46 (Std) 	[ImageManager] Created image: 'WindowsLook/TabContentPaneLowerLeft' (0x55c159cf6de0) of type: BasicImage
-06/08/2020 18:19:46 (Std) 	[ImageManager] Created image: 'WindowsLook/TabContentPaneLowerRight' (0x55c159cf7090) of type: BasicImage
-06/08/2020 18:19:46 (Std) 	[ImageManager] Created image: 'WindowsLook/TabButtonUpperLeftNormal' (0x55c159cf72d0) of type: BasicImage
-06/08/2020 18:19:46 (Std) 	[ImageManager] Created image: 'WindowsLook/TabButtonUpperNormal' (0x55c159cf71b0) of type: BasicImage
-06/08/2020 18:19:46 (Std) 	[ImageManager] Created image: 'WindowsLook/TabButtonUpperRightNormal' (0x55c159cf7710) of type: BasicImage
-06/08/2020 18:19:46 (Std) 	[ImageManager] Created image: 'WindowsLook/TabButtonLeftNormal' (0x55c159cf79c0) of type: BasicImage
-06/08/2020 18:19:46 (Std) 	[ImageManager] Created image: 'WindowsLook/TabButtonMiddleNormal' (0x55c159cf7d00) of type: BasicImage
-06/08/2020 18:19:46 (Std) 	[ImageManager] Created image: 'WindowsLook/TabButtonRightNormal' (0x55c159cf8130) of type: BasicImage
-06/08/2020 18:19:46 (Std) 	[ImageManager] Created image: 'WindowsLook/TabButtonLowerLeftNormal' (0x55c159cf8250) of type: BasicImage
-06/08/2020 18:19:46 (Std) 	[ImageManager] Created image: 'WindowsLook/TabButtonLowerNormal' (0x55c159cf8580) of type: BasicImage
-06/08/2020 18:19:46 (Std) 	[ImageManager] Created image: 'WindowsLook/TabButtonLowerRightNormal' (0x55c159cf8730) of type: BasicImage
-06/08/2020 18:19:46 (Std) 	[ImageManager] Created image: 'WindowsLook/TabButtonUpperLeftSelected' (0x55c159cf8b70) of type: BasicImage
-06/08/2020 18:19:46 (Std) 	[ImageManager] Created image: 'WindowsLook/TabButtonUpperSelected' (0x55c159cf8eb0) of type: BasicImage
-06/08/2020 18:19:46 (Std) 	[ImageManager] Created image: 'WindowsLook/TabButtonUpperRightSelected' (0x55c159cf9160) of type: BasicImage
-06/08/2020 18:19:46 (Std) 	[ImageManager] Created image: 'WindowsLook/TabButtonLeftSelected' (0x55c159cf9410) of type: BasicImage
-06/08/2020 18:19:46 (Std) 	[ImageManager] Created image: 'WindowsLook/TabButtonMiddleSelected' (0x55c159cf97a0) of type: BasicImage
-06/08/2020 18:19:46 (Std) 	[ImageManager] Created image: 'WindowsLook/TabButtonRightSelected' (0x55c159cf98c0) of type: BasicImage
-06/08/2020 18:19:46 (Std) 	[ImageManager] Created image: 'WindowsLook/TabButtonLowerLeftSelected' (0x55c159cf9d20) of type: BasicImage
-06/08/2020 18:19:46 (Std) 	[ImageManager] Created image: 'WindowsLook/TabButtonLowerSelected' (0x55c159cf9c00) of type: BasicImage
-06/08/2020 18:19:46 (Std) 	[ImageManager] Created image: 'WindowsLook/TabButtonLowerRightSelected' (0x55c159cfa170) of type: BasicImage
-06/08/2020 18:19:46 (Std) 	[ImageManager] Created image: 'WindowsLook/TabButtonScrollLeftNormal' (0x55c159cfa420) of type: BasicImage
-06/08/2020 18:19:46 (Std) 	[ImageManager] Created image: 'WindowsLook/TabButtonScrollRightNormal' (0x55c159cfa870) of type: BasicImage
-06/08/2020 18:19:46 (Std) 	[ImageManager] Created image: 'WindowsLook/TabButtonScrollLeftHover' (0x55c159cfa990) of type: BasicImage
-06/08/2020 18:19:46 (Std) 	[ImageManager] Created image: 'WindowsLook/TabButtonScrollRightHover' (0x55c159cfac40) of type: BasicImage
-06/08/2020 18:19:46 (Std) 	[ImageManager] Created image: 'WindowsLook/TooltipTopLeft' (0x55c159cfaef0) of type: BasicImage
-06/08/2020 18:19:46 (Std) 	[ImageManager] Created image: 'WindowsLook/TooltipTopRight' (0x55c159cfb1a0) of type: BasicImage
-06/08/2020 18:19:46 (Std) 	[ImageManager] Created image: 'WindowsLook/TooltipBottomLeft' (0x55c159cfb630) of type: BasicImage
-06/08/2020 18:19:46 (Std) 	[ImageManager] Created image: 'WindowsLook/TooltipBottomRight' (0x55c159cfb750) of type: BasicImage
-06/08/2020 18:19:46 (Std) 	[ImageManager] Created image: 'WindowsLook/TooltipLeftEdge' (0x55c159cfb960) of type: BasicImage
-06/08/2020 18:19:46 (Std) 	[ImageManager] Created image: 'WindowsLook/TooltipRightEdge' (0x55c159cfbb70) of type: BasicImage
-06/08/2020 18:19:46 (Std) 	[ImageManager] Created image: 'WindowsLook/TooltipTopEdge' (0x55c159d5b6d0) of type: BasicImage
-06/08/2020 18:19:46 (Std) 	[ImageManager] Created image: 'WindowsLook/TooltipBottomEdge' (0x55c159d5bac0) of type: BasicImage
-06/08/2020 18:19:46 (Std) 	[ImageManager] Created image: 'WindowsLook/TooltipMiddle' (0x55c159d5bbe0) of type: BasicImage
-06/08/2020 18:19:46 (Std) 	[ImageManager] Created image: 'WindowsLook/MenuTopLeft' (0x55c159d5bee0) of type: BasicImage
-06/08/2020 18:19:46 (Std) 	[ImageManager] Created image: 'WindowsLook/MenuTopRight' (0x55c159d5c1e0) of type: BasicImage
-06/08/2020 18:19:46 (Std) 	[ImageManager] Created image: 'WindowsLook/MenuBottomLeft' (0x55c159d5c300) of type: BasicImage
-06/08/2020 18:19:46 (Std) 	[ImageManager] Created image: 'WindowsLook/MenuBottomRight' (0x55c159d5c510) of type: BasicImage
-06/08/2020 18:19:46 (Std) 	[ImageManager] Created image: 'WindowsLook/MenuLeft' (0x55c159d5c630) of type: BasicImage
-06/08/2020 18:19:46 (Std) 	[ImageManager] Created image: 'WindowsLook/MenuRight' (0x55c159d5c930) of type: BasicImage
-06/08/2020 18:19:46 (Std) 	[ImageManager] Created image: 'WindowsLook/MenuTop' (0x55c159d5ca50) of type: BasicImage
-06/08/2020 18:19:46 (Std) 	[ImageManager] Created image: 'WindowsLook/MenuBottom' (0x55c159d5cc60) of type: BasicImage
-06/08/2020 18:19:46 (Std) 	[ImageManager] Created image: 'WindowsLook/PopupMenuFrameTopLeft' (0x55c159d5cd80) of type: BasicImage
-06/08/2020 18:19:46 (Std) 	[ImageManager] Created image: 'WindowsLook/PopupMenuFrameTopRight' (0x55c159d5d080) of type: BasicImage
-06/08/2020 18:19:46 (Std) 	[ImageManager] Created image: 'WindowsLook/PopupMenuFrameBottomLeft' (0x55c159d5d1a0) of type: BasicImage
-06/08/2020 18:19:46 (Std) 	[ImageManager] Created image: 'WindowsLook/PopupMenuFrameBottomRight' (0x55c159d5d490) of type: BasicImage
-06/08/2020 18:19:46 (Std) 	[ImageManager] Created image: 'WindowsLook/PopupMenuFrameLeft' (0x55c159d5d7e0) of type: BasicImage
-06/08/2020 18:19:46 (Std) 	[ImageManager] Created image: 'WindowsLook/PopupMenuFrameRight' (0x55c159d5db30) of type: BasicImage
-06/08/2020 18:19:46 (Std) 	[ImageManager] Created image: 'WindowsLook/PopupMenuFrameTop' (0x55c159d5ded0) of type: BasicImage
-06/08/2020 18:19:46 (Std) 	[ImageManager] Created image: 'WindowsLook/PopupMenuFrameBottom' (0x55c159d5e0e0) of type: BasicImage
-06/08/2020 18:19:46 (Std) 	[ImageManager] Created image: 'WindowsLook/PopupMenuArrowRight' (0x55c159d5e380) of type: BasicImage
-06/08/2020 18:19:46 (Std) 	[ImageManager] Created image: 'WindowsLook/PopupMenuArrowLeft' (0x55c159d5e4a0) of type: BasicImage
-06/08/2020 18:19:46 (Std) 	[ImageManager] Created image: 'WindowsLook/MultiListSelectionBrush' (0x55c159d5e830) of type: BasicImage
-06/08/2020 18:19:46 (Std) 	===== Falagard 'root' element: look and feel parsing begins =====
-06/08/2020 18:19:46 (Std) 	===== Look and feel parsing completed =====
-06/08/2020 18:19:46 (Std) 	No window renderer factories specified for module 'CEGUICoreWindowRendererSet' - adding all available factories...
-06/08/2020 18:19:46 (Std) 	Created WindowRendererFactory for 'Core/Button' WindowRenderers.
-06/08/2020 18:19:46 (Std) 	WindowRendererFactory 'Core/Button' added. (0x55c159cea220)
-06/08/2020 18:19:46 (Std) 	Created WindowRendererFactory for 'Core/Default' WindowRenderers.
-06/08/2020 18:19:46 (Std) 	WindowRendererFactory 'Core/Default' added. (0x55c159d61e20)
-06/08/2020 18:19:46 (Std) 	Created WindowRendererFactory for 'Core/Editbox' WindowRenderers.
-06/08/2020 18:19:46 (Std) 	WindowRendererFactory 'Core/Editbox' added. (0x55c159d61ee0)
-06/08/2020 18:19:46 (Std) 	Created WindowRendererFactory for 'Core/FrameWindow' WindowRenderers.
-06/08/2020 18:19:46 (Std) 	WindowRendererFactory 'Core/FrameWindow' added. (0x55c159d61fa0)
-06/08/2020 18:19:46 (Std) 	Created WindowRendererFactory for 'Core/ItemEntry' WindowRenderers.
-06/08/2020 18:19:46 (Std) 	WindowRendererFactory 'Core/ItemEntry' added. (0x55c159d62060)
-06/08/2020 18:19:46 (Std) 	Created WindowRendererFactory for 'Core/ListHeader' WindowRenderers.
-06/08/2020 18:19:46 (Std) 	WindowRendererFactory 'Core/ListHeader' added. (0x55c159d62120)
-06/08/2020 18:19:46 (Std) 	Created WindowRendererFactory for 'Core/ListHeaderSegment' WindowRenderers.
-06/08/2020 18:19:46 (Std) 	WindowRendererFactory 'Core/ListHeaderSegment' added. (0x55c159d60ea0)
-06/08/2020 18:19:46 (Std) 	Created WindowRendererFactory for 'Core/Listbox' WindowRenderers.
-06/08/2020 18:19:46 (Std) 	WindowRendererFactory 'Core/Listbox' added. (0x55c159d60f60)
-06/08/2020 18:19:46 (Std) 	Created WindowRendererFactory for 'Core/Menubar' WindowRenderers.
-06/08/2020 18:19:46 (Std) 	WindowRendererFactory 'Core/Menubar' added. (0x55c159d61020)
-06/08/2020 18:19:46 (Std) 	Created WindowRendererFactory for 'Core/MenuItem' WindowRenderers.
-06/08/2020 18:19:46 (Std) 	WindowRendererFactory 'Core/MenuItem' added. (0x55c159d611c0)
-06/08/2020 18:19:46 (Std) 	Created WindowRendererFactory for 'Core/MultiColumnList' WindowRenderers.
-06/08/2020 18:19:46 (Std) 	WindowRendererFactory 'Core/MultiColumnList' added. (0x55c159d61360)
-06/08/2020 18:19:46 (Std) 	Created WindowRendererFactory for 'Core/MultiLineEditbox' WindowRenderers.
-06/08/2020 18:19:46 (Std) 	WindowRendererFactory 'Core/MultiLineEditbox' added. (0x55c159d61500)
-06/08/2020 18:19:46 (Std) 	Created WindowRendererFactory for 'Core/PopupMenu' WindowRenderers.
-06/08/2020 18:19:46 (Std) 	WindowRendererFactory 'Core/PopupMenu' added. (0x55c159d616a0)
-06/08/2020 18:19:46 (Std) 	Created WindowRendererFactory for 'Core/ProgressBar' WindowRenderers.
-06/08/2020 18:19:46 (Std) 	WindowRendererFactory 'Core/ProgressBar' added. (0x55c159d61760)
-06/08/2020 18:19:46 (Std) 	Created WindowRendererFactory for 'Core/ScrollablePane' WindowRenderers.
-06/08/2020 18:19:46 (Std) 	WindowRendererFactory 'Core/ScrollablePane' added. (0x55c159e983e0)
-06/08/2020 18:19:46 (Std) 	Created WindowRendererFactory for 'Core/Scrollbar' WindowRenderers.
-06/08/2020 18:19:46 (Std) 	WindowRendererFactory 'Core/Scrollbar' added. (0x55c159e984a0)
-06/08/2020 18:19:46 (Std) 	Created WindowRendererFactory for 'Core/Slider' WindowRenderers.
-06/08/2020 18:19:46 (Std) 	WindowRendererFactory 'Core/Slider' added. (0x55c159e98560)
-06/08/2020 18:19:46 (Std) 	Created WindowRendererFactory for 'Core/Static' WindowRenderers.
-06/08/2020 18:19:46 (Std) 	WindowRendererFactory 'Core/Static' added. (0x55c159e987e0)
-06/08/2020 18:19:46 (Std) 	Created WindowRendererFactory for 'Core/StaticImage' WindowRenderers.
-06/08/2020 18:19:46 (Std) 	WindowRendererFactory 'Core/StaticImage' added. (0x55c159e988a0)
-06/08/2020 18:19:46 (Std) 	Created WindowRendererFactory for 'Core/StaticText' WindowRenderers.
-06/08/2020 18:19:46 (Std) 	WindowRendererFactory 'Core/StaticText' added. (0x55c159e98b50)
-06/08/2020 18:19:46 (Std) 	Created WindowRendererFactory for 'Core/TabButton' WindowRenderers.
-06/08/2020 18:19:46 (Std) 	WindowRendererFactory 'Core/TabButton' added. (0x55c159eae550)
-06/08/2020 18:19:46 (Std) 	Created WindowRendererFactory for 'Core/TabControl' WindowRenderers.
-06/08/2020 18:19:46 (Std) 	WindowRendererFactory 'Core/TabControl' added. (0x55c159eae610)
-06/08/2020 18:19:46 (Std) 	Created WindowRendererFactory for 'Core/Titlebar' WindowRenderers.
-06/08/2020 18:19:46 (Std) 	WindowRendererFactory 'Core/Titlebar' added. (0x55c159eae890)
-06/08/2020 18:19:46 (Std) 	Created WindowRendererFactory for 'Core/ToggleButton' WindowRenderers.
-06/08/2020 18:19:46 (Std) 	WindowRendererFactory 'Core/ToggleButton' added. (0x55c159eae950)
-06/08/2020 18:19:46 (Std) 	Created WindowRendererFactory for 'Core/Tooltip' WindowRenderers.
-06/08/2020 18:19:46 (Std) 	WindowRendererFactory 'Core/Tooltip' added. (0x55c159eaea10)
-06/08/2020 18:19:46 (Std) 	Created WindowRendererFactory for 'Core/ItemListbox' WindowRenderers.
-06/08/2020 18:19:46 (Std) 	WindowRendererFactory 'Core/ItemListbox' added. (0x55c159eaec90)
-06/08/2020 18:19:46 (Std) 	Created WindowRendererFactory for 'Core/Tree' WindowRenderers.
-06/08/2020 18:19:46 (Std) 	WindowRendererFactory 'Core/Tree' added. (0x55c159eaed50)
-06/08/2020 18:19:46 (Std) 	Creating falagard mapping for type 'WindowsLook/Label' using base type 'DefaultWindow', window renderer 'Core/Default' Look'N'Feel 'WindowsLook/Label' and RenderEffect ''. (0x7ffe6f0b67c0)
-06/08/2020 18:19:46 (Std) 	Creating falagard mapping for type 'WindowsLook/Button' using base type 'CEGUI/PushButton', window renderer 'Core/Button' Look'N'Feel 'WindowsLook/Button' and RenderEffect ''. (0x7ffe6f0b67c0)
-06/08/2020 18:19:46 (Std) 	Creating falagard mapping for type 'WindowsLook/Checkbox' using base type 'CEGUI/ToggleButton', window renderer 'Core/ToggleButton' Look'N'Feel 'WindowsLook/Checkbox' and RenderEffect ''. (0x7ffe6f0b67c0)
-06/08/2020 18:19:46 (Std) 	Creating falagard mapping for type 'WindowsLook/IconButton' using base type 'CEGUI/PushButton', window renderer 'Core/Button' Look'N'Feel 'WindowsLook/IconButton' and RenderEffect ''. (0x7ffe6f0b67c0)
-06/08/2020 18:19:46 (Std) 	Creating falagard mapping for type 'WindowsLook/RadioButton' using base type 'CEGUI/RadioButton', window renderer 'Core/ToggleButton' Look'N'Feel 'WindowsLook/RadioButton' and RenderEffect ''. (0x7ffe6f0b67c0)
-06/08/2020 18:19:46 (Std) 	Creating falagard mapping for type 'WindowsLook/FrameWindow' using base type 'CEGUI/FrameWindow', window renderer 'Core/FrameWindow' Look'N'Feel 'WindowsLook/FrameWindow' and RenderEffect ''. (0x7ffe6f0b67c0)
-06/08/2020 18:19:46 (Std) 	Creating falagard mapping for type 'WindowsLook/Titlebar' using base type 'CEGUI/Titlebar', window renderer 'Core/Titlebar' Look'N'Feel 'WindowsLook/Titlebar' and RenderEffect ''. (0x7ffe6f0b67c0)
-06/08/2020 18:19:46 (Std) 	Creating falagard mapping for type 'WindowsLook/SystemButton' using base type 'CEGUI/PushButton', window renderer 'Core/Button' Look'N'Feel 'WindowsLook/SystemButton' and RenderEffect ''. (0x7ffe6f0b67c0)
-06/08/2020 18:19:46 (Std) 	Creating falagard mapping for type 'WindowsLook/Editbox' using base type 'CEGUI/Editbox', window renderer 'Core/Editbox' Look'N'Feel 'WindowsLook/Editbox' and RenderEffect ''. (0x7ffe6f0b67c0)
-06/08/2020 18:19:46 (Std) 	Creating falagard mapping for type 'WindowsLook/MultiLineEditbox' using base type 'CEGUI/MultiLineEditbox', window renderer 'Core/MultiLineEditbox' Look'N'Feel 'WindowsLook/MultiLineEditbox' and RenderEffect ''. (0x7ffe6f0b67c0)
-06/08/2020 18:19:46 (Std) 	Creating falagard mapping for type 'WindowsLook/Menubar' using base type 'CEGUI/Menubar', window renderer 'Core/Menubar' Look'N'Feel 'WindowsLook/Menubar' and RenderEffect ''. (0x7ffe6f0b67c0)
-06/08/2020 18:19:46 (Std) 	Creating falagard mapping for type 'WindowsLook/PopupMenu' using base type 'CEGUI/PopupMenu', window renderer 'Core/PopupMenu' Look'N'Feel 'WindowsLook/PopupMenu' and RenderEffect ''. (0x7ffe6f0b67c0)
-06/08/2020 18:19:46 (Std) 	Creating falagard mapping for type 'WindowsLook/MenuItem' using base type 'CEGUI/MenuItem', window renderer 'Core/MenuItem' Look'N'Feel 'WindowsLook/MenuItem' and RenderEffect ''. (0x7ffe6f0b67c0)
-06/08/2020 18:19:46 (Std) 	Creating falagard mapping for type 'WindowsLook/ProgressBar' using base type 'CEGUI/ProgressBar', window renderer 'Core/ProgressBar' Look'N'Feel 'WindowsLook/ProgressBar' and RenderEffect ''. (0x7ffe6f0b67c0)
-06/08/2020 18:19:46 (Std) 	Creating falagard mapping for type 'WindowsLook/VerticalScrollbar' using base type 'CEGUI/Scrollbar', window renderer 'Core/Scrollbar' Look'N'Feel 'WindowsLook/VerticalScrollbar' and RenderEffect ''. (0x7ffe6f0b67c0)
-06/08/2020 18:19:46 (Std) 	Creating falagard mapping for type 'WindowsLook/HorizontalScrollbar' using base type 'CEGUI/Scrollbar', window renderer 'Core/Scrollbar' Look'N'Feel 'WindowsLook/HorizontalScrollbar' and RenderEffect ''. (0x7ffe6f0b67c0)
-06/08/2020 18:19:46 (Std) 	Creating falagard mapping for type 'WindowsLook/VerticalScrollbarThumb' using base type 'CEGUI/Thumb', window renderer 'Core/Button' Look'N'Feel 'WindowsLook/VerticalScrollbarThumb' and RenderEffect ''. (0x7ffe6f0b67c0)
-06/08/2020 18:19:46 (Std) 	Creating falagard mapping for type 'WindowsLook/HorizontalScrollbarThumb' using base type 'CEGUI/Thumb', window renderer 'Core/Button' Look'N'Feel 'WindowsLook/HorizontalScrollbarThumb' and RenderEffect ''. (0x7ffe6f0b67c0)
-06/08/2020 18:19:46 (Std) 	Creating falagard mapping for type 'WindowsLook/TabButton' using base type 'CEGUI/TabButton', window renderer 'Core/TabButton' Look'N'Feel 'WindowsLook/TabButton' and RenderEffect ''. (0x7ffe6f0b67c0)
-06/08/2020 18:19:46 (Std) 	Creating falagard mapping for type 'WindowsLook/TabControl' using base type 'CEGUI/TabControl', window renderer 'Core/TabControl' Look'N'Feel 'WindowsLook/TabControl' and RenderEffect ''. (0x7ffe6f0b67c0)
-06/08/2020 18:19:46 (Std) 	Creating falagard mapping for type 'WindowsLook/TabContentPane' using base type 'DefaultWindow', window renderer 'Core/Default' Look'N'Feel 'WindowsLook/TabContentPane' and RenderEffect ''. (0x7ffe6f0b67c0)
-06/08/2020 18:19:46 (Std) 	Creating falagard mapping for type 'WindowsLook/TabButtonPane' using base type 'DefaultWindow', window renderer 'Core/Default' Look'N'Feel 'WindowsLook/TabButtonPane' and RenderEffect ''. (0x7ffe6f0b67c0)
-06/08/2020 18:19:46 (Std) 	Creating falagard mapping for type 'WindowsLook/ComboDropList' using base type 'CEGUI/ComboDropList', window renderer 'Core/Listbox' Look'N'Feel 'WindowsLook/ComboDropList' and RenderEffect ''. (0x7ffe6f0b67c0)
-06/08/2020 18:19:46 (Std) 	Creating falagard mapping for type 'WindowsLook/Combobox' using base type 'CEGUI/Combobox', window renderer 'Core/Default' Look'N'Feel 'WindowsLook/Combobox' and RenderEffect ''. (0x7ffe6f0b67c0)
-06/08/2020 18:19:46 (Std) 	Creating falagard mapping for type 'WindowsLook/Listbox' using base type 'CEGUI/Listbox', window renderer 'Core/Listbox' Look'N'Feel 'WindowsLook/Listbox' and RenderEffect ''. (0x7ffe6f0b67c0)
-06/08/2020 18:19:46 (Std) 	Creating falagard mapping for type 'WindowsLook/ListHeader' using base type 'CEGUI/ListHeader', window renderer 'Core/ListHeader' Look'N'Feel 'WindowsLook/ListHeader' and RenderEffect ''. (0x7ffe6f0b67c0)
-06/08/2020 18:19:46 (Std) 	Creating falagard mapping for type 'WindowsLook/ListHeaderSegment' using base type 'CEGUI/ListHeaderSegment', window renderer 'Core/ListHeaderSegment' Look'N'Feel 'WindowsLook/ListHeaderSegment' and RenderEffect ''. (0x7ffe6f0b67c0)
-06/08/2020 18:19:46 (Std) 	Creating falagard mapping for type 'WindowsLook/MultiColumnList' using base type 'CEGUI/MultiColumnList', window renderer 'Core/MultiColumnList' Look'N'Feel 'WindowsLook/MultiColumnList' and RenderEffect ''. (0x7ffe6f0b67c0)
-06/08/2020 18:19:46 (Std) 	Creating falagard mapping for type 'WindowsLook/Slider' using base type 'CEGUI/Slider', window renderer 'Core/Slider' Look'N'Feel 'WindowsLook/Slider' and RenderEffect ''. (0x7ffe6f0b67c0)
-06/08/2020 18:19:46 (Std) 	Creating falagard mapping for type 'WindowsLook/SliderThumb' using base type 'CEGUI/Thumb', window renderer 'Core/Button' Look'N'Feel 'WindowsLook/SliderThumb' and RenderEffect ''. (0x7ffe6f0b67c0)
-06/08/2020 18:19:46 (Std) 	Creating falagard mapping for type 'WindowsLook/ScrollablePane' using base type 'CEGUI/ScrollablePane', window renderer 'Core/ScrollablePane' Look'N'Feel 'WindowsLook/ScrollablePane' and RenderEffect ''. (0x7ffe6f0b67c0)
-06/08/2020 18:19:46 (Std) 	Creating falagard mapping for type 'WindowsLook/Spinner' using base type 'CEGUI/Spinner', window renderer 'Core/Default' Look'N'Feel 'WindowsLook/Spinner' and RenderEffect ''. (0x7ffe6f0b67c0)
-06/08/2020 18:19:46 (Std) 	Creating falagard mapping for type 'WindowsLook/Tooltip' using base type 'CEGUI/Tooltip', window renderer 'Core/Tooltip' Look'N'Feel 'WindowsLook/Tooltip' and RenderEffect ''. (0x7ffe6f0b67c0)
-06/08/2020 18:19:46 (Std) 	Creating falagard mapping for type 'WindowsLook/Static' using base type 'DefaultWindow', window renderer 'Core/Static' Look'N'Feel 'WindowsLook/Static' and RenderEffect ''. (0x7ffe6f0b67c0)
-06/08/2020 18:19:46 (Std) 	Creating falagard mapping for type 'WindowsLook/StaticImage' using base type 'DefaultWindow', window renderer 'Core/StaticImage' Look'N'Feel 'WindowsLook/StaticImage' and RenderEffect ''. (0x7ffe6f0b67c0)
-06/08/2020 18:19:46 (Std) 	Creating falagard mapping for type 'WindowsLook/StaticText' using base type 'DefaultWindow', window renderer 'Core/StaticText' Look'N'Feel 'WindowsLook/StaticText' and RenderEffect ''. (0x7ffe6f0b67c0)
-06/08/2020 18:19:46 (Std) 	Creating falagard mapping for type 'WindowsLook/ItemListbox' using base type 'CEGUI/ItemListbox', window renderer 'Core/ItemListbox' Look'N'Feel 'WindowsLook/ItemListbox' and RenderEffect ''. (0x7ffe6f0b67c0)
-06/08/2020 18:19:46 (Std) 	Creating falagard mapping for type 'WindowsLook/ListboxItem' using base type 'CEGUI/ItemEntry', window renderer 'Core/ItemEntry' Look'N'Feel 'WindowsLook/ListboxItem' and RenderEffect ''. (0x7ffe6f0b67c0)
-06/08/2020 18:19:46 (Std) 	[OpenGLRenderer] Created texture: _ogl_tt_tex_0
-06/08/2020 18:19:46 (Std) 	[OpenGLRenderer] Created texture: _ogl_tt_tex_1
-06/08/2020 18:19:46 (Std) 	[OpenGLRenderer] Created texture: _ogl_tt_tex_2
-06/08/2020 18:19:46 (Std) 	[OpenGLRenderer] Created texture: _ogl_tt_tex_3
-06/08/2020 18:19:46 (Std) 	[OpenGLRenderer] Created texture: _ogl_tt_tex_4
-06/08/2020 18:19:46 (Std) 	[OpenGLRenderer] Created texture: _ogl_tt_tex_5
-06/08/2020 18:19:46 (Std) 	[OpenGLRenderer] Created texture: _ogl_tt_tex_6
-06/08/2020 18:19:46 (Std) 	[OpenGLRenderer] Created texture: _ogl_tt_tex_7
-06/08/2020 18:19:46 (Std) 	[OpenGLRenderer] Created texture: _ogl_tt_tex_8
-06/08/2020 18:19:46 (Std) 	[OpenGLRenderer] Created texture: _ogl_tt_tex_9
-06/08/2020 18:19:46 (Std) 	[OpenGLRenderer] Created texture: _ogl_tt_tex_10
-06/08/2020 18:19:46 (Std) 	[OpenGLRenderer] Created texture: _ogl_tt_tex_11
-06/08/2020 18:19:46 (Std) 	[OpenGLRenderer] Created texture: _ogl_tt_tex_12
-06/08/2020 18:19:46 (Std) 	[OpenGLRenderer] Created texture: DejaVuSans-10-NoScale_auto_glyph_images_32
-06/08/2020 18:20:03 (Std) 	[OpenGLRenderer] Created texture: DejaVuSans-14-NoScale_auto_glyph_images_32
+08/08/2020 18:25:02 (Std) 	CEGUI::Logger singleton created. (0x5581a40c99f0)
+08/08/2020 18:25:02 (Std) 	
+08/08/2020 18:25:02 (Std) 	********************************************************************************
+08/08/2020 18:25:02 (Std) 	* Important:                                                                   *
+08/08/2020 18:25:02 (Std) 	*     To get support at the CEGUI forums, you must post _at least_ the section *
+08/08/2020 18:25:02 (Std) 	*     of this log file indicated below.  Failure to do this will result in no  *
+08/08/2020 18:25:02 (Std) 	*     support being given; please do not waste our time.                       *
+08/08/2020 18:25:02 (Std) 	********************************************************************************
+08/08/2020 18:25:02 (Std) 	********************************************************************************
+08/08/2020 18:25:02 (Std) 	* -------- START OF ESSENTIAL SECTION TO BE POSTED ON THE FORUM       -------- *
+08/08/2020 18:25:02 (Std) 	********************************************************************************
+08/08/2020 18:25:02 (Std) 	---- Version: 0.8.7 (Build: Feb 19 2020 Debug GNU/Linux g++ 9.2.1 20200203 64 bit) ----
+08/08/2020 18:25:02 (Std) 	---- Renderer module is: CEGUI::OpenGL3Renderer - Official OpenGL 3.2 core based renderer module.  TextureTarget support enabled via FBO OGL 3.2 core implementation. ----
+08/08/2020 18:25:02 (Std) 	---- XML Parser module is: CEGUI::ExpatParser - Official expat based parser module for CEGUI ----
+08/08/2020 18:25:02 (Std) 	---- Image Codec module is: SILLYImageCodec - Official SILLY based image codec ----
+08/08/2020 18:25:02 (Std) 	---- Scripting module is: None ----
+08/08/2020 18:25:02 (Std) 	********************************************************************************
+08/08/2020 18:25:02 (Std) 	* -------- END OF ESSENTIAL SECTION TO BE POSTED ON THE FORUM         -------- *
+08/08/2020 18:25:02 (Std) 	********************************************************************************
+08/08/2020 18:25:02 (Std) 	
+08/08/2020 18:25:02 (Std) 	---- Begining CEGUI System initialisation ----
+08/08/2020 18:25:02 (Std) 	[CEGUI::ImageManager] Singleton created (0x5581a485cd80)
+08/08/2020 18:25:02 (Std) 	[CEGUI::ImageManager] Registered Image type: BasicImage
+08/08/2020 18:25:02 (Std) 	CEGUI::FontManager singleton created. (0x5581a485edb0)
+08/08/2020 18:25:02 (Std) 	CEGUI::WindowFactoryManager singleton created
+08/08/2020 18:25:02 (Std) 	CEGUI::WindowManager singleton created (0x5581a4858d90)
+08/08/2020 18:25:02 (Std) 	CEGUI::SchemeManager singleton created. (0x5581a485eee0)
+08/08/2020 18:25:02 (Std) 	CEGUI::GlobalEventSet singleton created. (0x5581a485a080)
+08/08/2020 18:25:02 (Std) 	CEGUI::AnimationManager singleton created (0x5581a485e9b0)
+08/08/2020 18:25:02 (Std) 	CEGUI::WidgetLookManager singleton created. (0x5581a485a2f0)
+08/08/2020 18:25:02 (Std) 	CEGUI::WindowRendererManager singleton created (0x5581a4858ef0)
+08/08/2020 18:25:02 (Std) 	CEGUI::RenderEffectManager singleton created (0x5581a485ebf0)
+08/08/2020 18:25:02 (Std) 	Created WindowFactory for 'DefaultWindow' windows.
+08/08/2020 18:25:02 (Std) 	WindowFactory for 'DefaultWindow' windows added. (0x5581a4860bf0)
+08/08/2020 18:25:02 (Std) 	Created WindowFactory for 'DragContainer' windows.
+08/08/2020 18:25:02 (Std) 	WindowFactory for 'DragContainer' windows added. (0x5581a4862140)
+08/08/2020 18:25:02 (Std) 	Created WindowFactory for 'ScrolledContainer' windows.
+08/08/2020 18:25:02 (Std) 	WindowFactory for 'ScrolledContainer' windows added. (0x5581a4862300)
+08/08/2020 18:25:02 (Std) 	Created WindowFactory for 'ClippedContainer' windows.
+08/08/2020 18:25:02 (Std) 	WindowFactory for 'ClippedContainer' windows added. (0x5581a48623c0)
+08/08/2020 18:25:02 (Std) 	Created WindowFactory for 'CEGUI/PushButton' windows.
+08/08/2020 18:25:02 (Std) 	WindowFactory for 'CEGUI/PushButton' windows added. (0x5581a4862480)
+08/08/2020 18:25:02 (Std) 	Created WindowFactory for 'CEGUI/RadioButton' windows.
+08/08/2020 18:25:02 (Std) 	WindowFactory for 'CEGUI/RadioButton' windows added. (0x5581a4862a40)
+08/08/2020 18:25:02 (Std) 	Created WindowFactory for 'CEGUI/Combobox' windows.
+08/08/2020 18:25:02 (Std) 	WindowFactory for 'CEGUI/Combobox' windows added. (0x5581a4862be0)
+08/08/2020 18:25:02 (Std) 	Created WindowFactory for 'CEGUI/ComboDropList' windows.
+08/08/2020 18:25:02 (Std) 	WindowFactory for 'CEGUI/ComboDropList' windows added. (0x5581a4862d80)
+08/08/2020 18:25:02 (Std) 	Created WindowFactory for 'CEGUI/Editbox' windows.
+08/08/2020 18:25:02 (Std) 	WindowFactory for 'CEGUI/Editbox' windows added. (0x5581a4863270)
+08/08/2020 18:25:02 (Std) 	Created WindowFactory for 'CEGUI/FrameWindow' windows.
+08/08/2020 18:25:02 (Std) 	WindowFactory for 'CEGUI/FrameWindow' windows added. (0x5581a4863330)
+08/08/2020 18:25:02 (Std) 	Created WindowFactory for 'CEGUI/ItemEntry' windows.
+08/08/2020 18:25:02 (Std) 	WindowFactory for 'CEGUI/ItemEntry' windows added. (0x5581a48633f0)
+08/08/2020 18:25:02 (Std) 	Created WindowFactory for 'CEGUI/Listbox' windows.
+08/08/2020 18:25:02 (Std) 	WindowFactory for 'CEGUI/Listbox' windows added. (0x5581a48634b0)
+08/08/2020 18:25:02 (Std) 	Created WindowFactory for 'CEGUI/ListHeader' windows.
+08/08/2020 18:25:02 (Std) 	WindowFactory for 'CEGUI/ListHeader' windows added. (0x5581a4863810)
+08/08/2020 18:25:02 (Std) 	Created WindowFactory for 'CEGUI/ListHeaderSegment' windows.
+08/08/2020 18:25:02 (Std) 	WindowFactory for 'CEGUI/ListHeaderSegment' windows added. (0x5581a4863a40)
+08/08/2020 18:25:02 (Std) 	Created WindowFactory for 'CEGUI/Menubar' windows.
+08/08/2020 18:25:02 (Std) 	WindowFactory for 'CEGUI/Menubar' windows added. (0x5581a4863b00)
+08/08/2020 18:25:02 (Std) 	Created WindowFactory for 'CEGUI/PopupMenu' windows.
+08/08/2020 18:25:02 (Std) 	WindowFactory for 'CEGUI/PopupMenu' windows added. (0x5581a4863d80)
+08/08/2020 18:25:02 (Std) 	Created WindowFactory for 'CEGUI/MenuItem' windows.
+08/08/2020 18:25:02 (Std) 	WindowFactory for 'CEGUI/MenuItem' windows added. (0x5581a4863f40)
+08/08/2020 18:25:02 (Std) 	Created WindowFactory for 'CEGUI/MultiColumnList' windows.
+08/08/2020 18:25:02 (Std) 	WindowFactory for 'CEGUI/MultiColumnList' windows added. (0x5581a4864000)
+08/08/2020 18:25:02 (Std) 	Created WindowFactory for 'CEGUI/MultiLineEditbox' windows.
+08/08/2020 18:25:02 (Std) 	WindowFactory for 'CEGUI/MultiLineEditbox' windows added. (0x5581a4864440)
+08/08/2020 18:25:02 (Std) 	Created WindowFactory for 'CEGUI/ProgressBar' windows.
+08/08/2020 18:25:02 (Std) 	WindowFactory for 'CEGUI/ProgressBar' windows added. (0x5581a4864500)
+08/08/2020 18:25:02 (Std) 	Created WindowFactory for 'CEGUI/ScrollablePane' windows.
+08/08/2020 18:25:02 (Std) 	WindowFactory for 'CEGUI/ScrollablePane' windows added. (0x5581a48645c0)
+08/08/2020 18:25:02 (Std) 	Created WindowFactory for 'CEGUI/Scrollbar' windows.
+08/08/2020 18:25:02 (Std) 	WindowFactory for 'CEGUI/Scrollbar' windows added. (0x5581a4864680)
+08/08/2020 18:25:02 (Std) 	Created WindowFactory for 'CEGUI/Slider' windows.
+08/08/2020 18:25:02 (Std) 	WindowFactory for 'CEGUI/Slider' windows added. (0x5581a48649e0)
+08/08/2020 18:25:02 (Std) 	Created WindowFactory for 'CEGUI/Spinner' windows.
+08/08/2020 18:25:02 (Std) 	WindowFactory for 'CEGUI/Spinner' windows added. (0x5581a4864aa0)
+08/08/2020 18:25:02 (Std) 	Created WindowFactory for 'CEGUI/TabButton' windows.
+08/08/2020 18:25:02 (Std) 	WindowFactory for 'CEGUI/TabButton' windows added. (0x5581a4864e30)
+08/08/2020 18:25:02 (Std) 	Created WindowFactory for 'CEGUI/TabControl' windows.
+08/08/2020 18:25:02 (Std) 	WindowFactory for 'CEGUI/TabControl' windows added. (0x5581a4864ef0)
+08/08/2020 18:25:02 (Std) 	Created WindowFactory for 'CEGUI/Thumb' windows.
+08/08/2020 18:25:02 (Std) 	WindowFactory for 'CEGUI/Thumb' windows added. (0x5581a4864fb0)
+08/08/2020 18:25:02 (Std) 	Created WindowFactory for 'CEGUI/Titlebar' windows.
+08/08/2020 18:25:02 (Std) 	WindowFactory for 'CEGUI/Titlebar' windows added. (0x5581a4865310)
+08/08/2020 18:25:02 (Std) 	Created WindowFactory for 'CEGUI/ToggleButton' windows.
+08/08/2020 18:25:02 (Std) 	WindowFactory for 'CEGUI/ToggleButton' windows added. (0x5581a4865670)
+08/08/2020 18:25:02 (Std) 	Created WindowFactory for 'CEGUI/Tooltip' windows.
+08/08/2020 18:25:02 (Std) 	WindowFactory for 'CEGUI/Tooltip' windows added. (0x5581a4865730)
+08/08/2020 18:25:02 (Std) 	Created WindowFactory for 'CEGUI/ItemListbox' windows.
+08/08/2020 18:25:02 (Std) 	WindowFactory for 'CEGUI/ItemListbox' windows added. (0x5581a48657f0)
+08/08/2020 18:25:02 (Std) 	Created WindowFactory for 'CEGUI/GroupBox' windows.
+08/08/2020 18:25:02 (Std) 	WindowFactory for 'CEGUI/GroupBox' windows added. (0x5581a48658b0)
+08/08/2020 18:25:02 (Std) 	Created WindowFactory for 'CEGUI/Tree' windows.
+08/08/2020 18:25:02 (Std) 	WindowFactory for 'CEGUI/Tree' windows added. (0x5581a4865970)
+08/08/2020 18:25:02 (Std) 	Created WindowFactory for 'LayoutCell' windows.
+08/08/2020 18:25:02 (Std) 	WindowFactory for 'LayoutCell' windows added. (0x5581a4865db0)
+08/08/2020 18:25:02 (Std) 	Created WindowFactory for 'HorizontalLayoutContainer' windows.
+08/08/2020 18:25:02 (Std) 	WindowFactory for 'HorizontalLayoutContainer' windows added. (0x5581a4865e70)
+08/08/2020 18:25:02 (Std) 	Created WindowFactory for 'VerticalLayoutContainer' windows.
+08/08/2020 18:25:02 (Std) 	WindowFactory for 'VerticalLayoutContainer' windows added. (0x5581a48660f0)
+08/08/2020 18:25:02 (Std) 	Created WindowFactory for 'GridLayoutContainer' windows.
+08/08/2020 18:25:02 (Std) 	WindowFactory for 'GridLayoutContainer' windows added. (0x5581a48661b0)
+08/08/2020 18:25:02 (Std) 	CEGUI::System singleton created. (0x5581a40bd2c0)
+08/08/2020 18:25:02 (Std) 	---- CEGUI System initialisation completed ----
+08/08/2020 18:25:02 (Std) 	
+08/08/2020 18:25:02 (Std) 	Started creation of Scheme from XML specification:
+08/08/2020 18:25:02 (Std) 	---- CEGUI GUIScheme name: WindowsLookSkin
+08/08/2020 18:25:02 (Std) 	[ImageManager] Started creation of Imageset from XML specification:
+08/08/2020 18:25:02 (Std) 	[ImageManager] ---- CEGUI Imageset name: WindowsLook
+08/08/2020 18:25:02 (Std) 	[ImageManager] ---- Source texture file: WindowsLook.png
+08/08/2020 18:25:02 (Std) 	[ImageManager] ---- Source texture resource group: (Default)
+08/08/2020 18:25:02 (Std) 	[OpenGLRenderer] Created texture: WindowsLook
+08/08/2020 18:25:02 (Std) 	[ImageManager] Created image: 'WindowsLook/Background' (0x5581a498aba0) of type: BasicImage
+08/08/2020 18:25:02 (Std) 	[ImageManager] Created image: 'WindowsLook/WindowFrameLeft' (0x5581a4915360) of type: BasicImage
+08/08/2020 18:25:02 (Std) 	[ImageManager] Created image: 'WindowsLook/WindowFrameRight' (0x5581a4914e20) of type: BasicImage
+08/08/2020 18:25:02 (Std) 	[ImageManager] Created image: 'WindowsLook/WindowFrameTop' (0x5581a486f900) of type: BasicImage
+08/08/2020 18:25:02 (Std) 	[ImageManager] Created image: 'WindowsLook/WindowFrameBottom' (0x5581a490fa10) of type: BasicImage
+08/08/2020 18:25:02 (Std) 	[ImageManager] Created image: 'WindowsLook/WindowFrameTopLeft' (0x5581a4967290) of type: BasicImage
+08/08/2020 18:25:02 (Std) 	[ImageManager] Created image: 'WindowsLook/WindowFrameTopRight' (0x5581a49673b0) of type: BasicImage
+08/08/2020 18:25:02 (Std) 	[ImageManager] Created image: 'WindowsLook/WindowFrameBottomLeft' (0x5581a49674d0) of type: BasicImage
+08/08/2020 18:25:02 (Std) 	[ImageManager] Created image: 'WindowsLook/WindowFrameBottomRight' (0x5581a48d1190) of type: BasicImage
+08/08/2020 18:25:02 (Std) 	[ImageManager] Created image: 'WindowsLook/ButtonNormalLeft' (0x5581a48d12b0) of type: BasicImage
+08/08/2020 18:25:02 (Std) 	[ImageManager] Created image: 'WindowsLook/ButtonNormalRight' (0x5581a4914580) of type: BasicImage
+08/08/2020 18:25:02 (Std) 	[ImageManager] Created image: 'WindowsLook/ButtonNormalTop' (0x5581a4910890) of type: BasicImage
+08/08/2020 18:25:02 (Std) 	[ImageManager] Created image: 'WindowsLook/ButtonNormalBottom' (0x5581a4874050) of type: BasicImage
+08/08/2020 18:25:02 (Std) 	[ImageManager] Created image: 'WindowsLook/ButtonNormalTopLeft' (0x5581a495d6a0) of type: BasicImage
+08/08/2020 18:25:02 (Std) 	[ImageManager] Created image: 'WindowsLook/ButtonNormalTopRight' (0x5581a495d8b0) of type: BasicImage
+08/08/2020 18:25:02 (Std) 	[ImageManager] Created image: 'WindowsLook/ButtonNormalBottomLeft' (0x5581a495dac0) of type: BasicImage
+08/08/2020 18:25:02 (Std) 	[ImageManager] Created image: 'WindowsLook/ButtonNormalBottomRight' (0x5581a495dbe0) of type: BasicImage
+08/08/2020 18:25:02 (Std) 	[ImageManager] Created image: 'WindowsLook/ButtonPushedLeft' (0x5581a42a0550) of type: BasicImage
+08/08/2020 18:25:02 (Std) 	[ImageManager] Created image: 'WindowsLook/ButtonPushedRight' (0x5581a42a0880) of type: BasicImage
+08/08/2020 18:25:02 (Std) 	[ImageManager] Created image: 'WindowsLook/ButtonPushedTop' (0x5581a42a0760) of type: BasicImage
+08/08/2020 18:25:02 (Std) 	[ImageManager] Created image: 'WindowsLook/ButtonPushedBottom' (0x5581a40c9e90) of type: BasicImage
+08/08/2020 18:25:02 (Std) 	[ImageManager] Created image: 'WindowsLook/ButtonPushedTopLeft' (0x5581a4963d30) of type: BasicImage
+08/08/2020 18:25:02 (Std) 	[ImageManager] Created image: 'WindowsLook/ButtonPushedTopRight' (0x5581a4870d50) of type: BasicImage
+08/08/2020 18:25:02 (Std) 	[ImageManager] Created image: 'WindowsLook/ButtonPushedBottomLeft' (0x5581a4870f60) of type: BasicImage
+08/08/2020 18:25:02 (Std) 	[ImageManager] Created image: 'WindowsLook/ButtonPushedBottomRight' (0x5581a4871080) of type: BasicImage
+08/08/2020 18:25:02 (Std) 	[ImageManager] Created image: 'WindowsLook/ButtonHoverLeft' (0x5581a4871330) of type: BasicImage
+08/08/2020 18:25:02 (Std) 	[ImageManager] Created image: 'WindowsLook/ButtonHoverRight' (0x5581a4871700) of type: BasicImage
+08/08/2020 18:25:02 (Std) 	[ImageManager] Created image: 'WindowsLook/ButtonHoverTop' (0x5581a48715e0) of type: BasicImage
+08/08/2020 18:25:02 (Std) 	[ImageManager] Created image: 'WindowsLook/ButtonHoverBottom' (0x5581a4964060) of type: BasicImage
+08/08/2020 18:25:02 (Std) 	[ImageManager] Created image: 'WindowsLook/ButtonHoverTopLeft' (0x5581a49708a0) of type: BasicImage
+08/08/2020 18:25:02 (Std) 	[ImageManager] Created image: 'WindowsLook/ButtonHoverTopRight' (0x5581a49709c0) of type: BasicImage
+08/08/2020 18:25:02 (Std) 	[ImageManager] Created image: 'WindowsLook/ButtonHoverBottomLeft' (0x5581a4970bd0) of type: BasicImage
+08/08/2020 18:25:02 (Std) 	[ImageManager] Created image: 'WindowsLook/ButtonHoverBottomRight' (0x5581a4970de0) of type: BasicImage
+08/08/2020 18:25:02 (Std) 	[ImageManager] Created image: 'WindowsLook/EditFrameLeft' (0x5581a4970f00) of type: BasicImage
+08/08/2020 18:25:02 (Std) 	[ImageManager] Created image: 'WindowsLook/EditFrameRight' (0x5581a4971240) of type: BasicImage
+08/08/2020 18:25:02 (Std) 	[ImageManager] Created image: 'WindowsLook/EditFrameTop' (0x5581a4970530) of type: BasicImage
+08/08/2020 18:25:02 (Std) 	[ImageManager] Created image: 'WindowsLook/EditFrameBottom' (0x5581a496f0d0) of type: BasicImage
+08/08/2020 18:25:02 (Std) 	[ImageManager] Created image: 'WindowsLook/EditFrameTopLeft' (0x5581a496f380) of type: BasicImage
+08/08/2020 18:25:02 (Std) 	[ImageManager] Created image: 'WindowsLook/EditFrameTopRight' (0x5581a496f4a0) of type: BasicImage
+08/08/2020 18:25:02 (Std) 	[ImageManager] Created image: 'WindowsLook/EditFrameBottomLeft' (0x5581a496f6b0) of type: BasicImage
+08/08/2020 18:25:02 (Std) 	[ImageManager] Created image: 'WindowsLook/EditFrameBottomRight' (0x5581a496f8c0) of type: BasicImage
+08/08/2020 18:25:02 (Std) 	[ImageManager] Created image: 'WindowsLook/StaticFrameLeft' (0x5581a496fb60) of type: BasicImage
+08/08/2020 18:25:02 (Std) 	[ImageManager] Created image: 'WindowsLook/StaticFrameRight' (0x5581a4967980) of type: BasicImage
+08/08/2020 18:25:02 (Std) 	[ImageManager] Created image: 'WindowsLook/StaticFrameTop' (0x5581a4967d10) of type: BasicImage
+08/08/2020 18:25:02 (Std) 	[ImageManager] Created image: 'WindowsLook/StaticFrameBottom' (0x5581a4968100) of type: BasicImage
+08/08/2020 18:25:02 (Std) 	[ImageManager] Created image: 'WindowsLook/StaticFrameTopLeft' (0x5581a4968220) of type: BasicImage
+08/08/2020 18:25:02 (Std) 	[ImageManager] Created image: 'WindowsLook/StaticFrameTopRight' (0x5581a4968340) of type: BasicImage
+08/08/2020 18:25:02 (Std) 	[ImageManager] Created image: 'WindowsLook/StaticFrameBottomLeft' (0x5581a4968550) of type: BasicImage
+08/08/2020 18:25:02 (Std) 	[ImageManager] Created image: 'WindowsLook/StaticFrameBottomRight' (0x5581a49687f0) of type: BasicImage
+08/08/2020 18:25:02 (Std) 	[ImageManager] Created image: 'WindowsLook/CloseButtonNormal' (0x5581a4968910) of type: BasicImage
+08/08/2020 18:25:02 (Std) 	[ImageManager] Created image: 'WindowsLook/CloseButtonHover' (0x5581a4968c50) of type: BasicImage
+08/08/2020 18:25:02 (Std) 	[ImageManager] Created image: 'WindowsLook/CloseButtonPushed' (0x5581a4968f50) of type: BasicImage
+08/08/2020 18:25:02 (Std) 	[ImageManager] Created image: 'WindowsLook/TitlebarTopLeft' (0x5581a4969160) of type: BasicImage
+08/08/2020 18:25:02 (Std) 	[ImageManager] Created image: 'WindowsLook/TitlebarTopRight' (0x5581a4969370) of type: BasicImage
+08/08/2020 18:25:02 (Std) 	[ImageManager] Created image: 'WindowsLook/TitlebarBottomLeft' (0x5581a4969580) of type: BasicImage
+08/08/2020 18:25:02 (Std) 	[ImageManager] Created image: 'WindowsLook/TitlebarBottomRight' (0x5581a4871c70) of type: BasicImage
+08/08/2020 18:25:02 (Std) 	[ImageManager] Created image: 'WindowsLook/TitlebarLeft' (0x5581a4871e80) of type: BasicImage
+08/08/2020 18:25:02 (Std) 	[ImageManager] Created image: 'WindowsLook/TitlebarRight' (0x5581a4872270) of type: BasicImage
+08/08/2020 18:25:02 (Std) 	[ImageManager] Created image: 'WindowsLook/TitlebarTop' (0x5581a4872480) of type: BasicImage
+08/08/2020 18:25:02 (Std) 	[ImageManager] Created image: 'WindowsLook/TitlebarBottom' (0x5581a4872780) of type: BasicImage
+08/08/2020 18:25:02 (Std) 	[ImageManager] Created image: 'WindowsLook/TitlebarFill' (0x5581a48728a0) of type: BasicImage
+08/08/2020 18:25:02 (Std) 	[ImageManager] Created image: 'WindowsLook/CheckboxNormal' (0x5581a4872ab0) of type: BasicImage
+08/08/2020 18:25:02 (Std) 	[ImageManager] Created image: 'WindowsLook/CheckboxHover' (0x5581a4872cc0) of type: BasicImage
+08/08/2020 18:25:02 (Std) 	[ImageManager] Created image: 'WindowsLook/CheckboxMark' (0x5581a4872ed0) of type: BasicImage
+08/08/2020 18:25:02 (Std) 	[ImageManager] Created image: 'WindowsLook/RadioButtonNormal' (0x5581a48730e0) of type: BasicImage
+08/08/2020 18:25:02 (Std) 	[ImageManager] Created image: 'WindowsLook/RadioButtonHover' (0x5581a4873200) of type: BasicImage
+08/08/2020 18:25:02 (Std) 	[ImageManager] Created image: 'WindowsLook/RadioButtonMark' (0x5581a4873320) of type: BasicImage
+08/08/2020 18:25:02 (Std) 	[ImageManager] Created image: 'WindowsLook/SliderThumbNormal' (0x5581a4873530) of type: BasicImage
+08/08/2020 18:25:02 (Std) 	[ImageManager] Created image: 'WindowsLook/SliderThumbHover' (0x5581a4873740) of type: BasicImage
+08/08/2020 18:25:02 (Std) 	[ImageManager] Created image: 'WindowsLook/SliderTrackLeft' (0x5581a4873950) of type: BasicImage
+08/08/2020 18:25:02 (Std) 	[ImageManager] Created image: 'WindowsLook/SlidertrackMiddle' (0x5581a4910e70) of type: BasicImage
+08/08/2020 18:25:02 (Std) 	[ImageManager] Created image: 'WindowsLook/SliderTrackRight' (0x5581a4911080) of type: BasicImage
+08/08/2020 18:25:02 (Std) 	[ImageManager] Created image: 'WindowsLook/SliderTick' (0x5581a4911290) of type: BasicImage
+08/08/2020 18:25:02 (Std) 	[ImageManager] Created image: 'WindowsLook/HeaderMainBrush' (0x5581a4911680) of type: BasicImage
+08/08/2020 18:25:02 (Std) 	[ImageManager] Created image: 'WindowsLook/HeaderBottomEdge' (0x5581a49117a0) of type: BasicImage
+08/08/2020 18:25:02 (Std) 	[ImageManager] Created image: 'WindowsLook/HeaderSplitter' (0x5581a49118c0) of type: BasicImage
+08/08/2020 18:25:02 (Std) 	[ImageManager] Created image: 'WindowsLook/VertScrollbarGrip' (0x5581a4911cb0) of type: BasicImage
+08/08/2020 18:25:02 (Std) 	[ImageManager] Created image: 'WindowsLook/HorzScrollbarGrip' (0x5581a4911dd0) of type: BasicImage
+08/08/2020 18:25:02 (Std) 	[ImageManager] Created image: 'WindowsLook/LargeLeftArrow' (0x5581a4911ef0) of type: BasicImage
+08/08/2020 18:25:02 (Std) 	[ImageManager] Created image: 'WindowsLook/LargeRightArrow' (0x5581a49122e0) of type: BasicImage
+08/08/2020 18:25:02 (Std) 	[ImageManager] Created image: 'WindowsLook/LargeUpArrow' (0x5581a4912400) of type: BasicImage
+08/08/2020 18:25:02 (Std) 	[ImageManager] Created image: 'WindowsLook/LargeDownArrow' (0x5581a4912700) of type: BasicImage
+08/08/2020 18:25:02 (Std) 	[ImageManager] Created image: 'WindowsLook/SmallLeftArrow' (0x5581a4912910) of type: BasicImage
+08/08/2020 18:25:02 (Std) 	[ImageManager] Created image: 'WindowsLook/SmallRightArrow' (0x5581a4912b20) of type: BasicImage
+08/08/2020 18:25:02 (Std) 	[ImageManager] Created image: 'WindowsLook/SmallUpArrow' (0x5581a4912c40) of type: BasicImage
+08/08/2020 18:25:02 (Std) 	[ImageManager] Created image: 'WindowsLook/SmallDownArrow' (0x5581a4912f40) of type: BasicImage
+08/08/2020 18:25:02 (Std) 	[ImageManager] Created image: 'WindowsLook/EditBoxCaret' (0x5581a4913150) of type: BasicImage
+08/08/2020 18:25:02 (Std) 	[ImageManager] Created image: 'WindowsLook/MouseArrow' (0x5581a4969f60) of type: BasicImage
+08/08/2020 18:25:02 (Std) 	[ImageManager] Created image: 'WindowsLook/MouseMoveCursor' (0x5581a496a080) of type: BasicImage
+08/08/2020 18:25:02 (Std) 	[ImageManager] Created image: 'WindowsLook/MouseNoSoCursor' (0x5581a49134f0) of type: BasicImage
+08/08/2020 18:25:02 (Std) 	[ImageManager] Created image: 'WindowsLook/MouseEsWeCursor' (0x5581a496a4c0) of type: BasicImage
+08/08/2020 18:25:02 (Std) 	[ImageManager] Created image: 'WindowsLook/MouseNeSwCursor' (0x5581a496a6d0) of type: BasicImage
+08/08/2020 18:25:02 (Std) 	[ImageManager] Created image: 'WindowsLook/MouseNwSeCursor' (0x5581a496a8e0) of type: BasicImage
+08/08/2020 18:25:02 (Std) 	[ImageManager] Created image: 'WindowsLook/MouseTextBar' (0x5581a496aaf0) of type: BasicImage
+08/08/2020 18:25:02 (Std) 	[ImageManager] Created image: 'WindowsLook/TabHorizontalTopFiller' (0x5581a486f770) of type: BasicImage
+08/08/2020 18:25:02 (Std) 	[ImageManager] Created image: 'WindowsLook/TabHorizontalBottomFiller' (0x5581a4966df0) of type: BasicImage
+08/08/2020 18:25:02 (Std) 	[ImageManager] Created image: 'WindowsLook/TabContentPaneUpperLeft' (0x5581a495d420) of type: BasicImage
+08/08/2020 18:25:02 (Std) 	[ImageManager] Created image: 'WindowsLook/TabContentPaneTop' (0x5581a496aee0) of type: BasicImage
+08/08/2020 18:25:02 (Std) 	[ImageManager] Created image: 'WindowsLook/TabContentPaneUpperRight' (0x5581a496b120) of type: BasicImage
+08/08/2020 18:25:02 (Std) 	[ImageManager] Created image: 'WindowsLook/TabContentPaneLeft' (0x5581a496b000) of type: BasicImage
+08/08/2020 18:25:02 (Std) 	[ImageManager] Created image: 'WindowsLook/TabContentPaneMiddle' (0x5581a496b3d0) of type: BasicImage
+08/08/2020 18:25:02 (Std) 	[ImageManager] Created image: 'WindowsLook/TabContentPaneRight' (0x5581a496b990) of type: BasicImage
+08/08/2020 18:25:02 (Std) 	[ImageManager] Created image: 'WindowsLook/TabContentPaneLower' (0x5581a496bab0) of type: BasicImage
+08/08/2020 18:25:02 (Std) 	[ImageManager] Created image: 'WindowsLook/TabContentPaneLowerLeft' (0x5581a496be40) of type: BasicImage
+08/08/2020 18:25:02 (Std) 	[ImageManager] Created image: 'WindowsLook/TabContentPaneLowerRight' (0x5581a496c0f0) of type: BasicImage
+08/08/2020 18:25:02 (Std) 	[ImageManager] Created image: 'WindowsLook/TabButtonUpperLeftNormal' (0x5581a496c330) of type: BasicImage
+08/08/2020 18:25:02 (Std) 	[ImageManager] Created image: 'WindowsLook/TabButtonUpperNormal' (0x5581a496c210) of type: BasicImage
+08/08/2020 18:25:02 (Std) 	[ImageManager] Created image: 'WindowsLook/TabButtonUpperRightNormal' (0x5581a496c770) of type: BasicImage
+08/08/2020 18:25:02 (Std) 	[ImageManager] Created image: 'WindowsLook/TabButtonLeftNormal' (0x5581a496ca20) of type: BasicImage
+08/08/2020 18:25:02 (Std) 	[ImageManager] Created image: 'WindowsLook/TabButtonMiddleNormal' (0x5581a496cd60) of type: BasicImage
+08/08/2020 18:25:02 (Std) 	[ImageManager] Created image: 'WindowsLook/TabButtonRightNormal' (0x5581a496d190) of type: BasicImage
+08/08/2020 18:25:02 (Std) 	[ImageManager] Created image: 'WindowsLook/TabButtonLowerLeftNormal' (0x5581a496d2b0) of type: BasicImage
+08/08/2020 18:25:02 (Std) 	[ImageManager] Created image: 'WindowsLook/TabButtonLowerNormal' (0x5581a496d5e0) of type: BasicImage
+08/08/2020 18:25:02 (Std) 	[ImageManager] Created image: 'WindowsLook/TabButtonLowerRightNormal' (0x5581a496d790) of type: BasicImage
+08/08/2020 18:25:02 (Std) 	[ImageManager] Created image: 'WindowsLook/TabButtonUpperLeftSelected' (0x5581a496dbd0) of type: BasicImage
+08/08/2020 18:25:02 (Std) 	[ImageManager] Created image: 'WindowsLook/TabButtonUpperSelected' (0x5581a487b990) of type: BasicImage
+08/08/2020 18:25:02 (Std) 	[ImageManager] Created image: 'WindowsLook/TabButtonUpperRightSelected' (0x5581a487bc40) of type: BasicImage
+08/08/2020 18:25:02 (Std) 	[ImageManager] Created image: 'WindowsLook/TabButtonLeftSelected' (0x5581a487bef0) of type: BasicImage
+08/08/2020 18:25:02 (Std) 	[ImageManager] Created image: 'WindowsLook/TabButtonMiddleSelected' (0x5581a487c460) of type: BasicImage
+08/08/2020 18:25:02 (Std) 	[ImageManager] Created image: 'WindowsLook/TabButtonRightSelected' (0x5581a487c580) of type: BasicImage
+08/08/2020 18:25:02 (Std) 	[ImageManager] Created image: 'WindowsLook/TabButtonLowerLeftSelected' (0x5581a487ca80) of type: BasicImage
+08/08/2020 18:25:02 (Std) 	[ImageManager] Created image: 'WindowsLook/TabButtonLowerSelected' (0x5581a487c960) of type: BasicImage
+08/08/2020 18:25:02 (Std) 	[ImageManager] Created image: 'WindowsLook/TabButtonLowerRightSelected' (0x5581a487d020) of type: BasicImage
+08/08/2020 18:25:02 (Std) 	[ImageManager] Created image: 'WindowsLook/TabButtonScrollLeftNormal' (0x5581a487d370) of type: BasicImage
+08/08/2020 18:25:02 (Std) 	[ImageManager] Created image: 'WindowsLook/TabButtonScrollRightNormal' (0x5581a487d910) of type: BasicImage
+08/08/2020 18:25:02 (Std) 	[ImageManager] Created image: 'WindowsLook/TabButtonScrollLeftHover' (0x5581a487da30) of type: BasicImage
+08/08/2020 18:25:02 (Std) 	[ImageManager] Created image: 'WindowsLook/TabButtonScrollRightHover' (0x5581a487de80) of type: BasicImage
+08/08/2020 18:25:02 (Std) 	[ImageManager] Created image: 'WindowsLook/TooltipTopLeft' (0x5581a487e130) of type: BasicImage
+08/08/2020 18:25:02 (Std) 	[ImageManager] Created image: 'WindowsLook/TooltipTopRight' (0x5581a487e480) of type: BasicImage
+08/08/2020 18:25:02 (Std) 	[ImageManager] Created image: 'WindowsLook/TooltipBottomLeft' (0x5581a487e910) of type: BasicImage
+08/08/2020 18:25:02 (Std) 	[ImageManager] Created image: 'WindowsLook/TooltipBottomRight' (0x5581a487ea30) of type: BasicImage
+08/08/2020 18:25:02 (Std) 	[ImageManager] Created image: 'WindowsLook/TooltipLeftEdge' (0x5581a487ec40) of type: BasicImage
+08/08/2020 18:25:02 (Std) 	[ImageManager] Created image: 'WindowsLook/TooltipRightEdge' (0x5581a487ee50) of type: BasicImage
+08/08/2020 18:25:02 (Std) 	[ImageManager] Created image: 'WindowsLook/TooltipTopEdge' (0x5581a487f060) of type: BasicImage
+08/08/2020 18:25:02 (Std) 	[ImageManager] Created image: 'WindowsLook/TooltipBottomEdge' (0x5581a487f450) of type: BasicImage
+08/08/2020 18:25:02 (Std) 	[ImageManager] Created image: 'WindowsLook/TooltipMiddle' (0x5581a487f570) of type: BasicImage
+08/08/2020 18:25:02 (Std) 	[ImageManager] Created image: 'WindowsLook/MenuTopLeft' (0x5581a487f870) of type: BasicImage
+08/08/2020 18:25:02 (Std) 	[ImageManager] Created image: 'WindowsLook/MenuTopRight' (0x5581a487fb70) of type: BasicImage
+08/08/2020 18:25:02 (Std) 	[ImageManager] Created image: 'WindowsLook/MenuBottomLeft' (0x5581a487fc90) of type: BasicImage
+08/08/2020 18:25:02 (Std) 	[ImageManager] Created image: 'WindowsLook/MenuBottomRight' (0x5581a487fea0) of type: BasicImage
+08/08/2020 18:25:02 (Std) 	[ImageManager] Created image: 'WindowsLook/MenuLeft' (0x5581a487ffc0) of type: BasicImage
+08/08/2020 18:25:02 (Std) 	[ImageManager] Created image: 'WindowsLook/MenuRight' (0x5581a48802c0) of type: BasicImage
+08/08/2020 18:25:02 (Std) 	[ImageManager] Created image: 'WindowsLook/MenuTop' (0x5581a48803e0) of type: BasicImage
+08/08/2020 18:25:02 (Std) 	[ImageManager] Created image: 'WindowsLook/MenuBottom' (0x5581a48805f0) of type: BasicImage
+08/08/2020 18:25:02 (Std) 	[ImageManager] Created image: 'WindowsLook/PopupMenuFrameTopLeft' (0x5581a4880710) of type: BasicImage
+08/08/2020 18:25:02 (Std) 	[ImageManager] Created image: 'WindowsLook/PopupMenuFrameTopRight' (0x5581a4880a10) of type: BasicImage
+08/08/2020 18:25:02 (Std) 	[ImageManager] Created image: 'WindowsLook/PopupMenuFrameBottomLeft' (0x5581a4880b30) of type: BasicImage
+08/08/2020 18:25:02 (Std) 	[ImageManager] Created image: 'WindowsLook/PopupMenuFrameBottomRight' (0x5581a4880e20) of type: BasicImage
+08/08/2020 18:25:02 (Std) 	[ImageManager] Created image: 'WindowsLook/PopupMenuFrameLeft' (0x5581a4881170) of type: BasicImage
+08/08/2020 18:25:02 (Std) 	[ImageManager] Created image: 'WindowsLook/PopupMenuFrameRight' (0x5581a48814c0) of type: BasicImage
+08/08/2020 18:25:02 (Std) 	[ImageManager] Created image: 'WindowsLook/PopupMenuFrameTop' (0x5581a4973b60) of type: BasicImage
+08/08/2020 18:25:02 (Std) 	[ImageManager] Created image: 'WindowsLook/PopupMenuFrameBottom' (0x5581a4973d70) of type: BasicImage
+08/08/2020 18:25:02 (Std) 	[ImageManager] Created image: 'WindowsLook/PopupMenuArrowRight' (0x5581a4974010) of type: BasicImage
+08/08/2020 18:25:02 (Std) 	[ImageManager] Created image: 'WindowsLook/PopupMenuArrowLeft' (0x5581a4974130) of type: BasicImage
+08/08/2020 18:25:02 (Std) 	[ImageManager] Created image: 'WindowsLook/MultiListSelectionBrush' (0x5581a49744c0) of type: BasicImage
+08/08/2020 18:25:02 (Std) 	===== Falagard 'root' element: look and feel parsing begins =====
+08/08/2020 18:25:02 (Std) 	===== Look and feel parsing completed =====
+08/08/2020 18:25:02 (Std) 	No window renderer factories specified for module 'CEGUICoreWindowRendererSet' - adding all available factories...
+08/08/2020 18:25:02 (Std) 	Created WindowRendererFactory for 'Core/Button' WindowRenderers.
+08/08/2020 18:25:02 (Std) 	WindowRendererFactory 'Core/Button' added. (0x5581a486fd40)
+08/08/2020 18:25:02 (Std) 	Created WindowRendererFactory for 'Core/Default' WindowRenderers.
+08/08/2020 18:25:02 (Std) 	WindowRendererFactory 'Core/Default' added. (0x5581a486fe00)
+08/08/2020 18:25:02 (Std) 	Created WindowRendererFactory for 'Core/Editbox' WindowRenderers.
+08/08/2020 18:25:02 (Std) 	WindowRendererFactory 'Core/Editbox' added. (0x5581a406e9c0)
+08/08/2020 18:25:02 (Std) 	Created WindowRendererFactory for 'Core/FrameWindow' WindowRenderers.
+08/08/2020 18:25:02 (Std) 	WindowRendererFactory 'Core/FrameWindow' added. (0x5581a406ea80)
+08/08/2020 18:25:02 (Std) 	Created WindowRendererFactory for 'Core/ItemEntry' WindowRenderers.
+08/08/2020 18:25:02 (Std) 	WindowRendererFactory 'Core/ItemEntry' added. (0x5581a406eb40)
+08/08/2020 18:25:02 (Std) 	Created WindowRendererFactory for 'Core/ListHeader' WindowRenderers.
+08/08/2020 18:25:02 (Std) 	WindowRendererFactory 'Core/ListHeader' added. (0x5581a406ec00)
+08/08/2020 18:25:02 (Std) 	Created WindowRendererFactory for 'Core/ListHeaderSegment' WindowRenderers.
+08/08/2020 18:25:02 (Std) 	WindowRendererFactory 'Core/ListHeaderSegment' added. (0x5581a406ecc0)
+08/08/2020 18:25:02 (Std) 	Created WindowRendererFactory for 'Core/Listbox' WindowRenderers.
+08/08/2020 18:25:02 (Std) 	WindowRendererFactory 'Core/Listbox' added. (0x5581a40cadf0)
+08/08/2020 18:25:02 (Std) 	Created WindowRendererFactory for 'Core/Menubar' WindowRenderers.
+08/08/2020 18:25:02 (Std) 	WindowRendererFactory 'Core/Menubar' added. (0x5581a40caeb0)
+08/08/2020 18:25:02 (Std) 	Created WindowRendererFactory for 'Core/MenuItem' WindowRenderers.
+08/08/2020 18:25:02 (Std) 	WindowRendererFactory 'Core/MenuItem' added. (0x5581a48772f0)
+08/08/2020 18:25:02 (Std) 	Created WindowRendererFactory for 'Core/MultiColumnList' WindowRenderers.
+08/08/2020 18:25:02 (Std) 	WindowRendererFactory 'Core/MultiColumnList' added. (0x5581a4877490)
+08/08/2020 18:25:02 (Std) 	Created WindowRendererFactory for 'Core/MultiLineEditbox' WindowRenderers.
+08/08/2020 18:25:02 (Std) 	WindowRendererFactory 'Core/MultiLineEditbox' added. (0x5581a48760d0)
+08/08/2020 18:25:02 (Std) 	Created WindowRendererFactory for 'Core/PopupMenu' WindowRenderers.
+08/08/2020 18:25:02 (Std) 	WindowRendererFactory 'Core/PopupMenu' added. (0x5581a4876270)
+08/08/2020 18:25:02 (Std) 	Created WindowRendererFactory for 'Core/ProgressBar' WindowRenderers.
+08/08/2020 18:25:02 (Std) 	WindowRendererFactory 'Core/ProgressBar' added. (0x5581a48764f0)
+08/08/2020 18:25:02 (Std) 	Created WindowRendererFactory for 'Core/ScrollablePane' WindowRenderers.
+08/08/2020 18:25:02 (Std) 	WindowRendererFactory 'Core/ScrollablePane' added. (0x5581a4876770)
+08/08/2020 18:25:02 (Std) 	Created WindowRendererFactory for 'Core/Scrollbar' WindowRenderers.
+08/08/2020 18:25:02 (Std) 	WindowRendererFactory 'Core/Scrollbar' added. (0x5581a4876830)
+08/08/2020 18:25:02 (Std) 	Created WindowRendererFactory for 'Core/Slider' WindowRenderers.
+08/08/2020 18:25:02 (Std) 	WindowRendererFactory 'Core/Slider' added. (0x5581a48768f0)
+08/08/2020 18:25:02 (Std) 	Created WindowRendererFactory for 'Core/Static' WindowRenderers.
+08/08/2020 18:25:02 (Std) 	WindowRendererFactory 'Core/Static' added. (0x5581a4b84920)
+08/08/2020 18:25:02 (Std) 	Created WindowRendererFactory for 'Core/StaticImage' WindowRenderers.
+08/08/2020 18:25:02 (Std) 	WindowRendererFactory 'Core/StaticImage' added. (0x5581a4b849e0)
+08/08/2020 18:25:02 (Std) 	Created WindowRendererFactory for 'Core/StaticText' WindowRenderers.
+08/08/2020 18:25:02 (Std) 	WindowRendererFactory 'Core/StaticText' added. (0x5581a4b84c90)
+08/08/2020 18:25:02 (Std) 	Created WindowRendererFactory for 'Core/TabButton' WindowRenderers.
+08/08/2020 18:25:02 (Std) 	WindowRendererFactory 'Core/TabButton' added. (0x5581a4b84ff0)
+08/08/2020 18:25:02 (Std) 	Created WindowRendererFactory for 'Core/TabControl' WindowRenderers.
+08/08/2020 18:25:02 (Std) 	WindowRendererFactory 'Core/TabControl' added. (0x5581a4b850b0)
+08/08/2020 18:25:02 (Std) 	Created WindowRendererFactory for 'Core/Titlebar' WindowRenderers.
+08/08/2020 18:25:02 (Std) 	WindowRendererFactory 'Core/Titlebar' added. (0x5581a4b85330)
+08/08/2020 18:25:02 (Std) 	Created WindowRendererFactory for 'Core/ToggleButton' WindowRenderers.
+08/08/2020 18:25:02 (Std) 	WindowRendererFactory 'Core/ToggleButton' added. (0x5581a4b853f0)
+08/08/2020 18:25:02 (Std) 	Created WindowRendererFactory for 'Core/Tooltip' WindowRenderers.
+08/08/2020 18:25:02 (Std) 	WindowRendererFactory 'Core/Tooltip' added. (0x5581a4b854b0)
+08/08/2020 18:25:02 (Std) 	Created WindowRendererFactory for 'Core/ItemListbox' WindowRenderers.
+08/08/2020 18:25:02 (Std) 	WindowRendererFactory 'Core/ItemListbox' added. (0x5581a4b8a190)
+08/08/2020 18:25:02 (Std) 	Created WindowRendererFactory for 'Core/Tree' WindowRenderers.
+08/08/2020 18:25:02 (Std) 	WindowRendererFactory 'Core/Tree' added. (0x5581a4b8a250)
+08/08/2020 18:25:02 (Std) 	Creating falagard mapping for type 'WindowsLook/Label' using base type 'DefaultWindow', window renderer 'Core/Default' Look'N'Feel 'WindowsLook/Label' and RenderEffect ''. (0x7ffe067dbbc0)
+08/08/2020 18:25:02 (Std) 	Creating falagard mapping for type 'WindowsLook/Button' using base type 'CEGUI/PushButton', window renderer 'Core/Button' Look'N'Feel 'WindowsLook/Button' and RenderEffect ''. (0x7ffe067dbbc0)
+08/08/2020 18:25:02 (Std) 	Creating falagard mapping for type 'WindowsLook/Checkbox' using base type 'CEGUI/ToggleButton', window renderer 'Core/ToggleButton' Look'N'Feel 'WindowsLook/Checkbox' and RenderEffect ''. (0x7ffe067dbbc0)
+08/08/2020 18:25:02 (Std) 	Creating falagard mapping for type 'WindowsLook/IconButton' using base type 'CEGUI/PushButton', window renderer 'Core/Button' Look'N'Feel 'WindowsLook/IconButton' and RenderEffect ''. (0x7ffe067dbbc0)
+08/08/2020 18:25:02 (Std) 	Creating falagard mapping for type 'WindowsLook/RadioButton' using base type 'CEGUI/RadioButton', window renderer 'Core/ToggleButton' Look'N'Feel 'WindowsLook/RadioButton' and RenderEffect ''. (0x7ffe067dbbc0)
+08/08/2020 18:25:02 (Std) 	Creating falagard mapping for type 'WindowsLook/FrameWindow' using base type 'CEGUI/FrameWindow', window renderer 'Core/FrameWindow' Look'N'Feel 'WindowsLook/FrameWindow' and RenderEffect ''. (0x7ffe067dbbc0)
+08/08/2020 18:25:02 (Std) 	Creating falagard mapping for type 'WindowsLook/Titlebar' using base type 'CEGUI/Titlebar', window renderer 'Core/Titlebar' Look'N'Feel 'WindowsLook/Titlebar' and RenderEffect ''. (0x7ffe067dbbc0)
+08/08/2020 18:25:02 (Std) 	Creating falagard mapping for type 'WindowsLook/SystemButton' using base type 'CEGUI/PushButton', window renderer 'Core/Button' Look'N'Feel 'WindowsLook/SystemButton' and RenderEffect ''. (0x7ffe067dbbc0)
+08/08/2020 18:25:02 (Std) 	Creating falagard mapping for type 'WindowsLook/Editbox' using base type 'CEGUI/Editbox', window renderer 'Core/Editbox' Look'N'Feel 'WindowsLook/Editbox' and RenderEffect ''. (0x7ffe067dbbc0)
+08/08/2020 18:25:02 (Std) 	Creating falagard mapping for type 'WindowsLook/MultiLineEditbox' using base type 'CEGUI/MultiLineEditbox', window renderer 'Core/MultiLineEditbox' Look'N'Feel 'WindowsLook/MultiLineEditbox' and RenderEffect ''. (0x7ffe067dbbc0)
+08/08/2020 18:25:02 (Std) 	Creating falagard mapping for type 'WindowsLook/Menubar' using base type 'CEGUI/Menubar', window renderer 'Core/Menubar' Look'N'Feel 'WindowsLook/Menubar' and RenderEffect ''. (0x7ffe067dbbc0)
+08/08/2020 18:25:02 (Std) 	Creating falagard mapping for type 'WindowsLook/PopupMenu' using base type 'CEGUI/PopupMenu', window renderer 'Core/PopupMenu' Look'N'Feel 'WindowsLook/PopupMenu' and RenderEffect ''. (0x7ffe067dbbc0)
+08/08/2020 18:25:02 (Std) 	Creating falagard mapping for type 'WindowsLook/MenuItem' using base type 'CEGUI/MenuItem', window renderer 'Core/MenuItem' Look'N'Feel 'WindowsLook/MenuItem' and RenderEffect ''. (0x7ffe067dbbc0)
+08/08/2020 18:25:02 (Std) 	Creating falagard mapping for type 'WindowsLook/ProgressBar' using base type 'CEGUI/ProgressBar', window renderer 'Core/ProgressBar' Look'N'Feel 'WindowsLook/ProgressBar' and RenderEffect ''. (0x7ffe067dbbc0)
+08/08/2020 18:25:02 (Std) 	Creating falagard mapping for type 'WindowsLook/VerticalScrollbar' using base type 'CEGUI/Scrollbar', window renderer 'Core/Scrollbar' Look'N'Feel 'WindowsLook/VerticalScrollbar' and RenderEffect ''. (0x7ffe067dbbc0)
+08/08/2020 18:25:02 (Std) 	Creating falagard mapping for type 'WindowsLook/HorizontalScrollbar' using base type 'CEGUI/Scrollbar', window renderer 'Core/Scrollbar' Look'N'Feel 'WindowsLook/HorizontalScrollbar' and RenderEffect ''. (0x7ffe067dbbc0)
+08/08/2020 18:25:02 (Std) 	Creating falagard mapping for type 'WindowsLook/VerticalScrollbarThumb' using base type 'CEGUI/Thumb', window renderer 'Core/Button' Look'N'Feel 'WindowsLook/VerticalScrollbarThumb' and RenderEffect ''. (0x7ffe067dbbc0)
+08/08/2020 18:25:02 (Std) 	Creating falagard mapping for type 'WindowsLook/HorizontalScrollbarThumb' using base type 'CEGUI/Thumb', window renderer 'Core/Button' Look'N'Feel 'WindowsLook/HorizontalScrollbarThumb' and RenderEffect ''. (0x7ffe067dbbc0)
+08/08/2020 18:25:02 (Std) 	Creating falagard mapping for type 'WindowsLook/TabButton' using base type 'CEGUI/TabButton', window renderer 'Core/TabButton' Look'N'Feel 'WindowsLook/TabButton' and RenderEffect ''. (0x7ffe067dbbc0)
+08/08/2020 18:25:02 (Std) 	Creating falagard mapping for type 'WindowsLook/TabControl' using base type 'CEGUI/TabControl', window renderer 'Core/TabControl' Look'N'Feel 'WindowsLook/TabControl' and RenderEffect ''. (0x7ffe067dbbc0)
+08/08/2020 18:25:02 (Std) 	Creating falagard mapping for type 'WindowsLook/TabContentPane' using base type 'DefaultWindow', window renderer 'Core/Default' Look'N'Feel 'WindowsLook/TabContentPane' and RenderEffect ''. (0x7ffe067dbbc0)
+08/08/2020 18:25:02 (Std) 	Creating falagard mapping for type 'WindowsLook/TabButtonPane' using base type 'DefaultWindow', window renderer 'Core/Default' Look'N'Feel 'WindowsLook/TabButtonPane' and RenderEffect ''. (0x7ffe067dbbc0)
+08/08/2020 18:25:02 (Std) 	Creating falagard mapping for type 'WindowsLook/ComboDropList' using base type 'CEGUI/ComboDropList', window renderer 'Core/Listbox' Look'N'Feel 'WindowsLook/ComboDropList' and RenderEffect ''. (0x7ffe067dbbc0)
+08/08/2020 18:25:02 (Std) 	Creating falagard mapping for type 'WindowsLook/Combobox' using base type 'CEGUI/Combobox', window renderer 'Core/Default' Look'N'Feel 'WindowsLook/Combobox' and RenderEffect ''. (0x7ffe067dbbc0)
+08/08/2020 18:25:02 (Std) 	Creating falagard mapping for type 'WindowsLook/Listbox' using base type 'CEGUI/Listbox', window renderer 'Core/Listbox' Look'N'Feel 'WindowsLook/Listbox' and RenderEffect ''. (0x7ffe067dbbc0)
+08/08/2020 18:25:02 (Std) 	Creating falagard mapping for type 'WindowsLook/ListHeader' using base type 'CEGUI/ListHeader', window renderer 'Core/ListHeader' Look'N'Feel 'WindowsLook/ListHeader' and RenderEffect ''. (0x7ffe067dbbc0)
+08/08/2020 18:25:02 (Std) 	Creating falagard mapping for type 'WindowsLook/ListHeaderSegment' using base type 'CEGUI/ListHeaderSegment', window renderer 'Core/ListHeaderSegment' Look'N'Feel 'WindowsLook/ListHeaderSegment' and RenderEffect ''. (0x7ffe067dbbc0)
+08/08/2020 18:25:02 (Std) 	Creating falagard mapping for type 'WindowsLook/MultiColumnList' using base type 'CEGUI/MultiColumnList', window renderer 'Core/MultiColumnList' Look'N'Feel 'WindowsLook/MultiColumnList' and RenderEffect ''. (0x7ffe067dbbc0)
+08/08/2020 18:25:02 (Std) 	Creating falagard mapping for type 'WindowsLook/Slider' using base type 'CEGUI/Slider', window renderer 'Core/Slider' Look'N'Feel 'WindowsLook/Slider' and RenderEffect ''. (0x7ffe067dbbc0)
+08/08/2020 18:25:02 (Std) 	Creating falagard mapping for type 'WindowsLook/SliderThumb' using base type 'CEGUI/Thumb', window renderer 'Core/Button' Look'N'Feel 'WindowsLook/SliderThumb' and RenderEffect ''. (0x7ffe067dbbc0)
+08/08/2020 18:25:02 (Std) 	Creating falagard mapping for type 'WindowsLook/ScrollablePane' using base type 'CEGUI/ScrollablePane', window renderer 'Core/ScrollablePane' Look'N'Feel 'WindowsLook/ScrollablePane' and RenderEffect ''. (0x7ffe067dbbc0)
+08/08/2020 18:25:02 (Std) 	Creating falagard mapping for type 'WindowsLook/Spinner' using base type 'CEGUI/Spinner', window renderer 'Core/Default' Look'N'Feel 'WindowsLook/Spinner' and RenderEffect ''. (0x7ffe067dbbc0)
+08/08/2020 18:25:02 (Std) 	Creating falagard mapping for type 'WindowsLook/Tooltip' using base type 'CEGUI/Tooltip', window renderer 'Core/Tooltip' Look'N'Feel 'WindowsLook/Tooltip' and RenderEffect ''. (0x7ffe067dbbc0)
+08/08/2020 18:25:02 (Std) 	Creating falagard mapping for type 'WindowsLook/Static' using base type 'DefaultWindow', window renderer 'Core/Static' Look'N'Feel 'WindowsLook/Static' and RenderEffect ''. (0x7ffe067dbbc0)
+08/08/2020 18:25:02 (Std) 	Creating falagard mapping for type 'WindowsLook/StaticImage' using base type 'DefaultWindow', window renderer 'Core/StaticImage' Look'N'Feel 'WindowsLook/StaticImage' and RenderEffect ''. (0x7ffe067dbbc0)
+08/08/2020 18:25:02 (Std) 	Creating falagard mapping for type 'WindowsLook/StaticText' using base type 'DefaultWindow', window renderer 'Core/StaticText' Look'N'Feel 'WindowsLook/StaticText' and RenderEffect ''. (0x7ffe067dbbc0)
+08/08/2020 18:25:02 (Std) 	Creating falagard mapping for type 'WindowsLook/ItemListbox' using base type 'CEGUI/ItemListbox', window renderer 'Core/ItemListbox' Look'N'Feel 'WindowsLook/ItemListbox' and RenderEffect ''. (0x7ffe067dbbc0)
+08/08/2020 18:25:02 (Std) 	Creating falagard mapping for type 'WindowsLook/ListboxItem' using base type 'CEGUI/ItemEntry', window renderer 'Core/ItemEntry' Look'N'Feel 'WindowsLook/ListboxItem' and RenderEffect ''. (0x7ffe067dbbc0)
+08/08/2020 18:25:02 (Std) 	[OpenGLRenderer] Created texture: _ogl_tt_tex_0
+08/08/2020 18:25:02 (Std) 	[OpenGLRenderer] Created texture: _ogl_tt_tex_1
+08/08/2020 18:25:02 (Std) 	[OpenGLRenderer] Created texture: _ogl_tt_tex_2
+08/08/2020 18:25:02 (Std) 	[OpenGLRenderer] Created texture: _ogl_tt_tex_3
+08/08/2020 18:25:02 (Std) 	[OpenGLRenderer] Created texture: _ogl_tt_tex_4
+08/08/2020 18:25:02 (Std) 	[OpenGLRenderer] Created texture: _ogl_tt_tex_5
+08/08/2020 18:25:02 (Std) 	[OpenGLRenderer] Created texture: _ogl_tt_tex_6
+08/08/2020 18:25:02 (Std) 	[OpenGLRenderer] Created texture: _ogl_tt_tex_7
+08/08/2020 18:25:02 (Std) 	[OpenGLRenderer] Created texture: _ogl_tt_tex_8
+08/08/2020 18:25:02 (Std) 	[OpenGLRenderer] Created texture: _ogl_tt_tex_9
+08/08/2020 18:25:02 (Std) 	[OpenGLRenderer] Created texture: _ogl_tt_tex_10
+08/08/2020 18:25:02 (Std) 	[OpenGLRenderer] Created texture: _ogl_tt_tex_11
+08/08/2020 18:25:02 (Std) 	[OpenGLRenderer] Created texture: _ogl_tt_tex_12
+08/08/2020 18:25:02 (Std) 	[OpenGLRenderer] Created texture: DejaVuSans-10-NoScale_auto_glyph_images_32
+08/08/2020 18:25:07 (Std) 	[OpenGLRenderer] Created texture: DejaVuSans-14-NoScale_auto_glyph_images_32

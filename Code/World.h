@@ -24,7 +24,7 @@ class World {
 		friend class Singletons;
 
 	public:
-		World();
+		World(unsigned int xSize, unsigned int ySize, unsigned int zSize);
 		~World();
 		void setTile(Tile* tile);
 		Tile* getTile(int x, int y, int layer);
@@ -82,6 +82,10 @@ class World {
 			m_nextWorldEra = newEraID;
 		}
 
+		unsigned int getSize() {
+			return m_tiles.size();
+		}
+
 		float getDistance(glm::vec2 point0, glm::vec2 point1); // Gets the distance between two points, accounting for crossover.
 
 	private:
@@ -91,11 +95,13 @@ class World {
 
 		void specialUpdateTile(Tile* origin);
 
-		Tile**** m_tiles = nullptr;
+		//Tile**** m_tiles = nullptr;
+		std::vector<std::vector<std::vector<Tile*>>> m_tiles; // [x][y][z]
+
 		std::vector<Tile*> m_lights; // Vector of tiles (ordered by x pos), that need to be checked for light rendering.
 		std::vector<Tile*> m_deadTiles; // Vector of tiles that need to be destroyed and deleted, but may be bound to other systems.
 
-		unsigned int m_biomesMap[(WORLD_SIZE / CHUNK_SIZE)]; // Simply a 1d vector of biome IDs, which can be mapped onto the world by referencing each "chunk"'s size
+		std::vector<unsigned int> m_biomesMap; // Simply a 1d vector of biome IDs, which can be mapped onto the world by referencing each "chunk"'s size
 
 		unsigned long int m_time = 0; // Tick time
 		unsigned long int m_frame = 0; // frames that have passed

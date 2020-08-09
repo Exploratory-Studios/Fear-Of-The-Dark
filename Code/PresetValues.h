@@ -3,11 +3,9 @@
 #include <string>
 
 /// World size variables
-// These must be #defines because the array size is taken at compile time.
-#define CHUNK_SIZE 32
-#define WORLD_HEIGHT 300
-#define WORLD_SIZE 320
-#define WORLD_DEPTH 4
+extern const unsigned int CHUNK_SIZE;
+extern const unsigned int WORLD_DEPTH;
+extern const unsigned int WORLD_HEIGHT;
 
 // How high does water spawn naturally?
 extern const unsigned int WATER_LEVEL;

@@ -1,5 +1,9 @@
 #include "PresetValues.h"
 
+const unsigned int CHUNK_SIZE = 32;
+const unsigned int WORLD_DEPTH = 4;
+const unsigned int WORLD_HEIGHT = 300;
+
 const unsigned int WATER_LEVEL = 50;
 
 const unsigned int VIEW_DIST = 5;

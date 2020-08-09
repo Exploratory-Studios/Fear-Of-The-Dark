@@ -10,10 +10,10 @@
 
 #include "Singletons.h"
 
-World::World() {
+World::World(unsigned int xSize, unsigned int ySize, unsigned int zSize) {
 	XMLModule::XMLData::init(); /// TODO: Move elsewhere.
 
-	m_tiles = (Tile****)malloc(WORLD_HEIGHT * WORLD_SIZE * WORLD_DEPTH * sizeof(Tile));
+	/*m_tiles = (Tile****)malloc(WORLD_HEIGHT * WORLD_SIZE * WORLD_DEPTH * sizeof(Tile));
 	for(int y = 0; y < WORLD_HEIGHT; y++) {
 		m_tiles[y] = (Tile***)malloc(WORLD_SIZE * WORLD_DEPTH * sizeof(Tile));
 		for(int x = 0; x < WORLD_SIZE; x++) {
@@ -22,13 +22,37 @@ World::World() {
 				m_tiles[y][x][z] = new Tile();
 			}
 		}
+	}*/
+
+	m_tiles.reserve(xSize);
+	for(unsigned int x = 0; x < xSize; x++) {
+		std::vector<std::vector<Tile*>> tempX;
+		for(unsigned int y = 0; y < ySize; y++) {
+			std::vector<Tile*> tempY;
+			for(unsigned int z = 0; z < zSize; z++) {
+				tempY.push_back(new Tile());
+			}
+			tempX.push_back(tempY);
+		}
+		m_tiles.push_back(tempX);
 	}
+
+	m_biomesMap.resize(xSize / CHUNK_SIZE);
+
 
 	Singletons::getEntityManager()->init(this);
 }
 
 World::~World() {
-	free(m_tiles);
+	//free(m_tiles);
+
+	for(unsigned int x = 0; x < m_tiles.size(); x++) {
+		for(unsigned int y = 0; y < m_tiles[x].size(); y++) {
+			for(unsigned int z = 0; z < m_tiles[x][y].size(); z++) {
+				delete m_tiles[x][y][z];
+			}
+		}
+	}
 }
 
 void World::setTile(Tile* tile) {
@@ -40,7 +64,7 @@ void World::setTile(Tile* tile) {
 	layer = tile->getLayer();
 	id = tile->getID();
 
-	specialUpdateTile(m_tiles[y][x][layer]);
+	specialUpdateTile(m_tiles[x][y][layer]);
 
 	std::vector<ScriptingModule::Argument> args = { ScriptingModule::Argument("blockID", std::to_string(id)),
 	                                                ScriptingModule::Argument("blockX", std::to_string(x)),
@@ -64,19 +88,19 @@ void World::setTile_noEvent(Tile* tile) {
 		addLight(tile);
 	}
 
-	if(m_tiles[y][x][layer]->getEmittedLight() > 0.0f) {
-		removeLight(m_tiles[y][x][layer]);
-		m_tiles[y][x][layer]->resetNeighboursLight(this);
+	if(m_tiles[x][y][layer]->getEmittedLight() > 0.0f) {
+		removeLight(m_tiles[x][y][layer]);
+		m_tiles[x][y][layer]->resetNeighboursLight();
 	}
 
-	tile->setAmbientLight(m_tiles[y][x][layer]->getAmbientLight());
+	tile->setAmbientLight(m_tiles[x][y][layer]->getAmbientLight());
 
-	m_tiles[y][x][layer]->destroy(this); // Make sure everything gets cleaned up nicely.
+	m_tiles[x][y][layer]->destroy(); // Make sure everything gets cleaned up nicely.
 
-	m_tiles[y][x][layer] = tile;
+	m_tiles[x][y][layer] = tile;
 
 	for(int i = y - 1; i >= 0; i--) {
-		Tile* t = m_tiles[i][x][layer];
+		Tile* t = m_tiles[x][i][layer];
 		t->setNeedsSunCheck();
 		Tile* l = getTile(x - 1, i, layer);
 		if(l) l->setNeedsSunCheck();
@@ -95,7 +119,7 @@ void World::setTile_noEvent(Tile* tile) {
 Tile* World::getTile(int x, int y, int layer) {
 	if(y < WORLD_HEIGHT && y >= 0) {
 		if(layer >= 0 && layer < WORLD_DEPTH) {
-			return m_tiles[y][(x + WORLD_SIZE) % WORLD_SIZE][layer];
+			return m_tiles[(x + getSize()) % getSize()][y][layer];
 		}
 	}
 	return nullptr;
@@ -214,9 +238,9 @@ void World::getRenderedLights(glm::vec4 destRect, float lights[MAX_LIGHTS_RENDER
 
 		if(centerXViewport > m_lights[i]->getPosition().x) {
 			leftDist = -(centerXViewport - m_lights[i]->getPosition().x);
-			rightDist = (WORLD_SIZE - centerXViewport) + m_lights[i]->getPosition().x;
+			rightDist = (getSize() - centerXViewport) + m_lights[i]->getPosition().x;
 		} else {
-			leftDist = -((WORLD_SIZE - m_lights[i]->getPosition().x) + centerXViewport);
+			leftDist = -((getSize() - m_lights[i]->getPosition().x) + centerXViewport);
 			rightDist = m_lights[i]->getPosition().x - centerXViewport;
 		}
 
@@ -283,15 +307,15 @@ void World::drawTiles(GLEngine::SpriteBatch& sb, GLEngine::SpriteFont& sf, GLEng
 	}
 
 	for(int x = destRect.x; x < destRect.z + destRect.x; x++) {
-		int columnIndex = (int)((x/*+destRect.x*/) + (WORLD_SIZE)) % WORLD_SIZE;
+		int columnIndex = (int)((x/*+destRect.x*/) + (getSize())) % getSize();
 		int offset = (/*destRect.x + */x) - columnIndex;
 
 		for(int y = destRect.y; y < destRect.w + destRect.y; y++) {
 			for(unsigned int layer = 0; layer < WORLD_DEPTH; layer++) {
 				if(y >= 0) {
 					if(y < WORLD_HEIGHT) {
-						m_tiles[y][columnIndex][layer]->draw(sb, sf, offset, diff[layer]);
-						if(!m_tiles[y][columnIndex][layer]->isTransparent()) {
+						m_tiles[columnIndex][y][layer]->draw(sb, sf, offset, diff[layer]);
+						if(!m_tiles[columnIndex][y][layer]->isTransparent()) {
 							break;
 						}
 					}
@@ -312,15 +336,15 @@ void World::drawTilesNormal(GLEngine::SpriteBatch& sb, glm::vec4 destRect, GLEng
 	}
 
 	for(int x = destRect.x; x < destRect.z + destRect.x; x++) {
-		int columnIndex = (int)((x/*+destRect.x*/) + (WORLD_SIZE)) % WORLD_SIZE;
+		int columnIndex = (int)((x/*+destRect.x*/) + (getSize())) % getSize();
 		int offset = (/*destRect.x + */x) - columnIndex;
 
 		for(int y = destRect.y; y < destRect.w + destRect.y; y++) {
 			for(unsigned int layer = 0; layer < WORLD_DEPTH; layer++) {
 				if(y >= 0) {
 					if(y < WORLD_HEIGHT) {
-						m_tiles[y][columnIndex][layer]->drawNormal(sb, offset, diff[layer]);
-						if(!m_tiles[y][columnIndex][layer]->isTransparent()) {
+						m_tiles[columnIndex][y][layer]->drawNormal(sb, offset, diff[layer]);
+						if(!m_tiles[columnIndex][y][layer]->isTransparent()) {
 							break;
 						}
 					}
@@ -332,14 +356,14 @@ void World::drawTilesNormal(GLEngine::SpriteBatch& sb, glm::vec4 destRect, GLEng
 
 void World::drawTilesGUI(GLEngine::SpriteBatch& sb, GLEngine::SpriteFont& sf, glm::vec4 destRect) {
 	for(int x = destRect.x; x < destRect.z + destRect.x; x++) {
-		int columnIndex = (int)((x) + (WORLD_SIZE)) % WORLD_SIZE;
+		int columnIndex = (int)((x) + (getSize())) % getSize();
 		int offset = (x) - columnIndex;
 
 		for(int y = destRect.y; y < destRect.w + destRect.y; y++) {
 			for(unsigned int layer = 0; layer < WORLD_DEPTH; layer++) {
 				if(y >= 0) {
 					if(y < WORLD_HEIGHT) {
-						m_tiles[y][columnIndex][layer]->drawGUI(sb, sf, offset);
+						m_tiles[columnIndex][y][layer]->drawGUI(sb, sf, offset);
 					}
 				}
 			}
@@ -360,13 +384,11 @@ void World::updateTiles(glm::vec4 destRect) {
 	}
 	m_deadTiles.clear();*/ // This breaks stuff apparently
 
-	const float s = m_sunlight;
-
 	for(int y = destRect.y; y < destRect.w + destRect.y; y++) {
 		for(int x = destRect.x; x < destRect.z + destRect.x; x++) {
 			for(unsigned int layer = 0; layer < WORLD_DEPTH; layer++) {
 				if(y >= 0 && y < WORLD_HEIGHT) {
-					(m_tiles[y][(x + WORLD_SIZE) % WORLD_SIZE][layer])->update(this, m_time, true, s);
+					(m_tiles[(x + getSize()) % getSize()][y][layer])->update(m_time, true, m_sunlight);
 				}
 			}
 		}
@@ -380,21 +402,19 @@ void World::tickTiles(glm::vec4 destRect) {
 	    eg. destRect = (-10, 10, 20, 10) will tick tiles from x=(WORLD_SIZE - 10) to x=(-10 + 20) and y=(10) to y=(10 + 10)
 	*/
 
-	const float sunlight = std::cos(m_time / (DAY_LENGTH / 6.28318f)) / 2.0f + 0.5f;
-	m_sunlight = sunlight;
+	m_sunlight = std::cos(m_time / (DAY_LENGTH / 6.28318f)) / 2.0f + 0.5f;;
 
 	for(int y = destRect.y; y < destRect.w + destRect.y; y++) {
 		for(int x = destRect.x; x < destRect.z + destRect.x; x++) {
 			for(unsigned int layer = 0; layer < WORLD_DEPTH; layer++) {
 				if(y >= 0 && y < WORLD_HEIGHT) {
-					(m_tiles[y][(x + WORLD_SIZE) % WORLD_SIZE][layer])->tick(this, m_time, sunlight);
+					(m_tiles[(x + getSize()) % getSize()][y][layer])->tick(m_time, m_sunlight);
 				} else {
-					goto escape_label; // break out of both loops.
+					continue;
 				}
 			}
 		}
 	}
-escape_label:
 	return;
 }
 
@@ -426,7 +446,7 @@ void World::drawSunlight(GLEngine::SpriteBatch& sb, glm::vec4 destRect) {
 			 * */
 
 			// Determine actual light value (R)
-			Tile* t = m_tiles[(int)y][((int)x + WORLD_SIZE) % WORLD_SIZE][0];
+			Tile* t = m_tiles[((int)x + getSize()) % getSize()][(int)y][0];
 
 			int light = (t->getSunlight() * 255.0f);
 
@@ -455,12 +475,12 @@ float World::getDistance(glm::vec2 point0, glm::vec2 point1) {
 
 	if(point0.x < point1.x) {
 		float xDist0 = point1.x - point0.x; // Regular dist not accounting for crossover.
-		float xDist1 = (point0.x) + (WORLD_SIZE - point1.x); // Distance accounting for crossover.
+		float xDist1 = (point0.x) + (getSize() - point1.x); // Distance accounting for crossover.
 
 		xDist = xDist0 < xDist1 ? xDist0 : xDist1; // Choose the shorter of the two.
 	} else if(point0.x > point1.x) {
 		float xDist0 = point0.x - point1.x; // Regular dist not accounting for crossover.
-		float xDist1 = (point1.x) + (WORLD_SIZE - point0.x); // Distance accounting for crossover.
+		float xDist1 = (point1.x) + (getSize() - point0.x); // Distance accounting for crossover.
 
 		xDist = xDist0 < xDist1 ? xDist0 : xDist1; // Choose the shorter of the two.
 	}
@@ -474,7 +494,7 @@ float World::getDistance(glm::vec2 point0, glm::vec2 point1) {
 /// PRIVATE FUNCTIONS BELOW
 
 void World::specialUpdateTile(Tile* origin) {
-	origin->specialUpdate(this, m_time);
+	origin->specialUpdate(m_time);
 
 	glm::vec2 oPos = origin->getPosition();
 
@@ -486,19 +506,19 @@ void World::specialUpdateTile(Tile* origin) {
 	Tile* b = getTile(oPos.x, oPos.y, origin->getLayer() + 1);
 
 	// left and right will always return a tile
-	l->specialUpdate(this, m_time);
-	r->specialUpdate(this, m_time);
+	l->specialUpdate(m_time);
+	r->specialUpdate(m_time);
 
 
 	if(u)
-		u->specialUpdate(this, m_time);
+		u->specialUpdate(m_time);
 	if(d)
-		d->specialUpdate(this, m_time);
+		d->specialUpdate(m_time);
 
 
 	if(f)
-		f->specialUpdate(this, m_time);
+		f->specialUpdate(m_time);
 	if(b)
-		b->specialUpdate(this, m_time);
+		b->specialUpdate(m_time);
 
 }

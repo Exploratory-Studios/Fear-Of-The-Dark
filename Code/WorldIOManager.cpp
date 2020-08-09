@@ -10,7 +10,7 @@
 #include "Tile.h"
 
 #include "XMLData.h"
-
+#include "Factory.h"
 #include "Singletons.h"
 
 void WorldIOManager::loadWorld(std::string worldName) {
@@ -32,10 +32,10 @@ void WorldIOManager::saveWorld() {
 	//P_saveWorld(worldName);
 }
 
-void WorldIOManager::createWorld(unsigned int seed, std::string worldName, bool isFlat) {
+void WorldIOManager::createWorld(unsigned int seed, std::string worldName, bool isFlat, unsigned int width) {
 	setProgress(0.0f);
 	boost::thread t([ = ]() {
-		P_createWorld(seed, worldName, isFlat, Singletons::getWorld());
+		P_createWorld(seed, worldName, isFlat, width);
 	});
 	t.detach();
 	//P_createWorld(seed, worldName, isFlat);
@@ -47,7 +47,7 @@ void WorldIOManager::P_loadWorld(std::string worldName, World* world) {
 		delete world;
 	}
 
-	world = new World();
+	world = new World(0, 0, 0); /// TODO: Read world size and all that before creation.
 
 
 	float startTime = (float)(std::clock()) / (float)(CLOCKS_PER_SEC / 1000);
@@ -105,23 +105,24 @@ void WorldIOManager::P_loadWorld(std::string worldName, World* world) {
 	{
 		// WORLD
 
-		SaveDataTypes::ChunkData* chunkData = new SaveDataTypes::ChunkData[WORLD_SIZE];
+		const unsigned int chunks = world->getSize() / CHUNK_SIZE;
+		SaveDataTypes::ChunkData* chunkData = new SaveDataTypes::ChunkData[chunks];
 		//file.read(reinterpret_cast<char*>(&chunkData[0]), sizeof(ChunkData) * WORLD_SIZE);
 
-		for(int i = 0; i < WORLD_SIZE; i++) {
+		for(int i = 0; i < world->getSize(); i++) {
 			chunkData[i].read(file);
 			world->m_biomesMap[i] = chunkData[i].biomeID;
-			setProgress(getProgress() + 1.0f / (WORLD_SIZE) * 0.1f); // 0.3
+			setProgress(getProgress() + 1.0f / (world->getSize()) * 0.1f); // 0.3
 		}
 
-		for(int i = 0; i < WORLD_SIZE; i++) {
+		for(int i = 0; i < world->getSize(); i++) {
 			for(unsigned int y = 0; y < WORLD_HEIGHT; y++) {
 				for(unsigned int x = 0; x < CHUNK_SIZE; x++) {
 					for(unsigned int k = 0; k < WORLD_DEPTH; k++) {
 						SaveDataTypes::TileData* temp = &chunkData[i].tiles[y][x][k];
-						Tile* tile = new Tile(temp->pos, k, temp->id, temp->metaData, false);
+						Tile* tile = Factory::createTile(temp->id, temp->pos, k, temp->metaData);
 						world->setTile_noEvent(tile);
-						setProgress(getProgress() + 1.0f / (CHUNK_SIZE * WORLD_HEIGHT * WORLD_SIZE * WORLD_DEPTH) * 0.2f); // 0.3
+						setProgress(getProgress() + 1.0f / (CHUNK_SIZE * WORLD_HEIGHT * world->getSize() * WORLD_DEPTH) * 0.2f); // 0.3
 					}
 				}
 			}
@@ -189,12 +190,14 @@ void WorldIOManager::P_saveWorld(World* world) {
 	logger->log("SAVE: Player Data Prepared");
 
 	// CHUNK
-	SaveDataTypes::ChunkData* chunkData = new SaveDataTypes::ChunkData[WORLD_SIZE];
-	for(unsigned int i = 0; i < WORLD_SIZE; i++) {
+	const unsigned int chunks = world->getSize() / CHUNK_SIZE;
+
+	SaveDataTypes::ChunkData* chunkData = new SaveDataTypes::ChunkData[chunks];
+	for(unsigned int i = 0; i < chunks; i++) {
 		for(int y = 0; y < WORLD_HEIGHT; y++) {
-			for(int x = 0; x < WORLD_SIZE; x++) {
+			for(int x = 0; x < CHUNK_SIZE; x++) {
 				for(int k = 0; k < WORLD_DEPTH; k++) {
-					chunkData[i].tiles[y][x][k] = world->getTile(x, y, k)->getSaveData(); // This gives data for ALL layers (recursive)
+					chunkData[i].tiles[x][y][k] = world->getTile(x + i * CHUNK_SIZE, y, k)->getSaveData(); // This gives data for ALL layers (recursive)
 				}
 			}
 		}
@@ -237,7 +240,7 @@ void WorldIOManager::P_saveWorld(World* world) {
 
 	{
 		// WORLD
-		for(int i = 0; i < WORLD_SIZE; i++) {
+		for(int i = 0; i < world->getSize(); i++) {
 			//file.write(reinterpret_cast<char*>(chunkData), sizeof(ChunkData) * WORLD_SIZE);
 			chunkData[i].save(file);
 		}
@@ -249,10 +252,11 @@ void WorldIOManager::P_saveWorld(World* world) {
 
 	file.close();
 }
-#include <iostream>
-void WorldIOManager::P_createWorld(unsigned int seed, std::string worldName, bool isFlat, World* world) {
 
-	World* w = new World();
+void WorldIOManager::P_createWorld(unsigned int seed, std::string worldName, bool isFlat, unsigned int width) {
+
+	World* w = new World(width, WORLD_HEIGHT, WORLD_DEPTH);
+	Singletons::setWorld(w);
 
 	float startTime = (float)(std::clock()) / (float)(CLOCKS_PER_SEC / 1000);
 	logger->log("CREATE: Starting world creation at time: " + std::to_string(startTime));
@@ -263,10 +267,11 @@ void WorldIOManager::P_createWorld(unsigned int seed, std::string worldName, boo
 
 	PerlinNoise placeNoise(seed);
 
-	float places[(WORLD_SIZE / CHUNK_SIZE)];
+	const unsigned int chunks = w->getSize() / CHUNK_SIZE;
+	float places[chunks];
 	float highestPlace, lowestPlace;
 
-	for(int i = 0; i < (WORLD_SIZE / CHUNK_SIZE); i++) { // 0.05 progress
+	for(int i = 0; i < chunks; i++) { // 0.05 progress
 
 		float place = placeNoise.noise(i / 2.0f, 0.8, 0.3);
 
@@ -281,27 +286,27 @@ void WorldIOManager::P_createWorld(unsigned int seed, std::string worldName, boo
 		if(lowest) lowestPlace = place;
 		if(highest) highestPlace = place;
 
-		setMessage("Now generating biomes... \n(" + std::to_string(i) + "/" + std::to_string((WORLD_SIZE / CHUNK_SIZE)) + ")");
+		setMessage("Now generating biomes... \n(" + std::to_string(i) + "/" + std::to_string((w->getSize() / CHUNK_SIZE)) + ")");
 
-		setProgress(0.05f / (WORLD_SIZE / CHUNK_SIZE) * (i + 1));
+		setProgress(0.05f / (w->getSize() / CHUNK_SIZE) * (i + 1));
 
 	}
 
 	setMessage("Finishing chunk initialization...");
 
-	for(int i = 0; i < (WORLD_SIZE / CHUNK_SIZE); i++) {// 0.05 progress
+	for(int i = 0; i < chunks; i++) {// 0.05 progress
 		float placeMapped = (places[i] - lowestPlace) / (highestPlace - lowestPlace);
 
 		w->m_biomesMap[i] = std::ceil(placeMapped * (XMLModule::XMLData::getTotalBiomes() - 1));
 
-		setProgress(0.05f + 0.05f / (WORLD_SIZE / CHUNK_SIZE) * (i + 1));
+		setProgress(0.05f + 0.05f / (chunks) * (i + 1));
 	}
 
 	std::vector<int> blockHeights;
-	blockHeights.resize(WORLD_SIZE * WORLD_DEPTH);
+	blockHeights.resize(w->getSize() * WORLD_DEPTH);
 
 	std::vector<int> tempHeights;
-	tempHeights.resize(WORLD_SIZE * WORLD_DEPTH);
+	tempHeights.resize(w->getSize() * WORLD_DEPTH);
 
 	// progress is at 0.1
 
@@ -309,7 +314,7 @@ void WorldIOManager::P_createWorld(unsigned int seed, std::string worldName, boo
 		// Set the block heights in each chunk
 		setMessage("Setting block heights...");
 
-		for(int i = 0; i < (WORLD_SIZE / CHUNK_SIZE); i++) {
+		for(int i = 0; i < chunks; i++) {
 			for(int layer = 0; layer < WORLD_DEPTH; layer++) {
 
 				XMLModule::BiomeData biome = XMLModule::XMLData::getBiomeData(w->m_biomesMap[i]);
@@ -332,19 +337,19 @@ void WorldIOManager::P_createWorld(unsigned int seed, std::string worldName, boo
 
 					tempHeights[layer * CHUNK_SIZE + j + i * CHUNK_SIZE * WORLD_DEPTH] = height;
 
-					setMessage("Setting block heights... \n(" + std::to_string(i * CHUNK_SIZE * WORLD_DEPTH + j + layer * CHUNK_SIZE) + "/" + std::to_string(WORLD_SIZE * WORLD_DEPTH) + ")");
-					setProgress(0.1f + 0.069f / (WORLD_DEPTH * WORLD_SIZE) * ((WORLD_SIZE * layer) + (i * CHUNK_SIZE) + (j + 1))); // Ends at 0.169f;
+					setMessage("Setting block heights... \n(" + std::to_string(i * CHUNK_SIZE * WORLD_DEPTH + j + layer * CHUNK_SIZE) + "/" + std::to_string(w->getSize()  * WORLD_DEPTH) + ")");
+					setProgress(0.1f + 0.069f / (WORLD_DEPTH * w->getSize()) * ((w->getSize()  * layer) + (i * CHUNK_SIZE) + (j + 1)));  // Ends at 0.169f;
 				}
 			}
 		}
 
 		{
 			setMessage("Smoothing terrain... ");
-			for(int chunk = 0; chunk < WORLD_SIZE / CHUNK_SIZE; chunk++) {
+			for(int chunk = 0; chunk < chunks; chunk++) {
 
 				// Get base height values of current, next, and previous chunks
-				unsigned int previousBase = XMLModule::XMLData::getBiomeData(w->m_biomesMap[((chunk - 1) + (WORLD_SIZE / CHUNK_SIZE)) % (WORLD_SIZE / CHUNK_SIZE)]).baseHeight;
-				unsigned int nextBase = XMLModule::XMLData::getBiomeData(w->m_biomesMap[chunk + 1] % (WORLD_SIZE / CHUNK_SIZE)).baseHeight;
+				unsigned int previousBase = XMLModule::XMLData::getBiomeData(w->m_biomesMap[((chunk - 1) + (chunks)) % (chunks)]).baseHeight;
+				unsigned int nextBase = XMLModule::XMLData::getBiomeData(w->m_biomesMap[chunk + 1] % (chunks)).baseHeight;
 				unsigned int baseHeight = XMLModule::XMLData::getBiomeData(w->m_biomesMap[chunk]).baseHeight;
 
 				for(int layer = 0; layer < WORLD_DEPTH; layer++) {
@@ -375,7 +380,7 @@ void WorldIOManager::P_createWorld(unsigned int seed, std::string worldName, boo
 							blockHeights[blockIndex] += baseHeight;
 						}
 
-						setProgress(0.169f + 0.069f / (WORLD_DEPTH * WORLD_SIZE) * ((WORLD_SIZE * layer) + ((x + CHUNK_SIZE * chunk) + 1))); // Ends at 0.238;
+						setProgress(0.169f + 0.069f / (WORLD_DEPTH * w->getSize()) * ((w->getSize()  * layer) + ((x + CHUNK_SIZE * chunk) + 1)));  // Ends at 0.238;
 					}
 				}
 			}
@@ -389,19 +394,20 @@ void WorldIOManager::P_createWorld(unsigned int seed, std::string worldName, boo
 
 			setMessage("Placing blocks...");
 
-			for(int chunk = 0; chunk < (WORLD_SIZE / CHUNK_SIZE); chunk++) {
+			for(int chunk = 0; chunk < (chunks); chunk++) {
 				for(int layer = 0; layer < WORLD_DEPTH; layer++) {
 					for(int x = 0; x < CHUNK_SIZE; x++) {
 						unsigned int blockIndex = layer * CHUNK_SIZE + x + chunk * CHUNK_SIZE * WORLD_DEPTH;
 						for(int y = 0; y < blockHeights[blockIndex]; y++) {
+							glm::vec2 pos = glm::vec2(x + chunk * CHUNK_SIZE, y);
 							if(y < blockHeights[blockIndex] - 1 - 5 || y <= WATER_LEVEL) {
-								Tile* tile = new Tile(glm::vec2(x + chunk * CHUNK_SIZE, y), layer, TileIDs::STONE, SaveDataTypes::MetaData(), false);
+								Tile* tile = Factory::createTile((unsigned int)TileIDs::STONE, pos, layer);
 								w->setTile_noEvent(tile);
 							} else if(y < blockHeights[blockIndex] - 1 && y > WATER_LEVEL) {
-								Tile* tile = new Tile(glm::vec2(x + chunk * CHUNK_SIZE, y), layer, TileIDs::DIRT, SaveDataTypes::MetaData(), false);
+								Tile* tile = Factory::createTile((unsigned int)TileIDs::DIRT, pos, layer);
 								w->setTile_noEvent(tile);
 							} else if(y < blockHeights[blockIndex] && y > WATER_LEVEL) {
-								Tile* tile = new Tile(glm::vec2(x + chunk * CHUNK_SIZE, y), layer, TileIDs::GRASS, SaveDataTypes::MetaData(), false);
+								Tile* tile = Factory::createTile((unsigned int)TileIDs::GRASS, pos, layer);
 								w->setTile_noEvent(tile);
 								int r = std::rand(); /// TODO: Re-enable flowers
 								if(r % 2 == 0) {
@@ -413,11 +419,12 @@ void WorldIOManager::P_createWorld(unsigned int seed, std::string worldName, boo
 							//setProgress(0.238f + 0.752f / (WORLD_DEPTH * WORLD_SIZE * WORLD_HEIGHT) * ((WORLD_SIZE * WORLD_HEIGHT * layer) + (WORLD_HEIGHT * x) + (y + 1))); // Ends at 0.99
 						}
 						for(int y = blockHeights[blockIndex]; y < WORLD_HEIGHT; y++) {
+							glm::vec2 pos = glm::vec2(x + chunk * CHUNK_SIZE, y);
 							if(y <= WATER_LEVEL) {
-								Tile* tile = new Tile(glm::vec2(x + chunk * CHUNK_SIZE, y), layer, TileIDs::WATER, SaveDataTypes::MetaData(), false);
+								Tile* tile = Factory::createTile((unsigned int)TileIDs::WATER, pos, layer);
 								w->setTile_noEvent(tile);
 							} else {
-								Tile* tile = new Tile(glm::vec2(x + chunk * CHUNK_SIZE, y), layer, TileIDs::AIR, SaveDataTypes::MetaData(), false);
+								Tile* tile = Factory::createTile((unsigned int)TileIDs::AIR, pos, layer);
 								w->setTile_noEvent(tile);
 							}
 							//setMessage("Placing blocks... (" + std::to_string(layer * WORLD_SIZE * WORLD_HEIGHT + x * WORLD_HEIGHT + y) + "/" + std::to_string((WORLD_DEPTH * WORLD_SIZE * WORLD_HEIGHT)) + ")");
@@ -429,21 +436,21 @@ void WorldIOManager::P_createWorld(unsigned int seed, std::string worldName, boo
 		}
 	} else {
 		for(int layer = 0; layer < WORLD_DEPTH; layer++) {
-			for(int k = 0; k < WORLD_SIZE; k++) {
-				blockHeights[k + layer * WORLD_SIZE] = 10;
-				for(int j = blockHeights[k + layer * WORLD_SIZE]; j < WORLD_HEIGHT; j++) {
-					Tile* tile = new Tile(glm::vec2(k, j), layer, TileIDs::AIR, SaveDataTypes::MetaData(), false);
+			for(int k = 0; k < w->getSize(); k++) {
+				blockHeights[k + layer * w->getSize()] = 10;
+				for(int j = blockHeights[k + layer * w->getSize() ]; j < WORLD_HEIGHT; j++) {
+					Tile* tile = Factory::createTile((unsigned int)TileIDs::AIR, glm::vec2(k, j), layer);
 					w->setTile_noEvent(tile);
 				}
-				for(int j = 0; j < blockHeights[k + layer * WORLD_SIZE]; j++) {
-					if(j < blockHeights[k + layer * WORLD_SIZE] - 1 - 5) {
-						Tile* tile = new Tile(glm::vec2(k, j), layer, TileIDs::STONE, SaveDataTypes::MetaData(), false);
+				for(int j = 0; j < blockHeights[k + layer * w->getSize()]; j++) {
+					if(j < blockHeights[k + layer * w->getSize()] - 1 - 5) {
+						Tile* tile = Factory::createTile((unsigned int)TileIDs::STONE, glm::vec2(k, j), layer);
 						w->setTile_noEvent(tile);
-					} else if(j < blockHeights[k + layer * WORLD_SIZE] - 1) {
-						Tile* tile = new Tile(glm::vec2(k, j), layer, TileIDs::DIRT, SaveDataTypes::MetaData(), false);
+					} else if(j < blockHeights[k + layer * w->getSize()] - 1) {
+						Tile* tile = Factory::createTile((unsigned int)TileIDs::DIRT, glm::vec2(k, j), layer);
 						w->setTile_noEvent(tile);
 					} else {
-						Tile* tile = new Tile(glm::vec2(k, j), layer, TileIDs::GRASS, SaveDataTypes::MetaData(), false);
+						Tile* tile = Factory::createTile((unsigned int)TileIDs::GRASS, glm::vec2(k, j), layer);
 						w->setTile_noEvent(tile);
 						int r = std::rand() % 2;
 						if(r == 0) { /// TODO: Re-enable flowers
@@ -451,13 +458,11 @@ void WorldIOManager::P_createWorld(unsigned int seed, std::string worldName, boo
 							//w->setTile_noEvent(flower); /// TODO: Cross-layer worldgen
 						}
 					}
-					setMessage("Placing blocks... \n(" + std::to_string(k * WORLD_HEIGHT + layer * WORLD_SIZE * WORLD_HEIGHT) + "/" + std::to_string(WORLD_SIZE * WORLD_HEIGHT * WORLD_DEPTH) + ")");
+					setMessage("Placing blocks... \n(" + std::to_string(k * WORLD_HEIGHT + layer * w->getSize() * WORLD_HEIGHT) + "/" + std::to_string(w->getSize() * WORLD_HEIGHT * WORLD_DEPTH) + ")");
 				}
 			}
 		}
 	}
-
-	*world = *w;
 
 	setProgress(1.0f);
 

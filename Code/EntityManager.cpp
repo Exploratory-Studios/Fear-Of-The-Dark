@@ -1,5 +1,8 @@
 #include "EntityManager.h"
 
+#include "Factory.h"
+#include "Singletons.h"
+
 #include "EventQueue.h"
 
 #include "World.h"
@@ -16,7 +19,7 @@ EntityManager::EntityManager() {
 }
 
 unsigned int EntityManager::getEntityIndex(Entity* entity) {
-	float horizontalPercentage = entity->getPosition().x / (float)WORLD_SIZE;
+	float horizontalPercentage = entity->getPosition().x / (float)Singletons::getWorld()->getSize();
 	for(unsigned int i = 0; i < std::ceil(m_entities.size() / 2) + 1; i++) {
 		int l = horizontalPercentage * (m_entities.size() - 1) - i;
 		int r = horizontalPercentage * (m_entities.size() - 1) + i;
@@ -255,26 +258,28 @@ void EntityManager::spawnEntities() {
 		positions.push_back(glm::vec3(m_player->getPosition().x + (std::rand() % ENTITY_SPAWN_RANGE), 0.0f, -1.0f));
 	}
 
+	unsigned int worldSize = Singletons::getWorld()->getSize();
+
 	/// 2.
 	for(int i = 0; i < positions.size(); i++) {
 		bool foundPosition = false;
 		for(int y = 0; !foundPosition && y < WORLD_HEIGHT - 2; y++) {
 			bool checkNext = false;
 			for(int z = 0; !checkNext && z < WORLD_DEPTH; z++) {
-				unsigned int x = ((int)positions[i].x + WORLD_SIZE) % WORLD_SIZE;
+				unsigned int x = ((int)positions[i].x + worldSize) % worldSize;
 				for(unsigned int y1 = 0; !checkNext && y1 < 2; y1++) {
 					for(int x1 = -1; !checkNext && x1 < 2; x1++) {
-						if(!m_world->getTile((x + x1 + WORLD_SIZE) % WORLD_SIZE, y + y1, z)) {
+						if(!m_world->getTile((x + x1 + worldSize) % worldSize, y + y1, z)) {
 							checkNext = true;
-						} else if(m_world->getTile((x + x1 + WORLD_SIZE) % WORLD_SIZE, y + y1, z)->isSolid()) {
+						} else if(m_world->getTile((x + x1 + worldSize) % worldSize, y + y1, z)->isSolid()) {
 							checkNext = true;
 						}
 					}
 				}
 				for(int x1 = -1; !checkNext && x1 < 2; x1++) {
-					if(!m_world->getTile((x + x1 + WORLD_SIZE) % WORLD_SIZE, y - 1, z)) {
+					if(!m_world->getTile((x + x1 + worldSize) % worldSize, y - 1, z)) {
 						checkNext = true;
-					} else if(!m_world->getTile((x + x1 + WORLD_SIZE) % WORLD_SIZE, y - 1, z)->isSolid()) {
+					} else if(!m_world->getTile((x + x1 + worldSize) % worldSize, y - 1, z)->isSolid()) {
 						checkNext = true;
 					}
 				}
@@ -297,6 +302,6 @@ void EntityManager::spawnEntities() {
 	}
 
 	for(int i = 0; i < positions.size(); i++) {
-		queueEntityToAdd(createEntity(glm::vec2(positions[i].x, positions[i].y), (int)positions[i].z, EntityIDs::NPC_NEUTRAL_COMPANIONCUBE, SaveDataTypes::MetaData(), true));
+		queueEntityToAdd(Factory::createEntity((unsigned int)EntityIDs::NPC_NEUTRAL_COMPANIONCUBE, glm::vec2(positions[i].x, positions[i].y), (int)positions[i].z, SaveDataTypes::MetaData(), true));
 	}
 }

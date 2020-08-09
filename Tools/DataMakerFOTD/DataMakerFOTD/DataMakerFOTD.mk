@@ -2,21 +2,21 @@
 ## Auto Generated makefile by CodeLite IDE
 ## any manual changes will be erased      
 ##
-## Release_(Windows64_OpenGL3)
+## Debug
 ProjectName            :=DataMakerFOTD
-ConfigurationName      :=Release_(Windows64_OpenGL3)
+ConfigurationName      :=Debug
 WorkspacePath          :=/home/davis-dev/Documents/Programming/C++/CodingGithub/Fear-Of-The-Dark/Code
 ProjectPath            :=/home/davis-dev/Documents/Programming/C++/CodingGithub/Fear-Of-The-Dark/Tools/DataMakerFOTD/DataMakerFOTD
-IntermediateDirectory  :=objSPEC
+IntermediateDirectory  :=./Debug
 OutDir                 := $(IntermediateDirectory)
 CurrentFileName        :=
 CurrentFilePath        :=
 CurrentFileFullPath    :=
-User                   :=Davis-Dev
-Date                   :=06/08/20
+User                   :=Davis-dev
+Date                   :=08/08/20
 CodeLitePath           :=/home/davis-dev/.codelite
-LinkerName             :=/usr/bin/x86_64-w64-mingw32-g++
-SharedObjectLinkerName :=/usr/bin/x86_64-w64-mingw32-g++ -shared -fPIC
+LinkerName             :=/usr/bin/g++
+SharedObjectLinkerName :=/usr/bin/g++ -shared -fPIC
 ObjectSuffix           :=.o
 DependSuffix           :=.o.d
 PreprocessSuffix       :=.i
@@ -27,7 +27,7 @@ OutputSwitch           :=-o
 LibraryPathSwitch      :=-L
 PreprocessorSwitch     :=-D
 SourceSwitch           :=-c 
-OutputFile             :=bin/ReleaseWin64GL3/DataMakerFOTD
+OutputFile             :=bin/Debug/DataMakerFOTD
 Preprocessors          :=
 ObjectSwitch           :=-o 
 ArchiveOutputSwitch    := 
@@ -35,25 +35,25 @@ PreprocessOnlySwitch   :=-E
 ObjectsFileList        :="DataMakerFOTD.txt"
 PCHCompileFlags        :=
 MakeDirCommand         :=mkdir -p
-LinkOptions            :=  -flto -static-libgcc -static-libstdc++
+LinkOptions            :=  
 IncludePath            :=  $(IncludeSwitch). $(IncludeSwitch)../../../Code $(IncludeSwitch)include $(IncludeSwitch)../../../../GLEngine $(IncludeSwitch)/usr/include/x86_64-linux-gnu/cegui-0.8.7 
 IncludePCH             := 
 RcIncludePath          := 
-Libs                   := $(LibrarySwitch)GLEngine $(LibrarySwitch)CEGUIBase-0 $(LibrarySwitch)CEGUIOpenGLRenderer-0 $(LibrarySwitch)SDL2 $(LibrarySwitch)SDL2_mixer $(LibrarySwitch)SDL2_ttf $(LibrarySwitch)opengl32 $(LibrarySwitch)glu32 $(LibrarySwitch)glew32 $(LibrarySwitch)boost_filesystem $(LibrarySwitch)boost_thread $(LibrarySwitch)boost_system $(LibrarySwitch)lua53 $(LibrarySwitch)pthread 
-ArLibs                 :=  "GLEngine" "CEGUIBase-0" "CEGUIOpenGLRenderer-0" "SDL2" "SDL2_mixer" "SDL2_ttf" "opengl32" "glu32" "glew32" "libboost_filesystem.a" "libboost_thread.a" "libboost_system.a" "lua53" "pthread" 
-LibPath                := $(LibraryPathSwitch). $(LibraryPathSwitch)../../../../GLEngine/bin/ReleaseWindows/ 
+Libs                   := $(LibrarySwitch)GLEngine $(LibrarySwitch)boost_thread $(LibrarySwitch)boost_filesystem $(LibrarySwitch)boost_system $(LibrarySwitch)lua5.3 $(LibrarySwitch)CEGUIBase-0 $(LibrarySwitch)CEGUIOpenGLRenderer-0 $(LibrarySwitch)SDL2 $(LibrarySwitch)SDL2_mixer $(LibrarySwitch)SDL2_ttf $(LibrarySwitch)GL $(LibrarySwitch)GLU $(LibrarySwitch)GLEW $(LibrarySwitch)pthread 
+ArLibs                 :=  "libGLEngine.a" "libboost_thread.a" "libboost_filesystem.a" "libboost_system.a" "lua5.3" "CEGUIBase-0" "CEGUIOpenGLRenderer-0" "SDL2" "SDL2_mixer" "SDL2_ttf" "GL" "GLU" "GLEW" "pthread" 
+LibPath                := $(LibraryPathSwitch). $(LibraryPathSwitch)../../../../GLEngine/bin/Release/ $(LibraryPathSwitch)/usr/lib/x86_64-linux-gnu/ $(LibraryPathSwitch)./ $(LibraryPathSwitch)../../../ 
 
 ##
 ## Common variables
 ## AR, CXX, CC, AS, CXXFLAGS and CFLAGS can be overriden using an environment variables
 ##
-AR       := /usr/bin/x86_64-w64-mingw32-ar rcu
-CXX      := /usr/bin/x86_64-w64-mingw32-g++
-CC       := /usr/bin/x86_64-w64-mingw32-gcc
-CXXFLAGS :=  -DWINDOWS -fexceptions -DLUA_APICHECK  $(Preprocessors)
+AR       := /usr/bin/ar rcu
+CXX      := /usr/bin/g++
+CC       := /usr/bin/gcc
+CXXFLAGS :=  -std=c++17 -g3 -g -DLINUX -fexceptions  $(Preprocessors)
 CFLAGS   :=   $(Preprocessors)
 ASFLAGS  := 
-AS       := /usr/bin/x86_64-w64-mingw32-as
+AS       := /usr/bin/as
 
 
 ##
@@ -80,11 +80,11 @@ $(OutputFile): $(IntermediateDirectory)/.d $(Objects)
 	$(LinkerName) $(OutputSwitch)$(OutputFile) @$(ObjectsFileList) $(LibPath) $(Libs) $(LinkOptions)
 
 MakeIntermediateDirs:
-	@test -d objSPEC || $(MakeDirCommand) objSPEC
+	@test -d ./Debug || $(MakeDirCommand) ./Debug
 
 
 $(IntermediateDirectory)/.d:
-	@test -d objSPEC || $(MakeDirCommand) objSPEC
+	@test -d ./Debug || $(MakeDirCommand) ./Debug
 
 PreBuild:
 
@@ -158,6 +158,6 @@ $(IntermediateDirectory)/up_up_up_Code_MetaData.cpp$(PreprocessSuffix): ../../..
 ## Clean
 ##
 clean:
-	$(RM) -r objSPEC/
+	$(RM) -r ./Debug/
 
 

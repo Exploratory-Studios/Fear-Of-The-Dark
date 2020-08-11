@@ -68,6 +68,9 @@ class World {
 		void updateTiles(glm::vec4 destRect);
 		void tickTiles(glm::vec4 destRect);
 
+		void drawFluids(GLEngine::SpriteBatch& sb, glm::vec4& destRect);
+		void updateFluids(float timeStep, glm::vec4& destRect);
+
 		void drawParticles(GLEngine::SpriteBatch* sb);
 		void drawSunlight(GLEngine::SpriteBatch& sb, glm::vec4 destRect); // Just draws the sunlight value into the rgb components.
 

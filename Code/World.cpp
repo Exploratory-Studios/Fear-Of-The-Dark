@@ -39,8 +39,11 @@ World::World(unsigned int xSize, unsigned int ySize, unsigned int zSize) {
 
 	m_biomesMap.resize(xSize / CHUNK_SIZE);
 
+	Singletons::setWorld(this);
+
 
 	Singletons::getEntityManager()->init(this);
+	Singletons::getFluidManager(); // inits fluidmanager
 }
 
 World::~World() {
@@ -405,6 +408,7 @@ void World::tickTiles(glm::vec4 destRect) {
 	m_sunlight = std::cos(m_time / (DAY_LENGTH / 6.28318f)) / 2.0f + 0.5f;;
 
 	for(int y = destRect.y; y < destRect.w + destRect.y; y++) {
+		if(y < -destRect.w) break;
 		for(int x = destRect.x; x < destRect.z + destRect.x; x++) {
 			for(unsigned int layer = 0; layer < WORLD_DEPTH; layer++) {
 				if(y >= 0 && y < WORLD_HEIGHT) {
@@ -416,6 +420,14 @@ void World::tickTiles(glm::vec4 destRect) {
 		}
 	}
 	return;
+}
+
+void World::drawFluids(GLEngine::SpriteBatch& sb, glm::vec4& destRect) {
+	Singletons::getFluidManager()->draw(sb, destRect);
+}
+
+void World::updateFluids(float timeStep, glm::vec4& destRect) {
+	Singletons::getFluidManager()->update(timeStep, destRect);
 }
 
 void World::drawDebug(GLEngine::DebugRenderer& dr, float xOffset) {

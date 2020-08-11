@@ -256,7 +256,6 @@ void WorldIOManager::P_saveWorld(World* world) {
 void WorldIOManager::P_createWorld(unsigned int seed, std::string worldName, bool isFlat, unsigned int width) {
 
 	World* w = new World(width, WORLD_HEIGHT, WORLD_DEPTH);
-	Singletons::setWorld(w);
 
 	float startTime = (float)(std::clock()) / (float)(CLOCKS_PER_SEC / 1000);
 	logger->log("CREATE: Starting world creation at time: " + std::to_string(startTime));

@@ -155,7 +155,10 @@ void GameplayScreen::update() {
 			/// TODO: Re-enable this -> m_world->getPlayer()->setCanInteract(!m_questManager->isDialogueActive());
 		}
 
-		Singletons::getWorld()->updateTiles(getScreenBox() + glm::vec4(-10.0f, -10.0f, 20.0f, 20.0f));
+		glm::vec4 screenRect = getScreenBox() + glm::vec4(-10.0f, -10.0f, 20.0f, 20.0f);
+		Singletons::getWorld()->updateTiles(screenRect);
+		glm::vec4 regScreenRect = getScreenBox();
+		Singletons::getWorld()->updateFluids(1.0f/60.0f, regScreenRect);
 		Singletons::getEntityManager()->updateEntities(1.0f); /// TODO: Use timestep
 
 		unsigned int worldSize = Singletons::getWorld()->getSize();
@@ -470,8 +473,10 @@ void GameplayScreen::drawGUIToScreen() {
 		glUniformMatrix4fv(pUniform, 1, GL_FALSE, &projectionMatrix[0][0]);
 
 		Singletons::getEntityManager()->getPlayer()->drawGUI(m_spriteBatch, m_spriteFont);
+		glm::vec4 screenRect = getScreenBox();
+		Singletons::getFluidManager()->draw(m_spriteBatch, screenRect);
 		m_spriteBatch.begin(GLEngine::GlyphSortType::BACK_TO_FRONT);
-		Singletons::getWorld()->drawTilesGUI(m_spriteBatch, m_spriteFont, getScreenBox() + glm::vec4(0.0f, 0.0f, 1.0f, 1.0f));
+		Singletons::getWorld()->drawTilesGUI(m_spriteBatch, m_spriteFont, screenRect);
 		if(Singletons::getEntityManager()->getPlayer()->isInventoryOpen()) Singletons::getEntityManager()->getPlayer()->display(m_spriteBatch, glm::vec2(0.2f, 0.36f) * glm::vec2(Singletons::getGameCamera()->getScreenWidth(), Singletons::getGameCamera()->getScreenHeight()), 80.0f);
 		m_spriteBatch.end();
 		m_spriteBatch.renderBatch();
@@ -740,21 +745,21 @@ void GameplayScreen::updateScale() {
 #ifdef DEV_CONTROLS
 
 void GameplayScreen::drawDebug() {
-	if(Singletons::getEntityManager()->getPlayer()->getSelectedBlock()) {
-		EntityPlayer* p = Singletons::getEntityManager()->getPlayer();
+	//if(Singletons::getEntityManager()->getPlayer()->getSelectedBlock()) {
+	EntityPlayer* p = Singletons::getEntityManager()->getPlayer();
 
-		int blockX, blockY;
-		blockX = p->getSelectedBlock()->getPosition().x;
-		blockY = p->getSelectedBlock()->getPosition().y;
+	/*int blockX, blockY;
+	blockX = p->getSelectedBlock()->getPosition().x;
+	blockY = p->getSelectedBlock()->getPosition().y;
 
-		std::string biomeString = Singletons::getWorld()->getBiome(p->getSelectedBlock()->getPosition().x).name;
+	std::string biomeString = Singletons::getWorld()->getBiome(p->getSelectedBlock()->getPosition().x).name;*/
 
-		std::string display = "FPS: " + std::to_string((int)m_game->getFps());
-		display += "\nMouse x,y: " + std::to_string(blockX) + "," + std::to_string(blockY);
-		display += "\nSelected Block: Biome: " + biomeString + ", " + p->getSelectedBlock()->getPrintout();
+	std::string display = "FPS: " + std::to_string((int)m_game->getFps());
+	//display += "\nMouse x,y: " + std::to_string(blockX) + "," + std::to_string(blockY);
+	//display += "\nSelected Block: Biome: " + biomeString + ", " + p->getSelectedBlock()->getPrintout();
 
-		m_fpsWidget->setText(display);
-	}
+	m_fpsWidget->setText(display);
+	//}
 }
 
 #endif //DEV_CONTROLS

@@ -6,6 +6,7 @@
 #include "EntityManager.h"
 #include "AudioManager.h"
 #include "World.h"
+#include "FluidManager.h"
 
 class Singletons {
 	public:
@@ -49,10 +50,17 @@ class Singletons {
 			m_world = w;
 		}
 
+		static FluidManager* getFluidManager() {
+			if(m_fluidManager) return m_fluidManager;
+			m_fluidManager = new FluidManager();
+			return m_fluidManager;
+		}
+
 	private:
 		static EntityManager* m_entityManager;
 		static AudioManager* m_audioManager;
 		static GLEngine::GUI* m_gui;
 		static GLEngine::Camera2D* m_gameCamera;
 		static World* m_world;
+		static FluidManager* m_fluidManager;
 };

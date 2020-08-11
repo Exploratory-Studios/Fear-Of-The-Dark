@@ -2,6 +2,7 @@
 
 #include "Entity.h"
 
+#include <glm/glm.hpp>
 #include <string>
 #include <ResourceManager.h>
 #include <iostream>

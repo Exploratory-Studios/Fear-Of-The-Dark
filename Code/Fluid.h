@@ -9,14 +9,12 @@
 
 class Tile;
 
-// The size of a 1/4 chunk length (8*8)
-#define FLUID_PARTITION_SIZE 40
-#define FLUID_CELL_SIZE 0.2f
-
 class Fluid {
 	public:
-		Fluid(float& viscosity);
+		Fluid(float& viscosity, bool gravity);
 		~Fluid();
+
+		void init();
 
 		void addObstacle(Tile* t); // Adds a tile's coordinates to the appropriate m_occupied vector.
 
@@ -24,13 +22,14 @@ class Fluid {
 		void draw(GLEngine::SpriteBatch& sb, glm::vec4& screenRect);
 
 	private:
+		void addObstacles();
 		void createVectors();
 		void destroyVectors();
 
-		void createTexture();
+		void getIndicesInBox(glm::vec4& destRect, std::vector<unsigned int>& indices, std::vector<glm::vec2>& positions);
 
 		float m_viscosity; // Rate of diffusion
-		GLEngine::GLTexture m_texture; // To store lots and lots of data about cell densities
+		bool m_hasGravity;
 
 		std::vector<std::vector<bool>> m_occupied;
 		std::vector<FluidField*> m_densities;

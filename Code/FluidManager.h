@@ -9,16 +9,24 @@
 
 #include "Fluid.h"
 
+enum class FluidTypes {
+	WATER
+};
+
 class FluidManager {
 	public:
 		FluidManager();
 		~FluidManager(); // Destroys all fluids
+
+		void init(); // Sets all obstacles
 
 		void update(float& timeStep, glm::vec4& screenRect);
 		void draw(GLEngine::SpriteBatch& sb, glm::vec4& screenRect);
 
 		void addFluid(Fluid* fluid);
 		void addObstacle(Tile* tile);
+
+		Fluid* getFluid(FluidTypes& type);
 		//void addObstacle(Entity* e); TODO?
 
 	private:

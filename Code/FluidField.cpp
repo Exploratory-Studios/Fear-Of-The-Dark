@@ -4,10 +4,10 @@
 
 #include "FluidVelocityField.h"
 
-FluidField::FluidField(unsigned int numCells_x, unsigned int numCells_y, float cellSize, GLEngine::GLTexture texture) : m_cellSize(cellSize), m_texture(texture) {
+FluidField::FluidField(unsigned int numCells_x, unsigned int numCells_y, float cellSize, std::string id, float fill) : m_cellSize(cellSize), m_id(id) {
 	m_numCells_x = numCells_x;
 	m_numCells_y = numCells_y;
-	constructVector();
+	constructVector(fill);
 }
 
 FluidField::~FluidField() {
@@ -27,9 +27,14 @@ void FluidField::diffuse(float& timeStep, float& rateOfDiffusion, std::vector<bo
 	// This is a linear system for unknowns newValues[here], which we can solve for:
 	// We use Gauss-Seidel relaxation to invert the matrix (idk what this means honestly, the paper says it: https://pdfs.semanticscholar.org/847f/819a4ea14bd789aca8bc88e85e906cfc657c.pdf
 
-	float a = timeStep * rateOfDiffusion * m_numCells_x * m_numCells_y;
+	float a = timeStep * rateOfDiffusion;
 
-	for(unsigned int k = 0; k < 1; k++) { // Something for the relaxation
+	//if(a == 0) {
+	//	m_data = m_lastData;
+	//	return;
+	//}
+
+	for(unsigned int k = 0; k < 20; k++) { // Something for the relaxation
 		for(int x = 0; x < m_numCells_x; x++) {
 			for(int y = 0; y < m_numCells_y; y++) {
 				int leftX = x-1;
@@ -39,7 +44,8 @@ void FluidField::diffuse(float& timeStep, float& rateOfDiffusion, std::vector<bo
 				getData(x, y) = (getLastData(x, y) + a * (getData(leftX, y) + getData(rightX, y) + getData(x, bottomY) + getData(x, topY))) / (1 + 4*a);
 			}
 		}
-		// setObstacles()?
+		setObstacles(obstacles, true);
+		setObstacles(obstacles, false);
 	}
 }
 
@@ -49,8 +55,13 @@ void FluidField::advect(float& timeStep, FluidVelocityField* velocities, std::ve
 	for(int x = 0; x < m_numCells_x; x++) {
 		for(int y = 0; y < m_numCells_y; y++) {
 			// get backtraced x and y
-			float backtracedX = x - timeStep * velocities->getXVelocities()->getData(x, y);
-			float backtracedY = y - timeStep * velocities->getYVelocities()->getData(x, y);
+			float backtracedX = (x) - timeStep * velocities->getXVelocities()->getLastData(x, y) * m_numCells_x;
+			float backtracedY = (y) - timeStep * velocities->getYVelocities()->getLastData(x, y) * m_numCells_y;
+
+			//if(backtracedX < 0.5f) backtracedX = 0.5f;
+			//if(backtracedX < 0.5f) backtracedX = 0.5f;
+			//if(backtracedX > m_numCells_x-0.5f) backtracedX = m_numCells_x-0.5f;
+			//if(backtracedY > m_numCells_y-0.5f) backtracedY = m_numCells_y-0.5f;
 
 			// Get closest neighbours
 			// X's
@@ -68,41 +79,41 @@ void FluidField::advect(float& timeStep, FluidVelocityField* velocities, std::ve
 			float yClosenessBottom = 1.0f - yClosenessTop;
 
 			// Actually interpolate the densities now (XPos0 == left, yPos0 == bottom)
-			float value = xClosenessLeft  * (yClosenessBottom * getLastData(neighbourXPos0, neighbourYPos0) +
-			                                 yClosenessTop    * getLastData(neighbourXPos0, neighbourYPos1)) +
+			float value = xClosenessLeft * (yClosenessBottom * getLastData(neighbourXPos0, neighbourYPos0) +
+			                                yClosenessTop    * getLastData(neighbourXPos0, neighbourYPos1)) +
 			              xClosenessRight * (yClosenessBottom * getLastData(neighbourXPos1, neighbourYPos0) +
 			                                 yClosenessTop    * getLastData(neighbourXPos1, neighbourYPos1));
-			m_data[x * m_numCells_y + y] = value;
+			getData(x, y) = value;
 		}
 	}
+	setObstacles(obstacles, true);
+	setObstacles(obstacles, false);
 }
 
-void FluidField::project(float& timeStep, std::vector<bool>& obstacles) {
-	// We don't even care about this rn
+void FluidField::addSource(int& x, int& y, float source, bool clamp/*=true*/) {
+	getLastData(x, y) += source;
 }
 
-void FluidField::addSource(int& x, int& y, float source) {
-	getData(x, y) = source;
+void FluidField::draw(GLEngine::SpriteBatch& sb, glm::vec2& pos) {
+	if(m_texture.filePath.length() == 0) createTexture();
+	constructTextureData(m_textureData);
+	GLEngine::ResourceManager::setTexture(m_texture.filePath, &m_textureData);
+
+	sb.draw(glm::vec4(pos.x, pos.y, m_numCells_x * m_cellSize, m_numCells_y * m_cellSize), glm::vec4(0.0f, 0.0f, 1.0f, 1.0f), m_texture.id, 0.0f, GLEngine::ColourRGBA8(0, 119, 190, 255));
 }
 
-void FluidField::draw(GLEngine::SpriteBatch& sb) {
-	std::vector<unsigned char> data;
-	data.resize(m_numCells_x*m_numCells_y*4, 0);
-	data = constructTextureData();
-	GLEngine::ResourceManager::setTexture(m_texture.filePath, &data);
-
-	sb.draw(glm::vec4(0.0f, 0.0f, 100.0f, 100.0f), glm::vec4(0.0f, 0.0f, 1.0f, 1.0f), m_texture.id, 0.0f, GLEngine::ColourRGBA8(255, 255, 255, 255));
-}
-
-std::vector<unsigned char> FluidField::constructTextureData() {
-	// Only write to the R value (once every 4 components I assume)
-	std::vector<unsigned char> data;
+void FluidField::constructTextureData(std::vector<unsigned char>& data) {
+	// Only write to the R value (once every 4 components)
 	data.resize(m_numCells_x*m_numCells_y*4, 0);
 
-	for(int x = 0; x < m_numCells_x; x++)
+	// OpenGL indexes the data a little backwards from ours ([y][x]), so we have to adjust
+
+	for(int x = 0; x < m_numCells_x; x++) {
 		for(int y = 0; y < m_numCells_y; y++) {
-			data[(x*m_numCells_y+y)*4] = getData(x, y);
+			// We use getData(y, x) instead of (x,y) to compensate for the above note.
+			data[(x*m_numCells_y+y)*4] = glm::clamp((int)(getData(y, x) * 255), 0, 255);
 		}
+	}
 }
 
 void FluidField::setObstacles(std::vector<bool>& obstacles, bool horizontal) {
@@ -114,27 +125,31 @@ void FluidField::setObstacles(std::vector<bool>& obstacles, bool horizontal) {
 			if(solid) {
 				if(horizontal) {
 					// Look for vertical walls
-					bool top = obstacles[x * m_numCells_y + y+1];
-					if(top) {
-						getData(x, y) = 0.0f;
-						continue;
+					if(y < m_numCells_y-1) {
+						bool top = obstacles[x * m_numCells_y + y+1];
+						if(top) {
+							getData(x, y) = 0.0f;
+						}
 					}
-					bool bottom = obstacles[x * m_numCells_y + y-1];
-					if(top) {
-						getData(x, y) = 0.0f;
-						continue;
+					if(y > 0) {
+						bool bottom = obstacles[x * m_numCells_y + y-1];
+						if(bottom) {
+							getData(x, y) = 0.0f;
+						}
 					}
 				} else {
 					// Look for horizontal walls
-					bool left = obstacles[(x-1) * m_numCells_y + y];
-					if(left) {
-						getData(x, y) = 0.0f;
-						continue;
+					if(x > 0) {
+						bool left = obstacles[(x-1) * m_numCells_y + y];
+						if(left) {
+							getData(x, y) = 0.0f;
+						}
 					}
-					bool right = obstacles[(x+1) * m_numCells_y + y];
-					if(right) {
-						getData(x, y) = 0.0f;
-						continue;
+					if(x < m_numCells_x-1) {
+						bool right = obstacles[(x+1) * m_numCells_y + y];
+						if(right) {
+							getData(x, y) = 0.0f;
+						}
 					}
 				}
 			}
@@ -142,27 +157,34 @@ void FluidField::setObstacles(std::vector<bool>& obstacles, bool horizontal) {
 	}
 }
 
-void FluidField::setOld() {
-	m_lastData = m_data;
+void FluidField::swap() {
+	std::vector<float> tmp = m_data;
+	m_data = m_lastData;
+	m_lastData = tmp;
+}
+
+void FluidField::addSources(float& timeStep) {
+	for(int x = 0; x < m_data.size(); x++)
+		m_data[x] += m_lastData[x] * timeStep;
 }
 
 float& FluidField::getData(int& x, int& y) {
 	// Account for edges. Use neighbour pointers
 	if(x >= m_numCells_x) {
-		int newX = x-m_numCells_x;
-		return m_right->getData(newX, y);
+		x -= m_numCells_x;
+		return m_right->getData(x, y);
 	}
 	if(x < 0) {
-		int newX = x+m_numCells_x;
-		return m_left->getData(newX, y);
+		x += m_numCells_x;
+		return m_left->getData(x, y);
 	}
 	if(y >= m_numCells_y) {
-		int newY = y-m_numCells_y;
-		return m_top->getData(x, newY);
+		y -= m_numCells_y;
+		return m_top->getData(x, y);
 	}
 	if(y < 0) {
-		int newY = y+m_numCells_y;
-		return m_bottom->getData(x, newY);
+		y += m_numCells_y;
+		return m_bottom->getData(x, y);
 	}
 	return m_data[x * m_numCells_y + y];
 }
@@ -188,18 +210,32 @@ float& FluidField::getLastData(int& x, int& y) {
 	return m_lastData[x * m_numCells_y + y];
 }
 
-void FluidField::setTexture(GLEngine::GLTexture& tex) {
-	m_texture = tex;
-}
-
-void FluidField::constructVector() {
+void FluidField::constructVector(float fill) {
 	destroyVector();
 
-	m_data.resize(m_numCells_x * m_numCells_y, 0.0f);
-	m_lastData.resize(m_numCells_x * m_numCells_y, 0.0f);
+	m_data.resize(m_numCells_x * m_numCells_y, fill);
+	m_lastData.resize(m_numCells_x * m_numCells_y, fill);
 }
 
 void FluidField::destroyVector() {
 	m_data.clear();
 	m_lastData.clear();
+}
+
+void FluidField::createTexture() {
+	unsigned int size = m_numCells_x;
+
+	std::vector<unsigned char> data;
+	data.resize(size*size, (unsigned char)0);
+	m_texture = GLEngine::ResourceManager::addTexture("fluidTexture" + m_id, size, size, data);
+
+	// (Re)bind the texture object
+	glBindTexture(GL_TEXTURE_2D, m_texture.id);
+
+	// Set to not wrap
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+
+	// Unbind
+	glBindTexture(GL_TEXTURE_2D, 0);
 }

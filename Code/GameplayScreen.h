@@ -106,6 +106,7 @@ class GameplayScreen : public GLEngine::IGameScreen {
 		GLEngine::FrameBufferObject m_sunlightFBO; // Used for fantastic sunlight!
 
 		GLEngine::GLSLProgram m_textureProgram;
+		GLEngine::GLSLProgram m_liquidProgram; // Renders liquids
 		GLEngine::GLSLProgram m_uiTextureProgram;
 		GLEngine::GLSLProgram m_vignetteTextureProgram;
 		GLEngine::GLSLProgram m_skyTextureProgram;

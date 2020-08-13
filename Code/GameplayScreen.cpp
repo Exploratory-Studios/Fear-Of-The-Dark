@@ -49,6 +49,8 @@ void GameplayScreen::onEntry() {
 
 	initUI();
 
+	Singletons::getFluidManager()->init();
+
 	m_hasBeenInited = true;
 
 	std::srand(std::time(NULL));
@@ -87,7 +89,17 @@ void GameplayScreen::onEntry() {
 
 	if(!Singletons::getEntityManager()->getPlayer()) {
 		//Player p(glm::vec2(5.0f, 100.0f), true);
-		EntityPlayer* p = new EntityPlayer(glm::vec2(5, 100), 0, SaveDataTypes::MetaData(), true);
+		bool found = false;
+		glm::vec2 pos;
+		pos.x = 5;
+		while(!found) {
+			if(!Singletons::getWorld()->getTile(pos.x, pos.y, 0)->isSolid()) {
+				found = true;
+			}
+			pos.y++;
+		}
+
+		EntityPlayer* p = new EntityPlayer(pos, 0, SaveDataTypes::MetaData(), true);
 
 		Singletons::getEntityManager()->setPlayer(p);
 
@@ -344,28 +356,55 @@ void GameplayScreen::drawWorldToFBO() {
 	m_mainFBO.begin();
 
 	m_mainFBO.clear();
+	glm::vec4 screenRect = getScreenBox() + glm::vec4(-1.0f, -1.0f, 2.0f, 2.0f);
 
 	{
-		// World: Tiles
-		m_textureProgram.use();
 
-		// Camera matrix
-		glm::mat4 projectionMatrix = Singletons::getGameCamera()->getCameraMatrix();
-		GLint pUniform = m_textureProgram.getUniformLocation("P");
-		glUniformMatrix4fv(pUniform, 1, GL_FALSE, &projectionMatrix[0][0]);
+		{
+			// World: Tiles
+			m_textureProgram.use();
 
-		GLint textureUniform = m_textureProgram.getUniformLocation("textureSampler");
-		glUniform1i(textureUniform, 0);
+			// Camera matrix
+			glm::mat4 projectionMatrix = Singletons::getGameCamera()->getCameraMatrix();
+			GLint pUniform = m_textureProgram.getUniformLocation("P");
+			glUniformMatrix4fv(pUniform, 1, GL_FALSE, &projectionMatrix[0][0]);
 
-		m_spriteBatch.begin(GLEngine::GlyphSortType::FRONT_TO_BACK);
+			GLint textureUniform = m_textureProgram.getUniformLocation("textureSampler");
+			glUniform1i(textureUniform, 0);
 
-		Singletons::getWorld()->drawTiles(m_spriteBatch, m_spriteFont, m_dr, getScreenBox() + glm::vec4(0.0f, 0.0f, 1.0f, 1.0f), &m_textureProgram); // handles spritebatch.begin and end
-		Singletons::getEntityManager()->drawEntities(m_spriteBatch, m_spriteFont, m_dr, getScreenBox() + glm::vec4(0.0f, 0.0f, 1.0f, 1.0f));
+			m_spriteBatch.begin(GLEngine::GlyphSortType::FRONT_TO_BACK);
 
-		m_spriteBatch.end();
-		m_spriteBatch.renderBatch();
+			//Singletons::getWorld()->drawTiles(m_spriteBatch, m_spriteFont, m_dr, screenRect, &m_textureProgram); // handles spritebatch.begin and end
+			Singletons::getEntityManager()->drawEntities(m_spriteBatch, m_spriteFont, m_dr, screenRect);
 
-		m_textureProgram.unuse();
+			m_spriteBatch.end();
+			m_spriteBatch.renderBatch();
+
+			m_textureProgram.unuse();
+
+		}
+
+		{
+			m_liquidProgram.use();
+
+			// Camera matrix
+			glm::mat4 projectionMatrix = Singletons::getGameCamera()->getCameraMatrix();
+			GLint pUniform = m_textureProgram.getUniformLocation("P");
+			glUniformMatrix4fv(pUniform, 1, GL_FALSE, &projectionMatrix[0][0]);
+
+			GLint textureUniform = m_textureProgram.getUniformLocation("textureSampler");
+			glUniform1i(textureUniform, 0);
+
+			m_spriteBatch.begin(GLEngine::GlyphSortType::FRONT_TO_BACK);
+
+			Singletons::getWorld()->drawFluids(m_spriteBatch, screenRect);
+
+			m_spriteBatch.end();
+			m_spriteBatch.renderBatch();
+
+			m_liquidProgram.unuse();
+
+		}
 	}
 
 	m_mainFBO.end();
@@ -633,6 +672,12 @@ void GameplayScreen::initShaders() {
 	m_sunlightProgram.addAttribute("vertexColour");
 	m_sunlightProgram.addAttribute("vertexUV");
 	m_sunlightProgram.linkShaders();
+
+	m_liquidProgram.compileShaders(ASSETS_FOLDER_PATH + "Shaders/liquidShader.vert", ASSETS_FOLDER_PATH + "Shaders/liquidShader.frag");
+	m_liquidProgram.addAttribute("vertexPosition");
+	m_liquidProgram.addAttribute("vertexColour");
+	m_liquidProgram.addAttribute("vertexUV");
+	m_liquidProgram.linkShaders();
 }
 
 void GameplayScreen::initUI() {

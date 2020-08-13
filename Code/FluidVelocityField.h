@@ -11,7 +11,7 @@
 
 class FluidVelocityField {
 	public:
-		FluidVelocityField(unsigned int num_cells_x, unsigned int num_cells_y, float cellSize, float x, float y);
+		FluidVelocityField(unsigned int num_cells_x, unsigned int num_cells_y, float cellSize, float x, float y, std::string id);
 		~FluidVelocityField();
 
 		void setNeighbours(FluidVelocityField* left, FluidVelocityField* right, FluidVelocityField* bottom, FluidVelocityField* top);
@@ -24,7 +24,11 @@ class FluidVelocityField {
 		FluidField* getYVelocities();
 
 	private:
+		void project(float& timeStep, std::vector<bool>& obstacles);
+
 		float m_x, m_y; // Actual world position of the start (bottom left) of the partition
+
+
 
 		FluidField* m_velocities_x = nullptr;
 		FluidField* m_velocities_y = nullptr;

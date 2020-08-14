@@ -2,9 +2,13 @@
 
 #include <ResourceManager.h>
 
-#include "FluidVelocityField.h"
+#include "Singletons.h"
+#include "PresetValues.h"
 
-FluidField::FluidField(unsigned int numCells_x, unsigned int numCells_y, float cellSize, std::string id, float fill) : m_cellSize(cellSize), m_id(id) {
+#include "FluidVelocityField.h"
+#include "Fluid.h"
+
+FluidField::FluidField(unsigned int numCells_x, unsigned int numCells_y, float cellSize, float x, float y, std::string id, float fill) : m_cellSize(cellSize), m_x(x), m_y(y), m_id(id) {
 	m_numCells_x = numCells_x;
 	m_numCells_y = numCells_y;
 	constructVector(fill);
@@ -27,7 +31,7 @@ void FluidField::diffuse(float& timeStep, float& rateOfDiffusion, std::vector<bo
 	// This is a linear system for unknowns newValues[here], which we can solve for:
 	// We use Gauss-Seidel relaxation to invert the matrix (idk what this means honestly, the paper says it: https://pdfs.semanticscholar.org/847f/819a4ea14bd789aca8bc88e85e906cfc657c.pdf
 
-	float a = timeStep * rateOfDiffusion;
+	float a = timeStep * rateOfDiffusion * m_numCells_x * m_numCells_y;
 
 	//if(a == 0) {
 	//	m_data = m_lastData;
@@ -41,11 +45,15 @@ void FluidField::diffuse(float& timeStep, float& rateOfDiffusion, std::vector<bo
 				int rightX = x+1;
 				int bottomY = y-1;
 				int topY = y+1;
-				getData(x, y) = (getLastData(x, y) + a * (getData(leftX, y) + getData(rightX, y) + getData(x, bottomY) + getData(x, topY))) / (1 + 4*a);
+				getData(x, y) = (getLastData(x, y) + a *
+				                 (getData(leftX, y) +
+				                  getData(rightX, y) +
+				                  getData(x, bottomY) +
+				                  getData(x, topY))) / (1 + 4*a);
 			}
 		}
-		setObstacles(obstacles, true);
-		setObstacles(obstacles, false);
+		//setObstacles(obstacles, true);
+		//setObstacles(obstacles, false);
 	}
 }
 
@@ -54,44 +62,40 @@ void FluidField::advect(float& timeStep, FluidVelocityField* velocities, std::ve
 
 	for(int x = 0; x < m_numCells_x; x++) {
 		for(int y = 0; y < m_numCells_y; y++) {
-			// get backtraced x and y
-			float backtracedX = (x) - timeStep * velocities->getXVelocities()->getLastData(x, y) * m_numCells_x;
-			float backtracedY = (y) - timeStep * velocities->getYVelocities()->getLastData(x, y) * m_numCells_y;
+			// Find data, that given this coordinate's last velocities, would have ended up here.
+			float previousX = (float)x - timeStep * velocities->getXVelocities()->getLastData(x, y);
+			float previousY = (float)y - timeStep * velocities->getYVelocities()->getLastData(x, y);
 
-			//if(backtracedX < 0.5f) backtracedX = 0.5f;
-			//if(backtracedX < 0.5f) backtracedX = 0.5f;
-			//if(backtracedX > m_numCells_x-0.5f) backtracedX = m_numCells_x-0.5f;
-			//if(backtracedY > m_numCells_y-0.5f) backtracedY = m_numCells_y-0.5f;
+			// Now we have the coordinates (previousX&Y), we need to linearly interpolate what that value would have been in the previous coordinates and put it here.
+			int leftX = (int)previousX;
+			int rightX = leftX + 1;
+			int bottomY = (int)previousY;
+			int topY = bottomY + 1;
 
-			// Get closest neighbours
-			// X's
-			int neighbourXPos0 = (int)backtracedX; // Lower bound
-			int neighbourXPos1 = neighbourXPos0 + 1;
+			// get "closeness" multiplier for linear interpolation
+			float rightCloseness = previousX - leftX;
+			float leftCloseness = 1.0f - rightCloseness;
+			float topCloseness = previousY - bottomY;
+			float bottomCloseness = 1.0f - topCloseness;
 
-			// Y's
-			int neighbourYPos0 = (int)backtracedY; // Lower bound
-			int neighbourYPos1 = neighbourYPos0 + 1;
+			// get different values
+			float LB = velocities->getXVelocities()->getLastData(leftX, bottomY);
+			float LT = velocities->getXVelocities()->getLastData(leftX, topY);
+			float RB = velocities->getXVelocities()->getLastData(rightX, bottomY);
+			float RT = velocities->getXVelocities()->getLastData(rightX, topY);
 
-			// Now we need to get how "far" each neighbour is, to linearly interpolate
-			float xClosenessRight = backtracedX - neighbourXPos0;
-			float xClosenessLeft = 1.0f - xClosenessRight;
-			float yClosenessTop = backtracedY - neighbourYPos0;
-			float yClosenessBottom = 1.0f - yClosenessTop;
+			// Linear interpolation time
+			float interpolated = rightCloseness * (bottomCloseness * RB + topCloseness * RT) +
+			                     leftCloseness * (bottomCloseness * LB + topCloseness * LT);
 
-			// Actually interpolate the densities now (XPos0 == left, yPos0 == bottom)
-			float value = xClosenessLeft * (yClosenessBottom * getLastData(neighbourXPos0, neighbourYPos0) +
-			                                yClosenessTop    * getLastData(neighbourXPos0, neighbourYPos1)) +
-			              xClosenessRight * (yClosenessBottom * getLastData(neighbourXPos1, neighbourYPos0) +
-			                                 yClosenessTop    * getLastData(neighbourXPos1, neighbourYPos1));
-			getData(x, y) = value;
+			getData(x, y) = interpolated;
 		}
 	}
-	setObstacles(obstacles, true);
-	setObstacles(obstacles, false);
 }
 
 void FluidField::addSource(int& x, int& y, float source, bool clamp/*=true*/) {
-	getLastData(x, y) += source;
+	//getLastData(x, y) += source;
+	getData(x, y) += source;
 }
 
 void FluidField::draw(GLEngine::SpriteBatch& sb, glm::vec2& pos) {
@@ -164,50 +168,64 @@ void FluidField::swap() {
 }
 
 void FluidField::addSources(float& timeStep) {
-	for(int x = 0; x < m_data.size(); x++)
-		m_data[x] += m_lastData[x] * timeStep;
+	for(int x = 0; x < m_data.size(); x++) {
+		//m_data[x] += m_lastData[x] * timeStep;
+		//m_lastData[x] = 0.0f;
+	}
 }
 
 float& FluidField::getData(int& x, int& y) {
 	// Account for edges. Use neighbour pointers
-	if(x >= m_numCells_x) {
-		x -= m_numCells_x;
+	if(x < 0 || y < 0) {
+		if(x < 0 && m_x < FLUID_PARTITION_SIZE) {
+			x += (float)Singletons::getWorld()->getSize() / FLUID_CELL_SIZE;
+			return m_left->getData(x, y);
+		}
+		if(y < 0 && m_y < FLUID_PARTITION_SIZE) {
+			y += (float)WORLD_HEIGHT / FLUID_CELL_SIZE;
+			return m_bottom->getData(x, y);
+		}
+	}
+	if(x >= m_numCells_x+m_x/FLUID_CELL_SIZE) {
 		return m_right->getData(x, y);
 	}
-	if(x < 0) {
-		x += m_numCells_x;
+	if(x < m_x/FLUID_CELL_SIZE) {
 		return m_left->getData(x, y);
 	}
-	if(y >= m_numCells_y) {
-		y -= m_numCells_y;
+	if(y >= m_numCells_y+m_y/FLUID_CELL_SIZE) {
 		return m_top->getData(x, y);
 	}
-	if(y < 0) {
-		y += m_numCells_y;
+	if(y < m_y/FLUID_CELL_SIZE) {
 		return m_bottom->getData(x, y);
 	}
-	return m_data[x * m_numCells_y + y];
+	return m_data[(x-m_x) * m_numCells_y + (y-m_y)];
 }
 
 float& FluidField::getLastData(int& x, int& y) {
 	// Account for edges. Use neighbour pointers
-	if(x >= m_numCells_x) {
-		int newX = x-m_numCells_x;
-		return m_right->getLastData(newX, y);
+	if(x < 0 || y < 0) {
+		if(x < 0 && m_x < FLUID_PARTITION_SIZE) {
+			x += (float)Singletons::getWorld()->getSize() / FLUID_CELL_SIZE;
+			return m_left->getLastData(x, y);
+		}
+		if(y < 0 && m_y < FLUID_PARTITION_SIZE) {
+			y += (float)WORLD_HEIGHT / FLUID_CELL_SIZE;
+			return m_bottom->getLastData(x, y);
+		}
 	}
-	if(x < 0) {
-		int newX = x+m_numCells_x;
-		return m_left->getLastData(newX, y);
+	if(x >= m_numCells_x+m_x/FLUID_CELL_SIZE) {
+		return m_right->getLastData(x, y);
 	}
-	if(y >= m_numCells_y) {
-		int newY = y-m_numCells_y;
-		return m_top->getLastData(x, newY);
+	if(x < m_x/FLUID_CELL_SIZE) {
+		return m_left->getLastData(x, y);
 	}
-	if(y < 0) {
-		int newY = y+m_numCells_y;
-		return m_bottom->getLastData(x, newY);
+	if(y >= m_numCells_y+m_y/FLUID_CELL_SIZE) {
+		return m_top->getLastData(x, y);
 	}
-	return m_lastData[x * m_numCells_y + y];
+	if(y < m_y/FLUID_CELL_SIZE) {
+		return m_bottom->getLastData(x, y);
+	}
+	return m_lastData[(x-m_x) * m_numCells_y + (y-m_y)];
 }
 
 void FluidField::constructVector(float fill) {

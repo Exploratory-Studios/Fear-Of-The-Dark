@@ -1,6 +1,7 @@
 #pragma once
 
 #include "FluidField.h"
+#include "FluidParticleBatch.h"
 
 #include <glm/glm.hpp>
 #include <SpriteBatch.h>
@@ -32,7 +33,7 @@ class Fluid {
 		bool m_hasGravity;
 
 		std::vector<std::vector<bool>> m_occupied;
-		std::vector<FluidField*> m_densities;
 		std::vector<FluidVelocityField*> m_velocityFields;
+		std::vector<FluidParticleBatch*> m_particles;
 
 };

@@ -1,8 +1,8 @@
 #include "FluidVelocityField.h"
 
 FluidVelocityField::FluidVelocityField(unsigned int num_cells_x, unsigned int num_cells_y, float cellSize, float x, float y, std::string id) : m_x(x), m_y(y) {
-	m_velocities_x = new FluidField(num_cells_x, num_cells_y, cellSize, id + "xVel");
-	m_velocities_y = new FluidField(num_cells_x, num_cells_y, cellSize, id + "yVel");
+	m_velocities_x = new FluidField(num_cells_x, num_cells_y, cellSize, x, y, id + "xVel");
+	m_velocities_y = new FluidField(num_cells_x, num_cells_y, cellSize, x, y, id + "yVel");
 }
 
 FluidVelocityField::~FluidVelocityField() {
@@ -16,10 +16,6 @@ void FluidVelocityField::setNeighbours(FluidVelocityField* left, FluidVelocityFi
 }
 
 void FluidVelocityField::update(float& timeStep, float& viscosity, std::vector<bool>& obstacles) {
-	for(int x = 0; x < m_velocities_y->getNumCellsX(); x++)
-		for(int y = 0; y < m_velocities_y->getNumCellsY(); y++)
-			m_velocities_y->addSource(x, y, -9.8f);
-
 	m_velocities_x->addSources(timeStep);
 	m_velocities_y->addSources(timeStep);
 

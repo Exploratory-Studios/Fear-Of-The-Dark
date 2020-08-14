@@ -4,7 +4,7 @@
 
 FluidManager::FluidManager() {
 	// Water
-	float waterViscosity = 0.7f;
+	float waterViscosity = 1.0f;
 	addFluid(new Fluid(waterViscosity, true));
 }
 

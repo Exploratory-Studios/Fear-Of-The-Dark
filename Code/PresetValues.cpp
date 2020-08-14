@@ -54,3 +54,6 @@ const unsigned int SPAWN_RATE = 10;
 
 const unsigned int MAX_TYPE_PARTICLES = 300;
 const std::string UNDEFINED_ASSET_PATH = std::string(ASSETS_FOLDER_PATH + "Textures/UNDEFINED.png");
+
+const unsigned int FLUID_PARTITION_SIZE = 32;
+const float FLUID_CELL_SIZE = 0.5f;

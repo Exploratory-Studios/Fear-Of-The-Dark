@@ -9,7 +9,7 @@ class FluidVelocityField;
 
 class FluidField {
 	public:
-		FluidField(unsigned int numCells_x, unsigned int numCells_y, float cellSize, std::string id, float fill = 0.0f);
+		FluidField(unsigned int numCells_x, unsigned int numCells_y, float cellSize, float x, float y, std::string id, float fill = 0.0f);
 		~FluidField();
 
 		void setNeighbours(FluidField* left, FluidField* right, FluidField* bottom, FluidField* top);
@@ -55,6 +55,7 @@ class FluidField {
 
 		int m_numCells_x, m_numCells_y; // How many cells horizontally/vertically
 		float m_cellSize; // width/height of cell, in terms of the width/height of a tile being 1.0f
+		float m_x, m_y;
 
 		std::string m_id;
 

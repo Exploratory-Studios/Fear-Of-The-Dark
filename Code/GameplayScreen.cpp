@@ -114,7 +114,8 @@ void GameplayScreen::onEntry() {
 	m_dialogueManager = new DialogueModule::DialogueManager(m_questManager);
 	//m_dialogueManager->activateDialogue(0);
 
-	Singletons::getGameCamera()->setPosition(Singletons::getEntityManager()->getPlayer()->getPosition());
+	Singletons::getGameCamera()->setPosition(Singletons::getEntityManager()->getPlayer()->getPosition() + glm::vec2(10.0f));
+	Singletons::getGameCamera()->update();
 
 	tick();
 }
@@ -170,7 +171,7 @@ void GameplayScreen::update() {
 		glm::vec4 screenRect = getScreenBox() + glm::vec4(-10.0f, -10.0f, 20.0f, 20.0f);
 		Singletons::getWorld()->updateTiles(screenRect);
 		glm::vec4 regScreenRect = getScreenBox();
-		Singletons::getWorld()->updateFluids(1.0f/60.0f, regScreenRect);
+		Singletons::getWorld()->updateFluids(1.0f/600.0f, regScreenRect);
 		Singletons::getEntityManager()->updateEntities(1.0f); /// TODO: Use timestep
 
 		unsigned int worldSize = Singletons::getWorld()->getSize();
@@ -240,6 +241,29 @@ void GameplayScreen::draw() {
 		drawWorldNormalToFBO(); // Draws to normal FBO
 		drawWorldSunlightToFBO(); // Draws to sunlight FBO.
 		drawParticlesToFBO();
+
+		{
+			//Liquid
+			m_liquidProgram.use();
+
+			// Camera matrix
+			glm::mat4 projectionMatrix = Singletons::getGameCamera()->getCameraMatrix();
+			GLint pUniform = m_textureProgram.getUniformLocation("P");
+			glUniformMatrix4fv(pUniform, 1, GL_FALSE, &projectionMatrix[0][0]);
+
+			GLint textureUniform = m_textureProgram.getUniformLocation("textureSampler");
+			glUniform1i(textureUniform, 0);
+
+			m_spriteBatch.begin(GLEngine::GlyphSortType::FRONT_TO_BACK);
+
+			glm::vec4 screenRect = getScreenBox() + glm::vec4(-1.0f, -1.0f, 2.0f, 2.0f);
+			Singletons::getWorld()->drawFluids(m_spriteBatch, screenRect);
+
+			m_spriteBatch.end();
+			m_spriteBatch.renderBatch();
+
+			m_liquidProgram.unuse();
+		}
 
 		// Draw main
 		m_postProcessor.use();
@@ -359,7 +383,6 @@ void GameplayScreen::drawWorldToFBO() {
 	glm::vec4 screenRect = getScreenBox() + glm::vec4(-1.0f, -1.0f, 2.0f, 2.0f);
 
 	{
-
 		{
 			// World: Tiles
 			m_textureProgram.use();
@@ -381,28 +404,6 @@ void GameplayScreen::drawWorldToFBO() {
 			m_spriteBatch.renderBatch();
 
 			m_textureProgram.unuse();
-
-		}
-
-		{
-			m_liquidProgram.use();
-
-			// Camera matrix
-			glm::mat4 projectionMatrix = Singletons::getGameCamera()->getCameraMatrix();
-			GLint pUniform = m_textureProgram.getUniformLocation("P");
-			glUniformMatrix4fv(pUniform, 1, GL_FALSE, &projectionMatrix[0][0]);
-
-			GLint textureUniform = m_textureProgram.getUniformLocation("textureSampler");
-			glUniform1i(textureUniform, 0);
-
-			m_spriteBatch.begin(GLEngine::GlyphSortType::FRONT_TO_BACK);
-
-			Singletons::getWorld()->drawFluids(m_spriteBatch, screenRect);
-
-			m_spriteBatch.end();
-			m_spriteBatch.renderBatch();
-
-			m_liquidProgram.unuse();
 
 		}
 	}

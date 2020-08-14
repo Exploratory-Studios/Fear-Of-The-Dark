@@ -63,3 +63,6 @@ extern const unsigned int SPAWN_RATE;
 #define MAX_LIGHTS_RENDERED 30
 extern const unsigned int MAX_TYPE_PARTICLES; // Max # of particles in each batch
 extern const std::string UNDEFINED_ASSET_PATH;
+
+extern const unsigned int FLUID_PARTITION_SIZE;
+extern const float FLUID_CELL_SIZE;

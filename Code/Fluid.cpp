@@ -9,10 +9,6 @@
 
 #include "Tile.h"
 
-// 16*16 tiles
-#define FLUID_PARTITION_SIZE 32
-#define FLUID_CELL_SIZE 0.5f
-
 Fluid::Fluid(float& viscosity, bool gravity) : m_viscosity(viscosity), m_hasGravity(gravity) {
 	createVectors();
 }
@@ -23,8 +19,13 @@ Fluid::~Fluid() {
 
 void Fluid::init() {
 
-	int x = 10, y = 22;
-	//m_densities[0]->addSource(x, y, 50.0f); // 0.5f every second
+	for(float x = 0.0f; x < 3.0f; x += 1.0f) {
+		for(float y = 0.0f; y < 3.0f; y += 1.0f) {
+			glm::vec2 sourcePos(5.0f+x, 5.0f+y);
+			m_particles[0]->addParticle(sourcePos);
+		}
+	}
+
 
 	addObstacles();
 }
@@ -59,19 +60,28 @@ void Fluid::createVectors() {
 	temp.resize(FLUID_PARTITION_SIZE * FLUID_PARTITION_SIZE, false);
 	m_occupied.resize(numPartitionsX * numPartitionsY, temp);
 
-	m_densities.reserve(numPartitionsX * numPartitionsY);
 	m_velocityFields.reserve(numPartitionsX * numPartitionsY);
+	m_particles.reserve(numPartitionsX * numPartitionsY);
 
 	for(unsigned int partitionX = 0; partitionX < numPartitionsX; partitionX++) {
 		for(unsigned int partitionY = 0; partitionY < numPartitionsY; partitionY++) {
-			m_densities.push_back(new FluidField(FLUID_PARTITION_SIZE, FLUID_PARTITION_SIZE, FLUID_CELL_SIZE, std::to_string(partitionX * numPartitionsY + partitionY)));
+			m_particles.push_back(
+			    new FluidParticleBatch(-9.8f,
+			                           partitionX * partitionSize,
+			                           partitionY * partitionSize,
+			                           partitionSize,
+			                           FLUID_PARTITION_SIZE,
+			                           std::to_string(partitionX * numPartitionsY + partitionY)
+			                          ));
 
-			m_velocityFields.push_back(new FluidVelocityField(FLUID_PARTITION_SIZE,
+			m_velocityFields.push_back(
+			    new FluidVelocityField(FLUID_PARTITION_SIZE,
 			                           FLUID_PARTITION_SIZE,
 			                           FLUID_CELL_SIZE,
 			                           partitionX * partitionSize,
 			                           partitionY * partitionSize,
-			                           std::to_string(partitionX * numPartitionsY + partitionY)));
+			                           std::to_string(partitionX * numPartitionsY + partitionY)
+			                          ));
 		}
 	}
 
@@ -87,11 +97,11 @@ void Fluid::createVectors() {
 			        m_velocityFields[bottomNeighbourIndex],
 			        m_velocityFields[topNeighbourIndex]);
 
-			m_densities[partitionX * numPartitionsY + partitionY]->setNeighbours(
-			    m_densities[leftNeighbourIndex],
-			    m_densities[rightNeighbourIndex],
-			    m_densities[bottomNeighbourIndex],
-			    m_densities[topNeighbourIndex]);
+			m_particles[partitionX * numPartitionsY + partitionY]->setNeighbours(
+			    m_particles[leftNeighbourIndex],
+			    m_particles[rightNeighbourIndex],
+			    m_particles[bottomNeighbourIndex],
+			    m_particles[topNeighbourIndex]);
 
 			/// TODO: We need to deal with the very very top of the world and the very very bottom of the world.
 		}
@@ -103,8 +113,8 @@ void Fluid::createVectors() {
 
 void Fluid::destroyVectors() {
 	m_occupied.clear();
-	m_densities.clear();
-	m_velocityFields.clear();
+	m_velocityFields.clear(); // Should be deleting.
+	m_particles.clear();
 }
 
 void Fluid::addObstacle(Tile* t) {
@@ -134,17 +144,14 @@ void Fluid::update(float& timeStep, glm::vec4& screenRect) {
 
 	getIndicesInBox(screenRect, indices, positions);
 
-	int x = 18, y = 28;
-	m_densities[0]->addSource(x, y, 5.0f); // 0.5f every second
+	//glm::vec2 sourcePos(5.0f, 10.0f);
+	//m_particles[0]->addParticle(sourcePos);
+	int x = 13, y = 13;
+	m_velocityFields[0]->getXVelocities()->addSource(x, y, 40.f/10.0f);
 
 	for(unsigned int& i : indices) {
-		float waterDiffusion = 0.01f;
 		m_velocityFields[i]->update(timeStep, m_viscosity, m_occupied[i]);
-		m_densities[i]->addSources(timeStep); // Add sources from lastDensities to this density
-		m_densities[i]->swap(); // swap: now lastDensities and density both have new sources
-		m_densities[i]->diffuse(timeStep, waterDiffusion, m_occupied[i]); // "lastDensities" has diffused values, using those from "density"
-		m_densities[i]->swap(); // swap: now density has the diffused values
-		m_densities[i]->advect(timeStep, m_velocityFields[i], m_occupied[i]); // change density using values at lastDensities
+		m_particles[i]->update(timeStep, m_velocityFields[i]);
 	}
 }
 
@@ -154,9 +161,12 @@ void Fluid::draw(GLEngine::SpriteBatch& sb, glm::vec4& screenRect) {
 
 	getIndicesInBox(screenRect, indices, positions);
 
-	for(unsigned int& i : indices) {
-		m_densities[i]->draw(sb, positions[i]);
-	}
+	glm::vec2 pos = glm::vec2(0.0f);
+	m_particles[0]->draw(sb, pos);
+
+	//for(unsigned int& i : indices) {
+	//m_densities[i]->draw(sb, positions[i]);
+	//}
 }
 
 void Fluid::getIndicesInBox(glm::vec4& destRect, std::vector<unsigned int>& indices, std::vector<glm::vec2>& positions) {

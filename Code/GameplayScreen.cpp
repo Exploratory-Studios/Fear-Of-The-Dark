@@ -801,7 +801,7 @@ void GameplayScreen::drawDebug() {
 	std::string biomeString = Singletons::getWorld()->getBiome(p->getSelectedBlock()->getPosition().x).name;*/
 
 	std::string display = "FPS: " + std::to_string((int)m_game->getFps());
-	//display += "\nMouse x,y: " + std::to_string(blockX) + "," + std::to_string(blockY);
+	display += "\nMouse x,y: " + std::to_string(p->getSelectedBlock()->getPosition().x) + "," + std::to_string(p->getSelectedBlock()->getPosition().y);
 	//display += "\nSelected Block: Biome: " + biomeString + ", " + p->getSelectedBlock()->getPrintout();
 
 	m_fpsWidget->setText(display);

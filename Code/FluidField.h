@@ -59,6 +59,10 @@ class FluidField {
 
 		std::string m_id;
 
+#ifdef DEBUG
+		float m_safeVar; // This exists only for debugging
+#endif
+
 		FluidField* m_left = nullptr, *m_right = nullptr, *m_bottom = nullptr, *m_top = nullptr; // neighbouring fields
 
 };

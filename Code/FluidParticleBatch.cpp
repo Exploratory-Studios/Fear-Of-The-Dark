@@ -3,6 +3,8 @@
 #include "FluidField.h"
 #include "FluidVelocityField.h"
 
+#include "PresetValues.h"
+
 #include <ResourceManager.h>
 
 float weightFunction_regularDistance(float& distance, float kernelSize) {
@@ -37,10 +39,10 @@ void FluidParticleBatch::giveVelocity(glm::vec2& vel) {
 	m_velocities.push_back(vel);
 }
 
-void FluidParticleBatch::update(float& timeStep, FluidVelocityField* velocityField) {
+void FluidParticleBatch::update(float& timeStep, FluidVelocityField* velocityField, std::vector<bool>& obstacles) {
 	diffuse(timeStep);
 	advect(timeStep, velocityField);
-	collideParticles();
+	collideParticles(obstacles);
 
 	removeRemoved();
 }
@@ -105,18 +107,91 @@ void FluidParticleBatch::advect(float& timeStep, FluidVelocityField* velocityFie
 	}
 }
 
-void FluidParticleBatch::collideParticles() {
+void FluidParticleBatch::collideParticles(std::vector<bool>& obstacles) {
 	// Conserves momentum, but "bounces" particles off of each other by applying a repulsive force.
 	for(unsigned int i = 0; i < m_positions.size(); i++) {
-		for(unsigned int j = 0; j < m_positions.size(); j++) {
-			if(i==j) continue;
-			glm::vec2 p1 = m_positions[i];
-			glm::vec2 p2 = m_positions[j];
-			float distSquared = (p1.x - p2.x)*(p1.x - p2.x) + (p1.y - p2.y)*(p1.y - p2.y);
+		// Collide particles
+		{
+			for(unsigned int j = 0; j < m_positions.size(); j++) {
+				if(i==j) continue;
+				glm::vec2 p1 = m_positions[i];
+				glm::vec2 p2 = m_positions[j];
+				float squaredDist = std::pow(p1.x - p2.x, 2) + std::pow(p1.y - p2.y, 2);
 
-			float force = 1.0f/std::max(distSquared, 10000.0f);
+				if(squaredDist <= std::pow(FLUID_PARTICLE_RADIUS*2, 2)) {
+					if(squaredDist == 0.0f) {
+						m_positions[i] += glm::vec2(FLUID_PARTICLE_RADIUS*2);
+					} else {
+						float dist = std::sqrt(squaredDist);
+						// This is the factor we need to "multiply" the difference in positions (see: distance) by to get particles to stop colliding.
+						float forceOut = (2*FLUID_PARTICLE_RADIUS) / (dist);
 
-			m_velocities[i] += (p1-p2*glm::vec2(force));
+						glm::vec2 diff = p1-p2;
+
+						m_positions[i] += diff * glm::vec2(forceOut);
+					}
+				}
+
+			}
+		}
+		// Collide obstacles
+		{
+			// We need to treat obstacles like tiles, because that's what they are.
+			// We also detect collision as if the particle were a rectangle. We can do this because it's low resolution
+			float L_X = m_positions[i].x - FLUID_PARTICLE_RADIUS;
+			float R_X = m_positions[i].x + FLUID_PARTICLE_RADIUS;
+			float B_Y = m_positions[i].y - FLUID_PARTICLE_RADIUS;
+			float T_Y = m_positions[i].y + FLUID_PARTICLE_RADIUS;
+
+			unsigned int L_X_cell = (int)(L_X-m_x) / FLUID_CELL_SIZE; // Cell coordinate system
+			unsigned int R_X_cell = (int)(R_X-m_x) / FLUID_CELL_SIZE;
+			unsigned int T_Y_cell = (int)(T_Y-m_x) / FLUID_CELL_SIZE;
+			unsigned int B_Y_cell = (int)(B_Y-m_x) / FLUID_CELL_SIZE;
+
+			unsigned int BL_index = (L_X_cell) * FLUID_PARTITION_SIZE + (B_Y_cell);
+			unsigned int TL_index = (L_X_cell) * FLUID_PARTITION_SIZE + (T_Y_cell);
+			unsigned int BR_index = (R_X_cell) * FLUID_PARTITION_SIZE + (B_Y_cell);
+			unsigned int TR_index = (R_X_cell) * FLUID_PARTITION_SIZE + (T_Y_cell);
+
+			if(obstacles[BL_index]) { // this corner happens to be in a solid position. Check and respond if necessary:
+				collideParticleWithObstacle(L_X_cell, B_Y_cell, m_positions[i]);
+			}
+			if(obstacles[TL_index]) { // this corner happens to be in a solid position. Check and respond if necessary:
+				collideParticleWithObstacle(L_X_cell, T_Y_cell, m_positions[i]);
+			}
+			if(obstacles[BR_index]) { // this corner happens to be in a solid position. Check and respond if necessary:
+				collideParticleWithObstacle(R_X_cell, B_Y_cell, m_positions[i]);
+			}
+			if(obstacles[TR_index]) { // this corner happens to be in a solid position. Check and respond if necessary:
+				collideParticleWithObstacle(R_X_cell, T_Y_cell, m_positions[i]);
+			}
+		}
+	}
+}
+
+void FluidParticleBatch::collideParticleWithObstacle(unsigned int obstacleX, unsigned int obstacleY, glm::vec2& particle) {
+	// NOTE: This ain't a perfect algorithm, but it works okay for small particle sizes and large tile sizes.
+	// NOTE: Assumes that the obstacle at X and Y is solid
+
+	// Check distance to all four sides from centre of particle
+	glm::vec2 pos = particle - glm::vec2(m_x, m_y);
+
+	float testX = pos.x, testY = pos.y; // coordinates to test with (either left/right bound or top/bottom bound)
+	if(pos.x < (float)(obstacleX * FLUID_CELL_SIZE)) testX = (float)(obstacleX * FLUID_CELL_SIZE);
+	else if(pos.x > (float)((obstacleX + 1) * FLUID_CELL_SIZE)) testX = (float)(obstacleX + 1) * FLUID_CELL_SIZE;
+	if(pos.y < (float)(obstacleY * FLUID_CELL_SIZE)) testY = (float)(obstacleY * FLUID_CELL_SIZE);
+	else if(pos.y > (float)((obstacleY + 1) * FLUID_CELL_SIZE)) testY = (float)(obstacleY + 1) * FLUID_CELL_SIZE;
+
+	float xDist = pos.x-testX; // In tile coordinate system
+	float yDist = pos.y-testY;
+	float distSquared = std::pow(xDist, 2) + std::pow(yDist, 2);
+	if(distSquared <= std::pow(FLUID_PARTICLE_RADIUS, 2)) {
+		if(xDist < yDist) {
+			// Move horizontally, we're deepest into the side bound
+			particle.x += xDist;
+		} else {
+			// Move vertically, we're deepest into the top/bottom bound
+			particle.y += yDist;
 		}
 	}
 }
@@ -126,7 +201,7 @@ void FluidParticleBatch::draw(GLEngine::SpriteBatch& sb, glm::vec2& pos) {
 
 	GLEngine::ResourceManager::setTexture(m_texture.filePath, &m_textureData);
 
-	sb.draw(glm::vec4(m_x, m_y, m_numCells, m_numCells), glm::vec4(0.0f, 0.0f, 1.0f, 1.0f), m_texture.id, 0.0f, GLEngine::ColourRGBA8(0, 119, 190, 255));
+	sb.draw(glm::vec4(m_x, m_y, m_fieldSize, m_fieldSize), glm::vec4(0.0f, 0.0f, 1.0f, 1.0f), m_texture.id, 0.0f, GLEngine::ColourRGBA8(0, 119, 190, 255));
 }
 
 void FluidParticleBatch::constructTextureData(std::vector<unsigned char>& data) {

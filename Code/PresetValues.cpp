@@ -57,3 +57,4 @@ const std::string UNDEFINED_ASSET_PATH = std::string(ASSETS_FOLDER_PATH + "Textu
 
 const unsigned int FLUID_PARTITION_SIZE = 32;
 const float FLUID_CELL_SIZE = 0.5f;
+const float FLUID_PARTICLE_RADIUS = 0.1f;

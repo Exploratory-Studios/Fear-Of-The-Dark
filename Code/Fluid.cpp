@@ -19,12 +19,12 @@ Fluid::~Fluid() {
 
 void Fluid::init() {
 
-	for(float x = 0.0f; x < 3.0f; x += 1.0f) {
-		for(float y = 0.0f; y < 3.0f; y += 1.0f) {
-			glm::vec2 sourcePos(5.0f+x, 5.0f+y);
-			m_particles[0]->addParticle(sourcePos);
-		}
-	}
+	//for(float x = 0.0f; x < 3.0f; x += 0.2f) {
+	//for(float y = 0.0f; y < 3.0f; y += 0.2f) {
+	glm::vec2 sourcePos(5.5f, 14.0f);
+	m_particles[0]->addParticle(sourcePos);
+	//}
+	//}
 
 
 	addObstacles();
@@ -144,14 +144,12 @@ void Fluid::update(float& timeStep, glm::vec4& screenRect) {
 
 	getIndicesInBox(screenRect, indices, positions);
 
-	//glm::vec2 sourcePos(5.0f, 10.0f);
-	//m_particles[0]->addParticle(sourcePos);
 	int x = 13, y = 13;
-	m_velocityFields[0]->getXVelocities()->addSource(x, y, 40.f/10.0f);
+	//m_velocityFields[0]->getXVelocities()->addSource(x, y, 40.f/10.0f);
 
 	for(unsigned int& i : indices) {
 		m_velocityFields[i]->update(timeStep, m_viscosity, m_occupied[i]);
-		m_particles[i]->update(timeStep, m_velocityFields[i]);
+		m_particles[i]->update(timeStep, m_velocityFields[i], m_occupied[i]);
 	}
 }
 

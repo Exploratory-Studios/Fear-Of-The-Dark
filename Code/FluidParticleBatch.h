@@ -25,11 +25,11 @@ class FluidParticleBatch {
 		void givePosition(glm::vec2& pos);
 		void giveVelocity(glm::vec2& vel);
 
-		void update(float& timeStep, FluidVelocityField* velocityField);
+		void update(float& timeStep, FluidVelocityField* velocityField, std::vector<bool>& obstacles);
 
 		void diffuse(float& timeStep);
 		void advect(float& timeStep, FluidVelocityField* velocityField);
-		void collideParticles();
+		void collideParticles(std::vector<bool>& obstacles);
 
 		void draw(GLEngine::SpriteBatch& sb, glm::vec2& pos);
 		void constructTextureData(std::vector<unsigned char>& data);
@@ -40,6 +40,7 @@ class FluidParticleBatch {
 		void createTexture();
 		void givePositionToNeighbour(FluidParticleBatch* neighbour, unsigned int index);
 		void removeRemoved();
+		void collideParticleWithObstacle(unsigned int obstacleX, unsigned int obstacleY, glm::vec2& particle);
 
 		float getDensityAtPoint(glm::vec2& point, std::function<float(float&, float)>& weightFunction_distToValue);
 

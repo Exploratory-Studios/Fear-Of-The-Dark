@@ -176,6 +176,8 @@ void FluidField::addSources(float& timeStep) {
 
 float& FluidField::getData(int& x, int& y) {
 	// Account for edges. Use neighbour pointers
+	if(std::abs(x - m_x) > FLUID_PARTITION_SIZE) return m_safeVar;
+	if(std::abs(y - m_y) > FLUID_PARTITION_SIZE) return m_safeVar;
 	if(x < 0 || y < 0) {
 		if(x < 0 && m_x < FLUID_PARTITION_SIZE) {
 			x += (float)Singletons::getWorld()->getSize() / FLUID_CELL_SIZE;

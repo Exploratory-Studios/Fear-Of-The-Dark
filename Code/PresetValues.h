@@ -66,3 +66,4 @@ extern const std::string UNDEFINED_ASSET_PATH;
 
 extern const unsigned int FLUID_PARTITION_SIZE;
 extern const float FLUID_CELL_SIZE;
+extern const float FLUID_PARTICLE_RADIUS;

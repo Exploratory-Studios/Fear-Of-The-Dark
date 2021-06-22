@@ -50,9 +50,9 @@ class Singletons {
 			m_world = w;
 		}
 
-		static FluidManager* getFluidManager() {
+		static FluidModule::FluidManager* getFluidManager() {
 			if(m_fluidManager) return m_fluidManager;
-			m_fluidManager = new FluidManager();
+			m_fluidManager = new FluidModule::FluidManager();
 			return m_fluidManager;
 		}
 
@@ -62,5 +62,5 @@ class Singletons {
 		static GLEngine::GUI* m_gui;
 		static GLEngine::Camera2D* m_gameCamera;
 		static World* m_world;
-		static FluidManager* m_fluidManager;
+		static FluidModule::FluidManager* m_fluidManager;
 };

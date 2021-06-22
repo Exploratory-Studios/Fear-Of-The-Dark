@@ -736,6 +736,24 @@ namespace XMLModule {
 			std::string description;
 			unsigned int duration = 15;
 	};
+	
+	class FluidData : public GenericData {
+		public:
+			FluidData() {
+				nodeName = "fluid";
+				std::vector<AttributeBase*> attrs = {
+					new Attribute<std::string>("texture", AttributeType::FILEPATH_TEXTURE, &texture),
+					new Attribute<float>("gravitationalConstant", AttributeType::FLOAT, &gravConstant),
+					new Attribute<float>("density", AttributeType::FLOAT, &idealDensity)
+				};
+				
+				addAttributes(attrs);
+			}
+			
+			std::string texture = UNDEFINED_ASSET_PATH;
+			float gravConstant;
+			float idealDensity = 1.0f;
+	};
 }
 
 #include "XMLDataTypes.tpp" // Just for templated functions.

@@ -268,6 +268,7 @@ namespace XMLModule {
 	std::map<unsigned int, GenericData*> XMLData::m_skeletalAnimationData;
 	std::map<unsigned int, GenericData*> XMLData::m_attackData;
 	std::map<unsigned int, GenericData*> XMLData::m_buffData;
+	std::map<unsigned int, GenericData*> XMLData::m_fluidData;
 
 	XMLDataFile::XMLDataFile(std::string filename, std::initializer_list<std::string> nodeNames) : m_filename(filename), m_nodeNames(nodeNames) {
 		// We need to construct m_maps. No copies allowed!
@@ -294,6 +295,7 @@ namespace XMLModule {
 		XMLDataFile("Animations", { "animation", "skeletalAnimation" }),
 		XMLDataFile("Attacks", { "meleeAttack", "rangedAttack", "magicAttack" }),
 		XMLDataFile("Buffs", { "buff" })
+		XMLDataFile("Fluids", { "fluid" })
 	};
 
 	std::vector<std::string> XMLData::getNodeNamesFromFile(std::string file) {
@@ -422,6 +424,8 @@ namespace XMLModule {
 			d = new MagicAttackData();
 		} else if(name == "buff") {
 			d = new BuffData();
+		} else if(name == "fluid") {
+			d = new FluidData();
 		} else {
 			Logger::getInstance()->log("ERROR: Type '" + name + "' not supported!", true);
 		}
@@ -466,6 +470,8 @@ namespace XMLModule {
 			mapForWrite = &m_attackData;
 		} else if(name == "buff") {
 			mapForWrite = &m_buffData;
+		} else if(name == "fluid") {
+			mapForWrite = &m_fluidData;
 		} else {
 			Logger::getInstance()->log("ERROR: Type '" + name + "' not supported!", true);
 		}
@@ -916,6 +922,18 @@ namespace XMLModule {
 		}
 
 		return *static_cast<BuffData*>(index->second);
+	}
+
+	FluidData XMLData::getFluidData(unsigned int id) {
+		auto index = m_fluidData.find(id);
+
+		if(index == m_fluidData.end()) {
+			Logger::getInstance()->log("ERROR: Couldn't find fluid data with ID: " + std::to_string(id), true);
+			BuffData s;
+			return s;
+		}
+
+		return *static_cast<FluidData*>(index->second);
 	}
 
 }

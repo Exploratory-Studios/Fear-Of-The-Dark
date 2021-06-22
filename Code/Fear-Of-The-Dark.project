@@ -6,14 +6,10 @@
     </Plugin>
   </Plugins>
   <VirtualDirectory Name="Fluid Simulation">
-    <File Name="FluidParticleBatch.cpp"/>
-    <File Name="FluidParticleBatch.h"/>
-    <File Name="FluidField.cpp"/>
-    <File Name="FluidField.h"/>
-    <File Name="FluidVelocityField.cpp"/>
-    <File Name="FluidVelocityField.h"/>
-    <File Name="Fluid.cpp"/>
-    <File Name="Fluid.h"/>
+    <File Name="DensityField.cpp"/>
+    <File Name="DensityField.h"/>
+    <File Name="FluidBody.cpp"/>
+    <File Name="FluidBody.h"/>
     <File Name="FluidManager.cpp"/>
     <File Name="FluidManager.h"/>
   </VirtualDirectory>
@@ -467,4 +463,9 @@
       </Completion>
     </Configuration>
   </Settings>
+  <Dependencies Name="Debug"/>
+  <Dependencies Name="DebugVB"/>
+  <Dependencies Name="Release - Linux"/>
+  <Dependencies Name="Release - Windows"/>
+  <Dependencies Name="Release - Windows32"/>
 </CodeLite_Project>

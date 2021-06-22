@@ -1,5 +1,10 @@
 #pragma once
 
+/*
+ *	This file holds all the differenct classes to save/load the world's state - Tiles w/ metadata, entities, etc.
+ * 
+ */
+
 #include <string>
 #include <vector>
 #include <unordered_map>

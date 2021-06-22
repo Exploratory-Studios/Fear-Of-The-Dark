@@ -1,0 +1,4 @@
+<fluid name="Water" id="0">
+	<texture>"UNDEFINED.png"</texture>
+	<gravitationalConstant>0.016</gravitationalConstant>
+</fluid>

@@ -156,7 +156,7 @@ Chunks
 */ // stacksize is 8192 kbytes
 
 void WorldIOManager::P_saveWorld(World* world) {
-	logger->log("SAVE: Starting World Save to File: " + world->getName() + ".bin");
+	logger->log("SAVE: Starting World Save to File: " + world->getName() + ".bin (Full path: " + SAVES_PATH + world->getName() + ".bin)");
 	logger->log("SAVE: Starting Save Preparations");
 
 	SaveDataTypes::EntityPlayerData p = Singletons::getEntityManager()->getPlayer()->getPlayerSaveData();
@@ -240,7 +240,7 @@ void WorldIOManager::P_saveWorld(World* world) {
 
 	{
 		// WORLD
-		for(int i = 0; i < world->getSize(); i++) {
+		for(int i = 0; i < chunks; i++) {
 			//file.write(reinterpret_cast<char*>(chunkData), sizeof(ChunkData) * WORLD_SIZE);
 			chunkData[i].save(file);
 		}

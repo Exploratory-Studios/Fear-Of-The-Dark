@@ -40,7 +40,7 @@ const std::string HOME_PATH = std::string((std::string)getenv("HOME") + "/.explo
 const std::string HOME_PATH = std::string("UNDEFINED_HOME_ERROR");
 #endif
 
-const std::string SAVES_PATH = HOME_PATH + std::string("/Saves");
+const std::string SAVES_PATH = HOME_PATH + std::string("/Saves/");
 const std::string ASSETS_FOLDER_PATH = HOME_PATH + std::string("/Assets/");
 
 const unsigned int FADE_TIME = 30 * 1000;

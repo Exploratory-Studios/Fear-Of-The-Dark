@@ -198,7 +198,7 @@ void SaveDataTypes::ChunkData::save(std::ofstream& file) {
 	for(int y = 0; y < WORLD_HEIGHT; y++) {
 		for(int x = 0; x < CHUNK_SIZE; x++) {
 			for(int k = 0; k < WORLD_DEPTH; k++) {
-				tiles[y][x][k].save(file);
+				tiles[x][y][k].save(file);
 			}
 		}
 	}
@@ -209,7 +209,7 @@ void SaveDataTypes::ChunkData::read(std::ifstream& file) {
 	for(int y = 0; y < WORLD_HEIGHT; y++) {
 		for(int x = 0; x < CHUNK_SIZE; x++) {
 			for(int k = 0; k < WORLD_DEPTH; k++) {
-				tiles[y][x][k].read(file);
+				tiles[x][y][k].read(file);
 			}
 		}
 	}

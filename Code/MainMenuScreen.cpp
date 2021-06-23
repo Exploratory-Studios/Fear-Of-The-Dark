@@ -1,32 +1,41 @@
 #include "MainMenuScreen.h"
 
+#include "XMLData.h"
+
 /// SCREEN FUNCTIONS
 
-MainMenuScreen::MainMenuScreen(GLEngine::Window* window) : m_window(window) {
+MainMenuScreen::MainMenuScreen(GLEngine::Window* window) : m_window(window)
+{
 	//ctor
 }
 
-MainMenuScreen::~MainMenuScreen() {
+MainMenuScreen::~MainMenuScreen()
+{
 	//dtor
 }
 
-int MainMenuScreen::getNextScreenIndex() const {
+int MainMenuScreen::getNextScreenIndex() const
+{
 	return m_nextScreenIndex;
 }
 
-int MainMenuScreen::getPreviousScreenIndex() const {
+int MainMenuScreen::getPreviousScreenIndex() const
+{
 	return SCREEN_INDEX_NO_SCREEN;
 }
 
-void MainMenuScreen::build() {
+void MainMenuScreen::build()
+{
 
 }
 
-void MainMenuScreen::destroy() {
+void MainMenuScreen::destroy()
+{
 
 }
 
-void MainMenuScreen::onEntry() {
+void MainMenuScreen::onEntry()
+{
 
 	initShaders();
 
@@ -48,13 +57,17 @@ void MainMenuScreen::onEntry() {
 	//}
 
 	m_time = 0.0f;
+
+	XMLModule::XMLData::init(); // This is a decent place for this. Doesn't load as the world is loading, is loaded before.
 }
 
-void addBackgroundImage(std::vector<GLEngine::GLTexture>& backgroundImages, std::string filename) {
+void addBackgroundImage(std::vector<GLEngine::GLTexture>& backgroundImages, std::string filename)
+{
 	backgroundImages.emplace_back(GLEngine::ResourceManager::getTexture(ASSETS_FOLDER_PATH + "Textures/MainMenuBackgrounds/" + filename));
 }
 
-void MainMenuScreen::onExit() {
+void MainMenuScreen::onExit()
+{
 	m_spriteBatch.dispose();
 	m_uiTextureProgram.dispose();
 	m_spriteFont.dispose();
@@ -62,7 +75,8 @@ void MainMenuScreen::onExit() {
 	m_gui.destroy();
 }
 
-void MainMenuScreen::update() {
+void MainMenuScreen::update()
+{
 	checkInput();
 	m_gui.update();
 	m_uiCamera.update();
@@ -71,7 +85,8 @@ void MainMenuScreen::update() {
 	m_time++;
 }
 
-void MainMenuScreen::draw() {
+void MainMenuScreen::draw()
+{
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 
@@ -148,7 +163,8 @@ void MainMenuScreen::draw() {
 
 /// PRIVATE FUNCTIONS
 
-void MainMenuScreen::initUI() {
+void MainMenuScreen::initUI()
+{
 	{
 		m_gui.init(ASSETS_FOLDER_PATH + "GUI", 1);
 		m_gui.loadScheme("FOTDSkin.scheme");
@@ -197,7 +213,8 @@ void MainMenuScreen::initUI() {
 
 }
 
-void MainMenuScreen::initShaders() {
+void MainMenuScreen::initShaders()
+{
 	m_uiTextureProgram.compileShaders(ASSETS_FOLDER_PATH + "Shaders/textureShader.vert", ASSETS_FOLDER_PATH + "Shaders/textureShader.frag");
 	m_uiTextureProgram.addAttribute("vertexPosition");
 	m_uiTextureProgram.addAttribute("vertexColour");
@@ -205,7 +222,8 @@ void MainMenuScreen::initShaders() {
 	m_uiTextureProgram.linkShaders();
 }
 
-void MainMenuScreen::checkInput() {
+void MainMenuScreen::checkInput()
+{
 	SDL_Event evnt;
 	while(SDL_PollEvent(&evnt)) {
 		m_game->onSDLEvent(evnt);
@@ -222,7 +240,8 @@ void MainMenuScreen::checkInput() {
 	}
 }
 
-void MainMenuScreen::updateMousebuttonDown(SDL_Event& evnt) {
+void MainMenuScreen::updateMousebuttonDown(SDL_Event& evnt)
+{
 	switch(evnt.button.button) {
 		case SDL_BUTTON_LEFT:
 			break;
@@ -235,19 +254,22 @@ void MainMenuScreen::updateMousebuttonDown(SDL_Event& evnt) {
 
 /// EVENT FUNCTIONS (GUI)
 
-bool MainMenuScreen::EventPlayButtonClicked(const CEGUI::EventArgs& e) {
+bool MainMenuScreen::EventPlayButtonClicked(const CEGUI::EventArgs& e)
+{
 	m_nextScreenIndex = SCREEN_INDEX_LOAD;
 	m_currentState = GLEngine::ScreenState::CHANGE_NEXT;
 	return true;
 }
 
-bool MainMenuScreen::EventOptionsButtonClicked(const CEGUI::EventArgs& e) {
+bool MainMenuScreen::EventOptionsButtonClicked(const CEGUI::EventArgs& e)
+{
 	m_nextScreenIndex = SCREEN_INDEX_OPTIONSMENU;
 	m_currentState = GLEngine::ScreenState::CHANGE_NEXT;
 	return true;
 }
 
-bool MainMenuScreen::EventExitButtonClicked(const CEGUI::EventArgs& e) {
+bool MainMenuScreen::EventExitButtonClicked(const CEGUI::EventArgs& e)
+{
 	m_currentState = GLEngine::ScreenState::EXIT_APPLICATION;
 	return true;
 }

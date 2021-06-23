@@ -6,12 +6,9 @@
     </Plugin>
   </Plugins>
   <VirtualDirectory Name="Fluid Simulation">
-    <File Name="DensityField.cpp"/>
+    <File Name="FluidDomain.cpp"/>
+    <File Name="FluidDomain.h"/>
     <File Name="DensityField.h"/>
-    <File Name="FluidBody.cpp"/>
-    <File Name="FluidBody.h"/>
-    <File Name="FluidManager.cpp"/>
-    <File Name="FluidManager.h"/>
   </VirtualDirectory>
   <VirtualDirectory Name="Tiles">
     <File Name="TileLiquid.h"/>

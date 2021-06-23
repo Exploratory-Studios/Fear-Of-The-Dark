@@ -2,6 +2,7 @@
 
 #include <cstdlib>
 #include "Tile.h"
+#include "FluidDomain.h"
 #include "EntityPlayer.h"
 
 #include "XMLData.h"
@@ -11,39 +12,12 @@
 #include "Singletons.h"
 
 World::World(unsigned int xSize, unsigned int ySize, unsigned int zSize) {
-	XMLModule::XMLData::init(); /// TODO: Move elsewhere.
-
-	/*m_tiles = (Tile****)malloc(WORLD_HEIGHT * WORLD_SIZE * WORLD_DEPTH * sizeof(Tile));
-	for(int y = 0; y < WORLD_HEIGHT; y++) {
-		m_tiles[y] = (Tile***)malloc(WORLD_SIZE * WORLD_DEPTH * sizeof(Tile));
-		for(int x = 0; x < WORLD_SIZE; x++) {
-			m_tiles[y][x] = (Tile**)malloc(WORLD_DEPTH * sizeof(Tile));
-			for(int z = 0; z < WORLD_DEPTH; z++) {
-				m_tiles[y][x][z] = new Tile();
-			}
-		}
-	}*/
-
-	m_tiles.reserve(xSize);
-	for(unsigned int x = 0; x < xSize; x++) {
-		std::vector<std::vector<Tile*>> tempX;
-		for(unsigned int y = 0; y < ySize; y++) {
-			std::vector<Tile*> tempY;
-			for(unsigned int z = 0; z < zSize; z++) {
-				tempY.push_back(new Tile());
-			}
-			tempX.push_back(tempY);
-		}
-		m_tiles.push_back(tempX);
-	}
-
-	m_biomesMap.resize(xSize / CHUNK_SIZE);
+	initTiles(xSize, ySize, zSize);
+	initFluids();
 
 	Singletons::setWorld(this);
 
-
 	Singletons::getEntityManager()->init(this);
-	Singletons::getFluidManager(); // inits fluidmanager
 }
 
 World::~World() {
@@ -58,22 +32,66 @@ World::~World() {
 	}
 }
 
+void World::initTiles(unsigned int xSize, unsigned int ySize, unsigned int zSize) {
+	// Clear tiles just in case we already did this.
+	for(unsigned int x = 0; x < m_tiles.size(); x++) {
+		for(unsigned int y = 0; y < m_tiles[x].size(); y++) {
+			for(unsigned int z = 0; z < m_tiles[x][y].size(); z++) {
+				delete m_tiles[x][y][z];
+			}
+			m_tiles[y].clear();
+		}
+		m_tiles[x].clear();
+	}
+	m_tiles.clear();
+
+	// Make/reserve tiles
+	m_tiles.reserve(xSize);
+	for(unsigned int x = 0; x < xSize; x++) {
+		std::vector<std::vector<Tile*>> tempX;
+		for(unsigned int y = 0; y < ySize; y++) {
+			std::vector<Tile*> tempY;
+			for(unsigned int z = 0; z < zSize; z++) {
+				tempY.push_back(new Tile());
+			}
+			tempX.push_back(tempY);
+		}
+		m_tiles.push_back(tempX);
+	}
+
+	m_biomesMap.resize(xSize / CHUNK_SIZE);
+}
+
+void World::initFluids() {
+	// Clear fluids, just in case we're doing this again.
+	for(unsigned int i = 0; i < m_fluidDomains.size(); i++) {
+		delete m_fluidDomains[i];
+	}
+	m_fluidDomains.clear();
+
+	unsigned int fluidCount =
+		XMLModule::XMLData::getFluidCount(); // Number of fluids that can be placed, therefore number of domains we need.
+
+	for(unsigned int i = 0; i < fluidCount; i++) {
+		m_fluidDomains.push_back(new FluidModule::FluidDomain(m_tiles));
+	}
+}
+
 void World::setTile(Tile* tile) {
 	setTile_noEvent(tile);
 
 	unsigned int x, y, layer, id;
-	x = tile->getPosition().x;
-	y = tile->getPosition().y;
+	x	  = tile->getPosition().x;
+	y	  = tile->getPosition().y;
 	layer = tile->getLayer();
-	id = tile->getID();
+	id	  = tile->getID();
 
 	specialUpdateTile(m_tiles[x][y][layer]);
 
-	std::vector<ScriptingModule::Argument> args = { ScriptingModule::Argument("blockID", std::to_string(id)),
-	                                                ScriptingModule::Argument("blockX", std::to_string(x)),
-	                                                ScriptingModule::Argument("blockY", std::to_string(y)),
-	                                                ScriptingModule::Argument("blockLayer", std::to_string(layer))
-	                                              };
+	std::vector<ScriptingModule::Argument> args = {ScriptingModule::Argument("blockID", std::to_string(id)),
+												   ScriptingModule::Argument("blockX", std::to_string(x)),
+												   ScriptingModule::Argument("blockY", std::to_string(y)),
+												   ScriptingModule::Argument("blockLayer", std::to_string(layer))};
 	EventModule::EventQueue::triggerEvent("setTile", args);
 	/*Tile* b = getTile(x, y, layer+1);
 	if(b) b->setNeedsSunCheck();
@@ -83,8 +101,8 @@ void World::setTile(Tile* tile) {
 
 void World::setTile_noEvent(Tile* tile) {
 	unsigned int x, y, layer;
-	x = tile->getPosition().x;
-	y = tile->getPosition().y;
+	x	  = tile->getPosition().x;
+	y	  = tile->getPosition().y;
 	layer = tile->getLayer();
 
 	if(tile->getEmittedLight() > 0.0f) {
@@ -106,17 +124,21 @@ void World::setTile_noEvent(Tile* tile) {
 		Tile* t = m_tiles[x][i][layer];
 		t->setNeedsSunCheck();
 		Tile* l = getTile(x - 1, i, layer);
-		if(l) l->setNeedsSunCheck();
+		if(l)
+			l->setNeedsSunCheck();
 		Tile* r = getTile(x + 1, i, layer);
-		if(r) r->setNeedsSunCheck();
+		if(r)
+			r->setNeedsSunCheck();
 		if(!t->isTransparent()) {
 			break;
 		}
 	}
 	Tile* l = getTile(x - 1, y, layer);
-	if(l) l->setNeedsSunCheck();
+	if(l)
+		l->setNeedsSunCheck();
 	Tile* r = getTile(x + 1, y, layer);
-	if(r) r->setNeedsSunCheck();
+	if(r)
+		r->setNeedsSunCheck();
 }
 
 Tile* World::getTile(int x, int y, int layer) {
@@ -137,7 +159,6 @@ XMLModule::BiomeData World::getBiome(int x) {
 
 	// Get biome data from XML Data
 	return XMLModule::XMLData::getBiomeData(biomeID);
-
 }
 
 void World::sortLights() {
@@ -146,10 +167,10 @@ void World::sortLights() {
 		changed = false;
 		for(unsigned int i = 0; i < m_lights.size() - 1; i++) {
 			if(m_lights[i]->getPosition().x > m_lights[i + 1]->getPosition().x) {
-				Tile* temp = m_lights[i];
-				m_lights[i] = m_lights[i + 1];
+				Tile* temp		= m_lights[i];
+				m_lights[i]		= m_lights[i + 1];
 				m_lights[i + 1] = temp;
-				changed = true;
+				changed			= true;
 			}
 		}
 	}
@@ -167,8 +188,8 @@ void World::addLight(Tile* t) {
 	m_lights.push_back(t);
 	for(int i = m_lights.size() - 1; i > 0; i--) {
 		if(m_lights[i]->getPosition().x > t->getPosition().x) {
-			Tile* temp = m_lights[i];
-			m_lights[i] = t;
+			Tile* temp		= m_lights[i];
+			m_lights[i]		= t;
 			m_lights[i + 1] = temp;
 		} else {
 			return;
@@ -194,7 +215,8 @@ void World::removeLight(Tile* t) {
 	int index = -1;
 
 	for(unsigned int i = 0; i < m_lights.size(); i++) {
-		if(m_lights[i] == t) index = i;
+		if(m_lights[i] == t)
+			index = i;
 	}
 
 	if(index != -1) {
@@ -240,10 +262,10 @@ void World::getRenderedLights(glm::vec4 destRect, float lights[MAX_LIGHTS_RENDER
 		float centerXViewport = destRect.x + (destRect.z / 2.0f);
 
 		if(centerXViewport > m_lights[i]->getPosition().x) {
-			leftDist = -(centerXViewport - m_lights[i]->getPosition().x);
+			leftDist  = -(centerXViewport - m_lights[i]->getPosition().x);
 			rightDist = (getSize() - centerXViewport) + m_lights[i]->getPosition().x;
 		} else {
-			leftDist = -((getSize() - m_lights[i]->getPosition().x) + centerXViewport);
+			leftDist  = -((getSize() - m_lights[i]->getPosition().x) + centerXViewport);
 			rightDist = m_lights[i]->getPosition().x - centerXViewport;
 		}
 
@@ -252,18 +274,19 @@ void World::getRenderedLights(glm::vec4 destRect, float lights[MAX_LIGHTS_RENDER
 			append = true;
 		}
 
-
 		if(append) {
-			glm::vec3 result = glm::vec3(centerXViewport + shortestDist, m_lights[i]->getPosition().y, m_lights[i]->getEmittedLight());
+			glm::vec3 result =
+				glm::vec3(centerXViewport + shortestDist, m_lights[i]->getPosition().y, m_lights[i]->getEmittedLight());
 			// 3.
 			if(added >= MAX_LIGHTS_RENDERED) {
 				glm::vec2 center(destRect.x + destRect.z / 2.0f, destRect.y + destRect.w / 2.0f);
-				float maxDist = glm::distance(glm::vec2(result.x, result.y), center); // Distance from the centre of the viewport
+				float	  maxDist =
+					glm::distance(glm::vec2(result.x, result.y), center); // Distance from the centre of the viewport
 				int maxDistIndex = -1;
 				for(int i = 0; i < MAX_LIGHTS_RENDERED; i++) {
 					float IDistance = glm::distance(glm::vec2(returnVal[i].x, returnVal[i].y), center);
 					if(IDistance > maxDist) {
-						maxDist = IDistance;
+						maxDist		 = IDistance;
 						maxDistIndex = i;
 					}
 				}
@@ -278,11 +301,13 @@ void World::getRenderedLights(glm::vec4 destRect, float lights[MAX_LIGHTS_RENDER
 	}
 
 	for(int i = 0; i < MAX_LIGHTS_RENDERED; i++) {
-		glm::vec2 pos = Singletons::getGameCamera()->convertWorldToScreen(glm::vec2(returnVal[i].x + 0.5f, returnVal[i].y + 0.5f));
+		glm::vec2 pos =
+			Singletons::getGameCamera()->convertWorldToScreen(glm::vec2(returnVal[i].x + 0.5f, returnVal[i].y + 0.5f));
 
-		lights[i * 3] = pos.x;
+		lights[i * 3]	  = pos.x;
 		lights[i * 3 + 1] = pos.y;
-		lights[i * 3 + 2] = returnVal[i].z * Singletons::getGameCamera()->getScale() * Singletons::getGameCamera()->getScale();
+		lights[i * 3 + 2] =
+			returnVal[i].z * Singletons::getGameCamera()->getScale() * Singletons::getGameCamera()->getScale();
 	}
 }
 
@@ -293,7 +318,11 @@ void World::setLightsUniform(glm::vec4 destRect, GLEngine::GLSLProgram* textureP
 	glUniform3fv(textureUniform, MAX_LIGHTS_RENDERED, lights); /// TODO: Set define directive for 30 lights max.
 }
 
-void World::drawTiles(GLEngine::SpriteBatch& sb, GLEngine::SpriteFont& sf, GLEngine::DebugRenderer& dr, glm::vec4 destRect, GLEngine::GLSLProgram* textureProgram) {
+void World::drawTiles(GLEngine::SpriteBatch&   sb,
+					  GLEngine::SpriteFont&	   sf,
+					  GLEngine::DebugRenderer& dr,
+					  glm::vec4				   destRect,
+					  GLEngine::GLSLProgram*   textureProgram) {
 	/**
 	    Draws an area of tiles at position destRect.xy, with width and height of destRect.z and destRect.w respectively.
 	    Negative coordinates are mapped to accomodate for 'crossover'
@@ -302,16 +331,16 @@ void World::drawTiles(GLEngine::SpriteBatch& sb, GLEngine::SpriteFont& sf, GLEng
 
 	EntityPlayer* player = Singletons::getEntityManager()->getPlayer();
 
-	int playerLayer = player->getLayer();
-	int diff[WORLD_DEPTH];
+	int	  playerLayer = player->getLayer();
+	int	  diff[WORLD_DEPTH];
 	float blur[WORLD_DEPTH];
 	for(int i = 0; i < WORLD_DEPTH; i++) {
 		diff[i] = (playerLayer - i);
 	}
 
 	for(int x = destRect.x; x < destRect.z + destRect.x; x++) {
-		int columnIndex = (int)((x/*+destRect.x*/) + (getSize())) % getSize();
-		int offset = (/*destRect.x + */x) - columnIndex;
+		int columnIndex = (int)((x /*+destRect.x*/) + (getSize())) % getSize();
+		int offset		= (/*destRect.x + */ x) - columnIndex;
 
 		for(int y = destRect.y; y < destRect.w + destRect.y; y++) {
 			for(unsigned int layer = 0; layer < WORLD_DEPTH; layer++) {
@@ -331,16 +360,16 @@ void World::drawTiles(GLEngine::SpriteBatch& sb, GLEngine::SpriteFont& sf, GLEng
 void World::drawTilesNormal(GLEngine::SpriteBatch& sb, glm::vec4 destRect, GLEngine::GLSLProgram* textureProgram) {
 	EntityPlayer* player = Singletons::getEntityManager()->getPlayer();
 
-	int playerLayer = player->getLayer();
-	int diff[WORLD_DEPTH];
+	int	  playerLayer = player->getLayer();
+	int	  diff[WORLD_DEPTH];
 	float blur[WORLD_DEPTH];
 	for(int i = 0; i < WORLD_DEPTH; i++) {
 		diff[i] = (playerLayer - i);
 	}
 
 	for(int x = destRect.x; x < destRect.z + destRect.x; x++) {
-		int columnIndex = (int)((x/*+destRect.x*/) + (getSize())) % getSize();
-		int offset = (/*destRect.x + */x) - columnIndex;
+		int columnIndex = (int)((x /*+destRect.x*/) + (getSize())) % getSize();
+		int offset		= (/*destRect.x + */ x) - columnIndex;
 
 		for(int y = destRect.y; y < destRect.w + destRect.y; y++) {
 			for(unsigned int layer = 0; layer < WORLD_DEPTH; layer++) {
@@ -360,7 +389,7 @@ void World::drawTilesNormal(GLEngine::SpriteBatch& sb, glm::vec4 destRect, GLEng
 void World::drawTilesGUI(GLEngine::SpriteBatch& sb, GLEngine::SpriteFont& sf, glm::vec4 destRect) {
 	for(int x = destRect.x; x < destRect.z + destRect.x; x++) {
 		int columnIndex = (int)((x) + (getSize())) % getSize();
-		int offset = (x) - columnIndex;
+		int offset		= (x)-columnIndex;
 
 		for(int y = destRect.y; y < destRect.w + destRect.y; y++) {
 			for(unsigned int layer = 0; layer < WORLD_DEPTH; layer++) {
@@ -405,10 +434,12 @@ void World::tickTiles(glm::vec4 destRect) {
 	    eg. destRect = (-10, 10, 20, 10) will tick tiles from x=(WORLD_SIZE - 10) to x=(-10 + 20) and y=(10) to y=(10 + 10)
 	*/
 
-	m_sunlight = std::cos(m_time / (DAY_LENGTH / 6.28318f)) / 2.0f + 0.5f;;
+	m_sunlight = std::cos(m_time / (DAY_LENGTH / 6.28318f)) / 2.0f + 0.5f;
+	;
 
 	for(int y = destRect.y; y < destRect.w + destRect.y; y++) {
-		if(y < -destRect.w) break;
+		if(y < -destRect.w)
+			break;
 		for(int x = destRect.x; x < destRect.z + destRect.x; x++) {
 			for(unsigned int layer = 0; layer < WORLD_DEPTH; layer++) {
 				if(y >= 0 && y < WORLD_HEIGHT) {
@@ -423,11 +454,15 @@ void World::tickTiles(glm::vec4 destRect) {
 }
 
 void World::drawFluids(GLEngine::SpriteBatch& sb, glm::vec4& destRect) {
-	Singletons::getFluidManager()->draw(sb, destRect);
+	for(unsigned int i = 0; i < m_fluidDomains.size(); i++) {
+		m_fluidDomains[i]->draw(sb, destRect);
+	}
 }
 
 void World::updateFluids(float timeStep, glm::vec4& destRect) {
-	Singletons::getFluidManager()->update(timeStep, destRect);
+	for(unsigned int i = 0; i < m_fluidDomains.size(); i++) {
+		m_fluidDomains[i]->update();
+	}
 }
 
 void World::drawDebug(GLEngine::DebugRenderer& dr, float xOffset) {
@@ -477,7 +512,11 @@ void World::drawSunlight(GLEngine::SpriteBatch& sb, glm::vec4 destRect) {
 			// Determine BR (bit 3)
 			corners |= (cornersVec.z > 0.0f) << 3;
 
-			sb.draw(glm::vec4((int)x, (int)y, 1.0f, 1.0f), glm::vec4(0.0f, 0.0f, 1.0f, 1.0f), 0, 0.0f, GLEngine::ColourRGBA8(light, corners, 255, 255));
+			sb.draw(glm::vec4((int)x, (int)y, 1.0f, 1.0f),
+					glm::vec4(0.0f, 0.0f, 1.0f, 1.0f),
+					0,
+					0.0f,
+					GLEngine::ColourRGBA8(light, corners, 255, 255));
 		}
 	}
 }
@@ -486,12 +525,12 @@ float World::getDistance(glm::vec2 point0, glm::vec2 point1) {
 	float xDist;
 
 	if(point0.x < point1.x) {
-		float xDist0 = point1.x - point0.x; // Regular dist not accounting for crossover.
+		float xDist0 = point1.x - point0.x;					// Regular dist not accounting for crossover.
 		float xDist1 = (point0.x) + (getSize() - point1.x); // Distance accounting for crossover.
 
 		xDist = xDist0 < xDist1 ? xDist0 : xDist1; // Choose the shorter of the two.
 	} else if(point0.x > point1.x) {
-		float xDist0 = point0.x - point1.x; // Regular dist not accounting for crossover.
+		float xDist0 = point0.x - point1.x;					// Regular dist not accounting for crossover.
 		float xDist1 = (point1.x) + (getSize() - point0.x); // Distance accounting for crossover.
 
 		xDist = xDist0 < xDist1 ? xDist0 : xDist1; // Choose the shorter of the two.
@@ -501,7 +540,6 @@ float World::getDistance(glm::vec2 point0, glm::vec2 point1) {
 
 	return std::sqrt(xDist * xDist + yDist * yDist);
 }
-
 
 /// PRIVATE FUNCTIONS BELOW
 
@@ -521,16 +559,13 @@ void World::specialUpdateTile(Tile* origin) {
 	l->specialUpdate(m_time);
 	r->specialUpdate(m_time);
 
-
 	if(u)
 		u->specialUpdate(m_time);
 	if(d)
 		d->specialUpdate(m_time);
 
-
 	if(f)
 		f->specialUpdate(m_time);
 	if(b)
 		b->specialUpdate(m_time);
-
 }

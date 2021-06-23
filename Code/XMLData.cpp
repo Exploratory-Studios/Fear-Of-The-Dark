@@ -2,9 +2,11 @@
 
 #include <rapidxml/rapidxml_print.hpp>
 
-namespace XMLModule {
+namespace XMLModule
+{
 
-	void getVector(rapidxml::xml_node<>* parent, std::string valueName, std::string childName, std::vector<std::string>& vec) {
+	void getVector(rapidxml::xml_node<>* parent, std::string valueName, std::string childName, std::vector<std::string>& vec)
+	{
 		/**
 		    Loops over getValue, getting all values out of a tag:
 
@@ -31,7 +33,8 @@ namespace XMLModule {
 		}
 	}
 
-	void getVector(rapidxml::xml_node<>* parent, std::string valueName, std::string childName, std::vector<float>& vec) {
+	void getVector(rapidxml::xml_node<>* parent, std::string valueName, std::string childName, std::vector<float>& vec)
+	{
 		rapidxml::xml_node<>* n = parent->first_node((char*)valueName.c_str()); // Gets <entities> in the example.
 
 		if(n) {
@@ -42,7 +45,8 @@ namespace XMLModule {
 		}
 	}
 
-	void getVector(rapidxml::xml_node<>* parent, std::string valueName, std::string childName, std::vector<glm::vec2>& vec) {
+	void getVector(rapidxml::xml_node<>* parent, std::string valueName, std::string childName, std::vector<glm::vec2>& vec)
+	{
 		rapidxml::xml_node<>* n = parent->first_node((char*)valueName.c_str()); // Gets <entities> in the example.
 
 		if(n) {
@@ -53,7 +57,8 @@ namespace XMLModule {
 		}
 	}
 
-	void getVector(rapidxml::xml_node<>* parent, std::string valueName, std::string childName, std::vector<int>& vec) {
+	void getVector(rapidxml::xml_node<>* parent, std::string valueName, std::string childName, std::vector<int>& vec)
+	{
 		rapidxml::xml_node<>* n = parent->first_node((char*)valueName.c_str()); // Gets <entities> in the example.
 
 		if(n) {
@@ -64,7 +69,8 @@ namespace XMLModule {
 		}
 	}
 
-	void getVector(rapidxml::xml_node<>* parent, std::string valueName, std::string childName, std::vector<unsigned int>& vec) {
+	void getVector(rapidxml::xml_node<>* parent, std::string valueName, std::string childName, std::vector<unsigned int>& vec)
+	{
 		rapidxml::xml_node<>* n = parent->first_node((char*)valueName.c_str()); // Gets <entities> in the example.
 
 		if(n) {
@@ -75,7 +81,8 @@ namespace XMLModule {
 		}
 	}
 
-	void getVector(rapidxml::xml_node<>* parent, std::string valueName, std::string childName, std::vector<bool>& vec) {
+	void getVector(rapidxml::xml_node<>* parent, std::string valueName, std::string childName, std::vector<bool>& vec)
+	{
 		rapidxml::xml_node<>* n = parent->first_node((char*)valueName.c_str()); // Gets <entities> in the example.
 
 		if(n) {
@@ -86,7 +93,8 @@ namespace XMLModule {
 		}
 	}
 
-	void getVector(rapidxml::xml_node<>* parent, std::string valueName, std::string childName, std::vector<ScriptData>& vec) {
+	void getVector(rapidxml::xml_node<>* parent, std::string valueName, std::string childName, std::vector<ScriptData>& vec)
+	{
 		rapidxml::xml_node<>* n = parent->first_node((char*)valueName.c_str()); // Gets <entities> in the example.
 
 		if(n) {
@@ -97,7 +105,8 @@ namespace XMLModule {
 		}
 	}
 
-	void getVector(rapidxml::xml_node<>* parent, std::string valueName, std::string childName, std::vector<GenericData>& vec) {
+	void getVector(rapidxml::xml_node<>* parent, std::string valueName, std::string childName, std::vector<GenericData>& vec)
+	{
 		rapidxml::xml_node<>* n = parent->first_node((char*)valueName.c_str()); // Gets <entities> in the example.
 
 		if(n) {
@@ -109,7 +118,8 @@ namespace XMLModule {
 	}
 
 
-	bool getValue(rapidxml::xml_node<>* parent, std::string valueName, std::string& variable) {
+	bool getValue(rapidxml::xml_node<>* parent, std::string valueName, std::string& variable)
+	{
 		/// Places value of node with name `valueName` into `variable` and removes the node from the doc.
 		rapidxml::xml_node<>* n = parent->first_node((char*)valueName.c_str());
 		if(n) {
@@ -122,7 +132,8 @@ namespace XMLModule {
 		return false;
 	}
 
-	bool getValue(rapidxml::xml_node<>* parent, std::string valueName, float& variable) {
+	bool getValue(rapidxml::xml_node<>* parent, std::string valueName, float& variable)
+	{
 		/// Places value of node with name `valueName` into `variable` and removes the node from the doc.
 		rapidxml::xml_node<>* n = parent->first_node((char*)valueName.c_str());
 		if(n) {
@@ -135,7 +146,8 @@ namespace XMLModule {
 		return false;
 	}
 
-	bool getValue(rapidxml::xml_node<>* parent, std::string valueName, glm::vec2& variable) {
+	bool getValue(rapidxml::xml_node<>* parent, std::string valueName, glm::vec2& variable)
+	{
 		/// Places value of node with name `valueName` into `variable` and removes the node from the doc.
 		rapidxml::xml_node<>* n = parent->first_node((char*)valueName.c_str());
 		if(n) {
@@ -154,7 +166,8 @@ namespace XMLModule {
 		return false;
 	}
 
-	bool getValue(rapidxml::xml_node<>* parent, std::string valueName, int& variable) {
+	bool getValue(rapidxml::xml_node<>* parent, std::string valueName, int& variable)
+	{
 		/// Places value of node with name `valueName` into `variable` and removes the node from the doc.
 		rapidxml::xml_node<>* n = parent->first_node((char*)valueName.c_str());
 		if(n) {
@@ -167,7 +180,8 @@ namespace XMLModule {
 		return false;
 	}
 
-	bool getValue(rapidxml::xml_node<>* parent, std::string valueName, unsigned int& variable) {
+	bool getValue(rapidxml::xml_node<>* parent, std::string valueName, unsigned int& variable)
+	{
 		/// Places value of node with name `valueName` into `variable` and removes the node from the doc.
 		rapidxml::xml_node<>* n = parent->first_node((char*)valueName.c_str());
 		if(n) {
@@ -180,7 +194,8 @@ namespace XMLModule {
 		return false;
 	}
 
-	bool getValue(rapidxml::xml_node<>* parent, std::string valueName, bool& variable) {
+	bool getValue(rapidxml::xml_node<>* parent, std::string valueName, bool& variable)
+	{
 		/// Places value of node with name `valueName` into `variable` and removes the node from the doc. Returns true on successful value find
 		rapidxml::xml_node<>* n = parent->first_node((char*)valueName.c_str());
 		if(n) {
@@ -197,7 +212,8 @@ namespace XMLModule {
 		return false;
 	}
 
-	bool getValue(rapidxml::xml_node<>* parent, std::string valueName, ScriptData& variable) {
+	bool getValue(rapidxml::xml_node<>* parent, std::string valueName, ScriptData& variable)
+	{
 		/// Places value of node with name `valueName` into `variable` and removes the node from the doc. Returns true on successful value find
 		rapidxml::xml_node<>* n = parent->first_node((char*)valueName.c_str());
 		if(n) {
@@ -215,7 +231,8 @@ namespace XMLModule {
 		return false;
 	}
 
-	bool getValue(rapidxml::xml_node<>* parent, std::string valueName, GenericData& variable) {
+	bool getValue(rapidxml::xml_node<>* parent, std::string valueName, GenericData& variable)
+	{
 		/// Places value of node with name `valueName` into `variable` and removes the node from the doc. Returns true on successful value find
 		rapidxml::xml_node<>* n = parent->first_node((char*)valueName.c_str());
 		if(n) {
@@ -228,7 +245,8 @@ namespace XMLModule {
 		return false;
 	}
 
-	void getMetaData(rapidxml::xml_node<>* parent, SaveDataTypes::MetaData& mdVar) {
+	void getMetaData(rapidxml::xml_node<>* parent, SaveDataTypes::MetaData& mdVar)
+	{
 		/// Retrieves ALL existing children from `parent`, then sets their names as the keys, with their values as the values in a MetaData object, stored in `mdVar`. Removes each node systematically from parent after adding them to mdVar.
 
 		SaveDataTypes::MetaData md;
@@ -270,7 +288,8 @@ namespace XMLModule {
 	std::map<unsigned int, GenericData*> XMLData::m_buffData;
 	std::map<unsigned int, GenericData*> XMLData::m_fluidData;
 
-	XMLDataFile::XMLDataFile(std::string filename, std::initializer_list<std::string> nodeNames) : m_filename(filename), m_nodeNames(nodeNames) {
+	XMLDataFile::XMLDataFile(std::string filename, std::initializer_list<std::string> nodeNames) : m_filename(filename), m_nodeNames(nodeNames)
+	{
 		// We need to construct m_maps. No copies allowed!
 		for(unsigned int i = 0; i < m_nodeNames.size(); i++) {
 			std::map<unsigned int, GenericData*>* mapCandidate = XMLData::getMapFromNodename(m_nodeNames[i]);
@@ -298,7 +317,8 @@ namespace XMLModule {
 		XMLDataFile("Fluids", { "fluid" })
 	};
 
-	std::vector<std::string> XMLData::getNodeNamesFromFile(std::string file) {
+	std::vector<std::string> XMLData::getNodeNamesFromFile(std::string file)
+	{
 		std::vector<std::string> ret;
 		//for(unsigned int i = 0; i < m_saveFileNames.size(); i++) {
 		//	if(m_saveFileNames[i] == file) {
@@ -311,7 +331,8 @@ namespace XMLModule {
 		return ret;
 	}
 
-	void XMLData::init(std::string filepath) {
+	void XMLData::init(std::string filepath)
+	{
 		Logger::getInstance()->log("\nXML Data beginning read");
 
 		std::vector<XMLDataFile> files = m_fileNames;
@@ -325,7 +346,8 @@ namespace XMLModule {
 		Logger::getInstance()->log("XML Data read complete.\n");
 	}
 
-	void XMLData::write(std::string filepath) {
+	void XMLData::write(std::string filepath)
+	{
 		Logger::getInstance()->log("\nXML Data beginning write.");
 
 		std::vector<XMLDataFile> files = m_fileNames;
@@ -343,7 +365,8 @@ namespace XMLModule {
 		Logger::getInstance()->log("XML Data write complete.\n");
 	}
 
-	void XMLData::addData(GenericData* data, std::string& nodename) {
+	void XMLData::addData(GenericData* data, std::string& nodename)
+	{
 		// First, retrieve the correct node name and map.
 		std::map<unsigned int, GenericData*>* mapForWrite = getMapFromNodename(nodename);
 
@@ -356,7 +379,8 @@ namespace XMLModule {
 		}
 	}
 
-	void XMLData::removeData(GenericData* data, std::string& nodename) {
+	void XMLData::removeData(GenericData* data, std::string& nodename)
+	{
 		// First, retrieve correct map
 		std::map<unsigned int, GenericData*>* mapForRemoval = getMapFromNodename(nodename);
 
@@ -369,7 +393,8 @@ namespace XMLModule {
 		}
 	}
 
-	GenericData* XMLData::createDataFromNodename(std::string& name) {
+	GenericData* XMLData::createDataFromNodename(std::string& name)
+	{
 		GenericData* d = nullptr;
 
 		if(name == "tile") {
@@ -433,7 +458,8 @@ namespace XMLModule {
 		return d;
 	}
 
-	std::map<unsigned int, GenericData*>* XMLData::getMapFromNodename(std::string& name) {
+	std::map<unsigned int, GenericData*>* XMLData::getMapFromNodename(std::string& name)
+	{
 		std::map<unsigned int, GenericData*>* mapForWrite = nullptr;
 
 		if(name == "tile" || name == "tileContainer") {
@@ -478,7 +504,8 @@ namespace XMLModule {
 		return mapForWrite;
 	}
 
-	void XMLData::loadXMLData(std::string filepath) {
+	void XMLData::loadXMLData(std::string filepath)
+	{
 		/** Loads all XML data into the map **/
 
 		// Open file at filepath
@@ -519,7 +546,8 @@ namespace XMLModule {
 		}
 	}
 
-	void XMLData::writeXMLData(std::string filepath, std::map<unsigned int, GenericData*>* mapToWrite) {
+	void XMLData::writeXMLData(std::string filepath, std::map<unsigned int, GenericData*>* mapToWrite)
+	{
 		/** Writes all XML data into the file at filepath **/
 
 		// Open file at filepath
@@ -549,7 +577,8 @@ namespace XMLModule {
 
 /// Tiles
 
-	TileData XMLData::getTileData(unsigned int id) {
+	TileData XMLData::getTileData(unsigned int id)
+	{
 		auto index = m_tileData.find(id);
 
 		if(index == m_tileData.end()) {
@@ -561,7 +590,8 @@ namespace XMLModule {
 		return *static_cast<TileData*>(index->second);
 	}
 
-	TileContainerData XMLData::getTileContainerData(unsigned int id) {
+	TileContainerData XMLData::getTileContainerData(unsigned int id)
+	{
 		auto index = m_tileData.find(id);
 
 		if(index == m_tileData.end()) {
@@ -575,7 +605,8 @@ namespace XMLModule {
 
 /// Particles
 
-	ParticleData XMLData::getParticleData(unsigned int id) {
+	ParticleData XMLData::getParticleData(unsigned int id)
+	{
 		auto index = m_particleData.find(id);
 
 		if(index == m_particleData.end()) {
@@ -587,7 +618,8 @@ namespace XMLModule {
 		return *static_cast<ParticleData*>(index->second);
 	}
 
-	EntityData XMLData::getEntityData(unsigned int id) {
+	EntityData XMLData::getEntityData(unsigned int id)
+	{
 		auto index = m_entityData.find(id);
 
 		if(index == m_entityData.end()) {
@@ -601,7 +633,8 @@ namespace XMLModule {
 
 /// Entities: NPCS
 
-	EntityNPCData XMLData::getEntityNPCData(unsigned int id) {
+	EntityNPCData XMLData::getEntityNPCData(unsigned int id)
+	{
 		auto index = m_entityData.find(id);
 
 		if(index == m_entityData.end()) {
@@ -615,7 +648,8 @@ namespace XMLModule {
 
 /// Entities: Projectiles
 
-	EntityProjectileData XMLData::getEntityProjectileData(unsigned int id) {
+	EntityProjectileData XMLData::getEntityProjectileData(unsigned int id)
+	{
 		auto index = m_entityData.find(id);
 
 		if(index == m_entityData.end()) {
@@ -629,7 +663,8 @@ namespace XMLModule {
 
 /// Entities: Items
 
-	EntityItemData XMLData::getEntityItemData(unsigned int id) {
+	EntityItemData XMLData::getEntityItemData(unsigned int id)
+	{
 		auto index = m_entityData.find(id);
 
 		if(index == m_entityData.end()) {
@@ -644,7 +679,8 @@ namespace XMLModule {
 
 /// Real Items
 
-	ItemData XMLData::getItemData(unsigned int id) {
+	ItemData XMLData::getItemData(unsigned int id)
+	{
 		auto index = m_itemData.find(id);
 
 		if(index == m_itemData.end()) {
@@ -656,7 +692,8 @@ namespace XMLModule {
 		return *static_cast<ItemData*>(index->second);
 	}
 
-	ItemArmourData XMLData::getItemArmourData(unsigned int id) {
+	ItemArmourData XMLData::getItemArmourData(unsigned int id)
+	{
 		auto index = m_itemData.find(id);
 
 		if(index == m_itemData.end()) {
@@ -668,7 +705,8 @@ namespace XMLModule {
 		return *static_cast<ItemArmourData*>(index->second);
 	}
 
-	ItemConsumableData XMLData::getItemConsumableData(unsigned int id) {
+	ItemConsumableData XMLData::getItemConsumableData(unsigned int id)
+	{
 		auto index = m_itemData.find(id);
 
 		if(index == m_itemData.end()) {
@@ -680,7 +718,8 @@ namespace XMLModule {
 		return *static_cast<ItemConsumableData*>(index->second);
 	}
 
-	ItemWeaponData XMLData::getItemWeaponData(unsigned int id) {
+	ItemWeaponData XMLData::getItemWeaponData(unsigned int id)
+	{
 		auto index = m_itemData.find(id);
 
 		if(index == m_itemData.end()) {
@@ -692,7 +731,8 @@ namespace XMLModule {
 		return *static_cast<ItemWeaponData*>(index->second);
 	}
 
-	ItemBlockData XMLData::getItemBlockData(unsigned int id) {
+	ItemBlockData XMLData::getItemBlockData(unsigned int id)
+	{
 		auto index = m_itemData.find(id);
 
 		if(index == m_itemData.end()) {
@@ -706,7 +746,8 @@ namespace XMLModule {
 
 /// Biomes
 
-	BiomeData XMLData::getBiomeData(unsigned int id) {
+	BiomeData XMLData::getBiomeData(unsigned int id)
+	{
 		auto index = m_biomeData.find(id);
 
 		if(index == m_biomeData.end()) {
@@ -718,13 +759,15 @@ namespace XMLModule {
 		return *static_cast<BiomeData*>(index->second);
 	}
 
-	unsigned int XMLData::getTotalBiomes() {
+	unsigned int XMLData::getTotalBiomes()
+	{
 		return m_biomeData.size();
 	}
 
 /// Eras
 
-	EraData XMLData::getEraData(unsigned int id) {
+	EraData XMLData::getEraData(unsigned int id)
+	{
 		auto index = m_eraData.find(id);
 
 		if(index == m_eraData.end()) {
@@ -738,7 +781,8 @@ namespace XMLModule {
 
 /// LootDrops
 
-	LootDropData XMLData::getLootDropData(unsigned int id) {
+	LootDropData XMLData::getLootDropData(unsigned int id)
+	{
 		auto index = m_lootDropData.find(id);
 
 		if(index == m_lootDropData.end()) {
@@ -752,7 +796,8 @@ namespace XMLModule {
 
 /// LootTables
 
-	LootTableData XMLData::getLootTableData(unsigned int id) {
+	LootTableData XMLData::getLootTableData(unsigned int id)
+	{
 		auto index = m_lootTableData.find(id);
 
 		if(index == m_lootTableData.end()) {
@@ -766,7 +811,8 @@ namespace XMLModule {
 
 /// Structures
 
-	StructureData XMLData::getStructureData(unsigned int id) {
+	StructureData XMLData::getStructureData(unsigned int id)
+	{
 		auto index = m_structureData.find(id);
 
 		if(index == m_structureData.end()) {
@@ -780,7 +826,8 @@ namespace XMLModule {
 
 /// Quests
 
-	QuestData XMLData::getQuestData(unsigned int id) {
+	QuestData XMLData::getQuestData(unsigned int id)
+	{
 		auto index = m_questData.find(id);
 
 		if(index == m_questData.end()) {
@@ -794,7 +841,8 @@ namespace XMLModule {
 
 /// QuestObjectives
 
-	QuestObjectiveData XMLData::getQuestObjectiveData(unsigned int id) {
+	QuestObjectiveData XMLData::getQuestObjectiveData(unsigned int id)
+	{
 		auto index = m_questData.find(id);
 
 		if(index == m_questData.end()) {
@@ -808,7 +856,8 @@ namespace XMLModule {
 
 /// DialogueQuestions
 
-	DialogueQuestionData XMLData::getDialogueQuestionData(unsigned int id) {
+	DialogueQuestionData XMLData::getDialogueQuestionData(unsigned int id)
+	{
 		auto index = m_dialogueQuestionData.find(id);
 
 		if(index == m_dialogueQuestionData.end()) {
@@ -822,7 +871,8 @@ namespace XMLModule {
 
 /// DialogueResponses
 
-	DialogueResponseData XMLData::getDialogueResponseData(unsigned int id) {
+	DialogueResponseData XMLData::getDialogueResponseData(unsigned int id)
+	{
 		auto index = m_dialogueResponseData.find(id);
 
 		if(index == m_dialogueResponseData.end()) {
@@ -836,7 +886,8 @@ namespace XMLModule {
 
 /// Animations
 
-	AnimationData XMLData::getAnimationData(unsigned int id) {
+	AnimationData XMLData::getAnimationData(unsigned int id)
+	{
 		auto index = m_animationData.find(id);
 
 		if(index == m_animationData.end()) {
@@ -850,7 +901,8 @@ namespace XMLModule {
 
 /// Skeletal Animations
 
-	SkeletalAnimationData XMLData::getSkeletalAnimationData(unsigned int id) {
+	SkeletalAnimationData XMLData::getSkeletalAnimationData(unsigned int id)
+	{
 		auto index = m_skeletalAnimationData.find(id);
 
 		if(index == m_skeletalAnimationData.end()) {
@@ -864,7 +916,8 @@ namespace XMLModule {
 
 /// Attack
 
-	AttackData XMLData::getAttackData(unsigned int id) {
+	AttackData XMLData::getAttackData(unsigned int id)
+	{
 		auto index = m_attackData.find(id);
 
 		if(index == m_attackData.end()) {
@@ -876,7 +929,8 @@ namespace XMLModule {
 		return *static_cast<AttackData*>(index->second);
 	}
 
-	MeleeAttackData XMLData::getMeleeAttackData(unsigned int id) {
+	MeleeAttackData XMLData::getMeleeAttackData(unsigned int id)
+	{
 		auto index = m_attackData.find(id);
 
 		if(index == m_attackData.end()) {
@@ -888,7 +942,8 @@ namespace XMLModule {
 		return *static_cast<MeleeAttackData*>(index->second);
 	}
 
-	RangedAttackData XMLData::getRangedAttackData(unsigned int id) {
+	RangedAttackData XMLData::getRangedAttackData(unsigned int id)
+	{
 		auto index = m_attackData.find(id);
 
 		if(index == m_attackData.end()) {
@@ -900,7 +955,8 @@ namespace XMLModule {
 		return *static_cast<RangedAttackData*>(index->second);
 	}
 
-	MagicAttackData XMLData::getMagicAttackData(unsigned int id) {
+	MagicAttackData XMLData::getMagicAttackData(unsigned int id)
+	{
 		auto index = m_attackData.find(id);
 
 		if(index == m_attackData.end()) {
@@ -912,7 +968,8 @@ namespace XMLModule {
 		return *static_cast<MagicAttackData*>(index->second);
 	}
 
-	BuffData XMLData::getBuffData(unsigned int id) {
+	BuffData XMLData::getBuffData(unsigned int id)
+	{
 		auto index = m_buffData.find(id);
 
 		if(index == m_buffData.end()) {
@@ -924,7 +981,8 @@ namespace XMLModule {
 		return *static_cast<BuffData*>(index->second);
 	}
 
-	FluidData XMLData::getFluidData(unsigned int id) {
+	FluidData XMLData::getFluidData(unsigned int id)
+	{
 		auto index = m_fluidData.find(id);
 
 		if(index == m_fluidData.end()) {
@@ -934,6 +992,11 @@ namespace XMLModule {
 		}
 
 		return *static_cast<FluidData*>(index->second);
+	}
+
+	unsigned int XMLData::getFluidCount()
+	{
+		return m_fluidData.size();
 	}
 
 }

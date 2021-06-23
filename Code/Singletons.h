@@ -6,54 +6,55 @@
 #include "EntityManager.h"
 #include "AudioManager.h"
 #include "World.h"
-#include "FluidManager.h"
 
-class Singletons {
+class Singletons
+{
 	public:
-		static EntityManager* getEntityManager() {
+		static EntityManager* getEntityManager()
+		{
 			if(m_entityManager) return m_entityManager;
 			m_entityManager = new EntityManager();
 			return m_entityManager;
 		}
 
-		static AudioManager* getAudioManager() {
+		static AudioManager* getAudioManager()
+		{
 			if(m_audioManager) return m_audioManager;
 			m_audioManager = new AudioManager();
 			return m_audioManager;
 		}
 
-		static GLEngine::GUI* getGUI() {
+		static GLEngine::GUI* getGUI()
+		{
 			if(m_gui) return m_gui;
 			m_gui = new GLEngine::GUI();
 			return m_gui;
 		}
 
-		static GLEngine::Camera2D* getGameCamera() {
+		static GLEngine::Camera2D* getGameCamera()
+		{
 			if(m_gameCamera) return m_gameCamera;
 			m_gameCamera = new GLEngine::Camera2D();
 			return m_gameCamera;
 		}
 
-		static World* getWorld() {
+		static World* getWorld()
+		{
 			if(m_world) return m_world;
 			m_world = new World(true);
 			return m_world;
 		}
 
-		static void createWorld() {
+		static void createWorld()
+		{
 			if(m_world) delete m_world;
 			m_world = new World(true);
 		}
 
-		static void setWorld(World* w) {
+		static void setWorld(World* w)
+		{
 			if(m_world) delete m_world;
 			m_world = w;
-		}
-
-		static FluidModule::FluidManager* getFluidManager() {
-			if(m_fluidManager) return m_fluidManager;
-			m_fluidManager = new FluidModule::FluidManager();
-			return m_fluidManager;
 		}
 
 	private:
@@ -62,5 +63,4 @@ class Singletons {
 		static GLEngine::GUI* m_gui;
 		static GLEngine::Camera2D* m_gameCamera;
 		static World* m_world;
-		static FluidModule::FluidManager* m_fluidManager;
 };

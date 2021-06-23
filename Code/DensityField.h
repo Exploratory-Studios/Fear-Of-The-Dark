@@ -1,37 +1,36 @@
 #pragma once
 
+#include "PresetValues.h"
+
 namespace FluidModule
 {
-
-	class DensityField
-	{
-		public:
-			DensityField(unsigned int w, unsigned int h, float idealDensity = 1.0f);
-			~DensityField();
-
-			float& getDensity(unsigned int x, unsigned int y)
-			{
-				return m_densities[y * m_height + x];
-			}
-
-			void update();
-
-		private:
-			float& getDensity_Delta(unsigned int x, unsigned int y)
-			{
-				return m_deltaBuffer[y * m_height + x];
-			}
-		
-			unsigned int m_width, m_height; // width and height of densityfield (in # of cells)
-			float* m_densities = nullptr; // Holds all densities
-			float* m_deltaBuffer = nullptr; // Is the 'swap' buffer to update fields.
-			
-			float m_idealDensity;
-
-			void propagate(float* buf); // Calls propagateCell for entire field.
-			void propagateCell(float* buf, unsigned int x, unsigned int y); // Propagates density of a cell, based on *that* formula.
-
-
+	struct FluidCell {
+		FluidCell() {}
+		~FluidCell() {}
+		float density = 0.0f;
 	};
 
+	struct DensityField {
+		DensityField()
+		{
+			densities = new FluidCell[FLUID_PARTITION_SIZE * FLUID_PARTITION_SIZE];
+			deltaDensities = new FluidCell[FLUID_PARTITION_SIZE * FLUID_PARTITION_SIZE];
+		}
+		~DensityField()
+		{
+			delete densities;
+			delete deltaDensities;
+		}
+
+		FluidCell* densities = nullptr;
+		FluidCell* deltaDensities = nullptr;
+
+		bool inEquilibrium = false; // If any interaction between cells trades more than some arbitrary amount of pressure, equilibrium is not achieved
+		bool brokeEquilibrium = false; // Has equilibrium been broken this past update cycle (Should this be true, break neighbours' equilibriums)
+
+		void swapForDelta()
+		{
+			densities = deltaDensities;
+		}
+	};
 }

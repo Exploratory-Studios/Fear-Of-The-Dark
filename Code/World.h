@@ -15,10 +15,15 @@ class Entity;
 class EntityNPC;
 class EntityPlayer;
 class Tile;
+namespace FluidModule
+{
+	class FluidDomain;
+}
 class AudioManager;
 class ScriptQueue;
 
-class World {
+class World
+{
 		friend class WorldIOManager;
 		friend class App;
 		friend class Singletons;
@@ -36,27 +41,34 @@ class World {
 		void removeLight(Tile* t);
 		void getRenderedLights(glm::vec4 destRect, float lights[MAX_LIGHTS_RENDERED]);
 
-		unsigned long int getTime() {
+		unsigned long int getTime()
+		{
 			return m_time;
 		}
-		unsigned long int getFrame() {
+		unsigned long int getFrame()
+		{
 			return m_frame;
 		}
-		std::string getName() {
+		std::string getName()
+		{
 			return m_name;
 		}
-		unsigned int getEra() {
+		unsigned int getEra()
+		{
 			return m_worldEra;
 		}
-		unsigned int getNextEra() {
+		unsigned int getNextEra()
+		{
 			return m_nextWorldEra;
 		}
 
-		void setName(std::string name) {
+		void setName(std::string name)
+		{
 			m_name = name;
 		}
 		void setPlayer(EntityPlayer& p);
-		void setTime(unsigned int time) {
+		void setTime(unsigned int time)
+		{
 			m_time = time;
 		}
 
@@ -76,16 +88,19 @@ class World {
 
 		void drawDebug(GLEngine::DebugRenderer& dr, float xOffset);
 
-		void incrementTime() {
+		void incrementTime()
+		{
 			m_frame++;
 			if((m_frame % 60 / TICK_RATE) == 0) m_time++;
 		}
 
-		void setWorldEra(unsigned int newEraID) {
+		void setWorldEra(unsigned int newEraID)
+		{
 			m_nextWorldEra = newEraID;
 		}
 
-		unsigned int getSize() {
+		unsigned int getSize()
+		{
 			return m_tiles.size();
 		}
 
@@ -100,6 +115,10 @@ class World {
 
 		//Tile**** m_tiles = nullptr;
 		std::vector<std::vector<std::vector<Tile*>>> m_tiles; // [x][y][z]
+		std::vector<FluidModule::FluidDomain*> m_fluidDomains; // Holds all fluid densities and manages the individual updating of fluid density-fields
+
+		void initTiles(unsigned int xSize, unsigned int ySize, unsigned int zSize); // Reserves space for all tiles
+		void initFluids(); // Clears all fluid domains, creates them again based on XML data
 
 		std::vector<Tile*> m_lights; // Vector of tiles (ordered by x pos), that need to be checked for light rendering.
 		std::vector<Tile*> m_deadTiles; // Vector of tiles that need to be destroyed and deleted, but may be bound to other systems.

@@ -21,35 +21,40 @@
 #include <regex>
 #endif //DEV_CONTROLS
 
-GameplayScreen::GameplayScreen(GLEngine::Window* window, WorldIOManager* WorldIOManager) : m_window(window), m_WorldIOManager(WorldIOManager) {
+GameplayScreen::GameplayScreen(GLEngine::Window* window, WorldIOManager* WorldIOManager) : m_window(window), m_WorldIOManager(WorldIOManager)
+{
 
 }
 
-GameplayScreen::~GameplayScreen() {
+GameplayScreen::~GameplayScreen()
+{
 
 }
 
-int GameplayScreen::getNextScreenIndex() const {
+int GameplayScreen::getNextScreenIndex() const
+{
 	return m_nextScreenIndex;
 }
 
-int GameplayScreen::getPreviousScreenIndex() const {
+int GameplayScreen::getPreviousScreenIndex() const
+{
 	return m_screenIndex;
 }
 
-void GameplayScreen::build() {
+void GameplayScreen::build()
+{
 
 }
 
-void GameplayScreen::destroy() {
+void GameplayScreen::destroy()
+{
 
 }
 
-void GameplayScreen::onEntry() {
+void GameplayScreen::onEntry()
+{
 
 	initUI();
-
-	Singletons::getFluidManager()->init();
 
 	m_hasBeenInited = true;
 
@@ -120,7 +125,8 @@ void GameplayScreen::onEntry() {
 	tick();
 }
 
-void GameplayScreen::onExit() {
+void GameplayScreen::onExit()
+{
 
 	delete m_scripter;
 	delete m_questManager;
@@ -142,7 +148,8 @@ void GameplayScreen::onExit() {
 	m_gameState = GameState::PLAY;
 }
 
-void GameplayScreen::update() {
+void GameplayScreen::update()
+{
 	m_deltaTime = std::abs((FRAME_RATE / m_game->getFps()) + -1);
 	m_deltaTime++;
 
@@ -171,7 +178,7 @@ void GameplayScreen::update() {
 		glm::vec4 screenRect = getScreenBox() + glm::vec4(-10.0f, -10.0f, 20.0f, 20.0f);
 		Singletons::getWorld()->updateTiles(screenRect);
 		glm::vec4 regScreenRect = getScreenBox();
-		Singletons::getWorld()->updateFluids(1.0f/600.0f, regScreenRect);
+		Singletons::getWorld()->updateFluids(1.0f / 600.0f, regScreenRect);
 		Singletons::getEntityManager()->updateEntities(1.0f); /// TODO: Use timestep
 
 		unsigned int worldSize = Singletons::getWorld()->getSize();
@@ -214,7 +221,8 @@ void GameplayScreen::update() {
 	if(m_currentState != GLEngine::ScreenState::EXIT_APPLICATION) Singletons::getGUI()->update();
 }
 
-void GameplayScreen::draw() {
+void GameplayScreen::draw()
+{
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	glClearColor(1.0, 0.0, 1.0, 1.0);
 
@@ -325,7 +333,8 @@ void GameplayScreen::draw() {
 	drawPostToScreen();
 }
 
-void GameplayScreen::drawSkyToFBO() {
+void GameplayScreen::drawSkyToFBO()
+{
 
 	float dayLight = cos((float)Singletons::getWorld()->getTime() / (DAY_LENGTH / 6.28318f)) / 2.0f + 0.5f;
 
@@ -376,7 +385,8 @@ void GameplayScreen::drawSkyToFBO() {
 	m_skyFBO.end();
 }
 
-void GameplayScreen::drawWorldToFBO() {
+void GameplayScreen::drawWorldToFBO()
+{
 	m_mainFBO.begin();
 
 	m_mainFBO.clear();
@@ -411,7 +421,8 @@ void GameplayScreen::drawWorldToFBO() {
 	m_mainFBO.end();
 }
 
-void GameplayScreen::drawWorldNormalToFBO() {
+void GameplayScreen::drawWorldNormalToFBO()
+{
 	m_normalFBO.begin(); // Normal mapping begin
 	m_normalFBO.clear();
 	m_textureProgram.use();
@@ -435,7 +446,8 @@ void GameplayScreen::drawWorldNormalToFBO() {
 	m_normalFBO.end(); // Normal mapping end.
 }
 
-void GameplayScreen::drawWorldSunlightToFBO() {
+void GameplayScreen::drawWorldSunlightToFBO()
+{
 	m_sunlightFBO.begin(); // Normal mapping begin
 	m_sunlightFBO.clear();
 	m_sunlightProgram.use(); // Literally just writes the colour value.
@@ -454,7 +466,8 @@ void GameplayScreen::drawWorldSunlightToFBO() {
 	m_sunlightFBO.end(); // Normal mapping end.
 }
 
-void GameplayScreen::drawParticlesToFBO() {
+void GameplayScreen::drawParticlesToFBO()
+{
 	m_mainFBO.begin();
 	{
 		// World: Particles
@@ -478,7 +491,8 @@ void GameplayScreen::drawParticlesToFBO() {
 	m_mainFBO.end();
 }
 
-void GameplayScreen::drawGUIToScreen() {
+void GameplayScreen::drawGUIToScreen()
+{
 	{
 		/// CEGUI Inventory GUI (Context 1)
 		m_uiTextureProgram.use();
@@ -514,7 +528,6 @@ void GameplayScreen::drawGUIToScreen() {
 
 		Singletons::getEntityManager()->getPlayer()->drawGUI(m_spriteBatch, m_spriteFont);
 		glm::vec4 screenRect = getScreenBox();
-		Singletons::getFluidManager()->draw(m_spriteBatch, screenRect);
 		m_spriteBatch.begin(GLEngine::GlyphSortType::BACK_TO_FRONT);
 		Singletons::getWorld()->drawTilesGUI(m_spriteBatch, m_spriteFont, screenRect);
 		if(Singletons::getEntityManager()->getPlayer()->isInventoryOpen()) Singletons::getEntityManager()->getPlayer()->display(m_spriteBatch, glm::vec2(0.2f, 0.36f) * glm::vec2(Singletons::getGameCamera()->getScreenWidth(), Singletons::getGameCamera()->getScreenHeight()), 80.0f);
@@ -552,7 +565,8 @@ void GameplayScreen::drawGUIToScreen() {
 	}
 }
 
-void GameplayScreen::drawPostToScreen() {
+void GameplayScreen::drawPostToScreen()
+{
 	// Post
 	m_vignetteTextureProgram.use();
 
@@ -583,7 +597,8 @@ void GameplayScreen::drawPostToScreen() {
 
 /// GameplayScreen PRIVATE FUNCTIONS
 
-void GameplayScreen::checkInput() {
+void GameplayScreen::checkInput()
+{
 	SDL_Event evnt;
 	while(SDL_PollEvent(&evnt)) {
 		if(!m_console->isShown()) m_game->onSDLEvent(evnt);
@@ -628,7 +643,8 @@ void GameplayScreen::checkInput() {
 
 }
 
-void GameplayScreen::initShaders() {
+void GameplayScreen::initShaders()
+{
 
 	m_textureProgram.compileShaders(ASSETS_FOLDER_PATH + "Shaders/textureShader.vert", ASSETS_FOLDER_PATH + "Shaders/textureShader.frag");
 	m_textureProgram.addAttribute("vertexPosition");
@@ -681,7 +697,8 @@ void GameplayScreen::initShaders() {
 	m_liquidProgram.linkShaders();
 }
 
-void GameplayScreen::initUI() {
+void GameplayScreen::initUI()
+{
 	{
 		Singletons::getGUI()->init(ASSETS_FOLDER_PATH + "GUI", 2);
 		/**
@@ -746,7 +763,8 @@ void GameplayScreen::initUI() {
 #endif //DEV_CONTROLS
 }
 
-void GameplayScreen::tick() {
+void GameplayScreen::tick()
+{
 	// Happens not every second, nor each frame, but somewhere in between.
 	Singletons::getWorld()->tickTiles(getScreenBox() + glm::vec4(-20.0f, -20.0f, 40.0f, 40.0f));
 	Singletons::getEntityManager()->tickEntities();
@@ -777,7 +795,8 @@ void GameplayScreen::tick() {
 	}
 }
 
-void GameplayScreen::updateScale() {
+void GameplayScreen::updateScale()
+{
 	m_scale += (float)m_game->inputManager.getMouseScrollPosition() * m_scale / 20.0f;
 	if(m_scale < MIN_ZOOM) {
 		m_scale = MIN_ZOOM;
@@ -790,7 +809,8 @@ void GameplayScreen::updateScale() {
 
 #ifdef DEV_CONTROLS
 
-void GameplayScreen::drawDebug() {
+void GameplayScreen::drawDebug()
+{
 	//if(Singletons::getEntityManager()->getPlayer()->getSelectedBlock()) {
 	EntityPlayer* p = Singletons::getEntityManager()->getPlayer();
 
@@ -810,7 +830,8 @@ void GameplayScreen::drawDebug() {
 
 #endif //DEV_CONTROLS
 
-void GameplayScreen::pauseGame() {
+void GameplayScreen::pauseGame()
+{
 	m_lastGameState = m_gameState;
 	m_gameState = GameState::PAUSE;
 	for(unsigned int i = 0; i < m_pauseWidgets.size(); i++) {
@@ -820,7 +841,8 @@ void GameplayScreen::pauseGame() {
 	}
 }
 
-void GameplayScreen::continueGame() {
+void GameplayScreen::continueGame()
+{
 	m_gameState = m_lastGameState;
 	for(unsigned int i = 0; i < m_pauseWidgets.size(); i++) {
 		m_pauseWidgets[i]->hide();
@@ -829,24 +851,28 @@ void GameplayScreen::continueGame() {
 	}
 }
 
-bool GameplayScreen::pause_resume_button_clicked(const CEGUI::EventArgs& e) {
+bool GameplayScreen::pause_resume_button_clicked(const CEGUI::EventArgs& e)
+{
 	continueGame();
 	return true;
 }
 
-bool GameplayScreen::pause_save_button_clicked(const CEGUI::EventArgs& e) {
+bool GameplayScreen::pause_save_button_clicked(const CEGUI::EventArgs& e)
+{
 	m_WorldIOManager->saveWorld();
 	return true;
 }
 
-bool GameplayScreen::pause_quit_button_clicked(const CEGUI::EventArgs& e) {
+bool GameplayScreen::pause_quit_button_clicked(const CEGUI::EventArgs& e)
+{
 	pause_save_button_clicked(e);
 	m_nextScreenIndex = SCREEN_INDEX_MAINMENU;
 	m_currentState = GLEngine::ScreenState::CHANGE_NEXT;
 	return true;
 }
 
-glm::vec4 GameplayScreen::getScreenBox() {
+glm::vec4 GameplayScreen::getScreenBox()
+{
 	// Window coordinates
 	glm::vec2 topLeft(0.0f, 0.0f);
 	glm::vec2 bottomRight(m_window->getScreenWidth(), m_window->getScreenHeight());

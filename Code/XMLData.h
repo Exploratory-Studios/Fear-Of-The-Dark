@@ -13,7 +13,8 @@
 
 #include "XMLDataTypes.h"
 
-namespace XMLModule {
+namespace XMLModule
+{
 
 	void getVector(rapidxml::xml_node<>* parent, std::string valueName, std::string childName, std::vector<std::string>& vec); // Retrieves a string vector from a node
 	void getVector(rapidxml::xml_node<>* parent, std::string valueName, std::string childName, std::vector<float>& vec); // Retrieves a float vector from a node
@@ -43,7 +44,8 @@ namespace XMLModule {
 		std::vector<std::map<unsigned int, GenericData*>*> m_maps;
 	};
 
-	class XMLData {
+	class XMLData
+	{
 		public:
 			static void init(std::string filepath = ASSETS_FOLDER_PATH);
 			static void write(std::string filepath);
@@ -94,8 +96,9 @@ namespace XMLModule {
 			static MagicAttackData getMagicAttackData(unsigned int id);
 
 			static BuffData getBuffData(unsigned int id);
-			
+
 			static FluidData getFluidData(unsigned int id);
+			static unsigned int getFluidCount(); // returns the number of fluids
 
 			static unsigned int getTotalBiomes(); // Returns the number of biomes
 

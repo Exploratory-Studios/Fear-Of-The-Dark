@@ -25,9 +25,11 @@ namespace FluidModule
 			unsigned int m_width, m_height; // width and height of densityfield (in # of cells)
 			float* m_densities = nullptr; // Holds all densities
 			float* m_deltaBuffer = nullptr; // Is the 'swap' buffer to update fields.
+			
+			float m_idealDensity;
 
-			void propagate(float** buf); // Calls propagateCell for entire field.
-			void propagateCell(float** buf, unsigned int x, unsigned int y); // Propagates density of a cell, based on *that* formula.
+			void propagate(float* buf); // Calls propagateCell for entire field.
+			void propagateCell(float* buf, unsigned int x, unsigned int y); // Propagates density of a cell, based on *that* formula.
 
 
 	};

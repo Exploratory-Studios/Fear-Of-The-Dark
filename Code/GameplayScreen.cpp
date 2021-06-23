@@ -397,7 +397,7 @@ void GameplayScreen::drawWorldToFBO() {
 
 			m_spriteBatch.begin(GLEngine::GlyphSortType::FRONT_TO_BACK);
 
-			//Singletons::getWorld()->drawTiles(m_spriteBatch, m_spriteFont, m_dr, screenRect, &m_textureProgram); // handles spritebatch.begin and end
+			Singletons::getWorld()->drawTiles(m_spriteBatch, m_spriteFont, m_dr, screenRect, &m_textureProgram); // handles spritebatch.begin and end
 			Singletons::getEntityManager()->drawEntities(m_spriteBatch, m_spriteFont, m_dr, screenRect);
 
 			m_spriteBatch.end();
@@ -801,7 +801,7 @@ void GameplayScreen::drawDebug() {
 	std::string biomeString = Singletons::getWorld()->getBiome(p->getSelectedBlock()->getPosition().x).name;*/
 
 	std::string display = "FPS: " + std::to_string((int)m_game->getFps());
-	display += "\nMouse x,y: " + std::to_string(p->getSelectedBlock()->getPosition().x) + "," + std::to_string(p->getSelectedBlock()->getPosition().y);
+	if(p->getSelectedBlock()) display += "\nMouse x,y: " + std::to_string(p->getSelectedBlock()->getPosition().x) + "," + std::to_string(p->getSelectedBlock()->getPosition().y);
 	//display += "\nSelected Block: Biome: " + biomeString + ", " + p->getSelectedBlock()->getPrintout();
 
 	m_fpsWidget->setText(display);

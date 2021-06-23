@@ -20,7 +20,7 @@ namespace FluidModule
 		propagate(m_deltaBuffer);
 
 		for(unsigned int i = 0; i < m_width*m_height; i++) {
-			m_densities = m_deltaBuffer[i];
+			m_densities[i] = m_deltaBuffer[i];
 		}
 	}
 

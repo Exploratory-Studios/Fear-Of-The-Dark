@@ -294,7 +294,7 @@ namespace XMLModule {
 		XMLDataFile("Dialogue", { "question", "response" }),
 		XMLDataFile("Animations", { "animation", "skeletalAnimation" }),
 		XMLDataFile("Attacks", { "meleeAttack", "rangedAttack", "magicAttack" }),
-		XMLDataFile("Buffs", { "buff" })
+		XMLDataFile("Buffs", { "buff" }),
 		XMLDataFile("Fluids", { "fluid" })
 	};
 
@@ -929,7 +929,7 @@ namespace XMLModule {
 
 		if(index == m_fluidData.end()) {
 			Logger::getInstance()->log("ERROR: Couldn't find fluid data with ID: " + std::to_string(id), true);
-			BuffData s;
+			FluidData s;
 			return s;
 		}
 

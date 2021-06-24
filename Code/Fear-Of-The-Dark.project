@@ -19,6 +19,7 @@
     <File Name="Tile.cpp"/>
   </VirtualDirectory>
   <VirtualDirectory Name="Core">
+    <File Name="CircularVector.h"/>
     <File Name="Factory.h"/>
     <File Name="Factory.cpp"/>
     <File Name="Singletons.cpp"/>

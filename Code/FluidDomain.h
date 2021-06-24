@@ -19,9 +19,16 @@ namespace FluidModule {
 		void draw(GLEngine::SpriteBatch& sb, glm::vec4& destRect);
 
 	  private:
-		void createTexture();
+		void updateTexture(glm::vec4& screenDestRect);				 // Updates the texture. Handles everything!
+		void createTexture();										 // Creates the texture. Is only for the constructor
+		void resizeTexture(unsigned int width, unsigned int height); // Resizes the texture. For use with shifting scale
+		std::vector<unsigned char>* getTextureData(
+			glm::vec4& screenDestRect); // Creates the array for texture assignment
 
-		GLEngine::GLTexture m_texture;
+		GLEngine::GLTexture			m_texture;
+		std::vector<unsigned char>* m_textureData;
+
+		float m_lastScale = 0; // The last camera scale. Used to adjust texture size.
 
 		std::vector<std::vector<DensityField*>> m_densityFields;
 		// A 2D vector of density field pointers,

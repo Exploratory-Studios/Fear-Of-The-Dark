@@ -15,7 +15,8 @@ namespace ScriptingModule {
 		}
 		m_scriptCache.push_back(script);
 
-		Logger::getInstance()->log("Successfully Loaded Script File: " + script.getFileName() + ", and given id of: " + std::to_string(m_scriptCache.size() - 1));
+		Logger::getInstance()->log("Successfully Loaded Script File: " + script.getFileName() +
+								   ", and given id of: " + std::to_string(m_scriptCache.size() - 1));
 
 		return m_scriptCache.size() - 1;
 	}
@@ -29,7 +30,8 @@ namespace ScriptingModule {
 		return id;
 	}
 
-	void ScriptQueue::activateScript(unsigned int id, std::vector<Argument> args) { // Starts a script using the id given earlier
+	void ScriptQueue::activateScript(unsigned int		   id,
+									 std::vector<Argument> args) { // Starts a script using the id given earlier
 		m_activeScripts.push_back(m_scriptCache[id]);
 		m_activeScripts[m_activeScripts.size() - 1].arguments = args;
 		//Logger::getInstance()->log("A script with id of: " + std::to_string(id));
@@ -52,4 +54,4 @@ namespace ScriptingModule {
 		return m_scriptCache[id];
 	}
 
-}
+} // namespace ScriptingModule

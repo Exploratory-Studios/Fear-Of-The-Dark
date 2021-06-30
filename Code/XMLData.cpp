@@ -2,11 +2,12 @@
 
 #include <rapidxml/rapidxml_print.hpp>
 
-namespace XMLModule
-{
+namespace XMLModule {
 
-	void getVector(rapidxml::xml_node<>* parent, std::string valueName, std::string childName, std::vector<std::string>& vec)
-	{
+	void getVector(rapidxml::xml_node<>*	 parent,
+				   std::string				 valueName,
+				   std::string				 childName,
+				   std::vector<std::string>& vec) {
 		/**
 		    Loops over getValue, getting all values out of a tag:
 
@@ -33,8 +34,7 @@ namespace XMLModule
 		}
 	}
 
-	void getVector(rapidxml::xml_node<>* parent, std::string valueName, std::string childName, std::vector<float>& vec)
-	{
+	void getVector(rapidxml::xml_node<>* parent, std::string valueName, std::string childName, std::vector<float>& vec) {
 		rapidxml::xml_node<>* n = parent->first_node((char*)valueName.c_str()); // Gets <entities> in the example.
 
 		if(n) {
@@ -45,8 +45,10 @@ namespace XMLModule
 		}
 	}
 
-	void getVector(rapidxml::xml_node<>* parent, std::string valueName, std::string childName, std::vector<glm::vec2>& vec)
-	{
+	void getVector(rapidxml::xml_node<>*   parent,
+				   std::string			   valueName,
+				   std::string			   childName,
+				   std::vector<glm::vec2>& vec) {
 		rapidxml::xml_node<>* n = parent->first_node((char*)valueName.c_str()); // Gets <entities> in the example.
 
 		if(n) {
@@ -57,8 +59,7 @@ namespace XMLModule
 		}
 	}
 
-	void getVector(rapidxml::xml_node<>* parent, std::string valueName, std::string childName, std::vector<int>& vec)
-	{
+	void getVector(rapidxml::xml_node<>* parent, std::string valueName, std::string childName, std::vector<int>& vec) {
 		rapidxml::xml_node<>* n = parent->first_node((char*)valueName.c_str()); // Gets <entities> in the example.
 
 		if(n) {
@@ -69,8 +70,10 @@ namespace XMLModule
 		}
 	}
 
-	void getVector(rapidxml::xml_node<>* parent, std::string valueName, std::string childName, std::vector<unsigned int>& vec)
-	{
+	void getVector(rapidxml::xml_node<>*	  parent,
+				   std::string				  valueName,
+				   std::string				  childName,
+				   std::vector<unsigned int>& vec) {
 		rapidxml::xml_node<>* n = parent->first_node((char*)valueName.c_str()); // Gets <entities> in the example.
 
 		if(n) {
@@ -81,8 +84,7 @@ namespace XMLModule
 		}
 	}
 
-	void getVector(rapidxml::xml_node<>* parent, std::string valueName, std::string childName, std::vector<bool>& vec)
-	{
+	void getVector(rapidxml::xml_node<>* parent, std::string valueName, std::string childName, std::vector<bool>& vec) {
 		rapidxml::xml_node<>* n = parent->first_node((char*)valueName.c_str()); // Gets <entities> in the example.
 
 		if(n) {
@@ -93,8 +95,10 @@ namespace XMLModule
 		}
 	}
 
-	void getVector(rapidxml::xml_node<>* parent, std::string valueName, std::string childName, std::vector<ScriptData>& vec)
-	{
+	void getVector(rapidxml::xml_node<>*	parent,
+				   std::string				valueName,
+				   std::string				childName,
+				   std::vector<ScriptData>& vec) {
 		rapidxml::xml_node<>* n = parent->first_node((char*)valueName.c_str()); // Gets <entities> in the example.
 
 		if(n) {
@@ -105,8 +109,10 @@ namespace XMLModule
 		}
 	}
 
-	void getVector(rapidxml::xml_node<>* parent, std::string valueName, std::string childName, std::vector<GenericData>& vec)
-	{
+	void getVector(rapidxml::xml_node<>*	 parent,
+				   std::string				 valueName,
+				   std::string				 childName,
+				   std::vector<GenericData>& vec) {
 		rapidxml::xml_node<>* n = parent->first_node((char*)valueName.c_str()); // Gets <entities> in the example.
 
 		if(n) {
@@ -117,9 +123,7 @@ namespace XMLModule
 		}
 	}
 
-
-	bool getValue(rapidxml::xml_node<>* parent, std::string valueName, std::string& variable)
-	{
+	bool getValue(rapidxml::xml_node<>* parent, std::string valueName, std::string& variable) {
 		/// Places value of node with name `valueName` into `variable` and removes the node from the doc.
 		rapidxml::xml_node<>* n = parent->first_node((char*)valueName.c_str());
 		if(n) {
@@ -132,8 +136,7 @@ namespace XMLModule
 		return false;
 	}
 
-	bool getValue(rapidxml::xml_node<>* parent, std::string valueName, float& variable)
-	{
+	bool getValue(rapidxml::xml_node<>* parent, std::string valueName, float& variable) {
 		/// Places value of node with name `valueName` into `variable` and removes the node from the doc.
 		rapidxml::xml_node<>* n = parent->first_node((char*)valueName.c_str());
 		if(n) {
@@ -146,13 +149,12 @@ namespace XMLModule
 		return false;
 	}
 
-	bool getValue(rapidxml::xml_node<>* parent, std::string valueName, glm::vec2& variable)
-	{
+	bool getValue(rapidxml::xml_node<>* parent, std::string valueName, glm::vec2& variable) {
 		/// Places value of node with name `valueName` into `variable` and removes the node from the doc.
 		rapidxml::xml_node<>* n = parent->first_node((char*)valueName.c_str());
 		if(n) {
 			if(std::string(n->value()) != std::string("")) {
-				float x = 0.0f, y = 0.0f;
+				float		 x = 0.0f, y = 0.0f;
 				unsigned int separatorIndex = std::string(n->value()).find(",");
 
 				x = std::stof(std::string(n->value()).substr(0, separatorIndex));
@@ -166,8 +168,7 @@ namespace XMLModule
 		return false;
 	}
 
-	bool getValue(rapidxml::xml_node<>* parent, std::string valueName, int& variable)
-	{
+	bool getValue(rapidxml::xml_node<>* parent, std::string valueName, int& variable) {
 		/// Places value of node with name `valueName` into `variable` and removes the node from the doc.
 		rapidxml::xml_node<>* n = parent->first_node((char*)valueName.c_str());
 		if(n) {
@@ -180,8 +181,7 @@ namespace XMLModule
 		return false;
 	}
 
-	bool getValue(rapidxml::xml_node<>* parent, std::string valueName, unsigned int& variable)
-	{
+	bool getValue(rapidxml::xml_node<>* parent, std::string valueName, unsigned int& variable) {
 		/// Places value of node with name `valueName` into `variable` and removes the node from the doc.
 		rapidxml::xml_node<>* n = parent->first_node((char*)valueName.c_str());
 		if(n) {
@@ -194,8 +194,7 @@ namespace XMLModule
 		return false;
 	}
 
-	bool getValue(rapidxml::xml_node<>* parent, std::string valueName, bool& variable)
-	{
+	bool getValue(rapidxml::xml_node<>* parent, std::string valueName, bool& variable) {
 		/// Places value of node with name `valueName` into `variable` and removes the node from the doc. Returns true on successful value find
 		rapidxml::xml_node<>* n = parent->first_node((char*)valueName.c_str());
 		if(n) {
@@ -212,8 +211,7 @@ namespace XMLModule
 		return false;
 	}
 
-	bool getValue(rapidxml::xml_node<>* parent, std::string valueName, ScriptData& variable)
-	{
+	bool getValue(rapidxml::xml_node<>* parent, std::string valueName, ScriptData& variable) {
 		/// Places value of node with name `valueName` into `variable` and removes the node from the doc. Returns true on successful value find
 		rapidxml::xml_node<>* n = parent->first_node((char*)valueName.c_str());
 		if(n) {
@@ -231,8 +229,7 @@ namespace XMLModule
 		return false;
 	}
 
-	bool getValue(rapidxml::xml_node<>* parent, std::string valueName, GenericData& variable)
-	{
+	bool getValue(rapidxml::xml_node<>* parent, std::string valueName, GenericData& variable) {
 		/// Places value of node with name `valueName` into `variable` and removes the node from the doc. Returns true on successful value find
 		rapidxml::xml_node<>* n = parent->first_node((char*)valueName.c_str());
 		if(n) {
@@ -245,8 +242,7 @@ namespace XMLModule
 		return false;
 	}
 
-	void getMetaData(rapidxml::xml_node<>* parent, SaveDataTypes::MetaData& mdVar)
-	{
+	void getMetaData(rapidxml::xml_node<>* parent, SaveDataTypes::MetaData& mdVar) {
 		/// Retrieves ALL existing children from `parent`, then sets their names as the keys, with their values as the values in a MetaData object, stored in `mdVar`. Removes each node systematically from parent after adding them to mdVar.
 
 		SaveDataTypes::MetaData md;
@@ -261,7 +257,7 @@ namespace XMLModule
 			// Now we set (/add) an element to the MetaData.
 			md.setElement(key, val);
 
-			parent->remove_first_node(); // Remove `child` from the doc.
+			parent->remove_first_node();  // Remove `child` from the doc.
 			child = parent->first_node(); // Re-set `child` again
 		}
 
@@ -288,37 +284,37 @@ namespace XMLModule
 	std::map<unsigned int, GenericData*> XMLData::m_buffData;
 	std::map<unsigned int, GenericData*> XMLData::m_fluidData;
 
-	XMLDataFile::XMLDataFile(std::string filename, std::initializer_list<std::string> nodeNames) : m_filename(filename), m_nodeNames(nodeNames)
-	{
+	XMLDataFile::XMLDataFile(std::string filename, std::initializer_list<std::string> nodeNames) :
+		m_filename(filename), m_nodeNames(nodeNames) {
 		// We need to construct m_maps. No copies allowed!
 		for(unsigned int i = 0; i < m_nodeNames.size(); i++) {
 			std::map<unsigned int, GenericData*>* mapCandidate = XMLData::getMapFromNodename(m_nodeNames[i]);
 			for(unsigned int j = 0; j < m_maps.size(); j++) {
-				if(m_maps[j] == mapCandidate) mapCandidate = nullptr;
+				if(m_maps[j] == mapCandidate)
+					mapCandidate = nullptr;
 			}
-			if(mapCandidate) m_maps.push_back(mapCandidate);
+			if(mapCandidate)
+				m_maps.push_back(mapCandidate);
 		}
 	}
 
-	const std::vector<XMLDataFile> XMLData::m_fileNames{
-		XMLDataFile("Blocks", { "tile", "tileContainer" }),
-		XMLDataFile("Particles", { "particle" }),
-		XMLDataFile("Entities", { "npc", "itemEntity", "projectile" }),
-		XMLDataFile("Items", { "item", "itemConsumable", "itemWeapon", "itemArmour", "itemBlock" }),
-		XMLDataFile("Biomes", { "biome" }),
-		XMLDataFile("Eras", { "era" }),
-		XMLDataFile("Loot", { "lootDrop", "lootTable" }),
-		XMLDataFile("Structures", { "structure" }),
-		XMLDataFile("Quests", { "quest", "questObjective" }),
-		XMLDataFile("Dialogue", { "question", "response" }),
-		XMLDataFile("Animations", { "animation", "skeletalAnimation" }),
-		XMLDataFile("Attacks", { "meleeAttack", "rangedAttack", "magicAttack" }),
-		XMLDataFile("Buffs", { "buff" }),
-		XMLDataFile("Fluids", { "fluid" })
-	};
+	const std::vector<XMLDataFile> XMLData::m_fileNames {
+		XMLDataFile("Blocks", {"tile", "tileContainer"}),
+		XMLDataFile("Particles", {"particle"}),
+		XMLDataFile("Entities", {"npc", "itemEntity", "projectile"}),
+		XMLDataFile("Items", {"item", "itemConsumable", "itemWeapon", "itemArmour", "itemBlock"}),
+		XMLDataFile("Biomes", {"biome"}),
+		XMLDataFile("Eras", {"era"}),
+		XMLDataFile("Loot", {"lootDrop", "lootTable"}),
+		XMLDataFile("Structures", {"structure"}),
+		XMLDataFile("Quests", {"quest", "questObjective"}),
+		XMLDataFile("Dialogue", {"question", "response"}),
+		XMLDataFile("Animations", {"animation", "skeletalAnimation"}),
+		XMLDataFile("Attacks", {"meleeAttack", "rangedAttack", "magicAttack"}),
+		XMLDataFile("Buffs", {"buff"}),
+		XMLDataFile("Fluids", {"fluid"})};
 
-	std::vector<std::string> XMLData::getNodeNamesFromFile(std::string file)
-	{
+	std::vector<std::string> XMLData::getNodeNamesFromFile(std::string file) {
 		std::vector<std::string> ret;
 		//for(unsigned int i = 0; i < m_saveFileNames.size(); i++) {
 		//	if(m_saveFileNames[i] == file) {
@@ -326,18 +322,19 @@ namespace XMLModule
 		//	}
 		//}
 
-		Logger::getInstance()->log("\n\n\n\n\n\nIMPORTANT: This function (getNodeNamesFromFile) has been deprecated. I suppose.\n\n\n\n\n\n", true);
+		Logger::getInstance()->log(
+			"\n\n\n\n\n\nIMPORTANT: This function (getNodeNamesFromFile) has been deprecated. I suppose.\n\n\n\n\n\n",
+			true);
 
 		return ret;
 	}
 
-	void XMLData::init(std::string filepath)
-	{
+	void XMLData::init(std::string filepath) {
 		Logger::getInstance()->log("\nXML Data beginning read");
 
 		std::vector<XMLDataFile> files = m_fileNames;
 
-		for(XMLDataFile& s : files) {
+		for(XMLDataFile& s: files) {
 			Logger::getInstance()->log("Loading data (" + s.m_filename + ")...");
 			loadXMLData(filepath + "/Data/" + s.m_filename + ".xml");
 			Logger::getInstance()->log("Loaded data (" + s.m_filename + ")");
@@ -346,8 +343,7 @@ namespace XMLModule
 		Logger::getInstance()->log("XML Data read complete.\n");
 	}
 
-	void XMLData::write(std::string filepath)
-	{
+	void XMLData::write(std::string filepath) {
 		Logger::getInstance()->log("\nXML Data beginning write.");
 
 		std::vector<XMLDataFile> files = m_fileNames;
@@ -365,8 +361,7 @@ namespace XMLModule
 		Logger::getInstance()->log("XML Data write complete.\n");
 	}
 
-	void XMLData::addData(GenericData* data, std::string& nodename)
-	{
+	void XMLData::addData(GenericData* data, std::string& nodename) {
 		// First, retrieve the correct node name and map.
 		std::map<unsigned int, GenericData*>* mapForWrite = getMapFromNodename(nodename);
 
@@ -375,12 +370,13 @@ namespace XMLModule
 			unsigned int id = data->id;
 			mapForWrite->insert(std::make_pair(id, data));
 		} else {
-			Logger::getInstance()->log("ERROR: Could not add data with node name: " + nodename + " to XML data singleton.", true);
+			Logger::getInstance()->log(
+				"ERROR: Could not add data with node name: " + nodename + " to XML data singleton.",
+				true);
 		}
 	}
 
-	void XMLData::removeData(GenericData* data, std::string& nodename)
-	{
+	void XMLData::removeData(GenericData* data, std::string& nodename) {
 		// First, retrieve correct map
 		std::map<unsigned int, GenericData*>* mapForRemoval = getMapFromNodename(nodename);
 
@@ -389,12 +385,13 @@ namespace XMLModule
 			unsigned int id = data->id;
 			mapForRemoval->erase(id);
 		} else {
-			Logger::getInstance()->log("ERROR: Could not remove data with node name: " + nodename + " from XML data singleton.", true);
+			Logger::getInstance()->log(
+				"ERROR: Could not remove data with node name: " + nodename + " from XML data singleton.",
+				true);
 		}
 	}
 
-	GenericData* XMLData::createDataFromNodename(std::string& name)
-	{
+	GenericData* XMLData::createDataFromNodename(std::string& name) {
 		GenericData* d = nullptr;
 
 		if(name == "tile") {
@@ -458,8 +455,7 @@ namespace XMLModule
 		return d;
 	}
 
-	std::map<unsigned int, GenericData*>* XMLData::getMapFromNodename(std::string& name)
-	{
+	std::map<unsigned int, GenericData*>* XMLData::getMapFromNodename(std::string& name) {
 		std::map<unsigned int, GenericData*>* mapForWrite = nullptr;
 
 		if(name == "tile" || name == "tileContainer") {
@@ -468,7 +464,8 @@ namespace XMLModule
 			mapForWrite = &m_particleData;
 		} else if(name == "npc" || name == "projectile" || name == "itemEntity") {
 			mapForWrite = &m_entityData;
-		} else if(name == "item" || name == "itemArmour" || name == "itemConsumable" || name == "itemWeapon" || name == "itemBlock") {
+		} else if(name == "item" || name == "itemArmour" || name == "itemConsumable" || name == "itemWeapon" ||
+				  name == "itemBlock") {
 			mapForWrite = &m_itemData;
 		} else if(name == "biome") {
 			mapForWrite = &m_biomeData;
@@ -504,8 +501,7 @@ namespace XMLModule
 		return mapForWrite;
 	}
 
-	void XMLData::loadXMLData(std::string filepath)
-	{
+	void XMLData::loadXMLData(std::string filepath) {
 		/** Loads all XML data into the map **/
 
 		// Open file at filepath
@@ -546,8 +542,7 @@ namespace XMLModule
 		}
 	}
 
-	void XMLData::writeXMLData(std::string filepath, std::map<unsigned int, GenericData*>* mapToWrite)
-	{
+	void XMLData::writeXMLData(std::string filepath, std::map<unsigned int, GenericData*>* mapToWrite) {
 		/** Writes all XML data into the file at filepath **/
 
 		// Open file at filepath
@@ -564,10 +559,11 @@ namespace XMLModule
 		// Create the document to write into the file.
 		rapidxml::xml_document<> doc;
 
-		for(auto element : *mapToWrite) {
+		for(auto element: *mapToWrite) {
 			element.second->write(&doc);
 
-			Logger::getInstance()->log("\tXML Saved " + element.second->getNodeName() + ": " + element.second->name + "(" + std::to_string(element.second->id) + ")");
+			Logger::getInstance()->log("\tXML Saved " + element.second->getNodeName() + ": " + element.second->name +
+									   "(" + std::to_string(element.second->id) + ")");
 		}
 
 		file << doc;
@@ -575,10 +571,9 @@ namespace XMLModule
 		Logger::getInstance()->log("Wrote to file, XML map write complete.");
 	}
 
-/// Tiles
+	/// Tiles
 
-	TileData XMLData::getTileData(unsigned int id)
-	{
+	TileData XMLData::getTileData(unsigned int id) {
 		auto index = m_tileData.find(id);
 
 		if(index == m_tileData.end()) {
@@ -590,12 +585,12 @@ namespace XMLModule
 		return *static_cast<TileData*>(index->second);
 	}
 
-	TileContainerData XMLData::getTileContainerData(unsigned int id)
-	{
+	TileContainerData XMLData::getTileContainerData(unsigned int id) {
 		auto index = m_tileData.find(id);
 
 		if(index == m_tileData.end()) {
-			Logger::getInstance()->log("ERROR: Couldn't find tile (container) data with ID: " + std::to_string(id), true);
+			Logger::getInstance()->log("ERROR: Couldn't find tile (container) data with ID: " + std::to_string(id),
+									   true);
 			TileContainerData t;
 			return t;
 		}
@@ -603,10 +598,9 @@ namespace XMLModule
 		return *static_cast<TileContainerData*>(index->second);
 	}
 
-/// Particles
+	/// Particles
 
-	ParticleData XMLData::getParticleData(unsigned int id)
-	{
+	ParticleData XMLData::getParticleData(unsigned int id) {
 		auto index = m_particleData.find(id);
 
 		if(index == m_particleData.end()) {
@@ -618,8 +612,7 @@ namespace XMLModule
 		return *static_cast<ParticleData*>(index->second);
 	}
 
-	EntityData XMLData::getEntityData(unsigned int id)
-	{
+	EntityData XMLData::getEntityData(unsigned int id) {
 		auto index = m_entityData.find(id);
 
 		if(index == m_entityData.end()) {
@@ -631,10 +624,9 @@ namespace XMLModule
 		return *static_cast<EntityData*>(index->second);
 	}
 
-/// Entities: NPCS
+	/// Entities: NPCS
 
-	EntityNPCData XMLData::getEntityNPCData(unsigned int id)
-	{
+	EntityNPCData XMLData::getEntityNPCData(unsigned int id) {
 		auto index = m_entityData.find(id);
 
 		if(index == m_entityData.end()) {
@@ -646,14 +638,14 @@ namespace XMLModule
 		return *static_cast<EntityNPCData*>(index->second);
 	}
 
-/// Entities: Projectiles
+	/// Entities: Projectiles
 
-	EntityProjectileData XMLData::getEntityProjectileData(unsigned int id)
-	{
+	EntityProjectileData XMLData::getEntityProjectileData(unsigned int id) {
 		auto index = m_entityData.find(id);
 
 		if(index == m_entityData.end()) {
-			Logger::getInstance()->log("ERROR: Couldn't find entity (Projectile) data with ID: " + std::to_string(id), true);
+			Logger::getInstance()->log("ERROR: Couldn't find entity (Projectile) data with ID: " + std::to_string(id),
+									   true);
 			EntityProjectileData t;
 			return t;
 		}
@@ -661,10 +653,9 @@ namespace XMLModule
 		return *static_cast<EntityProjectileData*>(index->second);
 	}
 
-/// Entities: Items
+	/// Entities: Items
 
-	EntityItemData XMLData::getEntityItemData(unsigned int id)
-	{
+	EntityItemData XMLData::getEntityItemData(unsigned int id) {
 		auto index = m_entityData.find(id);
 
 		if(index == m_entityData.end()) {
@@ -676,11 +667,9 @@ namespace XMLModule
 		return *static_cast<EntityItemData*>(index->second);
 	}
 
+	/// Real Items
 
-/// Real Items
-
-	ItemData XMLData::getItemData(unsigned int id)
-	{
+	ItemData XMLData::getItemData(unsigned int id) {
 		auto index = m_itemData.find(id);
 
 		if(index == m_itemData.end()) {
@@ -692,8 +681,7 @@ namespace XMLModule
 		return *static_cast<ItemData*>(index->second);
 	}
 
-	ItemArmourData XMLData::getItemArmourData(unsigned int id)
-	{
+	ItemArmourData XMLData::getItemArmourData(unsigned int id) {
 		auto index = m_itemData.find(id);
 
 		if(index == m_itemData.end()) {
@@ -705,12 +693,12 @@ namespace XMLModule
 		return *static_cast<ItemArmourData*>(index->second);
 	}
 
-	ItemConsumableData XMLData::getItemConsumableData(unsigned int id)
-	{
+	ItemConsumableData XMLData::getItemConsumableData(unsigned int id) {
 		auto index = m_itemData.find(id);
 
 		if(index == m_itemData.end()) {
-			Logger::getInstance()->log("ERROR: Couldn't find item consumable data with ID: " + std::to_string(id), true);
+			Logger::getInstance()->log("ERROR: Couldn't find item consumable data with ID: " + std::to_string(id),
+									   true);
 			ItemConsumableData t;
 			return t;
 		}
@@ -718,8 +706,7 @@ namespace XMLModule
 		return *static_cast<ItemConsumableData*>(index->second);
 	}
 
-	ItemWeaponData XMLData::getItemWeaponData(unsigned int id)
-	{
+	ItemWeaponData XMLData::getItemWeaponData(unsigned int id) {
 		auto index = m_itemData.find(id);
 
 		if(index == m_itemData.end()) {
@@ -731,8 +718,7 @@ namespace XMLModule
 		return *static_cast<ItemWeaponData*>(index->second);
 	}
 
-	ItemBlockData XMLData::getItemBlockData(unsigned int id)
-	{
+	ItemBlockData XMLData::getItemBlockData(unsigned int id) {
 		auto index = m_itemData.find(id);
 
 		if(index == m_itemData.end()) {
@@ -744,10 +730,9 @@ namespace XMLModule
 		return *static_cast<ItemBlockData*>(index->second);
 	}
 
-/// Biomes
+	/// Biomes
 
-	BiomeData XMLData::getBiomeData(unsigned int id)
-	{
+	BiomeData XMLData::getBiomeData(unsigned int id) {
 		auto index = m_biomeData.find(id);
 
 		if(index == m_biomeData.end()) {
@@ -759,15 +744,13 @@ namespace XMLModule
 		return *static_cast<BiomeData*>(index->second);
 	}
 
-	unsigned int XMLData::getTotalBiomes()
-	{
+	unsigned int XMLData::getTotalBiomes() {
 		return m_biomeData.size();
 	}
 
-/// Eras
+	/// Eras
 
-	EraData XMLData::getEraData(unsigned int id)
-	{
+	EraData XMLData::getEraData(unsigned int id) {
 		auto index = m_eraData.find(id);
 
 		if(index == m_eraData.end()) {
@@ -779,10 +762,9 @@ namespace XMLModule
 		return *static_cast<EraData*>(index->second);
 	}
 
-/// LootDrops
+	/// LootDrops
 
-	LootDropData XMLData::getLootDropData(unsigned int id)
-	{
+	LootDropData XMLData::getLootDropData(unsigned int id) {
 		auto index = m_lootDropData.find(id);
 
 		if(index == m_lootDropData.end()) {
@@ -794,10 +776,9 @@ namespace XMLModule
 		return *static_cast<LootDropData*>(index->second);
 	}
 
-/// LootTables
+	/// LootTables
 
-	LootTableData XMLData::getLootTableData(unsigned int id)
-	{
+	LootTableData XMLData::getLootTableData(unsigned int id) {
 		auto index = m_lootTableData.find(id);
 
 		if(index == m_lootTableData.end()) {
@@ -809,10 +790,9 @@ namespace XMLModule
 		return *static_cast<LootTableData*>(index->second);
 	}
 
-/// Structures
+	/// Structures
 
-	StructureData XMLData::getStructureData(unsigned int id)
-	{
+	StructureData XMLData::getStructureData(unsigned int id) {
 		auto index = m_structureData.find(id);
 
 		if(index == m_structureData.end()) {
@@ -824,10 +804,9 @@ namespace XMLModule
 		return *static_cast<StructureData*>(index->second);
 	}
 
-/// Quests
+	/// Quests
 
-	QuestData XMLData::getQuestData(unsigned int id)
-	{
+	QuestData XMLData::getQuestData(unsigned int id) {
 		auto index = m_questData.find(id);
 
 		if(index == m_questData.end()) {
@@ -839,14 +818,14 @@ namespace XMLModule
 		return *static_cast<QuestData*>(index->second);
 	}
 
-/// QuestObjectives
+	/// QuestObjectives
 
-	QuestObjectiveData XMLData::getQuestObjectiveData(unsigned int id)
-	{
+	QuestObjectiveData XMLData::getQuestObjectiveData(unsigned int id) {
 		auto index = m_questData.find(id);
 
 		if(index == m_questData.end()) {
-			Logger::getInstance()->log("ERROR: Couldn't find quest objective data with ID: " + std::to_string(id), true);
+			Logger::getInstance()->log("ERROR: Couldn't find quest objective data with ID: " + std::to_string(id),
+									   true);
 			QuestObjectiveData s;
 			return s;
 		}
@@ -854,14 +833,14 @@ namespace XMLModule
 		return *static_cast<QuestObjectiveData*>(index->second);
 	}
 
-/// DialogueQuestions
+	/// DialogueQuestions
 
-	DialogueQuestionData XMLData::getDialogueQuestionData(unsigned int id)
-	{
+	DialogueQuestionData XMLData::getDialogueQuestionData(unsigned int id) {
 		auto index = m_dialogueQuestionData.find(id);
 
 		if(index == m_dialogueQuestionData.end()) {
-			Logger::getInstance()->log("ERROR: Couldn't find dialogue question data with ID: " + std::to_string(id), true);
+			Logger::getInstance()->log("ERROR: Couldn't find dialogue question data with ID: " + std::to_string(id),
+									   true);
 			DialogueQuestionData s;
 			return s;
 		}
@@ -869,14 +848,14 @@ namespace XMLModule
 		return *static_cast<DialogueQuestionData*>(index->second);
 	}
 
-/// DialogueResponses
+	/// DialogueResponses
 
-	DialogueResponseData XMLData::getDialogueResponseData(unsigned int id)
-	{
+	DialogueResponseData XMLData::getDialogueResponseData(unsigned int id) {
 		auto index = m_dialogueResponseData.find(id);
 
 		if(index == m_dialogueResponseData.end()) {
-			Logger::getInstance()->log("ERROR: Couldn't find dialogue response data with ID: " + std::to_string(id), true);
+			Logger::getInstance()->log("ERROR: Couldn't find dialogue response data with ID: " + std::to_string(id),
+									   true);
 			DialogueResponseData s;
 			return s;
 		}
@@ -884,10 +863,9 @@ namespace XMLModule
 		return *static_cast<DialogueResponseData*>(index->second);
 	}
 
-/// Animations
+	/// Animations
 
-	AnimationData XMLData::getAnimationData(unsigned int id)
-	{
+	AnimationData XMLData::getAnimationData(unsigned int id) {
 		auto index = m_animationData.find(id);
 
 		if(index == m_animationData.end()) {
@@ -899,14 +877,14 @@ namespace XMLModule
 		return *static_cast<AnimationData*>(index->second);
 	}
 
-/// Skeletal Animations
+	/// Skeletal Animations
 
-	SkeletalAnimationData XMLData::getSkeletalAnimationData(unsigned int id)
-	{
+	SkeletalAnimationData XMLData::getSkeletalAnimationData(unsigned int id) {
 		auto index = m_skeletalAnimationData.find(id);
 
 		if(index == m_skeletalAnimationData.end()) {
-			Logger::getInstance()->log("ERROR: Couldn't find skeletal animation data with ID: " + std::to_string(id), true);
+			Logger::getInstance()->log("ERROR: Couldn't find skeletal animation data with ID: " + std::to_string(id),
+									   true);
 			SkeletalAnimationData s;
 			return s;
 		}
@@ -914,10 +892,9 @@ namespace XMLModule
 		return *static_cast<SkeletalAnimationData*>(index->second);
 	}
 
-/// Attack
+	/// Attack
 
-	AttackData XMLData::getAttackData(unsigned int id)
-	{
+	AttackData XMLData::getAttackData(unsigned int id) {
 		auto index = m_attackData.find(id);
 
 		if(index == m_attackData.end()) {
@@ -929,8 +906,7 @@ namespace XMLModule
 		return *static_cast<AttackData*>(index->second);
 	}
 
-	MeleeAttackData XMLData::getMeleeAttackData(unsigned int id)
-	{
+	MeleeAttackData XMLData::getMeleeAttackData(unsigned int id) {
 		auto index = m_attackData.find(id);
 
 		if(index == m_attackData.end()) {
@@ -942,8 +918,7 @@ namespace XMLModule
 		return *static_cast<MeleeAttackData*>(index->second);
 	}
 
-	RangedAttackData XMLData::getRangedAttackData(unsigned int id)
-	{
+	RangedAttackData XMLData::getRangedAttackData(unsigned int id) {
 		auto index = m_attackData.find(id);
 
 		if(index == m_attackData.end()) {
@@ -955,8 +930,7 @@ namespace XMLModule
 		return *static_cast<RangedAttackData*>(index->second);
 	}
 
-	MagicAttackData XMLData::getMagicAttackData(unsigned int id)
-	{
+	MagicAttackData XMLData::getMagicAttackData(unsigned int id) {
 		auto index = m_attackData.find(id);
 
 		if(index == m_attackData.end()) {
@@ -968,8 +942,7 @@ namespace XMLModule
 		return *static_cast<MagicAttackData*>(index->second);
 	}
 
-	BuffData XMLData::getBuffData(unsigned int id)
-	{
+	BuffData XMLData::getBuffData(unsigned int id) {
 		auto index = m_buffData.find(id);
 
 		if(index == m_buffData.end()) {
@@ -981,8 +954,7 @@ namespace XMLModule
 		return *static_cast<BuffData*>(index->second);
 	}
 
-	FluidData XMLData::getFluidData(unsigned int id)
-	{
+	FluidData XMLData::getFluidData(unsigned int id) {
 		auto index = m_fluidData.find(id);
 
 		if(index == m_fluidData.end()) {
@@ -994,9 +966,8 @@ namespace XMLModule
 		return *static_cast<FluidData*>(index->second);
 	}
 
-	unsigned int XMLData::getFluidCount()
-	{
+	unsigned int XMLData::getFluidCount() {
 		return m_fluidData.size();
 	}
 
-}
+} // namespace XMLModule

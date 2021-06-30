@@ -4,7 +4,12 @@
 
 #include "Singletons.h"
 
-EntityProjectile::EntityProjectile(glm::vec2 pos, unsigned int layer, unsigned int id, SaveDataTypes::MetaData data, bool loadTex) : Entity(pos, layer, SaveDataTypes::MetaData()) {
+EntityProjectile::EntityProjectile(glm::vec2			   pos,
+								   unsigned int			   layer,
+								   unsigned int			   id,
+								   SaveDataTypes::MetaData data,
+								   bool					   loadTex) :
+	Entity(pos, layer, SaveDataTypes::MetaData()) {
 	m_id = id;
 
 	init();
@@ -14,7 +19,12 @@ EntityProjectile::EntityProjectile(glm::vec2 pos, unsigned int layer, unsigned i
 	}
 }
 
-EntityProjectile::EntityProjectile(glm::vec2 pos, unsigned int layer, EntityIDs id, SaveDataTypes::MetaData data, bool loadTex) : Entity(pos, layer, SaveDataTypes::MetaData()) {
+EntityProjectile::EntityProjectile(glm::vec2			   pos,
+								   unsigned int			   layer,
+								   EntityIDs			   id,
+								   SaveDataTypes::MetaData data,
+								   bool					   loadTex) :
+	Entity(pos, layer, SaveDataTypes::MetaData()) {
 	m_id = (unsigned int)id;
 
 	init();
@@ -29,16 +39,16 @@ void EntityProjectile::init() {
 
 	XMLModule::EntityProjectileData d = XMLModule::XMLData::getEntityProjectileData(m_id);
 
-	m_size = d.size;
-	m_updateScriptId = d.updateScript.getID();
-	m_tickScriptId = d.tickScript.getID();
-	m_speed = d.speed;
-	m_damage = d.damage;
+	m_size				= d.size;
+	m_updateScriptId	= d.updateScript.getID();
+	m_tickScriptId		= d.tickScript.getID();
+	m_speed				= d.speed;
+	m_damage			= d.damage;
 	m_collideWithBlocks = d.collides;
-	m_gravity = d.gravity;
-	m_lifeTime = d.lifeTime;
-	m_knockback = d.knockback;
-	m_buffIDs = d.buffIDs;
+	m_gravity			= d.gravity;
+	m_lifeTime			= d.lifeTime;
+	m_knockback			= d.knockback;
+	m_buffIDs			= d.buffIDs;
 
 	m_metaData = d.getMetaData();
 
@@ -53,9 +63,7 @@ void EntityProjectile::collideWithTiles() {
 	if(m_collideWithBlocks) {
 		std::vector<glm::vec2> positions;
 
-		checkTilePosition(positions,
-		                  m_position.x + m_size.x / 2.0f,
-		                  m_position.y + m_size.y / 2.0f);
+		checkTilePosition(positions, m_position.x + m_size.x / 2.0f, m_position.y + m_size.y / 2.0f);
 
 		if(positions.size() > 0) {
 			// We did collide, destroy this
@@ -68,7 +76,7 @@ void EntityProjectile::collideWithTiles() {
 bool EntityProjectile::collideWithOther(Entity* other) {
 	bool collisionPossible = false;
 
-	glm::vec2 otherPos = other->getPosition();
+	glm::vec2 otherPos	= other->getPosition();
 	glm::vec2 otherSize = other->getSize();
 
 	float xDist = (otherPos.x + otherSize.x / 2.0f) - (m_position.x + m_size.x / 2.0f);
@@ -82,7 +90,7 @@ bool EntityProjectile::collideWithOther(Entity* other) {
 
 		if(std::abs(yDist) > (otherSize.y + m_size.y) / 2.0f) {
 			return true; // As shown above, collision would be possible on the X axis, so return true.
-		} // Else, we are colliding.
+		}				 // Else, we are colliding.
 
 		if(other->getType() == XMLModule::EntityType::NPC || other->getType() == XMLModule::EntityType::PROJECTILE) {
 			Singletons::getEntityManager()->queueEntityToRemove(this);
@@ -111,7 +119,8 @@ void EntityProjectile::drawNormal(GLEngine::SpriteBatch& sb, float time, int lay
 void EntityProjectile::onUpdate(float timeStep, unsigned int selfIndex) {
 	if(m_lifeTime > 0.0f) {
 		m_lifeTime -= timeStep;
-		if(m_lifeTime <= 0.0f) Singletons::getEntityManager()->queueEntityToRemove(this);
+		if(m_lifeTime <= 0.0f)
+			Singletons::getEntityManager()->queueEntityToRemove(this);
 	}
 }
 

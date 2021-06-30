@@ -16,14 +16,15 @@ namespace FluidModule {
 		~FluidDomain();
 
 		void update();
-		void draw(GLEngine::SpriteBatch& sb, glm::vec4& destRect);
+		void draw(GLEngine::SpriteBatch& sb, glm::vec4& destRect);   // Does the actual drawing. We *must* updateTexture beforehand. Don't do it with draw, because it can unbind the texture from the FBO.
+		void updateTexture(glm::vec4& screenDestRect);				 // Updates the texture. Handles everything!
+
+		void updateField(Tile* tile);
 
 	  private:
-		void updateTexture(glm::vec4& screenDestRect);				 // Updates the texture. Handles everything!
 		void createTexture();										 // Creates the texture. Is only for the constructor
 		void resizeTexture(unsigned int width, unsigned int height); // Resizes the texture. For use with shifting scale
-		std::vector<unsigned char>* getTextureData(
-			glm::vec4& screenDestRect); // Creates the array for texture assignment
+		void updateTextureData(glm::vec4& screenDestRect);			 // Creates the array for texture assignment
 
 		GLEngine::GLTexture			m_texture;
 		std::vector<unsigned char>* m_textureData;

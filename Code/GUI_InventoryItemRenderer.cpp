@@ -8,9 +8,7 @@ namespace CEGUI {
 
 	const String GUI_InventoryItemRenderer::TypeName("InventoryItemRenderer");
 
-	GUI_InventoryItemRenderer::GUI_InventoryItemRenderer(const String& type) :
-		WindowRenderer(type) {
-
+	GUI_InventoryItemRenderer::GUI_InventoryItemRenderer(const String& type) : WindowRenderer(type) {
 	}
 
 	void GUI_InventoryItemRenderer::render() {
@@ -22,10 +20,11 @@ namespace CEGUI {
 			wlf.getStateImagery(d_window->isDisabled() ? "Disabled" : "Enabled").render(*d_window);
 		}
 		if(item->isBeingDragged()) {
-			wlf.getStateImagery(item->currentDropTargetIsValid() ? "DraggingValidTarget" : "DraggingInvalidTarget").render(*item);
+			wlf.getStateImagery(item->currentDropTargetIsValid() ? "DraggingValidTarget" : "DraggingInvalidTarget")
+				.render(*item);
 		} else {
 			wlf.getStateImagery("Normal").render(*item);
 		}
 	}
 
-}
+} // namespace CEGUI

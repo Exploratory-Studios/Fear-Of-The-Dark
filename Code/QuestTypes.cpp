@@ -7,13 +7,13 @@
 
 namespace QuestModule {
 	Objective::Objective(std::string& instructions, unsigned int& scriptID) {
-		m_instructions = instructions;
+		m_instructions		 = instructions;
 		m_confirmationScript = scriptID;
 	}
 
 	void Objective::start(ScriptingModule::Scripter* scripter) {
 		/// Starts the confirmation "script", grabbing it's LuaScript pointer.
-		ScriptingModule::Script s = ScriptingModule::ScriptQueue::getScript(m_confirmationScript);
+		ScriptingModule::Script s  = ScriptingModule::ScriptQueue::getScript(m_confirmationScript);
 		m_confirmationScriptHandle = scripter->executeScript(s);
 	}
 	bool Objective::update() {
@@ -75,12 +75,11 @@ namespace QuestModule {
 		}
 
 		return ret;
-
 	}
 
 	void Quest::finish(ScriptingModule::Scripter* scripter) {
 		/// Sets the state to DONE, executes Lua script.
-		m_state = QuestState::DONE;
+		m_state					  = QuestState::DONE;
 		ScriptingModule::Script s = ScriptingModule::ScriptQueue::getScript(m_completionScript);
 		scripter->executeScript(s);
 	}
@@ -117,11 +116,12 @@ namespace QuestModule {
 		for(unsigned int i = 0; i < objectiveData.size(); i++) {
 			XMLModule::QuestObjectiveData d = XMLModule::XMLData::getQuestObjectiveData(objectiveData[i]);
 
-			std::string text = d.text;;
+			std::string text = d.text;
+			;
 			unsigned int confirmationScript = d.confirmationScript.getID();
 
 			m_objectives.emplace_back(text, confirmationScript);
 			m_objectiveStates.emplace_back(ObjectiveState::HIDDEN);
 		}
 	}
-}
+} // namespace QuestModule

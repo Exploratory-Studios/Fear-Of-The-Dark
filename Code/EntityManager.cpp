@@ -25,10 +25,12 @@ unsigned int EntityManager::getEntityIndex(Entity* entity) {
 		int r = horizontalPercentage * (m_entities.size() - 1) + i;
 
 		if(l >= 0) {
-			if(m_entities[l] == entity) return l;
+			if(m_entities[l] == entity)
+				return l;
 		}
 		if(r < m_entities.size()) {
-			if(m_entities[r] == entity) return r;
+			if(m_entities[r] == entity)
+				return r;
 		}
 	}
 }
@@ -49,17 +51,19 @@ void EntityManager::init(World* world) {
 
 void EntityManager::dispose() {
 	// Delete all entities. RAII baybeeeeee!
-	for(Entity* e : m_entities) {
+	for(Entity* e: m_entities) {
 		delete e;
 	}
 
-	m_entitiesByUUID.clear(); // We don't need to delete these; they are just copies of the pointers in m_entities (already deleted)
+	m_entitiesByUUID
+		.clear(); // We don't need to delete these; they are just copies of the pointers in m_entities (already deleted)
 
 	Logger::getInstance()->log("EntityManager deconstructed");
 }
 
 void EntityManager::setPlayer(EntityPlayer* p) {
-	if(m_player) queueEntityToRemove(m_player);
+	if(m_player)
+		queueEntityToRemove(m_player);
 	queueEntityToAdd(p);
 	m_player = p;
 }
@@ -70,10 +74,10 @@ void EntityManager::sortEntities() {
 		changed = false;
 		for(unsigned int i = 0; i < m_entities.size() - 1 && m_entities.size() > 1; i++) {
 			if(m_entities[i]->getPosition().x > m_entities[i + 1]->getPosition().x) {
-				Entity* temp = m_entities[i];
-				m_entities[i] = m_entities[i + 1];
+				Entity* temp	  = m_entities[i];
+				m_entities[i]	  = m_entities[i + 1];
 				m_entities[i + 1] = temp;
-				changed = true;
+				changed			  = true;
 			}
 		}
 	}
@@ -82,20 +86,23 @@ void EntityManager::sortEntities() {
 void EntityManager::queueEntityToAdd(Entity* entity) {
 	// Check for duplicates
 	for(unsigned int i = 0; i < m_entitiesToAdd.size(); i++) {
-		if(m_entitiesToAdd[i] == entity) return;
+		if(m_entitiesToAdd[i] == entity)
+			return;
 	}
 	m_entitiesToAdd.push_back(entity);
 }
 
 void EntityManager::queueEntityToRemove(Entity* entity) {
 	for(unsigned int i = 0; i < m_entitiesToRemove.size(); i++) {
-		if(m_entitiesToRemove[i] == entity) return;
+		if(m_entitiesToRemove[i] == entity)
+			return;
 	}
 	m_entitiesToRemove.push_back(entity);
 }
 
 void EntityManager::queueEntityToRemove(std::string UUID) {
-	queueEntityToRemove(getEntityByUUID(UUID)); // The UUID system assumes that you are in fact using a UUID that was created by and is managed by the entity manager
+	queueEntityToRemove(getEntityByUUID(
+		UUID)); // The UUID system assumes that you are in fact using a UUID that was created by and is managed by the entity manager
 }
 
 void EntityManager::addEntity(Entity* e) {
@@ -112,8 +119,8 @@ void EntityManager::addEntity(Entity* e) {
 	m_entities.push_back(e);
 	for(int i = m_entities.size() - 1; i > 0; i--) {
 		if(m_entities[i]->getPosition().x > e->getPosition().x) {
-			Entity* temp = m_entities[i];
-			m_entities[i] = e;
+			Entity* temp	  = m_entities[i];
+			m_entities[i]	  = e;
 			m_entities[i + 1] = temp;
 		} else {
 			break;
@@ -122,12 +129,12 @@ void EntityManager::addEntity(Entity* e) {
 
 	m_entitiesByUUID.insert(std::pair<std::string, Entity*>(e->getUUID(), e));
 
-	std::vector<ScriptingModule::Argument> args = { ScriptingModule::Argument("entityUUID", e->getUUID()),
-	                                                ScriptingModule::Argument("entityID", std::to_string(e->getID())),
-	                                                ScriptingModule::Argument("entityX", std::to_string(e->getPosition().x)),
-	                                                ScriptingModule::Argument("entityY", std::to_string(e->getPosition().y)),
-	                                                ScriptingModule::Argument("entityLayer", std::to_string(e->getLayer()))
-	                                              };
+	std::vector<ScriptingModule::Argument> args = {
+		ScriptingModule::Argument("entityUUID", e->getUUID()),
+		ScriptingModule::Argument("entityID", std::to_string(e->getID())),
+		ScriptingModule::Argument("entityX", std::to_string(e->getPosition().x)),
+		ScriptingModule::Argument("entityY", std::to_string(e->getPosition().y)),
+		ScriptingModule::Argument("entityLayer", std::to_string(e->getLayer()))};
 	EventModule::EventQueue::triggerEvent("addEntity", args);
 }
 
@@ -135,12 +142,12 @@ void EntityManager::removeEntity(unsigned int index) {
 	/** REMOVES AND DELETES ENTITY, COMPLETELY HANDLING MEMORY MANAGEMENT
 	*/
 
-	std::vector<ScriptingModule::Argument> args = { ScriptingModule::Argument("entityUUID", m_entities[index]->getUUID()),
-	                                                ScriptingModule::Argument("entityID", std::to_string(m_entities[index]->getID())),
-	                                                ScriptingModule::Argument("entityX", std::to_string(m_entities[index]->getPosition().x)),
-	                                                ScriptingModule::Argument("entityY", std::to_string(m_entities[index]->getPosition().y)),
-	                                                ScriptingModule::Argument("entityLayer", std::to_string(m_entities[index]->getLayer()))
-	                                              };
+	std::vector<ScriptingModule::Argument> args = {
+		ScriptingModule::Argument("entityUUID", m_entities[index]->getUUID()),
+		ScriptingModule::Argument("entityID", std::to_string(m_entities[index]->getID())),
+		ScriptingModule::Argument("entityX", std::to_string(m_entities[index]->getPosition().x)),
+		ScriptingModule::Argument("entityY", std::to_string(m_entities[index]->getPosition().y)),
+		ScriptingModule::Argument("entityLayer", std::to_string(m_entities[index]->getLayer()))};
 	EventModule::EventQueue::triggerEvent("removeEntity", args);
 
 	auto a = m_entitiesByUUID.find(m_entities[index]->getUUID());
@@ -159,7 +166,10 @@ void EntityManager::removeEntity(Entity* entity) {
 	removeEntity(getEntityIndex(entity));
 }
 
-void EntityManager::drawEntities(GLEngine::SpriteBatch& sb, GLEngine::SpriteFont& sf, GLEngine::DebugRenderer& dr, glm::vec4 destRect) {
+void EntityManager::drawEntities(GLEngine::SpriteBatch&	  sb,
+								 GLEngine::SpriteFont&	  sf,
+								 GLEngine::DebugRenderer& dr,
+								 glm::vec4				  destRect) {
 	/**
 	    Draws an area of tiles at position destRect.xy, with width and height of destRect.z and destRect.w respectively.
 	    Negative coordinates are mapped to accomodate for 'crossover'
@@ -173,7 +183,10 @@ void EntityManager::drawEntities(GLEngine::SpriteBatch& sb, GLEngine::SpriteFont
 	}
 
 	for(unsigned int i = 0; i < m_entities.size(); i++) {
-		m_entities[i]->draw(sb, m_world->getTime(), std::abs(diff[m_entities[i]->getLayer()]) + 1.0, 0.0f); /// TODO: Finish these entity functions up and improve!
+		m_entities[i]->draw(sb,
+							m_world->getTime(),
+							std::abs(diff[m_entities[i]->getLayer()]) + 1.0,
+							0.0f); /// TODO: Finish these entity functions up and improve!
 	}
 }
 
@@ -191,10 +204,12 @@ void EntityManager::drawEntitiesNormal(GLEngine::SpriteBatch& sb, glm::vec4 dest
 	}
 
 	for(unsigned int i = 0; i < m_entities.size(); i++) {
-		m_entities[i]->drawNormal(sb, m_world->getTime(), std::abs(diff[m_entities[i]->getLayer()]) + 1.0, 0.0f); /// TODO: Finish these entity functions up and improve!
+		m_entities[i]->drawNormal(sb,
+								  m_world->getTime(),
+								  std::abs(diff[m_entities[i]->getLayer()]) + 1.0,
+								  0.0f); /// TODO: Finish these entity functions up and improve!
 	}
 }
-
 
 void EntityManager::updateEntities(float timeStep) {
 	/**
@@ -204,7 +219,9 @@ void EntityManager::updateEntities(float timeStep) {
 	*/
 
 	for(unsigned int i = 0; i < m_entities.size(); i++) {
-		m_entities[i]->update(timeStep, i); // Make sure we update everything first so positions are set and collisions aren't weird
+		m_entities[i]->update(
+			timeStep,
+			i); // Make sure we update everything first so positions are set and collisions aren't weird
 	}
 
 	sortEntities();
@@ -213,8 +230,15 @@ void EntityManager::updateEntities(float timeStep) {
 		m_entities[i]->collideWithTiles();
 		/// Please note: Entities will collide twice with each other if they are the only two entities in the world.
 		/** This won't change actual gameplay at all, but it could have an effect on debugging. **/
-		for(unsigned int j = i + 1; i != (j % m_entities.size()) && m_entities[i]->collideWithOther(m_entities[j % m_entities.size()]) == true; j++);
-		for(unsigned int j = i - 1; i != ((j + m_entities.size()) % m_entities.size()) && m_entities[i]->collideWithOther(m_entities[(j + m_entities.size()) % m_entities.size()]) == true; j--);
+		for(unsigned int j = i + 1;
+			i != (j % m_entities.size()) && m_entities[i]->collideWithOther(m_entities[j % m_entities.size()]) == true;
+			j++)
+			;
+		for(unsigned int j = i - 1;
+			i != ((j + m_entities.size()) % m_entities.size()) &&
+			m_entities[i]->collideWithOther(m_entities[(j + m_entities.size()) % m_entities.size()]) == true;
+			j--)
+			;
 	}
 
 	for(unsigned int i = 0; i < m_entitiesToRemove.size(); i++) {
@@ -286,7 +310,7 @@ void EntityManager::spawnEntities() {
 				if(!checkNext) {
 					positions[i].y = y;
 					positions[i].z = z;
-					foundPosition = true;
+					foundPosition  = true;
 				}
 			}
 		}
@@ -298,10 +322,13 @@ void EntityManager::spawnEntities() {
 			}
 			positions.pop_back();
 		}
-
 	}
 
 	for(int i = 0; i < positions.size(); i++) {
-		queueEntityToAdd(Factory::createEntity((unsigned int)EntityIDs::NPC_NEUTRAL_COMPANIONCUBE, glm::vec2(positions[i].x, positions[i].y), (int)positions[i].z, SaveDataTypes::MetaData(), true));
+		queueEntityToAdd(Factory::createEntity((unsigned int)EntityIDs::NPC_NEUTRAL_COMPANIONCUBE,
+											   glm::vec2(positions[i].x, positions[i].y),
+											   (int)positions[i].z,
+											   SaveDataTypes::MetaData(),
+											   true));
 	}
 }

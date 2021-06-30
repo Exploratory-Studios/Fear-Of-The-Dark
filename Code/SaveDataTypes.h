@@ -31,18 +31,19 @@ namespace ScriptingModule {
 namespace SaveDataTypes {
 
 	class TileData {
-		public:
-			void save(std::ofstream& file);
-			void read(std::ifstream& file);
+	  public:
+		void save(std::ofstream& file);
+		void read(std::ifstream& file);
 
-			glm::vec2 pos;
-			float layer;
-			unsigned int id;
-			MetaData metaData;
+		glm::vec2	 pos;
+		float		 layer;
+		unsigned int id;
+		MetaData	 metaData;
 	};
 
 	struct ItemData {
-		ItemData() {}
+		ItemData() {
+		}
 		ItemData(Item i);
 
 		void read(std::ifstream& file);
@@ -50,11 +51,12 @@ namespace SaveDataTypes {
 
 		unsigned int id;
 		unsigned int quantity;
-		MetaData metaData;
+		MetaData	 metaData;
 	};
 
 	struct InventoryData {
-		InventoryData() {}
+		InventoryData() {
+		}
 		InventoryData(InventoryBase inv);
 
 		void read(std::ifstream& file);
@@ -64,44 +66,48 @@ namespace SaveDataTypes {
 	};
 
 	struct EntityData {
-			virtual void read(std::ifstream& file);
-			virtual void save(std::ofstream& file);
+		virtual void read(std::ifstream& file);
+		virtual void save(std::ofstream& file);
 
-			glm::vec2 position;
-			unsigned int layer;
-			glm::vec2 velocity;
-			unsigned int id;
-			MetaData md;
+		glm::vec2	 position;
+		unsigned int layer;
+		glm::vec2	 velocity;
+		unsigned int id;
+		MetaData	 md;
 
-		protected:
-			EntityData() {}
-			EntityData(Entity e);
-
+	  protected:
+		EntityData() {
+		}
+		EntityData(Entity e);
 	};
 
 	struct EntityItemData : public EntityData {
-		EntityItemData() : EntityData() {}
+		EntityItemData() : EntityData() {
+		}
 		EntityItemData(EntityItem i);
 	};
 
 	struct EntityNPCData : public EntityData {
-		EntityNPCData() : EntityData() {}
+		EntityNPCData() : EntityData() {
+		}
 		EntityNPCData(EntityNPC e);
 
 		virtual void read(std::ifstream& file);
 		virtual void save(std::ofstream& file);
 
 		InventoryData inventory;
-		float health;
+		float		  health;
 	};
 
 	struct EntityProjectileData : public EntityData {
-		EntityProjectileData() : EntityData() {}
+		EntityProjectileData() : EntityData() {
+		}
 		EntityProjectileData(EntityProjectile p);
 	};
 
 	struct EntityPlayerData : public EntityNPCData {
-		EntityPlayerData() : EntityNPCData() {}
+		EntityPlayerData() : EntityNPCData() {
+		}
 		EntityPlayerData(EntityPlayer p);
 
 		virtual void read(std::ifstream& file);
@@ -115,23 +121,23 @@ namespace SaveDataTypes {
 	};
 
 	class ChunkData {
-		public:
-			ChunkData();
-			void save(std::ofstream& file);
-			void read(std::ifstream& file);
+	  public:
+		ChunkData();
+		void save(std::ofstream& file);
+		void read(std::ifstream& file);
 
-			std::vector<std::vector<std::vector<TileData>>> tiles;
-			unsigned int biomeID;
+		std::vector<std::vector<std::vector<TileData>>> tiles;
+		unsigned int									biomeID;
 	};
 
 	class WorldData {
-		public:
-			WorldData();
-			void save(std::ofstream& file);
-			void read(std::ifstream& file);
+	  public:
+		WorldData();
+		void save(std::ofstream& file);
+		void read(std::ifstream& file);
 
-			std::vector<ChunkData> chunks;
-			std::vector<EntityData> entities;
+		std::vector<ChunkData>	chunks;
+		std::vector<EntityData> entities;
 	};
 
-}
+} // namespace SaveDataTypes

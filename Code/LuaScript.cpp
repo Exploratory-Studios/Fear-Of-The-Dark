@@ -92,7 +92,7 @@ namespace ScriptingModule {
 			return;
 		}
 
-		m_yielded = false;
+		m_yielded		   = false;
 		m_addedToYieldList = false;
 
 		lua_settop(T, 0);
@@ -108,10 +108,14 @@ namespace ScriptingModule {
 		    lua_settable(T, -3); // Add value and index to table at index -3
 		}*/
 
-		m_yielded = false;
+		m_yielded		   = false;
 		m_addedToYieldList = false;
 
-		lua_resume(T, state, lua_gettop(T)); // Continue the script with one argument: the argument table (The call to waitForEvent(...) will return this value)
+		lua_resume(
+			T,
+			state,
+			lua_gettop(
+				T)); // Continue the script with one argument: the argument table (The call to waitForEvent(...) will return this value)
 	}
 
 	void LuaScript::update(lua_State* state) {
@@ -140,15 +144,18 @@ namespace ScriptingModule {
 	int LuaScript::l_playSound(lua_State* L) {
 		AudioManager* audio = static_cast<AudioManager*>(getUpvalue(L, AUDIOMANAGER_KEY));
 
-		unsigned int id = (int)lua_tonumber(L, 1);
-		float volume = lua_tonumber(L, 1);
+		unsigned int id		= (int)lua_tonumber(L, 1);
+		float		 volume = lua_tonumber(L, 1);
 
 		audio->playSoundEffect(id, volume);
 
 		return 0;
 	}
 
-	void ParticleUpdate::updateFunction(GLEngine::Particle2D& particle, float deltaTime, unsigned int& scriptID, lua_State** T) {
+	void ParticleUpdate::updateFunction(GLEngine::Particle2D& particle,
+										float				  deltaTime,
+										unsigned int&		  scriptID,
+										lua_State**			  T) {
 		if(*T) { // A pointer to T would not change unless we ``delete T;``, but a pointer to a pointer of T would make sure we can know if the original *T = 0.
 			int top = lua_gettop(*T);
 
@@ -168,15 +175,13 @@ namespace ScriptingModule {
 			}
 
 			// Sets global table of arguments
-			std::vector<Argument> args = {
-				{ "particleX", std::to_string(particle.position.x) },
-				{ "particleY", std::to_string(particle.position.y) },
-				{ "particleXVel", std::to_string(particle.velocity.x) },
-				{ "particleYVel", std::to_string(particle.velocity.y) },
-				{ "particleLife", std::to_string(particle.life) },
-				{ "particleWidth", std::to_string(particle.width) },
-				{ "particleAlpha", std::to_string(particle.color.a) }
-			};
+			std::vector<Argument> args = {{"particleX", std::to_string(particle.position.x)},
+										  {"particleY", std::to_string(particle.position.y)},
+										  {"particleXVel", std::to_string(particle.velocity.x)},
+										  {"particleYVel", std::to_string(particle.velocity.y)},
+										  {"particleLife", std::to_string(particle.life)},
+										  {"particleWidth", std::to_string(particle.width)},
+										  {"particleAlpha", std::to_string(particle.color.a)}};
 
 			lua_newtable(thread2); // Make table of arguments
 			for(unsigned int i = 0; i < args.size(); i++) {
@@ -239,9 +244,9 @@ namespace ScriptingModule {
 
 			particle.position = glm::vec2(particleX, particleY);
 			particle.velocity = glm::vec2(particleVelX, particleVelY);
-			particle.life = particleLife;
-			particle.width = particleWidth;
-			particle.color.a = particleAlpha;
+			particle.life	  = particleLife;
+			particle.width	  = particleWidth;
+			particle.color.a  = particleAlpha;
 
 			luaL_unref(*T, LUA_REGISTRYINDEX, ref);
 
@@ -254,28 +259,31 @@ namespace ScriptingModule {
 	lua_State* LuaScript::m_parent;
 
 	int LuaScript::l_createParticle(lua_State* L) {
-		unsigned int id = (int)lua_tonumber(L, 1);
-		float x = lua_tonumber(L, 2);
-		float y = lua_tonumber(L, 3);
-		float xVel = lua_tonumber(L, 4);
-		float yVel = lua_tonumber(L, 5);
-		float width = lua_tonumber(L, 6);
+		unsigned int id	   = (int)lua_tonumber(L, 1);
+		float		 x	   = lua_tonumber(L, 2);
+		float		 y	   = lua_tonumber(L, 3);
+		float		 xVel  = lua_tonumber(L, 4);
+		float		 yVel  = lua_tonumber(L, 5);
+		float		 width = lua_tonumber(L, 6);
 
 		lua_pop(L, 6);
 
-		GLEngine::ParticleEngine2D* particles = static_cast<GLEngine::ParticleEngine2D*>(getUpvalue(L, PARTICLEENGINE_KEY));
+		GLEngine::ParticleEngine2D* particles =
+			static_cast<GLEngine::ParticleEngine2D*>(getUpvalue(L, PARTICLEENGINE_KEY));
 
 		XMLModule::ParticleData d = XMLModule::XMLData::getParticleData(id);
 
 		unsigned int scriptID = d.script.getID();
 
-		ParticleUpdate updater(scriptID, &m_parent);
+		ParticleUpdate									  updater(scriptID, &m_parent);
 		std::function<void(GLEngine::Particle2D&, float)> boundFunctor = updater.getBoundFunctor();
 
-		float decayRate = d.decayRate;
-		std::string textureFilepath = ASSETS_FOLDER_PATH + "/Textures/" + d.texture, bumpMapFilepath = ASSETS_FOLDER_PATH + "/Textures/BumpMaps/" + d.bumpMap;
+		float		decayRate		= d.decayRate;
+		std::string textureFilepath = ASSETS_FOLDER_PATH + "/Textures/" + d.texture,
+					bumpMapFilepath = ASSETS_FOLDER_PATH + "/Textures/BumpMaps/" + d.bumpMap;
 
-		GLEngine::ParticleBatch2D* batch = particles->getParticleBatch(MAX_TYPE_PARTICLES, decayRate, textureFilepath, bumpMapFilepath, boundFunctor);
+		GLEngine::ParticleBatch2D* batch =
+			particles->getParticleBatch(MAX_TYPE_PARTICLES, decayRate, textureFilepath, bumpMapFilepath, boundFunctor);
 
 		batch->addParticle(glm::vec2(x, y), glm::vec2(xVel, yVel), GLEngine::ColourRGBA8(255, 255, 255, 255), width);
 
@@ -283,12 +291,12 @@ namespace ScriptingModule {
 	}
 
 	int LuaScript::l_setBlock(lua_State* L) {
-		World* world = static_cast<World*>(getUpvalue(L, WORLD_KEY));
-		unsigned int id = (int)lua_tonumber(L, 1);
-		int x = (int)lua_tonumber(L, 2);
-		int y = (int)lua_tonumber(L, 3);
-		int layer = (int)lua_tonumber(L, 4);
-		std::string metaData = std::string(lua_tostring(L, 5));
+		World*		 world	  = static_cast<World*>(getUpvalue(L, WORLD_KEY));
+		unsigned int id		  = (int)lua_tonumber(L, 1);
+		int			 x		  = (int)lua_tonumber(L, 2);
+		int			 y		  = (int)lua_tonumber(L, 3);
+		int			 layer	  = (int)lua_tonumber(L, 4);
+		std::string	 metaData = std::string(lua_tostring(L, 5));
 
 		SaveDataTypes::MetaData md;
 		md.readFromLuaTable(L, 6);
@@ -302,44 +310,44 @@ namespace ScriptingModule {
 
 	int LuaScript::l_removeBlock(lua_State* L) {
 		World* world = static_cast<World*>(getUpvalue(L, WORLD_KEY));
-		int x = (int)lua_tonumber(L, 1); // get function argument
-		int y = (int)lua_tonumber(L, 2); // get function argument
-		int layer = (int)lua_tonumber(L, 3); // get function argument
+		int	   x	 = (int)lua_tonumber(L, 1); // get function argument
+		int	   y	 = (int)lua_tonumber(L, 2); // get function argument
+		int	   layer = (int)lua_tonumber(L, 3); // get function argument
 		lua_pop(L, 3);
 
 		removeBlock(world, x, y, layer); // calling C++ function with this argument...
-		return 0; // no returned values
+		return 0;						 // no returned values
 	}
 
 	int LuaScript::l_showBlock(lua_State* L) {
 		World* world = static_cast<World*>(getUpvalue(L, WORLD_KEY));
-		int x = (int)lua_tonumber(L, 1); // get function argument
-		int y = (int)lua_tonumber(L, 2); // get function argument
-		int layer = (int)lua_tonumber(L, 3); // get function argument
+		int	   x	 = (int)lua_tonumber(L, 1); // get function argument
+		int	   y	 = (int)lua_tonumber(L, 2); // get function argument
+		int	   layer = (int)lua_tonumber(L, 3); // get function argument
 
 		lua_pop(L, 3);
 
 		showBlock(world, x, y, layer); // calling C++ function with this argument...
-		return 0; // no returned values
+		return 0;					   // no returned values
 	}
 
 	int LuaScript::l_hideBlock(lua_State* L) {
 		World* world = static_cast<World*>(getUpvalue(L, WORLD_KEY));
-		int x = (int)lua_tonumber(L, 1); // get function argument
-		int y = (int)lua_tonumber(L, 2); // get function argument
-		int layer = (int)lua_tonumber(L, 3); // get function argument
+		int	   x	 = (int)lua_tonumber(L, 1); // get function argument
+		int	   y	 = (int)lua_tonumber(L, 2); // get function argument
+		int	   layer = (int)lua_tonumber(L, 3); // get function argument
 
 		lua_pop(L, 3);
 
 		hideBlock(world, x, y, layer); // calling C++ function with this argument...
-		return 0; // no returned values
+		return 0;					   // no returned values
 	}
 
 	int LuaScript::l_setBlockSize(lua_State* L) {
 		World* world = static_cast<World*>(getUpvalue(L, WORLD_KEY));
-		int x = (int)lua_tonumber(L, 1); // get function argument
-		int y = (int)lua_tonumber(L, 2); // get function argument
-		int layer = (int)lua_tonumber(L, 3); // get function argument
+		int	   x	 = (int)lua_tonumber(L, 1); // get function argument
+		int	   y	 = (int)lua_tonumber(L, 2); // get function argument
+		int	   layer = (int)lua_tonumber(L, 3); // get function argument
 
 		float xS = lua_tonumber(L, 4);
 		float yS = lua_tonumber(L, 5);
@@ -353,13 +361,13 @@ namespace ScriptingModule {
 
 	int LuaScript::l_getBlockData(lua_State* L) {
 		World* world = static_cast<World*>(getUpvalue(L, WORLD_KEY));
-		int x = (int)lua_tonumber(L, 1);
-		int y = (int)lua_tonumber(L, 2);
-		int l = (int)lua_tonumber(L, 3);
+		int	   x	 = (int)lua_tonumber(L, 1);
+		int	   y	 = (int)lua_tonumber(L, 2);
+		int	   l	 = (int)lua_tonumber(L, 3);
 
 		lua_pop(L, 3);
 
-		Tile* t = getBlock(world, glm::vec2(x, y), l);
+		Tile*				  t	   = getBlock(world, glm::vec2(x, y), l);
 		std::vector<Argument> args = t->generateLuaData();
 		createArgumentsTable(L, args); // Creates and pushes back table
 
@@ -368,9 +376,9 @@ namespace ScriptingModule {
 
 	int LuaScript::l_setBlockMetaData(lua_State* L) {
 		World* world = static_cast<World*>(getUpvalue(L, WORLD_KEY));
-		int x = (int)lua_tonumber(L, 1);
-		int y = (int)lua_tonumber(L, 2);
-		int l = (int)lua_tonumber(L, 3);
+		int	   x	 = (int)lua_tonumber(L, 1);
+		int	   y	 = (int)lua_tonumber(L, 2);
+		int	   l	 = (int)lua_tonumber(L, 3);
 
 		SaveDataTypes::MetaData md;
 		md.readFromLuaTable(L, -1);
@@ -385,49 +393,49 @@ namespace ScriptingModule {
 
 	int LuaScript::l_addEntity(lua_State* L) {
 		World* world = static_cast<World*>(getUpvalue(L, WORLD_KEY));
-		int id = (int)lua_tonumber(L, 1);
-		int x = lua_tonumber(L, 2); // get function argument
-		int y = lua_tonumber(L, 3); // get function argument
-		int layer = (int)lua_tonumber(L, 4); // get function argument
+		int	   id	 = (int)lua_tonumber(L, 1);
+		int	   x	 = lua_tonumber(L, 2);		// get function argument
+		int	   y	 = lua_tonumber(L, 3);		// get function argument
+		int	   layer = (int)lua_tonumber(L, 4); // get function argument
 
 		lua_pop(L, 4);
 
 		addEntity(world, id, glm::vec2(x, y), layer); // calling C++ function with this argument...
-		return 0; // no returned values
+		return 0;									  // no returned values
 	}
 
 	int LuaScript::l_removeEntity(lua_State* L) {
-		World* world = static_cast<World*>(getUpvalue(L, WORLD_KEY));
+		World*		world	   = static_cast<World*>(getUpvalue(L, WORLD_KEY));
 		std::string entityUUID = lua_tostring(L, 1);
 
 		lua_pop(L, 1);
 
 		removeEntity(world, entityUUID); // calling C++ function with this argument...
-		return 0; // no returned values
+		return 0;						 // no returned values
 	}
 
 	int LuaScript::l_showEntity(lua_State* L) {
-		World* world = static_cast<World*>(getUpvalue(L, WORLD_KEY));
+		World*		world	   = static_cast<World*>(getUpvalue(L, WORLD_KEY));
 		std::string entityUUID = lua_tostring(L, 1);
 
 		lua_pop(L, 1);
 
 		showEntity(world, entityUUID); // calling C++ function with this argument...
-		return 0; // no returned values
+		return 0;					   // no returned values
 	}
 
 	int LuaScript::l_hideEntity(lua_State* L) {
-		World* world = static_cast<World*>(getUpvalue(L, WORLD_KEY));
+		World*		world	   = static_cast<World*>(getUpvalue(L, WORLD_KEY));
 		std::string entityUUID = lua_tostring(L, 1);
 
 		lua_pop(L, 1);
 
 		hideEntity(world, entityUUID); // calling C++ function with this argument...
-		return 0; // no returned values
+		return 0;					   // no returned values
 	}
 
 	int LuaScript::l_setEntityMetaData(lua_State* L) {
-		World* world = static_cast<World*>(getUpvalue(L, WORLD_KEY));
+		World*		world	   = static_cast<World*>(getUpvalue(L, WORLD_KEY));
 		std::string entityUUID = lua_tostring(L, 1);
 		lua_pop(L, 1);
 
@@ -443,8 +451,8 @@ namespace ScriptingModule {
 	}
 
 	int LuaScript::l_setTime(lua_State* L) {
-		World* world = static_cast<World*>(getUpvalue(L, WORLD_KEY));
-		unsigned int time = (int)lua_tonumber(L, 1);
+		World*		 world = static_cast<World*>(getUpvalue(L, WORLD_KEY));
+		unsigned int time  = (int)lua_tonumber(L, 1);
 
 		lua_pop(L, 1);
 
@@ -463,7 +471,6 @@ namespace ScriptingModule {
 
 		lua_pop(L, 3);
 
-
 		teleport(world, entityUUID, glm::vec2(x, y));
 
 		return 0;
@@ -474,11 +481,10 @@ namespace ScriptingModule {
 
 		std::string entityUUID = lua_tostring(L, 1);
 
-		int id = (int)lua_tonumber(L, 2);
+		int id		 = (int)lua_tonumber(L, 2);
 		int quantity = (int)lua_tonumber(L, 3);
 
 		lua_pop(L, 3);
-
 
 		giveItem(world, entityUUID, id, quantity);
 
@@ -492,7 +498,6 @@ namespace ScriptingModule {
 
 		lua_pop(L, 1);
 
-
 		setPlayerCanInteract(world, canInteract);
 
 		return 0;
@@ -501,11 +506,10 @@ namespace ScriptingModule {
 	int LuaScript::l_setFlag(lua_State* L) {
 		QuestModule::QuestManager* qm = static_cast<QuestModule::QuestManager*>(getUpvalue(L, QUESTMANAGER_KEY));
 
-		unsigned int id = (int)lua_tonumber(L, 1);
-		bool val = lua_toboolean(L, 2);
+		unsigned int id	 = (int)lua_tonumber(L, 1);
+		bool		 val = lua_toboolean(L, 2);
 
 		lua_pop(L, 2);
-
 
 		ScriptingModule::setFlag(qm, id, val);
 
@@ -518,7 +522,6 @@ namespace ScriptingModule {
 		unsigned int id = (int)lua_tonumber(L, 1);
 
 		lua_pop(L, 1);
-
 
 		lua_pushboolean(L, ScriptingModule::getFlag(qm, id));
 
@@ -534,7 +537,6 @@ namespace ScriptingModule {
 
 		lua_pop(L, 1);
 
-
 		setEra(world, eraID);
 
 		return 0;
@@ -547,7 +549,6 @@ namespace ScriptingModule {
 
 		lua_pop(L, 1);
 
-
 		setPlayerGodMode(world, mode);
 
 		return 0;
@@ -559,7 +560,6 @@ namespace ScriptingModule {
 		bool locked = lua_toboolean(L, 1);
 
 		lua_pop(L, 1);
-
 
 		camera_setLocked(gs, locked);
 
@@ -574,7 +574,6 @@ namespace ScriptingModule {
 
 		lua_pop(L, 2);
 
-
 		camera_setPosition(gs, glm::vec2(x, y));
 
 		return 0;
@@ -587,7 +586,6 @@ namespace ScriptingModule {
 		unsigned int y = lua_tonumber(L, 2);
 
 		lua_pop(L, 2);
-
 
 		camera_move(gs, glm::vec2(x, y));
 
@@ -603,7 +601,6 @@ namespace ScriptingModule {
 		float speed = lua_tonumber(L, 3);
 
 		lua_pop(L, 3);
-
 
 		camera_smoothMove(gs, glm::vec2(x, y), speed);
 
@@ -657,7 +654,7 @@ namespace ScriptingModule {
 		while(lua_next(L, -2) != 0) {
 			// uses 'key' (at index -2) and 'value' (at index -1)
 			std::string value = lua_tostring(L, -1);
-			std::string key = lua_tostring(L, -2);
+			std::string key	  = lua_tostring(L, -2);
 
 			Argument a(key, value);
 			args.push_back(a);
@@ -719,7 +716,6 @@ namespace ScriptingModule {
 
 		lua_pop(L, 1);
 
-
 		setPlayerStat_sanity(world, sanity);
 
 		return 0;
@@ -731,7 +727,6 @@ namespace ScriptingModule {
 		unsigned int id = (int)lua_tonumber(L, 1);
 
 		lua_pop(L, 1);
-
 
 		//startTrade(qm, id);
 
@@ -745,7 +740,6 @@ namespace ScriptingModule {
 
 		lua_pop(L, 1);
 
-
 		//startDialogue(qm, id);
 
 		return 0;
@@ -754,12 +748,11 @@ namespace ScriptingModule {
 	int LuaScript::l_getEntitiesNear(lua_State* L) { // returns UUIDs
 		World* world = static_cast<World*>(getUpvalue(L, WORLD_KEY));
 
-		float x = lua_tonumber(L, 1);
-		float y = lua_tonumber(L, 2);
+		float x	   = lua_tonumber(L, 1);
+		float y	   = lua_tonumber(L, 2);
 		float dist = lua_tonumber(L, 3);
 
 		lua_pop(L, 3);
-
 
 		glm::vec2 pos(x, y);
 
@@ -785,7 +778,6 @@ namespace ScriptingModule {
 
 		lua_pop(L, 4);
 
-
 		glm::vec2 pos1(x1, y1);
 		glm::vec2 pos2(x2, y2);
 
@@ -802,15 +794,15 @@ namespace ScriptingModule {
 	}
 
 	int LuaScript::l_getPlayer(lua_State* L) {
-		EntityPlayer* p = Singletons::getEntityManager()->getPlayer();
-		std::string id = p->getUUID();
+		EntityPlayer* p	 = Singletons::getEntityManager()->getPlayer();
+		std::string	  id = p->getUUID();
 		lua_pushstring(L, (char*)id.c_str());
 
 		return 1;
 	}
 
 	int LuaScript::l_getSpeakingEntity(lua_State* L) {
-		Entity* s = Singletons::getEntityManager()->getPlayer()->getSelectedEntity();
+		Entity*		s  = Singletons::getEntityManager()->getPlayer()->getSelectedEntity();
 		std::string id = s->getUUID();
 		lua_pushstring(L, (char*)id.c_str());
 
@@ -846,4 +838,4 @@ namespace ScriptingModule {
 		return 0;
 	}
 
-}
+} // namespace ScriptingModule

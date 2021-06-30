@@ -1,7 +1,7 @@
 #include "WaitScreen.h"
 
-WaitScreen::WaitScreen(GLEngine::Window* window, WorldIOManager* WorldIOManager) : m_window(window), m_worldIOManager(WorldIOManager) {
-
+WaitScreen::WaitScreen(GLEngine::Window* window, WorldIOManager* WorldIOManager) :
+	m_window(window), m_worldIOManager(WorldIOManager) {
 }
 
 WaitScreen::~WaitScreen() {
@@ -17,11 +17,9 @@ int WaitScreen::getPreviousScreenIndex() const {
 }
 
 void WaitScreen::build() {
-
 }
 
 void WaitScreen::destroy() {
-
 }
 
 void WaitScreen::onEntry() {
@@ -40,7 +38,6 @@ void WaitScreen::onEntry() {
 }
 
 void WaitScreen::onExit() {
-
 }
 
 void WaitScreen::update() {
@@ -72,7 +69,7 @@ void WaitScreen::draw() {
 
 	// Camera matrix
 	glm::mat4 projectionMatrix = m_uiCamera.getCameraMatrix();
-	GLint pUniform = m_textureProgram.getUniformLocation("P");
+	GLint	  pUniform		   = m_textureProgram.getUniformLocation("P");
 	glUniformMatrix4fv(pUniform, 1, GL_FALSE, &projectionMatrix[0][0]);
 
 	m_spriteBatch.begin();
@@ -121,17 +118,24 @@ void WaitScreen::initUI() {
 	}
 
 	{
-		m_progressBar = static_cast<CEGUI::ProgressBar*>(m_gui.createWidget("FOTDSkin/ProgressBar", glm::vec4(0.1f, 0.1f, 0.8f, 0.1f), glm::vec4(0.0f), "WaitScreenProgressBar"));
+		m_progressBar = static_cast<CEGUI::ProgressBar*>(m_gui.createWidget("FOTDSkin/ProgressBar",
+																			glm::vec4(0.1f, 0.1f, 0.8f, 0.1f),
+																			glm::vec4(0.0f),
+																			"WaitScreenProgressBar"));
 		m_progressBar->setText("[padding='l:0 t:15 r:0 b:0']Progress: ");
 		m_progressBar->setFont("QuietHorror-42");
 
-		m_messageBox = static_cast<CEGUI::DefaultWindow*>(m_gui.createWidget("FOTDSkin/Label", glm::vec4(0.1f, 0.2f, 0.8f, 0.2f), glm::vec4(0.0f), "WaitScreenWaitMessage"));
+		m_messageBox = static_cast<CEGUI::DefaultWindow*>(m_gui.createWidget("FOTDSkin/Label",
+																			 glm::vec4(0.1f, 0.2f, 0.8f, 0.2f),
+																			 glm::vec4(0.0f),
+																			 "WaitScreenWaitMessage"));
 		m_messageBox->setText(m_worldIOManager->getMessage());
 	}
 }
 
 void WaitScreen::initShaders() {
-	m_textureProgram.compileShaders(ASSETS_FOLDER_PATH + "Shaders/textureShader.vert", ASSETS_FOLDER_PATH + "Shaders/textureShader.frag");
+	m_textureProgram.compileShaders(ASSETS_FOLDER_PATH + "Shaders/textureShader.vert",
+									ASSETS_FOLDER_PATH + "Shaders/textureShader.frag");
 	m_textureProgram.addAttribute("vertexPosition");
 	m_textureProgram.addAttribute("vertexColour");
 	m_textureProgram.addAttribute("vertexUV");

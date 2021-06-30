@@ -4,7 +4,8 @@
 
 #include "Factory.h"
 
-EntityItem::EntityItem(glm::vec2 pos, unsigned int layer, unsigned int id, SaveDataTypes::MetaData data, bool loadTex) : Entity(pos, layer, SaveDataTypes::MetaData()) {
+EntityItem::EntityItem(glm::vec2 pos, unsigned int layer, unsigned int id, SaveDataTypes::MetaData data, bool loadTex) :
+	Entity(pos, layer, SaveDataTypes::MetaData()) {
 	m_id = id;
 
 	init();
@@ -14,7 +15,8 @@ EntityItem::EntityItem(glm::vec2 pos, unsigned int layer, unsigned int id, SaveD
 	}
 }
 
-EntityItem::EntityItem(glm::vec2 pos, unsigned int layer, EntityIDs id, SaveDataTypes::MetaData data, bool loadTex) : Entity(pos, layer, SaveDataTypes::MetaData()) {
+EntityItem::EntityItem(glm::vec2 pos, unsigned int layer, EntityIDs id, SaveDataTypes::MetaData data, bool loadTex) :
+	Entity(pos, layer, SaveDataTypes::MetaData()) {
 	m_id = (unsigned int)id;
 
 	init();
@@ -29,12 +31,12 @@ void EntityItem::init() {
 
 	XMLModule::EntityItemData d = XMLModule::XMLData::getEntityItemData(m_id);
 
-	m_texturePath = ASSETS_FOLDER_PATH + "/Textures/" + d.texture;
-	m_bumpMapPath = ASSETS_FOLDER_PATH + "/Textures/BumpMaps/" + d.bumpMap;
-	m_size = d.size;
+	m_texturePath	 = ASSETS_FOLDER_PATH + "/Textures/" + d.texture;
+	m_bumpMapPath	 = ASSETS_FOLDER_PATH + "/Textures/BumpMaps/" + d.bumpMap;
+	m_size			 = d.size;
 	m_updateScriptId = d.updateScript.getID();
-	m_tickScriptId = d.tickScript.getID();
-	m_itemId = d.item;
+	m_tickScriptId	 = d.tickScript.getID();
+	m_itemId		 = d.item;
 
 	m_metaData = d.getMetaData();
 }
@@ -44,7 +46,6 @@ EntityItem::~EntityItem() {
 }
 
 bool EntityItem::collideWithOther(Entity* other) {
-
 }
 
 Item* EntityItem::getItem() {

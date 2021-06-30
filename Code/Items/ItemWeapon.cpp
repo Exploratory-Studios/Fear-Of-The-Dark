@@ -12,7 +12,7 @@ ItemWeapon::~ItemWeapon() {
 void ItemWeapon::init() {
 	// Inits XML
 	XMLModule::ItemWeaponData d = XMLModule::XMLData::getItemWeaponData(m_id);
-	m_attackID = d.attackID;
+	m_attackID					= d.attackID;
 }
 
 unsigned int ItemWeapon::getAttackID() {

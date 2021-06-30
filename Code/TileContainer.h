@@ -5,20 +5,19 @@
 class TileInventory;
 
 class TileContainer : public Tile {
-	public:
-		TileContainer(glm::vec2 pos, unsigned int layer, unsigned int id, SaveDataTypes::MetaData data, bool loadTex);
-		~TileContainer();
+  public:
+	TileContainer(glm::vec2 pos, unsigned int layer, unsigned int id, SaveDataTypes::MetaData data, bool loadTex);
+	~TileContainer();
 
-		virtual void drawGUI(GLEngine::SpriteBatch& sb, GLEngine::SpriteFont& sf, int& xOffset) override;
+	virtual void drawGUI(GLEngine::SpriteBatch& sb, GLEngine::SpriteFont& sf, int& xOffset) override;
 
-protected:
-		virtual void onUpdate() override;
-	
-		TileInventory* m_inventory = nullptr;
+  protected:
+	virtual void onUpdate() override;
 
-		bool m_opened = false;
+	TileInventory* m_inventory = nullptr;
 
-	private:
-		void init();
+	bool m_opened = false;
 
+  private:
+	void init();
 };

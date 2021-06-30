@@ -5,7 +5,6 @@
 namespace CEGUI {
 
 	GUI_IntArray2D::GUI_IntArray2D() : m_width(0), m_height(0), m_content(0) {
-
 	}
 
 	GUI_IntArray2D::GUI_IntArray2D(int width, int height) : m_content(0) {
@@ -32,7 +31,7 @@ namespace CEGUI {
 		m_content[y * m_width + x] = value;
 	}
 
-	void GUI_IntArray2D::clear(int value/*= -1*/) {
+	void GUI_IntArray2D::clear(int value /*= -1*/) {
 		if(!m_content)
 			return;
 
@@ -46,12 +45,12 @@ namespace CEGUI {
 	void GUI_IntArray2D::resetSize(int width, int height) {
 		if(m_width != width || m_height || height) {
 			delete[] m_content;
-			m_width = width;
-			m_height = height;
+			m_width	  = width;
+			m_height  = height;
 			m_content = new int[width * height];
 		}
 
 		clear();
 	}
 
-}
+} // namespace CEGUI

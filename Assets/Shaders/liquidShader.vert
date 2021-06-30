@@ -14,7 +14,8 @@ uniform mat4 P; // "Perspective"
 
 void main() {
     //Set the x,y,z position on the screen
-    gl_Position.xyz = (P * vec4(vertexPosition, 1.0)).xyz;
+    gl_Position.xy = (P * vec4(vertexPosition, 1.0)).xy;
+    gl_Position.z = 0.0; // We're in 2D, baby!
 
     //Indicate that the coordinates are normalized
     gl_Position.w = 1.0;

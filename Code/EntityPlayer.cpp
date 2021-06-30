@@ -14,53 +14,105 @@
 
 #include "ItemBlock.h"
 
-EntityPlayer::EntityPlayer(glm::vec2 pos, unsigned int layer, SaveDataTypes::MetaData data, bool loadTex) : EntityNPC(pos, layer, 0, data, loadTex) {
+EntityPlayer::EntityPlayer(glm::vec2 pos, unsigned int layer, SaveDataTypes::MetaData data, bool loadTex) :
+	EntityNPC(pos, layer, 0, data, loadTex) {
 	m_inventory->destroy();
 	m_armourWeaponsInventory->m_armourGrid->destroy();
 	m_armourWeaponsInventory->m_attacksGrid->destroy();
 	m_armourWeaponsInventory->destroy();
 
-	m_inventory = std::make_shared<NPCInventory>(15.0f, m_UUID, true); // This makes sure that the player has an inventory with GUI
+	m_inventory = std::make_shared<NPCInventory>(15.0f,
+												 m_UUID,
+												 true); // This makes sure that the player has an inventory with GUI
 	m_inventory->init();
 
 	m_armourWeaponsInventory = std::make_shared<NPCInventoryWrapper>(m_UUID, m_inventory);
 
-	std::function<bool(const CEGUI::EventArgs&)> reskin = [ = ](const CEGUI::EventArgs & e)->bool{ this->reskinLimbs(); };
-	std::function<bool(const CEGUI::EventArgs&)> defaultSkin = [ = ](const CEGUI::EventArgs & e)->bool{ this->m_body.resetAnimations(); };
+	std::function<bool(const CEGUI::EventArgs&)> reskin = [=](const CEGUI::EventArgs& e) -> bool {
+		this->reskinLimbs();
+	};
+	std::function<bool(const CEGUI::EventArgs&)> defaultSkin = [=](const CEGUI::EventArgs& e) -> bool {
+		this->m_body.resetAnimations();
+	};
 
-	m_armourWeaponsInventory->m_armourGrid->subscribeEvent(CEGUI::Element::EventChildAdded, CEGUI::Event::Subscriber(reskin));
-	m_armourWeaponsInventory->m_armourGrid->subscribeEvent(CEGUI::Element::EventChildRemoved, CEGUI::Event::Subscriber(defaultSkin));
+	m_armourWeaponsInventory->m_armourGrid->subscribeEvent(CEGUI::Element::EventChildAdded,
+														   CEGUI::Event::Subscriber(reskin));
+	m_armourWeaponsInventory->m_armourGrid->subscribeEvent(CEGUI::Element::EventChildRemoved,
+														   CEGUI::Event::Subscriber(defaultSkin));
 }
 
-
 EntityPlayer::~EntityPlayer() {
-
 }
 
 void EntityPlayer::initGUI() {
-	m_statusBoxFrame = static_cast<CEGUI::PopupMenu*>(Singletons::getGUI()->createWidget("FOTDSkin/StatusBox", glm::vec4(0.785f, 0.025f, 0.2f, 0.4f), glm::vec4(0.0f), "PlayerGUI_StatusBox"));
+	m_statusBoxFrame =
+		static_cast<CEGUI::PopupMenu*>(Singletons::getGUI()->createWidget("FOTDSkin/StatusBox",
+																		  glm::vec4(0.785f, 0.025f, 0.2f, 0.4f),
+																		  glm::vec4(0.0f),
+																		  "PlayerGUI_StatusBox"));
 	m_statusBoxFrame->openPopupMenu();
 
-	m_statusBoxLabel = static_cast<CEGUI::DefaultWindow*>(Singletons::getGUI()->createWidget(m_statusBoxFrame, "FOTDSkin/Label", glm::vec4(0.075f, 0.025f, 0.925f, 1.0f), glm::vec4(0.0f), "PlayerGUI_StatusBox_Label"));
+	m_statusBoxLabel =
+		static_cast<CEGUI::DefaultWindow*>(Singletons::getGUI()->createWidget(m_statusBoxFrame,
+																			  "FOTDSkin/Label",
+																			  glm::vec4(0.075f, 0.025f, 0.925f, 1.0f),
+																			  glm::vec4(0.0f),
+																			  "PlayerGUI_StatusBox_Label"));
 	m_statusBoxLabel->setProperty("HorzFormatting", "LeftAligned");
 	m_statusBoxLabel->setProperty("VertFormatting", "TopAligned");
 
 	std::string labelText = "[padding='l:0 t:0 r:0 b:-1']Time of day and date\n";
-	labelText +=            "[padding='l:4 t:-7 r:0 b:2'][vert-alignment='centre'][image-size='w:25 h:25'][image='FOTDSkin/SanityIcon']\n";
-	labelText +=            "[padding='l:4 t:-8 r:0 b:2'][vert-alignment='centre'][image-size='w:25 h:25'][image='FOTDSkin/HealthIcon']\n";
-	labelText +=            "[padding='l:4 t:-7 r:0 b:2'][vert-alignment='centre'][image-size='w:25 h:25'][image='FOTDSkin/ThirstIcon']\n";
-	labelText +=            "[padding='l:4 t:-5 r:0 b:2'][image-size='w:25 h:25'][vert-alignment='centre'][image='FOTDSkin/HungerIcon']\n";
-	labelText +=            "[padding='l:4 t:-8 r:0 b:2'][vert-alignment='centre'][image-size='w:25 h:25'][image='FOTDSkin/ExhaustionIcon']\n";
-	labelText +=            "[padding='l:4 t:-6 r:0 b:2'][vert-alignment='centre'][image-size='w:25 h:25'][image='FOTDSkin/StaminaIcon']\n";
+	labelText +=
+		"[padding='l:4 t:-7 r:0 b:2'][vert-alignment='centre'][image-size='w:25 h:25'][image='FOTDSkin/SanityIcon']\n";
+	labelText +=
+		"[padding='l:4 t:-8 r:0 b:2'][vert-alignment='centre'][image-size='w:25 h:25'][image='FOTDSkin/HealthIcon']\n";
+	labelText +=
+		"[padding='l:4 t:-7 r:0 b:2'][vert-alignment='centre'][image-size='w:25 h:25'][image='FOTDSkin/ThirstIcon']\n";
+	labelText +=
+		"[padding='l:4 t:-5 r:0 b:2'][image-size='w:25 h:25'][vert-alignment='centre'][image='FOTDSkin/HungerIcon']\n";
+	labelText +=
+		"[padding='l:4 t:-8 r:0 b:2'][vert-alignment='centre'][image-size='w:25 h:25'][image='FOTDSkin/ExhaustionIcon']\n";
+	labelText +=
+		"[padding='l:4 t:-6 r:0 b:2'][vert-alignment='centre'][image-size='w:25 h:25'][image='FOTDSkin/StaminaIcon']\n";
 
 	m_statusBoxLabel->setText(labelText);
 
-	m_sanityBar     = static_cast<CEGUI::ProgressBar*>(Singletons::getGUI()->createWidget(m_statusBoxFrame, "FOTDSkin/SanityBar",     glm::vec4(0.25f, 0.10f + 0.066f, 0.65f, 0.1f), glm::vec4(), "PlayerGUI_StatusBox_Sanity"));
-	m_healthBar     = static_cast<CEGUI::ProgressBar*>(Singletons::getGUI()->createWidget(m_statusBoxFrame, "FOTDSkin/HealthBar",     glm::vec4(0.25f, 0.23f + 0.066f, 0.65f, 0.1f), glm::vec4(), "PlayerGUI_StatusBox_Health"));
-	m_thirstBar     = static_cast<CEGUI::ProgressBar*>(Singletons::getGUI()->createWidget(m_statusBoxFrame, "FOTDSkin/ThirstBar",     glm::vec4(0.25f, 0.36f + 0.066f, 0.65f, 0.1f), glm::vec4(), "PlayerGUI_StatusBox_Thirst"));
-	m_hungerBar     = static_cast<CEGUI::ProgressBar*>(Singletons::getGUI()->createWidget(m_statusBoxFrame, "FOTDSkin/HungerBar",     glm::vec4(0.25f, 0.50f + 0.066f, 0.65f, 0.1f), glm::vec4(), "PlayerGUI_StatusBox_Hunger"));
-	m_exhaustionBar = static_cast<CEGUI::ProgressBar*>(Singletons::getGUI()->createWidget(m_statusBoxFrame, "FOTDSkin/ExhaustionBar", glm::vec4(0.25f, 0.63f + 0.066f, 0.65f, 0.1f), glm::vec4(), "PlayerGUI_StatusBox_Exhaustion"));
-	m_staminaBar    = static_cast<CEGUI::ProgressBar*>(Singletons::getGUI()->createWidget(m_statusBoxFrame, "FOTDSkin/StaminaBar",    glm::vec4(0.25f, 0.76f + 0.066f, 0.65f, 0.1f), glm::vec4(), "PlayerGUI_StatusBox_Stamina"));
+	m_sanityBar = static_cast<CEGUI::ProgressBar*>(
+		Singletons::getGUI()->createWidget(m_statusBoxFrame,
+										   "FOTDSkin/SanityBar",
+										   glm::vec4(0.25f, 0.10f + 0.066f, 0.65f, 0.1f),
+										   glm::vec4(),
+										   "PlayerGUI_StatusBox_Sanity"));
+	m_healthBar = static_cast<CEGUI::ProgressBar*>(
+		Singletons::getGUI()->createWidget(m_statusBoxFrame,
+										   "FOTDSkin/HealthBar",
+										   glm::vec4(0.25f, 0.23f + 0.066f, 0.65f, 0.1f),
+										   glm::vec4(),
+										   "PlayerGUI_StatusBox_Health"));
+	m_thirstBar = static_cast<CEGUI::ProgressBar*>(
+		Singletons::getGUI()->createWidget(m_statusBoxFrame,
+										   "FOTDSkin/ThirstBar",
+										   glm::vec4(0.25f, 0.36f + 0.066f, 0.65f, 0.1f),
+										   glm::vec4(),
+										   "PlayerGUI_StatusBox_Thirst"));
+	m_hungerBar = static_cast<CEGUI::ProgressBar*>(
+		Singletons::getGUI()->createWidget(m_statusBoxFrame,
+										   "FOTDSkin/HungerBar",
+										   glm::vec4(0.25f, 0.50f + 0.066f, 0.65f, 0.1f),
+										   glm::vec4(),
+										   "PlayerGUI_StatusBox_Hunger"));
+	m_exhaustionBar = static_cast<CEGUI::ProgressBar*>(
+		Singletons::getGUI()->createWidget(m_statusBoxFrame,
+										   "FOTDSkin/ExhaustionBar",
+										   glm::vec4(0.25f, 0.63f + 0.066f, 0.65f, 0.1f),
+										   glm::vec4(),
+										   "PlayerGUI_StatusBox_Exhaustion"));
+	m_staminaBar = static_cast<CEGUI::ProgressBar*>(
+		Singletons::getGUI()->createWidget(m_statusBoxFrame,
+										   "FOTDSkin/StaminaBar",
+										   glm::vec4(0.25f, 0.76f + 0.066f, 0.65f, 0.1f),
+										   glm::vec4(),
+										   "PlayerGUI_StatusBox_Stamina"));
 
 	m_sanityBar->setProgress(1.0f);
 	m_healthBar->setProgress(1.0f);
@@ -76,29 +128,46 @@ void EntityPlayer::initGUI() {
 	m_exhaustionBar->setStepSize(0.0000005d);
 	m_staminaBar->setStepSize(0.0000005d);
 
-
-	m_buffBoxFrame = static_cast<CEGUI::PopupMenu*>(Singletons::getGUI()->createWidget("FOTDSkin/StatusBox", glm::vec4(0.725f, 0.025f, 0.055f, 0.4f), glm::vec4(0.0f), "PlayerGUI_BuffBox"));
+	m_buffBoxFrame =
+		static_cast<CEGUI::PopupMenu*>(Singletons::getGUI()->createWidget("FOTDSkin/StatusBox",
+																		  glm::vec4(0.725f, 0.025f, 0.055f, 0.4f),
+																		  glm::vec4(0.0f),
+																		  "PlayerGUI_BuffBox"));
 	m_buffBoxFrame->openPopupMenu();
 }
 
 void EntityPlayer::onDraw(GLEngine::SpriteBatch& sb, float time, int layerDifference, float xOffset) {
 	if(m_selectedEntity) {
 		glm::vec4 fullUV(0.0f, 0.0f, 1.0f, 1.0f);
-		int cursorImgId = GLEngine::ResourceManager::getTexture(ASSETS_FOLDER_PATH + "GUI/Player/Cursor.png").id;
+		int		  cursorImgId = GLEngine::ResourceManager::getTexture(ASSETS_FOLDER_PATH + "GUI/Player/Cursor.png").id;
 
-		glm::vec4 cursorDestRect(m_selectedEntity->getPosition().x + xOffset, m_selectedEntity->getPosition().y, m_selectedEntity->getSize().x, m_selectedEntity->getSize().y);
-		sb.draw(cursorDestRect, fullUV, cursorImgId, 1.5f * (WORLD_DEPTH - m_layer), GLEngine::ColourRGBA8(255, 255, 255, 255));
+		glm::vec4 cursorDestRect(m_selectedEntity->getPosition().x + xOffset,
+								 m_selectedEntity->getPosition().y,
+								 m_selectedEntity->getSize().x,
+								 m_selectedEntity->getSize().y);
+		sb.draw(cursorDestRect,
+				fullUV,
+				cursorImgId,
+				1.5f * (WORLD_DEPTH - m_layer),
+				GLEngine::ColourRGBA8(255, 255, 255, 255));
 	} else if(m_selectedBlock) { // Cursor box selection
 		glm::vec4 fullUV(0.0f, 0.0f, 1.0f, 1.0f);
-		int cursorImgId = GLEngine::ResourceManager::getTexture(ASSETS_FOLDER_PATH + "GUI/Player/Cursor.png").id;
+		int		  cursorImgId = GLEngine::ResourceManager::getTexture(ASSETS_FOLDER_PATH + "GUI/Player/Cursor.png").id;
 
-		glm::vec4 cursorDestRect(m_selectedBlock->getPosition().x + xOffset, m_selectedBlock->getPosition().y, m_selectedBlock->getSize().x, m_selectedBlock->getSize().y);
-		sb.draw(cursorDestRect, fullUV, cursorImgId, 1.5f * (WORLD_DEPTH - m_layer), GLEngine::ColourRGBA8(255, 255, 255, 255));
+		glm::vec4 cursorDestRect(m_selectedBlock->getPosition().x + xOffset,
+								 m_selectedBlock->getPosition().y,
+								 m_selectedBlock->getSize().x,
+								 m_selectedBlock->getSize().y);
+		sb.draw(cursorDestRect,
+				fullUV,
+				cursorImgId,
+				1.5f * (WORLD_DEPTH - m_layer),
+				GLEngine::ColourRGBA8(255, 255, 255, 255));
 	}
 }
 
 void EntityPlayer::drawGUI(GLEngine::SpriteBatch& sb, GLEngine::SpriteFont& sf) {
-	glm::vec4 fullUV = glm::vec4(0.0f, 0.0f, 1.0f, 1.0f);
+	glm::vec4			  fullUV = glm::vec4(0.0f, 0.0f, 1.0f, 1.0f);
 	GLEngine::ColourRGBA8 fullColour(255, 255, 255, 255);
 
 	sb.begin();
@@ -147,7 +216,6 @@ void EntityPlayer::drawGUI(GLEngine::SpriteBatch& sb, GLEngine::SpriteFont& sf) 
 		sb.draw(destRect, fullUV, hotbarSelectImgId, 1.1f, fullColour);
 	} // Hotbar END*/
 
-
 	if(m_bagOpen) {
 		m_inventory->draw(sb, sf, m_position.x, m_position.y);
 	} else if(m_inventoryOpen) {
@@ -158,7 +226,11 @@ void EntityPlayer::drawGUI(GLEngine::SpriteBatch& sb, GLEngine::SpriteFont& sf) 
 	sb.renderBatch();
 }
 
-#define cap(x) if(x > 1) x = 1; if(x < 0) x = 0;
+#define cap(x) \
+	if(x > 1)  \
+		x = 1; \
+	if(x < 0)  \
+		x = 0;
 
 void EntityPlayer::updateStats(float timeStep) {
 	m_sanityBar->setProgress(m_sanity);
@@ -220,7 +292,6 @@ void EntityPlayer::updateStats(float timeStep) {
 }
 
 void EntityPlayer::updateMouse(glm::vec2 mouseCoords) {
-
 	m_aimingDirection = glm::normalize(mouseCoords - (m_position + m_size / glm::vec2(2.0f)));
 
 	if(m_canInteract) {
@@ -234,10 +305,10 @@ void EntityPlayer::updateMouse(glm::vec2 mouseCoords) {
 
 		for(unsigned int i = 0; i < Singletons::getEntityManager()->getEntities().size() && !m_selectedEntity; i++) {
 			float sizeX = (Singletons::getEntityManager()->getEntities()[i]->getSize().x) / 2.0f;
-			float midX = Singletons::getEntityManager()->getEntities()[i]->getPosition().x + sizeX;
+			float midX	= Singletons::getEntityManager()->getEntities()[i]->getPosition().x + sizeX;
 
 			float sizeY = (Singletons::getEntityManager()->getEntities()[i]->getSize().y) / 2.0f;
-			float midY = Singletons::getEntityManager()->getEntities()[i]->getPosition().y + sizeY;
+			float midY	= Singletons::getEntityManager()->getEntities()[i]->getPosition().y + sizeY;
 
 			if(std::abs(midX - mouseCoords.x) <= sizeX / 2.0f) {
 				if(std::abs(midY - mouseCoords.y) <= sizeY / 2.0f) {
@@ -246,13 +317,13 @@ void EntityPlayer::updateMouse(glm::vec2 mouseCoords) {
 			}
 		}
 	}
-
 }
 
 void EntityPlayer::updateInput(GLEngine::InputManager* input) {
 	if(input->isKeyDown(SDLK_w) && m_stamina > 0.0f) {
 		if(m_onGround) {
-			m_velocity.y = m_jumpHeight; // y=(jumpHeight*TILE_SIZE+3/4*TILE_SIZE+-5.88*x^2)  initial jump power is the absolute of the x when y=0. jumpheight is in eights of tiles and you must add 4
+			m_velocity.y =
+				m_jumpHeight; // y=(jumpHeight*TILE_SIZE+3/4*TILE_SIZE+-5.88*x^2)  initial jump power is the absolute of the x when y=0. jumpheight is in eights of tiles and you must add 4
 			m_onGround = false;
 			m_stamina -= 0.005f;
 		}
@@ -270,7 +341,8 @@ void EntityPlayer::updateInput(GLEngine::InputManager* input) {
 	m_layer = (m_layer < 0) ? 0 : (m_layer >= WORLD_DEPTH) ? WORLD_DEPTH - 1 : m_layer;
 
 	if(input->isKeyDown(SDLK_d) && (m_stamina > 0.0f)) {
-		if(m_velocity.x < 0.0f) m_velocity.x /= 5.0f;
+		if(m_velocity.x < 0.0f)
+			m_velocity.x /= 5.0f;
 		if(m_velocity.x < MAX_SPEED) {
 			m_velocity.x += m_runSpeed * m_inventory->getSpeedMultiplier() * std::pow(m_stamina, 0.4f);
 		}
@@ -281,7 +353,8 @@ void EntityPlayer::updateInput(GLEngine::InputManager* input) {
 		}
 		m_stamina *= 0.999f;
 	} else if(input->isKeyDown(SDLK_a) && (m_stamina > 0.0f)) {
-		if(m_velocity.x > 0.0f) m_velocity.x /= 5.0f;
+		if(m_velocity.x > 0.0f)
+			m_velocity.x /= 5.0f;
 		if(m_velocity.x > -MAX_SPEED) {
 			m_velocity.x -= m_runSpeed * m_inventory->getSpeedMultiplier() * std::pow(m_stamina, 0.4f);
 		}
@@ -323,7 +396,6 @@ void EntityPlayer::updateInput(GLEngine::InputManager* input) {
 				world->setTile(t);
 			}*/
 			//if(m_inventory) m_inventory->updateWeight();
-
 
 			activateAttack(0);
 		} else if(input->isKeyPressed(SDL_BUTTON_RIGHT)) {
@@ -375,20 +447,20 @@ bool EntityPlayer::event_reskin(const CEGUI::EventArgs& e) {
 
 SaveDataTypes::EntityPlayerData EntityPlayer::getPlayerSaveData() {
 	SaveDataTypes::EntityPlayerData ret;
-	ret.id = m_id;
+	ret.id		 = m_id;
 	ret.velocity = m_velocity;
 	ret.position = m_position;
-	ret.layer = m_layer;
-	ret.md = m_metaData;
+	ret.layer	 = m_layer;
+	ret.md		 = m_metaData;
 
-	ret.health = m_health;
+	ret.health	  = m_health;
 	ret.inventory = m_inventory->getInventorySaveData();
 
-	ret.sanity = m_sanity;
-	ret.thirst = m_thirst;
-	ret.hunger = m_hunger;
+	ret.sanity	   = m_sanity;
+	ret.thirst	   = m_thirst;
+	ret.hunger	   = m_hunger;
 	ret.exhaustion = m_exhaustion;
-	ret.stamina = m_stamina;
+	ret.stamina	   = m_stamina;
 
 	return ret;
 }

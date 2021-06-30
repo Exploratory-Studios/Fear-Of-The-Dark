@@ -14,14 +14,19 @@ void Text::draw(GLEngine::SpriteFont& sf, GLEngine::SpriteBatch& sb, float time,
 
 void Text::update(float time) {
 	if(time >= m_startTime && time < m_endTime) {
-		float curFade = (-(m_startTime + m_fadeTime - time) + m_fadeTime) / m_fadeTime; // time = 2, fadeTime = 1, startTime = 2, curFade = 1
-		if(curFade > 1.0f) curFade = 1.0f;
-		if(curFade < 0.0f) curFade = 0.0f;
+		float curFade = (-(m_startTime + m_fadeTime - time) + m_fadeTime) /
+						m_fadeTime; // time = 2, fadeTime = 1, startTime = 2, curFade = 1
+		if(curFade > 1.0f)
+			curFade = 1.0f;
+		if(curFade < 0.0f)
+			curFade = 0.0f;
 		m_colour.a = curFade * 255.0f;
 	} else if(time >= m_endTime) {
 		float curFade = ((m_endTime + m_fadeTime - time)) / m_fadeTime;
-		if(curFade > 1.0f) curFade = 1.0f;
-		if(curFade < 0.0f) curFade = 0.0f;
+		if(curFade > 1.0f)
+			curFade = 1.0f;
+		if(curFade < 0.0f)
+			curFade = 0.0f;
 		m_colour.a = curFade * 255.0f;
 	}
 }
@@ -32,20 +37,29 @@ void Image::draw(GLEngine::SpriteBatch& sb, float time, int activeSplashScreen) 
 	if(m_splashScreen == activeSplashScreen) {
 		update(time);
 
-		sb.draw(glm::vec4(m_pos.x - m_size.x * 0.5f, m_pos.y - m_size.y * 0.5f, m_size.x, m_size.y), glm::vec4(0.0f, 0.0f, 1.0f, 1.0f), GLEngine::ResourceManager::getTexture(m_filepath).id, 0.0f, m_colour);
+		sb.draw(glm::vec4(m_pos.x - m_size.x * 0.5f, m_pos.y - m_size.y * 0.5f, m_size.x, m_size.y),
+				glm::vec4(0.0f, 0.0f, 1.0f, 1.0f),
+				GLEngine::ResourceManager::getTexture(m_filepath).id,
+				0.0f,
+				m_colour);
 	}
 }
 
 void Image::update(float time) {
 	if(time >= m_startTime && time < m_endTime) {
-		float curFade = (-(m_startTime + m_fadeTime - time) + m_fadeTime) / m_fadeTime; // time = 2, fadeTime = 1, startTime = 2, curFade = 1
-		if(curFade > 1.0f) curFade = 1.0f;
-		if(curFade < 0.0f) curFade = 0.0f;
+		float curFade = (-(m_startTime + m_fadeTime - time) + m_fadeTime) /
+						m_fadeTime; // time = 2, fadeTime = 1, startTime = 2, curFade = 1
+		if(curFade > 1.0f)
+			curFade = 1.0f;
+		if(curFade < 0.0f)
+			curFade = 0.0f;
 		m_colour.a = curFade * 255.0f;
 	} else if(time >= m_endTime) {
 		float curFade = ((m_endTime + m_fadeTime - time)) / m_fadeTime;
-		if(curFade > 1.0f) curFade = 1.0f;
-		if(curFade < 0.0f) curFade = 0.0f;
+		if(curFade > 1.0f)
+			curFade = 1.0f;
+		if(curFade < 0.0f)
+			curFade = 0.0f;
 		m_colour.a = curFade * 255.0f;
 	}
 }
@@ -53,11 +67,9 @@ void Image::update(float time) {
 /// StartupScreen FUNCTIONS
 
 void StartupScreen::build() {
-
 }
 
 void StartupScreen::destroy() {
-
 }
 
 void StartupScreen::onEntry() {
@@ -79,7 +91,6 @@ void StartupScreen::onEntry() {
 }
 
 void StartupScreen::onExit() {
-
 }
 
 void StartupScreen::update() {
@@ -109,7 +120,6 @@ void StartupScreen::update() {
 }
 
 void StartupScreen::draw() {
-
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 
@@ -121,13 +131,15 @@ void StartupScreen::draw() {
 
 	// Camera matrix
 	glm::mat4 projectionMatrix = m_camera.getCameraMatrix();
-	GLint pUniform = m_uiTextureProgram.getUniformLocation("P");
+	GLint	  pUniform		   = m_uiTextureProgram.getUniformLocation("P");
 	glUniformMatrix4fv(pUniform, 1, GL_FALSE, &projectionMatrix[0][0]);
 
 	m_spriteBatch.begin();
 
-	for(auto ATxt : m_textAnimations) ATxt.draw(m_spriteFont, m_spriteBatch, m_time, m_splashScreen);
-	for(auto AImg : m_imageAnimations) AImg.draw(m_spriteBatch, m_time, m_splashScreen);
+	for(auto ATxt: m_textAnimations)
+		ATxt.draw(m_spriteFont, m_spriteBatch, m_time, m_splashScreen);
+	for(auto AImg: m_imageAnimations)
+		AImg.draw(m_spriteBatch, m_time, m_splashScreen);
 
 	m_spriteBatch.end();
 	m_spriteBatch.renderBatch();
@@ -138,7 +150,8 @@ void StartupScreen::draw() {
 /// StartupScreen PRIVATE FUNCTIONS
 
 void StartupScreen::initShaders() {
-	m_uiTextureProgram.compileShaders(ASSETS_FOLDER_PATH + "Shaders/textureShader.vert", ASSETS_FOLDER_PATH + "Shaders/textureShader.frag");
+	m_uiTextureProgram.compileShaders(ASSETS_FOLDER_PATH + "Shaders/textureShader.vert",
+									  ASSETS_FOLDER_PATH + "Shaders/textureShader.frag");
 	m_uiTextureProgram.addAttribute("vertexPosition");
 	m_uiTextureProgram.addAttribute("vertexColour");
 	m_uiTextureProgram.addAttribute("vertexUV");
@@ -150,21 +163,52 @@ void StartupScreen::initUI() {
 }
 
 void StartupScreen::initAnimations() {
-
 	{
-		m_textAnimations.emplace_back(glm::vec2(m_window->getScreenWidth() / 2.0, m_window->getScreenHeight() * 0.75), 2.0f, 6.0f, 3.0f, GLEngine::ColourRGBA8(255.0f, 255.0f, 255.0f, 255.0f), "An experience by", glm::vec2(1.0f, 1.0f), SPLASHSCREEN_STUDIO);
-		m_textAnimations.emplace_back(glm::vec2(m_window->getScreenWidth() / 2.0, m_window->getScreenHeight() * 0.05), 6.0f, 10.0f, 3.0f, GLEngine::ColourRGBA8(255.0f, 255.0f, 255.0f, 255.0f), "Exploratory Studios", glm::vec2(1.25f, 1.25f), SPLASHSCREEN_STUDIO);
+		m_textAnimations.emplace_back(glm::vec2(m_window->getScreenWidth() / 2.0, m_window->getScreenHeight() * 0.75),
+									  2.0f,
+									  6.0f,
+									  3.0f,
+									  GLEngine::ColourRGBA8(255.0f, 255.0f, 255.0f, 255.0f),
+									  "An experience by",
+									  glm::vec2(1.0f, 1.0f),
+									  SPLASHSCREEN_STUDIO);
+		m_textAnimations.emplace_back(glm::vec2(m_window->getScreenWidth() / 2.0, m_window->getScreenHeight() * 0.05),
+									  6.0f,
+									  10.0f,
+									  3.0f,
+									  GLEngine::ColourRGBA8(255.0f, 255.0f, 255.0f, 255.0f),
+									  "Exploratory Studios",
+									  glm::vec2(1.25f, 1.25f),
+									  SPLASHSCREEN_STUDIO);
 
-		m_imageAnimations.emplace_back(glm::vec2(m_window->getScreenWidth() * 0.5f, m_window->getScreenHeight() * 0.5f), 2.0f, 10.0f, 3.0f, GLEngine::ColourRGBA8(200.0f, 200.0f, 200.0f, 255.0f), ASSETS_FOLDER_PATH + "Textures/StartupScreens/Studio/Logo.png", glm::vec2(200.0f, 200.0f), SPLASHSCREEN_STUDIO);
+		m_imageAnimations.emplace_back(glm::vec2(m_window->getScreenWidth() * 0.5f, m_window->getScreenHeight() * 0.5f),
+									   2.0f,
+									   10.0f,
+									   3.0f,
+									   GLEngine::ColourRGBA8(200.0f, 200.0f, 200.0f, 255.0f),
+									   ASSETS_FOLDER_PATH + "Textures/StartupScreens/Studio/Logo.png",
+									   glm::vec2(200.0f, 200.0f),
+									   SPLASHSCREEN_STUDIO);
 	}
 
 	{
-		m_textAnimations.emplace_back(glm::vec2(m_window->getScreenWidth() / 2.0, m_window->getScreenHeight() * 0.75), 2.0f, 6.0f, 3.0f, GLEngine::ColourRGBA8(255.0f, 255.0f, 255.0f, 255.0f), "This game uses", glm::vec2(1.0f, 1.0f), SPLASHSCREEN_OPENGL_SDL);
-		m_textAnimations.emplace_back(glm::vec2(m_window->getScreenWidth() / 2.0, m_window->getScreenHeight() * 0.05), 6.0f, 10.0f, 3.0f, GLEngine::ColourRGBA8(255.0f, 255.0f, 255.0f, 255.0f), "OpenGL 3.0 & SDL 2.0", glm::vec2(1.0f, 1.0f), SPLASHSCREEN_OPENGL_SDL);
+		m_textAnimations.emplace_back(glm::vec2(m_window->getScreenWidth() / 2.0, m_window->getScreenHeight() * 0.75),
+									  2.0f,
+									  6.0f,
+									  3.0f,
+									  GLEngine::ColourRGBA8(255.0f, 255.0f, 255.0f, 255.0f),
+									  "This game uses",
+									  glm::vec2(1.0f, 1.0f),
+									  SPLASHSCREEN_OPENGL_SDL);
+		m_textAnimations.emplace_back(glm::vec2(m_window->getScreenWidth() / 2.0, m_window->getScreenHeight() * 0.05),
+									  6.0f,
+									  10.0f,
+									  3.0f,
+									  GLEngine::ColourRGBA8(255.0f, 255.0f, 255.0f, 255.0f),
+									  "OpenGL 3.0 & SDL 2.0",
+									  glm::vec2(1.0f, 1.0f),
+									  SPLASHSCREEN_OPENGL_SDL);
 	}
-
-
-
 }
 
 void StartupScreen::checkInput() {

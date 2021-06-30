@@ -12,60 +12,61 @@
 #include "TileContainer.h"
 
 Tile::Tile() {
-
 }
 
-Tile::Tile(glm::vec2 pos, unsigned int layer, unsigned int id, SaveDataTypes::MetaData data, bool loadTex) : m_pos(pos), m_layer(layer), m_id(id) {
+Tile::Tile(glm::vec2 pos, unsigned int layer, unsigned int id, SaveDataTypes::MetaData data, bool loadTex) :
+	m_pos(pos), m_layer(layer), m_id(id) {
 	XMLModule::TileData t = XMLModule::XMLData::getTileData(id);
 
-	m_texturePath = ASSETS_FOLDER_PATH + "/Textures/" + t.texture;
-	m_bumpMapPath = ASSETS_FOLDER_PATH + "/Textures/BumpMaps/" + t.bumpMap;
-	m_emittedLight = t.emittedLight;
-	m_emittedHeat = t.emittedHeat;
-	m_size = t.size;
-	m_solid = t.isSolid;
-	m_draw = t.isDrawn;
-	m_natural = t.isNatural;
-	m_transparent = t.isTransparent;
-	m_updateScriptID = t.updateScript.getID();
-	m_tickScriptID = t.tickScript.getID();
+	m_texturePath				= ASSETS_FOLDER_PATH + "/Textures/" + t.texture;
+	m_bumpMapPath				= ASSETS_FOLDER_PATH + "/Textures/BumpMaps/" + t.bumpMap;
+	m_emittedLight				= t.emittedLight;
+	m_emittedHeat				= t.emittedHeat;
+	m_size						= t.size;
+	m_solid						= t.isSolid;
+	m_draw						= t.isDrawn;
+	m_natural					= t.isNatural;
+	m_transparent				= t.isTransparent;
+	m_updateScriptID			= t.updateScript.getID();
+	m_tickScriptID				= t.tickScript.getID();
 	m_interactScriptID_walkedOn = t.interactScript_walkedOn.getID();
-	m_interactScriptID_used = t.interactScript_used.getID();
+	m_interactScriptID_used		= t.interactScript_used.getID();
 
 	m_metaData = t.getMetaData();
 
 	if(loadTex && m_draw) {
 		loadTexture();
 	} else {
-		m_textureId = (GLuint) - 1;
+		m_textureId = (GLuint)-1;
 	}
 
 	m_depthForRender = 0.1f + (m_layer * (1.0f / (float)(WORLD_DEPTH)) * 0.9f);
 }
 
-Tile::Tile(glm::vec2 pos, unsigned int layer, TileIDs id, SaveDataTypes::MetaData data, bool loadTex) : m_pos(pos), m_layer(layer), m_id((unsigned int)id) {
+Tile::Tile(glm::vec2 pos, unsigned int layer, TileIDs id, SaveDataTypes::MetaData data, bool loadTex) :
+	m_pos(pos), m_layer(layer), m_id((unsigned int)id) {
 	XMLModule::TileData t = XMLModule::XMLData::getTileData((unsigned int)id);
 
-	m_texturePath = ASSETS_FOLDER_PATH + "/Textures/" + t.texture;
-	m_bumpMapPath = ASSETS_FOLDER_PATH + "/Textures/BumpMaps/" + t.bumpMap;
-	m_emittedLight = t.emittedLight;
-	m_emittedHeat = t.emittedHeat;
-	m_size = t.size;
-	m_solid = t.isSolid;
-	m_draw = t.isDrawn;
-	m_natural = t.isNatural;
-	m_transparent = t.isTransparent;
-	m_updateScriptID = t.updateScript.getID();
-	m_tickScriptID = t.tickScript.getID();
+	m_texturePath				= ASSETS_FOLDER_PATH + "/Textures/" + t.texture;
+	m_bumpMapPath				= ASSETS_FOLDER_PATH + "/Textures/BumpMaps/" + t.bumpMap;
+	m_emittedLight				= t.emittedLight;
+	m_emittedHeat				= t.emittedHeat;
+	m_size						= t.size;
+	m_solid						= t.isSolid;
+	m_draw						= t.isDrawn;
+	m_natural					= t.isNatural;
+	m_transparent				= t.isTransparent;
+	m_updateScriptID			= t.updateScript.getID();
+	m_tickScriptID				= t.tickScript.getID();
 	m_interactScriptID_walkedOn = t.interactScript_walkedOn.getID();
-	m_interactScriptID_used = t.interactScript_used.getID();
+	m_interactScriptID_used		= t.interactScript_used.getID();
 
 	m_metaData = t.getMetaData();
 
 	if(loadTex && m_draw) {
 		loadTexture();
 	} else {
-		m_textureId = (GLuint) - 1;
+		m_textureId = (GLuint)-1;
 	}
 
 	m_depthForRender = 0.1f + (m_layer * (1.0f / (float)(WORLD_DEPTH)) * 0.9f);
@@ -148,7 +149,7 @@ float Tile::getSurroundingHeat() {
 		if(right) right->setToUpdate_heat();
 	}*/
 
-	return 20.0f;//temp / 4.0f;
+	return 20.0f; //temp / 4.0f;
 }
 
 float Tile::getHeat() {
@@ -182,7 +183,7 @@ void Tile::update(float time, bool updateLighting, float& sunlight) {
 			resetSunlightCorners();
 
 			m_needsSunCheck = false;
-			m_exposedToSun = exposedToSun();
+			m_exposedToSun	= exposedToSun();
 
 			calculateSunlight(sunlight);
 		}
@@ -192,14 +193,15 @@ void Tile::update(float time, bool updateLighting, float& sunlight) {
 }
 
 void Tile::specialUpdate(float time) {
-	if(m_updateScriptID != (unsigned int) - 1) ScriptingModule::ScriptQueue::activateScript(m_updateScriptID, generateLuaData());
+	if(m_updateScriptID != (unsigned int)-1)
+		ScriptingModule::ScriptQueue::activateScript(m_updateScriptID, generateLuaData());
 }
 
 void Tile::tick(float tickTime, float& sunlight) {
 	if(m_updateHeat && m_id != (unsigned int)TileIDs::AIR) {
-		float heat = getSurroundingHeat();
+		float heat	  = getSurroundingHeat();
 		m_temperature = heat;
-		m_updateHeat = false;
+		m_updateHeat  = false;
 	}
 
 	calculateSunlight(sunlight);
@@ -208,36 +210,26 @@ void Tile::tick(float tickTime, float& sunlight) {
 }
 #include <iostream>
 void Tile::draw(GLEngine::SpriteBatch& sb, GLEngine::SpriteFont& sf, int& xOffset, int& depthDifference) {
-
 	if(m_draw) {
-		if(m_textureId == (GLuint) - 1) {
+		if(m_textureId == (GLuint)-1) {
 			loadTexture();
 		}
 
 		glm::vec4 pos = glm::vec4(m_pos.x + xOffset, m_pos.y, m_size.x, m_size.y);
-		sb.draw(pos,
-		        glm::vec4(0.0f, 0.0f, 1.0f, 1.0f),
-		        m_textureId,
-		        m_depthForRender,
-		        m_colour);
+		sb.draw(pos, glm::vec4(0.0f, 0.0f, 1.0f, 1.0f), m_textureId, m_depthForRender, m_colour);
 
 		onDraw(sb, sf, pos, m_depthForRender);
 	}
 }
 
 void Tile::drawNormal(GLEngine::SpriteBatch& sb, int& xOffset, int& depthDifference) {
-
 	if(m_draw) {
-		if(m_bumpMapId == (GLuint) - 1) {
+		if(m_bumpMapId == (GLuint)-1) {
 			loadTexture();
 		}
 
 		glm::vec4 pos = glm::vec4(m_pos.x + xOffset, m_pos.y, m_size.x, m_size.y);
-		sb.draw(pos,
-		        glm::vec4(0.0f, 0.0f, 1.0f, 1.0f),
-		        m_bumpMapId,
-		        m_depthForRender,
-		        m_colour);
+		sb.draw(pos, glm::vec4(0.0f, 0.0f, 1.0f, 1.0f), m_bumpMapId, m_depthForRender, m_colour);
 
 		//onDraw(sb, sf, pos, depth);
 	}
@@ -255,21 +247,21 @@ float Tile::getLightAtPoint(glm::vec2 posFromBL) {
 	float TL_TR_X;
 	{
 		float mu = (1.0 - cos(relCoords.x * 3.141592)) / 2.0;
-		TL_TR_X = (TL * (1.0 - mu) + TR * mu);
+		TL_TR_X	 = (TL * (1.0 - mu) + TR * mu);
 	}
 
 	// Cosine interpolation from BL-BR (x)
 	float BL_BR_X;
 	{
 		float mu = (1.0 - cos(relCoords.x * 3.141592)) / 2.0;
-		BL_BR_X = (BL * (1.0 - mu) + BR * mu);
+		BL_BR_X	 = (BL * (1.0 - mu) + BR * mu);
 	}
 
 	// Cosine interpolation from each of those, using the y coord
 	float light;
 	{
 		float mu = (1.0 - cos(relCoords.y * 3.141592)) / 2.0;
-		light = (TL_TR_X * (1.0 - mu) + BL_BR_X * mu);
+		light	 = (TL_TR_X * (1.0 - mu) + BL_BR_X * mu);
 	}
 
 	return light;
@@ -280,13 +272,17 @@ void Tile::destroy() {
 		World* world = Singletons::getWorld();
 		world->getTile(m_pos.x, m_pos.y, m_layer)->setNeedsSunCheck();
 		Tile* R = world->getTile(m_pos.x + 1, m_pos.y, m_layer);
-		if(R) R->setNeedsSunCheck();
+		if(R)
+			R->setNeedsSunCheck();
 		Tile* L = world->getTile(m_pos.x - 1, m_pos.y, m_layer);
-		if(L) L->setNeedsSunCheck();
+		if(L)
+			L->setNeedsSunCheck();
 		Tile* B = world->getTile(m_pos.x, m_pos.y, m_layer + 1);
-		if(B) B->setNeedsSunCheck();
+		if(B)
+			B->setNeedsSunCheck();
 		Tile* F = world->getTile(m_pos.x, m_pos.y, m_layer - 1);
-		if(F) F->setNeedsSunCheck();
+		if(F)
+			F->setNeedsSunCheck();
 	}
 }
 
@@ -349,7 +345,7 @@ bool Tile::exposedToSun() {
 
 void Tile::calculateSunlight(float sunlight) {
 	if(m_exposedToSun) {
-		bool left = true, right = true;
+		bool   left = true, right = true;
 		World* world = Singletons::getWorld();
 		if(!m_transparent) {
 			Tile* leftT = world->getTile(m_pos.x - 1, m_pos.y, m_layer);
@@ -383,10 +379,10 @@ void Tile::calculateSunlight(float sunlight) {
 
 SaveDataTypes::TileData Tile::getSaveData() {
 	SaveDataTypes::TileData d;
-	d.pos = m_pos;
-	d.id = m_id;
+	d.pos	   = m_pos;
+	d.id	   = m_id;
 	d.metaData = getMetaData();
-	d.layer = m_layer;
+	d.layer	   = m_layer;
 	return d;
 }
 
@@ -402,7 +398,7 @@ void Tile::resetNeighboursLight() {
 			for(int layer = -std::ceil(range); layer <= std::ceil(range); layer++) {
 				Tile* t = world->getTile(m_pos.x + x, m_pos.y + y, m_layer + layer);
 				if(t) {
-					float dist = std::sqrt((x + 0.5f) * (x + 0.5f) + (y + 0.5f) * (y + 0.5f) + (layer * layer));
+					float dist	= std::sqrt((x + 0.5f) * (x + 0.5f) + (y + 0.5f) * (y + 0.5f) + (layer * layer));
 					float light = (1.0f - dist / (float)range) * m_emittedLight;
 
 					if(light > 0.0f) {
@@ -411,22 +407,22 @@ void Tile::resetNeighboursLight() {
 					{
 						// Bottom left corner (x, y)
 						float d = std::sqrt((x) * (x) + (y) * (y) + (layer * layer));
-						BL = ((1.0f - d / (float)(range)) * m_emittedLight); // x + 0, y + 0
+						BL		= ((1.0f - d / (float)(range)) * m_emittedLight); // x + 0, y + 0
 					}
 					{
 						// Bottom right corner (x+1, y)
 						float d = std::sqrt((x + 1.0f) * (x + 1.0f) + (y) * (y) + (layer * layer));
-						BR = ((1.0f - d / (float)(range)) * m_emittedLight); // x + 0, y + 0
+						BR		= ((1.0f - d / (float)(range)) * m_emittedLight); // x + 0, y + 0
 					}
 					{
 						// top left corner (x, y+1)
 						float d = std::sqrt((x) * (x) + (y + 1.0f) * (y + 1.0f) + (layer * layer));
-						TL = ((1.0f - d / (float)(range)) * m_emittedLight); // x + 0, y + 0
+						TL		= ((1.0f - d / (float)(range)) * m_emittedLight); // x + 0, y + 0
 					}
 					{
 						// top right corner (x+1, y+1)
 						float d = std::sqrt((x + 1.0f) * (x + 1.0f) + (y + 1.0f) * (y + 1.0f) + (layer * layer));
-						TR = ((1.0f - d / (float)(range)) * m_emittedLight); // x + 0, y + 0
+						TR		= ((1.0f - d / (float)(range)) * m_emittedLight); // x + 0, y + 0
 					}
 
 					if(BL > 0 || BR > 0 || TR > 0 || TL > 0) {
@@ -458,23 +454,27 @@ void Tile::setNeighboursLight() {
 					}
 					{
 						// Bottom left corner (x, y)
-						float d = glm::distance(glm::vec2(m_pos.x + 1.0f, m_pos.y), glm::vec2(m_pos.x + x, m_pos.y + y));
+						float d =
+							glm::distance(glm::vec2(m_pos.x + 1.0f, m_pos.y), glm::vec2(m_pos.x + x, m_pos.y + y));
 						BL = ((1.0f - d / (float)(range)) * m_emittedLight); // x + 0, y + 0
 					}
 					{
 						// Bottom right corner (x+1, y)
-						float d = glm::distance(glm::vec2(m_pos.x + 1.0f, m_pos.y), glm::vec2(m_pos.x + x + 1.0f, m_pos.y + y));
-						BR = ((1.0f - d / (float)(range)) * m_emittedLight); // x + 0, y + 0
+						float d = glm::distance(glm::vec2(m_pos.x + 1.0f, m_pos.y),
+												glm::vec2(m_pos.x + x + 1.0f, m_pos.y + y));
+						BR		= ((1.0f - d / (float)(range)) * m_emittedLight); // x + 0, y + 0
 					}
 					{
 						// top left corner (x, y+1)
-						float d = glm::distance(glm::vec2(m_pos.x + 1.0f, m_pos.y), glm::vec2(m_pos.x + x, m_pos.y + y + 1.0f));
-						TL = ((1.0f - d / (float)(range)) * m_emittedLight); // x + 0, y + 0
+						float d = glm::distance(glm::vec2(m_pos.x + 1.0f, m_pos.y),
+												glm::vec2(m_pos.x + x, m_pos.y + y + 1.0f));
+						TL		= ((1.0f - d / (float)(range)) * m_emittedLight); // x + 0, y + 0
 					}
 					{
 						// top right corner (x+1, y+1)
-						float d = glm::distance(glm::vec2(m_pos.x + 1.0f, m_pos.y), glm::vec2(m_pos.x + x + 1.0f, m_pos.y + y + 1.0f));
-						TR = ((1.0f - d / (float)(range)) * m_emittedLight); // x + 0, y + 0
+						float d = glm::distance(glm::vec2(m_pos.x + 1.0f, m_pos.y),
+												glm::vec2(m_pos.x + x + 1.0f, m_pos.y + y + 1.0f));
+						TR		= ((1.0f - d / (float)(range)) * m_emittedLight); // x + 0, y + 0
 					}
 
 					if(BL > 0 || BR > 0 || TR > 0 || TL > 0) {

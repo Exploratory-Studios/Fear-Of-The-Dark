@@ -32,7 +32,6 @@ void SaveDataTypes::TileData::read(std::ifstream& file) {
 }
 
 SaveDataTypes::ItemData::ItemData(Item i) : id(i.getID()), quantity(i.getQuantity()), metaData(i.getMetaData()) {
-
 }
 
 void SaveDataTypes::ItemData::save(std::ofstream& file) {
@@ -65,12 +64,8 @@ void SaveDataTypes::InventoryData::read(std::ifstream& file) {
 	}
 }
 
-SaveDataTypes::EntityData::EntityData(Entity e) : position(e.getPosition()),
-	layer(e.getLayer()),
-	velocity(e.getVelocity()),
-	id(e.getID()),
-	md(e.getMetaData()) {
-
+SaveDataTypes::EntityData::EntityData(Entity e) :
+	position(e.getPosition()), layer(e.getLayer()), velocity(e.getVelocity()), id(e.getID()), md(e.getMetaData()) {
 }
 
 void SaveDataTypes::EntityData::save(std::ofstream& file) {
@@ -94,13 +89,10 @@ void SaveDataTypes::EntityData::read(std::ifstream& file) {
 }
 
 SaveDataTypes::EntityItemData::EntityItemData(EntityItem i) : EntityData(i) {
-
 }
 
-SaveDataTypes::EntityNPCData::EntityNPCData(EntityNPC e) : inventory(static_cast<InventoryBase>(*(e.getInventory()))),
-	health(e.getHealth()),
-	EntityData(e) {
-
+SaveDataTypes::EntityNPCData::EntityNPCData(EntityNPC e) :
+	inventory(static_cast<InventoryBase>(*(e.getInventory()))), health(e.getHealth()), EntityData(e) {
 }
 
 void SaveDataTypes::EntityNPCData::save(std::ofstream& file) {
@@ -130,16 +122,11 @@ void SaveDataTypes::EntityNPCData::read(std::ifstream& file) {
 }
 
 SaveDataTypes::EntityProjectileData::EntityProjectileData(EntityProjectile p) : EntityData(p) {
-
 }
 
-SaveDataTypes::EntityPlayerData::EntityPlayerData(EntityPlayer p) : sanity(p.getSanity()),
-	thirst(p.getThirst()),
-	hunger(p.getHunger()),
-	exhaustion(p.getExhaustion()),
-	stamina(p.getStamina()),
-	EntityNPCData(p) {
-
+SaveDataTypes::EntityPlayerData::EntityPlayerData(EntityPlayer p) :
+	sanity(p.getSanity()), thirst(p.getThirst()), hunger(p.getHunger()), exhaustion(p.getExhaustion()),
+	stamina(p.getStamina()), EntityNPCData(p) {
 }
 
 void SaveDataTypes::EntityPlayerData::save(std::ofstream& file) {

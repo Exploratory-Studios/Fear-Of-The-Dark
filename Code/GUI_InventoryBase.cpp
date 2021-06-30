@@ -5,8 +5,7 @@ namespace CEGUI {
 	Sizef GUI_InventoryBase::squarePixelSize() const {
 		// Returns pixel size of a square in the grid
 		const Rectf area(gridBasePixelRect());
-		return Sizef(area.getWidth() / m_content.getWidth(),
-		             area.getHeight() / m_content.getHeight());
+		return Sizef(area.getWidth() / m_content.getWidth(), area.getHeight() / m_content.getHeight());
 	}
 
 	void GUI_InventoryBase::setContentSize(int width, int height) {
@@ -26,8 +25,7 @@ namespace CEGUI {
 		// Returns the grid position from a given screen pixel coord
 		const Rectf area(gridBasePixelRect());
 
-		if(pixelX < static_cast<int>(area.left()) ||
-		        pixelX >= static_cast<int>(area.right()))
+		if(pixelX < static_cast<int>(area.left()) || pixelX >= static_cast<int>(area.right()))
 			return -1;
 
 		return static_cast<int>((pixelX - area.left()) / (area.getWidth() / m_content.getWidth()));
@@ -36,15 +34,13 @@ namespace CEGUI {
 		// Returns the grid position from a given screen pixel coord
 		const Rectf area(gridBasePixelRect());
 
-		if(pixelY < static_cast<int>(area.top()) ||
-		        pixelY >= static_cast<int>(area.bottom()))
+		if(pixelY < static_cast<int>(area.top()) || pixelY >= static_cast<int>(area.bottom()))
 			return -1;
 
 		return static_cast<int>((pixelY - area.top()) / (area.getHeight() / m_content.getHeight()));
-
 	}
 
 	Rectf GUI_InventoryBase::getGridBasePixelRect() const {
 		return gridBasePixelRect();
 	}
-}
+} // namespace CEGUI

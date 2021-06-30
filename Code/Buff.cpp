@@ -19,11 +19,11 @@ Buff::Buff(Entity* owner, unsigned int id) {
 void Buff::init() {
 	XMLModule::BuffData d = XMLModule::XMLData::getBuffData(m_id);
 
-	m_textureId = GLEngine::ResourceManager::getTexture(d.texture).id;
-	m_duration = d.duration;
-	m_name = d.name;
+	m_textureId	  = GLEngine::ResourceManager::getTexture(d.texture).id;
+	m_duration	  = d.duration;
+	m_name		  = d.name;
 	m_description = d.description;
-	m_tickScript = d.tickScript.getID();
+	m_tickScript  = d.tickScript.getID();
 }
 
 void Buff::tick() {

@@ -139,6 +139,10 @@ void World::setTile_noEvent(Tile* tile) {
 	Tile* r = getTile(x + 1, y, layer);
 	if(r)
 		r->setNeedsSunCheck();
+
+	for(unsigned int i = 0; i < m_fluidDomains.size(); i++) {
+		m_fluidDomains[i]->updateField(tile);
+	}
 }
 
 Tile* World::getTile(int x, int y, int layer) {
@@ -456,6 +460,12 @@ void World::tickTiles(glm::vec4 destRect) {
 void World::drawFluids(GLEngine::SpriteBatch& sb, glm::vec4& destRect) {
 	for(unsigned int i = 0; i < m_fluidDomains.size(); i++) {
 		m_fluidDomains[i]->draw(sb, destRect);
+	}
+}
+
+void World::updateFluidTextures(glm::vec4& destRect) {
+	for(unsigned int i = 0; i < m_fluidDomains.size(); i++) {
+		m_fluidDomains[i]->updateTexture(destRect);
 	}
 }
 

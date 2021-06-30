@@ -24,10 +24,12 @@
 namespace ScriptingModule {
 
 	Scripter::Scripter() {
-
 	}
 
-	void Scripter::init(QuestModule::QuestManager* qm, GameplayScreen* gs, AudioManager* audio, GLEngine::ParticleEngine2D* particleEngine) {
+	void Scripter::init(QuestModule::QuestManager*	qm,
+						GameplayScreen*				gs,
+						AudioManager*				audio,
+						GLEngine::ParticleEngine2D* particleEngine) {
 		m_luaState = luaL_newstate();
 
 		luaL_openlibs(m_luaState);
@@ -127,7 +129,7 @@ namespace ScriptingModule {
 				continue;
 			} else {
 				liveScripts.push_back(m_scripts[i]);
-				\
+
 				m_scripts[i]->update(m_luaState);
 				if(m_scripts[i]->isYielded() && !m_scripts[i]->isAddedToYieldList()) {
 					m_scripts[i]->setAddedToYieldList();
@@ -154,11 +156,11 @@ namespace ScriptingModule {
 		std::vector<EventModule::Event> evnts = EventModule::EventQueue::getEvents();
 
 		// Then we loop through all of them.
-		for(auto evnt : evnts) {
+		for(auto evnt: evnts) {
 			// Find the lower and upper bounds of all yielded scripts with the evnt's type
 			std::string type = evnt.getType();
-			auto lb = m_yieldedScripts.lower_bound(type); // The first element that matches
-			auto ub = m_yieldedScripts.upper_bound(type); // One past the last element that matches
+			auto		lb	 = m_yieldedScripts.lower_bound(type); // The first element that matches
+			auto		ub	 = m_yieldedScripts.upper_bound(type); // One past the last element that matches
 
 			/// IMPORTANT NOTE: If there are events of duplicate type, then only the first is used.
 
@@ -181,8 +183,8 @@ namespace ScriptingModule {
 
 		int chunkRef = -1;
 
-		std::string fn = script.getFileName();
-		auto index = m_chunkRefCache.find(fn);
+		std::string fn	  = script.getFileName();
+		auto		index = m_chunkRefCache.find(fn);
 
 		if(index != m_chunkRefCache.end()) {
 			chunkRef = m_chunkRefCache.at(fn);
@@ -228,4 +230,4 @@ namespace ScriptingModule {
 		return s;
 	}
 
-}
+} // namespace ScriptingModule

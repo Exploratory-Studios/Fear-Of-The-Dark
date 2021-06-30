@@ -17,7 +17,11 @@
 
 #include "Attack.h"
 
-Entity* Factory::createEntity(unsigned int id, glm::vec2 pos, unsigned int layer, SaveDataTypes::MetaData data, bool loadTex) {
+Entity* Factory::createEntity(unsigned int			  id,
+							  glm::vec2				  pos,
+							  unsigned int			  layer,
+							  SaveDataTypes::MetaData data,
+							  bool					  loadTex) {
 	XMLModule::EntityData e = XMLModule::XMLData::getEntityData(id);
 
 	if(e.type == XMLModule::EntityType::NPC) {
@@ -33,10 +37,13 @@ Entity* Factory::createEntity(unsigned int id, glm::vec2 pos, unsigned int layer
 
 	Logger::getInstance()->log("ERROR: Failed to create entity with ID: " + std::to_string(id), true);
 	return nullptr;
-
 }
 
-Tile* Factory::createTile(unsigned int id, glm::vec2 pos, unsigned int layer, SaveDataTypes::MetaData data, bool loadTex) {
+Tile* Factory::createTile(unsigned int			  id,
+						  glm::vec2				  pos,
+						  unsigned int			  layer,
+						  SaveDataTypes::MetaData data,
+						  bool					  loadTex) {
 	XMLModule::TileData t = XMLModule::XMLData::getTileData(id);
 
 	if(t.type == XMLModule::TileType::TILE) {

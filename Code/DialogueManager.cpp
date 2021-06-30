@@ -30,21 +30,34 @@ namespace DialogueModule {
 
 	void ResponseFrame::init(CEGUI::FrameWindow* parent, std::string text, unsigned int index) {
 		// Should generate frame widget
-		float height = 0.3f;
+		float height  = 0.3f;
 		float padding = 0.05f;
 
-		m_button = static_cast<CEGUI::PushButton*>(Singletons::getGUI()->createWidget(parent, "FOTDSkin/Button", glm::vec4(0.1f, 0.35f + (height + padding) * index, 0.8f, height), glm::vec4(0.0f), "DialogueResponseFrame" + std::to_string(index)));
+		m_button = static_cast<CEGUI::PushButton*>(
+			Singletons::getGUI()->createWidget(parent,
+											   "FOTDSkin/Button",
+											   glm::vec4(0.1f, 0.35f + (height + padding) * index, 0.8f, height),
+											   glm::vec4(0.0f),
+											   "DialogueResponseFrame" + std::to_string(index)));
 		m_button->setText(text);
 	}
 
 	DialogueFrame::DialogueFrame(QuestModule::QuestManager* qm) : m_qm(qm) {
-		m_frame = static_cast<CEGUI::FrameWindow*>(Singletons::getGUI()->createWidget("FOTDSkin/FrameWindow", glm::vec4(0.1f, 0.6f, 0.8f, 0.3f), glm::vec4(0.0f), "DialogueMainFrame"));
+		m_frame = static_cast<CEGUI::FrameWindow*>(Singletons::getGUI()->createWidget("FOTDSkin/FrameWindow",
+																					  glm::vec4(0.1f, 0.6f, 0.8f, 0.3f),
+																					  glm::vec4(0.0f),
+																					  "DialogueMainFrame"));
 		m_frame->setCloseButtonEnabled(false);
 		m_frame->setDragMovingEnabled(false);
 		m_frame->setRollupEnabled(false);
 		m_frame->setTitleBarEnabled(false);
 
-		m_text = static_cast<CEGUI::DefaultWindow*>(Singletons::getGUI()->createWidget(m_frame, "FOTDSkin/Label", glm::vec4(0.1f, 0.1f, 0.8f, 0.3f), glm::vec4(0.0f), "DialogueMainFrameText"));
+		m_text =
+			static_cast<CEGUI::DefaultWindow*>(Singletons::getGUI()->createWidget(m_frame,
+																				  "FOTDSkin/Label",
+																				  glm::vec4(0.1f, 0.1f, 0.8f, 0.3f),
+																				  glm::vec4(0.0f),
+																				  "DialogueMainFrameText"));
 
 		hide();
 	}
@@ -119,7 +132,6 @@ namespace DialogueModule {
 		}
 
 		// Fin!
-
 	}
 
 	DialogueManager::DialogueManager(QuestModule::QuestManager* qm) {
@@ -137,9 +149,9 @@ namespace DialogueModule {
 	void DialogueManager::activateDialogue(unsigned int questionID) {
 		/// Should initialize the DialogueFrame, set the current dialogue ID, and set the state to true.
 		m_currentQuestion = questionID;
-		m_inDialogue = true;
+		m_inDialogue	  = true;
 
 		m_dialogueGUI->init(m_currentQuestion);
 		m_dialogueGUI->show();
 	}
-}
+} // namespace DialogueModule

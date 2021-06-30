@@ -1,11 +1,10 @@
 #include "NPCInventory.h"
 
-NPCInventory::NPCInventory(float maxWeight, std::string& name, bool initGUI/* = false*/) : InventoryBase(name, true, initGUI), m_absMaxWeight(maxWeight) {
-
+NPCInventory::NPCInventory(float maxWeight, std::string& name, bool initGUI /* = false*/) :
+	InventoryBase(name, true, initGUI), m_absMaxWeight(maxWeight) {
 }
 
 NPCInventory::~NPCInventory() {
-
 }
 
 void NPCInventory::initGUI(CEGUI::FrameWindow* frame) {
@@ -19,8 +18,10 @@ float NPCInventory::getSpeedMultiplier() {
 	if(m_weight > 0.0f) {
 		float multiplier = -std::pow(m_weight / MAX_WEIGHT, 4) + 1.0f;
 
-		if(multiplier < 0.0f) multiplier = 0.0f;
-		if(std::isnan(multiplier)) multiplier = 1.0f;
+		if(multiplier < 0.0f)
+			multiplier = 0.0f;
+		if(std::isnan(multiplier))
+			multiplier = 1.0f;
 
 		return multiplier;
 	}

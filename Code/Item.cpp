@@ -6,7 +6,8 @@
 Item::Item(short unsigned int quantity, unsigned int id, bool loadTex) : m_id(id), m_quantity(quantity) {
 	init();
 
-	if(loadTex) loadTexture();
+	if(loadTex)
+		loadTexture();
 }
 
 /*Item::Item(short unsigned int quantity, ItemIDs id, bool loadTex) : m_id((unsigned int)id), m_quantity(quantity) {
@@ -19,8 +20,8 @@ void Item::init() {
 	XMLModule::ItemData d = XMLModule::XMLData::getItemData(m_id);
 
 	m_texturePath = ASSETS_FOLDER_PATH + "/Textures/" + d.texture;
-	m_weight = d.weight;
-	m_name = d.name;
+	m_weight	  = d.weight;
+	m_name		  = d.name;
 
 	m_metaData = d.getMetaData();
 }
@@ -37,7 +38,7 @@ void Item::onRightClick(Tile* selectedBlock) {
 
 SaveDataTypes::ItemData Item::getItemSaveData() {
 	SaveDataTypes::ItemData ret;
-	ret.id = m_id;
+	ret.id		 = m_id;
 	ret.quantity = m_quantity;
 	ret.metaData = m_metaData;
 

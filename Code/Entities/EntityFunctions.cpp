@@ -4,7 +4,10 @@
 
 namespace EntityFunctions {
 
-	void basic_straight(bool (&controls)[6], std::vector<glm::vec3>& targets, unsigned int& currentTarget, EntityNPC* entity) {
+	void basic_straight(bool (&controls)[6],
+						std::vector<glm::vec3>& targets,
+						unsigned int&			currentTarget,
+						EntityNPC*				entity) {
 		// The targets are aligned to the bottom left corner of each tile (+0), **not** the middle (+size/2)
 
 		// Controls:
@@ -34,10 +37,10 @@ namespace EntityFunctions {
 
 		// Determine X, Y, and Z distances
 		const glm::vec3 curTarget = targets[currentTarget];
-		const float distX = entity->getPosition().x - curTarget.x;
-		const float distY = entity->getPosition().y - curTarget.y;
-		const float distZ = entity->getLayer() - curTarget.z;
-		const float threshold = 1.0f/8.0f; // 1/8th of a block
+		const float		distX	  = entity->getPosition().x - curTarget.x;
+		const float		distY	  = entity->getPosition().y - curTarget.y;
+		const float		distZ	  = entity->getLayer() - curTarget.z;
+		const float		threshold = 1.0f / 8.0f; // 1/8th of a block
 
 		// Declare some variables to check if the entity is close enough to a target to move on to the next one
 		// If all are true, move on.
@@ -91,7 +94,6 @@ namespace EntityFunctions {
 			// All aligned, move onto next target
 			currentTarget++;
 		}
-
 	}
 
-}
+} // namespace EntityFunctions

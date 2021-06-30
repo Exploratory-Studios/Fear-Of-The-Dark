@@ -2,19 +2,27 @@
 
 #include <functional>
 
-Slider::Slider(GLEngine::GUI& gui, float* data, glm::vec4 destRect, std::string name, std::string shownName) : m_data(data) {
+Slider::Slider(GLEngine::GUI& gui, float* data, glm::vec4 destRect, std::string name, std::string shownName) :
+	m_data(data) {
 	init(gui, destRect, name, shownName);
 }
 
 void Slider::init(GLEngine::GUI& gui, glm::vec4& destRect, std::string& name, std::string& shownName) {
-	m_slider = static_cast<CEGUI::Slider*>(gui.createWidget("FOTDSkin/HorizontalSlider", glm::vec4(destRect.x, destRect.y, destRect.z, destRect.w / 2.0f), glm::vec4(0.0f), name + "OptionsMenu"));
+	m_slider =
+		static_cast<CEGUI::Slider*>(gui.createWidget("FOTDSkin/HorizontalSlider",
+													 glm::vec4(destRect.x, destRect.y, destRect.z, destRect.w / 2.0f),
+													 glm::vec4(0.0f),
+													 name + "OptionsMenu"));
 	m_slider->setCurrentValue(*m_data);
-	std::function func = [ = ](const CEGUI::EventArgs & e)->bool{ *m_data = m_slider->getCurrentValue(); };
+	std::function func = [=](const CEGUI::EventArgs& e) -> bool { *m_data = m_slider->getCurrentValue(); };
 	m_slider->subscribeEvent(CEGUI::Slider::EventValueChanged, CEGUI::Event::Subscriber(func));
 
-	m_label = static_cast<CEGUI::DefaultWindow*>(gui.createWidget("FOTDSkin/Label", glm::vec4(destRect.x, destRect.y + destRect.w / 2.0f, destRect.z, destRect.w / 2.0f), glm::vec4(0.0f), name + "LabelOptionsMenu"));
+	m_label = static_cast<CEGUI::DefaultWindow*>(
+		gui.createWidget("FOTDSkin/Label",
+						 glm::vec4(destRect.x, destRect.y + destRect.w / 2.0f, destRect.z, destRect.w / 2.0f),
+						 glm::vec4(0.0f),
+						 name + "LabelOptionsMenu"));
 	m_label->setText(shownName);
-
 }
 
 void Slider::setFont(std::string font) {
@@ -38,11 +46,9 @@ int OptionsMenuScreen::getPreviousScreenIndex() const {
 }
 
 void OptionsMenuScreen::build() {
-
 }
 
 void OptionsMenuScreen::destroy() {
-
 }
 
 void OptionsMenuScreen::onEntry() {
@@ -58,7 +64,6 @@ void OptionsMenuScreen::onEntry() {
 }
 
 void OptionsMenuScreen::onExit() {
-
 }
 
 void OptionsMenuScreen::update() {
@@ -74,7 +79,8 @@ void OptionsMenuScreen::draw() {
 	glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 
 	float a = m_time;
-	if(a > 255.0f) a = 255.0f;
+	if(a > 255.0f)
+		a = 255.0f;
 
 	m_backButton->setAlpha(a);
 	m_gui.draw();
@@ -92,19 +98,35 @@ void OptionsMenuScreen::initUI() {
 		SDL_ShowCursor(0);
 	}
 
-	m_backButton = static_cast<CEGUI::PushButton*>(m_gui.createWidget("FOTDSkin/Button", glm::vec4(0.1f, 0.8f, 0.30f, 0.1f), glm::vec4(0.0f), "BackButtonOptionsMenu"));
+	m_backButton = static_cast<CEGUI::PushButton*>(m_gui.createWidget("FOTDSkin/Button",
+																	  glm::vec4(0.1f, 0.8f, 0.30f, 0.1f),
+																	  glm::vec4(0.0f),
+																	  "BackButtonOptionsMenu"));
 	m_backButton->subscribeEvent(CEGUI::PushButton::EventClicked,
-	                             CEGUI::Event::Subscriber(&OptionsMenuScreen::EventBackButtonClicked, this));
+								 CEGUI::Event::Subscriber(&OptionsMenuScreen::EventBackButtonClicked, this));
 	m_backButton->setText("[padding='l:0 t:15 r:0 b:0']Back");
 	m_backButton->setFont("QuietHorror-42");
 
-	m_masterVolumeSlider = new Slider(m_gui, &(Options::masterVolume), glm::vec4(0.1f, 0.1f, 0.3f, 0.11f), "SliderMasterVolume", "Master Volume");
-	m_soundsVolumeSlider = new Slider(m_gui, &(Options::soundsVolume), glm::vec4(0.1f, 0.22f, 0.3f, 0.11f), "SliderSoundsVolume", "Effects Volume");
-	m_musicVolumeSlider = new Slider(m_gui, &(Options::musicVolume), glm::vec4(0.1f, 0.34f, 0.3f, 0.11f), "SliderMusicVolume", "Music Volume");
+	m_masterVolumeSlider = new Slider(m_gui,
+									  &(Options::masterVolume),
+									  glm::vec4(0.1f, 0.1f, 0.3f, 0.11f),
+									  "SliderMasterVolume",
+									  "Master Volume");
+	m_soundsVolumeSlider = new Slider(m_gui,
+									  &(Options::soundsVolume),
+									  glm::vec4(0.1f, 0.22f, 0.3f, 0.11f),
+									  "SliderSoundsVolume",
+									  "Effects Volume");
+	m_musicVolumeSlider	 = new Slider(m_gui,
+									  &(Options::musicVolume),
+									  glm::vec4(0.1f, 0.34f, 0.3f, 0.11f),
+									  "SliderMusicVolume",
+									  "Music Volume");
 }
 
 void OptionsMenuScreen::initShaders() {
-	m_uiTextureProgram.compileShaders(ASSETS_FOLDER_PATH + "Shaders/textureShader.vert", ASSETS_FOLDER_PATH + "Shaders/textureShader.frag");
+	m_uiTextureProgram.compileShaders(ASSETS_FOLDER_PATH + "Shaders/textureShader.vert",
+									  ASSETS_FOLDER_PATH + "Shaders/textureShader.frag");
 	m_uiTextureProgram.addAttribute("vertexPosition");
 	m_uiTextureProgram.addAttribute("vertexColour");
 	m_uiTextureProgram.addAttribute("vertexUV");

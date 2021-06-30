@@ -7,14 +7,15 @@
 #include <GLEngineErrors.h>
 
 float Options::masterVolume = 1.0f;
-float Options::musicVolume = 1.0f;
+float Options::musicVolume	= 1.0f;
 float Options::soundsVolume = 1.0f;
 
 void Options::loadFromFile(std::string fileName) {
 	std::ifstream file(ASSETS_FOLDER_PATH + fileName, std::ios::binary);
 
 	if(file.fail()) {
-		Logger::getInstance()->log("Failed to load options from file: " + ASSETS_FOLDER_PATH + fileName + ", creating file.");
+		Logger::getInstance()->log("Failed to load options from file: " + ASSETS_FOLDER_PATH + fileName +
+								   ", creating file.");
 		saveToFile(fileName);
 		return;
 	}

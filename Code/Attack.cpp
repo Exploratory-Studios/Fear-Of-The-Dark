@@ -25,13 +25,15 @@ namespace CombatModule {
 	}
 
 	void MeleeAttack::execute(glm::vec2 direction) {
-		glm::vec2 pos = m_owner->getPosition();
+		glm::vec2	 pos   = m_owner->getPosition();
 		unsigned int layer = m_owner->getLayer();
 
-		EntityProjectile* e = static_cast<EntityProjectile*>(Factory::createEntity(m_projectileID, pos, layer, SaveDataTypes::MetaData(), true));
+		EntityProjectile* e = static_cast<EntityProjectile*>(
+			Factory::createEntity(m_projectileID, pos, layer, SaveDataTypes::MetaData(), true));
 		e->setOwner(m_owner);
 
-		e->setPosition(m_owner->getPosition() + m_owner->getSize() / glm::vec2(2.0f) - e->getSize() / glm::vec2(2.0f) + direction * e->getSize());
+		e->setPosition(m_owner->getPosition() + m_owner->getSize() / glm::vec2(2.0f) - e->getSize() / glm::vec2(2.0f) +
+					   direction * e->getSize());
 		e->setDirection(direction);
 
 		Singletons::getEntityManager()->queueEntityToAdd(e);
@@ -40,16 +42,17 @@ namespace CombatModule {
 	RangedAttack::RangedAttack(unsigned int attackID, ::Entity* owner) : Attack(attackID, owner) {
 		XMLModule::RangedAttackData d = XMLModule::XMLData::getRangedAttackData(attackID);
 
-		m_projectileID = d.projectileID;
+		m_projectileID	 = d.projectileID;
 		m_numProjectiles = d.numProjectiles;
-		m_angleWidth = glm::radians(d.angleWidth);
+		m_angleWidth	 = glm::radians(d.angleWidth);
 	}
 
 	void RangedAttack::execute(glm::vec2 direction) {
-		glm::vec2 pos = m_owner->getPosition();
+		glm::vec2	 pos   = m_owner->getPosition();
 		unsigned int layer = m_owner->getLayer();
 
-		EntityProjectile* e = static_cast<EntityProjectile*>(Factory::createEntity(m_projectileID, pos, layer, SaveDataTypes::MetaData(), true));
+		EntityProjectile* e = static_cast<EntityProjectile*>(
+			Factory::createEntity(m_projectileID, pos, layer, SaveDataTypes::MetaData(), true));
 		e->setOwner(m_owner);
 
 		e->setPosition(m_owner->getPosition() + direction * e->getSize());
@@ -68,4 +71,4 @@ namespace CombatModule {
 		ScriptingModule::ScriptQueue::activateScript(m_scriptID, m_owner->generateLuaValues());
 	}
 
-};
+}; // namespace CombatModule

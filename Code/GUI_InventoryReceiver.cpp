@@ -8,16 +8,15 @@ namespace CEGUI {
 	const String GUI_InventoryReceiver::EventNamespace("InventoryReceiver");
 
 	GUI_InventoryReceiver::GUI_InventoryReceiver(const String& type, const String& name) :
-		Window(type, name),
-		m_verificationFunction([](GUI_InventoryItem & a)->bool{ return true; }),
+		Window(type, name), m_verificationFunction([](GUI_InventoryItem& a) -> bool { return true; }),
 		m_receiving(true) {
 		setDragDropTarget(true);
 	}
 
 	bool GUI_InventoryReceiver::addItemAtLocation(GUI_InventoryItem& item, int x, int y) {
-		if(itemWillFitAtLocation(item, x, y) && (m_verificationFunction(item) || dynamic_cast<GUI_InventoryReceiver*>(item.getParent()) == this)) {
-			GUI_InventoryReceiver* old_receiver =
-			    dynamic_cast<GUI_InventoryReceiver*>(item.getParent());
+		if(itemWillFitAtLocation(item, x, y) &&
+		   (m_verificationFunction(item) || dynamic_cast<GUI_InventoryReceiver*>(item.getParent()) == this)) {
+			GUI_InventoryReceiver* old_receiver = dynamic_cast<GUI_InventoryReceiver*>(item.getParent());
 
 			if(old_receiver)
 				old_receiver->removeItem(item);
@@ -29,10 +28,9 @@ namespace CEGUI {
 			// set position and size.  This ensures the items visually match the
 			// logical content map.
 			item.setPosition(UVector2(UDim(static_cast<float>(x) / getContentWidth(), 0),
-			                          UDim(static_cast<float>(y) / getContentHeight(), 0)));
-			item.setSize(USize(
-			                 UDim(static_cast<float>(item.getContentWidth()) / getContentWidth(), 0),
-			                 UDim(static_cast<float>(item.getContentHeight()) / getContentHeight(), 0)));
+									  UDim(static_cast<float>(y) / getContentHeight(), 0)));
+			item.setSize(USize(UDim(static_cast<float>(item.getContentWidth()) / getContentWidth(), 0),
+							   UDim(static_cast<float>(item.getContentHeight()) / getContentHeight(), 0)));
 
 			return true;
 		}
@@ -41,9 +39,7 @@ namespace CEGUI {
 	}
 
 	void GUI_InventoryReceiver::removeItem(GUI_InventoryItem& item) {
-		if(item.getParent() != this ||
-		        item.locationOnReceiverX() == -1 ||
-		        item.locationOnReceiverY() == -1)
+		if(item.getParent() != this || item.locationOnReceiverX() == -1 || item.locationOnReceiverY() == -1)
 			return;
 
 		eraseItemFromContentMap(item);
@@ -98,16 +94,15 @@ namespace CEGUI {
 		invalidate();
 	}
 
-	bool GUI_InventoryReceiver::itemWillFitAtLocation(const GUI_InventoryItem& item,
-	        int x, int y) {
+	bool GUI_InventoryReceiver::itemWillFitAtLocation(const GUI_InventoryItem& item, int x, int y) {
 		if(x < 0 || y < 0)
 			return false;
 
-		if(x + item.getContentWidth() > m_content.getWidth() ||
-		        y + item.getContentHeight() > m_content.getHeight())
+		if(x + item.getContentWidth() > m_content.getWidth() || y + item.getContentHeight() > m_content.getHeight())
 			return false;
 
-		if(!m_receiving) return false;
+		if(!m_receiving)
+			return false;
 
 		const bool already_attached = this == item.getParent();
 		// if item is already attatched erase its data from the content map so the
@@ -118,8 +113,9 @@ namespace CEGUI {
 		bool result = true;
 		for(int item_y = 0; item_y < item.getContentHeight() && result; ++item_y) {
 			for(int item_x = 0; item_x < item.getContentWidth() && result; ++item_x) {
-				if(m_content.getElementAtLocation(item_x + x, item_y + y) != item.getID() && m_content.getElementAtLocation(item_x + x, item_y + y) != -1 &&
-				        item.isSolidAtLocation(item_x, item_y))
+				if(m_content.getElementAtLocation(item_x + x, item_y + y) != item.getID() &&
+				   m_content.getElementAtLocation(item_x + x, item_y + y) != -1 &&
+				   item.isSolidAtLocation(item_x, item_y))
 					result = false;
 			}
 		}
@@ -131,7 +127,7 @@ namespace CEGUI {
 		return result;
 	}
 
-	void GUI_InventoryReceiver::onDragDropItemDropped(DragDropEventArgs &e) {
+	void GUI_InventoryReceiver::onDragDropItemDropped(DragDropEventArgs& e) {
 		GUI_InventoryItem* item = dynamic_cast<GUI_InventoryItem*>(e.dragDropItem);
 
 		if(!item)
@@ -166,9 +162,10 @@ namespace CEGUI {
 					colour = 0xFFFFFFFF;
 
 				img->render(*d_geometry,
-				            Vector2f(x * square_size.d_width + 1, y * square_size.d_height + 1),
-				            Sizef(square_size.d_width - 2, square_size.d_height - 2), 0,
-				            ColourRect(colour));
+							Vector2f(x * square_size.d_width + 1, y * square_size.d_height + 1),
+							Sizef(square_size.d_width - 2, square_size.d_height - 2),
+							0,
+							ColourRect(colour));
 			}
 		}
 	}
@@ -177,4 +174,4 @@ namespace CEGUI {
 		return getChildContentArea().get();
 	}
 
-}
+} // namespace CEGUI

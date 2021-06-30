@@ -10,7 +10,6 @@
 namespace AnimationModule {
 
 	Animation::Animation() {
-
 	}
 
 	Animation::Animation(unsigned int id) {
@@ -21,14 +20,15 @@ namespace AnimationModule {
 		XMLModule::AnimationData d = XMLModule::XMLData::getAnimationData(id);
 
 		GLEngine::GLTexture tex = GLEngine::ResourceManager::getTexture(ASSETS_FOLDER_PATH + "/Textures/" + d.texture);
-		m_normalMapID = GLEngine::ResourceManager::getTexture(ASSETS_FOLDER_PATH + "/Textures/BumpMaps/" + d.normalMap).id;
+		m_normalMapID =
+			GLEngine::ResourceManager::getTexture(ASSETS_FOLDER_PATH + "/Textures/BumpMaps/" + d.normalMap).id;
 
-		m_textureID = tex.id;
-		float height = tex.height;
-		float y = d.y;
-		m_frameWidth = d.width;
+		m_textureID	  = tex.id;
+		float height  = tex.height;
+		float y		  = d.y;
+		m_frameWidth  = d.width;
 		m_frameHeight = d.height;
-		m_width = d.frames * m_frameWidth;
+		m_width		  = d.frames * m_frameWidth;
 
 		float framesVert = height / m_frameHeight;
 
@@ -41,7 +41,13 @@ namespace AnimationModule {
 		//m_uv.z = (float)(frameHeight) / (float)(height);
 	}
 
-	void Animation::draw(::GLEngine::SpriteBatch& sb, GLEngine::ColourRGBA8 colour, glm::vec4& destRect, float& depth, float& angle, glm::vec2& COR, bool flipped) {
+	void Animation::draw(::GLEngine::SpriteBatch& sb,
+						 GLEngine::ColourRGBA8	  colour,
+						 glm::vec4&				  destRect,
+						 float&					  depth,
+						 float&					  angle,
+						 glm::vec2&				  COR,
+						 bool					  flipped) {
 		glm::vec4 uv = m_uv;
 
 		uv.x = (float)(m_currentFrame * m_frameWidth) / (float)(m_width);
@@ -54,13 +60,22 @@ namespace AnimationModule {
 		sb.draw(destRect, uv, m_textureID, depth, colour, angle, COR);
 	}
 
-	void Animation::draw(::GLEngine::SpriteBatch& sb, GLEngine::ColourRGBA8 colour, glm::vec4& destRect, float& depth, glm::vec2 direction) {
+	void Animation::draw(::GLEngine::SpriteBatch& sb,
+						 GLEngine::ColourRGBA8	  colour,
+						 glm::vec4&				  destRect,
+						 float&					  depth,
+						 glm::vec2				  direction) {
 		m_uv.x = (float)(m_currentFrame * m_frameWidth) / (float)(m_width);
 
 		sb.draw(destRect, m_uv, m_textureID, depth, colour, direction);
 	}
 
-	void Animation::drawNormal(::GLEngine::SpriteBatch& sb, glm::vec4& destRect, float& depth, float& angle, glm::vec2& COR, bool flipped) {
+	void Animation::drawNormal(::GLEngine::SpriteBatch& sb,
+							   glm::vec4&				destRect,
+							   float&					depth,
+							   float&					angle,
+							   glm::vec2&				COR,
+							   bool						flipped) {
 		glm::vec4 uv = m_uv;
 
 		uv.x = (float)(m_currentFrame * m_frameWidth) / (float)(m_width);
@@ -98,7 +113,6 @@ namespace AnimationModule {
 	}
 
 	SkeletalAnimation::SkeletalAnimation() {
-
 	}
 
 	SkeletalAnimation::SkeletalAnimation(unsigned int id) {
@@ -110,11 +124,11 @@ namespace AnimationModule {
 
 		m_currentFrame = 0;
 
-		m_angles = d.angles;
-		m_offsets = d.offsets;
+		m_angles			= d.angles;
+		m_offsets			= d.offsets;
 		m_centresOfRotation = d.centresOfRotation;
-		m_limbIndices = d.limbIndices;
-		m_repeats = d.repeats;
+		m_limbIndices		= d.limbIndices;
+		m_repeats			= d.repeats;
 	}
 
 	void SkeletalAnimation::updateLimb(Limb* limb) {
@@ -128,24 +142,26 @@ namespace AnimationModule {
 					found = true;
 				}
 			}
-			if(!found) return;
+			if(!found)
+				return;
 		}
 
 		if(m_currentFrame < m_angles.size() - 1) {
 			unsigned int elementI = m_currentFrame * m_limbIndices.size() + limb->getIndex();
-			unsigned int nextElementI = (((m_currentFrame + 1) * m_limbIndices.size()) % m_angles.size()) + limb->getIndex();
+			unsigned int nextElementI =
+				(((m_currentFrame + 1) * m_limbIndices.size()) % m_angles.size()) + limb->getIndex();
 
 			if(m_lastFrame == m_currentFrame) { // Continue interpolation
-				glm::vec2 diffPos = m_offsets[nextElementI] - m_offsets[elementI];
-				float diffAngle = m_angles[nextElementI] - m_angles[elementI];
+				glm::vec2 diffPos	 = m_offsets[nextElementI] - m_offsets[elementI];
+				float	  diffAngle	 = m_angles[nextElementI] - m_angles[elementI];
 				glm::vec2 diffCentre = m_centresOfRotation[nextElementI] - m_centresOfRotation[elementI];
 
-				glm::vec2 integralPos = diffPos / glm::vec2(FRAME_RATE / TICK_RATE);
-				float integralAngle = diffAngle / (FRAME_RATE / TICK_RATE);
+				glm::vec2 integralPos	 = diffPos / glm::vec2(FRAME_RATE / TICK_RATE);
+				float	  integralAngle	 = diffAngle / (FRAME_RATE / TICK_RATE);
 				glm::vec2 integralCentre = diffCentre / glm::vec2(FRAME_RATE / TICK_RATE);
 
 				glm::vec2 newOffset = limb->getOffset() + integralPos;
-				float newAngle = limb->getAngle() + integralAngle;
+				float	  newAngle	= limb->getAngle() + integralAngle;
 				glm::vec2 newCentre = limb->getCentreOfRotation() + integralCentre;
 
 				limb->setOffset(newOffset);
@@ -166,19 +182,19 @@ namespace AnimationModule {
 
 		// We can use m_currentFrame to count up to some arbitrary number. We can calculate how far we need to move each frame, using some arbitrary number of frames, and how far we need to go still
 		const unsigned int framesPerTransition = 3;
-		const unsigned int numFramesLeft = framesPerTransition - m_currentFrame;
+		const unsigned int numFramesLeft	   = framesPerTransition - m_currentFrame;
 		// If we divide the distance/angle from here to where we need to go by the frames left, we should have our amount to move.
 
-		glm::vec2 diffPos = m_offsets[limb->getIndex()] - limb->getOffset();
-		float diffAngle = m_angles[limb->getIndex()] - limb->getAngle();
+		glm::vec2 diffPos	 = m_offsets[limb->getIndex()] - limb->getOffset();
+		float	  diffAngle	 = m_angles[limb->getIndex()] - limb->getAngle();
 		glm::vec2 diffCentre = m_centresOfRotation[limb->getIndex()] - limb->getCentreOfRotation();
 
-		glm::vec2 integralPos = diffPos / glm::vec2(numFramesLeft);
-		float integralAngle = diffAngle / numFramesLeft;
+		glm::vec2 integralPos	 = diffPos / glm::vec2(numFramesLeft);
+		float	  integralAngle	 = diffAngle / numFramesLeft;
 		glm::vec2 integralCentre = diffCentre / glm::vec2(numFramesLeft);
 
 		glm::vec2 newOffset = limb->getOffset() + integralPos;
-		float newAngle = limb->getAngle() + integralAngle;
+		float	  newAngle	= limb->getAngle() + integralAngle;
 		glm::vec2 newCentre = limb->getCentreOfRotation() + integralCentre;
 
 		limb->setOffset(newOffset);
@@ -203,9 +219,12 @@ namespace AnimationModule {
 	}
 
 	bool SkeletalAnimation::isFinished() {
-		if(m_repeats) return false;
-		if(m_angles.size() == 0) return true;
-		return (m_currentFrame + 1 >= (m_angles.size() / m_limbIndices.size())); // This only returns if it doesn't repeat
+		if(m_repeats)
+			return false;
+		if(m_angles.size() == 0)
+			return true;
+		return (m_currentFrame + 1 >=
+				(m_angles.size() / m_limbIndices.size())); // This only returns if it doesn't repeat
 	}
 
 	void SkeletalAnimation::restart() {
@@ -213,7 +232,6 @@ namespace AnimationModule {
 	}
 
 	Limb::Limb() {
-
 	}
 
 	Limb::Limb(Animation defaultAnimation, unsigned int index) {
@@ -223,8 +241,8 @@ namespace AnimationModule {
 
 	void Limb::init(Animation defaultAnimation, unsigned int index) {
 		m_defaultAnimation = defaultAnimation;
-		m_idleAnimation = defaultAnimation;
-		m_index = index;
+		m_idleAnimation	   = defaultAnimation;
+		m_index			   = index;
 		m_centreOfRotation = glm::vec2(0.5f);
 	}
 
@@ -235,10 +253,10 @@ namespace AnimationModule {
 		}
 
 		m_activeAnimation = anim;
-		m_nextAnimation = nullptr; // Make sure that this animation is the one we're actually using now.
+		m_nextAnimation	  = nullptr; // Make sure that this animation is the one we're actually using now.
 
-		m_offset = anim->getOffset(m_index);
-		m_angle = anim->getAngle(m_index);
+		m_offset		   = anim->getOffset(m_index);
+		m_angle			   = anim->getAngle(m_index);
 		m_centreOfRotation = anim->getCentreOfRotation(m_index);
 	}
 
@@ -273,16 +291,22 @@ namespace AnimationModule {
 		}
 	}
 
-	void Limb::draw(GLEngine::SpriteBatch& sb, GLEngine::ColourRGBA8 colour, glm::vec4 destRect, float& depth, bool flipped) {
+	void Limb::draw(GLEngine::SpriteBatch& sb,
+					GLEngine::ColourRGBA8  colour,
+					glm::vec4			   destRect,
+					float&				   depth,
+					bool				   flipped) {
 		// Transform based on centre of rotation
-		const glm::vec2 centre = flipped ? glm::vec2(1.0f - m_centreOfRotation.x, m_centreOfRotation.y) : m_centreOfRotation;
+		const glm::vec2 centre =
+			flipped ? glm::vec2(1.0f - m_centreOfRotation.x, m_centreOfRotation.y) : m_centreOfRotation;
 		const glm::vec2 offset = flipped ? glm::vec2(-m_offset.x, m_offset.y) : m_offset;
-		float angle = flipped ? M_PI - m_angle : m_angle;
+		float			angle  = flipped ? M_PI - m_angle : m_angle;
 
 		float xDist = (offset.x + destRect.z / 2.0f) - centre.x * destRect.z;
 		float yDist = (offset.y + destRect.w / 2.0f) - centre.y * destRect.w;
 
-		if(flipped) yDist *= -1;
+		if(flipped)
+			yDist *= -1;
 
 		destRect.x += xDist * std::cos(angle) - yDist * std::sin(angle) + centre.x * destRect.z;
 		destRect.y += xDist * std::sin(angle) + yDist * std::cos(angle) + centre.y * destRect.w;
@@ -297,14 +321,16 @@ namespace AnimationModule {
 
 	void Limb::drawNormal(GLEngine::SpriteBatch& sb, glm::vec4 destRect, float& depth, bool flipped) {
 		// Transform based on centre of rotation
-		const glm::vec2 centre = flipped ? glm::vec2(1.0f - m_centreOfRotation.x, m_centreOfRotation.y) : m_centreOfRotation;
+		const glm::vec2 centre =
+			flipped ? glm::vec2(1.0f - m_centreOfRotation.x, m_centreOfRotation.y) : m_centreOfRotation;
 		const glm::vec2 offset = flipped ? glm::vec2(-m_offset.x, m_offset.y) : m_offset;
-		float angle = flipped ? M_PI - m_angle : m_angle;
+		float			angle  = flipped ? M_PI - m_angle : m_angle;
 
 		float xDist = (offset.x + destRect.z / 2.0f) - centre.x * destRect.z;
 		float yDist = (offset.y + destRect.w / 2.0f) - centre.y * destRect.w;
 
-		if(flipped) yDist *= -1;
+		if(flipped)
+			yDist *= -1;
 
 		destRect.x += xDist * std::cos(angle) - yDist * std::sin(angle) + centre.x * destRect.z;
 		destRect.y += xDist * std::sin(angle) + yDist * std::cos(angle) + centre.y * destRect.w;
@@ -352,6 +378,4 @@ namespace AnimationModule {
 		m_centreOfRotation = centre;
 	}
 
-
-
-}
+} // namespace AnimationModule

@@ -18,21 +18,21 @@
 
 #include "PresetValues.h"
 
-Entity::Entity(glm::vec2 pos, unsigned int layer, SaveDataTypes::MetaData data) : m_position(pos), m_layer(layer), m_metaData(data) {
+Entity::Entity(glm::vec2 pos, unsigned int layer, SaveDataTypes::MetaData data) :
+	m_position(pos), m_layer(layer), m_metaData(data) {
 	generateUUID();
 } // This is more of an abstract class
 
 Entity::Entity(SaveDataTypes::EntityData& saveData) {
 	// Constructs an entity based off some very vague save data.
-	m_id = saveData.id;
+	m_id	   = saveData.id;
 	m_velocity = saveData.velocity;
 	m_position = saveData.position;
-	m_layer = saveData.layer;
+	m_layer	   = saveData.layer;
 	m_metaData = saveData.md;
 }
 
 Entity::~Entity() {
-
 }
 
 void Entity::update(float timeStep, unsigned int selfIndex) {
@@ -55,9 +55,8 @@ void Entity::tick() {
 }
 
 void Entity::draw(GLEngine::SpriteBatch& sb, float time, int layerDifference, float xOffset) {
-
 	if(m_draw) {
-		if(m_textureId == (GLuint) - 1) {
+		if(m_textureId == (GLuint)-1) {
 			loadTexture();
 		}
 
@@ -73,18 +72,16 @@ void Entity::draw(GLEngine::SpriteBatch& sb, float time, int layerDifference, fl
 
 		sb.draw(destRect, uvRect, m_textureId, depth, colour);
 
-
 		onDraw(sb, time, layerDifference, xOffset);
 	}
 }
 
 void Entity::drawNormal(GLEngine::SpriteBatch& sb, float time, int layerDifference, float xOffset) {
-
 	//GLint lightUniform = program->getUniformLocation("lightColour");
 	//glUniform3fv(lightUniform, 3, &glm::vec3(1.0f, 1.0f, 1.0f)[0]);
 
 	if(m_draw) {
-		if(m_bumpMapId == (GLuint) - 1) {
+		if(m_bumpMapId == (GLuint)-1) {
 			loadTexture();
 		}
 
@@ -111,10 +108,15 @@ void Entity::debugDraw(GLEngine::DebugRenderer& dr, float xOffset) {
 }
 
 void Entity::move(float timeStepVariable) {
-	if(m_velocity.x > MAX_SPEED) m_velocity.x = MAX_SPEED; // MAX_SPEED is here just to make sure entities don't go too fast and clip through blocks
-	if(m_velocity.x < -MAX_SPEED) m_velocity.x = -MAX_SPEED;
-	if(m_velocity.y > MAX_SPEED) m_velocity.y = MAX_SPEED;
-	if(m_velocity.y < -MAX_SPEED) m_velocity.y = -MAX_SPEED;
+	if(m_velocity.x > MAX_SPEED)
+		m_velocity.x =
+			MAX_SPEED; // MAX_SPEED is here just to make sure entities don't go too fast and clip through blocks
+	if(m_velocity.x < -MAX_SPEED)
+		m_velocity.x = -MAX_SPEED;
+	if(m_velocity.y > MAX_SPEED)
+		m_velocity.y = MAX_SPEED;
+	if(m_velocity.y < -MAX_SPEED)
+		m_velocity.y = -MAX_SPEED;
 
 	m_position += m_velocity * timeStepVariable;
 
@@ -125,7 +127,9 @@ void Entity::move(float timeStepVariable) {
 		m_position.x += worldSize;
 	}
 
-	if(m_gravity) m_velocity.y -= 1.225f / 60.0f * timeStepVariable; // Earth gravity is far too harsh for games. We use about 1/8th
+	if(m_gravity)
+		m_velocity.y -=
+			1.225f / 60.0f * timeStepVariable; // Earth gravity is far too harsh for games. We use about 1/8th
 }
 
 /// PRIVATE FUNCTIONS
@@ -137,7 +141,9 @@ bool Entity::checkTilePosition(std::vector<glm::vec2>& collideTilePositions, flo
 	if(gridPos.y >= 0) {
 		// If this is not an air tile, we should collide with it
 		if(Singletons::getWorld()->getTile(gridPos.x, gridPos.y, m_layer)->isSolid()) {
-			collideTilePositions.push_back(glm::vec2((float)gridPos.x + 0.500f, (float)gridPos.y + 0.500f)); // CollideTilePositions are put in as gridspace coords
+			collideTilePositions.push_back(
+				glm::vec2((float)gridPos.x + 0.500f,
+						  (float)gridPos.y + 0.500f)); // CollideTilePositions are put in as gridspace coords
 			return true;
 		}
 	}
@@ -174,23 +180,26 @@ void Entity::collideWithTile(glm::vec2 tilePos, bool ground) {
 	depthVec = glm::vec2((entRelativeCentrePosition + tileRelativeCentrePosition) - abs(distanceVec));
 
 	if(ground) { // Only y-direction
-		if(abs(depthVec.x / m_size.x) > abs(depthVec.y / m_size.y)) { // Figure out if the entity is coming from the Y direction using proportions of depth:size
-			if(distanceVec.y > 0.0f) { // Entity on top side
-				m_velocity.y = 0.0f; // Stop it so that it doesn't keep moving inwards
+		if(abs(depthVec.x / m_size.x) >
+		   abs(depthVec.y /
+			   m_size.y)) { // Figure out if the entity is coming from the Y direction using proportions of depth:size
+			if(distanceVec.y > 0.0f) {		// Entity on top side
+				m_velocity.y = 0.0f;		// Stop it so that it doesn't keep moving inwards
 				m_position.y += depthVec.y; // Put the entity back in the logical place
-				m_onGround = true; // The entity is on the ground (deactivates gravity)
-			} else { // Entity on bottom side
-				m_velocity.y = 0.0f; // Stop it so that it doesn't keep moving inwards
+				m_onGround = true;			// The entity is on the ground (deactivates gravity)
+			} else {						// Entity on bottom side
+				m_velocity.y = 0.0f;		// Stop it so that it doesn't keep moving inwards
 				m_position.y -= depthVec.y; // Put the entity back in the logical place
 			}
 		}
 	} else {
-		if(abs(depthVec.x / m_size.x) < abs(depthVec.y / m_size.y)) { // Figure out if the entity is coming from the X direction
-			if(distanceVec.x > 0.0f) { // Entity on right side
-				m_velocity.x = 0.0f; // Stop it so that it doesn't keep moving inwards
+		if(abs(depthVec.x / m_size.x) <
+		   abs(depthVec.y / m_size.y)) {	// Figure out if the entity is coming from the X direction
+			if(distanceVec.x > 0.0f) {		// Entity on right side
+				m_velocity.x = 0.0f;		// Stop it so that it doesn't keep moving inwards
 				m_position.x += depthVec.x; // Put the entity back in the logical place
-			} else { // Entity is on left side
-				m_velocity.x = 0.0f; // Stop it so that it doesn't keep moving inwards
+			} else {						// Entity is on left side
+				m_velocity.x = 0.0f;		// Stop it so that it doesn't keep moving inwards
 				m_position.x -= depthVec.x; // Put the entity back in the logical place
 			}
 		}
@@ -199,7 +208,6 @@ void Entity::collideWithTile(glm::vec2 tilePos, bool ground) {
 
 void Entity::updateLightLevel() {
 	m_exposedToSun = false;
-
 
 	// Lighting
 	// Find tiles on each corner of the entity
@@ -280,12 +288,12 @@ void Entity::moveDownLayer() {
 
 void Entity::loadTexture() {
 	GLEngine::GLTexture temp;
-	temp = GLEngine::ResourceManager::getTexture(m_texturePath);
+	temp		= GLEngine::ResourceManager::getTexture(m_texturePath);
 	m_textureId = temp.id;
 	//m_animationFramesX = temp.width / (32 * m_size.x);
 	//m_animationFramesY = temp.height / (32 * m_size.y);
 
-	temp = GLEngine::ResourceManager::getTexture(m_bumpMapPath);
+	temp		= GLEngine::ResourceManager::getTexture(m_bumpMapPath);
 	m_bumpMapId = temp.id;
 }
 
@@ -294,16 +302,16 @@ void Entity::generateUUID() {
 		return;
 	}
 
-	double ms = std::chrono::duration_cast<std::chrono::milliseconds>(
-	                std::chrono::system_clock::now().time_since_epoch()
-	            ).count();
+	double ms =
+		std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::system_clock::now().time_since_epoch())
+			.count();
 
 	std::string timeString = std::to_string(ms);
-	std::string rand1 = std::to_string(std::rand());
-	std::string rand2 = std::to_string(std::rand());
-	std::string rand3 = std::to_string(std::rand());
-	std::string xString = std::to_string(m_position.x);
-	std::string yString = std::to_string(m_position.y);
+	std::string rand1	   = std::to_string(std::rand());
+	std::string rand2	   = std::to_string(std::rand());
+	std::string rand3	   = std::to_string(std::rand());
+	std::string xString	   = std::to_string(m_position.x);
+	std::string yString	   = std::to_string(m_position.y);
 
 	std::string UUID = timeString + rand1 + rand2 + rand3 + xString + yString;
 
@@ -311,5 +319,4 @@ void Entity::generateUUID() {
 
 	std::string key = "UUID";
 	m_metaData.setElement(key, UUID);
-
 }

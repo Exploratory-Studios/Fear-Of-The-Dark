@@ -13,10 +13,10 @@ namespace CEGUI {
 	 */
 
 	class GUI_InventoryItemRenderer : public WindowRenderer {
-		public:
-			static const String TypeName;
-			GUI_InventoryItemRenderer(const String& type);
-			void render();
+	  public:
+		static const String TypeName;
+		GUI_InventoryItemRenderer(const String& type);
+		void render();
 	};
 
-}
+} // namespace CEGUI

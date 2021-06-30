@@ -10,11 +10,7 @@ namespace CEGUI {
 	const String GUI_InventoryItem::EventNamespace("InventoryItem");
 
 	GUI_InventoryItem::GUI_InventoryItem(const String& type, const String& name) :
-		DragContainer(type, name),
-		m_validDropTarget(false),
-		m_recieverLocationX(-1),
-		m_recieverLocationY(-1) {
-
+		DragContainer(type, name), m_validDropTarget(false), m_recieverLocationX(-1), m_recieverLocationY(-1) {
 	}
 
 	void GUI_InventoryItem::setContentSize(int width, int height) {
@@ -95,10 +91,10 @@ namespace CEGUI {
 			for(int x = 0; x < m_content.getWidth(); x++) {
 				if(m_content.getElementAtLocation(x, y) != -1) {
 					img->render(*d_geometry,
-					            Vector2f(x * square_size.d_width + 1, y * square_size.d_height + 1),
-					            Sizef(square_size.d_width - 2, square_size.d_height - 2),
-					            0,
-					            ColourRect(colour));
+								Vector2f(x * square_size.d_width + 1, y * square_size.d_height + 1),
+								Sizef(square_size.d_width - 2, square_size.d_height - 2),
+								0,
+								ColourRect(colour));
 				}
 			}
 		}
@@ -107,7 +103,6 @@ namespace CEGUI {
 	Rectf GUI_InventoryItem::gridBasePixelRect() const {
 		return getUnclippedOuterRect().get();
 	}
-
 
 	void GUI_InventoryItem::onMoved(ElementEventArgs& e) {
 		invalidate();
@@ -118,7 +113,7 @@ namespace CEGUI {
 
 		if(receiver) {
 			const Sizef square_size(receiver->squarePixelSize());
-			Rectf area(getUnclippedOuterRect().get());
+			Rectf		area(getUnclippedOuterRect().get());
 			area.offset(Vector2f(square_size.d_width / 2, square_size.d_height / 2));
 			const int x = receiver->gridXLocationFromPixelPosition(area.left());
 			const int y = receiver->gridYLocationFromPixelPosition(area.top());
@@ -136,4 +131,4 @@ namespace CEGUI {
 		m_validDropTarget = (dynamic_cast<GUI_InventoryReceiver*>(d_dropTarget) != 0);
 		invalidate();
 	}
-}
+} // namespace CEGUI

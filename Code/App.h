@@ -17,21 +17,21 @@
 #include <ScreenList.h>
 
 class App : public GLEngine::IMainGame {
-	public:
-		App();
-		~App();
-		virtual void onInit() override;
-		virtual void addScreens() override;
-		virtual void onExit() override;
+  public:
+	App();
+	~App();
+	virtual void onInit() override;
+	virtual void addScreens() override;
+	virtual void onExit() override;
 
-	private:
-		std::unique_ptr<StartupScreen> m_startupScreen;
-		std::unique_ptr<MainMenuScreen> m_mainMenuScreen;
-		std::unique_ptr<OptionsMenuScreen> m_optionsMenuScreen;
-		std::unique_ptr<LoadScreen> m_loadScreen;
-		std::unique_ptr<WaitScreen> m_waitScreen;
-		std::unique_ptr<GameplayScreen> m_gameplayScreen;
+  private:
+	std::unique_ptr<StartupScreen>	   m_startupScreen;
+	std::unique_ptr<MainMenuScreen>	   m_mainMenuScreen;
+	std::unique_ptr<OptionsMenuScreen> m_optionsMenuScreen;
+	std::unique_ptr<LoadScreen>		   m_loadScreen;
+	std::unique_ptr<WaitScreen>		   m_waitScreen;
+	std::unique_ptr<GameplayScreen>	   m_gameplayScreen;
 
-		WorldIOManager* m_WorldIOManager = new WorldIOManager();
-		Options* m_options = new Options;
+	WorldIOManager* m_WorldIOManager = new WorldIOManager();
+	Options*		m_options		 = new Options;
 };

@@ -24,11 +24,15 @@
 
 namespace ScriptingModule {
 
-	void pushDepsToRegistry(lua_State* L, QuestModule::QuestManager* qm, GameplayScreen* gs, AudioManager* am, GLEngine::ParticleEngine2D* p) {
-		setUpvalue(L, WORLD_KEY,          static_cast<void*>(Singletons::getWorld()));
-		setUpvalue(L, QUESTMANAGER_KEY,   static_cast<void*>(qm));
+	void pushDepsToRegistry(lua_State*					L,
+							QuestModule::QuestManager*	qm,
+							GameplayScreen*				gs,
+							AudioManager*				am,
+							GLEngine::ParticleEngine2D* p) {
+		setUpvalue(L, WORLD_KEY, static_cast<void*>(Singletons::getWorld()));
+		setUpvalue(L, QUESTMANAGER_KEY, static_cast<void*>(qm));
 		setUpvalue(L, GAMEPLAYSCREEN_KEY, static_cast<void*>(gs));
-		setUpvalue(L, AUDIOMANAGER_KEY,   static_cast<void*>(am));
+		setUpvalue(L, AUDIOMANAGER_KEY, static_cast<void*>(am));
 		setUpvalue(L, PARTICLEENGINE_KEY, static_cast<void*>(p));
 	}
 
@@ -52,7 +56,7 @@ namespace ScriptingModule {
 	}
 
 	void createArgumentsTable(lua_State* T, std::vector<Argument>& args) { // Creates and labels globals for user use.
-		lua_newtable(T); // Create the "main" table.
+		lua_newtable(T);												   // Create the "main" table.
 		for(unsigned int i = 0; i < args.size(); i++) {
 			if(args[i].isMetadata) {
 				continue; // We have another loop to deal with these guys.
@@ -62,7 +66,7 @@ namespace ScriptingModule {
 			lua_settable(T, -3);
 		}
 		lua_pushstring(T, (const char*)"metadata"); // Set the key for the metadata table. (the key in the main table)
-		lua_newtable(T); // This is our metadata table (the value in the main table)
+		lua_newtable(T);							// This is our metadata table (the value in the main table)
 		for(unsigned int i = 0; i < args.size(); i++) {
 			if(!args[i].isMetadata) {
 				continue; // We don't need to re-process these
@@ -74,15 +78,11 @@ namespace ScriptingModule {
 		lua_settable(T, -3); // Add the metadata table to the main table
 	}
 
-
-
-
-
-
 	void setBlock(World* world, unsigned int id, glm::vec2 pos, int layer, SaveDataTypes::MetaData metaData) {
-		unsigned int worldSize = Singletons::getWorld()->getSize();
-		float correctedX = ((int)pos.x + worldSize) % worldSize;
-		world->setTile(Factory::createTile(id, glm::vec2(correctedX, pos.y), layer, metaData)); // Set the block, of course
+		unsigned int worldSize	= Singletons::getWorld()->getSize();
+		float		 correctedX = ((int)pos.x + worldSize) % worldSize;
+		world->setTile(
+			Factory::createTile(id, glm::vec2(correctedX, pos.y), layer, metaData)); // Set the block, of course
 		/// TODO: compile array of chunks in init()
 	}
 
@@ -109,7 +109,8 @@ namespace ScriptingModule {
 	}
 
 	unsigned int addEntity(World* world, unsigned int id, glm::vec2 position, unsigned int layer) {
-		Singletons::getEntityManager()->queueEntityToAdd(Factory::createEntity(id, position, layer, SaveDataTypes::MetaData(), true));
+		Singletons::getEntityManager()->queueEntityToAdd(
+			Factory::createEntity(id, position, layer, SaveDataTypes::MetaData(), true));
 
 		return 0;
 	}
@@ -136,7 +137,8 @@ namespace ScriptingModule {
 
 	void giveItem(World* world, std::string UUID, unsigned int id, unsigned int quantity) {
 		EntityNPC* e = dynamic_cast<EntityNPC*>(Singletons::getEntityManager()->getEntityByUUID(UUID));
-		if(e) e->giveItem(Factory::createItem(id, quantity, false));
+		if(e)
+			e->giveItem(Factory::createItem(id, quantity, false));
 	}
 
 	void setPlayerCanInteract(World* world, bool canInteract) {
@@ -209,38 +211,40 @@ namespace ScriptingModule {
 
 		lua_pushinteger(L, index); // Set index ("key")
 		lua_pushinteger(L, value); // Set value
-		lua_settable(L, -3); // Add value and index to table at index -3
+		lua_settable(L, -3);	   // Add value and index to table at index -3
 	}
 
 	void lua_pushnumbertotable(lua_State* L, int index, float value) {
 		// make sure to call lua_newtable(L) before using this function!
 
 		lua_pushinteger(L, index); // Set index ("key")
-		lua_pushnumber(L, value); // Set value
-		lua_settable(L, -3); // Add value and index to table at index -3
+		lua_pushnumber(L, value);  // Set value
+		lua_settable(L, -3);	   // Add value and index to table at index -3
 	}
 
 	void lua_pushstringtotable(lua_State* L, int index, char* value) {
 		// make sure to call lua_newtable(L) before using this function!
 
 		lua_pushinteger(L, index); // Set index ("key")
-		lua_pushstring(L, value); // Set value
-		lua_settable(L, -3); // Add value and index to table at index -3
+		lua_pushstring(L, value);  // Set value
+		lua_settable(L, -3);	   // Add value and index to table at index -3
 	}
 
 	void lua_pushthreadtotable(lua_State* L, int index, lua_State* thread) {
 		// make sure to call lua_newtable(L) before using this function!
 
 		lua_pushinteger(L, index); // Set index ("key")
-		lua_pushthread(thread); // Set value
-		lua_settable(L, -3); // Add value and index to table at index -3
+		lua_pushthread(thread);	   // Set value
+		lua_settable(L, -3);	   // Add value and index to table at index -3
 	}
 
 	std::vector<Entity*> nearEntityTarget(World* world, glm::vec2 nearTo, float minDist) {
 		std::vector<Entity*> ret;
 
 		for(unsigned int i = 0; i < Singletons::getEntityManager()->getEntities().size(); i++) { /// TODO: Optimize this
-			float dist = std::sqrt(std::abs(nearTo.x - Singletons::getEntityManager()->getEntities()[i]->getPosition().x) + std::abs(nearTo.y - Singletons::getEntityManager()->getEntities()[i]->getPosition().y));
+			float dist =
+				std::sqrt(std::abs(nearTo.x - Singletons::getEntityManager()->getEntities()[i]->getPosition().x) +
+						  std::abs(nearTo.y - Singletons::getEntityManager()->getEntities()[i]->getPosition().y));
 			if(dist < minDist) {
 				ret.push_back(Singletons::getEntityManager()->getEntities()[i]);
 			}
@@ -251,15 +255,17 @@ namespace ScriptingModule {
 
 	std::vector<Entity*> areaEntityTarget(World* world, glm::vec2 pos1, glm::vec2 pos2) {
 		unsigned int worldSize = Singletons::getWorld()->getSize();
-		unsigned int chunk1 = std::floor(pos1.x / CHUNK_SIZE) + worldSize;
-		unsigned int chunk2 = std::floor(pos2.x / CHUNK_SIZE) + worldSize;
+		unsigned int chunk1	   = std::floor(pos1.x / CHUNK_SIZE) + worldSize;
+		unsigned int chunk2	   = std::floor(pos2.x / CHUNK_SIZE) + worldSize;
 
 		std::vector<Entity*> ret;
 
 		for(unsigned int i = 0; i <= chunk1 - chunk2; i++) {
 			for(unsigned int j = 0; j < Singletons::getEntityManager()->getEntities().size(); j++) {
-				if(Singletons::getEntityManager()->getEntities()[j]->getPosition().x >= pos1.x && Singletons::getEntityManager()->getEntities()[j]->getPosition().x <= pos2.x) {
-					if(Singletons::getEntityManager()->getEntities()[j]->getPosition().y >= pos1.y && Singletons::getEntityManager()->getEntities()[j]->getPosition().y <= pos2.y) {
+				if(Singletons::getEntityManager()->getEntities()[j]->getPosition().x >= pos1.x &&
+				   Singletons::getEntityManager()->getEntities()[j]->getPosition().x <= pos2.x) {
+					if(Singletons::getEntityManager()->getEntities()[j]->getPosition().y >= pos1.y &&
+					   Singletons::getEntityManager()->getEntities()[j]->getPosition().y <= pos2.y) {
 						ret.push_back(Singletons::getEntityManager()->getEntities()[j]);
 					}
 				}
@@ -293,7 +299,8 @@ namespace ScriptingModule {
 		unsigned int s = 0;
 
 		for(unsigned int i = 0; i < Singletons::getEntityManager()->getEntities().size(); i++) {
-			if(Singletons::getEntityManager()->getEntities()[i] == Singletons::getEntityManager()->getPlayer()->getSelectedEntity()) {
+			if(Singletons::getEntityManager()->getEntities()[i] ==
+			   Singletons::getEntityManager()->getPlayer()->getSelectedEntity()) {
 				s = i;
 				break;
 			}
@@ -324,4 +331,4 @@ namespace ScriptingModule {
 		return ret;
 	}
 
-}
+} // namespace ScriptingModule

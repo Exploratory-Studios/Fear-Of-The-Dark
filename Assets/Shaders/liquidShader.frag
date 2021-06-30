@@ -12,17 +12,7 @@ out vec4 color;
 uniform sampler2D textureSampler;
 
 void main() {
-	gl_FragDepth = fragmentPosition.z;
-
-	float opacity = texture(textureSampler, fragmentUV.xy).r;
-	if(opacity > 0.08f) {
-		opacity = 1.0f;
-	} else if(opacity > 0.065f) {
-		opacity = 0.5f;
-	} else if(opacity > 0.05f) {
-		opacity = 0.25f;
-	} else {
-		discard;
-	}
-	color = fragmentColour * vec4(1.0, 1.0, 1.0, opacity);
+	float density = texture(textureSampler, fragmentUV.xy).r;
+	
+	color = vec4(density, fragmentColour.g, density, 1.0);
 }

@@ -34,5 +34,9 @@ void ItemBlock::setTileToPlace(Tile& tile) {
 }
 
 void ItemBlock::placeBlock(Tile* selected) {
-	Singletons::getWorld()->setTile(Factory::createTile(m_block->getID(), selected->getPosition(), selected->getLayer(), m_block->getMetaData(), true));
+	Singletons::getWorld()->setTile(Factory::createTile(m_block->getID(),
+														selected->getPosition(),
+														selected->getLayer(),
+														m_block->getMetaData(),
+														true));
 }

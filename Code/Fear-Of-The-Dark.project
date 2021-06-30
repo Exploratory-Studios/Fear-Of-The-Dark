@@ -5,6 +5,9 @@
       <![CDATA[00040001N0005Debug0000000000000001N0007DebugVB0000000000000001N0015Release - Linux0000000000000001N0017Release - Windows000000000000]]>
     </Plugin>
   </Plugins>
+  <VirtualDirectory Name="Questing">
+    <File Name="../Assets/Questing/Readme"/>
+  </VirtualDirectory>
   <VirtualDirectory Name="Fluid Simulation">
     <File Name="FluidDomain.cpp"/>
     <File Name="FluidDomain.h"/>
@@ -106,20 +109,6 @@
     <File Name="InventoryBase.h"/>
     <File Name="NPCInventory.h"/>
     <File Name="NPCInventory.cpp"/>
-  </VirtualDirectory>
-  <VirtualDirectory Name="Shaders &amp; Data">
-    <File Name="../Assets/Shaders/vignetteShader.vert"/>
-    <File Name="../Assets/Shaders/vignetteShader.frag"/>
-    <File Name="../Assets/Shaders/textureShader.vert"/>
-    <File Name="../Assets/Shaders/textureShader.frag"/>
-    <File Name="../Assets/Shaders/superBasicShader.vert"/>
-    <File Name="../Assets/Shaders/superBasicShader.frag"/>
-    <File Name="../Assets/Shaders/skyShader.vert"/>
-    <File Name="../Assets/Shaders/skyShader.frag"/>
-    <File Name="../Assets/Shaders/postProcesser.vert"/>
-    <File Name="../Assets/Shaders/postProcesser.frag"/>
-    <File Name="../Assets/Shaders/colourShader.vert"/>
-    <File Name="../Assets/Shaders/colourShader.frag"/>
   </VirtualDirectory>
   <VirtualDirectory Name="GUI">
     <File Name="GUI_IntArray2D.h"/>
@@ -461,9 +450,11 @@
       </Completion>
     </Configuration>
   </Settings>
-  <Dependencies Name="Debug"/>
   <Dependencies Name="DebugVB"/>
   <Dependencies Name="Release - Linux"/>
   <Dependencies Name="Release - Windows"/>
   <Dependencies Name="Release - Windows32"/>
+  <Dependencies Name="Debug">
+    <Project Name="GLEngine"/>
+  </Dependencies>
 </CodeLite_Project>

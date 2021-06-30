@@ -297,24 +297,23 @@ void GameplayScreen::draw() {
 	}
 
 	{
-		if(m_debugBool)
-			drawFluidsToFBO();
+		drawFluidsToFBO();
 
-		/*m_textureProgram.use();
+		m_basicFBOTextureProgram.use();
 
 		// Camera matrix
 		glm::mat4 projectionMatrix = m_uiCamera.getCameraMatrix();
-		GLuint	  pUniform		   = m_postProcessor.getUniformLocation("P");
+		GLuint	  pUniform		   = m_basicFBOTextureProgram.getUniformLocation("P");
 		glUniformMatrix4fv(pUniform, 1, GL_FALSE, &projectionMatrix[0][0]);
 
 		glActiveTexture(GL_TEXTURE0);
 		glBindTexture(GL_TEXTURE_2D, m_fluidFBO.getTexture());
-		GLuint textureUniform = m_postProcessor.getUniformLocation("textureSampler");
+		GLuint textureUniform = m_basicFBOTextureProgram.getUniformLocation("textureSampler");
 		glUniform1i(textureUniform, 0);
 
 		m_fluidFBO.draw();
 
-		m_textureProgram.unuse();*/
+		m_basicFBOTextureProgram.unuse();
 	}
 
 	drawGUIToScreen(); // These two actually do draw to the screen.
@@ -486,11 +485,11 @@ void GameplayScreen::drawFluidsToFBO() {
 	glm::vec4 screenRect = getScreenBox();
 	Singletons::getWorld()->updateFluidTextures(screenRect);
 
-	/*m_fluidFBO.begin();
+	m_fluidFBO.begin();
 	m_fluidFBO.clear();
 
 	glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
-	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);*/
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 	m_fluidProgram.use();
 
@@ -511,7 +510,7 @@ void GameplayScreen::drawFluidsToFBO() {
 
 	m_fluidProgram.unuse();
 
-	//m_fluidFBO.end();
+	m_fluidFBO.end();
 }
 
 void GameplayScreen::drawGUIToScreen() {

@@ -16,8 +16,11 @@ namespace FluidModule {
 		~FluidDomain();
 
 		void update();
-		void draw(GLEngine::SpriteBatch& sb, glm::vec4& destRect);   // Does the actual drawing. We *must* updateTexture beforehand. Don't do it with draw, because it can unbind the texture from the FBO.
-		void updateTexture(glm::vec4& screenDestRect);				 // Updates the texture. Handles everything!
+		void draw(
+			GLEngine::SpriteBatch& sb,
+			glm::vec4&
+				destRect); // Does the actual drawing. We *must* updateTexture beforehand. Don't do it with draw, because it can unbind the texture from the FBO.
+		void updateTexture(glm::vec4& screenDestRect); // Updates the texture. Handles everything!
 
 		void updateField(Tile* tile);
 
@@ -27,7 +30,11 @@ namespace FluidModule {
 		void updateTextureData(glm::vec4& screenDestRect);			 // Creates the array for texture assignment
 
 		GLEngine::GLTexture			m_texture;
+		GLEngine::ColourRGBA8		m_fluidColour;
 		std::vector<unsigned char>* m_textureData;
+		unsigned int				m_usedTextureWidth, m_usedTextureHeight;
+		unsigned int				m_allocatedTextureWidth = 60 * FLUID_PARTITION_SIZE,
+					 m_allocatedTextureHeight				= 40 * FLUID_PARTITION_SIZE;
 
 		float m_lastScale = 0; // The last camera scale. Used to adjust texture size.
 

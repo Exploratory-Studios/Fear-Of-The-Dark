@@ -12,7 +12,5 @@ out vec4 color;
 uniform sampler2D textureSampler;
 
 void main() {
-	float density = texture(textureSampler, fragmentUV.xy).r;
-	
-	color = vec4(density, fragmentColour.g, density, 1.0);
+	color = vec4(1.0, 1.0, 1.0, texture(textureSampler, fragmentUV.xy).r) * fragmentColour;
 }

@@ -21,6 +21,13 @@ namespace FluidModule {
 			delete deltaDensities;
 		}
 
+		FluidCell* getDensityCell(unsigned int x, unsigned int y) {
+			return &densities[x + FLUID_PARTITION_SIZE * y];
+		}
+		FluidCell* getDeltaDensityCell(unsigned int x, unsigned int y) {
+			return &deltaDensities[x + FLUID_PARTITION_SIZE * y];
+		}
+
 		FluidCell* densities	  = nullptr;
 		FluidCell* deltaDensities = nullptr;
 

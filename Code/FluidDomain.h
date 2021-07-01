@@ -35,6 +35,8 @@ namespace FluidModule {
 		unsigned int				m_usedTextureWidth, m_usedTextureHeight;
 		unsigned int				m_allocatedTextureWidth = 60 * FLUID_PARTITION_SIZE,
 					 m_allocatedTextureHeight				= 40 * FLUID_PARTITION_SIZE;
+		float m_idealDensity								= 1.0f;
+		float m_gravityConstant								= 0.4f;
 
 		float m_lastScale = 0; // The last camera scale. Used to adjust texture size.
 
@@ -43,16 +45,47 @@ namespace FluidModule {
 		// where a nullptr is equivalent to a solid block (AKA, no density should be traded there)
 
 		void updateDensityFields(); // Loop through fields and only update the non-nullptrs who don't have the equilibrium flag set
-		void updateDensityField(
-			unsigned fieldX,
-			unsigned fieldY); // Loops through all FluidCells in density field, propagating them into their deltafields
-		void getReceivedDensityFromNeighbour(
-			unsigned int fieldX,
-			unsigned int fieldY,
-			unsigned int cellX,
-			unsigned int cellY,
-			int			 cellXN,
-			int cellYN); // Calculates how much density is traded between this cell (@x, y) and its neighbour (@xn, yn)
-						 /// NOTE: The domain spans the entire world so no out-of-bounds should ever take place.
+		void updateDensityField(unsigned fieldX, unsigned fieldY);
+		// Loops through all FluidCells in density field, propagating them into their deltafields
+		float getReceivedDensityFromNeighbour(unsigned int fieldX,
+											  unsigned int fieldY,
+											  unsigned int cellX,
+											  unsigned int cellY,
+											  int		   cellXMod,
+											  int		   cellYMod);
+		// Calculates how much density is traded between this cell (@x, y) and its neighbour (@x+xMod, y+ymod)
+		/// NOTE: The domain spans the entire world so no out-of-bounds should ever take place.
+
+		FluidCell* getRelativeCell(unsigned int fieldX0,
+								   unsigned int fieldY0,
+								   unsigned int cellX0,
+								   unsigned int cellY0,
+								   int			cellXOffset,
+								   int			cellYOffset);
+		// Returns a FluidCell address to some cell relative to cell0 in field0
+
+		float getRelativeCellDensity(unsigned int fieldX0,
+									 unsigned int fieldY0,
+									 unsigned int cellX0,
+									 unsigned int cellY0,
+									 int		  cellXOffset,
+									 int		  cellYOffset);
+		// Returns a cell's density at some cell relative to cell0 in field0.
+
+		FluidCell* getRelativeDeltaCell(unsigned int fieldX0,
+										unsigned int fieldY0,
+										unsigned int cellX0,
+										unsigned int cellY0,
+										int			 cellXOffset,
+										int			 cellYOffset);
+		// Returns a FluidCell address to some cell relative to cell0 in field0
+
+		float getRelativeDeltaCellDensity(unsigned int fieldX0,
+										  unsigned int fieldY0,
+										  unsigned int cellX0,
+										  unsigned int cellY0,
+										  int		   cellXOffset,
+										  int		   cellYOffset);
+		// Returns a cell's density at some cell relative to cell0 in field0.
 	};
 } // namespace FluidModule

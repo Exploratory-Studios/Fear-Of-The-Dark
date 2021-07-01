@@ -116,4 +116,6 @@ void main()
 	float intensity = getLight(sun, components);
 
 	colour.rgb *= intensity;
+	colour.rgb *= colour.rgb; // Extremifies colours!
+	//colour.rgb = -(sqrt(vec3(1.0)-colour.rgb*colour.rgb) - vec3(1.0));
 }

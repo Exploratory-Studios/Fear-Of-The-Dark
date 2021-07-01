@@ -176,7 +176,7 @@ namespace FluidModule {
 				DensityField* field = m_densityFields[fieldX][fieldY];
 
 				if(field) {
-					(*m_textureData)[index] = 255;
+					(*m_textureData)[index] = field->densities[(addedCellX - addedFieldX*FLUID_PARTITION_SIZE) * FLUID_PARTITION_SIZE + (addedCellY - addedFieldY*FLUID_PARTITION_SIZE)].density;
 				} else {
 					(*m_textureData)[index] = 0;
 				}

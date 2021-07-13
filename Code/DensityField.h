@@ -17,8 +17,8 @@ namespace FluidModule {
 			deltaDensities = new FluidCell[FLUID_PARTITION_SIZE * FLUID_PARTITION_SIZE];
 		}
 		~DensityField() {
-			delete densities;
-			delete deltaDensities;
+			delete[] densities;
+			delete[] deltaDensities;
 		}
 
 		FluidCell* getDensityCell(unsigned int x, unsigned int y) {
@@ -42,7 +42,7 @@ namespace FluidModule {
 			for(unsigned int i = 0; i < FLUID_PARTITION_SIZE * FLUID_PARTITION_SIZE; i++)
 				totalTraded += std::abs(densities[i].density - deltaDensities[i].density);
 
-			if(totalTraded <= 0.005f) {
+			if(totalTraded <= 0.0001f) {
 				inEquilibrium = true;
 				return true;
 			} else {

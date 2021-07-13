@@ -150,7 +150,7 @@ class GameplayScreen : public GLEngine::IGameScreen {
 #ifdef DEV_CONTROLS
 	CEGUI::DefaultWindow* m_fpsWidget = nullptr;
 
-	bool m_debugBool = true;
+	bool m_debugBool = false;
 #endif // DEV_CONTROLS
 
 	std::vector<int> m_activatedChunks; // Chunks that should still update
@@ -162,4 +162,6 @@ class GameplayScreen : public GLEngine::IGameScreen {
 	unsigned int m_nextScreenIndex = SCREEN_INDEX_NO_SCREEN;
 
 	bool m_hasBeenInited = false;
+	
+	float variable = 0.0f;
 };

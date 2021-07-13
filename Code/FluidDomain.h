@@ -24,6 +24,13 @@ namespace FluidModule {
 
 		void updateField(Tile* tile);
 
+		void  addFluid(unsigned int fieldX,
+					   unsigned int fieldY,
+					   unsigned int cellX,
+					   unsigned int cellY,
+					   float		amount); // Adds fluid, breaks equilibrium
+		float removeFluid();		  // Returns the amount of fluid removed.
+
 	  private:
 		void createTexture();										 // Creates the texture. Is only for the constructor
 		void resizeTexture(unsigned int width, unsigned int height); // Resizes the texture. For use with shifting scale
@@ -36,11 +43,13 @@ namespace FluidModule {
 		unsigned int				m_allocatedTextureWidth = 60 * FLUID_PARTITION_SIZE,
 					 m_allocatedTextureHeight				= 40 * FLUID_PARTITION_SIZE;
 		float m_idealDensity								= 1.0f;
-		float m_gravityConstant								= 0.4f;
+		float m_gravityConstant								= 0.0f;
 
 		float m_lastScale = 0; // The last camera scale. Used to adjust texture size.
 
 		std::vector<std::vector<DensityField*>> m_densityFields;
+		std::vector<DensityField*>				m_brokenEquilibriums;
+		std::vector<DensityField*>				m_madeEquilibriums;
 		// A 2D vector of density field pointers,
 		// where a nullptr is equivalent to a solid block (AKA, no density should be traded there)
 
@@ -52,9 +61,12 @@ namespace FluidModule {
 											  unsigned int cellX,
 											  unsigned int cellY,
 											  int		   cellXMod,
-											  int		   cellYMod);
-		// Calculates how much density is traded between this cell (@x, y) and its neighbour (@x+xMod, y+ymod)
-		/// NOTE: The domain spans the entire world so no out-of-bounds should ever take place.
+											  int		   cellYMod,
+											  float		   neighbourSum);
+		// Calculates how much density is traded to this cell (@x, y) from its neighbour (@x+xMod, y+ymod)
+
+		DensityField* getRelativeField(unsigned int fieldX0, unsigned int fieldY0, int fieldXOffset, int fieldYOffset);
+		// Returns a DensityField address to some densityfield relative to field0.
 
 		FluidCell* getRelativeCell(unsigned int fieldX0,
 								   unsigned int fieldY0,

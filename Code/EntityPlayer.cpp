@@ -297,7 +297,7 @@ void EntityPlayer::updateMouse(glm::vec2 mouseCoords) {
 	if(m_canInteract) {
 		m_selectedBlock = nullptr;
 
-		if((int)mouseCoords.x > -Singletons::getWorld()->getSize()) {
+		if((int)mouseCoords.x > -(int)(Singletons::getWorld()->getSize() * CHUNK_SIZE)) {
 			m_selectedBlock = Singletons::getWorld()->getTile((int)mouseCoords.x, mouseCoords.y, m_layer);
 		}
 

@@ -36,8 +36,26 @@ namespace FluidModule {
 		bool brokeEquilibrium =
 			false; // Has equilibrium been broken this past update cycle (Should this be true, break neighbours' equilibriums)
 
+		bool checkForEquilibrium() {
+			float totalTraded = 0.0f;
+
+			for(unsigned int i = 0; i < FLUID_PARTITION_SIZE * FLUID_PARTITION_SIZE; i++)
+				totalTraded += std::abs(densities[i].density - deltaDensities[i].density);
+
+			if(totalTraded <= 0.005f) {
+				inEquilibrium = true;
+				return true;
+			} else {
+				inEquilibrium = false;
+				return false;
+			}
+		}
+
 		void swapForDelta() {
-			densities = deltaDensities;
+			for(unsigned int i = 0; i < FLUID_PARTITION_SIZE * FLUID_PARTITION_SIZE; i++) {
+				densities[i].density	  = deltaDensities[i].density;
+				deltaDensities[i].density = 0.0f;
+			}
 		}
 	};
 } // namespace FluidModule

@@ -9,6 +9,7 @@
 #include "Tile.h"
 #include "EntityNPC.h"
 #include "EntityPlayer.h"
+#include "FluidDomain.h"
 
 #include "NPCInventory.h"
 
@@ -217,6 +218,11 @@ void GameplayScreen::update() {
 	}
 	if(m_currentState != GLEngine::ScreenState::EXIT_APPLICATION)
 		Singletons::getGUI()->update();
+
+	if(m_debugBool) {
+		// 13,15
+		Singletons::getWorld()->getFluid(0)->addFluid(13, 15, 0, 0, 1.2f);
+	}
 }
 
 void GameplayScreen::draw() {

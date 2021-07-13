@@ -12,5 +12,21 @@ out vec4 color;
 uniform sampler2D textureSampler;
 
 void main() {
-	color = vec4(1.0, 1.0, 1.0, texture(textureSampler, fragmentUV.xy).r) * fragmentColour;
+	float water = texture(textureSampler, fragmentUV.xy).r;
+	float alpha = water;
+	
+	//if(water < 0.8f) {
+	//	alpha = 0.8f;
+	//}
+	//if(water < 0.5f) {
+	//	alpha = 0.5f;
+	//}
+	//if(water < 0.2f) {
+	//	alpha = 0.2f;
+	//}
+	//if(water == 0.0f) {
+	//	alpha = 0.0f;
+	//}
+
+	color = vec4(1.0, 1.0, 1.0, alpha) * fragmentColour;
 }

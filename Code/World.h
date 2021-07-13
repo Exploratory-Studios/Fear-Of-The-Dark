@@ -31,9 +31,10 @@ class World {
   public:
 	World(unsigned int xSize, unsigned int ySize, unsigned int zSize);
 	~World();
-	void				 setTile(Tile* tile);
-	Tile*				 getTile(int x, int y, int layer);
-	XMLModule::BiomeData getBiome(int x); // Returns the biome data of a certain x position
+	void					  setTile(Tile* tile);
+	Tile*					  getTile(int x, int y, int layer);
+	XMLModule::BiomeData	  getBiome(int x); // Returns the biome data of a certain x position
+	FluidModule::FluidDomain* getFluid(unsigned int index);
 
 	void sortLights();
 	void addLight(Tile* t);

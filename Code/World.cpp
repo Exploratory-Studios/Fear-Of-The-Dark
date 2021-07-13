@@ -165,6 +165,10 @@ XMLModule::BiomeData World::getBiome(int x) {
 	return XMLModule::XMLData::getBiomeData(biomeID);
 }
 
+FluidModule::FluidDomain* World::getFluid(unsigned int index) {
+	return m_fluidDomains[index];
+}
+
 void World::sortLights() {
 	bool changed = true;
 	while(changed) {

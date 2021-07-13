@@ -176,9 +176,14 @@ namespace FluidModule {
 				DensityField* field = m_densityFields[fieldX][fieldY];
 
 				if(field) {
-					unsigned int cellX		= (addedCellX - addedFieldX * FLUID_PARTITION_SIZE);
-					unsigned int cellY		= (addedCellY - addedFieldY * FLUID_PARTITION_SIZE);
-					(*m_textureData)[index] = field->getDensityCell(cellX, cellY)->density;
+					unsigned int cellX = (addedCellX - addedFieldX * FLUID_PARTITION_SIZE);
+					unsigned int cellY = (addedCellY - addedFieldY * FLUID_PARTITION_SIZE);
+					(*m_textureData)[index] =
+						std::max(std::min(field->getDensityCell(cellX, cellY)->density * 255, 255.0f), 0.0f);
+
+					//if(field->inEquilibrium == false) {
+					//(*m_textureData)[index] = 128;
+					//}
 				} else {
 					(*m_textureData)[index] = 0;
 				}
@@ -189,7 +194,19 @@ namespace FluidModule {
 	}
 
 	void FluidDomain::update() {
-		updateDensityFields(); // Right now everything just sets the equilibrium. Nothing breaks it.
+		updateDensityFields();
+	}
+
+	void FluidDomain::addFluid(unsigned int fieldX,
+							   unsigned int fieldY,
+							   unsigned int cellX,
+							   unsigned int cellY,
+							   float		amount) {
+		DensityField* field = m_densityFields[fieldX][fieldY];
+
+		field->getDensityCell(cellX, cellY)->density += amount;
+
+		m_brokenEquilibriums.push_back(field);
 	}
 
 	void FluidDomain::updateDensityFields() {
@@ -206,11 +223,33 @@ namespace FluidModule {
 				if(m_densityFields[x][y]) {
 					if(!m_densityFields[x][y]->inEquilibrium) {
 						DensityField* field = m_densityFields[x][y];
+						if(!field->checkForEquilibrium()) {
+							// Equilibrium has been broken, set the neighbours!
+							m_brokenEquilibriums.push_back(getRelativeField(x, y, -1, 0));
+							m_brokenEquilibriums.push_back(getRelativeField(x, y, 1, 0));
+
+							if(y > 0) {
+								m_brokenEquilibriums.push_back(m_densityFields[x][y - 1]);
+							}
+							if(y < m_densityFields[x].size() - 1) {
+								m_brokenEquilibriums.push_back(m_densityFields[x][y + 1]);
+							}
+						}
 						field->swapForDelta();
 					}
 				}
 			}
 		}
+
+		for(unsigned int i = 0; i < m_madeEquilibriums.size(); i++) {
+			m_madeEquilibriums[i]->inEquilibrium = true;
+		}
+		m_madeEquilibriums.clear();
+
+		for(unsigned int i = 0; i < m_brokenEquilibriums.size(); i++) {
+			m_brokenEquilibriums[i]->inEquilibrium = false;
+		}
+		m_brokenEquilibriums.clear();
 	}
 
 	void FluidDomain::updateDensityField(unsigned fieldX, unsigned fieldY) {
@@ -221,37 +260,63 @@ namespace FluidModule {
 
 		for(unsigned int x = 0; x < FLUID_PARTITION_SIZE; x++) {
 			for(unsigned int y = 0; y < FLUID_PARTITION_SIZE; y++) {
-				FluidCell* cell0 = field->getDensityCell(x, y);
+				FluidCell* cell0	   = field->getDensityCell(x, y);
+				FluidCell* cell0_delta = field->getDeltaDensityCell(x, y);
 
-				FluidCell* cellX0	= getRelativeDeltaCell(fieldX, fieldY, x, y, +1, 0);
-				float	   tradedX0 = getReceivedDensityFromNeighbour(fieldX, fieldY, x, y, +1, 0);
-				cellX0->density += tradedX0;
-				totalTraded += tradedX0;
+				// Calculate total neighbourly needs (excluding self)
+				float neighbourlyNeeds = 0.0f;
 
-				if(fieldY < WORLD_HEIGHT - 1) {
-					FluidCell* cellY0	= getRelativeDeltaCell(fieldX, fieldY, x, y, 0, +1);
-					float	   tradedY0 = getReceivedDensityFromNeighbour(fieldX, fieldY, x, y, 0, +1);
-					cellY0->density += tradedY0;
-					totalTraded += tradedY0;
-				}
+				FluidCell* cellX0	= getRelativeCell(fieldX, fieldY, x, y, -1, 0);
+				FluidCell* cellX1	= getRelativeCell(fieldX, fieldY, x, y, 1, 0);
+				FluidCell* cellX0_d = getRelativeDeltaCell(fieldX, fieldY, x, y, -1, 0);
+				FluidCell* cellX1_d = getRelativeDeltaCell(fieldX, fieldY, x, y, 1, 0);
 
-				FluidCell* cellX1	= getRelativeDeltaCell(fieldX, fieldY, x, y, -1, 0);
-				float	   tradedX1 = getReceivedDensityFromNeighbour(fieldX, fieldY, x, y, -1, 0);
-				cellX1->density += tradedX1;
-				totalTraded += tradedX1;
+				neighbourlyNeeds += std::max(m_idealDensity - cellX0->density, 0.0f);
+				neighbourlyNeeds += std::max(m_idealDensity - cellX1->density, 0.0f);
 
+				FluidCell* cellY0	= nullptr;
+				FluidCell* cellY0_d = nullptr;
 				if(fieldY > 0) {
-					FluidCell* cellY1	= getRelativeDeltaCell(fieldX, fieldY, x, y, 0, -1);
-					float	   tradedY1 = getReceivedDensityFromNeighbour(fieldX, fieldY, x, y, 0, -1);
-					cellY1->density += tradedY1;
-					totalTraded += tradedY1;
+					cellY0	 = getRelativeCell(fieldX, fieldY, x, y, 0, -1);
+					cellY0_d = getRelativeDeltaCell(fieldX, fieldY, x, y, 0, -1);
+					neighbourlyNeeds += std::max(m_idealDensity - cellY0->density, 0.0f);
 				}
-			}
-		}
 
-		if(totalTraded < 0.1f) {
-			// Equilibrium has been reached. Set the flag!
-			field->inEquilibrium = true;
+				FluidCell* cellY1	= nullptr;
+				FluidCell* cellY1_d = nullptr;
+				if(fieldY < WORLD_HEIGHT - 1) {
+					cellY1	 = getRelativeCell(fieldX, fieldY, x, y, 0, 1);
+					cellY1_d = getRelativeDeltaCell(fieldX, fieldY, x, y, 0, 1);
+					neighbourlyNeeds += std::max(m_idealDensity - cellY1->density, 0.0f);
+				}
+
+				// Add self's needs
+				neighbourlyNeeds += std::max(m_idealDensity - cell0->density, 0.0f);
+
+				// Now we have neighbourly need, find out their individual weights;
+				float cellX0_w = std::max(m_idealDensity - cellX0->density, 0.0f) / neighbourlyNeeds,
+					  cellX1_w = std::max(m_idealDensity - cellX1->density, 0.0f) / neighbourlyNeeds,
+					  cellY0_w = cellY0 ? (std::max(m_idealDensity - (cellY0->density + m_gravityConstant), 0.0f) / neighbourlyNeeds) : 0.0f,
+					  cellY1_w = cellY1 ? (std::max(m_idealDensity - (cellY1->density - m_gravityConstant), 0.0f) / neighbourlyNeeds) : 0.0f,
+					  cell0_w  = std::max(m_idealDensity - cell0->density, 0.0f) / neighbourlyNeeds;
+
+				// Now we have their weights (great!) we just need to multiply that by the self's density
+				// Of course, we are going to weight the self much higher than the rest.
+				float selfDensity	  = cell0->density;
+				float neighbourWeight = 0.1f;
+				unsigned int neighbours = 2;
+				cellX0_d->density += selfDensity * cellX0_w * neighbourWeight;
+				cellX1_d->density += selfDensity * cellX1_w * neighbourWeight;
+				if(cellY0) {
+					cellY0_d->density += selfDensity * cellY0_w * neighbourWeight;
+					neighbours++;
+				}
+				if(cellY1) {
+					cellY1_d->density += selfDensity * cellY1_w * neighbourWeight;
+					neighbours++;
+				}
+				cell0_delta->density += selfDensity * cell0_w * ((neighbours + 1.0f) - neighbours * neighbourWeight);
+			}
 		}
 	}
 
@@ -260,54 +325,47 @@ namespace FluidModule {
 													   unsigned int cellX,
 													   unsigned int cellY,
 													   int			cellXMod,
-													   int			cellYMod) {
+													   int			cellYMod,
+													   float		neighbourSum) {
 		// Calculates how much density is traded between this cell (@x, y) and its neighbour (@xn, yn)
-		// Uses the formula: [1 - (neighbour[n].density - (ideal_density +- gravity))/(sum_neighbours_dens)](density - ideal_density)
-		float neighbourDensitySum = 0.0f;
-		if(fieldY == 0 && cellY == 0) {
-			// We're at the bottom
-			// Only use three total neighbours. Not below.
-			neighbourDensitySum += getRelativeCellDensity(fieldX, fieldY, cellX, cellY, -1, 0); // Left
-			neighbourDensitySum += getRelativeCellDensity(fieldX, fieldY, cellX, cellY, +1, 0); // Right
-			neighbourDensitySum += getRelativeCellDensity(fieldX, fieldY, cellX, cellY, 0, +1); // Up
-		} else if(fieldY == WORLD_HEIGHT - 1 && cellY == FLUID_PARTITION_SIZE - 1) {
-			// We're at the tippy-top
-			// Only use three total neighbours. Not above.
-			neighbourDensitySum += getRelativeCellDensity(fieldX, fieldY, cellX, cellY, -1, 0); // Left
-			neighbourDensitySum += getRelativeCellDensity(fieldX, fieldY, cellX, cellY, +1, 0); // Right
-			neighbourDensitySum += getRelativeCellDensity(fieldX, fieldY, cellX, cellY, 0, -1); // Down
-		} else {
-			// We're anywhere else. Use all four neighbours :)
-			neighbourDensitySum += getRelativeCellDensity(fieldX, fieldY, cellX, cellY, -1, 0); // Left
-			neighbourDensitySum += getRelativeCellDensity(fieldX, fieldY, cellX, cellY, +1, 0); // Right
-			neighbourDensitySum += getRelativeCellDensity(fieldX, fieldY, cellX, cellY, 0, +1); // Up
-			neighbourDensitySum += getRelativeCellDensity(fieldX, fieldY, cellX, cellY, 0, -1); // Down
-		}
-
-		if(std::abs(neighbourDensitySum) < 0.01f) {
-			return 0.0f;
-		}
-
-		float neighbourDensity = getRelativeCellDensity(fieldX, fieldY, cellX, cellY, cellXMod, cellYMod);
-		float idealDens		   = m_idealDensity;
-		if(cellYMod == 1) {
-			idealDens += m_gravityConstant;
-		} else if(cellYMod == -1) {
+		/*float idealDens = m_idealDensity;
+		if(cellYMod == -1) {
 			idealDens -= m_gravityConstant;
+		} else if(cellYMod == 1) {
+			idealDens += m_gravityConstant;
 		}
 
-		float tradedDensity;
-		float term1, term2;
+		float selfDens = m_densityFields[fieldX][fieldY]->getDensityCell(cellX, cellY)->density;
 
-		// Term 1 = [1 - (neighbour[n].density - (ideal_density +- gravity))/(sum_neighbours_dens)]
-		term1 = (1 - (neighbourDensity - idealDens) / (neighbourDensitySum));
+		float densityNeedSum += idealDens - selfDens;
 
-		// Term 2 = (density - ideal_density)
-		term2 = (m_densityFields[fieldX][fieldY]->getDensityCell(cellX, cellY)->density - idealDens);
+		float neighbourDensityNeed =
+			idealDens - getRelativeCellDensity(fieldX, fieldY, cellX, cellY, cellXMod, cellYMod);
 
-		tradedDensity = term1 * term2;
+		// (Roughly) (neighbour_density_weight) * (self_density). Pretty simple, really.
+		float tradedDensity = (neighbourDensityNeed / densityNeedSum) * (selfDens);
 
-		return tradedDensity;
+		return std::max(tradedDensity, 0.0f);*/
+	}
+
+	DensityField* FluidDomain::getRelativeField(unsigned int fieldX0,
+												unsigned int fieldY0,
+												int			 fieldXOffset,
+												int			 fieldYOffset) {
+		int newFieldX = fieldX0 + fieldXOffset;
+		int newFieldY = fieldY0 + fieldYOffset;
+
+		if(newFieldX < 0) {
+			newFieldX += m_densityFields.size();
+		} else if(newFieldX > m_densityFields.size() - 1) {
+			newFieldX -= m_densityFields.size();
+		}
+		
+		if(newFieldY > WORLD_HEIGHT-1 || newFieldY < 0) {
+			return nullptr;
+		}
+
+		return m_densityFields[newFieldX][newFieldY];
 	}
 
 	FluidCell* FluidDomain::getRelativeCell(unsigned int fieldX0,
@@ -338,9 +396,11 @@ namespace FluidModule {
 
 		if(newCellY < 0) {
 			newFieldY--;
+			if(newFieldY < 0) return nullptr;
 			newCellY += FLUID_PARTITION_SIZE;
 		} else if(newCellY > FLUID_PARTITION_SIZE - 1) {
 			newFieldY++;
+			if(newFieldY > WORLD_HEIGHT-1) return nullptr;
 			newCellY -= FLUID_PARTITION_SIZE;
 		}
 

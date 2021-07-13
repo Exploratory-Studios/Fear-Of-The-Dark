@@ -221,7 +221,7 @@ void GameplayScreen::update() {
 
 	if(m_debugBool) {
 		// 13,15
-		Singletons::getWorld()->getFluid(0)->addFluid(13, 15, 0, 0, 1.2f);
+		Singletons::getWorld()->getFluid(0)->addFluid(13, 15, 0, 0, 0.1f);
 	}
 }
 

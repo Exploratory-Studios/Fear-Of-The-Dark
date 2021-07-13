@@ -296,26 +296,38 @@ namespace FluidModule {
 				// Now we have neighbourly need, find out their individual weights;
 				float cellX0_w = std::max(m_idealDensity - cellX0->density, 0.0f) / neighbourlyNeeds,
 					  cellX1_w = std::max(m_idealDensity - cellX1->density, 0.0f) / neighbourlyNeeds,
-					  cellY0_w = cellY0 ? (std::max(m_idealDensity - (cellY0->density + m_gravityConstant), 0.0f) / neighbourlyNeeds) : 0.0f,
-					  cellY1_w = cellY1 ? (std::max(m_idealDensity - (cellY1->density - m_gravityConstant), 0.0f) / neighbourlyNeeds) : 0.0f,
+					  cellY0_w = cellY0 ? (std::max(m_idealDensity - (cellY0->density - m_gravityConstant), 0.0f) / neighbourlyNeeds) : 0.0f,
+					  cellY1_w = cellY1 ? (std::max(m_idealDensity - (cellY1->density + m_gravityConstant), 0.0f) / neighbourlyNeeds) : 0.0f,
 					  cell0_w  = std::max(m_idealDensity - cell0->density, 0.0f) / neighbourlyNeeds;
 
 				// Now we have their weights (great!) we just need to multiply that by the self's density
 				// Of course, we are going to weight the self much higher than the rest.
 				float selfDensity	  = cell0->density;
-				float neighbourWeight = 0.1f;
+				float selfDensityRemainder = selfDensity;
+				float neighbourWeight = 0.01f;
 				unsigned int neighbours = 2;
-				cellX0_d->density += selfDensity * cellX0_w * neighbourWeight;
-				cellX1_d->density += selfDensity * cellX1_w * neighbourWeight;
+				
+				float d0 = selfDensity * cellX0_w * neighbourWeight;
+				cellX0_d->density += d0;;
+				selfDensityRemainder -= d0;
+				
+				float d1 = selfDensity * cellX1_w * neighbourWeight;
+				cellX1_d->density += d1;
+				selfDensityRemainder -= d1;
+				
 				if(cellY0) {
-					cellY0_d->density += selfDensity * cellY0_w * neighbourWeight;
+					float d2 = selfDensity * cellY0_w * neighbourWeight;
+					cellY0_d->density += d2;
+					selfDensityRemainder -= d2;
 					neighbours++;
 				}
 				if(cellY1) {
-					cellY1_d->density += selfDensity * cellY1_w * neighbourWeight;
+					float d3 = selfDensity * cellY1_w * neighbourWeight;
+					cellY1_d->density += d3;
+					selfDensityRemainder -= d3;
 					neighbours++;
 				}
-				cell0_delta->density += selfDensity * cell0_w * ((neighbours + 1.0f) - neighbours * neighbourWeight);
+				cell0_delta->density += selfDensityRemainder;
 			}
 		}
 	}

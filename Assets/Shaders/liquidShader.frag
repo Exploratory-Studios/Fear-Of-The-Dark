@@ -15,18 +15,15 @@ void main() {
 	float water = texture(textureSampler, fragmentUV.xy).r;
 	float alpha = water;
 	
-	//if(water < 0.8f) {
-	//	alpha = 0.8f;
-	//}
-	//if(water < 0.5f) {
-	//	alpha = 0.5f;
-	//}
-	//if(water < 0.2f) {
-	//	alpha = 0.2f;
-	//}
-	//if(water == 0.0f) {
-	//	alpha = 0.0f;
-	//}
+	if(water > 0.2) {
+		alpha = 0.7;
+	}
+	if(water > 0.6) {
+		alpha = 0.85;
+	}
+	if(water > 0.8) {
+		alpha = 1.0;
+	}
 
 	color = vec4(1.0, 1.0, 1.0, alpha) * fragmentColour;
 }

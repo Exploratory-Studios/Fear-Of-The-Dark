@@ -43,7 +43,7 @@ namespace FluidModule {
 		unsigned int				m_allocatedTextureWidth = 60 * FLUID_PARTITION_SIZE,
 					 m_allocatedTextureHeight				= 40 * FLUID_PARTITION_SIZE;
 		float m_idealDensity								= 1.0f;
-		float m_gravityConstant								= 0.0f;
+		float m_gravityConstant								= 0.7f;
 
 		float m_lastScale = 0; // The last camera scale. Used to adjust texture size.
 

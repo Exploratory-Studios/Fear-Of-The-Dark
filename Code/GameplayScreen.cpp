@@ -222,8 +222,8 @@ void GameplayScreen::update() {
 
 	if(m_debugBool) {
 		// 13,15
-		Singletons::getWorld()->getFluid(0)->addFluid(13, 15, 0, 0, 1.0f);
-		Singletons::getWorld()->getFluid(1)->addFluid(8, 15, 0, 0, 0.15f); // Smoke
+		Singletons::getWorld()->getFluid(0)->addFluid(10, 39, 0, 0, 1.0f);
+		//Singletons::getWorld()->getFluid(1)->addFluid(8, 15, 0, 0, 1.0f); // Smoke
 	}
 }
 

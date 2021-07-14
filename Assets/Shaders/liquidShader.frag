@@ -13,11 +13,10 @@ uniform sampler2D textureSampler;
 
 void main() {
 	float water = texture(textureSampler, fragmentUV.xy).r;
-	float alpha = water;
 	
-	alpha *= (-5.0 * water) + 6.0;
+	float alpha = water * (-water + 2);
 	
-	if(alpha == 0.0) {
+	if(alpha <= 0.1) {
 		discard;
 	}
 

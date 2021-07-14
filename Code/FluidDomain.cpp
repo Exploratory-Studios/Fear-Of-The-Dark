@@ -2,13 +2,21 @@
 
 #include <ResourceManager.h>
 
+#include "XMLData.h"
 #include "Singletons.h"
 
 #include "Tile.h"
 
 namespace FluidModule {
 
-	FluidDomain::FluidDomain(std::vector<std::vector<std::vector<Tile*>>>& tiles) {
+	FluidDomain::FluidDomain(std::vector<std::vector<std::vector<Tile*>>>& tiles, unsigned int id) {
+		m_id = id;
+		XMLModule::FluidData data = XMLModule::XMLData::getFluidData(id);
+		m_fluidColour = GLEngine::ColourRGBA8(data.red, data.green, data.blue, data.alpha);
+		m_viscosity = data.viscosity;
+		m_gravityConstant = data.gravConstant;
+		m_idealDensity = data.idealDensity;
+		
 		m_textureData = new std::vector<unsigned char>();
 		m_densityFields.resize(tiles.size());
 		for(unsigned int x = 0; x < m_densityFields.size(); x++) {
@@ -22,7 +30,6 @@ namespace FluidModule {
 				}
 			}
 		}
-		m_fluidColour = GLEngine::ColourRGBA8(0, 119, 190, 255);
 	}
 
 	FluidDomain::~FluidDomain() {
@@ -44,6 +51,7 @@ namespace FluidModule {
 			} else if(existent) {
 				// Tile is solid and we have a density field here. Delete it!
 				delete m_densityFields[tile->getPosition().x][tile->getPosition().y];
+				m_densityFields[tile->getPosition().x][tile->getPosition().y] = nullptr;
 			}
 		}
 	}
@@ -111,7 +119,7 @@ namespace FluidModule {
 		m_textureData->resize(m_allocatedTextureWidth * m_allocatedTextureHeight,
 							  0); // Allocate all the texture we'll ever need.
 		m_textureData->shrink_to_fit();
-		m_texture = GLEngine::ResourceManager::addTexture("fluidTexture",
+		m_texture = GLEngine::ResourceManager::addTexture("fluidTexture" + std::to_string(m_id),
 														  m_allocatedTextureWidth,
 														  m_allocatedTextureHeight,
 														  *m_textureData,

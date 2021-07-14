@@ -12,7 +12,7 @@ class Tile;
 namespace FluidModule {
 	class FluidDomain {
 	  public:
-		FluidDomain(std::vector<std::vector<std::vector<Tile*>>>& tiles);
+		FluidDomain(std::vector<std::vector<std::vector<Tile*>>>& tiles, unsigned int id);
 		~FluidDomain();
 
 		void update();
@@ -36,6 +36,7 @@ namespace FluidModule {
 		void resizeTexture(unsigned int width, unsigned int height); // Resizes the texture. For use with shifting scale
 		void updateTextureData(glm::vec4& screenDestRect);			 // Creates the array for texture assignment
 
+		unsigned int				m_id;
 		GLEngine::GLTexture			m_texture;
 		GLEngine::ColourRGBA8		m_fluidColour;
 		std::vector<unsigned char>* m_textureData;
@@ -43,8 +44,8 @@ namespace FluidModule {
 		unsigned int				m_allocatedTextureWidth = 60 * FLUID_PARTITION_SIZE,
 					 m_allocatedTextureHeight				= 40 * FLUID_PARTITION_SIZE;
 		float m_idealDensity								= 1.0f;
-		float m_gravityConstant								= 0.8f;
-		float m_viscosity									= 3.0f; // Higher numbers are equal to slower movement.
+		float m_gravityConstant								= 0.7f;
+		float m_viscosity									= 1.0f; // Higher numbers are equal to slower movement.
 
 		float m_lastScale = 0; // The last camera scale. Used to adjust texture size.
 

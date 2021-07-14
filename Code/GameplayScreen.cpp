@@ -65,6 +65,7 @@ void GameplayScreen::onEntry() {
 	Singletons::getGameCamera()->init(m_window->getScreenWidth(), m_window->getScreenHeight());
 	Singletons::getGameCamera()->setPosition(
 		(glm::vec2(m_window->getScreenWidth() / 2, m_window->getScreenHeight() / 2)));
+	Singletons::getGameCamera()->update();
 
 	m_uiCamera.init(m_window->getScreenWidth(), m_window->getScreenHeight());
 	m_uiCamera.setPosition((glm::vec2(m_window->getScreenWidth() / 2, m_window->getScreenHeight() / 2)));
@@ -221,7 +222,7 @@ void GameplayScreen::update() {
 
 	if(m_debugBool) {
 		// 13,15
-		Singletons::getWorld()->getFluid(0)->addFluid(13, 15, 0, 0, 0.5f);
+		Singletons::getWorld()->getFluid(0)->addFluid(13, 15, 0, 0, 3.0f);
 	}
 }
 
@@ -936,9 +937,11 @@ glm::vec4 GameplayScreen::getScreenBox() {
 	glm::vec2 gameplayCoordsTL = Singletons::getGameCamera()->convertScreenToWorld(topLeft);
 	glm::vec2 gameplayCoordsBR = Singletons::getGameCamera()->convertScreenToWorld(bottomRight);
 
-	return glm::vec4(gameplayCoordsTL.x,
-					 gameplayCoordsBR.y,
-					 gameplayCoordsBR.x - gameplayCoordsTL.x,
-					 gameplayCoordsTL.y - gameplayCoordsBR.y) +
-		   glm::vec4(-1.5f, -1.5f, 3.0f, 3.0f);
+	glm::vec4 ret = glm::vec4(gameplayCoordsTL.x,
+							  gameplayCoordsBR.y,
+							  gameplayCoordsBR.x - gameplayCoordsTL.x,
+							  gameplayCoordsTL.y - gameplayCoordsBR.y) +
+					glm::vec4(-1.5f, -1.5f, 3.0f, 3.0f);
+
+	return ret;
 }

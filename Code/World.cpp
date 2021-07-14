@@ -73,7 +73,7 @@ void World::initFluids() {
 		XMLModule::XMLData::getFluidCount(); // Number of fluids that can be placed, therefore number of domains we need.
 
 	for(unsigned int i = 0; i < fluidCount; i++) {
-		m_fluidDomains.push_back(new FluidModule::FluidDomain(m_tiles));
+		m_fluidDomains.push_back(new FluidModule::FluidDomain(m_tiles, i));
 	}
 }
 
@@ -462,6 +462,8 @@ void World::tickTiles(glm::vec4 destRect) {
 }
 
 void World::drawFluids(GLEngine::SpriteBatch& sb, glm::vec4& destRect) {
+	glDisable(GL_DEPTH_TEST); // Make sure that our fluids aren't blocked by... invisible fluids.
+	
 	for(unsigned int i = 0; i < m_fluidDomains.size(); i++) {
 		m_fluidDomains[i]->draw(sb, destRect);
 	}

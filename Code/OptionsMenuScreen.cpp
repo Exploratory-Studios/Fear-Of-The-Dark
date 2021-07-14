@@ -14,7 +14,10 @@ void Slider::init(GLEngine::GUI& gui, glm::vec4& destRect, std::string& name, st
 													 glm::vec4(0.0f),
 													 name + "OptionsMenu"));
 	m_slider->setCurrentValue(*m_data);
-	std::function func = [=](const CEGUI::EventArgs& e) -> bool { *m_data = m_slider->getCurrentValue(); };
+	std::function func = [=](const CEGUI::EventArgs& e) -> bool {
+		*m_data = m_slider->getCurrentValue();
+		return true;
+	};
 	m_slider->subscribeEvent(CEGUI::Slider::EventValueChanged, CEGUI::Event::Subscriber(func));
 
 	m_label = static_cast<CEGUI::DefaultWindow*>(

@@ -42,13 +42,12 @@ namespace FluidModule {
 			for(unsigned int i = 0; i < FLUID_PARTITION_SIZE * FLUID_PARTITION_SIZE; i++)
 				totalTraded += std::abs(densities[i].density - deltaDensities[i].density);
 
-			if(totalTraded <= 0.0001f) {
-				inEquilibrium = true;
-				return true;
-			} else {
+			if(totalTraded >= FLUID_AVG_CELL_EQUILIBRIUM_THRESHOLD * FLUID_PARTITION_SIZE * FLUID_PARTITION_SIZE) {
 				inEquilibrium = false;
-				return false;
+			} else {
+				inEquilibrium = true;
 			}
+			return inEquilibrium;
 		}
 
 		void swapForDelta() {

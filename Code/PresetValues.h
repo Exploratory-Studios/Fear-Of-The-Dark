@@ -65,3 +65,5 @@ extern const unsigned int MAX_TYPE_PARTICLES; // Max # of particles in each batc
 extern const std::string  UNDEFINED_ASSET_PATH;
 
 extern const unsigned int FLUID_PARTITION_SIZE;
+extern const float
+	FLUID_AVG_CELL_EQUILIBRIUM_THRESHOLD; // How much each of the cells in a densityField must transfer (on average) to be considered out of equilibrium.

@@ -39,6 +39,7 @@ class Entity {
 	virtual void collideWithTiles() {
 	}
 	virtual bool collideWithOther(Entity* other) {
+		return false;
 	} // Returns false if the X distance makes collision impossible
 
 	// Getters

@@ -15,7 +15,7 @@ void main() {
 	float water = texture(textureSampler, fragmentUV.xy).r;
 	float alpha = water;
 	
-	alpha *= (-2.0 * water) + 3.0;
+	alpha *= (-5.0 * water) + 6.0;
 	
 	if(alpha == 0.0) {
 		discard;

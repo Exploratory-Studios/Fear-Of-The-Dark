@@ -289,7 +289,6 @@ void InventoryBase::draw(GLEngine::SpriteBatch& sb,
 			if(percentages.y < 0.0f || percentages.y > 1.0f) {
 				setToDraw(false);
 			}
-			//m_frameWindow->setSize(CEGUI::USize(cegui_reldim(percentagesSize.x), cegui_reldim(percentages.y)));
 		}
 
 		{

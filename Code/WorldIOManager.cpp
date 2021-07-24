@@ -8,6 +8,7 @@
 #include "World.h"
 #include "InventoryBase.h"
 #include "Tile.h"
+#include "FluidDomain.h"
 
 #include "XMLData.h"
 #include "Factory.h"
@@ -266,8 +267,7 @@ void WorldIOManager::P_createWorld(unsigned int seed, std::string worldName, boo
 	float			   places[chunks];
 	float			   highestPlace, lowestPlace;
 
-	for(int i = 0; i < chunks; i++) { // 0.05 progress
-
+	for(int i = 0; i < chunks; i++) {
 		float place = placeNoise.noise(i / 2.0f, 0.8, 0.3);
 
 		places[i] = place;
@@ -288,8 +288,10 @@ void WorldIOManager::P_createWorld(unsigned int seed, std::string worldName, boo
 		setMessage("Now generating biomes... \n(" + std::to_string(i) + "/" +
 				   std::to_string((w->getSize() / CHUNK_SIZE)) + ")");
 
-		setProgress(0.05f / (w->getSize() / CHUNK_SIZE) * (i + 1));
+		setProgress(0.05f * ((i + 1.0f) / (float)chunks));
 	}
+
+	// Prog at 0.05f
 
 	setMessage("Finishing chunk initialization...");
 
@@ -298,16 +300,16 @@ void WorldIOManager::P_createWorld(unsigned int seed, std::string worldName, boo
 
 		w->m_biomesMap[i] = std::ceil(placeMapped * (XMLModule::XMLData::getTotalBiomes() - 1));
 
-		setProgress(0.05f + 0.05f / (chunks) * (i + 1));
+		setProgress(0.05f + 0.05f * ((i + 1.0f) / chunks));
 	}
+
+	// Prog at 0.1f
 
 	std::vector<int> blockHeights;
 	blockHeights.resize(w->getSize() * WORLD_DEPTH);
 
 	std::vector<int> tempHeights;
 	tempHeights.resize(w->getSize() * WORLD_DEPTH);
-
-	// progress is at 0.1
 
 	if(!isFlat) {
 		// Set the block heights in each chunk
@@ -335,15 +337,17 @@ void WorldIOManager::P_createWorld(unsigned int seed, std::string worldName, boo
 
 					tempHeights[layer * CHUNK_SIZE + j + i * CHUNK_SIZE * WORLD_DEPTH] = height;
 
-					setMessage("Setting block heights... \n(" +
-							   std::to_string(i * CHUNK_SIZE * WORLD_DEPTH + j + layer * CHUNK_SIZE) + "/" +
-							   std::to_string(w->getSize() * WORLD_DEPTH) + ")");
-					setProgress(0.1f + 0.069f / (WORLD_DEPTH * w->getSize()) *
-										   ((w->getSize() * layer) + (i * CHUNK_SIZE) + (j + 1))); // Ends at 0.169f;
+					int	  progNumerator	  = i * CHUNK_SIZE * WORLD_DEPTH + layer * CHUNK_SIZE + j;
+					int	  progDenominator = chunks * WORLD_DEPTH * CHUNK_SIZE;
+					float prog			  = (float)progNumerator / (float)progDenominator;
+
+					setMessage("Setting block heights... \n(" + std::to_string(progNumerator) + "/" +
+							   std::to_string(progDenominator) + ")");
+					setProgress(0.1f + 0.1f * prog); // Ends at 0.2f
 				}
 			}
 		}
-
+		// Progress at 0.2f
 		{
 			setMessage("Smoothing terrain... ");
 			for(int chunk = 0; chunk < chunks; chunk++) {
@@ -392,20 +396,24 @@ void WorldIOManager::P_createWorld(unsigned int seed, std::string worldName, boo
 							blockHeights[blockIndex] += baseHeight;
 						}
 
-						setProgress(0.169f +
-									0.069f / (WORLD_DEPTH * w->getSize()) *
-										((w->getSize() * layer) + ((x + CHUNK_SIZE * chunk) + 1))); // Ends at 0.238;
+						int	  progNumerator	  = chunk * WORLD_DEPTH * CHUNK_SIZE + layer * CHUNK_SIZE + x;
+						int	  progDenominator = chunks * WORLD_DEPTH * CHUNK_SIZE;
+						float prog			  = (float)progNumerator / (float)progDenominator;
+
+						setMessage("Smoothing Terrain... \n(" + std::to_string(progNumerator) + "/" +
+								   std::to_string(progDenominator) + ")");
+						setProgress(0.2f + 0.1f * prog); // Ends at 0.3f;
 					}
 				}
 			}
 		}
 
+		// m_progress at 0.3f
+
 		tempHeights.clear();
 
 		{
-			// m_progress at 0.4f
-
-			setMessage("Placing blocks...");
+			setMessage("Placing blocks... ");
 
 			for(int chunk = 0; chunk < (chunks); chunk++) {
 				for(int layer = 0; layer < WORLD_DEPTH; layer++) {
@@ -428,21 +436,31 @@ void WorldIOManager::P_createWorld(unsigned int seed, std::string worldName, boo
 									//w->setTile_noEvent(flower);
 								}
 							}
-							//setMessage("Placing blocks... (" + std::to_string(layer * WORLD_SIZE * WORLD_HEIGHT + x * WORLD_HEIGHT + y) + "/" + std::to_string((WORLD_DEPTH * WORLD_SIZE * WORLD_HEIGHT)) + ")");
-							//setProgress(0.238f + 0.752f / (WORLD_DEPTH * WORLD_SIZE * WORLD_HEIGHT) * ((WORLD_SIZE * WORLD_HEIGHT * layer) + (WORLD_HEIGHT * x) + (y + 1))); // Ends at 0.99
 						}
 						for(int y = blockHeights[blockIndex]; y < WORLD_HEIGHT; y++) {
 							glm::vec2 pos = glm::vec2(x + chunk * CHUNK_SIZE, y);
 							if(y <= WATER_LEVEL) {
-								Tile* tile = Factory::createTile((unsigned int)TileIDs::WATER, pos, layer);
+								Tile* tile = Factory::createTile((unsigned int)TileIDs::AIR, pos, layer);
 								w->setTile_noEvent(tile);
+								for(unsigned int x = 0; x < FLUID_PARTITION_SIZE; x++) {
+									for(unsigned int y = 0; y < FLUID_PARTITION_SIZE; y++) {
+										w->getFluid((unsigned int)FluidModule::FluidIDs::WATER)
+											->setFluid(pos.x, pos.y, x, y, 1.4f);
+									}
+								}
 							} else {
 								Tile* tile = Factory::createTile((unsigned int)TileIDs::AIR, pos, layer);
 								w->setTile_noEvent(tile);
 							}
-							//setMessage("Placing blocks... (" + std::to_string(layer * WORLD_SIZE * WORLD_HEIGHT + x * WORLD_HEIGHT + y) + "/" + std::to_string((WORLD_DEPTH * WORLD_SIZE * WORLD_HEIGHT)) + ")");
-							//setProgress(0.238f + 0.752f / (WORLD_DEPTH * WORLD_SIZE * WORLD_HEIGHT) * ((WORLD_SIZE * WORLD_HEIGHT * layer) + (WORLD_HEIGHT * x) + (y + 1))); // Ends at 0.99
 						}
+
+						int	  progNumerator	  = blockIndex;
+						int	  progDenominator = chunks * WORLD_DEPTH * CHUNK_SIZE;
+						float prog			  = (float)progNumerator / (float)progDenominator;
+
+						setMessage("Placing Blocks... \n(" + std::to_string(progNumerator * WORLD_HEIGHT) + "/" +
+								   std::to_string(progDenominator * WORLD_HEIGHT) + ")");
+						setProgress(0.3f + 0.699f * prog); // Ends at 0.999f
 					}
 				}
 			}
@@ -479,15 +497,13 @@ void WorldIOManager::P_createWorld(unsigned int seed, std::string worldName, boo
 		}
 	}
 
-	setProgress(1.0f);
+	setProgress(1.0f); // make sure to tell the loading screen this thread is done its job.
 
 	float endTime = (float)(std::clock()) / (float)(CLOCKS_PER_SEC / 1000);
 	logger->log("CREATE: Finished world creation at time: " + std::to_string(endTime) +
 				" (Elapsed: " + std::to_string(endTime - startTime) + "ms)");
 
 	return;
-
-	//world->player = new Player(glm::vec2(5.0f, (blockHeights[5] + 5)), m_input, m_sq);
 }
 
 void WorldIOManager::setWorldEra(unsigned int newEraID) {

@@ -4,7 +4,7 @@ const unsigned int CHUNK_SIZE	= 32;
 const unsigned int WORLD_DEPTH	= 4;
 const unsigned int WORLD_HEIGHT = 320;
 
-const unsigned int WATER_LEVEL = 50;
+const unsigned int WATER_LEVEL = 25;
 
 const unsigned int VIEW_DIST = 5;
 
@@ -56,5 +56,5 @@ const unsigned int SPAWN_RATE		  = 10;
 const unsigned int MAX_TYPE_PARTICLES	= 300;
 const std::string  UNDEFINED_ASSET_PATH = std::string(ASSETS_FOLDER_PATH + "Textures/UNDEFINED.png");
 
-const unsigned int FLUID_PARTITION_SIZE = 2;
-const float FLUID_AVG_CELL_EQUILIBRIUM_THRESHOLD = 0.00125f;
+const unsigned int FLUID_PARTITION_SIZE					= 4;
+const float		   FLUID_AVG_CELL_EQUILIBRIUM_THRESHOLD = 0.00125f;

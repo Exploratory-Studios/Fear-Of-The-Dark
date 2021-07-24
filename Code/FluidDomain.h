@@ -10,6 +10,9 @@
 class Tile;
 
 namespace FluidModule {
+
+	enum class FluidIDs { WATER };
+
 	class FluidDomain {
 	  public:
 		FluidDomain(std::vector<std::vector<std::vector<Tile*>>>& tiles, unsigned int id);
@@ -30,6 +33,11 @@ namespace FluidModule {
 					   unsigned int cellY,
 					   float		amount); // Adds fluid, breaks equilibrium
 		float removeFluid();		  // Returns the amount of fluid removed.
+		void  setFluid(unsigned int fieldX,
+					   unsigned int fieldY,
+					   unsigned int cellX,
+					   unsigned int cellY,
+					   float		amount); // Sets the level of fluid in a cell
 
 	  private:
 		void createTexture();										 // Creates the texture. Is only for the constructor
@@ -101,7 +109,7 @@ namespace FluidModule {
 										  int		   cellXOffset,
 										  int		   cellYOffset);
 		// Returns a cell's density at some cell relative to cell0 in field0.
-		
+
 		bool m_smoothFluid = false;
 	};
 } // namespace FluidModule

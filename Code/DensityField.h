@@ -8,7 +8,16 @@ namespace FluidModule {
 		}
 		~FluidCell() {
 		}
-		float density = 0.0f;
+		void updateAvgDensity() {
+			avgDensity_3Steps = ((2.0f) * avgDensity_3Steps + density) / 3.0f;
+
+			// First, the avg density will be 1.0f, then 1.0f, 1.0f, 1.0f...
+		}
+
+		float density			= 0.0f;
+		float avgDensity_3Steps = 0.0f; // The average density over the past three steps.
+
+		// Avg(n steps) = [(n-1)*avg_n_steps + this->density]/n
 	};
 
 	struct DensityField {
@@ -39,8 +48,12 @@ namespace FluidModule {
 		bool checkForEquilibrium() {
 			float totalTraded = 0.0f;
 
-			for(unsigned int i = 0; i < FLUID_PARTITION_SIZE * FLUID_PARTITION_SIZE; i++)
-				totalTraded += std::abs(densities[i].density - deltaDensities[i].density);
+			/*for(unsigned int i = 0; i < FLUID_PARTITION_SIZE * FLUID_PARTITION_SIZE; i++)
+				totalTraded += std::abs(densities[i].density - deltaDensities[i].density);*/
+
+			for(unsigned int i = 0; i < FLUID_PARTITION_SIZE * FLUID_PARTITION_SIZE; i++) {
+				totalTraded += std::abs(densities[i].density - densities[i].avgDensity_3Steps);
+			}
 
 			if(totalTraded >= FLUID_AVG_CELL_EQUILIBRIUM_THRESHOLD * FLUID_PARTITION_SIZE * FLUID_PARTITION_SIZE) {
 				inEquilibrium = false;

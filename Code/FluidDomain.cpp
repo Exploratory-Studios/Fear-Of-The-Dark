@@ -227,6 +227,19 @@ namespace FluidModule {
 		m_brokenEquilibriums.push_back(field);
 	}
 
+	void FluidDomain::setFluid(unsigned int fieldX,
+							   unsigned int fieldY,
+							   unsigned int cellX,
+							   unsigned int cellY,
+							   float		amount) {
+		DensityField* field = m_densityFields[fieldX][fieldY];
+
+		field->getDensityCell(cellX, cellY)->density		   = amount;
+		field->getDensityCell(cellX, cellY)->avgDensity_3Steps = amount;
+
+		m_brokenEquilibriums.push_back(field);
+	}
+
 	void FluidDomain::updateDensityFields() {
 		// Loop through fields and only update the non-nullptrs who don't have the equilibrium flag set
 		for(unsigned int x = 0; x < m_densityFields.size(); x++) {
@@ -377,6 +390,7 @@ namespace FluidModule {
 					neighbours++;
 				}
 				cell0_delta->density += selfDensityRemainder;
+				cell0->updateAvgDensity(); // A good a place as any for this.
 			}
 		}
 	}

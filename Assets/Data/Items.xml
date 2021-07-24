@@ -2,7 +2,7 @@
 	<weight>0.000000</weight>
 </item>
 <item id="1" name="BlockDirt">
-	<texture>../Blocks/Dirt.png</texture>
+	<texture>Blocks/Dirt.png</texture>
 	<weight>0.000000</weight>
 </item>
 <item id="2" name="BlockTorch">
@@ -11,33 +11,33 @@
 	<useScript><script>Item_BlockPlacement.lua</script><isFile>1</isFile></useScript>
 </item>
 <item id="3" name="BlockTorch_Bright">
-	<texture>../Blocks/Torch.png</texture>
+	<texture>Blocks/Torch.png</texture>
 	<weight>0.000000</weight>
 </item>
 <item id="4" name="BlockTorch_Anti">
-	<texture>../Blocks/Torch.png</texture>
+	<texture>Blocks/Torch.png</texture>
 	<weight>0.000000</weight>
 </item>
 <item id="5" name="BlockGrass">
-	<texture>../Blocks/Grass.png</texture>
+	<texture>Blocks/Grass.png</texture>
 	<weight>0.000000</weight>
 </item>
 <item id="6" name="BlockWood">
-	<texture>../Blocks/WoodBlock.png</texture>
+	<texture>Blocks/WoodBlock.png</texture>
 	<weight>0.000000</weight>
 </item>
 <item id="7" name="BlockWoodPole">
-	<texture>../Blocks/WoodBlock.png</texture>
-	<weight>0.000000</weight>
+	<texture>Blocks/WoodBlock.png</texture>
+	<weight>1.0</weight>
 </item>
 <item id="8" name="BlockSign">
-	<texture>../Blocks/WoodBlock.png</texture>
-	<weight>0.000000</weight>
+	<texture>Blocks/WoodBlock.png</texture>
+	<weight>0.500000</weight>
 	<useScript><script>Item_BlockPlacement.lua</script><isFile>1</isFile></useScript> <!-- TODO: Attach string literals to these. Its already implemented, just do it. -->
 </item>
 <itemArmour id="9" name="Chestplate">
 	<texture>Items/Map.png</texture>
-	<weight>0.0</weight>
+	<weight>0.25</weight>
 	<animationIDs>
 		<animationID>5</animationID>
 		<animationID>7</animationID>

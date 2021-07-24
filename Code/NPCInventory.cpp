@@ -7,10 +7,12 @@ NPCInventory::NPCInventory(float maxWeight, std::string& name, bool initGUI /* =
 NPCInventory::~NPCInventory() {
 }
 
-void NPCInventory::initGUI(CEGUI::FrameWindow* frame) {
-	//frame->setTitleBarEnabled(true);
-	//frame->getTitlebar()->setDraggingEnabled(true);
-	//frame->getTitlebar()->setText("[font='AmaticBold-22']TEST");
+void NPCInventory::initInventoryGUI(std::string name, bool autoResize, CEGUI::Window* parent) {
+	InventoryBase::initInventoryGUI(name, autoResize, parent);
+	
+	m_frameWindow->setTitleBarEnabled(true);
+	m_frameWindow->getTitlebar()->setDraggingEnabled(true);
+	m_frameWindow->getTitlebar()->setText("[font='AmaticBold-22']TEST");
 }
 
 float NPCInventory::getSpeedMultiplier() {

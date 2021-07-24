@@ -104,7 +104,7 @@ void GameplayScreen::onEntry() {
 		Singletons::getEntityManager()->getPlayer()->initGUI();
 	}
 
-	ScriptingModule::Script scr("setBlock(7, 16, 101, 0, \"\")", false);
+	ScriptingModule::Script scr("setBlock(7, 16, 11, 0, \"\")\nsetBlock(7, 32, 11, 0, \"\")", false);
 	ScriptingModule::ScriptQueue::activateScript(ScriptingModule::ScriptQueue::addScript(scr));
 
 	m_console->init(m_scripter, m_questManager, this);
@@ -222,8 +222,12 @@ void GameplayScreen::update() {
 
 	if(m_debugBool) {
 		// 13,15
-		Singletons::getWorld()->getFluid(0)->addFluid(10, 39, 0, 0, 1.0f);
+		//Singletons::getWorld()->getFluid(0)->addFluid(10, 39, 0, 0, 1.0f);
 		//Singletons::getWorld()->getFluid(1)->addFluid(8, 15, 0, 0, 1.0f); // Smoke
+		
+		Singletons::getEntityManager()->getPlayer()->getInventory()->addItem(new Item(1, 7, true));
+		Singletons::getEntityManager()->getPlayer()->getInventory()->addItem(new Item(1, 8, true));
+		Singletons::getEntityManager()->getPlayer()->getInventory()->addItem(new Item(1, 9, true));
 	}
 }
 

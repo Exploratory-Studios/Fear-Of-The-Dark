@@ -24,7 +24,7 @@ EntityPlayer::EntityPlayer(glm::vec2 pos, unsigned int layer, SaveDataTypes::Met
 	m_inventory = std::make_shared<NPCInventory>(15.0f,
 												 m_UUID,
 												 true); // This makes sure that the player has an inventory with GUI
-	m_inventory->init();
+	m_inventory->init(m_UUID + "_PLAYER_Inventory", false, nullptr);
 
 	m_armourWeaponsInventory = std::make_shared<NPCInventoryWrapper>(m_UUID, m_inventory);
 
@@ -217,7 +217,10 @@ void EntityPlayer::drawGUI(GLEngine::SpriteBatch& sb, GLEngine::SpriteFont& sf) 
 	} // Hotbar END*/
 
 	if(m_bagOpen) {
-		m_inventory->draw(sb, sf, m_position.x, m_position.y);
+		glm::vec2 size = Singletons::getGameCamera()->convertWorldSizeToRelativeScreenSize(glm::vec2(3.0f, 3.0f));
+		glm::vec4 destRect(0.0f, 0.0f, size.x, size.y);
+		m_inventory->setDestRect(destRect);
+		m_inventory->draw(sb, sf, m_position.x - m_size.x / 2.0f, m_position.y + m_size.y * 3.0f/4.0f);
 	} else if(m_inventoryOpen) {
 		m_armourWeaponsInventory->draw(sb, sf, m_position.x, m_position.y);
 	}
@@ -297,7 +300,7 @@ void EntityPlayer::updateMouse(glm::vec2 mouseCoords) {
 	if(m_canInteract) {
 		m_selectedBlock = nullptr;
 
-		if((int)mouseCoords.x > -(int)(Singletons::getWorld()->getSize() * CHUNK_SIZE)) {
+		if((int)mouseCoords.x > -(int)((int)Singletons::getWorld()->getSize() * (int)CHUNK_SIZE)) {
 			m_selectedBlock = Singletons::getWorld()->getTile((int)mouseCoords.x, mouseCoords.y, m_layer);
 		}
 
@@ -332,7 +335,7 @@ void EntityPlayer::updateInput(GLEngine::InputManager* input) {
 		m_velocity.y -= 0.1f;
 	}
 
-	if(input->isKeyPressed(SDLK_e)) {
+	if(input->isKeyPressed(SDLK_e)) { /// TODO: Implement back and forward doors.
 		moveDownLayer();
 	}
 	if(input->isKeyPressed(SDLK_q)) {
@@ -397,7 +400,7 @@ void EntityPlayer::updateInput(GLEngine::InputManager* input) {
 			}*/
 			//if(m_inventory) m_inventory->updateWeight();
 
-			activateAttack(0);
+			//activateAttack(0);
 		} else if(input->isKeyPressed(SDL_BUTTON_RIGHT)) {
 			if(m_selectedBlock) {
 				/*if(m_favouriteItems[m_selectedHotbox]) {

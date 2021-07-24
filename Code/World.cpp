@@ -355,6 +355,7 @@ void World::drawTiles(GLEngine::SpriteBatch&   sb,
 				if(y >= 0) {
 					if(y < WORLD_HEIGHT) {
 						m_tiles[columnIndex][y][layer]->draw(sb, sf, offset, diff[layer]);
+						m_tiles[columnIndex][y][layer]->drawGUI(sb, sf, offset);
 						if(!m_tiles[columnIndex][y][layer]->isTransparent()) {
 							break;
 						}

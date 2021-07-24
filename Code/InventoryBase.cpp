@@ -11,69 +11,7 @@ InventoryBase::InventoryBase(std::string&	name,
 							 CEGUI::Window* parent /* = nullptr*/) :
 	m_automaticallyResizes(automaticResizing) {
 	if(initGUI) {
-		Singletons::getGUI()->setActiveContext(1); // Set this to the 2nd context (Inventory systems)
-
-		if(parent) {
-			m_frameWindow =
-				static_cast<CEGUI::FrameWindow*>(Singletons::getGUI()->createWidget(parent,
-																					"FOTDSkin/FrameWindow",
-																					glm::vec4(0.0f, 0.0f, 1.0f, 1.0f),
-																					glm::vec4(0.0f),
-																					name + "_Inventory"));
-		} else {
-			m_frameWindow = static_cast<CEGUI::FrameWindow*>(
-				Singletons::getGUI()->createWidget("FOTDSkin/FrameWindow",
-												   glm::vec4(-0.2f, -0.2f, 0.35f, 0.5f),
-												   glm::vec4(0.0f),
-												   name + "_Inventory"));
-		}
-		m_frameWindow->setCloseButtonEnabled(false);
-		m_frameWindow->setDragMovingEnabled(true);
-		m_frameWindow->setRollupEnabled(false);
-		m_frameWindow->setSizingEnabled(false);
-		m_frameWindow->setTitleBarEnabled(false);
-		//m_frameWindow->setProperty("BackgroundColours", "tl: 80FFFFFF tr: 80FFFFFF bl: 80FFFFFF br: 80FFFFFF");
-		m_frameWindow->setProperty("CaptionColour", "FF101010");
-		m_frameWindow->subscribeEvent(CEGUI::Window::EventMouseDoubleClick,
-									  CEGUI::Event::Subscriber(&InventoryBase::onDoubleClick, this));
-		m_frameWindow->subscribeEvent(CEGUI::Window::EventMouseButtonUp,
-									  CEGUI::Event::Subscriber(&InventoryBase::onMouseUp, this));
-		m_frameWindow->subscribeEvent(CEGUI::Window::EventMouseMove,
-									  CEGUI::Event::Subscriber(&InventoryBase::onMouseMove, this));
-		m_frameWindow->subscribeEvent(CEGUI::Window::EventMouseLeavesArea,
-									  CEGUI::Event::Subscriber(&InventoryBase::onMouseLeave, this));
-
-		m_pane =
-			static_cast<CEGUI::ScrollablePane*>(Singletons::getGUI()->createWidget(m_frameWindow,
-																				   "FOTDSkin/ScrollablePane",
-																				   glm::vec4(0.0f, 0.0f, 1.0f, 1.0f),
-																				   glm::vec4(0.0f),
-																				   name + "_Inventory_PANE"));
-		m_pane->setMouseInputPropagationEnabled(true);
-
-		m_gridItems.clear();
-
-		m_grid = static_cast<CEGUI::GUI_InventoryReceiver*>(Singletons::getGUI()->createWidget(
-			m_pane,
-			"InventoryReceiver",
-			glm::vec4(0.05f, 0.05f, INVENTORY_BOX_WIDTH * 5.0f, INVENTORY_BOX_HEIGHT * 5.0f),
-			glm::vec4(0.0f),
-			name + "_Inventory_GRID"));
-		m_grid->setContentSize(INVENTORY_WIDTH, 5);
-		m_grid->setUserString("BlockImage", "FOTDSkin/InventoryBox");
-		m_grid->setMouseInputPropagationEnabled(true);
-		m_grid->subscribeEvent(CEGUI::Element::EventChildAdded,
-							   CEGUI::Event::Subscriber(&InventoryBase::onDragDropItemAdded, this));
-		m_grid->subscribeEvent(CEGUI::Element::EventChildRemoved,
-							   CEGUI::Event::Subscriber(&InventoryBase::onDragDropItemRemoved, this));
-
-		m_destRect = glm::vec4(-0.4f, -0.25f, 0.4f, 0.4f);
-
-		setToDraw(false);
-
-		m_initedGUI = initGUI;
-
-		Singletons::getGUI()->setActiveContext(0); // Reset back to normal GUI context.
+		initInventoryGUI(name, automaticResizing, parent);
 	}
 }
 
@@ -150,9 +88,74 @@ InventoryBase::~InventoryBase() {
 	destroy();
 }
 
-void InventoryBase::init() { // This must be seperate from the constructor due to the virtual, overridden function
-	if(m_initedGUI)
-		initGUI(m_frameWindow);
+void InventoryBase::init(std::string name, bool autoResize, CEGUI::Window* parent) { // This must be seperate from the constructor due to the virtual, overridden function
+	if(!m_initedGUI)
+		initInventoryGUI(name, autoResize, parent);
+}
+
+void InventoryBase::initInventoryGUI(std::string name, bool autoResize, CEGUI::Window* parent) {
+	Singletons::getGUI()->setActiveContext(1); // Set this to the 2nd context (Inventory systems)
+
+	if(parent) {
+		m_frameWindow =
+			static_cast<CEGUI::FrameWindow*>(Singletons::getGUI()->createWidget(parent,
+																				"FOTDSkin/FrameWindow",
+																				glm::vec4(0.0f, 0.0f, 1.0f, 1.0f),
+																				glm::vec4(0.0f),
+																				name + "_Inventory"));
+	} else {
+		m_frameWindow =
+			static_cast<CEGUI::FrameWindow*>(Singletons::getGUI()->createWidget("FOTDSkin/FrameWindow",
+																				glm::vec4(-0.2f, -0.2f, 0.35f, 0.5f),
+																				glm::vec4(0.0f),
+																				name + "_Inventory"));
+	}
+	m_frameWindow->setCloseButtonEnabled(false);
+	m_frameWindow->setDragMovingEnabled(true);
+	m_frameWindow->setRollupEnabled(false);
+	m_frameWindow->setSizingEnabled(false);
+	m_frameWindow->setTitleBarEnabled(false);
+	//m_frameWindow->setProperty("BackgroundColours", "tl: 80FFFFFF tr: 80FFFFFF bl: 80FFFFFF br: 80FFFFFF");
+	m_frameWindow->setProperty("CaptionColour", "FF101010");
+	m_frameWindow->subscribeEvent(CEGUI::Window::EventMouseDoubleClick,
+								  CEGUI::Event::Subscriber(&InventoryBase::onDoubleClick, this));
+	m_frameWindow->subscribeEvent(CEGUI::Window::EventMouseButtonUp,
+								  CEGUI::Event::Subscriber(&InventoryBase::onMouseUp, this));
+	m_frameWindow->subscribeEvent(CEGUI::Window::EventMouseMove,
+								  CEGUI::Event::Subscriber(&InventoryBase::onMouseMove, this));
+	m_frameWindow->subscribeEvent(CEGUI::Window::EventMouseLeavesArea,
+								  CEGUI::Event::Subscriber(&InventoryBase::onMouseLeave, this));
+
+	m_pane = static_cast<CEGUI::ScrollablePane*>(Singletons::getGUI()->createWidget(m_frameWindow,
+																					"FOTDSkin/ScrollablePane",
+																					glm::vec4(0.0f, 0.0f, 1.0f, 1.0f),
+																					glm::vec4(0.0f),
+																					name + "_Inventory_PANE"));
+	m_pane->setMouseInputPropagationEnabled(true);
+
+	m_gridItems.clear();
+
+	m_grid = static_cast<CEGUI::GUI_InventoryReceiver*>(Singletons::getGUI()->createWidget(
+		m_pane,
+		"InventoryReceiver",
+		glm::vec4(0.05f, 0.05f, INVENTORY_BOX_WIDTH * 5.0f, INVENTORY_BOX_HEIGHT * 5.0f),
+		glm::vec4(0.0f),
+		name + "_Inventory_GRID"));
+	m_grid->setContentSize(INVENTORY_WIDTH, 5);
+	m_grid->setUserString("BlockImage", "FOTDSkin/InventoryBox");
+	m_grid->setMouseInputPropagationEnabled(true);
+	m_grid->subscribeEvent(CEGUI::Element::EventChildAdded,
+						   CEGUI::Event::Subscriber(&InventoryBase::onDragDropItemAdded, this));
+	m_grid->subscribeEvent(CEGUI::Element::EventChildRemoved,
+						   CEGUI::Event::Subscriber(&InventoryBase::onDragDropItemRemoved, this));
+
+	m_destRect = glm::vec4(-0.4f, -0.25f, 0.4f, 0.4f);
+
+	setToDraw(false);
+
+	m_initedGUI = true;
+
+	Singletons::getGUI()->setActiveContext(0); // Reset back to normal GUI context.
 }
 
 void InventoryBase::destroy() {
@@ -312,6 +315,9 @@ void InventoryBase::draw(GLEngine::SpriteBatch& sb,
 					m_items[i]->loadTexture();
 					textureID = m_items[i]->getTextureId();
 				}
+				
+				glm::vec2 textScalingFactor = glm::vec2(destRect.z, destRect.w);
+				float nativeTextScale = 0.008f;
 
 				if((screenCoords.y >= bottomY && screenCoords.y + screenSize.y < topY) ||
 				   m_gridItems[i]->isBeingDragged()) {
@@ -326,7 +332,7 @@ void InventoryBase::draw(GLEngine::SpriteBatch& sb,
 						sb,
 						quantityStr.c_str(),
 						destRect * glm::vec4(1.0f, 1.0f, 0.5f, 0.5f) + glm::vec4(screenSize.x * 0.9f, 0.0f, 0.0f, 0.0f),
-						glm::vec2(0.4f),
+						glm::vec2(nativeTextScale) * textScalingFactor,
 						depth,
 						colour,
 						GLEngine::Justification::RIGHT,
@@ -335,9 +341,9 @@ void InventoryBase::draw(GLEngine::SpriteBatch& sb,
 					// Cut off the top (set the "position" bit of the UV as well as the "size" bit to match)
 					float amntCutoff	   = bottomY - screenCoords.y;
 					float portionOfTexture = amntCutoff / screenSize.y;
-					float portionOfText	   = amntCutoff + 6 < screenSize.y * 0.4f ?
+					float portionOfText	   = amntCutoff + 6 < screenSize.y * nativeTextScale ?
 											  0.0f :
-											  ((amntCutoff + 6) - screenSize.y * 0.4f) / (screenSize.y * 0.6f);
+											  ((amntCutoff + 6) - screenSize.y * nativeTextScale) / (screenSize.y * (1.0f - nativeTextScale));
 
 					if(portionOfTexture < 1.0f) {
 						glm::vec4 uvRect(0.0f, 0.0f, 1.0f, 1.0f - portionOfTexture);
@@ -351,7 +357,7 @@ void InventoryBase::draw(GLEngine::SpriteBatch& sb,
 								quantityStr.c_str(),
 								destRect * glm::vec4(1.0f, 1.0f, 0.5f, 0.5f) +
 									glm::vec4(screenSize.x * 0.9f, 0.0f, 0.0f, 0.0f),
-								glm::vec2(0.4f, 0.4f * (1.0f - portionOfText)),
+								glm::vec2(nativeTextScale, nativeTextScale * (1.0f - portionOfText)) * textScalingFactor,
 								depth,
 								colour,
 								GLEngine::Justification::RIGHT,
@@ -361,7 +367,7 @@ void InventoryBase::draw(GLEngine::SpriteBatch& sb,
 					// Cut off the bottom (set only the "size" bit in the UV)
 					float amntCutoff	   = (screenCoords.y + screenSize.y) - topY;
 					float portionOfTexture = amntCutoff / screenSize.y;
-					float portionOfText	   = (amntCutoff) / (screenSize.y * 0.6f);
+					float portionOfText	   = (amntCutoff) / (screenSize.y * (1.0f - nativeTextScale));
 
 					if(portionOfTexture < 1.0f) {
 						glm::vec4 uvRect(0.0f, portionOfTexture, 1.0f, 1.0f - portionOfTexture);
@@ -379,7 +385,7 @@ void InventoryBase::draw(GLEngine::SpriteBatch& sb,
 								quantityStr.c_str(),
 								destRect * glm::vec4(1.0f, 1.0f, 0.5f, 0.5f) +
 									glm::vec4(screenSize.x * 0.9f, amntCutoff, 0.0f, -amntCutoff),
-								glm::vec2(0.4f, 0.4f * (1.0f - portionOfText)),
+								glm::vec2(nativeTextScale, nativeTextScale * (1.0f - portionOfText)) * textScalingFactor,
 								depth,
 								colour,
 								GLEngine::Justification::RIGHT,

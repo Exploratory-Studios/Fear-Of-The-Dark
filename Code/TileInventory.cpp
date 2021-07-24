@@ -11,6 +11,3 @@ TileInventory::TileInventory(unsigned int maxItems, std::string& name) : Invento
 
 TileInventory::~TileInventory() {
 }
-
-void TileInventory::initGUI(CEGUI::FrameWindow* frame) {
-}

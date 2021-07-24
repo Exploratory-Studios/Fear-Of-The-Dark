@@ -46,9 +46,9 @@ NPCInventoryWrapper::NPCInventoryWrapper(std::string& UUID, std::shared_ptr<NPCI
 	Singletons::getGUI()->setActiveContext(0);
 
 	m_armourGrid = std::make_unique<ArmourInventory>(armourName, false, true, m_window);
-	m_armourGrid->init();
+	m_armourGrid->init(armourName, false, m_window);
 	m_attacksGrid = std::make_unique<WeaponInventory>(attacksName, false, true, m_window);
-	m_attacksGrid->init();
+	m_attacksGrid->init(attacksName, false, m_window);
 
 	m_window->setVisible(false);
 	m_window->setEnabled(false);
@@ -150,7 +150,7 @@ void EntityNPC::init(unsigned int id) {
 	initLimbs();
 
 	m_inventory = std::make_shared<NPCInventory>(15.0f, m_UUID);
-	m_inventory->init();
+	m_inventory->init(m_UUID + "_NPC_Inventory", false, nullptr);
 
 	m_armourWeaponsInventory = std::make_shared<NPCInventoryWrapper>(m_UUID, m_inventory);
 

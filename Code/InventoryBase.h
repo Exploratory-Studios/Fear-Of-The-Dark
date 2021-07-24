@@ -23,7 +23,7 @@ class InventoryBase {
 				  CEGUI::Window* parent			   = nullptr);
 	virtual ~InventoryBase();
 
-	void init();
+	void init(std::string name, bool autoResize, CEGUI::Window* parent);
 	void destroy(); // Actually destroys GUI windows used.
 
 	bool addItem(Item* newItem);   // Returns false if the item didn't pass the test, true otherwise. Adds a gridItem.
@@ -99,7 +99,7 @@ class InventoryBase {
 	virtual void onItemAdded(const CEGUI::WindowEventArgs& e) {}; // the args are WindowEventArgs
 
 	float			   m_weight = 0.0f; // The average person can carry about 20kg of weight and still walk normally
-	virtual void	   initGUI(CEGUI::FrameWindow* frame) {};
+	virtual void	   initInventoryGUI(std::string name, bool autoResize, CEGUI::Window* parent);
 	std::vector<Item*> m_items {};
 
 	// This should never *HAVE* to be touched by derived classes. The base class ***should*** manage everything

@@ -12,6 +12,8 @@ class TileContainer : public Tile {
 	virtual void drawGUI(GLEngine::SpriteBatch& sb, GLEngine::SpriteFont& sf, int& xOffset) override;
 
   protected:
+	virtual void setToDraw(bool toDraw);
+  
 	virtual void onUpdate() override;
 
 	TileInventory* m_inventory = nullptr;

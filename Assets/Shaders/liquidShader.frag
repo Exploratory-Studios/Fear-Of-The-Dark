@@ -11,14 +11,16 @@ out vec4 color;
 
 uniform sampler2D textureSampler;
 
+float map(float value, float low1, float high1, float low2, float high2) {
+	return low2 + (value - low1) * (high2 - low2) / (high1 - low1);
+}
+
 void main() {
-	float water = texture(textureSampler, fragmentUV.xy).r;
+	float opacity = texture(textureSampler, fragmentUV.xy).r;
 	
-	float alpha = water * (-water + 2);
+	if(opacity <= 0.1f) discard;
 	
-	if(alpha <= 0.1) {
-		discard;
-	}
+	float alpha = map(opacity * (-opacity + 2), 0.0, 1.0, 0.4, 1.0);
 
 	color = vec4(1.0, 1.0, 1.0, alpha) * fragmentColour;
 }

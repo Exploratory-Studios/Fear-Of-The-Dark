@@ -9,6 +9,4 @@ class TileInventory : public InventoryBase {
 
   protected:
 	unsigned int m_maxNumItems = 1;
-
-	virtual void initGUI(CEGUI::FrameWindow* frame) override;
 };

@@ -101,5 +101,7 @@ namespace FluidModule {
 										  int		   cellXOffset,
 										  int		   cellYOffset);
 		// Returns a cell's density at some cell relative to cell0 in field0.
+		
+		bool m_smoothFluid = false;
 	};
 } // namespace FluidModule

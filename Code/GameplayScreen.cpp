@@ -1,5 +1,7 @@
 #include "GameplayScreen.h"
 
+#include <GLContextManager.h>
+
 #include "GUI_InventoryReceiver.h"
 #include "GUI_InventoryItem.h"
 #include "GUI_InventoryItemRenderer.h"
@@ -224,7 +226,7 @@ void GameplayScreen::update() {
 		// 13,15
 		//Singletons::getWorld()->getFluid(0)->addFluid(10, 39, 0, 0, 1.0f);
 		//Singletons::getWorld()->getFluid(1)->addFluid(8, 15, 0, 0, 1.0f); // Smoke
-		
+
 		Singletons::getEntityManager()->getPlayer()->getInventory()->addItem(new Item(1, 7, true));
 		Singletons::getEntityManager()->getPlayer()->getInventory()->addItem(new Item(1, 8, true));
 		Singletons::getEntityManager()->getPlayer()->getInventory()->addItem(new Item(1, 9, true));
@@ -270,20 +272,20 @@ void GameplayScreen::draw() {
 		GLuint textureUniform = m_postProcessor.getUniformLocation("textureSampler");
 		glUniform1i(textureUniform, 0);
 
-		glActiveTexture(GL_TEXTURE1);
-		glBindTexture(GL_TEXTURE_2D, 0);
+		GLEngine::GLContextManager::getGLContext()->setActiveTexture(GL_TEXTURE1);
+		GLEngine::GLContextManager::getGLContext()->bindTexture(GL_TEXTURE_2D, 0);
 		textureUniform = m_postProcessor.getUniformLocation("depthMap");
 		glUniform1i(textureUniform, 1);
 
 		// Sunlight
-		glActiveTexture(GL_TEXTURE2);
-		glBindTexture(GL_TEXTURE_2D, m_sunlightFBO.getTexture());
+		GLEngine::GLContextManager::getGLContext()->setActiveTexture(GL_TEXTURE2);
+		GLEngine::GLContextManager::getGLContext()->bindTexture(GL_TEXTURE_2D, m_sunlightFBO.getTexture());
 		textureUniform = m_postProcessor.getUniformLocation("sunlightMap");
 		glUniform1i(textureUniform, 2);
 
 		// Normal Map.
-		glActiveTexture(GL_TEXTURE3);
-		glBindTexture(GL_TEXTURE_2D, m_normalFBO.getTexture()); // Bind the texture
+		GLEngine::GLContextManager::getGLContext()->setActiveTexture(GL_TEXTURE3);
+		GLEngine::GLContextManager::getGLContext()->bindTexture(GL_TEXTURE_2D, m_normalFBO.getTexture());
 		textureUniform = m_postProcessor.getUniformLocation("normalMap");
 		glUniform1i(textureUniform, 3);
 
@@ -297,15 +299,6 @@ void GameplayScreen::draw() {
 
 		m_mainFBO.draw();
 		m_postProcessor.unuse();
-
-		// Unbind
-		glBindTexture(GL_TEXTURE_2D, 0);
-		glActiveTexture(GL_TEXTURE2);
-		glBindTexture(GL_TEXTURE_2D, 0);
-		glActiveTexture(GL_TEXTURE1);
-		glBindTexture(GL_TEXTURE_2D, 0);
-		glActiveTexture(GL_TEXTURE0);
-		glBindTexture(GL_TEXTURE_2D, 0);
 	}
 
 	{
@@ -318,8 +311,8 @@ void GameplayScreen::draw() {
 		GLuint	  pUniform		   = m_basicFBOTextureProgram.getUniformLocation("P");
 		glUniformMatrix4fv(pUniform, 1, GL_FALSE, &projectionMatrix[0][0]);
 
-		glActiveTexture(GL_TEXTURE0);
-		glBindTexture(GL_TEXTURE_2D, m_fluidFBO.getTexture());
+		GLEngine::GLContextManager::getGLContext()->setActiveTexture(GL_TEXTURE0);
+		GLEngine::GLContextManager::getGLContext()->bindTexture(GL_TEXTURE_2D, m_fluidFBO.getTexture());
 		GLuint textureUniform = m_basicFBOTextureProgram.getUniformLocation("textureSampler");
 		glUniform1i(textureUniform, 0);
 
@@ -532,7 +525,7 @@ void GameplayScreen::drawGUIToScreen() {
 
 		GLint textureUniform = m_uiTextureProgram.getUniformLocation("textureSampler");
 		glUniform1i(textureUniform, 0);
-		glActiveTexture(GL_TEXTURE0);
+		GLEngine::GLContextManager::getGLContext()->setActiveTexture(GL_TEXTURE0);
 
 		// Camera matrix
 		glm::mat4 projectionMatrix = m_uiCamera.getCameraMatrix();
@@ -552,7 +545,7 @@ void GameplayScreen::drawGUIToScreen() {
 
 		GLint textureUniform = m_uiTextureProgram.getUniformLocation("textureSampler");
 		glUniform1i(textureUniform, 0);
-		glActiveTexture(GL_TEXTURE0);
+		GLEngine::GLContextManager::getGLContext()->setActiveTexture(GL_TEXTURE0);
 
 		// Camera matrix
 		glm::mat4 projectionMatrix = m_uiCamera.getCameraMatrix();
@@ -581,7 +574,7 @@ void GameplayScreen::drawGUIToScreen() {
 
 		GLint textureUniform = m_uiTextureProgram.getUniformLocation("textureSampler");
 		glUniform1i(textureUniform, 0);
-		glActiveTexture(GL_TEXTURE0);
+		GLEngine::GLContextManager::getGLContext()->setActiveTexture(GL_TEXTURE0);
 
 		// Camera matrix
 		glm::mat4 projectionMatrix = m_uiCamera.getCameraMatrix();

@@ -1,5 +1,7 @@
 #include "StartupScreen.h"
 
+#include <GLContextManager.h>
+
 #include "Options.h"
 
 /// Text FUNCTIONS
@@ -127,7 +129,7 @@ void StartupScreen::draw() {
 
 	GLint textureUniform = m_uiTextureProgram.getUniformLocation("textureSampler");
 	glUniform1i(textureUniform, 0);
-	glActiveTexture(GL_TEXTURE0);
+	GLEngine::GLContextManager::getGLContext()->setActiveTexture(GL_TEXTURE0);
 
 	// Camera matrix
 	glm::mat4 projectionMatrix = m_camera.getCameraMatrix();

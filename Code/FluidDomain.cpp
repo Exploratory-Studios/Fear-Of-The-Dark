@@ -1,6 +1,7 @@
 #include "FluidDomain.h"
 
 #include <ResourceManager.h>
+#include <GLContextManager.h>
 
 #include "XMLData.h"
 #include "Singletons.h"
@@ -99,7 +100,7 @@ namespace FluidModule {
 
 		updateTextureData(screenDestRect);
 
-		glBindTexture(GL_TEXTURE_2D, m_texture.id);
+		GLEngine::GLContextManager::getGLContext()->bindTexture(GL_TEXTURE_2D, m_texture.id);
 		glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
 
 		glTexSubImage2D(GL_TEXTURE_2D,
@@ -126,7 +127,7 @@ namespace FluidModule {
 														  GL_RED);
 
 		// (Re)bind the texture object
-		glBindTexture(GL_TEXTURE_2D, m_texture.id);
+		GLEngine::GLContextManager::getGLContext()->bindTexture(GL_TEXTURE_2D, m_texture.id);
 
 		// Set to not wrap
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
@@ -141,7 +142,7 @@ namespace FluidModule {
 		}
 
 		// Unbind
-		glBindTexture(GL_TEXTURE_2D, 0);
+		GLEngine::GLContextManager::getGLContext()->bindTexture(GL_TEXTURE_2D, 0);
 	}
 
 	void FluidDomain::resizeTexture(unsigned int width, unsigned int height) {

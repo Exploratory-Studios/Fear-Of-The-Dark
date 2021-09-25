@@ -267,6 +267,7 @@ void WorldIOManager::P_createWorld(unsigned int seed, std::string worldName, boo
 	float			   places[chunks];
 	float			   highestPlace, lowestPlace;
 
+	// Create chunk data (Pretty much just assigning biomes)
 	for(int i = 0; i < chunks; i++) {
 		float place = placeNoise.noise(i / 2.0f, 0.8, 0.3);
 
@@ -304,6 +305,8 @@ void WorldIOManager::P_createWorld(unsigned int seed, std::string worldName, boo
 	}
 
 	// Prog at 0.1f
+
+	// Set the heights at each x value.
 
 	std::vector<int> blockHeights;
 	blockHeights.resize(w->getSize() * WORLD_DEPTH);

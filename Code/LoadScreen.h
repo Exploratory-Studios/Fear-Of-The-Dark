@@ -36,7 +36,7 @@ class MiniScreenEntry {
 		}
 	}
 	void dispose() {
-		delete m_widget;
+		//delete m_widget; These are handled by my GUI wrapper classes. Should only be destroyed by m_gui.destroy()
 	}
 
   private:
@@ -64,6 +64,8 @@ class LoadScreen : public GLEngine::IGameScreen {
 	void initShaders();
 
 	bool onNewWorldCreateNewButtonClicked(const CEGUI::EventArgs& e);
+	bool onNewWorldSizeValueChanged(const CEGUI::EventArgs& e);
+	bool onNewWorldSizeSliderReleased(const CEGUI::EventArgs& e);
 	bool onCreateButtonClicked(const CEGUI::EventArgs& e);
 	bool onLoadButtonClicked(const CEGUI::EventArgs& e);
 	bool onLoadWorldLoadButtonClicked(const CEGUI::EventArgs& e);
@@ -78,13 +80,14 @@ class LoadScreen : public GLEngine::IGameScreen {
 
 	float m_time = 0;
 
-	CEGUI::PushButton*	 m_createButton			   = nullptr;
-	CEGUI::PushButton*	 m_newWorldCreateNewButton = nullptr;
-	CEGUI::FrameWindow*	 m_newWorldFramewindow	   = nullptr; /// World creation buttons
-	CEGUI::Editbox*		 m_newWorldNameEditbox	   = nullptr;
-	CEGUI::Editbox*		 m_newWorldSeedEditbox	   = nullptr;
-	CEGUI::ToggleButton* m_newWorldFlatCheckbox	   = nullptr; // To create a flat world
-	CEGUI::Slider*		 m_newWorldSizeSlider	   = nullptr;
+	CEGUI::PushButton*	 	m_createButton			   = nullptr;
+	CEGUI::PushButton*	 	m_newWorldCreateNewButton  = nullptr;
+	CEGUI::FrameWindow*	 	m_newWorldFramewindow	   = nullptr; /// World creation buttons
+	CEGUI::Editbox*		 	m_newWorldNameEditbox	   = nullptr;
+	CEGUI::Editbox*		 	m_newWorldSeedEditbox	   = nullptr;
+	CEGUI::ToggleButton* 	m_newWorldFlatCheckbox	   = nullptr; // To create a flat world
+	CEGUI::Slider*		 	m_newWorldSizeSlider	   = nullptr;
+	CEGUI::DefaultWindow*	m_newWorldSizeLabel	   	   = nullptr; // For the # of chunks
 
 	CEGUI::PushButton* m_backButton = nullptr;
 

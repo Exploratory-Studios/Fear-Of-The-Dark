@@ -141,7 +141,7 @@ class GameplayScreen : public GLEngine::IGameScreen {
 
 	bool m_debuggingInfo = false;
 
-	glm::vec2 m_lastPlayerPos;
+	glm::vec2 m_lastPlayerPos = glm::vec2(0.0f);
 
 	Logger* logger = Logger::getInstance();
 

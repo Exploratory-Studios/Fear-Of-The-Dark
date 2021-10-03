@@ -53,7 +53,8 @@ namespace FluidModule {
 					 m_allocatedTextureHeight				= 40 * FLUID_PARTITION_SIZE;
 		float m_idealDensity								= 1.0f;
 		float m_gravityConstant								= 0.7f;
-		float m_viscosity									= 1.0f; // Higher numbers are equal to slower movement.
+		float m_trickleConstant								= 0.4f; // Controls the random L/R movement of fluid
+		float m_viscosity									= 0.5f; // Higher numbers are equal to slower movement.
 
 		float m_lastScale = 0; // The last camera scale. Used to adjust texture size.
 

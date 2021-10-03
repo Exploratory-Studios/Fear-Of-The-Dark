@@ -17,6 +17,7 @@ namespace FluidModule {
 		m_viscosity				  = data.viscosity;
 		m_gravityConstant		  = data.gravConstant;
 		m_idealDensity			  = data.idealDensity;
+		m_trickleConstant 		  = data.trickleConstant;
 
 		m_textureData = new std::vector<unsigned char>();
 		m_densityFields.resize(tiles.size());
@@ -307,13 +308,15 @@ namespace FluidModule {
 				float	   cellX1_needs = 0.0f;
 				FluidCell* cellX0_d		= getRelativeDeltaCell(fieldX, fieldY, x, y, -1, 0);
 				FluidCell* cellX1_d		= getRelativeDeltaCell(fieldX, fieldY, x, y, 1, 0);
+				
+				float trickle = ((std::rand() % 200) - 100)/200.0f * m_trickleConstant * m_idealDensity;
 
 				if(cellX0) {
-					cellX0_needs = std::max(m_idealDensity - cellX0->density, 0.0f);
+					cellX0_needs = std::max((m_idealDensity + trickle) - cellX0->density, 0.0f);
 					neighbourlyNeeds += cellX0_needs;
 				}
 				if(cellX1) {
-					cellX1_needs = std::max(m_idealDensity - cellX1->density, 0.0f);
+					cellX1_needs = std::max((m_idealDensity - trickle) - cellX1->density, 0.0f);
 					neighbourlyNeeds += cellX1_needs;
 				}
 
@@ -324,8 +327,8 @@ namespace FluidModule {
 					cellY0	 = getRelativeCell(fieldX, fieldY, x, y, 0, -1);
 					cellY0_d = getRelativeDeltaCell(fieldX, fieldY, x, y, 0, -1);
 					if(cellY0) {
-						cellY0_needs = std::max(m_idealDensity - (cellY0->density - m_gravityConstant), 0.0f);
-						neighbourlyNeeds += std::max(cellY0_needs - m_gravityConstant, 0.0f);
+						cellY0_needs = std::max((m_idealDensity + m_gravityConstant) - cellY0->density, 0.0f);
+						neighbourlyNeeds += cellY0_needs;
 					}
 				}
 
@@ -336,61 +339,52 @@ namespace FluidModule {
 					cellY1	 = getRelativeCell(fieldX, fieldY, x, y, 0, 1);
 					cellY1_d = getRelativeDeltaCell(fieldX, fieldY, x, y, 0, 1);
 					if(cellY1) {
-						cellY1_needs = std::max(m_idealDensity - (cellY1->density + m_gravityConstant), 0.0f);
-						neighbourlyNeeds += std::max(cellY1_needs + m_gravityConstant, 0.0f);
+						cellY1_needs = std::max((m_idealDensity - m_gravityConstant) - cellY1->density, 0.0f);
+						neighbourlyNeeds += cellY1_needs;
 					}
 				}
 
-				// Add self's needs
-				neighbourlyNeeds += std::max(cell0_needs, 0.0f);
-
 				// Now we have neighbourly need, find out their individual weights;
-				float cellX0_w, cellX1_w, cellY0_w, cellY1_w;
+				float cellX0_w = 0.0f, cellX1_w = 0.0f, cellY0_w = 0.0f, cellY1_w = 0.0f;
 
-				if(neighbourlyNeeds > 0.00001f) {
-					cellX0_w = cellX0_needs / neighbourlyNeeds;
-					cellX1_w = cellX1_needs / neighbourlyNeeds;
-					cellY0_w = cellY0_needs / neighbourlyNeeds;
-					cellY1_w = cellY1_needs / neighbourlyNeeds;
+				if(neighbourlyNeeds > 0.0f) {
+					if(cellX0) cellX0_w = cellX0_needs / neighbourlyNeeds;
+					if(cellX1) cellX1_w = cellX1_needs / neighbourlyNeeds;
+					if(cellY0) cellY0_w = cellY0_needs / neighbourlyNeeds;
+					if(cellY1) cellY1_w = cellY1_needs / neighbourlyNeeds;
 				} else {
 					// Neighbours are pretty dang full up there chief. Don't wanna divide by 0. Just set all the weights to 0.
 					cellX0_w = cellX1_w = cellY0_w = cellY1_w = 0.0f;
+					neighbourlyNeeds = 0.0f;
 				}
 
-				// Now we have their weights (great!) we just need to multiply that by the self's density
-				// Of course, we are going to weight the self much higher than the rest.
-				float		 selfDensity		  = cell0->density;
-				float		 selfDensityRemainder = selfDensity;
-				float		 neighbourWeight	  = 1.0f / m_viscosity;
-				unsigned int neighbours			  = 0;
+				// Now we have their weights (great!) we just need to multiply that by the donated density (which decreases as viscosity increases to 1)
+				float 		 selfDensity = cell0->density;
+				// Ensure we aren't transferring more than we need to (greater than needs) or more than we can (density * viscosity reduction)
+				float		 donatedDensity = std::min(neighbourlyNeeds, selfDensity * (1.0f - m_viscosity));
+				
+				float dX0 = 0.0f, dX1 = 0.0f, dY0 = 0.0f, dY1 = 0.0f;
 
 				if(cellX0) {
-					float d0 = selfDensity * cellX0_w * neighbourWeight;
-					cellX0_d->density += d0;
-					selfDensityRemainder -= d0;
-					neighbours++;
+					dX0 = donatedDensity * cellX0_w;
+					cellX0_d->density += dX0;
 				}
 
 				if(cellX1) {
-					float d1 = selfDensity * cellX1_w * neighbourWeight;
-					cellX1_d->density += d1;
-					selfDensityRemainder -= d1;
-					neighbours++;
+					dX1 = donatedDensity * cellX1_w;
+					cellX1_d->density += dX1;
 				}
 
 				if(cellY0) {
-					float d2 = selfDensity * cellY0_w * neighbourWeight;
-					cellY0_d->density += d2;
-					selfDensityRemainder -= d2;
-					neighbours++;
+					dY0 = donatedDensity * cellY0_w;
+					cellY0_d->density += dY0;
 				}
 				if(cellY1) {
-					float d3 = selfDensity * cellY1_w * neighbourWeight;
-					cellY1_d->density += d3;
-					selfDensityRemainder -= d3;
-					neighbours++;
+					dY1 = donatedDensity * cellY1_w;
+					cellY1_d->density += dY1;
 				}
-				cell0_delta->density += selfDensityRemainder;
+				
+				cell0_delta->density += selfDensity - donatedDensity;
 				cell0->updateAvgDensity(); // A good a place as any for this.
 			}
 		}

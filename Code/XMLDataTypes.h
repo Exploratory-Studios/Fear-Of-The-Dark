@@ -730,6 +730,7 @@ namespace XMLModule {
 				new Attribute<float>("gravitationalConstant", AttributeType::FLOAT, &gravConstant),
 				new Attribute<float>("idealDensity", AttributeType::FLOAT, &idealDensity),
 				new Attribute<float>("viscosity", AttributeType::FLOAT, &viscosity),
+				new Attribute<float>("trickle", AttributeType::FLOAT, &trickleConstant),
 				new Attribute<unsigned int>("red", AttributeType::UNSIGNED_INT, &red),
 				new Attribute<unsigned int>("green", AttributeType::UNSIGNED_INT, &green),
 				new Attribute<unsigned int>("blue", AttributeType::UNSIGNED_INT, &blue),
@@ -742,6 +743,7 @@ namespace XMLModule {
 		float		gravConstant = 0.7f;
 		float		idealDensity = 1.0f;
 		float		viscosity = 1.0f;
+		float 		trickleConstant = 0.0f;
 		unsigned int red = 255, green = 0, blue = 255, alpha = 255;
 	};
 } // namespace XMLModule

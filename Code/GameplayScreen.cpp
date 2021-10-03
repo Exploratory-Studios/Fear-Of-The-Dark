@@ -224,12 +224,12 @@ void GameplayScreen::update() {
 
 	if(m_debugBool) {
 		// 13,15
-		//Singletons::getWorld()->getFluid(0)->addFluid(10, 39, 0, 0, 1.0f);
+		Singletons::getWorld()->getFluid(0)->addFluid(10, 39, 0, 0, 1.8f); // Water
 		//Singletons::getWorld()->getFluid(1)->addFluid(8, 15, 0, 0, 1.0f); // Smoke
 
-		Singletons::getEntityManager()->getPlayer()->getInventory()->addItem(new Item(1, 7, true));
-		Singletons::getEntityManager()->getPlayer()->getInventory()->addItem(new Item(1, 8, true));
-		Singletons::getEntityManager()->getPlayer()->getInventory()->addItem(new Item(1, 9, true));
+		//Singletons::getEntityManager()->getPlayer()->getInventory()->addItem(new Item(1, 7, true));
+		//Singletons::getEntityManager()->getPlayer()->getInventory()->addItem(new Item(1, 8, true));
+		//Singletons::getEntityManager()->getPlayer()->getInventory()->addItem(new Item(1, 9, true));
 	}
 }
 
@@ -940,6 +940,10 @@ glm::vec4 GameplayScreen::getScreenBox() {
 							  gameplayCoordsBR.x - gameplayCoordsTL.x,
 							  gameplayCoordsTL.y - gameplayCoordsBR.y) +
 					glm::vec4(-1.5f, -1.5f, 3.0f, 3.0f);
+	
+	if(std::abs(ret.x) > 10000 || std::abs(ret.y) > 1000) {
+		Logger::getInstance()->log("Err");
+	}
 
 	return ret;
 }

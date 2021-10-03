@@ -39,6 +39,12 @@ namespace FluidModule {
 					   unsigned int cellY,
 					   float		amount); // Sets the level of fluid in a cell
 
+		bool displaceFluidArea(
+			float x0,
+			float y0,
+			float x1,
+			float y1); // Displaces an area of fluid from (x0, y0) to (x1, y1). If successful, returns true. Else, returns false
+
 	  private:
 		void createTexture();										 // Creates the texture. Is only for the constructor
 		void resizeTexture(unsigned int width, unsigned int height); // Resizes the texture. For use with shifting scale
@@ -75,7 +81,7 @@ namespace FluidModule {
 											  int		   cellYMod,
 											  float		   neighbourSum);
 		// Calculates how much density is traded to this cell (@x, y) from its neighbour (@x+xMod, y+ymod)
-
+		
 		DensityField* getRelativeField(unsigned int fieldX0, unsigned int fieldY0, int fieldXOffset, int fieldYOffset);
 		// Returns a DensityField address to some densityfield relative to field0.
 

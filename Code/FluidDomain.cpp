@@ -28,7 +28,7 @@ namespace FluidModule {
 					m_densityFields[x][y] = new DensityField(); // Tile isn't solid, create a fluid DensityField here
 				} else {
 					m_densityFields[x][y] = nullptr; // Tile is solid, push back a nullptr to both ensure proper
-													 // system coords and show it's solid to the fluid
+					// system coords and show it's solid to the fluid
 				}
 			}
 		}
@@ -60,18 +60,18 @@ namespace FluidModule {
 
 	void FluidDomain::draw(GLEngine::SpriteBatch& sb, glm::vec4& destRect) {
 		glm::vec4 snapped =
-			glm::vec4(std::floor(destRect.x),
-					  std::floor(destRect.y),
-					  std::ceil(destRect.z * (float)FLUID_PARTITION_SIZE) / (float)FLUID_PARTITION_SIZE,
-					  std::ceil(destRect.w * (float)FLUID_PARTITION_SIZE) / (float)FLUID_PARTITION_SIZE);
+		    glm::vec4(std::floor(destRect.x),
+		              std::floor(destRect.y),
+		              std::ceil(destRect.z * (float)FLUID_PARTITION_SIZE) / (float)FLUID_PARTITION_SIZE,
+		              std::ceil(destRect.w * (float)FLUID_PARTITION_SIZE) / (float)FLUID_PARTITION_SIZE);
 		sb.draw(snapped,
-				glm::vec4(0.0f,
-						  0.0f,
-						  (float)m_usedTextureWidth / (float)m_allocatedTextureWidth,
-						  (float)m_usedTextureHeight / (float)m_allocatedTextureHeight),
-				m_texture.id,
-				1.0f,
-				m_fluidColour);
+		        glm::vec4(0.0f,
+		                  0.0f,
+		                  (float)m_usedTextureWidth / (float)m_allocatedTextureWidth,
+		                  (float)m_usedTextureHeight / (float)m_allocatedTextureHeight),
+		        m_texture.id,
+		        1.0f,
+		        m_fluidColour);
 	}
 
 	void FluidDomain::updateTexture(glm::vec4& screenDestRect) {
@@ -105,27 +105,27 @@ namespace FluidModule {
 		glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
 
 		glTexSubImage2D(GL_TEXTURE_2D,
-						(GLint)0,
-						0,
-						0,
-						m_usedTextureWidth,
-						m_usedTextureHeight,
-						GL_RED,
-						GL_UNSIGNED_BYTE,
-						&((*m_textureData)[0]));
+		                (GLint)0,
+		                0,
+		                0,
+		                m_usedTextureWidth,
+		                m_usedTextureHeight,
+		                GL_RED,
+		                GL_UNSIGNED_BYTE,
+		                &((*m_textureData)[0]));
 
 		glPixelStorei(GL_UNPACK_ALIGNMENT, 4);
 	}
 
 	void FluidDomain::createTexture() {
 		m_textureData->resize(m_allocatedTextureWidth * m_allocatedTextureHeight,
-							  0); // Allocate all the texture we'll ever need.
+		                      0); // Allocate all the texture we'll ever need.
 		m_textureData->shrink_to_fit();
 		m_texture = GLEngine::ResourceManager::addTexture("fluidTexture" + std::to_string(m_id),
-														  m_allocatedTextureWidth,
-														  m_allocatedTextureHeight,
-														  *m_textureData,
-														  GL_RED);
+		            m_allocatedTextureWidth,
+		            m_allocatedTextureHeight,
+		            *m_textureData,
+		            GL_RED);
 
 		// (Re)bind the texture object
 		GLEngine::GLContextManager::getGLContext()->bindTexture(GL_TEXTURE_2D, m_texture.id);
@@ -199,7 +199,7 @@ namespace FluidModule {
 					unsigned int cellX = (addedCellX - addedFieldX * FLUID_PARTITION_SIZE);
 					unsigned int cellY = (addedCellY - addedFieldY * FLUID_PARTITION_SIZE);
 					(*m_textureData)[index] =
-						std::max(std::min(field->getDensityCell(cellX, cellY)->density * 255, 255.0f), 0.0f);
+					    std::max(std::min(field->getDensityCell(cellX, cellY)->density * 255, 255.0f), 0.0f);
 
 					if(field->inEquilibrium == false) {
 						//(*m_textureData)[index] = 128;
@@ -218,10 +218,10 @@ namespace FluidModule {
 	}
 
 	void FluidDomain::addFluid(unsigned int fieldX,
-							   unsigned int fieldY,
-							   unsigned int cellX,
-							   unsigned int cellY,
-							   float		amount) {
+	                           unsigned int fieldY,
+	                           unsigned int cellX,
+	                           unsigned int cellY,
+	                           float		amount) {
 		DensityField* field = m_densityFields[fieldX][fieldY];
 
 		field->getDensityCell(cellX, cellY)->density += amount;
@@ -230,16 +230,122 @@ namespace FluidModule {
 	}
 
 	void FluidDomain::setFluid(unsigned int fieldX,
-							   unsigned int fieldY,
-							   unsigned int cellX,
-							   unsigned int cellY,
-							   float		amount) {
+	                           unsigned int fieldY,
+	                           unsigned int cellX,
+	                           unsigned int cellY,
+	                           float		amount) {
 		DensityField* field = m_densityFields[fieldX][fieldY];
 
 		field->getDensityCell(cellX, cellY)->density		   = amount;
 		field->getDensityCell(cellX, cellY)->avgDensity_3Steps = amount;
 
 		m_brokenEquilibriums.push_back(field);
+	}
+
+	bool FluidDomain::displaceFluidArea(float x0, float y0, float x1, float y1) {
+		unsigned int x0_cs = std::floor(x0 * FLUID_PARTITION_SIZE), // x0 in fluid cellspace
+		             y0_cs = std::floor(y0 * FLUID_PARTITION_SIZE), //  fluid cellspace
+		             x1_cs = std::ceil(x1 * FLUID_PARTITION_SIZE), //  fluid cellspace
+		             y1_cs = std::ceil(y1 * FLUID_PARTITION_SIZE); //  fluid cellspace
+
+		std::vector<glm::vec2> availableFieldCoords;
+
+		// Check for available surrounding fields above/below:
+		for(unsigned int fieldX = std::floor(x0); fieldX < std::ceil(x1); fieldX++) {
+			// Check above
+			if(getRelativeField(fieldX, std::floor(y0), 0, -1)) {
+				availableFieldCoords.push_back(glm::vec2(fieldX + 0.5f, std::floor(y0)-1 + 0.5f));
+			}
+			// Check below
+			if(getRelativeField(fieldX, std::ceil(y1), 0, 1)) {
+				availableFieldCoords.push_back(glm::vec2(fieldX + 0.5f, std::ceil(y1)+1 + 0.5f));
+			}
+		}
+
+		// Check for available surrounding fields on left/right:
+		for(unsigned int fieldY = std::floor(y0); fieldY < std::ceil(y1); fieldY++) {
+			// Check to the left
+			if(getRelativeField(std::floor(y0), fieldY, -1, 0)) {
+				availableFieldCoords.push_back(glm::vec2(std::floor(y0)-1 + 0.5f, fieldY + 0.5f));
+			}
+			// Check below
+			if(getRelativeField(std::ceil(y1), fieldY, 1, 0)) {
+				availableFieldCoords.push_back(glm::vec2(std::ceil(y1)+1 + 0.5f, fieldY + 0.5f));
+			}
+		}
+
+		// If there are no available fields at this point, we can't continue. Return false, as there's simply no place to displace water.
+		if(availableFieldCoords.size() == 0) {
+			return false;
+		}
+
+		for(unsigned int cellX = x0_cs; cellX < x1_cs; cellX++) {
+			for(unsigned int cellY = y0_cs; cellY < y1_cs; cellY++) {
+				// At this point in the loop, we're running this for every cell in the area
+
+				float x = float(cellX - x0_cs) * float(FLUID_PARTITION_SIZE) + x0; // find the "real" coordinates of this cell
+				float y = float(cellY - y0_cs) * float(FLUID_PARTITION_SIZE) + y0;
+
+				// Check for closest field:
+				unsigned int closestIndex = 0;
+				float closest = 99999.99f;
+
+				for(unsigned int i = 0; i < availableFieldCoords.size(); i++) {
+					float dist = glm::distance(availableFieldCoords[i], glm::vec2(x, y));
+					if(closest > dist) {
+						closest = dist;
+						closestIndex = i;
+					}
+				}
+
+				// Move the cell's density to the closest field:
+				float endX, endY;
+
+				// Find the final x value for this density.
+				if(x < availableFieldCoords[closest].x - 0.5f) {
+					// move it to the left side of the field
+					endX = availableFieldCoords[closest].x - 0.5f;
+				} else if(x > availableFieldCoords[closest].x + 0.5f) {
+					// move it to the right side of the field
+					endX = availableFieldCoords[closest].x + 0.5f;
+				} else {
+					// no need to move the x value
+					endX = x;
+				}
+
+				// Find the final y value for this density
+				if(y < availableFieldCoords[closest].y - 0.5f) {
+					// move it to the bottom side of the field
+					endY = availableFieldCoords[closest].y - 0.5f;
+				} else if(x > availableFieldCoords[closest].y + 0.5f) {
+					// move it to the top side of the field
+					endY = availableFieldCoords[closest].y + 0.5f;
+				} else {
+					// no need to move the y value
+					endY = y;
+				}
+
+				// Finally, add the density to that field at that position and remove it from currPosition
+				unsigned int endX_field = std::floor(endX);
+				unsigned int endY_field = std::floor(endY);
+
+				unsigned int endX_cell = (endX - endX_field) / FLUID_PARTITION_SIZE;
+				unsigned int endY_cell = (endY - endY_field) / FLUID_PARTITION_SIZE;
+
+				unsigned int currX_field = std::floor(x);
+				unsigned int currY_field = std::floor(y);
+
+				unsigned int currX_cell = (x - currX_field) / FLUID_PARTITION_SIZE;
+				unsigned int currY_cell = (y - currY_field) / FLUID_PARTITION_SIZE;
+
+
+				addFluid(endX_field, endY_field, endX_cell, endY_cell, getRelativeCell(currX_field, currY_field, currX_cell, currY_cell, 0, 0)->density);
+				setFluid(currX_field, currY_field, currX_cell, currY_cell, 0.0f);
+
+			}
+		}
+
+		return true;
 	}
 
 	void FluidDomain::updateDensityFields() {
@@ -308,7 +414,7 @@ namespace FluidModule {
 				float	   cellX1_needs = 0.0f;
 				FluidCell* cellX0_d		= getRelativeDeltaCell(fieldX, fieldY, x, y, -1, 0);
 				FluidCell* cellX1_d		= getRelativeDeltaCell(fieldX, fieldY, x, y, 1, 0);
-				
+
 				float trickle = ((std::rand() % 200) - 100)/200.0f * m_trickleConstant * m_idealDensity;
 
 				if(cellX0) {
@@ -362,7 +468,7 @@ namespace FluidModule {
 				float 		 selfDensity = cell0->density;
 				// Ensure we aren't transferring more than we need to (greater than needs) or more than we can (density * viscosity reduction)
 				float		 donatedDensity = std::min(neighbourlyNeeds, selfDensity * (1.0f - m_viscosity));
-				
+
 				float dX0 = 0.0f, dX1 = 0.0f, dY0 = 0.0f, dY1 = 0.0f;
 
 				if(cellX0) {
@@ -383,7 +489,7 @@ namespace FluidModule {
 					dY1 = donatedDensity * cellY1_w;
 					cellY1_d->density += dY1;
 				}
-				
+
 				cell0_delta->density += selfDensity - donatedDensity;
 				cell0->updateAvgDensity(); // A good a place as any for this.
 			}
@@ -391,12 +497,12 @@ namespace FluidModule {
 	}
 
 	float FluidDomain::getReceivedDensityFromNeighbour(unsigned int fieldX,
-													   unsigned int fieldY,
-													   unsigned int cellX,
-													   unsigned int cellY,
-													   int			cellXMod,
-													   int			cellYMod,
-													   float		neighbourSum) {
+	        unsigned int fieldY,
+	        unsigned int cellX,
+	        unsigned int cellY,
+	        int			cellXMod,
+	        int			cellYMod,
+	        float		neighbourSum) {
 		// Calculates how much density is traded between this cell (@x, y) and its neighbour (@xn, yn)
 		/*float idealDens = m_idealDensity;
 		if(cellYMod == -1) {
@@ -419,9 +525,9 @@ namespace FluidModule {
 	}
 
 	DensityField* FluidDomain::getRelativeField(unsigned int fieldX0,
-												unsigned int fieldY0,
-												int			 fieldXOffset,
-												int			 fieldYOffset) {
+	        unsigned int fieldY0,
+	        int			 fieldXOffset,
+	        int			 fieldYOffset) {
 		int newFieldX = fieldX0 + fieldXOffset;
 		int newFieldY = fieldY0 + fieldYOffset;
 
@@ -444,11 +550,11 @@ namespace FluidModule {
 	}
 
 	FluidCell* FluidDomain::getRelativeCell(unsigned int fieldX0,
-											unsigned int fieldY0,
-											unsigned int cellX0,
-											unsigned int cellY0,
-											int			 cellXOffset,
-											int			 cellYOffset) {
+	                                        unsigned int fieldY0,
+	                                        unsigned int cellX0,
+	                                        unsigned int cellY0,
+	                                        int			 cellXOffset,
+	                                        int			 cellYOffset) {
 		// Just assume the offsetted cell is within worldly bounds. (In the y-direction at least)
 		int newCellX  = cellX0 + cellXOffset;
 		int newCellY  = cellY0 + cellYOffset;
@@ -490,11 +596,11 @@ namespace FluidModule {
 	}
 
 	float FluidDomain::getRelativeCellDensity(unsigned int fieldX0,
-											  unsigned int fieldY0,
-											  unsigned int cellX0,
-											  unsigned int cellY0,
-											  int		   cellXOffset,
-											  int		   cellYOffset) {
+	        unsigned int fieldY0,
+	        unsigned int cellX0,
+	        unsigned int cellY0,
+	        int		   cellXOffset,
+	        int		   cellYOffset) {
 		FluidCell* cell = getRelativeCell(fieldX0, fieldY0, cellX0, cellY0, cellXOffset, cellYOffset);
 
 		if(cell)
@@ -504,11 +610,11 @@ namespace FluidModule {
 	}
 
 	FluidCell* FluidDomain::getRelativeDeltaCell(unsigned int fieldX0,
-												 unsigned int fieldY0,
-												 unsigned int cellX0,
-												 unsigned int cellY0,
-												 int		  cellXOffset,
-												 int		  cellYOffset) {
+	        unsigned int fieldY0,
+	        unsigned int cellX0,
+	        unsigned int cellY0,
+	        int		  cellXOffset,
+	        int		  cellYOffset) {
 		// Just assume the offsetted cell is within worldly bounds. (In the y-direction at least)
 		int newCellX  = cellX0 + cellXOffset;
 		int newCellY  = cellY0 + cellYOffset;
@@ -546,11 +652,11 @@ namespace FluidModule {
 	}
 
 	float FluidDomain::getRelativeDeltaCellDensity(unsigned int fieldX0,
-												   unsigned int fieldY0,
-												   unsigned int cellX0,
-												   unsigned int cellY0,
-												   int			cellXOffset,
-												   int			cellYOffset) {
+	        unsigned int fieldY0,
+	        unsigned int cellX0,
+	        unsigned int cellY0,
+	        int			cellXOffset,
+	        int			cellYOffset) {
 		FluidCell* cell = getRelativeDeltaCell(fieldX0, fieldY0, cellX0, cellY0, cellXOffset, cellYOffset);
 
 		if(cell)

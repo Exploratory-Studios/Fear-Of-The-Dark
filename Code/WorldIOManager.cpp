@@ -369,60 +369,64 @@ void WorldIOManager::P_createWorld(unsigned int seed, std::string worldName, boo
 		// Progress at 0.2f
 		{
 			setMessage("Smoothing terrain... ");
-			for(int chunk = 0; chunk < chunks; chunk++) {
-				// Get base height values of current, next, and previous chunks
-				unsigned int previousBase =
-					XMLModule::XMLData::getBiomeData(w->m_biomesMap[((chunk - 1) + (chunks)) % (chunks)]).baseHeight;
-				unsigned int nextBase =
-					XMLModule::XMLData::getBiomeData(w->m_biomesMap[chunk + 1] % (chunks)).baseHeight;
-				unsigned int baseHeight = XMLModule::XMLData::getBiomeData(w->m_biomesMap[chunk]).baseHeight;
+			const unsigned int n = 5; // This determines how much is smoothed.
+			const unsigned int affectedBlocks = CHUNK_SIZE/n; // How many actual blocks are smoothed.
+			
+			for(int layer = 0; layer < WORLD_DEPTH; layer++) {
+				for(int chunk = 0; chunk < chunks; chunk++) {
+					// Get base height values of current, next, and previous chunks
+					const unsigned int prevChunk = ((chunk - 1) + chunks) % chunks;
+					const unsigned int nextChunk = (chunk + 1) % chunks;
+					
+					const int previousBase =
+						XMLModule::XMLData::getBiomeData(w->m_biomesMap[prevChunk]).baseHeight;
+					const int nextBase =
+						XMLModule::XMLData::getBiomeData(w->m_biomesMap[nextChunk]).baseHeight;
+					const int baseHeight = XMLModule::XMLData::getBiomeData(w->m_biomesMap[chunk]).baseHeight;
 
-				for(int layer = 0; layer < WORLD_DEPTH; layer++) {
-					for(int x = 0; x < CHUNK_SIZE; x++) {
-						/// 1. Figure out how 'deep' this x value is in its biome
-						short int centreDepth = (CHUNK_SIZE / 2); // Short ints for speed?
-
-						// How far in it is (to the right, not back). Centre is CHUNK_SIZE/2, very outsides are 0.
-						short int chunkDepthInv = std::abs(x - centreDepth);
-						short int chunkDepth	= centreDepth - chunkDepthInv;
-
-						/// 2. Interpolate
-						unsigned int blockIndex = layer * CHUNK_SIZE + x + chunk * CHUNK_SIZE * WORLD_DEPTH;
-
-						blockHeights[blockIndex] = tempHeights[blockIndex];
-
-						if(chunkDepth / (float)CHUNK_SIZE <= 2.0f / 3.0f) {
-							blockHeights[blockIndex] *=
-								(chunkDepth / (float)CHUNK_SIZE) *
-								3.0f; // I promise this makes sense. *3.0f to account for the 1/3
-						}			  // Each third of a chunk should be flattened
-
-						if(x > centreDepth) { // current and next chunks smoothen
-							blockHeights[blockIndex] +=
-								nextBase *
-								(chunkDepthInv / (float)CHUNK_SIZE); // ChunkDepthInv/CHUNK_SIZE -> edges=1/2, centre=0
-							blockHeights[blockIndex] +=
-								baseHeight * ((chunkDepth / (float)CHUNK_SIZE) +
-											  0.5f); // ChunkDepth/CHUNK_SIZE -> edges=0, centre=1/2
-						} else if(x < centreDepth) {
-							blockHeights[blockIndex] +=
-								previousBase *
-								(chunkDepthInv / (float)CHUNK_SIZE); // ChunkDepthInv/CHUNK_SIZE -> edges=1/2, centre=0
-							blockHeights[blockIndex] +=
-								baseHeight * ((chunkDepth / (float)CHUNK_SIZE) +
-											  0.5f); // ChunkDepth/CHUNK_SIZE -> edges=0, centre=1/2
-						} else {
-							blockHeights[blockIndex] += baseHeight;
-						}
-
-						int	  progNumerator	  = chunk * WORLD_DEPTH * CHUNK_SIZE + layer * CHUNK_SIZE + x;
-						int	  progDenominator = chunks * WORLD_DEPTH * CHUNK_SIZE;
-						float prog			  = (float)progNumerator / (float)progDenominator;
-
-						setMessage("Smoothing Terrain... \n(" + std::to_string(progNumerator) + "/" +
-								   std::to_string(progDenominator) + ")");
-						setProgress(0.2f + 0.1f * prog); // Ends at 0.3f;
+					// Only affects every first and last 1/nth of each chunk (2/nths total)
+					// First, find the average height of the first 1/nth of this chunk + last 1/nth of prev chunk
+					int avg_this = 0, avg_prev = 0;
+					for(unsigned int i = 0; i < affectedBlocks; i++) {
+						const unsigned int blockIndex_prev = (prevChunk * CHUNK_SIZE * WORLD_DEPTH) + (0 * CHUNK_SIZE) + (CHUNK_SIZE-i-1);
+						const unsigned int blockIndex_this = (chunk * CHUNK_SIZE * WORLD_DEPTH) + (0 * CHUNK_SIZE) + (i);
+						
+						avg_prev += tempHeights[blockIndex_prev] + previousBase;
+						avg_this += tempHeights[blockIndex_this] + baseHeight;
 					}
+					avg_prev /= affectedBlocks;
+					avg_this /= affectedBlocks;
+					
+					int avg_aim = (avg_prev + avg_this) / 2; // Find the middle ground!
+					
+					// Now that we have the averages, we can start to curve the actual heights towards them, with the closeness inversely proportional to the distance from the edge of the chunk.
+					// That is to say, the at the edge of the chunk we should be very very close to the average. Further, we make smaller adjustments
+					for(unsigned int i = 0; i < affectedBlocks; i++) {
+						const unsigned int blockIndex_prev = (prevChunk * CHUNK_SIZE * WORLD_DEPTH) + (layer * CHUNK_SIZE) + (CHUNK_SIZE-i-1);
+						const unsigned int blockIndex_this = (chunk * CHUNK_SIZE * WORLD_DEPTH) + (layer * CHUNK_SIZE) + (i);
+						
+						// Adjustment = (y distance from avg)/(x distance from edge of chunk)
+						const int heightAdjustment_prev = (avg_aim - (tempHeights[blockIndex_prev] + previousBase))/(signed int)(i + 1);
+						const int heightAdjustment_this = (avg_aim - (tempHeights[blockIndex_this] + baseHeight))/(signed int)(i + 1);
+						
+						// Actually apply the adjustment
+						tempHeights[blockIndex_prev] += heightAdjustment_prev;
+						tempHeights[blockIndex_this] += heightAdjustment_this;
+					}
+				}
+				for(unsigned int chunk = 0; chunk < chunks; chunk++) {
+					const int baseHeight = XMLModule::XMLData::getBiomeData(w->m_biomesMap[chunk]).baseHeight;
+					for(int x = 0; x < CHUNK_SIZE; x++) {
+						unsigned int blockIndex = layer * CHUNK_SIZE + x + (chunk%chunks) * CHUNK_SIZE * WORLD_DEPTH;
+						blockHeights[blockIndex] = tempHeights[blockIndex] + baseHeight;
+						if(blockHeights[blockIndex] > WORLD_HEIGHT-1) blockHeights[blockIndex] = WORLD_HEIGHT-1;
+						if(blockHeights[blockIndex] < 0) blockHeights[blockIndex] = 0;
+					}
+					
+					float prog			  = (float)(chunk + layer*chunks) / (float)(chunks * WORLD_DEPTH);
+					setMessage("Smoothing Terrain... \n(" + std::to_string(chunk + layer*chunks) + "/" +
+							   std::to_string(chunks * WORLD_DEPTH) + ")");
+					setProgress(0.2f + 0.1f * prog); // Ends at 0.3f;
 				}
 			}
 		}

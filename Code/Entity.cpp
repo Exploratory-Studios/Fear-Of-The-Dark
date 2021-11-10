@@ -129,7 +129,7 @@ void Entity::move(float timeStepVariable) {
 	m_position += m_velocity * timeStepVariable;
 
 	unsigned int worldSize = Singletons::getWorld()->getSize();
-	if((int)m_position.x > worldSize) {
+	if(((float)m_position.x) > (float)worldSize) {
 		m_position.x -= worldSize;
 	} else if((int)m_position.x < 0) {
 		m_position.x += worldSize;

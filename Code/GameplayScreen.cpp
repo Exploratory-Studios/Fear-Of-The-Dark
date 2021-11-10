@@ -290,21 +290,24 @@ void GameplayScreen::draw() {
 	{
 		drawFluidsToFBO();
 
-		m_basicFBOTextureProgram.use();
+		m_waterFBOProgram.use();
 
 		// Camera matrix
 		glm::mat4 projectionMatrix = m_uiCamera.getCameraMatrix();
-		GLuint	  pUniform		   = m_basicFBOTextureProgram.getUniformLocation("P");
+		GLuint	  pUniform		   = m_waterFBOProgram.getUniformLocation("P");
 		glUniformMatrix4fv(pUniform, 1, GL_FALSE, &projectionMatrix[0][0]);
 
 		GLEngine::GLContextManager::getGLContext()->setActiveTexture(GL_TEXTURE0);
 		GLEngine::GLContextManager::getGLContext()->bindTexture(GL_TEXTURE_2D, m_fluidFBO.getTexture());
-		GLuint textureUniform = m_basicFBOTextureProgram.getUniformLocation("textureSampler");
+		GLuint textureUniform = m_waterFBOProgram.getUniformLocation("textureSampler");
 		glUniform1i(textureUniform, 0);
+		
+		GLuint	  tUniform		   = m_waterFBOProgram.getUniformLocation("time");
+		glUniform1f(tUniform, m_time);
 
 		m_fluidFBO.draw();
 
-		m_basicFBOTextureProgram.unuse();
+		m_waterFBOProgram.unuse();
 	}
 
 	drawGUIToScreen(); // These two actually do draw to the screen.
@@ -703,6 +706,13 @@ void GameplayScreen::initShaders() {
 	m_basicFBOTextureProgram.addAttribute("vertexColour");
 	m_basicFBOTextureProgram.addAttribute("vertexUV");
 	m_basicFBOTextureProgram.linkShaders();
+	
+	m_waterFBOProgram.compileShaders(ASSETS_FOLDER_PATH + "Shaders/water.vert",
+											ASSETS_FOLDER_PATH + "Shaders/water.frag");
+	m_waterFBOProgram.addAttribute("vertexPosition");
+	m_waterFBOProgram.addAttribute("vertexColour");
+	m_waterFBOProgram.addAttribute("vertexUV");
+	m_waterFBOProgram.linkShaders();
 
 	m_postProcessor.compileShaders(ASSETS_FOLDER_PATH + "Shaders/postProcesser.vert",
 								   ASSETS_FOLDER_PATH + "Shaders/postProcesser.frag");

@@ -110,6 +110,7 @@ class GameplayScreen : public GLEngine::IGameScreen {
 	GLEngine::GLSLProgram m_vignetteTextureProgram;
 	GLEngine::GLSLProgram m_skyTextureProgram;
 	GLEngine::GLSLProgram m_basicFBOTextureProgram;
+	GLEngine::GLSLProgram m_waterFBOProgram;
 	GLEngine::GLSLProgram m_postProcessor;	 // Adds lights!
 	GLEngine::GLSLProgram m_sunlightProgram; // Adds lights!
 

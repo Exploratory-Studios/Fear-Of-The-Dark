@@ -15,6 +15,12 @@ class Singletons {
 		m_entityManager = new EntityManager();
 		return m_entityManager;
 	}
+	
+	static void deleteEntityManager() {
+		if(m_entityManager)
+			delete m_entityManager;
+		m_entityManager = nullptr;
+	}
 
 	static AudioManager* getAudioManager() {
 		if(m_audioManager)
@@ -28,6 +34,14 @@ class Singletons {
 			return m_gui;
 		m_gui = new GLEngine::GUI();
 		return m_gui;
+	}
+	
+	static void destroyGUI() {
+		if(m_gui) {
+			m_gui->destroy();
+			delete m_gui;
+		}
+		m_gui = nullptr;
 	}
 
 	static GLEngine::Camera2D* getGameCamera() {

@@ -16,18 +16,45 @@
 
 EntityPlayer::EntityPlayer(glm::vec2 pos, unsigned int layer, SaveDataTypes::MetaData data, bool loadTex) :
 	EntityNPC(pos, layer, 0, data, loadTex) {
-	m_inventory->destroy();
-	m_armourWeaponsInventory->m_armourGrid->destroy();
-	m_armourWeaponsInventory->m_attacksGrid->destroy();
-	m_armourWeaponsInventory->destroy();
+	//m_armourWeaponsInventory->m_armourGrid->destroy();
+	//m_armourWeaponsInventory->m_attacksGrid->destroy();
+	//m_armourWeaponsInventory->destroy();
+	//m_inventory->destroy(); I can't imagine actually needing these
 
+	init();
+}
+
+EntityPlayer::~EntityPlayer() {
+}
+
+void EntityPlayer::init() {
 	m_inventory = std::make_shared<NPCInventory>(15.0f,
-												 m_UUID,
-												 true); // This makes sure that the player has an inventory with GUI
+												 m_UUID);
 	m_inventory->init(m_UUID + "_PLAYER_Inventory", false, nullptr);
 
 	m_armourWeaponsInventory = std::make_shared<NPCInventoryWrapper>(m_UUID, m_inventory);
+}
 
+void EntityPlayer::init(SaveDataTypes::EntityPlayerData& data) {
+	EntityNPC::init(data);
+	
+	init();
+	
+	m_position = data.position;
+	m_layer = data.layer;
+	m_velocity = data.velocity;
+	m_id = data.id;
+	m_health = data.health;
+	m_sanity = data.sanity;
+	m_hunger = data.hunger;
+	m_exhaustion = data.exhaustion;
+	m_stamina = data.stamina;
+}
+
+void EntityPlayer::initGUI() {
+	m_armourWeaponsInventory->initGUI();
+	m_inventory->initInventoryGUI();
+	
 	std::function<bool(const CEGUI::EventArgs&)> reskin = [=](const CEGUI::EventArgs& e) -> bool {
 		this->reskinLimbs();
 	};
@@ -39,12 +66,7 @@ EntityPlayer::EntityPlayer(glm::vec2 pos, unsigned int layer, SaveDataTypes::Met
 														   CEGUI::Event::Subscriber(reskin));
 	m_armourWeaponsInventory->m_armourGrid->subscribeEvent(CEGUI::Element::EventChildRemoved,
 														   CEGUI::Event::Subscriber(defaultSkin));
-}
-
-EntityPlayer::~EntityPlayer() {
-}
-
-void EntityPlayer::initGUI() {
+														   
 	m_statusBoxFrame =
 		static_cast<CEGUI::PopupMenu*>(Singletons::getGUI()->createWidget("FOTDSkin/StatusBox",
 																		  glm::vec4(0.785f, 0.025f, 0.2f, 0.4f),
@@ -134,6 +156,8 @@ void EntityPlayer::initGUI() {
 																		  glm::vec4(0.0f),
 																		  "PlayerGUI_BuffBox"));
 	m_buffBoxFrame->openPopupMenu();
+	
+	m_initedGUI = true;
 }
 
 void EntityPlayer::onDraw(GLEngine::SpriteBatch& sb, float time, int layerDifference, float xOffset) {
@@ -167,6 +191,8 @@ void EntityPlayer::onDraw(GLEngine::SpriteBatch& sb, float time, int layerDiffer
 }
 
 void EntityPlayer::drawGUI(GLEngine::SpriteBatch& sb, GLEngine::SpriteFont& sf) {
+	if(!m_initedGUI) initGUI();
+	
 	glm::vec4			  fullUV = glm::vec4(0.0f, 0.0f, 1.0f, 1.0f);
 	GLEngine::ColourRGBA8 fullColour(255, 255, 255, 255);
 

@@ -20,7 +20,7 @@ void SaveDataTypes::TileData::save(std::ofstream& file) {
 	file.write(reinterpret_cast<char*>(&pos.y), sizeof(float));
 	file.write(reinterpret_cast<char*>(&layer), sizeof(float));
 	file.write(reinterpret_cast<char*>(&id), sizeof(unsigned int));
-	metaData.save(file);
+	//metaData.save(file);
 }
 
 void SaveDataTypes::TileData::read(std::ifstream& file) {
@@ -28,7 +28,7 @@ void SaveDataTypes::TileData::read(std::ifstream& file) {
 	file.read(reinterpret_cast<char*>(&pos.y), sizeof(float));
 	file.read(reinterpret_cast<char*>(&layer), sizeof(float));
 	file.read(reinterpret_cast<char*>(&id), sizeof(unsigned int));
-	metaData.read(file);
+	//metaData.read(file);
 }
 
 SaveDataTypes::ItemData::ItemData(Item i) : id(i.getID()), quantity(i.getQuantity()), metaData(i.getMetaData()) {
@@ -37,13 +37,13 @@ SaveDataTypes::ItemData::ItemData(Item i) : id(i.getID()), quantity(i.getQuantit
 void SaveDataTypes::ItemData::save(std::ofstream& file) {
 	file.write(reinterpret_cast<char*>(&id), sizeof(unsigned int));
 	file.write(reinterpret_cast<char*>(&quantity), sizeof(unsigned int));
-	metaData.save(file);
+	//metaData.save(file);
 }
 
 void SaveDataTypes::ItemData::read(std::ifstream& file) {
 	file.read(reinterpret_cast<char*>(&id), sizeof(unsigned int));
 	file.read(reinterpret_cast<char*>(&quantity), sizeof(unsigned int));
-	metaData.read(file);
+	//metaData.read(file);
 }
 
 SaveDataTypes::InventoryData::InventoryData(InventoryBase inventory) {
@@ -75,7 +75,7 @@ void SaveDataTypes::EntityData::save(std::ofstream& file) {
 	file.write(reinterpret_cast<char*>(&velocity.x), sizeof(float));
 	file.write(reinterpret_cast<char*>(&velocity.y), sizeof(float));
 	file.write(reinterpret_cast<char*>(&id), sizeof(unsigned int));
-	md.save(file);
+	//md.save(file);
 }
 
 void SaveDataTypes::EntityData::read(std::ifstream& file) {
@@ -85,7 +85,7 @@ void SaveDataTypes::EntityData::read(std::ifstream& file) {
 	file.read(reinterpret_cast<char*>(&velocity.x), sizeof(float));
 	file.read(reinterpret_cast<char*>(&velocity.y), sizeof(float));
 	file.read(reinterpret_cast<char*>(&id), sizeof(unsigned int));
-	md.read(file);
+	//md.read(file);
 }
 
 SaveDataTypes::EntityItemData::EntityItemData(EntityItem i) : EntityData(i) {
@@ -96,26 +96,16 @@ SaveDataTypes::EntityNPCData::EntityNPCData(EntityNPC e) :
 }
 
 void SaveDataTypes::EntityNPCData::save(std::ofstream& file) {
-	file.write(reinterpret_cast<char*>(&position.x), sizeof(float));
-	file.write(reinterpret_cast<char*>(&position.y), sizeof(float));
-	file.write(reinterpret_cast<char*>(&layer), sizeof(unsigned int));
-	file.write(reinterpret_cast<char*>(&velocity.x), sizeof(float));
-	file.write(reinterpret_cast<char*>(&velocity.y), sizeof(float));
-	file.write(reinterpret_cast<char*>(&id), sizeof(unsigned int));
-	md.save(file);
+	EntityData::save(file);
+	//md.save(file);
 
 	inventory.save(file);
 	file.write(reinterpret_cast<char*>(&health), sizeof(float));
 }
 
 void SaveDataTypes::EntityNPCData::read(std::ifstream& file) {
-	file.read(reinterpret_cast<char*>(&position.x), sizeof(float));
-	file.read(reinterpret_cast<char*>(&position.y), sizeof(float));
-	file.read(reinterpret_cast<char*>(&layer), sizeof(unsigned int));
-	file.read(reinterpret_cast<char*>(&velocity.x), sizeof(float));
-	file.read(reinterpret_cast<char*>(&velocity.y), sizeof(float));
-	file.read(reinterpret_cast<char*>(&id), sizeof(unsigned int));
-	md.read(file);
+	EntityData::read(file);
+	//md.read(file);
 
 	inventory.read(file);
 	file.read(reinterpret_cast<char*>(&health), sizeof(float));
@@ -130,16 +120,7 @@ SaveDataTypes::EntityPlayerData::EntityPlayerData(EntityPlayer p) :
 }
 
 void SaveDataTypes::EntityPlayerData::save(std::ofstream& file) {
-	file.write(reinterpret_cast<char*>(&position.x), sizeof(float));
-	file.write(reinterpret_cast<char*>(&position.y), sizeof(float));
-	file.write(reinterpret_cast<char*>(&layer), sizeof(unsigned int));
-	file.write(reinterpret_cast<char*>(&velocity.x), sizeof(float));
-	file.write(reinterpret_cast<char*>(&velocity.y), sizeof(float));
-	file.write(reinterpret_cast<char*>(&id), sizeof(unsigned int));
-	md.save(file);
-
-	inventory.save(file);
-	file.write(reinterpret_cast<char*>(&health), sizeof(float));
+	EntityNPCData::save(file);
 
 	file.write(reinterpret_cast<char*>(&sanity), sizeof(float));
 	file.write(reinterpret_cast<char*>(&thirst), sizeof(float));
@@ -149,16 +130,7 @@ void SaveDataTypes::EntityPlayerData::save(std::ofstream& file) {
 }
 
 void SaveDataTypes::EntityPlayerData::read(std::ifstream& file) {
-	file.read(reinterpret_cast<char*>(&position.x), sizeof(float));
-	file.read(reinterpret_cast<char*>(&position.y), sizeof(float));
-	file.read(reinterpret_cast<char*>(&layer), sizeof(unsigned int));
-	file.read(reinterpret_cast<char*>(&velocity.x), sizeof(float));
-	file.read(reinterpret_cast<char*>(&velocity.y), sizeof(float));
-	file.read(reinterpret_cast<char*>(&id), sizeof(unsigned int));
-	md.read(file);
-
-	inventory.read(file);
-	file.read(reinterpret_cast<char*>(&health), sizeof(float));
+	EntityNPCData::read(file);
 
 	file.read(reinterpret_cast<char*>(&sanity), sizeof(float));
 	file.read(reinterpret_cast<char*>(&thirst), sizeof(float));
@@ -168,7 +140,7 @@ void SaveDataTypes::EntityPlayerData::read(std::ifstream& file) {
 }
 
 SaveDataTypes::ChunkData::ChunkData() {
-	for(unsigned int x = 0; x < Singletons::getWorld()->getSize(); x++) {
+	for(unsigned int x = 0; x < CHUNK_SIZE; x++) {
 		std::vector<std::vector<TileData>> xData;
 		for(unsigned int y = 0; y < WORLD_HEIGHT; y++) {
 			std::vector<TileData> yData;
@@ -182,8 +154,8 @@ SaveDataTypes::ChunkData::ChunkData() {
 }
 
 void SaveDataTypes::ChunkData::save(std::ofstream& file) {
-	for(int y = 0; y < WORLD_HEIGHT; y++) {
-		for(int x = 0; x < CHUNK_SIZE; x++) {
+	for(int x = 0; x < CHUNK_SIZE; x++) {
+		for(int y = 0; y < WORLD_HEIGHT; y++) {
 			for(int k = 0; k < WORLD_DEPTH; k++) {
 				tiles[x][y][k].save(file);
 			}
@@ -193,8 +165,8 @@ void SaveDataTypes::ChunkData::save(std::ofstream& file) {
 }
 
 void SaveDataTypes::ChunkData::read(std::ifstream& file) {
-	for(int y = 0; y < WORLD_HEIGHT; y++) {
-		for(int x = 0; x < CHUNK_SIZE; x++) {
+	for(int x = 0; x < CHUNK_SIZE; x++) {
+		for(int y = 0; y < WORLD_HEIGHT; y++) {
 			for(int k = 0; k < WORLD_DEPTH; k++) {
 				tiles[x][y][k].read(file);
 			}

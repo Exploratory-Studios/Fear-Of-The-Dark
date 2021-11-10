@@ -6,6 +6,8 @@ class NPCInventory : public InventoryBase {
   public:
 	NPCInventory(float maxWeight, std::string& name, bool initGUI = false);
 	~NPCInventory();
+	
+	virtual void initInventoryGUI() override;
 
 	virtual void copyFrom(InventoryBase* other) override {
 		m_items	 = other->getItems();
@@ -21,7 +23,6 @@ class NPCInventory : public InventoryBase {
 	float getSpeedMultiplier();
 
   protected:
-	virtual void initInventoryGUI(std::string name, bool autoResize, CEGUI::Window* parent) override;
 
 	// The max weight at which you can still walk the normal speed, defined in PRESETS file. Called MAX_WEIGHT
 	float m_absMaxWeight =

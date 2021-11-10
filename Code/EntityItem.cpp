@@ -41,6 +41,12 @@ void EntityItem::init() {
 	m_metaData = d.getMetaData();
 }
 
+void EntityItem::init(SaveDataTypes::EntityItemData& data) {
+	Entity::init(data);
+	
+	init();
+}
+
 EntityItem::~EntityItem() {
 	//dtor
 }

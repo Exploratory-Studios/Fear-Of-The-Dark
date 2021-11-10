@@ -48,8 +48,6 @@ void GameplayScreen::destroy() {
 void GameplayScreen::onEntry() {
 	initUI();
 
-	m_hasBeenInited = true;
-
 	std::srand(std::time(NULL));
 
 	initShaders();
@@ -102,7 +100,6 @@ void GameplayScreen::onEntry() {
 		EntityPlayer* p = new EntityPlayer(pos, 0, SaveDataTypes::MetaData(), true);
 
 		Singletons::getEntityManager()->setPlayer(p);
-
 		Singletons::getEntityManager()->getPlayer()->initGUI();
 	}
 
@@ -124,9 +121,6 @@ void GameplayScreen::onExit() {
 	delete m_scripter;
 	delete m_questManager;
 	delete m_dialogueManager;
-
-	m_hasBeenInited = false;
-	Singletons::getGUI()->destroy();
 	delete m_console;
 
 	m_textureProgram.dispose();
@@ -140,6 +134,8 @@ void GameplayScreen::onExit() {
 	m_dr.dispose();
 
 	m_gameState = GameState::PLAY;
+	
+	Singletons::destroyGUI();
 }
 
 void GameplayScreen::update() {
@@ -221,16 +217,6 @@ void GameplayScreen::update() {
 	}
 	if(m_currentState != GLEngine::ScreenState::EXIT_APPLICATION)
 		Singletons::getGUI()->update();
-
-	if(m_debugBool) {
-		// 13,15
-		Singletons::getWorld()->getFluid(0)->addFluid(10, 39, 0, 0, 1.8f); // Water
-		//Singletons::getWorld()->getFluid(1)->addFluid(8, 15, 0, 0, 1.0f); // Smoke
-
-		//Singletons::getEntityManager()->getPlayer()->getInventory()->addItem(new Item(1, 7, true));
-		//Singletons::getEntityManager()->getPlayer()->getInventory()->addItem(new Item(1, 8, true));
-		//Singletons::getEntityManager()->getPlayer()->getInventory()->addItem(new Item(1, 9, true));
-	}
 }
 
 void GameplayScreen::draw() {
@@ -767,9 +753,13 @@ void GameplayScreen::initUI() {
 
 	// Register custom objects
 	{
-		CEGUI::WindowFactoryManager::addFactory<CEGUI::TplWindowFactory<CEGUI::GUI_InventoryReceiver>>();
-		CEGUI::WindowFactoryManager::addFactory<CEGUI::TplWindowFactory<CEGUI::GUI_InventoryItem>>();
-		CEGUI::WindowRendererManager::addFactory<CEGUI::TplWindowRendererFactory<CEGUI::GUI_InventoryItemRenderer>>();
+		// Only register if it's not already registered
+		CEGUI::WindowFactoryManager* singleton = CEGUI::Singleton<CEGUI::WindowFactoryManager>::getSingletonPtr();
+		if(!singleton->isFactoryPresent((CEGUI::TplWindowFactory<CEGUI::GUI_InventoryReceiver>()).getTypeName())) {
+			CEGUI::WindowFactoryManager::addFactory<CEGUI::TplWindowFactory<CEGUI::GUI_InventoryReceiver>>();
+			CEGUI::WindowFactoryManager::addFactory<CEGUI::TplWindowFactory<CEGUI::GUI_InventoryItem>>();
+			CEGUI::WindowRendererManager::addFactory<CEGUI::TplWindowRendererFactory<CEGUI::GUI_InventoryItemRenderer>>();
+		}
 	}
 
 	{

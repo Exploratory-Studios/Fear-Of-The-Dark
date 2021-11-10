@@ -15,6 +15,7 @@ class EntityProjectile : public Entity {
 	virtual bool collideWithOther(Entity* other) override;
 
 	void init();
+	void init(SaveDataTypes::EntityProjectileData& data);
 
 	void setDirection(glm::vec2& direction) {
 		m_velocity = direction * glm::vec2(m_speed);

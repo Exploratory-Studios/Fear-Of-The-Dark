@@ -160,8 +160,6 @@ class GameplayScreen : public GLEngine::IGameScreen {
 	bool m_cameraLocked = false; // Can the camera move with the player, or is it 'locked'?
 
 	unsigned int m_nextScreenIndex = SCREEN_INDEX_NO_SCREEN;
-
-	bool m_hasBeenInited = false;
 	
 	float variable = 0.0f;
 };

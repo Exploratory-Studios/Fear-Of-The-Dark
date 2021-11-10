@@ -9,4 +9,6 @@ class WeaponInventory : public InventoryBase {
 					bool		   initGUI			 = true,
 					CEGUI::Window* parent			 = nullptr);
 	~WeaponInventory();
+	
+	virtual void initInventoryGUI() override;
 };

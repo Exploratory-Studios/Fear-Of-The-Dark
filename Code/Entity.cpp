@@ -35,6 +35,14 @@ Entity::Entity(SaveDataTypes::EntityData& saveData) {
 Entity::~Entity() {
 }
 
+void Entity::init(SaveDataTypes::EntityData& data) {
+	m_position = data.position;
+	m_layer = data.layer;
+	m_velocity = data.velocity;
+	m_id = data.id;
+	m_metaData = data.md;
+}
+
 void Entity::update(float timeStep, unsigned int selfIndex) {
 	if(m_updateScriptId != -1) {
 		ScriptingModule::ScriptQueue::activateScript(m_updateScriptId, generateLuaValues());

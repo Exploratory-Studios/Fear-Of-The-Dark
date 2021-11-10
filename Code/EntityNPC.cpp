@@ -21,15 +21,23 @@
 #include "XMLData.h"
 #include "Singletons.h"
 
-NPCInventoryWrapper::NPCInventoryWrapper(std::string& UUID, std::shared_ptr<NPCInventory> inventory) {
+NPCInventoryWrapper::NPCInventoryWrapper(std::string& UUID, std::shared_ptr<NPCInventory> inventory) : m_UUID(UUID) {
 	// Construct all of our inventories, as well as the GUI
 
 	// Construct inventories:
 	m_inventory = inventory; // Done
+}
 
-	std::string armourName	= UUID + "ArmourGrid";
-	std::string attacksName = UUID + "AttacksGrid";
-	std::string frameName	= UUID + "ArmourAttacksFrame";
+NPCInventoryWrapper::~NPCInventoryWrapper() {
+	destroy();
+}
+
+void NPCInventoryWrapper::initGUI() {
+	if(m_initedGUI) return;
+	
+	std::string armourName	= m_UUID + "ArmourGrid";
+	std::string attacksName = m_UUID + "AttacksGrid";
+	std::string frameName	= m_UUID + "ArmourAttacksFrame";
 
 	Singletons::getGUI()->setActiveContext(1);
 
@@ -52,6 +60,9 @@ NPCInventoryWrapper::NPCInventoryWrapper(std::string& UUID, std::shared_ptr<NPCI
 
 	m_window->setVisible(false);
 	m_window->setEnabled(false);
+	
+	m_armourGrid->initInventoryGUI();
+	m_attacksGrid->initInventoryGUI();
 	m_armourGrid->setToDraw(true);
 	m_attacksGrid->setToDraw(true);
 
@@ -71,10 +82,8 @@ NPCInventoryWrapper::NPCInventoryWrapper(std::string& UUID, std::shared_ptr<NPCI
 
 	m_armourGrid->setContentSize(1, 3);	 // vertical
 	m_attacksGrid->setContentSize(3, 1); // horizontal
-}
-
-NPCInventoryWrapper::~NPCInventoryWrapper() {
-	destroy();
+	
+	m_initedGUI = true;
 }
 
 void NPCInventoryWrapper::destroy() {
@@ -103,6 +112,8 @@ void NPCInventoryWrapper::setToDraw(bool& setting) {
 }
 
 void NPCInventoryWrapper::draw(GLEngine::SpriteBatch& sb, GLEngine::SpriteFont& sf, float x, float y) {
+	if(!m_initedGUI) initGUI();
+	
 	// This draws our armourGrid, attacksGrid, and inventory.
 	m_inventory->draw(sb, sf, x, y, false);
 	m_armourGrid->draw(sb, sf, x, y, false);
@@ -119,17 +130,17 @@ EntityNPC::EntityNPC(glm::vec2 pos, unsigned int layer, unsigned int id, SaveDat
 	Entity(pos, layer, SaveDataTypes::MetaData()) {
 	m_id = id;
 
-	init(m_id);
+	init();
 }
 
 EntityNPC::EntityNPC(glm::vec2 pos, unsigned int layer, EntityIDs id, SaveDataTypes::MetaData data, bool loadTex) :
 	Entity(pos, layer, SaveDataTypes::MetaData()) {
 	m_id = (unsigned int)id;
 
-	init(m_id);
+	init();
 }
 
-void EntityNPC::init(unsigned int id) {
+void EntityNPC::init() {
 	m_type = XMLModule::EntityType::NPC;
 
 	XMLModule::EntityNPCData d = XMLModule::XMLData::getEntityNPCData(m_id);
@@ -147,28 +158,43 @@ void EntityNPC::init(unsigned int id) {
 
 	m_health = m_maxHealth;
 
-	initLimbs();
-
 	m_inventory = std::make_shared<NPCInventory>(15.0f, m_UUID);
 	m_inventory->init(m_UUID + "_NPC_Inventory", false, nullptr);
 
 	m_armourWeaponsInventory = std::make_shared<NPCInventoryWrapper>(m_UUID, m_inventory);
+}
 
+void EntityNPC::init(SaveDataTypes::EntityNPCData& data) {
+	Entity::init(data);
+	
+	init();
+	
+	m_inventory->init(data.inventory);
+}
+
+void EntityNPC::initGUI() {
 	std::function<bool(const CEGUI::EventArgs&)> reskin = [=](const CEGUI::EventArgs& e) -> bool {
 		this->reskinLimbs();
 	};
 	std::function<bool(const CEGUI::EventArgs&)> defaultSkin = [=](const CEGUI::EventArgs& e) -> bool {
 		this->m_body.resetAnimations();
 	};
-
+	
+	m_armourWeaponsInventory->initGUI();
+	
 	m_armourWeaponsInventory->m_armourGrid->subscribeEvent(CEGUI::Element::EventChildAdded,
 														   CEGUI::Event::Subscriber(reskin));
 	m_armourWeaponsInventory->m_armourGrid->subscribeEvent(CEGUI::Element::EventChildRemoved,
 														   CEGUI::Event::Subscriber(defaultSkin));
+	
+	m_initedGUI = true;
 }
 
 void EntityNPC::initLimbs() {
 	/// TODO: Expand XML a bit
+	
+	if(m_initedLimbs) return;
+	m_initedLimbs = true;
 
 	// Load XML:
 	XMLModule::EntityNPCData data = XMLModule::XMLData::getEntityNPCData(m_id);
@@ -224,6 +250,7 @@ bool EntityNPC::event_reskin(const CEGUI::EventArgs& e) {
 
 void EntityNPC::reskinLimbs() {
 	// Set all limbs to their default skins first, so any that don't have armour just aren't affected
+	initLimbs();
 	m_body.resetAnimations();
 
 	// Loop through all data in m_armour, and apply skins to affected limbs
@@ -251,6 +278,9 @@ void EntityNPC::dispose() {
 }
 
 void EntityNPC::draw(GLEngine::SpriteBatch& sb, float time, int layerDifference, float xOffset) {
+	if(!m_initedGUI) initGUI();
+	if(!m_initedLimbs) initLimbs();
+	
 	if(m_draw) {
 		glm::vec4 destRect = glm::vec4(m_position.x + (xOffset * CHUNK_SIZE), m_position.y, m_size.x, m_size.y);
 
@@ -263,6 +293,8 @@ void EntityNPC::draw(GLEngine::SpriteBatch& sb, float time, int layerDifference,
 }
 
 void EntityNPC::drawNormal(GLEngine::SpriteBatch& sb, float time, int layerDifference, float xOffset) {
+	if(!m_initedLimbs) initLimbs();
+	
 	if(m_draw) {
 		glm::vec4 destRect = glm::vec4(m_position.x + (xOffset * CHUNK_SIZE), m_position.y, m_size.x, m_size.y);
 
@@ -273,6 +305,8 @@ void EntityNPC::drawNormal(GLEngine::SpriteBatch& sb, float time, int layerDiffe
 }
 
 void EntityNPC::display(GLEngine::SpriteBatch& sb, glm::vec2 position, float scale) {
+	if(!m_initedLimbs) initLimbs();
+	
 	float depth = getDepth();
 	m_body.draw(sb,
 				GLEngine::ColourRGBA8(255, 255, 255, 255),

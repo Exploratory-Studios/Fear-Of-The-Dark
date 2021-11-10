@@ -45,8 +45,6 @@ void EntityManager::init(World* world) {
 		Logger::getInstance()->log("WARNING: EntityManager attempted to initialize after already doing so!", true);
 		return;
 	}
-
-	m_world = world;
 }
 
 void EntityManager::dispose() {
@@ -55,8 +53,7 @@ void EntityManager::dispose() {
 		delete e;
 	}
 
-	m_entitiesByUUID
-		.clear(); // We don't need to delete these; they are just copies of the pointers in m_entities (already deleted)
+	m_entitiesByUUID.clear(); // We don't need to delete these; they are just copies of the pointers in m_entities (already deleted)
 
 	Logger::getInstance()->log("EntityManager deconstructed");
 }
@@ -184,7 +181,7 @@ void EntityManager::drawEntities(GLEngine::SpriteBatch&	  sb,
 
 	for(unsigned int i = 0; i < m_entities.size(); i++) {
 		m_entities[i]->draw(sb,
-							m_world->getTime(),
+							Singletons::getWorld()->getTime(),
 							std::abs(diff[m_entities[i]->getLayer()]) + 1.0,
 							0.0f); /// TODO: Finish these entity functions up and improve!
 	}
@@ -205,7 +202,7 @@ void EntityManager::drawEntitiesNormal(GLEngine::SpriteBatch& sb, glm::vec4 dest
 
 	for(unsigned int i = 0; i < m_entities.size(); i++) {
 		m_entities[i]->drawNormal(sb,
-								  m_world->getTime(),
+								  Singletons::getWorld()->getTime(),
 								  std::abs(diff[m_entities[i]->getLayer()]) + 1.0,
 								  0.0f); /// TODO: Finish these entity functions up and improve!
 	}
@@ -293,17 +290,17 @@ void EntityManager::spawnEntities() {
 				unsigned int x = ((int)positions[i].x + worldSize) % worldSize;
 				for(unsigned int y1 = 0; !checkNext && y1 < 2; y1++) {
 					for(int x1 = -1; !checkNext && x1 < 2; x1++) {
-						if(!m_world->getTile((x + x1 + worldSize) % worldSize, y + y1, z)) {
+						if(!Singletons::getWorld()->getTile((x + x1 + worldSize) % worldSize, y + y1, z)) {
 							checkNext = true;
-						} else if(m_world->getTile((x + x1 + worldSize) % worldSize, y + y1, z)->isSolid()) {
+						} else if(Singletons::getWorld()->getTile((x + x1 + worldSize) % worldSize, y + y1, z)->isSolid()) {
 							checkNext = true;
 						}
 					}
 				}
 				for(int x1 = -1; !checkNext && x1 < 2; x1++) {
-					if(!m_world->getTile((x + x1 + worldSize) % worldSize, y - 1, z)) {
+					if(!Singletons::getWorld()->getTile((x + x1 + worldSize) % worldSize, y - 1, z)) {
 						checkNext = true;
-					} else if(!m_world->getTile((x + x1 + worldSize) % worldSize, y - 1, z)->isSolid()) {
+					} else if(!Singletons::getWorld()->getTile((x + x1 + worldSize) % worldSize, y - 1, z)->isSolid()) {
 						checkNext = true;
 					}
 				}

@@ -14,8 +14,16 @@
 #include "Factory.h"
 #include "Singletons.h"
 
+void WorldIOManager::initLoadSaveStuff() {
+	m_progress		  = new float(0.0f);
+	m_saveLoadMessage = new std::string("");
+
+	logger = Logger::getInstance();
+}
+
 void WorldIOManager::loadWorld(std::string worldName) {
-	setProgress(0.0f);
+	Singletons::setWorld(nullptr); // Delete the world!
+	initLoadSaveStuff();
 	boost::thread t([=]() { P_loadWorld(worldName, Singletons::getWorld()); });
 	t.detach();
 	//P_loadWorld(worldName);
@@ -23,58 +31,61 @@ void WorldIOManager::loadWorld(std::string worldName) {
 }
 
 void WorldIOManager::saveWorld() {
-	setProgress(0.0f);
+	initLoadSaveStuff();
 	boost::thread t([=]() { P_saveWorld(Singletons::getWorld()); });
 	t.detach();
 	//P_saveWorld(worldName);
 }
 
 void WorldIOManager::createWorld(unsigned int seed, std::string worldName, bool isFlat, unsigned int width) {
-	setProgress(0.0f);
+	Singletons::setWorld(nullptr); // Delete the world!
+	initLoadSaveStuff();
 	boost::thread t([=]() { P_createWorld(seed, worldName, isFlat, width); });
 	t.detach();
 	//P_createWorld(seed, worldName, isFlat);
 }
 
 void WorldIOManager::P_loadWorld(std::string worldName, World* world) {
-	if(world) {
-		delete world;
-	}
-
-	world = new World(0, 0, 0); /// TODO: Read world size and all that before creation.
-
 	float startTime = (float)(std::clock()) / (float)(CLOCKS_PER_SEC / 1000);
 
 	setProgress(0.0f);
+	setMessage("Loading basic info...");
 
 	logger->log("LOAD: STARTING LOAD AT " + std::to_string(startTime), true);
+	
+	std::string filepath = SAVES_PATH + worldName + ".bin";
+	world->setName(worldName);
+	
+	logger->log("LOAD: Loading from file: " + filepath);
 
 	// INIT
-	std::ifstream file(SAVES_PATH + worldName + ".bin", std::ios::binary);
+	std::ifstream file(filepath, std::ios::binary);
 	if(file.fail()) {
-		GLEngine::fatalError("Error loading from file: " + SAVES_PATH + worldName + ".bin");
+		GLEngine::fatalError("Error loading from file: " + filepath);
 	}
-
+	
 	{
 		// VERSION
-		unsigned int saveLen;
 
-		file.read(reinterpret_cast<char*>(&saveLen), sizeof(unsigned int));
+		unsigned int saveVersion;
+		file.read(reinterpret_cast<char*>(&saveVersion), sizeof(unsigned int));
 
-		char* saveVersion = new char();
-		file.read(&saveVersion[0], saveLen);
+		logger->log("LOAD: Loaded Version: " + std::to_string(saveVersion) + ", Using Version: " + std::to_string(m_saveVersion), true);
 
-		logger->log("LOAD: Loaded Version: " + std::string(saveVersion) + ", Using Version: " + m_saveVersion, true);
-
-		if(m_saveVersion + "\177" != saveVersion) {
+		if(m_saveVersion != saveVersion) {
 			logger->log("LOAD: Loaded Version Doesn't Match Current Loader Version. Quitting...", true);
-			GLEngine::fatalError("Error loading from file: " + worldName + ".bin: Save Version Mismatch");
+			GLEngine::fatalError("Error loading from file: " + filepath + ": Save Version Mismatch");
 		}
 	}
 
 	{
 		// MISCELLANEOUS WORLD DATA
-		file.read(reinterpret_cast<char*>(&world->m_time), sizeof(float));
+		file.read(reinterpret_cast<char*>(&world->m_time), sizeof(unsigned long int));
+		
+		unsigned int worldSize_tiles = 0;
+		file.read(reinterpret_cast<char*>(&worldSize_tiles), sizeof(unsigned int));
+		
+		world->initTiles(worldSize_tiles, WORLD_HEIGHT, WORLD_DEPTH);
 	}
 
 	setProgress(0.1f);
@@ -82,41 +93,44 @@ void WorldIOManager::P_loadWorld(std::string worldName, World* world) {
 	{
 		// PLAYER
 
-		EntityPlayer* newP = new EntityPlayer(glm::vec2(0.0f), 0, SaveDataTypes::MetaData(), false);
+  		EntityPlayer* newP = new EntityPlayer(glm::vec2(0.0f), 0, SaveDataTypes::MetaData(), false);
 		Singletons::getEntityManager()->setPlayer(newP);
 
 		SaveDataTypes::EntityPlayerData pod;
 		pod.read(file);
 
-		/// TODO: Set actual player data from pod
+		Singletons::getEntityManager()->getPlayer()->init(pod);
 
 		logger->log("LOAD: Loaded Player POD");
 	}
 
-	setProgress(0.2f);
+	setProgress(0.1f);
 
 	{
 		// WORLD
-
+		
 		const unsigned int		  chunks	= world->getSize() / CHUNK_SIZE;
 		SaveDataTypes::ChunkData* chunkData = new SaveDataTypes::ChunkData[chunks];
-		//file.read(reinterpret_cast<char*>(&chunkData[0]), sizeof(ChunkData) * WORLD_SIZE);
-
-		for(int i = 0; i < world->getSize(); i++) {
+		//file.read(reinterpret_cast<char*>(&chunkData[0]), sizeof(SaveDataTypes::ChunkData) * WORLD_SIZE);
+		
+		setMessage("Loading Chunks... 0/" + std::to_string(chunks));
+		
+		for(int i = 0; i < chunks; i++) {
 			chunkData[i].read(file);
 			world->m_biomesMap[i] = chunkData[i].biomeID;
 			setProgress(getProgress() + 1.0f / (world->getSize()) * 0.1f); // 0.3
 		}
 
-		for(int i = 0; i < world->getSize(); i++) {
-			for(unsigned int y = 0; y < WORLD_HEIGHT; y++) {
-				for(unsigned int x = 0; x < CHUNK_SIZE; x++) {
+		for(int i = 0; i < chunks; i++) {
+			setMessage("Loading Chunks... " + std::to_string(i) + "/" + std::to_string(chunks));
+			for(unsigned int x = 0; x < CHUNK_SIZE; x++) {
+				for(unsigned int y = 0; y < WORLD_HEIGHT; y++) {
 					for(unsigned int k = 0; k < WORLD_DEPTH; k++) {
-						SaveDataTypes::TileData* temp = &chunkData[i].tiles[y][x][k];
+						SaveDataTypes::TileData* temp = &chunkData[i].tiles[x][y][k];
 						Tile*					 tile = Factory::createTile(temp->id, temp->pos, k, temp->metaData);
+						
 						world->setTile_noEvent(tile);
-						setProgress(getProgress() +
-									1.0f / (CHUNK_SIZE * WORLD_HEIGHT * world->getSize() * WORLD_DEPTH) * 0.2f); // 0.3
+						setProgress(0.1f + 0.9f * (i * CHUNK_SIZE * WORLD_HEIGHT * WORLD_DEPTH + x * WORLD_HEIGHT * WORLD_DEPTH + y * WORLD_DEPTH + k) / (chunks*CHUNK_SIZE*WORLD_HEIGHT*WORLD_DEPTH)); // 0.3
 					}
 				}
 			}
@@ -140,6 +154,9 @@ void WorldIOManager::P_loadWorld(std::string worldName, World* world) {
 
 /*
 SAVING ORDER:
+MISC WORLD INFO
+	Time
+	World Size
 Player POD (x, y, stats, etc.)
 Player Inventory
     Inventory POD
@@ -152,8 +169,10 @@ Chunks
 */ // stacksize is 8192 kbytes
 
 void WorldIOManager::P_saveWorld(World* world) {
-	logger->log("SAVE: Starting World Save to File: " + world->getName() + ".bin (Full path: " + SAVES_PATH +
-				world->getName() + ".bin)");
+	
+	std::string filepath = SAVES_PATH + world->getName() + ".bin";
+	
+	logger->log("SAVE: Starting World Save to File: " + filepath);
 	logger->log("SAVE: Starting Save Preparations");
 
 	SaveDataTypes::EntityPlayerData p = Singletons::getEntityManager()->getPlayer()->getPlayerSaveData();
@@ -205,28 +224,27 @@ void WorldIOManager::P_saveWorld(World* world) {
 	logger->log("SAVE: Chunk Data Prepared");
 
 	unsigned long int time = world->getTime();
+	unsigned int worldSize = world->getSize();
 
 	logger->log("SAVE: ALL DATA PREPARED, STARTING SAVE", true);
 
 	// INIT
-	std::ofstream file(SAVES_PATH + world->getName() + ".bin", std::ios::binary);
+	std::ofstream file(filepath, std::ios::binary);
 	if(file.fail()) {
-		GLEngine::fatalError("Error saving to file: " + SAVES_PATH + world->getName() + ".bin");
+		GLEngine::fatalError("Error saving to file: " + filepath);
 	}
 
 	{
 		// VERSION
-		unsigned int saveLen = m_saveVersion.size();
+		file.write(reinterpret_cast<char*>(&m_saveVersion), sizeof(unsigned int));
 
-		file.write(reinterpret_cast<char*>(&saveLen), sizeof(unsigned int));
-		file.write(m_saveVersion.c_str(), m_saveVersion.size());
-
-		logger->log("SAVE: Started Saving with version: " + m_saveVersion);
+		logger->log("SAVE: Started Saving with version: " + std::to_string(m_saveVersion));
 	}
 
 	{
 		// MISCELLANEOUS WORLD DATA
-		file.write(reinterpret_cast<char*>(&time), sizeof(float));
+		file.write(reinterpret_cast<char*>(&time), sizeof(unsigned long int));
+		file.write(reinterpret_cast<char*>(&worldSize), sizeof(unsigned int));
 	}
 
 	{
@@ -238,7 +256,6 @@ void WorldIOManager::P_saveWorld(World* world) {
 	{
 		// WORLD
 		for(int i = 0; i < chunks; i++) {
-			//file.write(reinterpret_cast<char*>(chunkData), sizeof(ChunkData) * WORLD_SIZE);
 			chunkData[i].save(file);
 		}
 		delete[] chunkData;
@@ -246,7 +263,6 @@ void WorldIOManager::P_saveWorld(World* world) {
 	}
 
 	logger->log("SAVE: SAVE COMPLETED", true);
-	;
 
 	file.close();
 }

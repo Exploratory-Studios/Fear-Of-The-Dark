@@ -19,15 +19,10 @@ class World;
 class WorldIOManager {
   public:
 	WorldIOManager() {
-		init();
+		initLoadSaveStuff();
 	}
 
-	void init() {
-		m_progress		  = new float(0.0f);
-		m_saveLoadMessage = new std::string("");
-
-		logger = Logger::getInstance();
-	}
+	void initLoadSaveStuff();
 
 	~WorldIOManager() {
 		delete m_progress;
@@ -76,7 +71,7 @@ class WorldIOManager {
 		    all of the world (random engine #2)
 		*/
 
-	std::string m_saveVersion = "1.3.1";
+	unsigned int m_saveVersion = 1;
 
 	Logger* logger = nullptr;
 

@@ -14,6 +14,9 @@ class EntityPlayer : public EntityNPC {
   public:
 	EntityPlayer(glm::vec2 pos, unsigned int layer, SaveDataTypes::MetaData data, bool loadTex);
 	virtual ~EntityPlayer();
+	
+	void init();
+	void init(SaveDataTypes::EntityPlayerData& data); // For loading saves.
 
 	void initGUI(); /// TODO: Move GUI to GameplayScreen
 

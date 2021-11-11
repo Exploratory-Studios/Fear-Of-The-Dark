@@ -9,14 +9,22 @@
 
 class Tile;
 
+namespace SaveDataTypes {
+	class FluidData;
+}
+
 namespace FluidModule {
 
 	enum class FluidIDs { WATER };
 
 	class FluidDomain {
-	  public:
+	public:
+		FluidDomain() {}
 		FluidDomain(std::vector<std::vector<std::vector<Tile*>>>& tiles, unsigned int id);
 		~FluidDomain();
+		
+		void init();
+		void init(SaveDataTypes::FluidData& data);
 
 		void update();
 		void draw(
@@ -44,7 +52,12 @@ namespace FluidModule {
 			float y0,
 			float x1,
 			float y1); // Displaces an area of fluid from (x0, y0) to (x1, y1). If successful, returns true. Else, returns false
-
+		
+		unsigned int getID() { return m_id; }
+		unsigned int getDomainXSize() { return m_densityFields.size(); }
+		unsigned int getDomainYSize() { return m_densityFields[0].size(); }
+		std::vector<std::vector<DensityField*>> getFields() { return m_densityFields; }
+		
 	  private:
 		void createTexture();										 // Creates the texture. Is only for the constructor
 		void resizeTexture(unsigned int width, unsigned int height); // Resizes the texture. For use with shifting scale
@@ -56,7 +69,7 @@ namespace FluidModule {
 		std::vector<unsigned char>* m_textureData;
 		unsigned int				m_usedTextureWidth, m_usedTextureHeight;
 		unsigned int				m_allocatedTextureWidth = 60 * FLUID_PARTITION_SIZE,
-					 m_allocatedTextureHeight				= 40 * FLUID_PARTITION_SIZE;
+									m_allocatedTextureHeight= 40 * FLUID_PARTITION_SIZE;
 		float m_idealDensity								= 1.0f;
 		float m_gravityConstant								= 0.7f;
 		float m_trickleConstant								= 0.4f; // Controls the random L/R movement of fluid

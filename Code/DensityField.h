@@ -2,6 +2,10 @@
 
 #include "PresetValues.h"
 
+namespace SaveDataTypes {
+	class FluidDensityData;
+}
+
 namespace FluidModule {
 	struct FluidCell {
 		FluidCell() {
@@ -22,6 +26,10 @@ namespace FluidModule {
 
 	struct DensityField {
 		DensityField() {
+			init();
+		}
+		DensityField(SaveDataTypes::FluidDensityData& data);
+		void init() {
 			densities	   = new FluidCell[FLUID_PARTITION_SIZE * FLUID_PARTITION_SIZE];
 			deltaDensities = new FluidCell[FLUID_PARTITION_SIZE * FLUID_PARTITION_SIZE];
 		}

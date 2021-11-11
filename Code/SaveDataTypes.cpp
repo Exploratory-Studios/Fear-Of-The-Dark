@@ -15,6 +15,94 @@
 #include "LuaHeaders.h"
 #include "MetaData.h"
 
+#include "FluidDomain.h"
+
+SaveDataTypes::FluidData::FluidData(FluidModule::FluidDomain* domain) {
+	id = domain->getID();
+	
+	xSize = domain->getDomainXSize();
+	ySize = domain->getDomainYSize();
+	
+	std::vector<std::vector<FluidModule::DensityField*>> fields = domain->getFields();
+	
+	for(unsigned int x = 0; x < fields.size(); x++) {
+		for(unsigned int y = 0; y < fields[x].size(); y++) {
+			if(fields[x][y]) {
+				FluidDensityData d(*fields[x][y]);
+				d.x = x;
+				d.y = y;
+				densityFields.push_back(d);
+			}
+		}
+	}
+}
+
+void SaveDataTypes::FluidData::save(std::ofstream& file) {
+	file.write(reinterpret_cast<char*>(&id), sizeof(unsigned int));
+	
+	file.write(reinterpret_cast<char*>(&xSize), sizeof(unsigned int));
+	file.write(reinterpret_cast<char*>(&ySize), sizeof(unsigned int));
+	
+	unsigned int numFields = densityFields.size();
+	file.write(reinterpret_cast<char*>(&numFields), sizeof(unsigned int));
+	
+	for(unsigned int i = 0; i < densityFields.size(); i++) {
+		densityFields[i].save(file);
+	}
+}
+
+void SaveDataTypes::FluidData::read(std::ifstream& file) {
+	file.read(reinterpret_cast<char*>(&id), sizeof(unsigned int));
+	
+	file.read(reinterpret_cast<char*>(&xSize), sizeof(unsigned int));
+	file.read(reinterpret_cast<char*>(&ySize), sizeof(unsigned int));
+	
+	unsigned int numDensityFields = 0;
+	file.read(reinterpret_cast<char*>(&numDensityFields), sizeof(unsigned int));
+	
+	densityFields.resize(numDensityFields);
+	
+	for(unsigned int i = 0; i < densityFields.size(); i++) {
+		densityFields[i].read(file);
+	}
+}
+
+SaveDataTypes::FluidDensityData::FluidDensityData() {
+	densities = new float[FLUID_PARTITION_SIZE*FLUID_PARTITION_SIZE];
+	deltaDensities = new float[FLUID_PARTITION_SIZE*FLUID_PARTITION_SIZE];
+}
+
+SaveDataTypes::FluidDensityData::FluidDensityData(FluidModule::DensityField cell) {
+	densities = new float[FLUID_PARTITION_SIZE*FLUID_PARTITION_SIZE];
+	deltaDensities = new float[FLUID_PARTITION_SIZE*FLUID_PARTITION_SIZE];
+	
+	for(unsigned int i = 0; i < FLUID_PARTITION_SIZE*FLUID_PARTITION_SIZE; i++) {
+		densities[i] = cell.densities[i].density;
+		deltaDensities[i] = cell.deltaDensities[i].density;
+	}
+	inEquilibrium = cell.inEquilibrium;
+}
+
+void SaveDataTypes::FluidDensityData::save(std::ofstream& file) {
+	file.write(reinterpret_cast<char*>(&x), sizeof(unsigned int));
+	file.write(reinterpret_cast<char*>(&y), sizeof(unsigned int));
+	for(unsigned int i = 0; i < FLUID_PARTITION_SIZE*FLUID_PARTITION_SIZE; i++) {
+		file.write(reinterpret_cast<char*>(&densities[i]), sizeof(float));
+		file.write(reinterpret_cast<char*>(&deltaDensities[i]), sizeof(float));
+	}
+	file.write(reinterpret_cast<char*>(&inEquilibrium), sizeof(bool));
+}
+
+void SaveDataTypes::FluidDensityData::read(std::ifstream& file) {
+	file.read(reinterpret_cast<char*>(&x), sizeof(unsigned int));
+	file.read(reinterpret_cast<char*>(&y), sizeof(unsigned int));
+	for(unsigned int i = 0; i < FLUID_PARTITION_SIZE*FLUID_PARTITION_SIZE; i++) {
+		file.read(reinterpret_cast<char*>(&densities[i]), sizeof(float));
+		file.read(reinterpret_cast<char*>(&deltaDensities[i]), sizeof(float));
+	}
+	file.read(reinterpret_cast<char*>(&inEquilibrium), sizeof(bool));
+}
+
 void SaveDataTypes::TileData::save(std::ofstream& file) {
 	file.write(reinterpret_cast<char*>(&pos.x), sizeof(float));
 	file.write(reinterpret_cast<char*>(&pos.y), sizeof(float));

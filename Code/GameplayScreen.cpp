@@ -239,6 +239,52 @@ void GameplayScreen::draw() {
 		m_skyFBO.draw();
 
 		m_basicFBOTextureProgram.unuse();
+		
+		{
+			m_basicFBOTextureProgram.use();
+
+			// Camera matrix
+			glm::mat4 projectionMatrix = m_uiCamera.getCameraMatrix();
+			GLint	  pUniform		   = m_basicFBOTextureProgram.getUniformLocation("P");
+			glUniformMatrix4fv(pUniform, 1, GL_FALSE, &projectionMatrix[0][0]);
+
+			GLint textureUniform = m_basicFBOTextureProgram.getUniformLocation("textureSampler");
+			glUniform1i(textureUniform, 0);
+			
+			m_spriteBatch.begin();
+		  
+			float sunPercentX, sunPercentY; // 0.45, 0.8f
+			
+			sunPercentX = 0.45f * std::cos(3.1415f*2.0f * ((float)Singletons::getWorld()->getTime()/DAY_LENGTH) + 3.1415f*0.5f);
+			sunPercentY = 0.8f *  std::sin(3.1415f*2.0f * ((float)Singletons::getWorld()->getTime()/DAY_LENGTH) + 3.1415f*0.5f);
+			
+			std::string sunPath =
+				ASSETS_FOLDER_PATH + "/Textures/sun.png";
+
+			GLuint sunID = GLEngine::ResourceManager::getTexture(sunPath).id;
+
+			m_spriteBatch.draw(glm::vec4(m_window->getScreenWidth() * (0.5f - sunPercentX) - 16.0f, (sunPercentY) * m_window->getScreenHeight(), 32.0f, 32.0f),
+							   glm::vec4(0.0f, 0.0f, 1.0f, 1.0f),
+							   sunID,
+							   1.0f,
+							   GLEngine::ColourRGBA8(255, 255, 255, 255));
+			
+			std::string moonPath =
+				ASSETS_FOLDER_PATH + "/Textures/UNDEFINED.png";
+
+			GLuint moonID = GLEngine::ResourceManager::getTexture(moonPath).id;
+
+			m_spriteBatch.draw(glm::vec4(m_window->getScreenWidth() * (0.5f + sunPercentX) - 16.0f, -(sunPercentY) * m_window->getScreenHeight(), 32.0f, 32.0f),
+							   glm::vec4(0.0f, 0.0f, 1.0f, 1.0f),
+							   moonID,
+							   1.0f,
+							   GLEngine::ColourRGBA8(0, 0, 255, 255));
+			
+			m_spriteBatch.end();
+			m_spriteBatch.renderBatch();
+			
+			m_basicFBOTextureProgram.unuse();
+		}
 	}
 
 	{
@@ -322,50 +368,53 @@ void GameplayScreen::drawSkyToFBO() {
 
 	glClearColor(0.3f * dayLight, 0.4f * dayLight, 1.0f * dayLight, 1.0f);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+	
+	{
+		// Sky
+		m_skyTextureProgram.use();
 
-	// Sky
-	m_skyTextureProgram.use();
+		// Camera matrix
+		glm::mat4 projectionMatrix = m_uiCamera.getCameraMatrix();
+		GLint	  pUniform		   = m_skyTextureProgram.getUniformLocation("P");
+		glUniformMatrix4fv(pUniform, 1, GL_FALSE, &projectionMatrix[0][0]);
 
-	// Camera matrix
-	glm::mat4 projectionMatrix = m_uiCamera.getCameraMatrix();
-	GLint	  pUniform		   = m_skyTextureProgram.getUniformLocation("P");
-	glUniformMatrix4fv(pUniform, 1, GL_FALSE, &projectionMatrix[0][0]);
+		GLint textureUniform = m_skyTextureProgram.getUniformLocation("textureSampler");
+		glUniform1i(textureUniform, 0);
 
-	GLint textureUniform = m_skyTextureProgram.getUniformLocation("textureSampler");
-	glUniform1i(textureUniform, 0);
+		GLint sizeUniform = m_skyTextureProgram.getUniformLocation("screenSizeU");
+		glUniform2f(sizeUniform, m_window->getScreenWidth(), m_window->getScreenHeight());
 
-	GLint sizeUniform = m_skyTextureProgram.getUniformLocation("screenSizeU");
-	glUniform2f(sizeUniform, m_window->getScreenWidth(), m_window->getScreenHeight());
+		GLint lightUniform = m_skyTextureProgram.getUniformLocation("daylight");
+		glUniform1f(lightUniform, dayLight*0.5f + 0.5f);
 
-	GLint lightUniform = m_skyTextureProgram.getUniformLocation("daylight");
-	glUniform1f(lightUniform, dayLight);
+		GLint playerDepthUniform = m_skyTextureProgram.getUniformLocation("playerXPos");
+		float playerChunkX = std::fmod((Singletons::getEntityManager()->getPlayer()->getPosition().x + (float)CHUNK_SIZE),
+									   (float)CHUNK_SIZE);
+		glUniform1f(playerDepthUniform, playerChunkX / (float)(CHUNK_SIZE));
 
-	GLint playerDepthUniform = m_skyTextureProgram.getUniformLocation("playerXPos");
-	float playerChunkX = std::fmod((Singletons::getEntityManager()->getPlayer()->getPosition().x + (float)CHUNK_SIZE),
-								   (float)CHUNK_SIZE);
-	glUniform1f(playerDepthUniform, playerChunkX / (float)(CHUNK_SIZE));
+		GLint parallaxZoomUniform = m_skyTextureProgram.getUniformLocation("parallaxZoom");
+		glUniform1f(parallaxZoomUniform, 0.95f);
 
-	GLint parallaxZoomUniform = m_skyTextureProgram.getUniformLocation("parallaxZoom");
-	glUniform1f(parallaxZoomUniform, 0.95f);
+		m_spriteBatch.begin();
 
-	m_spriteBatch.begin();
+		int			playerX = (int)Singletons::getEntityManager()->getPlayer()->getPosition().x;
+		std::string backgroundPath =
+			ASSETS_FOLDER_PATH + "/Textures/" + Singletons::getWorld()->getBiome(playerX).backgroundTexture;
 
-	int			playerX = (int)Singletons::getEntityManager()->getPlayer()->getPosition().x;
-	std::string backgroundPath =
-		ASSETS_FOLDER_PATH + "/Textures/" + Singletons::getWorld()->getBiome(playerX).backgroundTexture;
+		GLuint backgroundID = GLEngine::ResourceManager::getTexture(backgroundPath).id;
 
-	GLuint backgroundID = GLEngine::ResourceManager::getTexture(backgroundPath).id;
+		m_spriteBatch.draw(glm::vec4(0.0f, 0.0f, m_window->getScreenWidth(), m_window->getScreenHeight()),
+						   glm::vec4(0.0f, 0.0f, 1.0f, 1.0f),
+						   backgroundID,
+						   1.0f,
+						   GLEngine::ColourRGBA8(255, 255, 255, 255));
+						   
+		m_spriteBatch.end();
+		m_spriteBatch.renderBatch();
 
-	m_spriteBatch.draw(glm::vec4(0.0f, 0.0f, m_window->getScreenWidth(), m_window->getScreenHeight()),
-					   glm::vec4(0.0f, 0.0f, 1.0f, 1.0f),
-					   backgroundID,
-					   1.0f,
-					   GLEngine::ColourRGBA8(255, 255, 255, 255));
-
-	m_spriteBatch.end();
-	m_spriteBatch.renderBatch();
-
-	m_skyTextureProgram.unuse();
+		m_skyTextureProgram.unuse();
+	}
+	
 
 	m_skyFBO.end();
 }

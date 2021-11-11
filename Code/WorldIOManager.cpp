@@ -130,7 +130,7 @@ void WorldIOManager::P_loadWorld(std::string worldName, World* world) {
 						Tile*					 tile = Factory::createTile(temp->id, temp->pos, k, temp->metaData);
 						
 						world->setTile_noEvent(tile);
-						setProgress(0.1f + 0.9f * (i * CHUNK_SIZE * WORLD_HEIGHT * WORLD_DEPTH + x * WORLD_HEIGHT * WORLD_DEPTH + y * WORLD_DEPTH + k) / (chunks*CHUNK_SIZE*WORLD_HEIGHT*WORLD_DEPTH)); // 0.3
+						setProgress(0.1f + 0.7f * (i * CHUNK_SIZE * WORLD_HEIGHT * WORLD_DEPTH + x * WORLD_HEIGHT * WORLD_DEPTH + y * WORLD_DEPTH + k) / (chunks*CHUNK_SIZE*WORLD_HEIGHT*WORLD_DEPTH)); // 0.3
 					}
 				}
 			}
@@ -139,6 +139,23 @@ void WorldIOManager::P_loadWorld(std::string worldName, World* world) {
 		logger->log("LOAD: Loaded World Chunks");
 
 		//world->player->setParentChunk(world->chunks);
+	}
+	
+	{
+		// Fluids
+		unsigned int fluids;
+		file.read(reinterpret_cast<char*>(&fluids), sizeof(unsigned int));
+		for(unsigned int i = 0; i < fluids; i++) {
+			SaveDataTypes::FluidData data;
+			
+			data.read(file);
+			
+			FluidModule::FluidDomain* domain = new FluidModule::FluidDomain();
+			domain->init(data);
+			
+			world->m_fluidDomains.push_back(domain);
+		}
+		logger->log("LOAD: Loaded Fluids");
 	}
 
 	float finishTime = (float)(std::clock()) / (float)(CLOCKS_PER_SEC / 1000);
@@ -166,6 +183,7 @@ Chunks
     Entities -> need to init properly on load
         Talking -> need to init properly on load
         Otherwise -> need to init properly on load
+Fluids
 */ // stacksize is 8192 kbytes
 
 void WorldIOManager::P_saveWorld(World* world) {
@@ -260,6 +278,18 @@ void WorldIOManager::P_saveWorld(World* world) {
 		}
 		delete[] chunkData;
 		logger->log("SAVE: Wrote World Chunks");
+	}
+	
+	{
+		// Fluids
+		unsigned int fluids = XMLModule::XMLData::getFluidCount();
+		file.write(reinterpret_cast<char*>(&fluids), sizeof(unsigned int));
+		for(unsigned int i = 0; i < fluids; i++) {
+			SaveDataTypes::FluidData data(Singletons::getWorld()->m_fluidDomains[i]);
+			
+			data.save(file);
+		}
+		logger->log("SAVE: Wrote Fluids");
 	}
 
 	logger->log("SAVE: SAVE COMPLETED", true);

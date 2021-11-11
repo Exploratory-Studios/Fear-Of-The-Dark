@@ -1,5 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <CodeLite_Project Name="Fear-Of-The-Dark" Version="11000">
+  <Plugins>
+    <Plugin Name="qmake">
+      <![CDATA[00040001N0005Debug0000000000000001N0007DebugVB0000000000000001N0015Release - Linux0000000000000001N0017Release - Windows000000000000]]>
+    </Plugin>
+  </Plugins>
   <VirtualDirectory Name="Scripting">
     <File Name="ScriptingHelperFunctions.cpp"/>
     <File Name="ScripterMain.h"/>
@@ -27,11 +32,6 @@
     <File Name="WorldIOManager.cpp"/>
     <File Name="WorldIOManager.h"/>
   </VirtualDirectory>
-  <Plugins>
-    <Plugin Name="qmake">
-      <![CDATA[00040001N0005Debug0000000000000001N0007DebugVB0000000000000001N0015Release - Linux0000000000000001N0017Release - Windows000000000000]]>
-    </Plugin>
-  </Plugins>
   <VirtualDirectory Name="Questing">
     <File Name="QuestTypes.h"/>
     <File Name="QuestTypes.cpp"/>
@@ -44,6 +44,7 @@
     <File Name="../Assets/Questing/Readme"/>
   </VirtualDirectory>
   <VirtualDirectory Name="Fluid Simulation">
+    <File Name="DensityField.cpp"/>
     <File Name="FluidDomain.cpp"/>
     <File Name="FluidDomain.h"/>
     <File Name="DensityField.h"/>

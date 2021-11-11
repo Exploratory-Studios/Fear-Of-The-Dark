@@ -11,15 +11,9 @@
 namespace FluidModule {
 
 	FluidDomain::FluidDomain(std::vector<std::vector<std::vector<Tile*>>>& tiles, unsigned int id) {
-		m_id					  = id;
-		XMLModule::FluidData data = XMLModule::XMLData::getFluidData(id);
-		m_fluidColour			  = GLEngine::ColourRGBA8(data.red, data.green, data.blue, data.alpha);
-		m_viscosity				  = data.viscosity;
-		m_gravityConstant		  = data.gravConstant;
-		m_idealDensity			  = data.idealDensity;
-		m_trickleConstant 		  = data.trickleConstant;
+		m_id = id;
+		init();
 
-		m_textureData = new std::vector<unsigned char>();
 		m_densityFields.resize(tiles.size());
 		for(unsigned int x = 0; x < m_densityFields.size(); x++) {
 			m_densityFields[x].resize(tiles[x].size());
@@ -41,6 +35,35 @@ namespace FluidModule {
 				if(m_densityFields[x][y])
 					delete m_densityFields[x][y];
 			}
+		}
+	}
+	
+	void FluidDomain::init() {
+		XMLModule::FluidData data = XMLModule::XMLData::getFluidData(m_id);
+		m_fluidColour			  = GLEngine::ColourRGBA8(data.red, data.green, data.blue, data.alpha);
+		m_viscosity				  = data.viscosity;
+		m_gravityConstant		  = data.gravConstant;
+		m_idealDensity			  = data.idealDensity;
+		m_trickleConstant 		  = data.trickleConstant;
+		
+		m_textureData = new std::vector<unsigned char>();
+	}
+	
+	void FluidDomain::init(SaveDataTypes::FluidData& data) {
+		m_id = data.id;
+		
+		init();
+		
+		m_densityFields.resize(data.xSize);
+		for(unsigned int x = 0; x < m_densityFields.size(); x++) {
+			m_densityFields[x].resize(data.ySize);
+			for(unsigned int y = 0; y < m_densityFields[x].size(); y++) {
+				m_densityFields[x][y] = nullptr;
+			}
+		}
+		
+		for(unsigned int i = 0; i < data.densityFields.size(); i++) {
+			m_densityFields[data.densityFields[i].x][data.densityFields[i].y] = new DensityField(data.densityFields[i]);
 		}
 	}
 

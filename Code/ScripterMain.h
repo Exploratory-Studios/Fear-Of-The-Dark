@@ -37,7 +37,7 @@ namespace ScriptingModule {
 
 		ScriptingModule::LuaScript* executeScript(
 			ScriptingModule::Script&
-				script); /// TODO: For the love of all things unholy, do NOT pass scripts by reference. They do not like that.
+				script); /// TODO: For the love of all things unholy, do NOT pass scripts by copy. They do not like that.
 		ScriptingModule::LuaScript* executeCommand(std::string& command);
 
 	  private:

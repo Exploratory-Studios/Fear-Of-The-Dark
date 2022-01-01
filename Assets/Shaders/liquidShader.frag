@@ -14,9 +14,9 @@ uniform sampler2D textureSampler;
 void main() {
 	float opacity = texture(textureSampler, fragmentUV.xy).r;
 	
-	if(opacity <= 0.1f) discard;
+	if(opacity <= 0.0001f) discard;
 	
-	float alpha = 0.6 * opacity + 0.4;
+	float alpha = pow(opacity, (1.0/3.0));
 
 	color = vec4(1.0, 1.0, 1.0, alpha) * fragmentColour;
 }

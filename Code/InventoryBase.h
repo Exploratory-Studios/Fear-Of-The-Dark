@@ -24,6 +24,8 @@ class InventoryBase {
 	virtual ~InventoryBase();
 
 	void init(std::string name, bool autoResize, CEGUI::Window* parent);
+	void init(SaveDataTypes::InventoryData& data);
+	virtual void initInventoryGUI();
 	void destroy(); // Actually destroys GUI windows used.
 
 	bool addItem(Item* newItem);   // Returns false if the item didn't pass the test, true otherwise. Adds a gridItem.
@@ -95,11 +97,10 @@ class InventoryBase {
 	bool onDragDropItemRemoved(const CEGUI::EventArgs& e);
 	bool onDragDropItemAdded(const CEGUI::EventArgs& e);
 
-  protected:
+protected:
 	virtual void onItemAdded(const CEGUI::WindowEventArgs& e) {}; // the args are WindowEventArgs
 
 	float			   m_weight = 0.0f; // The average person can carry about 20kg of weight and still walk normally
-	virtual void	   initInventoryGUI(std::string name, bool autoResize, CEGUI::Window* parent);
 	std::vector<Item*> m_items {};
 
 	// This should never *HAVE* to be touched by derived classes. The base class ***should*** manage everything
@@ -115,6 +116,9 @@ class InventoryBase {
 	bool m_automaticallyResizes = true;
 	bool m_initedGUI			= false;
 	bool m_movable				= true;
+	
+	std::string m_name = "";
+	CEGUI::Window* m_parent = nullptr;
 
 	void createInventoryItem(Item* item); // Creates and adds a GUI_InventoryItem to the reciever.
 	void resizeInventoryWidget();		  // Resizes the inventory (m_grid) to have the height (necessaryHeight + 1).

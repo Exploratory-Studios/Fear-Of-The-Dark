@@ -47,6 +47,12 @@ void LoadScreen::onExit() {
 		e.dispose();
 	m_miniScreenEntries.clear();
 	m_loadWorldNameListbox->resetList();
+	
+	m_spriteBatch.dispose();
+	m_textureProgram.dispose();
+	m_spriteFont.dispose();
+	
+	m_gui.destroy();
 }
 
 void LoadScreen::update() {
@@ -174,11 +180,23 @@ void LoadScreen::initUI() {
 																 "WorldFlatToggleButton"));
 		m_newWorldFlatCheckbox->setText("[padding='l:0 t:10 r:0 b:0']Flat World");
 		m_miniScreenEntries.emplace_back(m_newWorldFlatCheckbox, MiniScreen::CREATE);
+		
+		m_newWorldSizeLabel = static_cast<CEGUI::DefaultWindow*>(m_gui.createWidget("FOTDSkin/Label",
+																					glm::vec4(0.6f, 0.05f, 0.3f, 0.05f),
+																					glm::vec4(0.0f),
+																					"WorldSizeLabel"));
+		m_miniScreenEntries.emplace_back(m_newWorldSizeLabel, MiniScreen::CREATE);
 
 		m_newWorldSizeSlider = static_cast<CEGUI::Slider*>(m_gui.createWidget("FOTDSkin/HorizontalSlider",
 																			  glm::vec4(0.6f, 0.1f, 0.3f, 0.1f),
 																			  glm::vec4(0),
 																			  "WorldSizeSlider"));
+		m_newWorldSizeSlider->subscribeEvent(
+			CEGUI::Slider::EventValueChanged,
+			CEGUI::Event::Subscriber(&LoadScreen::onNewWorldSizeValueChanged, this));
+		m_newWorldSizeSlider->subscribeEvent(
+			CEGUI::Slider::EventThumbTrackEnded,
+			CEGUI::Event::Subscriber(&LoadScreen::onNewWorldSizeSliderReleased, this));
 		m_newWorldSizeSlider->setMaxValue(19.0f);
 		m_newWorldSizeSlider->setClickStep(1.0f);
 		m_newWorldSizeSlider->setCurrentValue(1.0f);
@@ -253,6 +271,30 @@ bool LoadScreen::onNewWorldCreateNewButtonClicked(const CEGUI::EventArgs& e) { /
 	m_currentState	  = GLEngine::ScreenState::CHANGE_NEXT;
 	m_nextScreenIndex = SCREEN_INDEX_WAIT;
 
+	return true;
+}
+
+bool LoadScreen::onNewWorldSizeValueChanged(const CEGUI::EventArgs& e) {
+	float val = m_newWorldSizeSlider->getCurrentValue();
+	if(std::abs(val - std::floor(val)) < std::abs(val - std::ceil(val))) {
+		val = std::floor(val);
+	} else {
+		val = std::ceil(val);
+	}
+	m_newWorldSizeLabel->setText("Chunks: " + std::to_string((int)val));
+	return true;
+}
+
+bool LoadScreen::onNewWorldSizeSliderReleased(const CEGUI::EventArgs& e) {
+	float val = m_newWorldSizeSlider->getCurrentValue();
+	if(std::abs(val - std::floor(val)) < std::abs(val - std::ceil(val))) {
+		val = std::floor(val);
+	} else {
+		val = std::ceil(val);
+	}
+	m_newWorldSizeSlider->setCurrentValue((int)val);
+	m_newWorldSizeSlider->invalidate();
+	
 	return true;
 }
 

@@ -23,12 +23,42 @@ class EntityItem;
 class EntityPlayer;
 class InventoryBase;
 class Item;
-
+namespace FluidModule {
+	class FluidDomain;
+	class DensityField;
+}
 namespace ScriptingModule {
 	class Argument;
 }
 
 namespace SaveDataTypes {
+	
+	class FluidDensityData {
+	public:
+		FluidDensityData();
+		FluidDensityData(FluidModule::DensityField cell);
+	
+		void save(std::ofstream& file);
+		void read(std::ifstream& file);
+		
+		unsigned int x, y;
+		float* densities = nullptr;
+		float* deltaDensities = nullptr;
+		bool inEquilibrium = false;
+	};
+	
+	class FluidData {
+	public:
+		FluidData() {}
+		FluidData(FluidModule::FluidDomain* domain);
+		void save(std::ofstream& file);
+		void read(std::ifstream& file);
+		
+		unsigned int id;
+		unsigned int xSize, ySize;
+		
+		std::vector<FluidDensityData> densityFields;
+	};
 
 	class TileData {
 	  public:

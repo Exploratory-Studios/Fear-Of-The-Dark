@@ -35,6 +35,14 @@ Entity::Entity(SaveDataTypes::EntityData& saveData) {
 Entity::~Entity() {
 }
 
+void Entity::init(SaveDataTypes::EntityData& data) {
+	m_position = data.position;
+	m_layer = data.layer;
+	m_velocity = data.velocity;
+	m_id = data.id;
+	m_metaData = data.md;
+}
+
 void Entity::update(float timeStep, unsigned int selfIndex) {
 	if(m_updateScriptId != -1) {
 		ScriptingModule::ScriptQueue::activateScript(m_updateScriptId, generateLuaValues());
@@ -121,7 +129,7 @@ void Entity::move(float timeStepVariable) {
 	m_position += m_velocity * timeStepVariable;
 
 	unsigned int worldSize = Singletons::getWorld()->getSize();
-	if((int)m_position.x > worldSize) {
+	if(((float)m_position.x) > (float)worldSize) {
 		m_position.x -= worldSize;
 	} else if((int)m_position.x < 0) {
 		m_position.x += worldSize;

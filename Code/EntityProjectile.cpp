@@ -55,6 +55,12 @@ void EntityProjectile::init() {
 	m_anim.init(d.animationID);
 }
 
+void EntityProjectile::init(SaveDataTypes::EntityProjectileData& data) {
+	Entity::init(data);
+	
+	init();
+}
+
 EntityProjectile::~EntityProjectile() {
 	//dtor
 }

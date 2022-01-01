@@ -14,8 +14,16 @@
 #include "Factory.h"
 #include "Singletons.h"
 
+void WorldIOManager::initLoadSaveStuff() {
+	m_progress		  = new float(0.0f);
+	m_saveLoadMessage = new std::string("");
+
+	logger = Logger::getInstance();
+}
+
 void WorldIOManager::loadWorld(std::string worldName) {
-	setProgress(0.0f);
+	Singletons::setWorld(nullptr); // Delete the world!
+	initLoadSaveStuff();
 	boost::thread t([=]() { P_loadWorld(worldName, Singletons::getWorld()); });
 	t.detach();
 	//P_loadWorld(worldName);
@@ -23,58 +31,61 @@ void WorldIOManager::loadWorld(std::string worldName) {
 }
 
 void WorldIOManager::saveWorld() {
-	setProgress(0.0f);
+	initLoadSaveStuff();
 	boost::thread t([=]() { P_saveWorld(Singletons::getWorld()); });
 	t.detach();
 	//P_saveWorld(worldName);
 }
 
 void WorldIOManager::createWorld(unsigned int seed, std::string worldName, bool isFlat, unsigned int width) {
-	setProgress(0.0f);
+	Singletons::setWorld(nullptr); // Delete the world!
+	initLoadSaveStuff();
 	boost::thread t([=]() { P_createWorld(seed, worldName, isFlat, width); });
 	t.detach();
 	//P_createWorld(seed, worldName, isFlat);
 }
 
 void WorldIOManager::P_loadWorld(std::string worldName, World* world) {
-	if(world) {
-		delete world;
-	}
-
-	world = new World(0, 0, 0); /// TODO: Read world size and all that before creation.
-
 	float startTime = (float)(std::clock()) / (float)(CLOCKS_PER_SEC / 1000);
 
 	setProgress(0.0f);
+	setMessage("Loading basic info...");
 
 	logger->log("LOAD: STARTING LOAD AT " + std::to_string(startTime), true);
+	
+	std::string filepath = SAVES_PATH + worldName + ".bin";
+	world->setName(worldName);
+	
+	logger->log("LOAD: Loading from file: " + filepath);
 
 	// INIT
-	std::ifstream file(SAVES_PATH + worldName + ".bin", std::ios::binary);
+	std::ifstream file(filepath, std::ios::binary);
 	if(file.fail()) {
-		GLEngine::fatalError("Error loading from file: " + SAVES_PATH + worldName + ".bin");
+		GLEngine::fatalError("Error loading from file: " + filepath);
 	}
-
+	
 	{
 		// VERSION
-		unsigned int saveLen;
 
-		file.read(reinterpret_cast<char*>(&saveLen), sizeof(unsigned int));
+		unsigned int saveVersion;
+		file.read(reinterpret_cast<char*>(&saveVersion), sizeof(unsigned int));
 
-		char* saveVersion = new char();
-		file.read(&saveVersion[0], saveLen);
+		logger->log("LOAD: Loaded Version: " + std::to_string(saveVersion) + ", Using Version: " + std::to_string(m_saveVersion), true);
 
-		logger->log("LOAD: Loaded Version: " + std::string(saveVersion) + ", Using Version: " + m_saveVersion, true);
-
-		if(m_saveVersion + "\177" != saveVersion) {
+		if(m_saveVersion != saveVersion) {
 			logger->log("LOAD: Loaded Version Doesn't Match Current Loader Version. Quitting...", true);
-			GLEngine::fatalError("Error loading from file: " + worldName + ".bin: Save Version Mismatch");
+			GLEngine::fatalError("Error loading from file: " + filepath + ": Save Version Mismatch");
 		}
 	}
 
 	{
 		// MISCELLANEOUS WORLD DATA
-		file.read(reinterpret_cast<char*>(&world->m_time), sizeof(float));
+		file.read(reinterpret_cast<char*>(&world->m_time), sizeof(unsigned long int));
+		
+		unsigned int worldSize_tiles = 0;
+		file.read(reinterpret_cast<char*>(&worldSize_tiles), sizeof(unsigned int));
+		
+		world->initTiles(worldSize_tiles, WORLD_HEIGHT, WORLD_DEPTH);
 	}
 
 	setProgress(0.1f);
@@ -82,41 +93,44 @@ void WorldIOManager::P_loadWorld(std::string worldName, World* world) {
 	{
 		// PLAYER
 
-		EntityPlayer* newP = new EntityPlayer(glm::vec2(0.0f), 0, SaveDataTypes::MetaData(), false);
+  		EntityPlayer* newP = new EntityPlayer(glm::vec2(0.0f), 0, SaveDataTypes::MetaData(), false);
 		Singletons::getEntityManager()->setPlayer(newP);
 
 		SaveDataTypes::EntityPlayerData pod;
 		pod.read(file);
 
-		/// TODO: Set actual player data from pod
+		Singletons::getEntityManager()->getPlayer()->init(pod);
 
 		logger->log("LOAD: Loaded Player POD");
 	}
 
-	setProgress(0.2f);
+	setProgress(0.1f);
 
 	{
 		// WORLD
-
+		
 		const unsigned int		  chunks	= world->getSize() / CHUNK_SIZE;
 		SaveDataTypes::ChunkData* chunkData = new SaveDataTypes::ChunkData[chunks];
-		//file.read(reinterpret_cast<char*>(&chunkData[0]), sizeof(ChunkData) * WORLD_SIZE);
-
-		for(int i = 0; i < world->getSize(); i++) {
+		//file.read(reinterpret_cast<char*>(&chunkData[0]), sizeof(SaveDataTypes::ChunkData) * WORLD_SIZE);
+		
+		setMessage("Loading Chunks... 0/" + std::to_string(chunks));
+		
+		for(int i = 0; i < chunks; i++) {
 			chunkData[i].read(file);
 			world->m_biomesMap[i] = chunkData[i].biomeID;
 			setProgress(getProgress() + 1.0f / (world->getSize()) * 0.1f); // 0.3
 		}
 
-		for(int i = 0; i < world->getSize(); i++) {
-			for(unsigned int y = 0; y < WORLD_HEIGHT; y++) {
-				for(unsigned int x = 0; x < CHUNK_SIZE; x++) {
+		for(int i = 0; i < chunks; i++) {
+			setMessage("Loading Chunks... " + std::to_string(i) + "/" + std::to_string(chunks));
+			for(unsigned int x = 0; x < CHUNK_SIZE; x++) {
+				for(unsigned int y = 0; y < WORLD_HEIGHT; y++) {
 					for(unsigned int k = 0; k < WORLD_DEPTH; k++) {
-						SaveDataTypes::TileData* temp = &chunkData[i].tiles[y][x][k];
+						SaveDataTypes::TileData* temp = &chunkData[i].tiles[x][y][k];
 						Tile*					 tile = Factory::createTile(temp->id, temp->pos, k, temp->metaData);
+						
 						world->setTile_noEvent(tile);
-						setProgress(getProgress() +
-									1.0f / (CHUNK_SIZE * WORLD_HEIGHT * world->getSize() * WORLD_DEPTH) * 0.2f); // 0.3
+						setProgress(0.1f + 0.7f * (i * CHUNK_SIZE * WORLD_HEIGHT * WORLD_DEPTH + x * WORLD_HEIGHT * WORLD_DEPTH + y * WORLD_DEPTH + k) / (chunks*CHUNK_SIZE*WORLD_HEIGHT*WORLD_DEPTH)); // 0.3
 					}
 				}
 			}
@@ -125,6 +139,23 @@ void WorldIOManager::P_loadWorld(std::string worldName, World* world) {
 		logger->log("LOAD: Loaded World Chunks");
 
 		//world->player->setParentChunk(world->chunks);
+	}
+	
+	{
+		// Fluids
+		unsigned int fluids;
+		file.read(reinterpret_cast<char*>(&fluids), sizeof(unsigned int));
+		for(unsigned int i = 0; i < fluids; i++) {
+			SaveDataTypes::FluidData data;
+			
+			data.read(file);
+			
+			FluidModule::FluidDomain* domain = new FluidModule::FluidDomain();
+			domain->init(data);
+			
+			world->m_fluidDomains.push_back(domain);
+		}
+		logger->log("LOAD: Loaded Fluids");
 	}
 
 	float finishTime = (float)(std::clock()) / (float)(CLOCKS_PER_SEC / 1000);
@@ -140,6 +171,9 @@ void WorldIOManager::P_loadWorld(std::string worldName, World* world) {
 
 /*
 SAVING ORDER:
+MISC WORLD INFO
+	Time
+	World Size
 Player POD (x, y, stats, etc.)
 Player Inventory
     Inventory POD
@@ -149,11 +183,14 @@ Chunks
     Entities -> need to init properly on load
         Talking -> need to init properly on load
         Otherwise -> need to init properly on load
+Fluids
 */ // stacksize is 8192 kbytes
 
 void WorldIOManager::P_saveWorld(World* world) {
-	logger->log("SAVE: Starting World Save to File: " + world->getName() + ".bin (Full path: " + SAVES_PATH +
-				world->getName() + ".bin)");
+	
+	std::string filepath = SAVES_PATH + world->getName() + ".bin";
+	
+	logger->log("SAVE: Starting World Save to File: " + filepath);
 	logger->log("SAVE: Starting Save Preparations");
 
 	SaveDataTypes::EntityPlayerData p = Singletons::getEntityManager()->getPlayer()->getPlayerSaveData();
@@ -205,28 +242,27 @@ void WorldIOManager::P_saveWorld(World* world) {
 	logger->log("SAVE: Chunk Data Prepared");
 
 	unsigned long int time = world->getTime();
+	unsigned int worldSize = world->getSize();
 
 	logger->log("SAVE: ALL DATA PREPARED, STARTING SAVE", true);
 
 	// INIT
-	std::ofstream file(SAVES_PATH + world->getName() + ".bin", std::ios::binary);
+	std::ofstream file(filepath, std::ios::binary);
 	if(file.fail()) {
-		GLEngine::fatalError("Error saving to file: " + SAVES_PATH + world->getName() + ".bin");
+		GLEngine::fatalError("Error saving to file: " + filepath);
 	}
 
 	{
 		// VERSION
-		unsigned int saveLen = m_saveVersion.size();
+		file.write(reinterpret_cast<char*>(&m_saveVersion), sizeof(unsigned int));
 
-		file.write(reinterpret_cast<char*>(&saveLen), sizeof(unsigned int));
-		file.write(m_saveVersion.c_str(), m_saveVersion.size());
-
-		logger->log("SAVE: Started Saving with version: " + m_saveVersion);
+		logger->log("SAVE: Started Saving with version: " + std::to_string(m_saveVersion));
 	}
 
 	{
 		// MISCELLANEOUS WORLD DATA
-		file.write(reinterpret_cast<char*>(&time), sizeof(float));
+		file.write(reinterpret_cast<char*>(&time), sizeof(unsigned long int));
+		file.write(reinterpret_cast<char*>(&worldSize), sizeof(unsigned int));
 	}
 
 	{
@@ -238,15 +274,25 @@ void WorldIOManager::P_saveWorld(World* world) {
 	{
 		// WORLD
 		for(int i = 0; i < chunks; i++) {
-			//file.write(reinterpret_cast<char*>(chunkData), sizeof(ChunkData) * WORLD_SIZE);
 			chunkData[i].save(file);
 		}
 		delete[] chunkData;
 		logger->log("SAVE: Wrote World Chunks");
 	}
+	
+	{
+		// Fluids
+		unsigned int fluids = XMLModule::XMLData::getFluidCount();
+		file.write(reinterpret_cast<char*>(&fluids), sizeof(unsigned int));
+		for(unsigned int i = 0; i < fluids; i++) {
+			SaveDataTypes::FluidData data(Singletons::getWorld()->m_fluidDomains[i]);
+			
+			data.save(file);
+		}
+		logger->log("SAVE: Wrote Fluids");
+	}
 
 	logger->log("SAVE: SAVE COMPLETED", true);
-	;
 
 	file.close();
 }
@@ -353,60 +399,64 @@ void WorldIOManager::P_createWorld(unsigned int seed, std::string worldName, boo
 		// Progress at 0.2f
 		{
 			setMessage("Smoothing terrain... ");
-			for(int chunk = 0; chunk < chunks; chunk++) {
-				// Get base height values of current, next, and previous chunks
-				unsigned int previousBase =
-					XMLModule::XMLData::getBiomeData(w->m_biomesMap[((chunk - 1) + (chunks)) % (chunks)]).baseHeight;
-				unsigned int nextBase =
-					XMLModule::XMLData::getBiomeData(w->m_biomesMap[chunk + 1] % (chunks)).baseHeight;
-				unsigned int baseHeight = XMLModule::XMLData::getBiomeData(w->m_biomesMap[chunk]).baseHeight;
+			const unsigned int n = 5; // This determines how much is smoothed.
+			const unsigned int affectedBlocks = CHUNK_SIZE/n; // How many actual blocks are smoothed.
+			
+			for(int layer = 0; layer < WORLD_DEPTH; layer++) {
+				for(int chunk = 0; chunk < chunks; chunk++) {
+					// Get base height values of current, next, and previous chunks
+					const unsigned int prevChunk = ((chunk - 1) + chunks) % chunks;
+					const unsigned int nextChunk = (chunk + 1) % chunks;
+					
+					const int previousBase =
+						XMLModule::XMLData::getBiomeData(w->m_biomesMap[prevChunk]).baseHeight;
+					const int nextBase =
+						XMLModule::XMLData::getBiomeData(w->m_biomesMap[nextChunk]).baseHeight;
+					const int baseHeight = XMLModule::XMLData::getBiomeData(w->m_biomesMap[chunk]).baseHeight;
 
-				for(int layer = 0; layer < WORLD_DEPTH; layer++) {
-					for(int x = 0; x < CHUNK_SIZE; x++) {
-						/// 1. Figure out how 'deep' this x value is in its biome
-						short int centreDepth = (CHUNK_SIZE / 2); // Short ints for speed?
-
-						// How far in it is (to the right, not back). Centre is CHUNK_SIZE/2, very outsides are 0.
-						short int chunkDepthInv = std::abs(x - centreDepth);
-						short int chunkDepth	= centreDepth - chunkDepthInv;
-
-						/// 2. Interpolate
-						unsigned int blockIndex = layer * CHUNK_SIZE + x + chunk * CHUNK_SIZE * WORLD_DEPTH;
-
-						blockHeights[blockIndex] = tempHeights[blockIndex];
-
-						if(chunkDepth / (float)CHUNK_SIZE <= 2.0f / 3.0f) {
-							blockHeights[blockIndex] *=
-								(chunkDepth / (float)CHUNK_SIZE) *
-								3.0f; // I promise this makes sense. *3.0f to account for the 1/3
-						}			  // Each third of a chunk should be flattened
-
-						if(x > centreDepth) { // current and next chunks smoothen
-							blockHeights[blockIndex] +=
-								nextBase *
-								(chunkDepthInv / (float)CHUNK_SIZE); // ChunkDepthInv/CHUNK_SIZE -> edges=1/2, centre=0
-							blockHeights[blockIndex] +=
-								baseHeight * ((chunkDepth / (float)CHUNK_SIZE) +
-											  0.5f); // ChunkDepth/CHUNK_SIZE -> edges=0, centre=1/2
-						} else if(x < centreDepth) {
-							blockHeights[blockIndex] +=
-								previousBase *
-								(chunkDepthInv / (float)CHUNK_SIZE); // ChunkDepthInv/CHUNK_SIZE -> edges=1/2, centre=0
-							blockHeights[blockIndex] +=
-								baseHeight * ((chunkDepth / (float)CHUNK_SIZE) +
-											  0.5f); // ChunkDepth/CHUNK_SIZE -> edges=0, centre=1/2
-						} else {
-							blockHeights[blockIndex] += baseHeight;
-						}
-
-						int	  progNumerator	  = chunk * WORLD_DEPTH * CHUNK_SIZE + layer * CHUNK_SIZE + x;
-						int	  progDenominator = chunks * WORLD_DEPTH * CHUNK_SIZE;
-						float prog			  = (float)progNumerator / (float)progDenominator;
-
-						setMessage("Smoothing Terrain... \n(" + std::to_string(progNumerator) + "/" +
-								   std::to_string(progDenominator) + ")");
-						setProgress(0.2f + 0.1f * prog); // Ends at 0.3f;
+					// Only affects every first and last 1/nth of each chunk (2/nths total)
+					// First, find the average height of the first 1/nth of this chunk + last 1/nth of prev chunk
+					int avg_this = 0, avg_prev = 0;
+					for(unsigned int i = 0; i < affectedBlocks; i++) {
+						const unsigned int blockIndex_prev = (prevChunk * CHUNK_SIZE * WORLD_DEPTH) + (0 * CHUNK_SIZE) + (CHUNK_SIZE-i-1);
+						const unsigned int blockIndex_this = (chunk * CHUNK_SIZE * WORLD_DEPTH) + (0 * CHUNK_SIZE) + (i);
+						
+						avg_prev += tempHeights[blockIndex_prev] + previousBase;
+						avg_this += tempHeights[blockIndex_this] + baseHeight;
 					}
+					avg_prev /= affectedBlocks;
+					avg_this /= affectedBlocks;
+					
+					int avg_aim = (avg_prev + avg_this) / 2; // Find the middle ground!
+					
+					// Now that we have the averages, we can start to curve the actual heights towards them, with the closeness inversely proportional to the distance from the edge of the chunk.
+					// That is to say, the at the edge of the chunk we should be very very close to the average. Further, we make smaller adjustments
+					for(unsigned int i = 0; i < affectedBlocks; i++) {
+						const unsigned int blockIndex_prev = (prevChunk * CHUNK_SIZE * WORLD_DEPTH) + (layer * CHUNK_SIZE) + (CHUNK_SIZE-i-1);
+						const unsigned int blockIndex_this = (chunk * CHUNK_SIZE * WORLD_DEPTH) + (layer * CHUNK_SIZE) + (i);
+						
+						// Adjustment = (y distance from avg)/(x distance from edge of chunk)
+						const int heightAdjustment_prev = (avg_aim - (tempHeights[blockIndex_prev] + previousBase))/(signed int)(i + 1);
+						const int heightAdjustment_this = (avg_aim - (tempHeights[blockIndex_this] + baseHeight))/(signed int)(i + 1);
+						
+						// Actually apply the adjustment
+						tempHeights[blockIndex_prev] += heightAdjustment_prev;
+						tempHeights[blockIndex_this] += heightAdjustment_this;
+					}
+				}
+				for(unsigned int chunk = 0; chunk < chunks; chunk++) {
+					const int baseHeight = XMLModule::XMLData::getBiomeData(w->m_biomesMap[chunk]).baseHeight;
+					for(int x = 0; x < CHUNK_SIZE; x++) {
+						unsigned int blockIndex = layer * CHUNK_SIZE + x + (chunk%chunks) * CHUNK_SIZE * WORLD_DEPTH;
+						blockHeights[blockIndex] = tempHeights[blockIndex] + baseHeight;
+						if(blockHeights[blockIndex] > WORLD_HEIGHT-1) blockHeights[blockIndex] = WORLD_HEIGHT-1;
+						if(blockHeights[blockIndex] < 0) blockHeights[blockIndex] = 0;
+					}
+					
+					float prog			  = (float)(chunk + layer*chunks) / (float)(chunks * WORLD_DEPTH);
+					setMessage("Smoothing Terrain... \n(" + std::to_string(chunk + layer*chunks) + "/" +
+							   std::to_string(chunks * WORLD_DEPTH) + ")");
+					setProgress(0.2f + 0.1f * prog); // Ends at 0.3f;
 				}
 			}
 		}

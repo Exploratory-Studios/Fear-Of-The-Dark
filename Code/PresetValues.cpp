@@ -57,4 +57,4 @@ const unsigned int MAX_TYPE_PARTICLES	= 300;
 const std::string  UNDEFINED_ASSET_PATH = std::string(ASSETS_FOLDER_PATH + "Textures/UNDEFINED.png");
 
 const unsigned int FLUID_PARTITION_SIZE					= 4;
-const float		   FLUID_AVG_CELL_EQUILIBRIUM_THRESHOLD = 0.00125f;
+const float		   FLUID_AVG_CELL_EQUILIBRIUM_THRESHOLD = 0.0000125f;

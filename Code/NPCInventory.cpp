@@ -7,8 +7,8 @@ NPCInventory::NPCInventory(float maxWeight, std::string& name, bool initGUI /* =
 NPCInventory::~NPCInventory() {
 }
 
-void NPCInventory::initInventoryGUI(std::string name, bool autoResize, CEGUI::Window* parent) {
-	InventoryBase::initInventoryGUI(name, autoResize, parent);
+void NPCInventory::initInventoryGUI() {
+	InventoryBase::initInventoryGUI();
 	
 	m_frameWindow->setTitleBarEnabled(true);
 	m_frameWindow->getTitlebar()->setDraggingEnabled(true);

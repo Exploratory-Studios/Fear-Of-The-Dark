@@ -10,6 +10,7 @@ class TileContainer : public Tile {
 	~TileContainer();
 
 	virtual void drawGUI(GLEngine::SpriteBatch& sb, GLEngine::SpriteFont& sf, int& xOffset) override;
+	virtual void destroy() override;
 
   protected:
 	virtual void setToDraw(bool toDraw);
@@ -19,6 +20,8 @@ class TileContainer : public Tile {
 	TileInventory* m_inventory = nullptr;
 
 	bool m_opened = false;
+	
+	bool m_initedGUI = false;
 
   private:
 	void init();

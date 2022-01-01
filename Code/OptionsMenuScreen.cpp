@@ -67,6 +67,11 @@ void OptionsMenuScreen::onEntry() {
 }
 
 void OptionsMenuScreen::onExit() {
+	m_spriteBatch.dispose();
+	m_uiTextureProgram.dispose();
+	m_spriteFont.dispose();
+	m_gui.destroy();
+	
 }
 
 void OptionsMenuScreen::update() {

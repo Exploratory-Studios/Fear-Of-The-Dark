@@ -110,6 +110,7 @@ class GameplayScreen : public GLEngine::IGameScreen {
 	GLEngine::GLSLProgram m_vignetteTextureProgram;
 	GLEngine::GLSLProgram m_skyTextureProgram;
 	GLEngine::GLSLProgram m_basicFBOTextureProgram;
+	GLEngine::GLSLProgram m_waterFBOProgram;
 	GLEngine::GLSLProgram m_postProcessor;	 // Adds lights!
 	GLEngine::GLSLProgram m_sunlightProgram; // Adds lights!
 
@@ -141,7 +142,7 @@ class GameplayScreen : public GLEngine::IGameScreen {
 
 	bool m_debuggingInfo = false;
 
-	glm::vec2 m_lastPlayerPos;
+	glm::vec2 m_lastPlayerPos = glm::vec2(0.0f);
 
 	Logger* logger = Logger::getInstance();
 
@@ -160,8 +161,6 @@ class GameplayScreen : public GLEngine::IGameScreen {
 	bool m_cameraLocked = false; // Can the camera move with the player, or is it 'locked'?
 
 	unsigned int m_nextScreenIndex = SCREEN_INDEX_NO_SCREEN;
-
-	bool m_hasBeenInited = false;
 	
 	float variable = 0.0f;
 };

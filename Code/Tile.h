@@ -223,7 +223,7 @@ class Tile {
 	virtual void drawGUI(GLEngine::SpriteBatch& sb, GLEngine::SpriteFont& sf, int& xOffset) {
 	}
 
-	void destroy();
+	virtual void destroy();
 
 	void onInteract_WalkedOn() {
 		if(m_interactScriptID_walkedOn != -1)

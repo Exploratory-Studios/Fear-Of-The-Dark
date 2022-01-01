@@ -11,6 +11,8 @@ class ArmourInventory : public InventoryBase {
 					bool		   initGUI			 = true,
 					CEGUI::Window* parent			 = nullptr);
 	~ArmourInventory();
+	
+	virtual void initInventoryGUI() override;
 
 	float getTotalDamageThreshold() {
 		float total = 0.0f;

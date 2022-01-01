@@ -28,6 +28,8 @@ class Entity {
 	Entity(glm::vec2 pos, unsigned int layer, SaveDataTypes::MetaData data);
 	Entity(SaveDataTypes::EntityData& saveData);
 	virtual ~Entity();
+	
+	void init(SaveDataTypes::EntityData& data);
 
 	void		 update(float timeStep, unsigned int selfIndex);
 	void		 tick();

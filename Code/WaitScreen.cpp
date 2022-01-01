@@ -40,6 +40,11 @@ void WaitScreen::onEntry() {
 }
 
 void WaitScreen::onExit() {
+	m_spriteBatch.dispose();
+	m_textureProgram.dispose();
+	m_spriteFont.dispose();
+	
+	m_gui.destroy();
 }
 
 void WaitScreen::update() {

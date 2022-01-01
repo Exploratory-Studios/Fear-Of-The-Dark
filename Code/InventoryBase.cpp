@@ -9,10 +9,10 @@ InventoryBase::InventoryBase(std::string&	name,
 							 bool			automaticResizing /* = true*/,
 							 bool			initGUI /* = true*/,
 							 CEGUI::Window* parent /* = nullptr*/) :
-	m_automaticallyResizes(automaticResizing) {
-	if(initGUI) {
-		initInventoryGUI(name, automaticResizing, parent);
-	}
+	m_automaticallyResizes(automaticResizing),
+	m_name(name),
+	m_parent(parent) {
+		
 }
 
 bool InventoryBase::onDoubleClick(const CEGUI::EventArgs& e) {
@@ -89,26 +89,33 @@ InventoryBase::~InventoryBase() {
 }
 
 void InventoryBase::init(std::string name, bool autoResize, CEGUI::Window* parent) { // This must be seperate from the constructor due to the virtual, overridden function
-	if(!m_initedGUI)
-		initInventoryGUI(name, autoResize, parent);
+	m_name = name;
+	m_automaticallyResizes = autoResize;
+	m_parent = parent;
 }
 
-void InventoryBase::initInventoryGUI(std::string name, bool autoResize, CEGUI::Window* parent) {
+void InventoryBase::init(SaveDataTypes::InventoryData& data) {
+	for(unsigned int i = 0; i < data.itemData.size(); i++) {
+		addItem(new Item(data.itemData[i].quantity, data.itemData[i].id, false)); // Probably not the best way to do this, but whatever.
+	}
+}
+
+void InventoryBase::initInventoryGUI() {
 	Singletons::getGUI()->setActiveContext(1); // Set this to the 2nd context (Inventory systems)
 
-	if(parent) {
+	if(m_parent) {
 		m_frameWindow =
-			static_cast<CEGUI::FrameWindow*>(Singletons::getGUI()->createWidget(parent,
+			static_cast<CEGUI::FrameWindow*>(Singletons::getGUI()->createWidget(m_parent,
 																				"FOTDSkin/FrameWindow",
 																				glm::vec4(0.0f, 0.0f, 1.0f, 1.0f),
 																				glm::vec4(0.0f),
-																				name + "_Inventory"));
+																				m_name + "_Inventory"));
 	} else {
 		m_frameWindow =
 			static_cast<CEGUI::FrameWindow*>(Singletons::getGUI()->createWidget("FOTDSkin/FrameWindow",
 																				glm::vec4(-0.2f, -0.2f, 0.35f, 0.5f),
 																				glm::vec4(0.0f),
-																				name + "_Inventory"));
+																				m_name + "_Inventory"));
 	}
 	m_frameWindow->setCloseButtonEnabled(false);
 	m_frameWindow->setDragMovingEnabled(true);
@@ -130,7 +137,7 @@ void InventoryBase::initInventoryGUI(std::string name, bool autoResize, CEGUI::W
 																					"FOTDSkin/ScrollablePane",
 																					glm::vec4(0.0f, 0.0f, 1.0f, 1.0f),
 																					glm::vec4(0.0f),
-																					name + "_Inventory_PANE"));
+																					m_name + "_Inventory_PANE"));
 	m_pane->setMouseInputPropagationEnabled(true);
 
 	m_gridItems.clear();
@@ -140,7 +147,7 @@ void InventoryBase::initInventoryGUI(std::string name, bool autoResize, CEGUI::W
 		"InventoryReceiver",
 		glm::vec4(0.05f, 0.05f, INVENTORY_BOX_WIDTH * 5.0f, INVENTORY_BOX_HEIGHT * 5.0f),
 		glm::vec4(0.0f),
-		name + "_Inventory_GRID"));
+		m_name + "_Inventory_GRID"));
 	m_grid->setContentSize(INVENTORY_WIDTH, 5);
 	m_grid->setUserString("BlockImage", "FOTDSkin/InventoryBox");
 	m_grid->setMouseInputPropagationEnabled(true);
@@ -159,10 +166,13 @@ void InventoryBase::initInventoryGUI(std::string name, bool autoResize, CEGUI::W
 }
 
 void InventoryBase::destroy() {
-	CEGUI::WindowManager& winMgr = CEGUI::WindowManager::getSingleton();
-	winMgr.destroyWindow(m_frameWindow);
+	if(m_frameWindow) {
+		Singletons::getGUI()->setActiveContext(1);
+		CEGUI::WindowManager& winMgr = CEGUI::WindowManager::getSingleton();
+		winMgr.destroyWindow(m_frameWindow);
+	}
 
-	m_frameWindow = 0;
+	m_frameWindow = nullptr;
 	m_pane		  = 0;
 	m_grid		  = 0;
 	m_gridItems.clear();
@@ -260,6 +270,9 @@ void InventoryBase::draw(GLEngine::SpriteBatch& sb,
 						 float					x,
 						 float					y,
 						 bool					relative /* = true*/) {
+							 
+	if(!m_initedGUI)
+		initInventoryGUI();
 	if(m_initedGUI && m_frameWindow->isVisible()) {
 		if(relative) {
 			// Set m_frameWindow position and size based on camera's convert screen to world and screen dims (retrieved from cam)

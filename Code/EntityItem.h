@@ -11,6 +11,7 @@ class EntityItem : public Entity {
 	virtual ~EntityItem();
 
 	void init();
+	void init(SaveDataTypes::EntityItemData& data);
 
 	virtual bool collideWithOther(Entity* other) override;
 

@@ -27,9 +27,12 @@ World::~World() {
 		for(unsigned int y = 0; y < m_tiles[x].size(); y++) {
 			for(unsigned int z = 0; z < m_tiles[x][y].size(); z++) {
 				delete m_tiles[x][y][z];
+				m_tiles[x][y][z] = nullptr;
 			}
 		}
 	}
+	
+	Singletons::deleteEntityManager();
 }
 
 void World::initTiles(unsigned int xSize, unsigned int ySize, unsigned int zSize) {
@@ -38,6 +41,7 @@ void World::initTiles(unsigned int xSize, unsigned int ySize, unsigned int zSize
 		for(unsigned int y = 0; y < m_tiles[x].size(); y++) {
 			for(unsigned int z = 0; z < m_tiles[x][y].size(); z++) {
 				delete m_tiles[x][y][z];
+				m_tiles[x][y][z] = nullptr;
 			}
 			m_tiles[y].clear();
 		}
@@ -156,7 +160,7 @@ Tile* World::getTile(int x, int y, int layer) {
 
 XMLModule::BiomeData World::getBiome(int x) {
 	// Get chunk position
-	int chunkX = (unsigned int)(x / CHUNK_SIZE);
+	int chunkX = (unsigned int)(((x + CHUNK_SIZE) % m_biomesMap.size()) / CHUNK_SIZE);
 
 	// Get biome's id from position:
 	unsigned int biomeID = m_biomesMap[chunkX];

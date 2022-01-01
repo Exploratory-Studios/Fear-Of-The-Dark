@@ -64,8 +64,6 @@ class EntityManager {
 						 m_entitiesToRemove; // All will be removed/added at once at the end of each update, to prevent weird processing errors.
 	std::vector<Entity*> m_entitiesToAdd;
 
-	World* m_world = nullptr;
-
 	std::map<std::string, Entity*> m_entitiesByUUID; // Organized by UUID (For Lua)
 
 	bool m_inited = false;

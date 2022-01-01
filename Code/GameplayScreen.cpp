@@ -48,8 +48,6 @@ void GameplayScreen::destroy() {
 void GameplayScreen::onEntry() {
 	initUI();
 
-	m_hasBeenInited = true;
-
 	std::srand(std::time(NULL));
 
 	initShaders();
@@ -102,7 +100,6 @@ void GameplayScreen::onEntry() {
 		EntityPlayer* p = new EntityPlayer(pos, 0, SaveDataTypes::MetaData(), true);
 
 		Singletons::getEntityManager()->setPlayer(p);
-
 		Singletons::getEntityManager()->getPlayer()->initGUI();
 	}
 
@@ -124,9 +121,6 @@ void GameplayScreen::onExit() {
 	delete m_scripter;
 	delete m_questManager;
 	delete m_dialogueManager;
-
-	m_hasBeenInited = false;
-	Singletons::getGUI()->destroy();
 	delete m_console;
 
 	m_textureProgram.dispose();
@@ -140,6 +134,8 @@ void GameplayScreen::onExit() {
 	m_dr.dispose();
 
 	m_gameState = GameState::PLAY;
+	
+	Singletons::destroyGUI();
 }
 
 void GameplayScreen::update() {
@@ -221,16 +217,6 @@ void GameplayScreen::update() {
 	}
 	if(m_currentState != GLEngine::ScreenState::EXIT_APPLICATION)
 		Singletons::getGUI()->update();
-
-	if(m_debugBool) {
-		// 13,15
-		//Singletons::getWorld()->getFluid(0)->addFluid(10, 39, 0, 0, 1.0f);
-		//Singletons::getWorld()->getFluid(1)->addFluid(8, 15, 0, 0, 1.0f); // Smoke
-
-		Singletons::getEntityManager()->getPlayer()->getInventory()->addItem(new Item(1, 7, true));
-		Singletons::getEntityManager()->getPlayer()->getInventory()->addItem(new Item(1, 8, true));
-		Singletons::getEntityManager()->getPlayer()->getInventory()->addItem(new Item(1, 9, true));
-	}
 }
 
 void GameplayScreen::draw() {
@@ -253,6 +239,52 @@ void GameplayScreen::draw() {
 		m_skyFBO.draw();
 
 		m_basicFBOTextureProgram.unuse();
+		
+		{
+			m_basicFBOTextureProgram.use();
+
+			// Camera matrix
+			glm::mat4 projectionMatrix = m_uiCamera.getCameraMatrix();
+			GLint	  pUniform		   = m_basicFBOTextureProgram.getUniformLocation("P");
+			glUniformMatrix4fv(pUniform, 1, GL_FALSE, &projectionMatrix[0][0]);
+
+			GLint textureUniform = m_basicFBOTextureProgram.getUniformLocation("textureSampler");
+			glUniform1i(textureUniform, 0);
+			
+			m_spriteBatch.begin();
+		  
+			float sunPercentX, sunPercentY; // 0.45, 0.8f
+			
+			sunPercentX = 0.45f * std::cos(3.1415f*2.0f * ((float)Singletons::getWorld()->getTime()/DAY_LENGTH) + 3.1415f*0.5f);
+			sunPercentY = 0.8f *  std::sin(3.1415f*2.0f * ((float)Singletons::getWorld()->getTime()/DAY_LENGTH) + 3.1415f*0.5f);
+			
+			std::string sunPath =
+				ASSETS_FOLDER_PATH + "/Textures/sun.png";
+
+			GLuint sunID = GLEngine::ResourceManager::getTexture(sunPath).id;
+
+			m_spriteBatch.draw(glm::vec4(m_window->getScreenWidth() * (0.5f - sunPercentX) - 16.0f, (sunPercentY) * m_window->getScreenHeight(), 32.0f, 32.0f),
+							   glm::vec4(0.0f, 0.0f, 1.0f, 1.0f),
+							   sunID,
+							   1.0f,
+							   GLEngine::ColourRGBA8(255, 255, 255, 255));
+			
+			std::string moonPath =
+				ASSETS_FOLDER_PATH + "/Textures/UNDEFINED.png";
+
+			GLuint moonID = GLEngine::ResourceManager::getTexture(moonPath).id;
+
+			m_spriteBatch.draw(glm::vec4(m_window->getScreenWidth() * (0.5f + sunPercentX) - 16.0f, -(sunPercentY) * m_window->getScreenHeight(), 32.0f, 32.0f),
+							   glm::vec4(0.0f, 0.0f, 1.0f, 1.0f),
+							   moonID,
+							   1.0f,
+							   GLEngine::ColourRGBA8(0, 0, 255, 255));
+			
+			m_spriteBatch.end();
+			m_spriteBatch.renderBatch();
+			
+			m_basicFBOTextureProgram.unuse();
+		}
 	}
 
 	{
@@ -304,21 +336,24 @@ void GameplayScreen::draw() {
 	{
 		drawFluidsToFBO();
 
-		m_basicFBOTextureProgram.use();
+		m_waterFBOProgram.use();
 
 		// Camera matrix
 		glm::mat4 projectionMatrix = m_uiCamera.getCameraMatrix();
-		GLuint	  pUniform		   = m_basicFBOTextureProgram.getUniformLocation("P");
+		GLuint	  pUniform		   = m_waterFBOProgram.getUniformLocation("P");
 		glUniformMatrix4fv(pUniform, 1, GL_FALSE, &projectionMatrix[0][0]);
 
 		GLEngine::GLContextManager::getGLContext()->setActiveTexture(GL_TEXTURE0);
 		GLEngine::GLContextManager::getGLContext()->bindTexture(GL_TEXTURE_2D, m_fluidFBO.getTexture());
-		GLuint textureUniform = m_basicFBOTextureProgram.getUniformLocation("textureSampler");
+		GLuint textureUniform = m_waterFBOProgram.getUniformLocation("textureSampler");
 		glUniform1i(textureUniform, 0);
+		
+		GLuint	  tUniform		   = m_waterFBOProgram.getUniformLocation("time");
+		glUniform1f(tUniform, m_time);
 
 		m_fluidFBO.draw();
 
-		m_basicFBOTextureProgram.unuse();
+		m_waterFBOProgram.unuse();
 	}
 
 	drawGUIToScreen(); // These two actually do draw to the screen.
@@ -333,50 +368,53 @@ void GameplayScreen::drawSkyToFBO() {
 
 	glClearColor(0.3f * dayLight, 0.4f * dayLight, 1.0f * dayLight, 1.0f);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+	
+	{
+		// Sky
+		m_skyTextureProgram.use();
 
-	// Sky
-	m_skyTextureProgram.use();
+		// Camera matrix
+		glm::mat4 projectionMatrix = m_uiCamera.getCameraMatrix();
+		GLint	  pUniform		   = m_skyTextureProgram.getUniformLocation("P");
+		glUniformMatrix4fv(pUniform, 1, GL_FALSE, &projectionMatrix[0][0]);
 
-	// Camera matrix
-	glm::mat4 projectionMatrix = m_uiCamera.getCameraMatrix();
-	GLint	  pUniform		   = m_skyTextureProgram.getUniformLocation("P");
-	glUniformMatrix4fv(pUniform, 1, GL_FALSE, &projectionMatrix[0][0]);
+		GLint textureUniform = m_skyTextureProgram.getUniformLocation("textureSampler");
+		glUniform1i(textureUniform, 0);
 
-	GLint textureUniform = m_skyTextureProgram.getUniformLocation("textureSampler");
-	glUniform1i(textureUniform, 0);
+		GLint sizeUniform = m_skyTextureProgram.getUniformLocation("screenSizeU");
+		glUniform2f(sizeUniform, m_window->getScreenWidth(), m_window->getScreenHeight());
 
-	GLint sizeUniform = m_skyTextureProgram.getUniformLocation("screenSizeU");
-	glUniform2f(sizeUniform, m_window->getScreenWidth(), m_window->getScreenHeight());
+		GLint lightUniform = m_skyTextureProgram.getUniformLocation("daylight");
+		glUniform1f(lightUniform, dayLight*0.5f + 0.5f);
 
-	GLint lightUniform = m_skyTextureProgram.getUniformLocation("daylight");
-	glUniform1f(lightUniform, dayLight);
+		GLint playerDepthUniform = m_skyTextureProgram.getUniformLocation("playerXPos");
+		float playerChunkX = std::fmod((Singletons::getEntityManager()->getPlayer()->getPosition().x + (float)CHUNK_SIZE),
+									   (float)CHUNK_SIZE);
+		glUniform1f(playerDepthUniform, playerChunkX / (float)(CHUNK_SIZE));
 
-	GLint playerDepthUniform = m_skyTextureProgram.getUniformLocation("playerXPos");
-	float playerChunkX = std::fmod((Singletons::getEntityManager()->getPlayer()->getPosition().x + (float)CHUNK_SIZE),
-								   (float)CHUNK_SIZE);
-	glUniform1f(playerDepthUniform, playerChunkX / (float)(CHUNK_SIZE));
+		GLint parallaxZoomUniform = m_skyTextureProgram.getUniformLocation("parallaxZoom");
+		glUniform1f(parallaxZoomUniform, 0.95f);
 
-	GLint parallaxZoomUniform = m_skyTextureProgram.getUniformLocation("parallaxZoom");
-	glUniform1f(parallaxZoomUniform, 0.95f);
+		m_spriteBatch.begin();
 
-	m_spriteBatch.begin();
+		int			playerX = (int)Singletons::getEntityManager()->getPlayer()->getPosition().x;
+		std::string backgroundPath =
+			ASSETS_FOLDER_PATH + "/Textures/" + Singletons::getWorld()->getBiome(playerX).backgroundTexture;
 
-	int			playerX = (int)Singletons::getEntityManager()->getPlayer()->getPosition().x;
-	std::string backgroundPath =
-		ASSETS_FOLDER_PATH + "/Textures/" + Singletons::getWorld()->getBiome(playerX).backgroundTexture;
+		GLuint backgroundID = GLEngine::ResourceManager::getTexture(backgroundPath).id;
 
-	GLuint backgroundID = GLEngine::ResourceManager::getTexture(backgroundPath).id;
+		m_spriteBatch.draw(glm::vec4(0.0f, 0.0f, m_window->getScreenWidth(), m_window->getScreenHeight()),
+						   glm::vec4(0.0f, 0.0f, 1.0f, 1.0f),
+						   backgroundID,
+						   1.0f,
+						   GLEngine::ColourRGBA8(255, 255, 255, 255));
+						   
+		m_spriteBatch.end();
+		m_spriteBatch.renderBatch();
 
-	m_spriteBatch.draw(glm::vec4(0.0f, 0.0f, m_window->getScreenWidth(), m_window->getScreenHeight()),
-					   glm::vec4(0.0f, 0.0f, 1.0f, 1.0f),
-					   backgroundID,
-					   1.0f,
-					   GLEngine::ColourRGBA8(255, 255, 255, 255));
-
-	m_spriteBatch.end();
-	m_spriteBatch.renderBatch();
-
-	m_skyTextureProgram.unuse();
+		m_skyTextureProgram.unuse();
+	}
+	
 
 	m_skyFBO.end();
 }
@@ -717,6 +755,13 @@ void GameplayScreen::initShaders() {
 	m_basicFBOTextureProgram.addAttribute("vertexColour");
 	m_basicFBOTextureProgram.addAttribute("vertexUV");
 	m_basicFBOTextureProgram.linkShaders();
+	
+	m_waterFBOProgram.compileShaders(ASSETS_FOLDER_PATH + "Shaders/water.vert",
+											ASSETS_FOLDER_PATH + "Shaders/water.frag");
+	m_waterFBOProgram.addAttribute("vertexPosition");
+	m_waterFBOProgram.addAttribute("vertexColour");
+	m_waterFBOProgram.addAttribute("vertexUV");
+	m_waterFBOProgram.linkShaders();
 
 	m_postProcessor.compileShaders(ASSETS_FOLDER_PATH + "Shaders/postProcesser.vert",
 								   ASSETS_FOLDER_PATH + "Shaders/postProcesser.frag");
@@ -767,9 +812,13 @@ void GameplayScreen::initUI() {
 
 	// Register custom objects
 	{
-		CEGUI::WindowFactoryManager::addFactory<CEGUI::TplWindowFactory<CEGUI::GUI_InventoryReceiver>>();
-		CEGUI::WindowFactoryManager::addFactory<CEGUI::TplWindowFactory<CEGUI::GUI_InventoryItem>>();
-		CEGUI::WindowRendererManager::addFactory<CEGUI::TplWindowRendererFactory<CEGUI::GUI_InventoryItemRenderer>>();
+		// Only register if it's not already registered
+		CEGUI::WindowFactoryManager* singleton = CEGUI::Singleton<CEGUI::WindowFactoryManager>::getSingletonPtr();
+		if(!singleton->isFactoryPresent((CEGUI::TplWindowFactory<CEGUI::GUI_InventoryReceiver>()).getTypeName())) {
+			CEGUI::WindowFactoryManager::addFactory<CEGUI::TplWindowFactory<CEGUI::GUI_InventoryReceiver>>();
+			CEGUI::WindowFactoryManager::addFactory<CEGUI::TplWindowFactory<CEGUI::GUI_InventoryItem>>();
+			CEGUI::WindowRendererManager::addFactory<CEGUI::TplWindowRendererFactory<CEGUI::GUI_InventoryItemRenderer>>();
+		}
 	}
 
 	{
@@ -940,6 +989,10 @@ glm::vec4 GameplayScreen::getScreenBox() {
 							  gameplayCoordsBR.x - gameplayCoordsTL.x,
 							  gameplayCoordsTL.y - gameplayCoordsBR.y) +
 					glm::vec4(-1.5f, -1.5f, 3.0f, 3.0f);
+	
+	if(std::abs(ret.x) > 10000 || std::abs(ret.y) > 1000) {
+		Logger::getInstance()->log("Err");
+	}
 
 	return ret;
 }

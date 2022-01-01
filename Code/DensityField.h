@@ -28,7 +28,7 @@ namespace FluidModule {
 		DensityField() {
 			init();
 		}
-		DensityField(SaveDataTypes::FluidDensityData& data);
+		DensityField(::SaveDataTypes::FluidDensityData& data);
 		void init() {
 			densities	   = new FluidCell[FLUID_PARTITION_SIZE * FLUID_PARTITION_SIZE];
 			deltaDensities = new FluidCell[FLUID_PARTITION_SIZE * FLUID_PARTITION_SIZE];

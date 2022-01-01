@@ -5,42 +5,7 @@
       <![CDATA[00040001N0005Debug0000000000000001N0007DebugVB0000000000000001N0015Release - Linux0000000000000001N0017Release - Windows000000000000]]>
     </Plugin>
   </Plugins>
-  <VirtualDirectory Name="Scripting">
-    <File Name="ScriptingHelperFunctions.cpp"/>
-    <File Name="ScripterMain.h"/>
-    <File Name="LuaScript.h"/>
-    <File Name="LuaHeaders.h"/>
-    <File Name="LuaScript.cpp"/>
-    <File Name="ScripterMain.cpp"/>
-    <File Name="ScriptQueue.h"/>
-    <File Name="ScriptQueue.cpp"/>
-    <File Name="ScriptingHelperFunctions.h"/>
-    <File Name="Console.h"/>
-    <File Name="Console.cpp"/>
-  </VirtualDirectory>
-  <VirtualDirectory Name="Combat and Animations">
-    <File Name="Buff.h"/>
-    <File Name="Buff.cpp"/>
-    <File Name="Attack.h"/>
-    <File Name="Attack.cpp"/>
-    <File Name="Animation.h"/>
-    <File Name="Animation.cpp"/>
-  </VirtualDirectory>
-  <VirtualDirectory Name="World">
-    <File Name="World.cpp"/>
-    <File Name="World.h"/>
-    <File Name="WorldIOManager.cpp"/>
-    <File Name="WorldIOManager.h"/>
-  </VirtualDirectory>
   <VirtualDirectory Name="Questing">
-    <File Name="QuestTypes.h"/>
-    <File Name="QuestTypes.cpp"/>
-    <File Name="QuestManager.h"/>
-    <File Name="QuestManager.cpp"/>
-    <File Name="EventQueue.h"/>
-    <File Name="EventQueue.cpp"/>
-    <File Name="DialogueManager.h"/>
-    <File Name="DialogueManager.cpp"/>
     <File Name="../Assets/Questing/Readme"/>
   </VirtualDirectory>
   <VirtualDirectory Name="Fluid Simulation">
@@ -157,6 +122,37 @@
     <File Name="GUI_InventoryItem.h"/>
     <File Name="GUI_InventoryBase.cpp"/>
     <File Name="GUI_InventoryBase.h"/>
+  </VirtualDirectory>
+  <VirtualDirectory Name="src">
+    <File Name="Buff.cpp"/>
+    <File Name="Buff.h"/>
+    <File Name="WorldIOManager.h"/>
+    <File Name="World.h"/>
+    <File Name="ScriptQueue.h"/>
+    <File Name="ScriptingHelperFunctions.h"/>
+    <File Name="ScripterMain.h"/>
+    <File Name="QuestTypes.h"/>
+    <File Name="QuestManager.h"/>
+    <File Name="LuaScript.h"/>
+    <File Name="LuaHeaders.h"/>
+    <File Name="EventQueue.h"/>
+    <File Name="DialogueManager.h"/>
+    <File Name="Console.h"/>
+    <File Name="Attack.h"/>
+    <File Name="Animation.h"/>
+    <File Name="Animation.cpp"/>
+    <File Name="Attack.cpp"/>
+    <File Name="DialogueManager.cpp"/>
+    <File Name="WorldIOManager.cpp"/>
+    <File Name="World.cpp"/>
+    <File Name="ScriptingHelperFunctions.cpp"/>
+    <File Name="ScripterMain.cpp"/>
+    <File Name="ScriptQueue.cpp"/>
+    <File Name="QuestTypes.cpp"/>
+    <File Name="QuestManager.cpp"/>
+    <File Name="LuaScript.cpp"/>
+    <File Name="EventQueue.cpp"/>
+    <File Name="Console.cpp"/>
   </VirtualDirectory>
   <Description/>
   <Dependencies/>

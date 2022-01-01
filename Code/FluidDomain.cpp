@@ -7,6 +7,7 @@
 #include "Singletons.h"
 
 #include "Tile.h"
+#include "DensityField.h"
 
 namespace FluidModule {
 

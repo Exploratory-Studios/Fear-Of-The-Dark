@@ -1,27 +1,25 @@
 #pragma once
 
-#include <IGameScreen.h>
-#include <Camera2D.h>
-#include <GUI.h>
-#include <GLSLProgram.h>
-#include <SpriteBatch.h>
-#include <SpriteFont.h>
+#include <Screen.hpp>
+#include <Camera2D.hpp>
+#include <BARECEGUI.hpp>
+#include <BasicRenderer.hpp>
+#include <FontRenderer.hpp>
 
 #include "WorldIOManager.h"
 #include "ScreenIndices.h"
 
-class WaitScreen : public GLEngine::IGameScreen {
+class WaitScreen : public BARE2D::Screen {
   public:
-	WaitScreen(GLEngine::Window* window, WorldIOManager* worldIOManager);
+	WaitScreen(BARE2D::Window* window, WorldIOManager* worldIOManager);
 	virtual ~WaitScreen();
 
 	virtual int	 getNextScreenIndex() const override;
-	virtual int	 getPreviousScreenIndex() const override;
-	virtual void build() override;
-	virtual void destroy() override;
+	virtual void initScreen() override;
+	virtual void destroyScreen() override;
 	virtual void onEntry() override;
 	virtual void onExit() override;
-	virtual void update() override;
+	virtual void update(double dt) override;
 	virtual void draw() override;
 
   protected:
@@ -30,18 +28,11 @@ class WaitScreen : public GLEngine::IGameScreen {
 
 	void checkInput();
 
-	GLEngine::SpriteBatch m_spriteBatch;
-	GLEngine::SpriteFont  m_spriteFont;
+	BARE2D::BasicRenderer* m_renderer = nullptr;
+	BARE2D::FontRenderer*  m_fontRenderer = nullptr;
 
-	GLEngine::Camera2D m_uiCamera;
-	GLEngine::Camera2D m_camera;
-
-	GLEngine::GUI m_gui;
-
-	GLEngine::GLSLProgram m_textureProgram;
-
-	WorldIOManager*	  m_worldIOManager = nullptr;
-	GLEngine::Window* m_window		   = nullptr;
+	WorldIOManager* m_worldIOManager = nullptr;
+	BARE2D::Window* m_window		 = nullptr;
 
 	CEGUI::ProgressBar*	  m_progressBar = nullptr;
 	CEGUI::DefaultWindow* m_messageBox	= nullptr;

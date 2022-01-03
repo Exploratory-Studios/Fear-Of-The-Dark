@@ -1,7 +1,7 @@
 #include "Singletons.h"
 
-EntityManager*		Singletons::m_entityManager = nullptr;
-AudioManager*		Singletons::m_audioManager	= nullptr;
-GLEngine::GUI*		Singletons::m_gui			= nullptr;
-GLEngine::Camera2D* Singletons::m_gameCamera	= nullptr;
-World*				Singletons::m_world			= nullptr;
+EntityManager*	   Singletons::m_entityManager = nullptr;
+GameAudioManager*  Singletons::m_audioManager  = nullptr;
+BARE2D::BARECEGUI* Singletons::m_gui		   = nullptr;
+BARE2D::Camera2D*  Singletons::m_gameCamera	   = nullptr;
+World*			   Singletons::m_world		   = nullptr;

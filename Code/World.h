@@ -1,17 +1,16 @@
 #pragma once
 
-#include <DebugRenderer.h>
-#include <ParticleEngine2D.h>
-#include <SpriteBatch.h>
-#include <SpriteFont.h>
-#include <Camera2D.h>
+#include <DebugRenderer.hpp>
+#include <BumpyRenderer.hpp>
+#include <FontRenderer.hpp>
+#include <Camera2D.hpp>
 
 //#include "CircularVector.h"
 
 #include "Categories.h"
 #include "PresetValues.h"
 
-#include "XMLDataTypes.h"
+#include "CustomXMLTypes.h"
 
 class Entity;
 class EntityNPC;
@@ -66,27 +65,25 @@ class World {
 		m_time = time;
 	}
 
-	void setLightsUniform(glm::vec4 destRect, GLEngine::GLSLProgram* textureProgram);
+	void setLightsUniform(glm::vec4 destRect, BARE2D::ShaderProgram* shader);
 
-	void drawTiles(GLEngine::SpriteBatch&	sb,
-				   GLEngine::SpriteFont&	sf,
-				   GLEngine::DebugRenderer& dr,
-				   glm::vec4				destRect,
-				   GLEngine::GLSLProgram*	textureProgram);
-	void drawTilesNormal(GLEngine::SpriteBatch& sb, glm::vec4 destRect, GLEngine::GLSLProgram* textureProgram);
-	void drawTilesGUI(GLEngine::SpriteBatch& sb, GLEngine::SpriteFont& sf, glm::vec4 destRect);
+	void drawTiles(BARE2D::BumpyRenderer* renderer,
+				   BARE2D::FontRenderer*  fontRenderer,
+				   BARE2D::DebugRenderer* dr,
+				   glm::vec4			  destRect);
+	void drawTilesGUI(BARE2D::BasicRenderer* renderer, BARE2D::FontRenderer* fontRenderer, glm::vec4 destRect);
 	void updateTiles(glm::vec4 destRect);
 	void tickTiles(glm::vec4 destRect);
 
-	void drawFluids(GLEngine::SpriteBatch& sb, glm::vec4& destRect);
+	void drawFluids(BARE2D::BumpyRenderer* renderer, glm::vec4& destRect);
 	void updateFluidTextures(glm::vec4& destRect);
 	void updateFluids(float timeStep, glm::vec4& destRect);
 
-	void drawParticles(GLEngine::SpriteBatch* sb);
-	void drawSunlight(GLEngine::SpriteBatch& sb,
+	void drawParticles(BARE2D::BumpyRenderer* renderer);
+	void drawSunlight(BARE2D::BasicRenderer* renderer,
 					  glm::vec4				 destRect); // Just draws the sunlight value into the rgb components.
 
-	void drawDebug(GLEngine::DebugRenderer& dr, float xOffset);
+	void drawDebug(BARE2D::DebugRenderer* dr, float xOffset);
 
 	void incrementTime() {
 		m_frame++;

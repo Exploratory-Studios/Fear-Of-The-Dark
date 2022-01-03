@@ -10,15 +10,13 @@
 #include "Tile.h"
 #include "FluidDomain.h"
 
-#include "XMLData.h"
+#include <XMLDataManager.hpp>
 #include "Factory.h"
 #include "Singletons.h"
 
 void WorldIOManager::initLoadSaveStuff() {
 	m_progress		  = new float(0.0f);
 	m_saveLoadMessage = new std::string("");
-
-	logger = Logger::getInstance();
 }
 
 void WorldIOManager::loadWorld(std::string worldName) {
@@ -51,40 +49,44 @@ void WorldIOManager::P_loadWorld(std::string worldName, World* world) {
 	setProgress(0.0f);
 	setMessage("Loading basic info...");
 
-	logger->log("LOAD: STARTING LOAD AT " + std::to_string(startTime), true);
-	
+	BARE2D::Logger::getInstance()->log("LOAD: STARTING LOAD AT " + std::to_string(startTime), true);
+
 	std::string filepath = SAVES_PATH + worldName + ".bin";
 	world->setName(worldName);
-	
-	logger->log("LOAD: Loading from file: " + filepath);
+
+	BARE2D::Logger::getInstance()->log("LOAD: Loading from file: " + filepath);
 
 	// INIT
 	std::ifstream file(filepath, std::ios::binary);
 	if(file.fail()) {
-		GLEngine::fatalError("Error loading from file: " + filepath);
+		BARE2D::throwFatalError(BARE2D::BAREError::FILE_FAILURE, "Error loading from file: " + filepath);
 	}
-	
+
 	{
 		// VERSION
 
 		unsigned int saveVersion;
 		file.read(reinterpret_cast<char*>(&saveVersion), sizeof(unsigned int));
 
-		logger->log("LOAD: Loaded Version: " + std::to_string(saveVersion) + ", Using Version: " + std::to_string(m_saveVersion), true);
+		BARE2D::Logger::getInstance()->log("LOAD: Loaded Version: " + std::to_string(saveVersion) +
+											   ", Using Version: " + std::to_string(m_saveVersion),
+										   true);
 
 		if(m_saveVersion != saveVersion) {
-			logger->log("LOAD: Loaded Version Doesn't Match Current Loader Version. Quitting...", true);
-			GLEngine::fatalError("Error loading from file: " + filepath + ": Save Version Mismatch");
+			BARE2D::Logger::getInstance()->log("LOAD: Loaded Version Doesn't Match Current Loader Version. Quitting...",
+											   true);
+			BARE2D::throwFatalError(BARE2D::BAREError::FILE_FAILURE,
+									"Error loading from file: " + filepath + ": Save Version Mismatch");
 		}
 	}
 
 	{
 		// MISCELLANEOUS WORLD DATA
 		file.read(reinterpret_cast<char*>(&world->m_time), sizeof(unsigned long int));
-		
+
 		unsigned int worldSize_tiles = 0;
 		file.read(reinterpret_cast<char*>(&worldSize_tiles), sizeof(unsigned int));
-		
+
 		world->initTiles(worldSize_tiles, WORLD_HEIGHT, WORLD_DEPTH);
 	}
 
@@ -93,7 +95,7 @@ void WorldIOManager::P_loadWorld(std::string worldName, World* world) {
 	{
 		// PLAYER
 
-  		EntityPlayer* newP = new EntityPlayer(glm::vec2(0.0f), 0, SaveDataTypes::MetaData(), false);
+		EntityPlayer* newP = new EntityPlayer(glm::vec2(0.0f), 0);
 		Singletons::getEntityManager()->setPlayer(newP);
 
 		SaveDataTypes::EntityPlayerData pod;
@@ -101,20 +103,20 @@ void WorldIOManager::P_loadWorld(std::string worldName, World* world) {
 
 		Singletons::getEntityManager()->getPlayer()->init(pod);
 
-		logger->log("LOAD: Loaded Player POD");
+		BARE2D::Logger::getInstance()->log("LOAD: Loaded Player POD");
 	}
 
 	setProgress(0.1f);
 
 	{
 		// WORLD
-		
+
 		const unsigned int		  chunks	= world->getSize() / CHUNK_SIZE;
 		SaveDataTypes::ChunkData* chunkData = new SaveDataTypes::ChunkData[chunks];
 		//file.read(reinterpret_cast<char*>(&chunkData[0]), sizeof(SaveDataTypes::ChunkData) * WORLD_SIZE);
-		
+
 		setMessage("Loading Chunks... 0/" + std::to_string(chunks));
-		
+
 		for(int i = 0; i < chunks; i++) {
 			chunkData[i].read(file);
 			world->m_biomesMap[i] = chunkData[i].biomeID;
@@ -127,42 +129,45 @@ void WorldIOManager::P_loadWorld(std::string worldName, World* world) {
 				for(unsigned int y = 0; y < WORLD_HEIGHT; y++) {
 					for(unsigned int k = 0; k < WORLD_DEPTH; k++) {
 						SaveDataTypes::TileData* temp = &chunkData[i].tiles[x][y][k];
-						Tile*					 tile = Factory::createTile(temp->id, temp->pos, k, temp->metaData);
-						
+						Tile*					 tile = Factory::createTile(temp->id, temp->pos, k);
+
 						world->setTile_noEvent(tile);
-						setProgress(0.1f + 0.7f * (i * CHUNK_SIZE * WORLD_HEIGHT * WORLD_DEPTH + x * WORLD_HEIGHT * WORLD_DEPTH + y * WORLD_DEPTH + k) / (chunks*CHUNK_SIZE*WORLD_HEIGHT*WORLD_DEPTH)); // 0.3
+						setProgress(0.1f + 0.7f *
+											   (i * CHUNK_SIZE * WORLD_HEIGHT * WORLD_DEPTH +
+												x * WORLD_HEIGHT * WORLD_DEPTH + y * WORLD_DEPTH + k) /
+											   (chunks * CHUNK_SIZE * WORLD_HEIGHT * WORLD_DEPTH)); // 0.3
 					}
 				}
 			}
 		}
 
-		logger->log("LOAD: Loaded World Chunks");
+		BARE2D::Logger::getInstance()->log("LOAD: Loaded World Chunks");
 
 		//world->player->setParentChunk(world->chunks);
 	}
-	
+
 	{
 		// Fluids
 		unsigned int fluids;
 		file.read(reinterpret_cast<char*>(&fluids), sizeof(unsigned int));
 		for(unsigned int i = 0; i < fluids; i++) {
 			SaveDataTypes::FluidData data;
-			
+
 			data.read(file);
-			
+
 			FluidModule::FluidDomain* domain = new FluidModule::FluidDomain();
 			domain->init(data);
-			
+
 			world->m_fluidDomains.push_back(domain);
 		}
-		logger->log("LOAD: Loaded Fluids");
+		BARE2D::Logger::getInstance()->log("LOAD: Loaded Fluids");
 	}
 
 	float finishTime = (float)(std::clock()) / (float)(CLOCKS_PER_SEC / 1000);
 
-	logger->log("LOAD: LOAD COMPLETED. FINISHED AT " + std::to_string(finishTime) + " (" +
-					std::to_string(finishTime - startTime) + " milliseconds)",
-				true);
+	BARE2D::Logger::getInstance()->log("LOAD: LOAD COMPLETED. FINISHED AT " + std::to_string(finishTime) + " (" +
+										   std::to_string(finishTime - startTime) + " milliseconds)",
+									   true);
 
 	setProgress(1.0f);
 
@@ -187,11 +192,10 @@ Fluids
 */ // stacksize is 8192 kbytes
 
 void WorldIOManager::P_saveWorld(World* world) {
-	
 	std::string filepath = SAVES_PATH + world->getName() + ".bin";
-	
-	logger->log("SAVE: Starting World Save to File: " + filepath);
-	logger->log("SAVE: Starting Save Preparations");
+
+	BARE2D::Logger::getInstance()->log("SAVE: Starting World Save to File: " + filepath);
+	BARE2D::Logger::getInstance()->log("SAVE: Starting Save Preparations");
 
 	SaveDataTypes::EntityPlayerData p = Singletons::getEntityManager()->getPlayer()->getPlayerSaveData();
 
@@ -215,13 +219,12 @@ void WorldIOManager::P_saveWorld(World* world) {
 	    Item* tempI = world->getPlayer()->m_inventory->getItem(i);
 	    item.id = tempI->getID();
 	    item.quantity = tempI->getQuantity();
-	    item.metaData = tempI->getMetaData();
 	    pInventory.itemData.push_back(item);
 	}
 
 	p.inventory = pInventory;*/
 
-	logger->log("SAVE: Player Data Prepared");
+	BARE2D::Logger::getInstance()->log("SAVE: Player Data Prepared");
 
 	// CHUNK
 	const unsigned int chunks = world->getSize() / CHUNK_SIZE;
@@ -239,24 +242,24 @@ void WorldIOManager::P_saveWorld(World* world) {
 		chunkData[i].biomeID = world->m_biomesMap[i];
 	}
 
-	logger->log("SAVE: Chunk Data Prepared");
+	BARE2D::Logger::getInstance()->log("SAVE: Chunk Data Prepared");
 
-	unsigned long int time = world->getTime();
-	unsigned int worldSize = world->getSize();
+	unsigned long int time		= world->getTime();
+	unsigned int	  worldSize = world->getSize();
 
-	logger->log("SAVE: ALL DATA PREPARED, STARTING SAVE", true);
+	BARE2D::Logger::getInstance()->log("SAVE: ALL DATA PREPARED, STARTING SAVE", true);
 
 	// INIT
 	std::ofstream file(filepath, std::ios::binary);
 	if(file.fail()) {
-		GLEngine::fatalError("Error saving to file: " + filepath);
+		BARE2D::throwFatalError(BARE2D::BAREError::FILE_FAILURE, "Error saving to file: " + filepath);
 	}
 
 	{
 		// VERSION
 		file.write(reinterpret_cast<char*>(&m_saveVersion), sizeof(unsigned int));
 
-		logger->log("SAVE: Started Saving with version: " + std::to_string(m_saveVersion));
+		BARE2D::Logger::getInstance()->log("SAVE: Started Saving with version: " + std::to_string(m_saveVersion));
 	}
 
 	{
@@ -268,7 +271,7 @@ void WorldIOManager::P_saveWorld(World* world) {
 	{
 		// PLAYER
 		p.save(file);
-		logger->log("SAVE: Wrote Player POD");
+		BARE2D::Logger::getInstance()->log("SAVE: Wrote Player POD");
 	}
 
 	{
@@ -277,22 +280,22 @@ void WorldIOManager::P_saveWorld(World* world) {
 			chunkData[i].save(file);
 		}
 		delete[] chunkData;
-		logger->log("SAVE: Wrote World Chunks");
+		BARE2D::Logger::getInstance()->log("SAVE: Wrote World Chunks");
 	}
-	
+
 	{
 		// Fluids
-		unsigned int fluids = XMLModule::XMLData::getFluidCount();
+		unsigned int fluids = BARE2D::XMLDataManager::getDataCount("Fluid");
 		file.write(reinterpret_cast<char*>(&fluids), sizeof(unsigned int));
 		for(unsigned int i = 0; i < fluids; i++) {
 			SaveDataTypes::FluidData data(Singletons::getWorld()->m_fluidDomains[i]);
-			
+
 			data.save(file);
 		}
-		logger->log("SAVE: Wrote Fluids");
+		BARE2D::Logger::getInstance()->log("SAVE: Wrote Fluids");
 	}
 
-	logger->log("SAVE: SAVE COMPLETED", true);
+	BARE2D::Logger::getInstance()->log("SAVE: SAVE COMPLETED", true);
 
 	file.close();
 }
@@ -301,7 +304,7 @@ void WorldIOManager::P_createWorld(unsigned int seed, std::string worldName, boo
 	World* w = new World(width, WORLD_HEIGHT, WORLD_DEPTH);
 
 	float startTime = (float)(std::clock()) / (float)(CLOCKS_PER_SEC / 1000);
-	logger->log("CREATE: Starting world creation at time: " + std::to_string(startTime));
+	BARE2D::Logger::getInstance()->log("CREATE: Starting world creation at time: " + std::to_string(startTime));
 
 	setProgress(0.0f);
 
@@ -345,7 +348,7 @@ void WorldIOManager::P_createWorld(unsigned int seed, std::string worldName, boo
 	for(int i = 0; i < chunks; i++) { // 0.05 progress
 		float placeMapped = (places[i] - lowestPlace) / (highestPlace - lowestPlace);
 
-		w->m_biomesMap[i] = std::ceil(placeMapped * (XMLModule::XMLData::getTotalBiomes() - 1));
+		w->m_biomesMap[i] = std::ceil(placeMapped * (BARE2D::XMLDataManager::getDataCount("Biome") - 1));
 
 		setProgress(0.05f + 0.05f * ((i + 1.0f) / chunks));
 	}
@@ -366,7 +369,7 @@ void WorldIOManager::P_createWorld(unsigned int seed, std::string worldName, boo
 
 		for(int i = 0; i < chunks; i++) {
 			for(int layer = 0; layer < WORLD_DEPTH; layer++) {
-				XMLModule::BiomeData biome = XMLModule::XMLData::getBiomeData(w->m_biomesMap[i]);
+				XMLModule::BiomeData biome = getBiomeData(w->m_biomesMap[i]);
 
 				PerlinNoise heightNoise(seed * (i + 1) * 783);
 
@@ -399,62 +402,68 @@ void WorldIOManager::P_createWorld(unsigned int seed, std::string worldName, boo
 		// Progress at 0.2f
 		{
 			setMessage("Smoothing terrain... ");
-			const unsigned int n = 5; // This determines how much is smoothed.
-			const unsigned int affectedBlocks = CHUNK_SIZE/n; // How many actual blocks are smoothed.
-			
+			const unsigned int n			  = 5;				// This determines how much is smoothed.
+			const unsigned int affectedBlocks = CHUNK_SIZE / n; // How many actual blocks are smoothed.
+
 			for(int layer = 0; layer < WORLD_DEPTH; layer++) {
 				for(int chunk = 0; chunk < chunks; chunk++) {
 					// Get base height values of current, next, and previous chunks
 					const unsigned int prevChunk = ((chunk - 1) + chunks) % chunks;
 					const unsigned int nextChunk = (chunk + 1) % chunks;
-					
-					const int previousBase =
-						XMLModule::XMLData::getBiomeData(w->m_biomesMap[prevChunk]).baseHeight;
-					const int nextBase =
-						XMLModule::XMLData::getBiomeData(w->m_biomesMap[nextChunk]).baseHeight;
-					const int baseHeight = XMLModule::XMLData::getBiomeData(w->m_biomesMap[chunk]).baseHeight;
+
+					const int previousBase = getBiomeData(w->m_biomesMap[prevChunk]).baseHeight;
+					const int nextBase	   = getBiomeData(w->m_biomesMap[nextChunk]).baseHeight;
+					const int baseHeight   = getBiomeData(w->m_biomesMap[chunk]).baseHeight;
 
 					// Only affects every first and last 1/nth of each chunk (2/nths total)
 					// First, find the average height of the first 1/nth of this chunk + last 1/nth of prev chunk
 					int avg_this = 0, avg_prev = 0;
 					for(unsigned int i = 0; i < affectedBlocks; i++) {
-						const unsigned int blockIndex_prev = (prevChunk * CHUNK_SIZE * WORLD_DEPTH) + (0 * CHUNK_SIZE) + (CHUNK_SIZE-i-1);
-						const unsigned int blockIndex_this = (chunk * CHUNK_SIZE * WORLD_DEPTH) + (0 * CHUNK_SIZE) + (i);
-						
+						const unsigned int blockIndex_prev =
+							(prevChunk * CHUNK_SIZE * WORLD_DEPTH) + (0 * CHUNK_SIZE) + (CHUNK_SIZE - i - 1);
+						const unsigned int blockIndex_this =
+							(chunk * CHUNK_SIZE * WORLD_DEPTH) + (0 * CHUNK_SIZE) + (i);
+
 						avg_prev += tempHeights[blockIndex_prev] + previousBase;
 						avg_this += tempHeights[blockIndex_this] + baseHeight;
 					}
 					avg_prev /= affectedBlocks;
 					avg_this /= affectedBlocks;
-					
+
 					int avg_aim = (avg_prev + avg_this) / 2; // Find the middle ground!
-					
+
 					// Now that we have the averages, we can start to curve the actual heights towards them, with the closeness inversely proportional to the distance from the edge of the chunk.
 					// That is to say, the at the edge of the chunk we should be very very close to the average. Further, we make smaller adjustments
 					for(unsigned int i = 0; i < affectedBlocks; i++) {
-						const unsigned int blockIndex_prev = (prevChunk * CHUNK_SIZE * WORLD_DEPTH) + (layer * CHUNK_SIZE) + (CHUNK_SIZE-i-1);
-						const unsigned int blockIndex_this = (chunk * CHUNK_SIZE * WORLD_DEPTH) + (layer * CHUNK_SIZE) + (i);
-						
+						const unsigned int blockIndex_prev =
+							(prevChunk * CHUNK_SIZE * WORLD_DEPTH) + (layer * CHUNK_SIZE) + (CHUNK_SIZE - i - 1);
+						const unsigned int blockIndex_this =
+							(chunk * CHUNK_SIZE * WORLD_DEPTH) + (layer * CHUNK_SIZE) + (i);
+
 						// Adjustment = (y distance from avg)/(x distance from edge of chunk)
-						const int heightAdjustment_prev = (avg_aim - (tempHeights[blockIndex_prev] + previousBase))/(signed int)(i + 1);
-						const int heightAdjustment_this = (avg_aim - (tempHeights[blockIndex_this] + baseHeight))/(signed int)(i + 1);
-						
+						const int heightAdjustment_prev =
+							(avg_aim - (tempHeights[blockIndex_prev] + previousBase)) / (signed int)(i + 1);
+						const int heightAdjustment_this =
+							(avg_aim - (tempHeights[blockIndex_this] + baseHeight)) / (signed int)(i + 1);
+
 						// Actually apply the adjustment
 						tempHeights[blockIndex_prev] += heightAdjustment_prev;
 						tempHeights[blockIndex_this] += heightAdjustment_this;
 					}
 				}
 				for(unsigned int chunk = 0; chunk < chunks; chunk++) {
-					const int baseHeight = XMLModule::XMLData::getBiomeData(w->m_biomesMap[chunk]).baseHeight;
+					const int baseHeight = getBiomeData(w->m_biomesMap[chunk]).baseHeight;
 					for(int x = 0; x < CHUNK_SIZE; x++) {
-						unsigned int blockIndex = layer * CHUNK_SIZE + x + (chunk%chunks) * CHUNK_SIZE * WORLD_DEPTH;
+						unsigned int blockIndex	 = layer * CHUNK_SIZE + x + (chunk % chunks) * CHUNK_SIZE * WORLD_DEPTH;
 						blockHeights[blockIndex] = tempHeights[blockIndex] + baseHeight;
-						if(blockHeights[blockIndex] > WORLD_HEIGHT-1) blockHeights[blockIndex] = WORLD_HEIGHT-1;
-						if(blockHeights[blockIndex] < 0) blockHeights[blockIndex] = 0;
+						if(blockHeights[blockIndex] > WORLD_HEIGHT - 1)
+							blockHeights[blockIndex] = WORLD_HEIGHT - 1;
+						if(blockHeights[blockIndex] < 0)
+							blockHeights[blockIndex] = 0;
 					}
-					
-					float prog			  = (float)(chunk + layer*chunks) / (float)(chunks * WORLD_DEPTH);
-					setMessage("Smoothing Terrain... \n(" + std::to_string(chunk + layer*chunks) + "/" +
+
+					float prog = (float)(chunk + layer * chunks) / (float)(chunks * WORLD_DEPTH);
+					setMessage("Smoothing Terrain... \n(" + std::to_string(chunk + layer * chunks) + "/" +
 							   std::to_string(chunks * WORLD_DEPTH) + ")");
 					setProgress(0.2f + 0.1f * prog); // Ends at 0.3f;
 				}
@@ -485,7 +494,7 @@ void WorldIOManager::P_createWorld(unsigned int seed, std::string worldName, boo
 								w->setTile_noEvent(tile);
 								int r = std::rand(); /// TODO: Re-enable flowers
 								if(r % 2 == 0) {
-									//BlockBush* flower = new BlockBush(glm::vec2(x, y + 1), layer, MetaData(), false);
+									//BlockBush* flower = new BlockBush(glm::vec2(x, y + 1), layer, false);
 									//w->setTile_noEvent(flower);
 								}
 							}
@@ -538,8 +547,8 @@ void WorldIOManager::P_createWorld(unsigned int seed, std::string worldName, boo
 						w->setTile_noEvent(tile);
 						int r = std::rand() % 2;
 						if(r == 0) { /// TODO: Re-enable flowers
-									 //BlockBush* flower = new BlockBush(glm::vec2(k, j + 1), layer, MetaData(), false);
-									 //w->setTile_noEvent(flower); /// TODO: Cross-layer worldgen
+							//BlockBush* flower = new BlockBush(glm::vec2(k, j + 1), layer, false);
+							//w->setTile_noEvent(flower); /// TODO: Cross-layer worldgen
 						}
 					}
 					setMessage("Placing blocks... \n(" +
@@ -553,8 +562,8 @@ void WorldIOManager::P_createWorld(unsigned int seed, std::string worldName, boo
 	setProgress(1.0f); // make sure to tell the loading screen this thread is done its job.
 
 	float endTime = (float)(std::clock()) / (float)(CLOCKS_PER_SEC / 1000);
-	logger->log("CREATE: Finished world creation at time: " + std::to_string(endTime) +
-				" (Elapsed: " + std::to_string(endTime - startTime) + "ms)");
+	BARE2D::Logger::getInstance()->log("CREATE: Finished world creation at time: " + std::to_string(endTime) +
+									   " (Elapsed: " + std::to_string(endTime - startTime) + "ms)");
 
 	return;
 }
@@ -588,7 +597,7 @@ void WorldIOManager::setWorldEra(unsigned int newEraID) {
 	std::ifstream file("." + world->m_name + "_" + std::to_string((unsigned int)newEra) + ".bin");
 
 	if(file.fail()) {
-	    logger->log("No existing save for time period: " + std::to_string((unsigned int)newEra) + ", starting actual generation.");
+	    BARE2D::Logger->log("No existing save for time period: " + std::to_string((unsigned int)newEra) + ", starting actual generation.");
 	} else {
 	    P_loadWorld("." + world->m_name + "_" + std::to_string((unsigned int)newEra), world);
 	    return;
@@ -601,7 +610,7 @@ void WorldIOManager::setWorldEra(unsigned int newEraID) {
 	                for(int chunkX = 0; chunkX < CHUNK_SIZE; chunkX++) { /// TODO: Cross-layer stuff
 	                    if(!world->getTile(chunkX, y, 0)->isSolid() && world->getTile(chunkX, y, 0)->getID() != (unsigned int)TileIDs::AIR) {
 	                        //*world->tiles[y][chunkX] = BlockAir(glm::vec2(chunkX + CHUNK_SIZE * x, y), world);
-	                        world->setTile_noEvent(new Tile(glm::vec2(chunkX + CHUNK_SIZE * x, y), 0, TileIDs::AIR, MetaData(), false)); /// Implement cross-layer stuff
+	                        world->setTile_noEvent(new Tile(glm::vec2(chunkX + CHUNK_SIZE * x, y), 0, TileIDs::AIR, false)); /// Implement cross-layer stuff
 	                    }
 	                    if(world->getTile(chunkX, y, 0)->getID() != (unsigned int)TileIDs::AIR) {
 	                        int yOffset = -1;
@@ -625,7 +634,7 @@ void WorldIOManager::setWorldEra(unsigned int newEraID) {
 	                                    while(y + yOffset >= 0) {
 	                                        if(world->getTile(chunkX, y+yOffset, 0)->isSolid()) {/// TODO: Cross-layer
 
-	                                            world->setTile_noEvent(new Tile(glm::vec2(chunkX, y), 0, TileIDs::AIR, MetaData(), false)); /// TODO: Implement cross-layer structure stuff
+	                                            world->setTile_noEvent(new Tile(glm::vec2(chunkX, y), 0, TileIDs::AIR, false)); /// TODO: Implement cross-layer structure stuff
 
 	                                        } else {
 	                                            yOffset--;
@@ -650,7 +659,7 @@ void WorldIOManager::setWorldEra(unsigned int newEraID) {
 	                for(unsigned int chunkX = 0; chunkX < CHUNK_SIZE; chunkX++) {
 	                    if(world->getTile(chunkX, y, 0)->isNatural() == true) {/// TODO: Cross-layer
 	                        //*world->tiles[y][chunkX] = BlockStone(glm::vec2(chunkX + x * CHUNK_SIZE, y), world);
-	                        world->setTile_noEvent(new Tile(glm::vec2(chunkX + x * CHUNK_SIZE, y), 0, TileIDs::STONE, MetaData(), false));/// TODO: Cross-layer
+	                        world->setTile_noEvent(new Tile(glm::vec2(chunkX + x * CHUNK_SIZE, y), 0, TileIDs::STONE, false));/// TODO: Cross-layer
 	                        blockHeights[chunkX + x * CHUNK_SIZE] = y;
 	                    }
 	                }
@@ -664,7 +673,7 @@ void WorldIOManager::setWorldEra(unsigned int newEraID) {
 	                for(unsigned int y = 1; y < heightNoise.noise(chunkX, x, 1.0f) * 10 + 5; y++) {
 	                    if(world->getTile(chunkX, y+blockHeights[chunkX + x*CHUNK_SIZE], 0)->getID() == (unsigned int)TileIDs::AIR || rand() % 100 > 90) {/// TODO: Cross-layer
 	                        //*world->tiles[y+blockHeights[chunkX + x * CHUNK_SIZE]][chunkX] = BlockDirt(glm::vec2(chunkX + x * CHUNK_SIZE, y+blockHeights[chunkX + x * CHUNK_SIZE]), world);
-	                        world->setTile_noEvent(new Tile(glm::vec2(chunkX + x * CHUNK_SIZE, y+blockHeights[chunkX + x * CHUNK_SIZE]), 0, TileIDs::DIRT, MetaData(), false));/// TODO: Cross-layer
+	                        world->setTile_noEvent(new Tile(glm::vec2(chunkX + x * CHUNK_SIZE, y+blockHeights[chunkX + x * CHUNK_SIZE]), 0, TileIDs::DIRT, false));/// TODO: Cross-layer
 
 	                    }
 	                }
@@ -701,8 +710,8 @@ void WorldIOManager::setWorldEra(unsigned int newEraID) {
     // Open the file
     std::ifstream file(filepath);
     if(file.fail()) {
-        logger->log("FATAL ERROR: The structure file could not be opened: " + filepath, true);
-        GLEngine::fatalError("The structure file could not be opened: " + filepath + "\n");
+        BARE2D::Logger->log("FATAL ERROR: The structure file could not be opened: " + filepath, true);
+        BARE2D::fatalError("The structure file could not be opened: " + filepath + "\n");
     } else {
         // Get all the information, starting with the header
         unsigned int saveLen; // The length of the saveVersion string
@@ -717,11 +726,11 @@ void WorldIOManager::setWorldEra(unsigned int newEraID) {
                 char* saveVersion = new char();
                 file.read(&saveVersion[0], saveLen);
 
-                logger->log("LOAD: Loaded Version: " + std::string(saveVersion) + ", Using Version: " + m_saveVersion, true);
+                BARE2D::Logger->log("LOAD: Loaded Version: " + std::string(saveVersion) + ", Using Version: " + m_saveVersion, true);
 
                 if(m_saveVersion + "\177" != saveVersion) {
-                    logger->log("LOAD: Loaded Version Doesn't Match Current Loader Version. Quitting...", true);
-                    GLEngine::fatalError("Error loading structure from file: " + filepath + ".bin: Save Version Mismatch");
+                    BARE2D::Logger->log("LOAD: Loaded Version Doesn't Match Current Loader Version. Quitting...", true);
+                    BARE2D::fatalError("Error loading structure from file: " + filepath + ".bin: Save Version Mismatch");
                 }
             }
 
@@ -789,7 +798,7 @@ void WorldIOManager::placeStructure(World* world, StructureData& structure, glm:
 
                 unsigned int chunkX = (tileX / CHUNK_SIZE + WORLD_SIZE);
 
-                world->setTile_noEvent(new Tile(glm::vec2(tileX, tileY), 0, structure.tiles[tileIndex].id, MetaData(), false));/// TODO: Cross-layer
+                world->setTile_noEvent(new Tile(glm::vec2(tileX, tileY), 0, structure.tiles[tileIndex].id, false));/// TODO: Cross-layer
             }
         }
     }
@@ -823,8 +832,8 @@ void WorldIOManager::saveStructureToFile(World* world, std::string& filepath, St
     // Open the file
     std::ofstream file(filepath);
     if(file.fail()) {
-        logger->log("FATAL ERROR: The structure file could not be opened: " + filepath, true);
-        GLEngine::fatalError("The structure file could not be opened: " + filepath + "\n");
+        BARE2D::Logger->log("FATAL ERROR: The structure file could not be opened: " + filepath, true);
+        BARE2D::fatalError("The structure file could not be opened: " + filepath + "\n");
     } else {
         // Collect all the information (break down structureData)
         unsigned int id; // The ID of the structure, corresponding with PresetVals stuff
@@ -865,7 +874,7 @@ void WorldIOManager::saveStructureToFile(World* world, std::string& filepath, St
         }
 
         // Say everything is all good
-        logger->log("SAVE: Saved structure with width of " + std::to_string(width) + " and height of " + std::to_string(height) + " successfully under id " + std::to_string(id) + ".");
+        BARE2D::Logger->log("SAVE: Saved structure with width of " + std::to_string(width) + " and height of " + std::to_string(height) + " successfully under id " + std::to_string(id) + ".");
     }
 }
 

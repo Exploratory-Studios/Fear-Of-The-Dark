@@ -1,17 +1,17 @@
 #include "ScriptingHelperFunctions.h"
 
+#include <LuaScript.hpp>
+#include <LuaScriptQueue.hpp>
+#include <XMLDataManager.hpp>
+#include <Camera2D.hpp>
+
 #include "World.h"
 #include "QuestManager.h"
 #include "GameplayScreen.h"
-#include "AudioManager.h"
-#include "LuaScript.h"
-#include "ScriptQueue.h"
-
-#include <Camera2D.h>
+#include "GameAudioManager.h"
 
 #include "ExtraFunctions.h"
 
-#include "XMLData.h"
 #include "Factory.h"
 
 #include "EntityNPC.h"
@@ -24,65 +24,22 @@
 
 namespace ScriptingModule {
 
-	void pushDepsToRegistry(lua_State*					L,
-							QuestModule::QuestManager*	qm,
-							GameplayScreen*				gs,
-							AudioManager*				am,
-							GLEngine::ParticleEngine2D* p) {
-		setUpvalue(L, WORLD_KEY, static_cast<void*>(Singletons::getWorld()));
-		setUpvalue(L, QUESTMANAGER_KEY, static_cast<void*>(qm));
-		setUpvalue(L, GAMEPLAYSCREEN_KEY, static_cast<void*>(gs));
-		setUpvalue(L, AUDIOMANAGER_KEY, static_cast<void*>(am));
-		setUpvalue(L, PARTICLEENGINE_KEY, static_cast<void*>(p));
+	void pushDepsToRegistry(lua_State*				   L,
+							QuestModule::QuestManager* qm,
+							GameplayScreen*			   gs,
+							AudioManager*			   am,
+							BARE2D::ParticleEngine2D*  p) {
+		BARE2D::LuaScriptEngine::addValueToRegistry(L, Singletons::getWorld(), WORLD_KEY);
+		BARE2D::LuaScriptEngine::addValueToRegistry(L, qm, QUESTMANAGER_KEY);
+		BARE2D::LuaScriptEngine::addValueToRegistry(L, gs, GAMEPLAYSCREEN_KEY);
+		BARE2D::LuaScriptEngine::addValueToRegistry(L, am, AUDIOMANAGER_KEY);
+		BARE2D::LuaScriptEngine::addValueToRegistry(L, p, PARTICLEENGINE_KEY);
 	}
 
-	void pushFunction(lua_State* L, lua_CFunction func, std::string name) {
-		lua_pushcfunction(L, func);
-		lua_setglobal(L, name.c_str());
-	}
-
-	void setUpvalue(lua_State* L, const char* key, void* ptr) {
-		lua_pushstring(L, key);
-		lua_pushlightuserdata(L, ptr);
-		lua_settable(L, LUA_REGISTRYINDEX);
-	}
-
-	void* getUpvalue(lua_State* L, const char* key) {
-		lua_pushstring(L, key);
-		lua_gettable(L, LUA_REGISTRYINDEX);
-		void* ret = lua_touserdata(L, -1);
-		lua_pop(L, 1);
-		return ret;
-	}
-
-	void createArgumentsTable(lua_State* T, std::vector<Argument>& args) { // Creates and labels globals for user use.
-		lua_newtable(T);												   // Create the "main" table.
-		for(unsigned int i = 0; i < args.size(); i++) {
-			if(args[i].isMetadata) {
-				continue; // We have another loop to deal with these guys.
-			}
-			lua_pushstring(T, (const char*)args[i].key.c_str());
-			lua_pushstring(T, (const char*)args[i].val.c_str());
-			lua_settable(T, -3);
-		}
-		lua_pushstring(T, (const char*)"metadata"); // Set the key for the metadata table. (the key in the main table)
-		lua_newtable(T);							// This is our metadata table (the value in the main table)
-		for(unsigned int i = 0; i < args.size(); i++) {
-			if(!args[i].isMetadata) {
-				continue; // We don't need to re-process these
-			}
-			lua_pushstring(T, (const char*)args[i].key.c_str()); // Add a value to the metadata table
-			lua_pushstring(T, (const char*)args[i].val.c_str());
-			lua_settable(T, -3);
-		}
-		lua_settable(T, -3); // Add the metadata table to the main table
-	}
-
-	void setBlock(World* world, unsigned int id, glm::vec2 pos, int layer, SaveDataTypes::MetaData metaData) {
+	void setBlock(World* world, unsigned int id, glm::vec2 pos, int layer) {
 		unsigned int worldSize	= Singletons::getWorld()->getSize();
 		float		 correctedX = ((int)pos.x + worldSize) % worldSize;
-		world->setTile(
-			Factory::createTile(id, glm::vec2(correctedX, pos.y), layer, metaData)); // Set the block, of course
+		world->setTile(Factory::createTile(id, glm::vec2(correctedX, pos.y), layer)); // Set the block, of course
 		/// TODO: compile array of chunks in init()
 	}
 
@@ -109,8 +66,7 @@ namespace ScriptingModule {
 	}
 
 	unsigned int addEntity(World* world, unsigned int id, glm::vec2 position, unsigned int layer) {
-		Singletons::getEntityManager()->queueEntityToAdd(
-			Factory::createEntity(id, position, layer, SaveDataTypes::MetaData(), true));
+		Singletons::getEntityManager()->queueEntityToAdd(Factory::createEntity(id, position, layer));
 
 		return 0;
 	}
@@ -138,7 +94,7 @@ namespace ScriptingModule {
 	void giveItem(World* world, std::string UUID, unsigned int id, unsigned int quantity) {
 		EntityNPC* e = dynamic_cast<EntityNPC*>(Singletons::getEntityManager()->getEntityByUUID(UUID));
 		if(e)
-			e->giveItem(Factory::createItem(id, quantity, false));
+			e->giveItem(Factory::createItem(id, quantity));
 	}
 
 	void setPlayerCanInteract(World* world, bool canInteract) {

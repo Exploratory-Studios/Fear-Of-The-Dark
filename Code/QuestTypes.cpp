@@ -2,26 +2,27 @@
 
 #include <fstream>
 
-#include "LuaScript.h"
-#include "ScripterMain.h"
+#include <LuaScript.hpp>
+#include <LuaScriptQueue.hpp>
+#include <LuaContextManager.hpp>
+
+#include "CustomXMLTypes.h"
 
 namespace QuestModule {
-	Objective::Objective(std::string& instructions, unsigned int& scriptID) {
+	Objective::Objective(std::string& instructions, BARE2D::LuaScript& script) {
 		m_instructions		 = instructions;
-		m_confirmationScript = scriptID;
+		m_confirmationScript = script;
 	}
 
-	void Objective::start(ScriptingModule::Scripter* scripter) {
-		/// Starts the confirmation "script", grabbing it's LuaScript pointer.
-		ScriptingModule::Script s  = ScriptingModule::ScriptQueue::getScript(m_confirmationScript);
-		m_confirmationScriptHandle = scripter->executeScript(s);
+	void Objective::start() {
+		// Starts the confirmations script.
+		m_confirmationScriptHandle = BARE2D::LuaScriptQueue::getInstance()->addLuaScript(m_confirmationScript);
 	}
 	bool Objective::update() {
 		/// Checks if confirmation "script" finished.
-		if(m_confirmationScriptHandle->isFinished()) {
-			return true;
-		}
-		return false;
+		BARE2D::LuaScriptContextWrapper* confScript = BARE2D::LuaContextManager::getInstance()->getContext(m_confirmationScriptHandle);
+		if(!confScript) return true;
+		return confScript->isCompleted();
 	}
 
 	std::string Objective::getDisplayText() {
@@ -29,21 +30,21 @@ namespace QuestModule {
 	}
 
 	Quest::Quest(unsigned int id) {
-		XMLModule::QuestData data = XMLModule::XMLData::getQuestData(id);
+		XMLModule::QuestData data = getQuestData(id);
 
 		std::vector<unsigned int> objectives = data.objectives;
 
 		initObjectives(objectives);
 
-		m_completionScript = data.completionScript.getID();
+		m_completionScript = data.completionScript;
 	}
 
-	void Quest::start(ScriptingModule::Scripter* scripter) {
-		startObjective(scripter, 0);
+	void Quest::start() {
+		startObjective(0);
 		m_state = QuestState::CURRENT;
 	}
 
-	void Quest::update(ScriptingModule::Scripter* scripter) {
+	void Quest::update() {
 		std::vector<unsigned int> current = getCurrentObjectives();
 
 		for(unsigned int i = 0; i < current.size(); i++) {
@@ -53,8 +54,8 @@ namespace QuestModule {
 
 		if(getCurrentObjectives().size() == 0 && current.size() > 0) {
 			// All objectives finished!
-			if(!startObjective(scripter, current[current.size() - 1] + 1)) {
-				finish(scripter);
+			if(!startObjective(current[current.size() - 1] + 1)) {
+				finish();
 			}
 		}
 	}
@@ -77,11 +78,10 @@ namespace QuestModule {
 		return ret;
 	}
 
-	void Quest::finish(ScriptingModule::Scripter* scripter) {
+	void Quest::finish() {
 		/// Sets the state to DONE, executes Lua script.
 		m_state					  = QuestState::DONE;
-		ScriptingModule::Script s = ScriptingModule::ScriptQueue::getScript(m_completionScript);
-		scripter->executeScript(s);
+		BARE2D::LuaScriptQueue::getInstance()->addLuaScript(m_completionScript);
 	}
 
 	std::vector<unsigned int> Quest::getCurrentObjectives() {
@@ -98,12 +98,12 @@ namespace QuestModule {
 		return ret;
 	}
 
-	bool Quest::startObjective(ScriptingModule::Scripter* scripter, unsigned int i) {
+	bool Quest::startObjective(unsigned int i) {
 		/// Starts an objective, checking if it exists first, and setting its state after. If no objective at `i` exists, returns false. Else, true
 		// Check if it exists.
 		if(i < m_objectives.size()) {
 			// It does! Start it!
-			m_objectives[i].start(scripter);
+			m_objectives[i].start();
 			m_objectiveStates[i] = ObjectiveState::CURRENT;
 			return true;
 		}
@@ -114,11 +114,11 @@ namespace QuestModule {
 	void Quest::initObjectives(std::vector<unsigned int> objectiveData) {
 		/// Initializes all objectives based on their Objective objects.
 		for(unsigned int i = 0; i < objectiveData.size(); i++) {
-			XMLModule::QuestObjectiveData d = XMLModule::XMLData::getQuestObjectiveData(objectiveData[i]);
+			XMLModule::QuestObjectiveData d = getQuestObjectiveData(objectiveData[i]);
 
 			std::string text = d.text;
-			;
-			unsigned int confirmationScript = d.confirmationScript.getID();
+			
+			BARE2D::LuaScript confirmationScript = d.confirmationScript;
 
 			m_objectives.emplace_back(text, confirmationScript);
 			m_objectiveStates.emplace_back(ObjectiveState::HIDDEN);

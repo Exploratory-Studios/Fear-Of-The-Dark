@@ -1,47 +1,29 @@
 #include "EntityProjectile.h"
 
-#include "XMLData.h"
+#include <XMLDataManager.hpp>
 
 #include "Singletons.h"
 
-EntityProjectile::EntityProjectile(glm::vec2			   pos,
-								   unsigned int			   layer,
-								   unsigned int			   id,
-								   SaveDataTypes::MetaData data,
-								   bool					   loadTex) :
-	Entity(pos, layer, SaveDataTypes::MetaData()) {
+EntityProjectile::EntityProjectile(glm::vec2 pos, unsigned int layer, unsigned int id) : Entity(pos, layer) {
 	m_id = id;
 
 	init();
-
-	if(loadTex) {
-		//loadTexture();
-	}
 }
 
-EntityProjectile::EntityProjectile(glm::vec2			   pos,
-								   unsigned int			   layer,
-								   EntityIDs			   id,
-								   SaveDataTypes::MetaData data,
-								   bool					   loadTex) :
-	Entity(pos, layer, SaveDataTypes::MetaData()) {
+EntityProjectile::EntityProjectile(glm::vec2 pos, unsigned int layer, EntityIDs id) : Entity(pos, layer) {
 	m_id = (unsigned int)id;
 
 	init();
-
-	if(loadTex) {
-		//loadTexture();
-	}
 }
 
 void EntityProjectile::init() {
 	m_type = XMLModule::EntityType::PROJECTILE;
 
-	XMLModule::EntityProjectileData d = XMLModule::XMLData::getEntityProjectileData(m_id);
+	XMLModule::EntityProjectileData d = getEntityProjectileData(m_id);
 
 	m_size				= d.size;
-	m_updateScriptId	= d.updateScript.getID();
-	m_tickScriptId		= d.tickScript.getID();
+	m_updateScript		= d.updateScript;
+	m_tickScript		= d.tickScript;
 	m_speed				= d.speed;
 	m_damage			= d.damage;
 	m_collideWithBlocks = d.collides;
@@ -50,14 +32,12 @@ void EntityProjectile::init() {
 	m_knockback			= d.knockback;
 	m_buffIDs			= d.buffIDs;
 
-	m_metaData = d.getMetaData();
-
 	m_anim.init(d.animationID);
 }
 
 void EntityProjectile::init(SaveDataTypes::EntityProjectileData& data) {
 	Entity::init(data);
-	
+
 	init();
 }
 
@@ -107,19 +87,14 @@ bool EntityProjectile::collideWithOther(Entity* other) {
 	return true;
 }
 
-void EntityProjectile::draw(GLEngine::SpriteBatch& sb, float time, int layerDifference, float xOffset) {
+void EntityProjectile::draw(BARE2D::BumpyRenderer* renderer, float time, int layerDifference, float xOffset) {
 	if(m_draw) {
 		glm::vec4 destRect = glm::vec4(m_position.x + (xOffset * CHUNK_SIZE), m_position.y, m_size.x, m_size.y);
 
 		float depth = getDepth();
 
-		m_anim.draw(sb, GLEngine::ColourRGBA8(255, 255, 255, 255), destRect, depth, glm::normalize(m_velocity));
+		m_anim.draw(renderer, BARE2D::Colour(255, 255, 255, 255), destRect, depth, glm::normalize(m_velocity));
 	}
-}
-
-void EntityProjectile::drawNormal(GLEngine::SpriteBatch& sb, float time, int layerDifference, float xOffset) {
-	// Do nothing for right now
-	/// TODO: Add normal maps to animations.
 }
 
 void EntityProjectile::onUpdate(float timeStep, unsigned int selfIndex) {

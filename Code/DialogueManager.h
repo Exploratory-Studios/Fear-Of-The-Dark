@@ -1,6 +1,6 @@
 #pragma once
 
-#include <GUI.h>
+#include <BARECEGUI.hpp>
 
 namespace QuestModule {
 	class QuestManager;

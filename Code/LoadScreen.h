@@ -1,12 +1,11 @@
 #pragma once
 
-#include <IGameScreen.h>
-#include <Window.h>
-#include <Camera2D.h>
-#include <GUI.h>
-#include <SpriteBatch.h>
-#include <GLSLProgram.h>
-#include <SpriteFont.h>
+#include <Screen.hpp>
+#include <Window.hpp>
+#include <Camera2D.hpp>
+#include <BARECEGUI.hpp>
+#include <BasicRenderer.hpp>
+#include <FontRenderer.hpp>
 #include <boost/thread.hpp>
 #include <boost/filesystem.hpp>
 
@@ -44,24 +43,22 @@ class MiniScreenEntry {
 	MiniScreen	   m_miniScreen;
 };
 
-class LoadScreen : public GLEngine::IGameScreen {
+class LoadScreen : public BARE2D::Screen {
   public:
-	LoadScreen(GLEngine::Window* window, WorldIOManager* WorldIOManager);
+	LoadScreen(BARE2D::Window* window, WorldIOManager* WorldIOManager);
 	virtual ~LoadScreen();
 
 	virtual int	 getNextScreenIndex() const override;
-	virtual int	 getPreviousScreenIndex() const override;
-	virtual void build() override;
-	virtual void destroy() override;
+	virtual void initScreen() override;
+	virtual void destroyScreen() override;
 	virtual void onEntry() override;
 	virtual void onExit() override;
-	virtual void update() override;
+	virtual void update(double dt) override;
 	virtual void draw() override;
 
   private:
 	void checkInput();
 	void initUI();
-	void initShaders();
 
 	bool onNewWorldCreateNewButtonClicked(const CEGUI::EventArgs& e);
 	bool onNewWorldSizeValueChanged(const CEGUI::EventArgs& e);
@@ -73,21 +70,21 @@ class LoadScreen : public GLEngine::IGameScreen {
 
 	void getDirectoryEntries();
 
-	int m_nextScreenIndex = SCREEN_INDEX_NO_SCREEN;
+	int m_nextScreenIndex = SCREEN_INDEX_LOAD;
 
 	std::vector<MiniScreenEntry> m_miniScreenEntries;
 	MiniScreen					 m_miniScreen = MiniScreen::MAIN;
 
 	float m_time = 0;
 
-	CEGUI::PushButton*	 	m_createButton			   = nullptr;
-	CEGUI::PushButton*	 	m_newWorldCreateNewButton  = nullptr;
-	CEGUI::FrameWindow*	 	m_newWorldFramewindow	   = nullptr; /// World creation buttons
-	CEGUI::Editbox*		 	m_newWorldNameEditbox	   = nullptr;
-	CEGUI::Editbox*		 	m_newWorldSeedEditbox	   = nullptr;
-	CEGUI::ToggleButton* 	m_newWorldFlatCheckbox	   = nullptr; // To create a flat world
-	CEGUI::Slider*		 	m_newWorldSizeSlider	   = nullptr;
-	CEGUI::DefaultWindow*	m_newWorldSizeLabel	   	   = nullptr; // For the # of chunks
+	CEGUI::PushButton*	  m_createButton			= nullptr;
+	CEGUI::PushButton*	  m_newWorldCreateNewButton = nullptr;
+	CEGUI::FrameWindow*	  m_newWorldFramewindow		= nullptr; /// World creation buttons
+	CEGUI::Editbox*		  m_newWorldNameEditbox		= nullptr;
+	CEGUI::Editbox*		  m_newWorldSeedEditbox		= nullptr;
+	CEGUI::ToggleButton*  m_newWorldFlatCheckbox	= nullptr; // To create a flat world
+	CEGUI::Slider*		  m_newWorldSizeSlider		= nullptr;
+	CEGUI::DefaultWindow* m_newWorldSizeLabel		= nullptr; // For the # of chunks
 
 	CEGUI::PushButton* m_backButton = nullptr;
 
@@ -95,15 +92,9 @@ class LoadScreen : public GLEngine::IGameScreen {
 	CEGUI::PushButton* m_loadWorldLoadButton  = nullptr;
 	CEGUI::Listbox*	   m_loadWorldNameListbox = nullptr;
 
-	GLEngine::Camera2D	  m_camera;
-	GLEngine::Camera2D	  m_uiCamera;
-	GLEngine::Window*	  m_window;
-	GLEngine::GUI		  m_gui;
-	GLEngine::SpriteBatch m_spriteBatch;
-	GLEngine::GLSLProgram m_textureProgram;
-	GLEngine::SpriteFont  m_spriteFont;
-
-	Logger* logger = Logger::getInstance();
+	BARE2D::Window*		   m_window		  = nullptr;
+	BARE2D::BasicRenderer* m_renderer	  = nullptr;
+	BARE2D::FontRenderer*  m_fontRenderer = nullptr;
 
 	WorldIOManager* m_worldIOManager = nullptr;
 };

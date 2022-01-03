@@ -1,14 +1,14 @@
 #include "EntityNPC.h"
 
 #include <CEGUI/CEGUI.h>
-#include <SpriteFont.h>
+#include <FontRenderer.hpp>
 
 #include "World.h"
 #include "Tile.h"
 
 #include "EntityItem.h"
 #include "EntityProjectile.h"
-#include "Entities/EntityFunctions.h"
+#include "EntityFunctions.h"
 
 #include "NPCInventory.h"
 #include "ArmourInventory.h"
@@ -18,7 +18,7 @@
 #include "ItemArmour.h"
 
 #include "Factory.h"
-#include "XMLData.h"
+#include <XMLDataManager.hpp>
 #include "Singletons.h"
 
 NPCInventoryWrapper::NPCInventoryWrapper(std::string& UUID, std::shared_ptr<NPCInventory> inventory) : m_UUID(UUID) {
@@ -33,8 +33,9 @@ NPCInventoryWrapper::~NPCInventoryWrapper() {
 }
 
 void NPCInventoryWrapper::initGUI() {
-	if(m_initedGUI) return;
-	
+	if(m_initedGUI)
+		return;
+
 	std::string armourName	= m_UUID + "ArmourGrid";
 	std::string attacksName = m_UUID + "AttacksGrid";
 	std::string frameName	= m_UUID + "ArmourAttacksFrame";
@@ -44,6 +45,7 @@ void NPCInventoryWrapper::initGUI() {
 	m_window = static_cast<CEGUI::FrameWindow*>(Singletons::getGUI()->createWidget("FOTDSkin/FrameWindow",
 																				   glm::vec4(0.0f, 0.0f, 0.65f, 1.0f),
 																				   glm::vec4(0.0f),
+																				   nullptr,
 																				   frameName));
 	m_window->setCloseButtonEnabled(false);
 	m_window->setDragMovingEnabled(true);
@@ -60,7 +62,7 @@ void NPCInventoryWrapper::initGUI() {
 
 	m_window->setVisible(false);
 	m_window->setEnabled(false);
-	
+
 	m_armourGrid->initInventoryGUI();
 	m_attacksGrid->initInventoryGUI();
 	m_armourGrid->setToDraw(true);
@@ -82,7 +84,7 @@ void NPCInventoryWrapper::initGUI() {
 
 	m_armourGrid->setContentSize(1, 3);	 // vertical
 	m_attacksGrid->setContentSize(3, 1); // horizontal
-	
+
 	m_initedGUI = true;
 }
 
@@ -111,13 +113,14 @@ void NPCInventoryWrapper::setToDraw(bool& setting) {
 	m_inventory->setToDraw(setting);
 }
 
-void NPCInventoryWrapper::draw(GLEngine::SpriteBatch& sb, GLEngine::SpriteFont& sf, float x, float y) {
-	if(!m_initedGUI) initGUI();
-	
+void NPCInventoryWrapper::draw(BARE2D::BasicRenderer* renderer, BARE2D::FontRenderer* fontRenderer, float x, float y) {
+	if(!m_initedGUI)
+		initGUI();
+
 	// This draws our armourGrid, attacksGrid, and inventory.
-	m_inventory->draw(sb, sf, x, y, false);
-	m_armourGrid->draw(sb, sf, x, y, false);
-	m_attacksGrid->draw(sb, sf, x, y, false);
+	m_inventory->draw(renderer, fontRenderer, x, y, false);
+	m_armourGrid->draw(renderer, fontRenderer, x, y, false);
+	m_attacksGrid->draw(renderer, fontRenderer, x, y, false);
 }
 
 void NPCInventoryWrapper::update() {
@@ -126,15 +129,13 @@ void NPCInventoryWrapper::update() {
 	m_attacksGrid->update();
 }
 
-EntityNPC::EntityNPC(glm::vec2 pos, unsigned int layer, unsigned int id, SaveDataTypes::MetaData data, bool loadTex) :
-	Entity(pos, layer, SaveDataTypes::MetaData()) {
+EntityNPC::EntityNPC(glm::vec2 pos, unsigned int layer, unsigned int id) : Entity(pos, layer) {
 	m_id = id;
 
 	init();
 }
 
-EntityNPC::EntityNPC(glm::vec2 pos, unsigned int layer, EntityIDs id, SaveDataTypes::MetaData data, bool loadTex) :
-	Entity(pos, layer, SaveDataTypes::MetaData()) {
+EntityNPC::EntityNPC(glm::vec2 pos, unsigned int layer, EntityIDs id) : Entity(pos, layer) {
 	m_id = (unsigned int)id;
 
 	init();
@@ -143,7 +144,7 @@ EntityNPC::EntityNPC(glm::vec2 pos, unsigned int layer, EntityIDs id, SaveDataTy
 void EntityNPC::init() {
 	m_type = XMLModule::EntityType::NPC;
 
-	XMLModule::EntityNPCData d = XMLModule::XMLData::getEntityNPCData(m_id);
+	XMLModule::EntityNPCData d = getEntityNPCData(m_id);
 
 	m_size			  = d.size;
 	m_takesFallDamage = d.isDamagedByFalls;
@@ -151,10 +152,8 @@ void EntityNPC::init() {
 	m_runSpeed		  = d.speed;
 	m_jumpHeight	  = std::sqrt(d.jumpHeight * 2.0f * (1.225f / 60.0f));
 	m_maxHealth		  = d.maxHealth;
-	m_faction		  = (Categories::Faction)d.faction;
+	m_faction		  = Categories::getFactionFromString(d.faction);
 	m_gravity		  = d.gravity;
-
-	m_metaData = d.getMetaData();
 
 	m_health = m_maxHealth;
 
@@ -166,9 +165,9 @@ void EntityNPC::init() {
 
 void EntityNPC::init(SaveDataTypes::EntityNPCData& data) {
 	Entity::init(data);
-	
+
 	init();
-	
+
 	m_inventory->init(data.inventory);
 }
 
@@ -179,25 +178,26 @@ void EntityNPC::initGUI() {
 	std::function<bool(const CEGUI::EventArgs&)> defaultSkin = [=](const CEGUI::EventArgs& e) -> bool {
 		this->m_body.resetAnimations();
 	};
-	
+
 	m_armourWeaponsInventory->initGUI();
-	
+
 	m_armourWeaponsInventory->m_armourGrid->subscribeEvent(CEGUI::Element::EventChildAdded,
 														   CEGUI::Event::Subscriber(reskin));
 	m_armourWeaponsInventory->m_armourGrid->subscribeEvent(CEGUI::Element::EventChildRemoved,
 														   CEGUI::Event::Subscriber(defaultSkin));
-	
+
 	m_initedGUI = true;
 }
 
 void EntityNPC::initLimbs() {
 	/// TODO: Expand XML a bit
-	
-	if(m_initedLimbs) return;
+
+	if(m_initedLimbs)
+		return;
 	m_initedLimbs = true;
 
 	// Load XML:
-	XMLModule::EntityNPCData data = XMLModule::XMLData::getEntityNPCData(m_id);
+	XMLModule::EntityNPCData data = getEntityNPCData(m_id);
 
 	// Create limbs with animations. (Loads animations as it goes)
 	for(unsigned int i = 0; i < data.skinAnimationIDs.size(); i++) {
@@ -277,39 +277,30 @@ void EntityNPC::dispose() {
 		delete m_downAnimation;
 }
 
-void EntityNPC::draw(GLEngine::SpriteBatch& sb, float time, int layerDifference, float xOffset) {
-	if(!m_initedGUI) initGUI();
-	if(!m_initedLimbs) initLimbs();
-	
+void EntityNPC::draw(BARE2D::BumpyRenderer* renderer, float time, int layerDifference, float xOffset) {
+	if(!m_initedGUI)
+		initGUI();
+	if(!m_initedLimbs)
+		initLimbs();
+
 	if(m_draw) {
 		glm::vec4 destRect = glm::vec4(m_position.x + (xOffset * CHUNK_SIZE), m_position.y, m_size.x, m_size.y);
 
 		float depth = getDepth();
 
-		m_body.draw(sb, GLEngine::ColourRGBA8(255, 255, 255, 255), destRect, depth, m_flippedTexture);
+		m_body.draw(renderer, BARE2D::Colour(255, 255, 255, 255), destRect, depth, m_flippedTexture);
 
-		onDraw(sb, time, layerDifference, xOffset);
+		onDraw(renderer, time, layerDifference, xOffset);
 	}
 }
 
-void EntityNPC::drawNormal(GLEngine::SpriteBatch& sb, float time, int layerDifference, float xOffset) {
-	if(!m_initedLimbs) initLimbs();
-	
-	if(m_draw) {
-		glm::vec4 destRect = glm::vec4(m_position.x + (xOffset * CHUNK_SIZE), m_position.y, m_size.x, m_size.y);
+void EntityNPC::display(BARE2D::BumpyRenderer* renderer, glm::vec2 position, float scale) {
+	if(!m_initedLimbs)
+		initLimbs();
 
-		float depth = getDepth();
-
-		m_body.drawNormal(sb, destRect, depth, m_flippedTexture);
-	}
-}
-
-void EntityNPC::display(GLEngine::SpriteBatch& sb, glm::vec2 position, float scale) {
-	if(!m_initedLimbs) initLimbs();
-	
 	float depth = getDepth();
-	m_body.draw(sb,
-				GLEngine::ColourRGBA8(255, 255, 255, 255),
+	m_body.draw(renderer,
+				BARE2D::Colour(255, 255, 255, 255),
 				glm::vec4(position.x, position.y, scale, scale) * glm::vec4(1.0f, 1.0f, m_size.x, m_size.y),
 				depth,
 				false);
@@ -516,7 +507,6 @@ SaveDataTypes::EntityNPCData EntityNPC::getNPCSaveData() {
 	ret.velocity = m_velocity;
 	ret.position = m_position;
 	ret.layer	 = m_layer;
-	ret.md		 = m_metaData;
 
 	ret.health	  = m_health;
 	ret.inventory = m_inventory->getInventorySaveData();
@@ -528,7 +518,7 @@ void EntityNPC::giveItem(Item* item) {
 	if(m_inventory) {
 		m_inventory->addItem(item);
 	} else {
-		Logger::getInstance()->log("ERROR: Entity inventory not initialized, could not give item", true);
+		BARE2D::Logger::getInstance()->log("ERROR: Entity inventory not initialized, could not give item", true);
 	}
 }
 

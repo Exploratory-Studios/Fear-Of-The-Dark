@@ -2,12 +2,11 @@
 
 #include <memory>
 
+#include <FontRenderer.hpp>
+
 #include "Categories.h"
-
 #include "Entity.h"
-
-#include "XMLDataTypes.h"
-
+#include "CustomXMLTypes.h"
 #include "Buff.h"
 
 struct NavTile { // Pretty much the same thing as a navmesh
@@ -30,7 +29,7 @@ class Tile;
 class ItemArmour;
 
 namespace GLEngine {
-	class SpriteFont;
+	class FontRenderer;
 }
 
 namespace CEGUI {
@@ -43,15 +42,15 @@ class NPCInventoryWrapper {
   public:
 	NPCInventoryWrapper(std::string& UUID, std::shared_ptr<NPCInventory> inventory);
 	~NPCInventoryWrapper();
-	
+
 	void initGUI();
 
 	void destroy();
 
 	void setToDraw(bool& setting);
 
-	void draw(GLEngine::SpriteBatch& sb,
-			  GLEngine::SpriteFont&	 sf,
+	void draw(BARE2D::BasicRenderer* renderer,
+			  BARE2D::FontRenderer*	 fontRenderer,
 			  float					 x,
 			  float					 y); // This draws our armourGrid, attacksGrid, and inventory.
 	void update();
@@ -60,25 +59,24 @@ class NPCInventoryWrapper {
 	std::shared_ptr<ArmourInventory> m_armourGrid; // These InventoryBase classes allow us to draw, disable resizing, etc.
 	std::shared_ptr<WeaponInventory> m_attacksGrid;
 	std::shared_ptr<NPCInventory>	 m_inventory;
-	std::string m_UUID = "";
-	
+	std::string						 m_UUID = "";
+
 	bool m_initedGUI = false;
 };
 
 class EntityNPC : public Entity {
   public:
-	EntityNPC(glm::vec2 pos, unsigned int layer, unsigned int id, SaveDataTypes::MetaData data, bool loadTex);
-	EntityNPC(glm::vec2 pos, unsigned int layer, EntityIDs id, SaveDataTypes::MetaData data, bool loadTex);
+	EntityNPC(glm::vec2 pos, unsigned int layer, unsigned int id);
+	EntityNPC(glm::vec2 pos, unsigned int layer, EntityIDs id);
 	virtual ~EntityNPC();
 	void dispose(); // Deletes some stuff that shouldn't be deleted if a copy operation takes place!
 
 	void init();
 	void init(SaveDataTypes::EntityNPCData& data);
 
-	virtual void draw(GLEngine::SpriteBatch& sb, float time, int layerDifference, float xOffset) override;
-	virtual void drawNormal(GLEngine::SpriteBatch& sb, float time, int layerDifference, float xOffset) override;
+	virtual void draw(BARE2D::BumpyRenderer* renderer, float time, int layerDifference, float xOffset) override;
 
-	virtual void display(GLEngine::SpriteBatch& sb,
+	virtual void display(BARE2D::BumpyRenderer* renderer,
 						 glm::vec2				position,
 						 float					scale); // Displays the entity in UI style.
 
@@ -119,12 +117,11 @@ class EntityNPC : public Entity {
 	// Inventory stuff
 	virtual bool event_reskin(const CEGUI::EventArgs& e); // Just calls reskinLimbs, but as a CEGUI Event
 
-protected:
+  protected:
 	// GUI Stuff
 	bool m_initedGUI = false, m_initedLimbs = false;
 	void initGUI();
-  
-  
+
 	// Pathfinding
 	void	 updateMovement();
 	void	 pathfindToTarget(glm::vec3 target, bool goLeft);

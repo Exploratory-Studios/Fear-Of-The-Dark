@@ -10,9 +10,7 @@ InventoryBase::InventoryBase(std::string&	name,
 							 bool			initGUI /* = true*/,
 							 CEGUI::Window* parent /* = nullptr*/) :
 	m_automaticallyResizes(automaticResizing),
-	m_name(name),
-	m_parent(parent) {
-		
+	m_name(name), m_parent(parent) {
 }
 
 bool InventoryBase::onDoubleClick(const CEGUI::EventArgs& e) {
@@ -88,15 +86,18 @@ InventoryBase::~InventoryBase() {
 	destroy();
 }
 
-void InventoryBase::init(std::string name, bool autoResize, CEGUI::Window* parent) { // This must be seperate from the constructor due to the virtual, overridden function
-	m_name = name;
+void InventoryBase::init(
+	std::string	   name,
+	bool		   autoResize,
+	CEGUI::Window* parent) { // This must be seperate from the constructor due to the virtual, overridden function
+	m_name				   = name;
 	m_automaticallyResizes = autoResize;
-	m_parent = parent;
+	m_parent			   = parent;
 }
 
 void InventoryBase::init(SaveDataTypes::InventoryData& data) {
 	for(unsigned int i = 0; i < data.itemData.size(); i++) {
-		addItem(new Item(data.itemData[i].quantity, data.itemData[i].id, false)); // Probably not the best way to do this, but whatever.
+		addItem(new Item(data.itemData[i].quantity, data.itemData[i].id));
 	}
 }
 
@@ -105,16 +106,17 @@ void InventoryBase::initInventoryGUI() {
 
 	if(m_parent) {
 		m_frameWindow =
-			static_cast<CEGUI::FrameWindow*>(Singletons::getGUI()->createWidget(m_parent,
-																				"FOTDSkin/FrameWindow",
+			static_cast<CEGUI::FrameWindow*>(Singletons::getGUI()->createWidget("FOTDSkin/FrameWindow",
 																				glm::vec4(0.0f, 0.0f, 1.0f, 1.0f),
 																				glm::vec4(0.0f),
+																				m_parent,
 																				m_name + "_Inventory"));
 	} else {
 		m_frameWindow =
 			static_cast<CEGUI::FrameWindow*>(Singletons::getGUI()->createWidget("FOTDSkin/FrameWindow",
 																				glm::vec4(-0.2f, -0.2f, 0.35f, 0.5f),
 																				glm::vec4(0.0f),
+																				nullptr,
 																				m_name + "_Inventory"));
 	}
 	m_frameWindow->setCloseButtonEnabled(false);
@@ -133,20 +135,20 @@ void InventoryBase::initInventoryGUI() {
 	m_frameWindow->subscribeEvent(CEGUI::Window::EventMouseLeavesArea,
 								  CEGUI::Event::Subscriber(&InventoryBase::onMouseLeave, this));
 
-	m_pane = static_cast<CEGUI::ScrollablePane*>(Singletons::getGUI()->createWidget(m_frameWindow,
-																					"FOTDSkin/ScrollablePane",
+	m_pane = static_cast<CEGUI::ScrollablePane*>(Singletons::getGUI()->createWidget("FOTDSkin/ScrollablePane",
 																					glm::vec4(0.0f, 0.0f, 1.0f, 1.0f),
 																					glm::vec4(0.0f),
+																					m_frameWindow,
 																					m_name + "_Inventory_PANE"));
 	m_pane->setMouseInputPropagationEnabled(true);
 
 	m_gridItems.clear();
 
 	m_grid = static_cast<CEGUI::GUI_InventoryReceiver*>(Singletons::getGUI()->createWidget(
-		m_pane,
 		"InventoryReceiver",
 		glm::vec4(0.05f, 0.05f, INVENTORY_BOX_WIDTH * 5.0f, INVENTORY_BOX_HEIGHT * 5.0f),
 		glm::vec4(0.0f),
+		m_pane,
 		m_name + "_Inventory_GRID"));
 	m_grid->setContentSize(INVENTORY_WIDTH, 5);
 	m_grid->setUserString("BlockImage", "FOTDSkin/InventoryBox");
@@ -265,12 +267,11 @@ unsigned int InventoryBase::getCount() {
 	return count;
 }
 
-void InventoryBase::draw(GLEngine::SpriteBatch& sb,
-						 GLEngine::SpriteFont&	sf,
+void InventoryBase::draw(BARE2D::BasicRenderer* renderer,
+						 BARE2D::FontRenderer*	fontRenderer,
 						 float					x,
 						 float					y,
 						 bool					relative /* = true*/) {
-							 
 	if(!m_initedGUI)
 		initInventoryGUI();
 	if(m_initedGUI && m_frameWindow->isVisible()) {
@@ -282,7 +283,7 @@ void InventoryBase::draw(GLEngine::SpriteBatch& sb,
 			// Move the frame window
 
 			// Convert x and y
-			glm::vec2 screenCoords = Singletons::getGameCamera()->convertWorldToScreen(glm::vec2(x, y));
+			glm::vec2 screenCoords = Singletons::getGameCamera()->getViewedPositionFromScreenPosition(glm::vec2(x, y));
 			screenCoords.y		   = Singletons::getGameCamera()->getScreenHeight() - screenCoords.y;
 
 			// Convert screenCoords to percentages
@@ -322,14 +323,10 @@ void InventoryBase::draw(GLEngine::SpriteBatch& sb,
 
 				std::string quantityStr = std::to_string(m_items[i]->getQuantity());
 
-				GLuint textureID = m_items[i]->getTextureId();
-				if(textureID == (unsigned int)-1) {
-					m_items[i]->loadTexture();
-					textureID = m_items[i]->getTextureId();
-				}
-				
+				GLuint textureID = m_items[i]->getTextureID();
+
 				glm::vec2 textScalingFactor = glm::vec2(destRect.z, destRect.w);
-				float nativeTextScale = 0.008f;
+				float	  nativeTextScale	= 0.008f;
 
 				if((screenCoords.y >= bottomY && screenCoords.y + screenSize.y < topY) ||
 				   m_gridItems[i]->isBeingDragged()) {
@@ -337,43 +334,48 @@ void InventoryBase::draw(GLEngine::SpriteBatch& sb,
 
 					float depth = 0.0f;
 
-					GLEngine::ColourRGBA8 colour(255, 255, 255, 255);
+					BARE2D::Colour colour(255, 255, 255, 255);
 
-					sb.draw(destRect, uvRect, textureID, depth, colour);
-					sf.draw(
-						sb,
+					renderer->draw(destRect, uvRect, textureID, depth, colour);
+					/*fontRenderer.draw(
+						renderer,
 						quantityStr.c_str(),
 						destRect * glm::vec4(1.0f, 1.0f, 0.5f, 0.5f) + glm::vec4(screenSize.x * 0.9f, 0.0f, 0.0f, 0.0f),
 						glm::vec2(nativeTextScale) * textScalingFactor,
 						depth,
 						colour,
-						GLEngine::Justification::RIGHT,
-						uvRect);
+						BARE2D::Justification::RIGHT,
+						uvRect);*/
 				} else if(screenCoords.y < bottomY) {
 					// Cut off the top (set the "position" bit of the UV as well as the "size" bit to match)
 					float amntCutoff	   = bottomY - screenCoords.y;
 					float portionOfTexture = amntCutoff / screenSize.y;
 					float portionOfText	   = amntCutoff + 6 < screenSize.y * nativeTextScale ?
 											  0.0f :
-											  ((amntCutoff + 6) - screenSize.y * nativeTextScale) / (screenSize.y * (1.0f - nativeTextScale));
+											  ((amntCutoff + 6) - screenSize.y * nativeTextScale) /
+												  (screenSize.y * (1.0f - nativeTextScale));
 
 					if(portionOfTexture < 1.0f) {
 						glm::vec4 uvRect(0.0f, 0.0f, 1.0f, 1.0f - portionOfTexture);
 
 						float depth = 0.0f;
 
-						GLEngine::ColourRGBA8 colour(255, 255, 255, 255 * (1.0f - portionOfTexture));
+						BARE2D::Colour colour(255, 255, 255, 255 * (1.0f - portionOfTexture));
 
-						sb.draw(destRect + glm::vec4(0.0f, 0.0f, 0.0f, -amntCutoff), uvRect, textureID, depth, colour);
-						sf.draw(sb,
+						renderer->draw(destRect + glm::vec4(0.0f, 0.0f, 0.0f, -amntCutoff),
+									   uvRect,
+									   textureID,
+									   depth,
+									   colour);
+						/*fontRenderer.draw(renderer,
 								quantityStr.c_str(),
 								destRect * glm::vec4(1.0f, 1.0f, 0.5f, 0.5f) +
 									glm::vec4(screenSize.x * 0.9f, 0.0f, 0.0f, 0.0f),
 								glm::vec2(nativeTextScale, nativeTextScale * (1.0f - portionOfText)) * textScalingFactor,
 								depth,
 								colour,
-								GLEngine::Justification::RIGHT,
-								glm::vec4(0.0f, 0.0f, 1.0f, 1.0f - portionOfText));
+								BARE2D::Justification::RIGHT,
+								glm::vec4(0.0f, 0.0f, 1.0f, 1.0f - portionOfText));*/
 					}
 				} else if(screenCoords.y + screenSize.y >= topY) {
 					// Cut off the bottom (set only the "size" bit in the UV)
@@ -386,22 +388,22 @@ void InventoryBase::draw(GLEngine::SpriteBatch& sb,
 
 						float depth = 0.0f;
 
-						GLEngine::ColourRGBA8 colour(255, 255, 255, (int)(255.0f * (1.0f - portionOfTexture)));
+						BARE2D::Colour colour(255, 255, 255, (int)(255.0f * (1.0f - portionOfTexture)));
 
-						sb.draw(destRect + glm::vec4(0.0f, amntCutoff, 0.0f, -amntCutoff),
-								uvRect,
-								textureID,
-								depth,
-								colour);
-						sf.draw(sb,
+						renderer->draw(destRect + glm::vec4(0.0f, amntCutoff, 0.0f, -amntCutoff),
+									   uvRect,
+									   textureID,
+									   depth,
+									   colour);
+						/*fontRenderer.draw(renderer,
 								quantityStr.c_str(),
 								destRect * glm::vec4(1.0f, 1.0f, 0.5f, 0.5f) +
 									glm::vec4(screenSize.x * 0.9f, amntCutoff, 0.0f, -amntCutoff),
 								glm::vec2(nativeTextScale, nativeTextScale * (1.0f - portionOfText)) * textScalingFactor,
 								depth,
 								colour,
-								GLEngine::Justification::RIGHT,
-								glm::vec4(0.0f, portionOfText, 1.0f, 1.0f - portionOfText));
+								BARE2D::Justification::RIGHT,
+								glm::vec4(0.0f, portionOfText, 1.0f, 1.0f - portionOfText));*/
 					}
 				}
 			}
@@ -427,8 +429,7 @@ void InventoryBase::createInventoryItem(Item* item) {
 	CEGUI::GUI_InventoryItem* gridItem =
 		static_cast<CEGUI::GUI_InventoryItem*>(Singletons::getGUI()->createWidget("FOTDSkin/InventoryItem",
 																				  glm::vec4(0.05f, 0.05f, 0.9f, 0.9f),
-																				  glm::vec4(0.0f),
-																				  ""));
+																				  glm::vec4(0.0f)));
 	Singletons::getGUI()->setActiveContext(0); // Reset context to global
 
 	std::ostringstream addressStr;

@@ -1,25 +1,24 @@
 #include "Entity.h"
 
-#include "Singletons.h"
+#include <math.h>
+#include <chrono>
 
+#include <XMLDataManager.hpp>
+
+#include "CustomXMLTypes.h"
+#include "PresetValues.h"
+#include "Singletons.h"
 #include "Categories.h"
-#include "World.h"
+
+#include "Tile.h"
 
 #include "EntityNPC.h"
 #include "EntityItem.h"
 #include "EntityProjectile.h"
 
-#include "Tile.h"
+#include "World.h"
 
-#include "XMLData.h"
-#include "XMLDataTypes.h"
-
-#include <math.h>
-
-#include "PresetValues.h"
-
-Entity::Entity(glm::vec2 pos, unsigned int layer, SaveDataTypes::MetaData data) :
-	m_position(pos), m_layer(layer), m_metaData(data) {
+Entity::Entity(glm::vec2 pos, unsigned int layer) : m_position(pos), m_layer(layer) {
 	generateUUID();
 } // This is more of an abstract class
 
@@ -29,7 +28,6 @@ Entity::Entity(SaveDataTypes::EntityData& saveData) {
 	m_velocity = saveData.velocity;
 	m_position = saveData.position;
 	m_layer	   = saveData.layer;
-	m_metaData = saveData.md;
 }
 
 Entity::~Entity() {
@@ -37,15 +35,14 @@ Entity::~Entity() {
 
 void Entity::init(SaveDataTypes::EntityData& data) {
 	m_position = data.position;
-	m_layer = data.layer;
+	m_layer	   = data.layer;
 	m_velocity = data.velocity;
-	m_id = data.id;
-	m_metaData = data.md;
+	m_id	   = data.id;
 }
 
 void Entity::update(float timeStep, unsigned int selfIndex) {
-	if(m_updateScriptId != -1) {
-		ScriptingModule::ScriptQueue::activateScript(m_updateScriptId, generateLuaValues());
+	if(m_updateScript.inited) {
+		BARE2D::LuaScriptQueue::getInstance()->addLuaScript(m_updateScript);
 	}
 
 	move(1); /// Fix timestepping, make sure that each step, the entity collides :facepalm:
@@ -56,60 +53,33 @@ void Entity::update(float timeStep, unsigned int selfIndex) {
 }
 
 void Entity::tick() {
-	if(m_tickScriptId != -1) {
-		ScriptingModule::ScriptQueue::activateScript(m_tickScriptId, generateLuaValues());
+	if(m_tickScript.inited) {
+		BARE2D::LuaScriptQueue::getInstance()->addLuaScript(m_tickScript);
 	}
 	onTick();
 }
 
-void Entity::draw(GLEngine::SpriteBatch& sb, float time, int layerDifference, float xOffset) {
+void Entity::draw(BARE2D::BumpyRenderer* renderer, float time, int layerDifference, float xOffset) {
 	if(m_draw) {
-		if(m_textureId == (GLuint)-1) {
-			loadTexture();
-		}
-
 		glm::vec4 destRect = glm::vec4(m_position.x + (xOffset * CHUNK_SIZE), m_position.y, m_size.x, m_size.y);
 
 		int x = 0, y = 0;
 
 		glm::vec4 uvRect(0.0f, 0.0f, 1.0f, 1.0f);
 
-		GLEngine::ColourRGBA8 colour(255, 255, 255, 255);
+		BARE2D::Colour colour(255, 255, 255, 255);
 
 		float depth = getDepth();
 
-		sb.draw(destRect, uvRect, m_textureId, depth, colour);
+		renderer->draw(destRect, uvRect, m_texture.id, m_bumpmap.id, depth, colour);
 
-		onDraw(sb, time, layerDifference, xOffset);
+		onDraw(renderer, time, layerDifference, xOffset);
 	}
 }
 
-void Entity::drawNormal(GLEngine::SpriteBatch& sb, float time, int layerDifference, float xOffset) {
-	//GLint lightUniform = program->getUniformLocation("lightColour");
-	//glUniform3fv(lightUniform, 3, &glm::vec3(1.0f, 1.0f, 1.0f)[0]);
-
-	if(m_draw) {
-		if(m_bumpMapId == (GLuint)-1) {
-			loadTexture();
-		}
-
-		glm::vec4 destRect = glm::vec4(m_position.x + (xOffset * CHUNK_SIZE), m_position.y, m_size.x, m_size.y);
-
-		int x = 0, y = 0;
-
-		glm::vec4 uvRect(0.0f, 0.0f, 1.0f, 1.0f);
-
-		GLEngine::ColourRGBA8 colour(255, 255, 255, 255);
-
-		float depth = getDepth();
-
-		sb.draw(destRect, uvRect, m_bumpMapId, depth, colour);
-	}
-}
-
-void Entity::debugDraw(GLEngine::DebugRenderer& dr, float xOffset) {
+void Entity::debugDraw(BARE2D::DebugRenderer* dr, float xOffset) {
 	/*for(unsigned int i = 0; i < m_targets.size(); i++) {
-	    GLEngine::ColourRGBA8 c(255, 255, 255, 255);
+	    BARE2D::Colour c(255, 255, 255, 255);
 	    if(i == m_curTarget) c.r = 0;
 	    dr.drawCircle(glm::vec2(m_targets[i].x + 0.5f, m_targets[i].y + 0.5f), c, 0.2f);
 	}*/
@@ -294,17 +264,6 @@ void Entity::moveDownLayer() {
 	}
 }
 
-void Entity::loadTexture() {
-	GLEngine::GLTexture temp;
-	temp		= GLEngine::ResourceManager::getTexture(m_texturePath);
-	m_textureId = temp.id;
-	//m_animationFramesX = temp.width / (32 * m_size.x);
-	//m_animationFramesY = temp.height / (32 * m_size.y);
-
-	temp		= GLEngine::ResourceManager::getTexture(m_bumpMapPath);
-	m_bumpMapId = temp.id;
-}
-
 void Entity::generateUUID() {
 	if(m_UUID != "NO_UUID") {
 		return;
@@ -324,7 +283,4 @@ void Entity::generateUUID() {
 	std::string UUID = timeString + rand1 + rand2 + rand3 + xString + yString;
 
 	m_UUID = UUID;
-
-	std::string key = "UUID";
-	m_metaData.setElement(key, UUID);
 }

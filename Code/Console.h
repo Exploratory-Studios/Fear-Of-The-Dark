@@ -1,7 +1,7 @@
 #pragma once
 
-#include "ScripterMain.h"
-#include <GUI.h>
+#include <LuaScriptEngine.hpp>
+#include <BARECEGUI.hpp>
 
 namespace ScriptingModule {
 	class Scripter;
@@ -17,8 +17,7 @@ class Console {
 	Console();
 	virtual ~Console();
 
-	void init(ScriptingModule::Scripter* scripter,
-			  QuestModule::QuestManager* qm,
+	void init(QuestModule::QuestManager* qm,
 			  GameplayScreen*			 gs); /// TODO: Make this not have a world member or qm variable
 
 	void show();
@@ -47,6 +46,4 @@ class Console {
 	GameplayScreen*			   m_gs = nullptr;
 
 	bool m_showing = false;
-
-	ScriptingModule::Scripter* m_scripter = nullptr;
 };

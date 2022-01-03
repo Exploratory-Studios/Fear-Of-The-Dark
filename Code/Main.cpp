@@ -1,4 +1,4 @@
-#include <IMainGame.h>
+#include <App.hpp>
 
 #include "App.h"
 

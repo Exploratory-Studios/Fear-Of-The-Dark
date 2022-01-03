@@ -4,12 +4,11 @@
 
 class EntityProjectile : public Entity {
   public:
-	EntityProjectile(glm::vec2 pos, unsigned int layer, unsigned int id, SaveDataTypes::MetaData data, bool loadTex);
-	EntityProjectile(glm::vec2 pos, unsigned int layer, EntityIDs id, SaveDataTypes::MetaData data, bool loadTex);
+	EntityProjectile(glm::vec2 pos, unsigned int layer, unsigned int id);
+	EntityProjectile(glm::vec2 pos, unsigned int layer, EntityIDs id);
 	virtual ~EntityProjectile();
 
-	virtual void draw(GLEngine::SpriteBatch& sb, float time, int layerDifference, float xOffset) override;
-	virtual void drawNormal(GLEngine::SpriteBatch& sb, float time, int layerDifference, float xOffset) override;
+	virtual void draw(BARE2D::BumpyRenderer* renderer, float time, int layerDifference, float xOffset) override;
 
 	virtual void collideWithTiles() override;
 	virtual bool collideWithOther(Entity* other) override;

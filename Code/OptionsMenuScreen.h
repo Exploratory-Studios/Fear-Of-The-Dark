@@ -6,23 +6,22 @@
 
 #include "Options.h"
 
-#include <IGameScreen.h>
-#include <Window.h>
-#include <Camera2D.h>
-#include <GUI.h>
-#include <SpriteBatch.h>
-#include <GLSLProgram.h>
-#include <SpriteFont.h>
+#include <Screen.hpp>
+#include <Window.hpp>
+#include <Camera2D.hpp>
+#include <BARECEGUI.hpp>
+#include <BasicRenderer.hpp>
+#include <FontRenderer.hpp>
 
 class Slider {
 	/// A wrapper class for a CEGUI::Slider and CEGUI::Label. Give it a title and a pointer to some data!
   public:
-	Slider(GLEngine::GUI& gui, float* data, glm::vec4 destRect, std::string name, std::string shownName = "");
+	Slider(float* data, glm::vec4 destRect, std::string name, std::string shownName = "");
 
 	void setFont(std::string font);
 
   private:
-	void init(GLEngine::GUI& gui, glm::vec4& destRect, std::string& name, std::string& shownName);
+	void init(glm::vec4& destRect, std::string& name, std::string& shownName);
 
 	float* m_data = nullptr;
 
@@ -30,36 +29,32 @@ class Slider {
 	CEGUI::DefaultWindow* m_label  = nullptr;
 };
 
-class OptionsMenuScreen : public GLEngine::IGameScreen {
+class OptionsMenuScreen : public BARE2D::Screen {
   public:
-	OptionsMenuScreen(GLEngine::Window* window);
+	OptionsMenuScreen(BARE2D::Window* window);
 	virtual ~OptionsMenuScreen();
 
 	virtual int	 getNextScreenIndex() const override;
-	virtual int	 getPreviousScreenIndex() const override;
-	virtual void build() override;
-	virtual void destroy() override;
+	virtual void initScreen() override;
+	virtual void destroyScreen() override;
 	virtual void onEntry() override;
 	virtual void onExit() override;
-	virtual void update() override;
+	virtual void update(double dt) override;
 	virtual void draw() override;
 
   private:
 	void initUI();
 	void initShaders();
-	void checkInput();
-	void updateMousebuttonDown(SDL_Event& evnt);
 
 	bool EventBackButtonClicked(const CEGUI::EventArgs& e);
 
 	CEGUI::PushButton* m_backButton = nullptr;
 
-	GLEngine::Camera2D	  m_uiCamera;
-	GLEngine::Window*	  m_window;
-	GLEngine::GUI		  m_gui;
-	GLEngine::SpriteBatch m_spriteBatch;
-	GLEngine::GLSLProgram m_uiTextureProgram;
-	GLEngine::SpriteFont  m_spriteFont;
+	BARE2D::Camera2D	   m_uiCamera;
+	BARE2D::Window*		   m_window		  = nullptr;
+	BARE2D::BARECEGUI*	   m_gui		  = nullptr;
+	BARE2D::BasicRenderer* m_renderer	  = nullptr;
+	BARE2D::FontRenderer*  m_fontRenderer = nullptr;
 
 	float m_time = 0.0f;
 

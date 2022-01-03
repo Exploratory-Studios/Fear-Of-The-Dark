@@ -1,10 +1,9 @@
 #pragma once
 
-#include "XMLData.h"
+#include <XMLDataManager.hpp>
 
 #include <glm/glm.hpp>
-#include <SpriteBatch.h>
-#include <GLTexture.h>
+#include <BumpyRenderer.hpp>
 
 namespace AnimationModule {
 
@@ -21,26 +20,18 @@ namespace AnimationModule {
 
 		void init(unsigned int id);
 
-		void draw(::GLEngine::SpriteBatch& sb,
-				  GLEngine::ColourRGBA8	   colour,
+		void draw(BARE2D::BumpyRenderer* renderer,
+				  BARE2D::Colour	   colour,
 				  glm::vec4&			   destRect,
 				  float&				   depth,
 				  float&				   angle,
 				  glm::vec2&			   COR,
 				  bool					   flipped);
-		void draw(::GLEngine::SpriteBatch& sb,
-				  GLEngine::ColourRGBA8	   colour,
+		void draw(BARE2D::BumpyRenderer* renderer,
+				  BARE2D::Colour	   colour,
 				  glm::vec4&			   destRect,
 				  float&				   depth,
 				  glm::vec2				   direction);
-
-		void drawNormal(::GLEngine::SpriteBatch& sb,
-						glm::vec4&				 destRect,
-						float&					 depth,
-						float&					 angle,
-						glm::vec2&				 COR,
-						bool					 flipped);
-		void drawNormal(::GLEngine::SpriteBatch& sb, glm::vec4& destRect, float& depth, glm::vec2 direction);
 
 		void tick();
 
@@ -164,12 +155,11 @@ namespace AnimationModule {
 
 		void		 tick();
 		void		 update();
-		virtual void draw(GLEngine::SpriteBatch& sb,
-						  GLEngine::ColourRGBA8	 colour,
+		virtual void draw(BARE2D::BumpyRenderer* renderer,
+						  BARE2D::Colour	 colour,
 						  glm::vec4				 destRect,
 						  float&				 depth,
 						  bool					 flipped);
-		virtual void drawNormal(GLEngine::SpriteBatch& sb, glm::vec4 destRect, float& depth, bool flipped);
 
 		bool		 isAnimationActive();
 		unsigned int getIndex();
@@ -220,21 +210,14 @@ namespace AnimationModule {
 			}
 		}
 
-		void draw(GLEngine::SpriteBatch& sb,
-				  GLEngine::ColourRGBA8	 colour,
+		void draw(BARE2D::BumpyRenderer* renderer,
+				  BARE2D::Colour	 colour,
 				  glm::vec4				 destRect,
 				  float&				 depth,
 				  bool					 flipped) {
 			for(int i = m_limbs.size() - 1; i >= 0; i--) {
 				float d = depth - i * 0.001f;
-				m_limbs[i].draw(sb, colour, destRect, d, flipped);
-			}
-		}
-
-		void drawNormal(GLEngine::SpriteBatch& sb, glm::vec4 destRect, float& depth, bool flipped) {
-			for(int i = m_limbs.size() - 1; i >= 0; i--) {
-				float d = depth - i * 0.001f;
-				m_limbs[i].drawNormal(sb, destRect, d, flipped);
+				m_limbs[i].draw(renderer, colour, destRect, d, flipped);
 			}
 		}
 

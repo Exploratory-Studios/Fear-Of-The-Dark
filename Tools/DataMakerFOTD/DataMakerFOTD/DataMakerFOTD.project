@@ -17,8 +17,6 @@
     <File Name="../../../Code/ScriptQueue.cpp"/>
     <File Name="../../../Code/MetaData.h"/>
     <File Name="../../../Code/MetaData.cpp"/>
-    <File Name="../../../Code/Logging.h"/>
-    <File Name="../../../Code/Logging.cpp"/>
   </VirtualDirectory>
   <VirtualDirectory Name="include">
     <File Name="MainScreen.h"/>
@@ -261,4 +259,8 @@
       </Completion>
     </Configuration>
   </Settings>
+  <Dependencies Name="Debug"/>
+  <Dependencies Name="Release (Windows 32)"/>
+  <Dependencies Name="Release (Windows64 OpenGL)"/>
+  <Dependencies Name="Release (Windows64 OpenGL3)"/>
 </CodeLite_Project>

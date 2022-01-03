@@ -13,16 +13,15 @@
 
 #include "Options.h"
 
-#include <IMainGame.h>
-#include <ScreenList.h>
+#include <App.hpp>
+#include <ScreenList.hpp>
 
-class App : public GLEngine::IMainGame {
+class App : public BARE2D::App {
   public:
 	App();
 	~App();
-	virtual void onInit() override;
-	virtual void addScreens() override;
-	virtual void onExit() override;
+	
+	void addScreens();
 
   private:
 	std::unique_ptr<StartupScreen>	   m_startupScreen;

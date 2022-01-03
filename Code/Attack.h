@@ -71,6 +71,6 @@ namespace CombatModule {
 		virtual void execute(glm::vec2 direction) override;
 
 	  protected:
-		unsigned int m_scriptID = 0;
+		BARE2D::LuaScript m_script;
 	};
 } // namespace CombatModule

@@ -4,15 +4,17 @@
 
 class TileLiquid : public Tile {
   public:
-	TileLiquid(glm::vec2 pos, unsigned int layer, unsigned int id, SaveDataTypes::MetaData data, bool loadTex);
+	TileLiquid(glm::vec2 pos, unsigned int layer, unsigned int id);
 	~TileLiquid();
 
 	float getLiquidLevel() {
 		return m_level;
 	}
 
-	virtual void draw(GLEngine::SpriteBatch& sb, GLEngine::SpriteFont& sf, int& xOffset, int& depthDifference) override;
-	virtual void drawNormal(GLEngine::SpriteBatch& sb, int& xOffset, int& depthDifference) override;
+	virtual void draw(BARE2D::BumpyRenderer* renderer,
+					  BARE2D::FontRenderer*	 fontRenderer,
+					  int&					 xOffset,
+					  int&					 depthDifference) override;
 
   protected:
 	virtual void onUpdate() override;

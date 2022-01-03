@@ -1,37 +1,37 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <CodeLite_Workspace Name="Fear-Of-The-Dark" Database="" Version="10.0.0">
-  <Project Name="Fear-Of-The-Dark" Path="Fear-Of-The-Dark.project" Active="Yes"/>
-  <Project Name="GLEngine" Path="../../GLEngine/GLEngine.project" Active="No"/>
   <Project Name="AnimationTool" Path="../Tools/AnimationTool/AnimationTool/AnimationTool.project" Active="No"/>
   <Project Name="DataMakerFOTD" Path="../Tools/DataMakerFOTD/DataMakerFOTD/DataMakerFOTD.project" Active="No"/>
+  <Project Name="BARE2DEngine" Path="../../BARE2DEngine/BARE2DEngine.project" Active="No"/>
+  <Project Name="Fear-Of-The-Dark" Path="Fear-Of-The-Dark.project" Active="Yes"/>
   <BuildMatrix>
-    <WorkspaceConfiguration Name="Linux Release" Selected="no">
+    <WorkspaceConfiguration Name="Linux Release">
       <Environment/>
       <Project Name="AnimationTool" ConfigName="Release - Linux"/>
       <Project Name="Fear-Of-The-Dark" ConfigName="Release - Linux"/>
-      <Project Name="GLEngine" ConfigName="Release"/>
       <Project Name="DataMakerFOTD" ConfigName="Debug"/>
+      <Project Name="BARE2DEngine" ConfigName="Debug"/>
     </WorkspaceConfiguration>
-    <WorkspaceConfiguration Name="Linux Debug" Selected="yes">
+    <WorkspaceConfiguration Name="Linux Debug">
       <Environment/>
       <Project Name="AnimationTool" ConfigName="Debug"/>
       <Project Name="Fear-Of-The-Dark" ConfigName="Debug"/>
-      <Project Name="GLEngine" ConfigName="Release"/>
       <Project Name="DataMakerFOTD" ConfigName="Debug"/>
+      <Project Name="BARE2DEngine" ConfigName="Debug"/>
     </WorkspaceConfiguration>
-    <WorkspaceConfiguration Name="Windows Release" Selected="no">
+    <WorkspaceConfiguration Name="Windows Release">
       <Environment/>
       <Project Name="AnimationTool" ConfigName="Release - Windows"/>
       <Project Name="DataMakerFOTD" ConfigName="Release (Windows64 OpenGL3)"/>
       <Project Name="Fear-Of-The-Dark" ConfigName="Release - Windows"/>
-      <Project Name="GLEngine" ConfigName="Release (Windows)"/>
+      <Project Name="BARE2DEngine" ConfigName="Debug"/>
     </WorkspaceConfiguration>
-    <WorkspaceConfiguration Name="Windows Release (x32)" Selected="no">
+    <WorkspaceConfiguration Name="Windows Release (x32)">
       <Environment/>
       <Project Name="AnimationTool" ConfigName="Release - Windows32"/>
       <Project Name="DataMakerFOTD" ConfigName="Release (Windows 32)"/>
       <Project Name="Fear-Of-The-Dark" ConfigName="Release - Windows32"/>
-      <Project Name="GLEngine" ConfigName="Release (Windows32)"/>
+      <Project Name="BARE2DEngine" ConfigName="Debug"/>
     </WorkspaceConfiguration>
   </BuildMatrix>
 </CodeLite_Workspace>

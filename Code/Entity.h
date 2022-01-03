@@ -1,22 +1,15 @@
 #pragma once
 
 #include <vector>
-#include <GLTexture.h>
-#include <SpriteBatch.h>
-#include <DebugRenderer.h>
+#include <BumpyRenderer.hpp>
+#include <DebugRenderer.hpp>
 
-#include "ScriptQueue.h"
 #include "SaveDataTypes.h"
-#include "XMLDataTypes.h"
+#include "CustomXMLTypes.h"
 
 #include "Animation.h"
 
-#include <SpriteBatch.h>
-
 class Chunk;
-namespace SaveDataTypes {
-	class MetaData;
-}
 class World;
 
 enum class EntityIDs { NPC_PLAYER, NPC_NEUTRAL_QUESTGIVER_A, NPC_NEUTRAL_COMPANIONCUBE, ITEM };
@@ -25,17 +18,16 @@ class Entity {
 	friend class Scripter;
 
   public:
-	Entity(glm::vec2 pos, unsigned int layer, SaveDataTypes::MetaData data);
+	Entity(glm::vec2 pos, unsigned int layer);
 	Entity(SaveDataTypes::EntityData& saveData);
 	virtual ~Entity();
-	
+
 	void init(SaveDataTypes::EntityData& data);
 
 	void		 update(float timeStep, unsigned int selfIndex);
 	void		 tick();
-	virtual void draw(GLEngine::SpriteBatch& sb, float time, int layerDifference, float xOffset);
-	virtual void drawNormal(GLEngine::SpriteBatch& sb, float time, int layerDifference, float xOffset);
-	void		 debugDraw(GLEngine::DebugRenderer& dr, float xOffset);
+	virtual void draw(BARE2D::BumpyRenderer* renderer, float time, int layerDifference, float xOffset);
+	void		 debugDraw(BARE2D::DebugRenderer* dr, float xOffset);
 	void		 move(float timeStepVariable);
 
 	virtual void collideWithTiles() {
@@ -75,30 +67,12 @@ class Entity {
 	XMLModule::EntityType getType() const {
 		return m_type;
 	}
-	SaveDataTypes::MetaData getMetaData() const {
-		return m_metaData;
-	}
 
 	void setToDraw(bool draw) {
 		m_draw = draw;
 	}
-	void setMetaData(SaveDataTypes::MetaData& m) {
-		m_metaData = m;
-	}
 
 	void generateUUID();
-
-	virtual std::vector<ScriptingModule::Argument> generateLuaValues() {
-		std::vector<ScriptingModule::Argument> args = {{"selfX", std::to_string(m_position.x)},
-													   {"selfY", std::to_string(m_position.y)},
-													   {"selfXVel", std::to_string(m_velocity.x)},
-													   {"selfYVel", std::to_string(m_velocity.y)},
-													   {"selfID", std::to_string(m_id)}};
-
-		m_metaData.getLuaArguments(args);
-
-		return args;
-	}
 
 	float getDepth() {
 		/// Returns the depth for drawing.
@@ -122,15 +96,11 @@ class Entity {
 	}
 	virtual void onTick() {
 	}
-	virtual void onDraw(GLEngine::SpriteBatch& sb, float time, int layerDifference, float xOffset) {
+	virtual void onDraw(BARE2D::BumpyRenderer* renderer, float time, int layerDifference, float xOffset) {
 	}
 
 	virtual void animate(int& x, int& y, bool& flip, float time) {
 	}
-
-	// Internal
-	// Rendering
-	void loadTexture();
 
 	bool m_controls[6]; // Up, down (crouching while on ground), left, right, backwards (layer++), forwards (layer--)
 
@@ -144,20 +114,16 @@ class Entity {
 	bool		 m_onGround = false;
 	bool		 m_draw		= true;
 
-	SaveDataTypes::MetaData m_metaData;
-
 	// XML Attributes
 	unsigned int m_id;
-	GLuint		 m_textureId = (GLuint)-1;
-	GLuint		 m_bumpMapId = (GLuint)-1;
 
-	std::string m_texturePath;
-	std::string m_bumpMapPath;
+	BARE2D::Texture m_texture;
+	BARE2D::Texture m_bumpmap;
 
 	glm::vec2 m_size = glm::vec2(1.0f);
 
-	int m_updateScriptId = -1;
-	int m_tickScriptId	 = -1;
+	BARE2D::LuaScript m_updateScript;
+	BARE2D::LuaScript m_tickScript;
 
 	bool m_gravity = true;
 

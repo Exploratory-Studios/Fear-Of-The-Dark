@@ -18,7 +18,7 @@ class ItemArmour : public Item {
 		 *  - No draw function needed, the limb objects handle that
 		 **/
   public:
-	ItemArmour(short unsigned int quantity, unsigned int armourID, bool loadTex);
+	ItemArmour(short unsigned int quantity, unsigned int armourID);
 	~ItemArmour();
 
 	void init();
@@ -38,7 +38,7 @@ class ItemArmour : public Item {
   private:
 	std::vector<unsigned int> m_animationIDs;
 	std::vector<unsigned int> m_limbIndices;
-	unsigned int			  m_threshold	 = 0;
-	float					  m_resistance	 = 0.0f;
-	unsigned int			  m_tickScriptID = (unsigned int)-1;
+	unsigned int			  m_threshold  = 0;
+	float					  m_resistance = 0.0f;
+	BARE2D::LuaScript		  m_tickScript;
 };

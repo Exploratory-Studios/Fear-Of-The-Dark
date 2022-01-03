@@ -2,7 +2,7 @@
 
 /// LoadScreen FUNCTIONS
 
-LoadScreen::LoadScreen(GLEngine::Window* window, WorldIOManager* WorldIOManager) :
+LoadScreen::LoadScreen(BARE2D::Window* window, WorldIOManager* WorldIOManager) :
 	m_window(window), m_worldIOManager(WorldIOManager) {
 }
 
@@ -14,27 +14,21 @@ int LoadScreen::getNextScreenIndex() const {
 	return m_nextScreenIndex;
 }
 
-int LoadScreen::getPreviousScreenIndex() const {
-	return SCREEN_INDEX_MAINMENU;
+void LoadScreen::initScreen() {
 }
 
-void LoadScreen::build() {
-}
-
-void LoadScreen::destroy() {
+void LoadScreen::destroyScreen() {
 }
 
 void LoadScreen::onEntry() {
-	initShaders();
+	std::string fragShader = ASSETS_FOLDER_PATH + "Shaders/textureShader.frag";
+	std::string vertShader = ASSETS_FOLDER_PATH + "Shaders/textureShader.vert";
 
-	m_spriteBatch.init();
-	m_spriteFont.init((ASSETS_FOLDER_PATH + "GUI/fonts/QuietHorror.ttf").c_str(), 96);
+	m_renderer = new BARE2D::BasicRenderer(fragShader, vertShader);
+	m_renderer->init();
 
-	m_camera.init(m_window->getScreenWidth(), m_window->getScreenHeight());
-	m_camera.setPosition(glm::vec2(m_window->getScreenWidth() / 2.0f, m_window->getScreenHeight() / 2.0f));
-
-	m_uiCamera.init(m_window->getScreenWidth(), m_window->getScreenHeight());
-	m_uiCamera.setPosition(glm::vec2(m_window->getScreenWidth() / 2.0f, m_window->getScreenHeight() / 2.0f));
+	m_fontRenderer = new BARE2D::FontRenderer(fragShader, vertShader);
+	m_fontRenderer->init();
 
 	initUI();
 
@@ -47,22 +41,9 @@ void LoadScreen::onExit() {
 		e.dispose();
 	m_miniScreenEntries.clear();
 	m_loadWorldNameListbox->resetList();
-	
-	m_spriteBatch.dispose();
-	m_textureProgram.dispose();
-	m_spriteFont.dispose();
-	
-	m_gui.destroy();
 }
 
-void LoadScreen::update() {
-	checkInput();
-
-	m_camera.update();
-	m_uiCamera.update();
-
-	m_gui.update();
-
+void LoadScreen::update(double dt) {
 	for(auto e: m_miniScreenEntries)
 		e.checkScreen(m_miniScreen);
 
@@ -73,18 +54,7 @@ void LoadScreen::draw() {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 
-	m_textureProgram.use();
-
-	GLint textureUniform = m_textureProgram.getUniformLocation("textureSampler");
-	glUniform1i(textureUniform, 0);
-	glActiveTexture(GL_TEXTURE0);
-
-	// Camera matrix
-	glm::mat4 projectionMatrix = m_uiCamera.getCameraMatrix();
-	GLint	  pUniform		   = m_textureProgram.getUniformLocation("P");
-	glUniformMatrix4fv(pUniform, 1, GL_FALSE, &projectionMatrix[0][0]);
-
-	m_spriteBatch.begin();
+	m_renderer->begin();
 
 	float alpha = 0.0f;
 
@@ -97,75 +67,72 @@ void LoadScreen::draw() {
 	m_createButton->setAlpha(alpha / 255);
 	m_loadButton->setAlpha(alpha / 255);
 
-	m_gui.draw();
+	BARE2D::BARECEGUI::getInstance()->draw();
 
-	m_spriteBatch.end();
-	m_spriteBatch.renderBatch();
-
-	m_textureProgram.unuse();
-}
-
-void LoadScreen::checkInput() {
-	SDL_Event evnt;
-	while(SDL_PollEvent(&evnt)) {
-		m_game->onSDLEvent(evnt);
-		m_gui.onSDLEvent(evnt);
-		switch(evnt.type) {
-			case SDL_QUIT:
-				m_currentState = GLEngine::ScreenState::EXIT_APPLICATION;
-				break;
-		}
-	}
+	m_renderer->end();
+	m_renderer->render();
 }
 
 void LoadScreen::initUI() {
+	BARE2D::BARECEGUI* gui = BARE2D::BARECEGUI::getInstance();
+
 	{
-		m_gui.init(ASSETS_FOLDER_PATH + "GUI", 1);
-		m_gui.loadScheme("FOTDSkin.scheme");
+		std::string guiPath = ASSETS_FOLDER_PATH + "GUI";
+		gui->init(guiPath, 1);
+		gui->loadScheme("FOTDSkin.scheme");
 
-		m_gui.setFont("QuietHorror-30");
+		gui->setFont("QuietHorror-30");
 
-		m_gui.setMouseCursor("FOTDSkin/MouseArrow");
-		m_gui.showMouseCursor();
+		gui->setMouseCursor("FOTDSkin/MouseArrow");
+		gui->setMouseCursorShown(true);
 		SDL_ShowCursor(0);
 	}
 
 	{
-		m_createButton = static_cast<CEGUI::PushButton*>(m_gui.createWidget("FOTDSkin/Button",
-																			glm::vec4(0.1f, 0.3f, 0.35f, 0.35f),
-																			glm::vec4(0.0f),
-																			"CreatePushbutton"));
+		m_createButton = static_cast<CEGUI::PushButton*>(gui->createWidget("FOTDSkin/Button",
+																		   glm::vec4(0.1f, 0.3f, 0.35f, 0.35f),
+																		   glm::vec4(0.0f),
+																		   nullptr,
+																		   "CreatePushbutton"));
 		m_createButton->subscribeEvent(CEGUI::PushButton::EventClicked,
 									   CEGUI::Event::Subscriber(&LoadScreen::onCreateButtonClicked, this));
 		m_createButton->setText("[padding='l:0 t:15 r:0 b:0']New World");
 		m_createButton->setFont("QuietHorror-42");
 		m_miniScreenEntries.emplace_back(m_createButton, MiniScreen::MAIN);
 
-		CEGUI::PushButton* temp = static_cast<CEGUI::PushButton*>(
-			m_gui.createWidget("FOTDSkin/Label", glm::vec4(0.1f, 0.05f, 0.8f, 0.2f), glm::vec4(0.0f), "PlayMainLabel"));
+		CEGUI::PushButton* temp = static_cast<CEGUI::PushButton*>(gui->createWidget("FOTDSkin/Label",
+																					glm::vec4(0.1f, 0.05f, 0.8f, 0.2f),
+																					glm::vec4(0.0f),
+																					nullptr,
+																					"PlayMainLabel"));
 		temp->setText("[padding='l:0 t:30 r:0 b:0']Play");
 		temp->setFont("QuietHorror-118");
 		m_miniScreenEntries.emplace_back(temp, MiniScreen::MAIN);
 	}
 
 	{
-		m_newWorldNameEditbox = static_cast<CEGUI::Editbox*>(m_gui.createWidget("FOTDSkin/Editbox",
-																				glm::vec4(0.1f, 0.1f, 0.25f, 0.1f),
-																				glm::vec4(0.0f),
-																				"WorldNameEditbox"));
+		m_newWorldNameEditbox = static_cast<CEGUI::Editbox*>(gui->createWidget("FOTDSkin/Editbox",
+																			   glm::vec4(0.1f, 0.1f, 0.25f, 0.1f),
+																			   glm::vec4(0.0f),
+																			   nullptr,
+																			   "WorldNameEditbox"));
 		m_newWorldNameEditbox->setText("Name");
 		m_miniScreenEntries.emplace_back(m_newWorldNameEditbox, MiniScreen::CREATE);
 
-		m_newWorldSeedEditbox = static_cast<CEGUI::Editbox*>(
-			m_gui.createWidget("FOTDSkin/Editbox", glm::vec4(0.1f, 0.25f, 0.25f, 0.1f), glm::vec4(0.0f), "SeedEditbox"));
+		m_newWorldSeedEditbox = static_cast<CEGUI::Editbox*>(gui->createWidget("FOTDSkin/Editbox",
+																			   glm::vec4(0.1f, 0.25f, 0.25f, 0.1f),
+																			   glm::vec4(0.0f),
+																			   nullptr,
+																			   "SeedEditbox"));
 		m_newWorldSeedEditbox->setText("Seed");
 		m_miniScreenEntries.emplace_back(m_newWorldSeedEditbox, MiniScreen::CREATE);
 
 		m_newWorldCreateNewButton =
-			static_cast<CEGUI::PushButton*>(m_gui.createWidget("FOTDSkin/Button",
-															   glm::vec4(0.35f, 0.7f, 0.3f, 0.15f),
-															   glm::vec4(0.0f),
-															   "CreateNewWorldPushbutton"));
+			static_cast<CEGUI::PushButton*>(gui->createWidget("FOTDSkin/Button",
+															  glm::vec4(0.35f, 0.7f, 0.3f, 0.15f),
+															  glm::vec4(0.0f),
+															  nullptr,
+															  "CreateNewWorldPushbutton"));
 		m_newWorldCreateNewButton->subscribeEvent(
 			CEGUI::PushButton::EventClicked,
 			CEGUI::Event::Subscriber(&LoadScreen::onNewWorldCreateNewButtonClicked, this));
@@ -173,30 +140,30 @@ void LoadScreen::initUI() {
 		m_newWorldCreateNewButton->setFont("QuietHorror-42");
 		m_miniScreenEntries.emplace_back(m_newWorldCreateNewButton, MiniScreen::CREATE);
 
-		m_newWorldFlatCheckbox =
-			static_cast<CEGUI::ToggleButton*>(m_gui.createWidget("FOTDSkin/Checkbox",
-																 glm::vec4(0.1f, 0.4f, 0.12f, 0.1f),
-																 glm::vec4(0.0f),
-																 "WorldFlatToggleButton"));
+		m_newWorldFlatCheckbox = static_cast<CEGUI::ToggleButton*>(gui->createWidget("FOTDSkin/Checkbox",
+																					 glm::vec4(0.1f, 0.4f, 0.12f, 0.1f),
+																					 glm::vec4(0.0f),
+																					 nullptr,
+																					 "WorldFlatToggleButton"));
 		m_newWorldFlatCheckbox->setText("[padding='l:0 t:10 r:0 b:0']Flat World");
 		m_miniScreenEntries.emplace_back(m_newWorldFlatCheckbox, MiniScreen::CREATE);
-		
-		m_newWorldSizeLabel = static_cast<CEGUI::DefaultWindow*>(m_gui.createWidget("FOTDSkin/Label",
-																					glm::vec4(0.6f, 0.05f, 0.3f, 0.05f),
-																					glm::vec4(0.0f),
-																					"WorldSizeLabel"));
+
+		m_newWorldSizeLabel = static_cast<CEGUI::DefaultWindow*>(gui->createWidget("FOTDSkin/Label",
+																				   glm::vec4(0.6f, 0.05f, 0.3f, 0.05f),
+																				   glm::vec4(0.0f),
+																				   nullptr,
+																				   "WorldSizeLabel"));
 		m_miniScreenEntries.emplace_back(m_newWorldSizeLabel, MiniScreen::CREATE);
 
-		m_newWorldSizeSlider = static_cast<CEGUI::Slider*>(m_gui.createWidget("FOTDSkin/HorizontalSlider",
-																			  glm::vec4(0.6f, 0.1f, 0.3f, 0.1f),
-																			  glm::vec4(0),
-																			  "WorldSizeSlider"));
-		m_newWorldSizeSlider->subscribeEvent(
-			CEGUI::Slider::EventValueChanged,
-			CEGUI::Event::Subscriber(&LoadScreen::onNewWorldSizeValueChanged, this));
-		m_newWorldSizeSlider->subscribeEvent(
-			CEGUI::Slider::EventThumbTrackEnded,
-			CEGUI::Event::Subscriber(&LoadScreen::onNewWorldSizeSliderReleased, this));
+		m_newWorldSizeSlider = static_cast<CEGUI::Slider*>(gui->createWidget("FOTDSkin/HorizontalSlider",
+																			 glm::vec4(0.6f, 0.1f, 0.3f, 0.1f),
+																			 glm::vec4(0),
+																			 nullptr,
+																			 "WorldSizeSlider"));
+		m_newWorldSizeSlider->subscribeEvent(CEGUI::Slider::EventValueChanged,
+											 CEGUI::Event::Subscriber(&LoadScreen::onNewWorldSizeValueChanged, this));
+		m_newWorldSizeSlider->subscribeEvent(CEGUI::Slider::EventThumbTrackEnded,
+											 CEGUI::Event::Subscriber(&LoadScreen::onNewWorldSizeSliderReleased, this));
 		m_newWorldSizeSlider->setMaxValue(19.0f);
 		m_newWorldSizeSlider->setClickStep(1.0f);
 		m_newWorldSizeSlider->setCurrentValue(1.0f);
@@ -204,10 +171,11 @@ void LoadScreen::initUI() {
 	}
 
 	{
-		m_loadButton = static_cast<CEGUI::PushButton*>(m_gui.createWidget("FOTDSkin/Button",
-																		  glm::vec4(0.55f, 0.3f, 0.35f, 0.35f),
-																		  glm::vec4(0.0f),
-																		  "LoadPushButton"));
+		m_loadButton = static_cast<CEGUI::PushButton*>(gui->createWidget("FOTDSkin/Button",
+																		 glm::vec4(0.55f, 0.3f, 0.35f, 0.35f),
+																		 glm::vec4(0.0f),
+																		 nullptr,
+																		 "LoadPushButton"));
 		m_loadButton->subscribeEvent(CEGUI::PushButton::EventClicked,
 									 CEGUI::Event::Subscriber(&LoadScreen::onLoadButtonClicked, this));
 		m_loadButton->setText("[padding='l:0 t:15 r:0 b:0']Load World");
@@ -216,17 +184,19 @@ void LoadScreen::initUI() {
 	}
 
 	{
-		m_loadWorldNameListbox = static_cast<CEGUI::Listbox*>(m_gui.createWidget("FOTDSkin/Listbox",
-																				 glm::vec4(0.6f, 0.1f, 0.3f, 0.8f),
-																				 glm::vec4(0.0f),
-																				 "LoadWorldNameListbox"));
+		m_loadWorldNameListbox = static_cast<CEGUI::Listbox*>(gui->createWidget("FOTDSkin/Listbox",
+																				glm::vec4(0.6f, 0.1f, 0.3f, 0.8f),
+																				glm::vec4(0.0f),
+																				nullptr,
+																				"LoadWorldNameListbox"));
 		m_loadWorldNameListbox->setFont("Amatic-38");
 		m_miniScreenEntries.emplace_back(m_loadWorldNameListbox, MiniScreen::LOAD);
 
-		m_loadWorldLoadButton = static_cast<CEGUI::PushButton*>(m_gui.createWidget("FOTDSkin/Button",
-																				   glm::vec4(0.1f, 0.3f, 0.25f, 0.15f),
-																				   glm::vec4(0.0f),
-																				   "LoadWorldLoadPushButton"));
+		m_loadWorldLoadButton = static_cast<CEGUI::PushButton*>(gui->createWidget("FOTDSkin/Button",
+																				  glm::vec4(0.1f, 0.3f, 0.25f, 0.15f),
+																				  glm::vec4(0.0f),
+																				  nullptr,
+																				  "LoadWorldLoadPushButton"));
 		m_loadWorldLoadButton->subscribeEvent(
 			CEGUI::PushButton::EventClicked,
 			CEGUI::Event::Subscriber(&LoadScreen::onLoadWorldLoadButtonClicked, this));
@@ -235,21 +205,15 @@ void LoadScreen::initUI() {
 		m_miniScreenEntries.emplace_back(m_loadWorldLoadButton, MiniScreen::LOAD);
 	}
 
-	m_backButton = static_cast<CEGUI::PushButton*>(
-		m_gui.createWidget("FOTDSkin/Button", glm::vec4(0.1f, 0.8f, 0.2f, 0.1f), glm::vec4(0.0f), "BackPushButton"));
+	m_backButton = static_cast<CEGUI::PushButton*>(gui->createWidget("FOTDSkin/Button",
+																	 glm::vec4(0.1f, 0.8f, 0.2f, 0.1f),
+																	 glm::vec4(0.0f),
+																	 nullptr,
+																	 "BackPushButton"));
 	m_backButton->subscribeEvent(CEGUI::PushButton::EventClicked,
 								 CEGUI::Event::Subscriber(&LoadScreen::onBackButtonClicked, this));
 	m_backButton->setText("[padding='l:0 t:15 r:0 b:0']Back");
 	m_backButton->setFont("QuietHorror-42");
-}
-
-void LoadScreen::initShaders() {
-	m_textureProgram.compileShaders(ASSETS_FOLDER_PATH + "Shaders/textureShader.vert",
-									ASSETS_FOLDER_PATH + "Shaders/textureShader.frag");
-	m_textureProgram.addAttribute("vertexPosition");
-	m_textureProgram.addAttribute("vertexColour");
-	m_textureProgram.addAttribute("vertexUV");
-	m_textureProgram.linkShaders();
 }
 
 bool LoadScreen::onNewWorldCreateNewButtonClicked(const CEGUI::EventArgs& e) { /// TODO: clean post-this lines up
@@ -268,7 +232,7 @@ bool LoadScreen::onNewWorldCreateNewButtonClicked(const CEGUI::EventArgs& e) { /
 
 	//m_worldIOManager->createWorld(seed, m_newWorldNameEditbox->getText().c_str(), m_newWorldFlatCheckbox->isSelected(), nullptr);
 
-	m_currentState	  = GLEngine::ScreenState::CHANGE_NEXT;
+	m_screenState	  = BARE2D::ScreenState::CHANGE_NEXT;
 	m_nextScreenIndex = SCREEN_INDEX_WAIT;
 
 	return true;
@@ -294,7 +258,7 @@ bool LoadScreen::onNewWorldSizeSliderReleased(const CEGUI::EventArgs& e) {
 	}
 	m_newWorldSizeSlider->setCurrentValue((int)val);
 	m_newWorldSizeSlider->invalidate();
-	
+
 	return true;
 }
 
@@ -304,7 +268,7 @@ bool LoadScreen::onLoadWorldLoadButtonClicked(const CEGUI::EventArgs& e) { /// T
 
 	m_worldIOManager->loadWorld(text);
 
-	m_currentState	  = GLEngine::ScreenState::CHANGE_NEXT;
+	m_screenState	  = BARE2D::ScreenState::CHANGE_NEXT;
 	m_nextScreenIndex = SCREEN_INDEX_WAIT;
 
 	return true;
@@ -324,7 +288,7 @@ bool LoadScreen::onLoadButtonClicked(const CEGUI::EventArgs& e) {
 bool LoadScreen::onBackButtonClicked(const CEGUI::EventArgs& e) {
 	if(m_miniScreen == MiniScreen::MAIN) {
 		m_nextScreenIndex = SCREEN_INDEX_MAINMENU;
-		m_currentState	  = GLEngine::ScreenState::CHANGE_NEXT;
+		m_screenState	  = BARE2D::ScreenState::CHANGE_NEXT;
 	} else if(m_miniScreen == MiniScreen::CREATE) {
 		m_miniScreen = MiniScreen::MAIN;
 		for(auto& m: m_miniScreenEntries) {
@@ -360,7 +324,7 @@ void LoadScreen::getDirectoryEntries() {
 			}
 		}
 	} else {
-		logger->log("Bad saves path: " + path.string());
+		BARE2D::Logger::getInstance()->log("Bad saves path: " + path.string());
 	}
 
 	for(unsigned int i = 0; i < entries.size(); i++) {

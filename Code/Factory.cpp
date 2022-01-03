@@ -1,6 +1,8 @@
 #include "Factory.h"
 
-#include "XMLData.h"
+#include <XMLDataManager.hpp>
+
+#include "SaveDataTypes.h"
 
 #include "Entity.h"
 #include "EntityItem.h"
@@ -17,73 +19,65 @@
 
 #include "Attack.h"
 
-Entity* Factory::createEntity(unsigned int			  id,
-							  glm::vec2				  pos,
-							  unsigned int			  layer,
-							  SaveDataTypes::MetaData data,
-							  bool					  loadTex) {
-	XMLModule::EntityData e = XMLModule::XMLData::getEntityData(id);
+Entity* Factory::createEntity(unsigned int id, glm::vec2 pos, unsigned int layer) {
+	XMLModule::EntityData e = getEntityData(id);
 
 	if(e.type == XMLModule::EntityType::NPC) {
 		// An NPC
-		return new EntityNPC(pos, layer, id, data, loadTex);
+		return new EntityNPC(pos, layer, id);
 	} else if(e.type == XMLModule::EntityType::ITEM) {
 		// An Item
-		return new EntityItem(pos, layer, id, data, loadTex);
+		return new EntityItem(pos, layer, id);
 	} else if(e.type == XMLModule::EntityType::PROJECTILE) {
 		// An Projectile
-		return new EntityProjectile(pos, layer, id, data, loadTex);
+		return new EntityProjectile(pos, layer, id);
 	}
 
-	Logger::getInstance()->log("ERROR: Failed to create entity with ID: " + std::to_string(id), true);
+	BARE2D::Logger::getInstance()->log("ERROR: Failed to create entity with ID: " + std::to_string(id), true);
 	return nullptr;
 }
 
-Tile* Factory::createTile(unsigned int			  id,
-						  glm::vec2				  pos,
-						  unsigned int			  layer,
-						  SaveDataTypes::MetaData data,
-						  bool					  loadTex) {
-	XMLModule::TileData t = XMLModule::XMLData::getTileData(id);
+Tile* Factory::createTile(unsigned int id, glm::vec2 pos, unsigned int layer) {
+	XMLModule::TileData t = getTileData(id);
 
 	if(t.type == XMLModule::TileType::TILE) {
 		// A regular, inert tile
-		return new Tile(pos, layer, id, data, loadTex);
+		return new Tile(pos, layer, id);
 	} else if(t.type == XMLModule::TileType::CONTAINER) {
 		// A container tile (like a chest)
-		return new TileContainer(pos, layer, id, data, loadTex);
+		return new TileContainer(pos, layer, id);
 	}
 
-	Logger::getInstance()->log("ERROR: Failed to create tile with ID: " + std::to_string(id), true);
+	BARE2D::Logger::getInstance()->log("ERROR: Failed to create tile with ID: " + std::to_string(id), true);
 	return nullptr;
 }
 
-Item* Factory::createItem(unsigned int id, short unsigned int quantity, bool loadTex) {
-	XMLModule::ItemData i = XMLModule::XMLData::getItemData(id);
+Item* Factory::createItem(unsigned int id, short unsigned int quantity) {
+	XMLModule::ItemData i = getItemData(id);
 
 	if(i.type == XMLModule::ItemType::MISC) {
 		// A regular ol' item
-		return new Item(quantity, id, loadTex);
+		return new Item(quantity, id);
 	} else if(i.type == XMLModule::ItemType::CONSUMABLE) {
 		// A consumable item, destroyed on use
 		return nullptr; /// TODO
 	} else if(i.type == XMLModule::ItemType::ARMOUR) {
 		// A piece of clothing, equippable
-		return new ItemArmour(quantity, id, loadTex);
+		return new ItemArmour(quantity, id);
 	} else if(i.type == XMLModule::ItemType::WEAPON) {
 		// A weapon, starts an attack on use, equippable
-		return new ItemWeapon(quantity, id, loadTex);
+		return new ItemWeapon(quantity, id);
 	} else if(i.type == XMLModule::ItemType::BLOCK) {
 		// A weapon, starts an attack on use, equippable
-		return new ItemBlock(quantity, id, loadTex);
+		return new ItemBlock(quantity, id);
 	}
 
-	Logger::getInstance()->log("ERROR: Failed to create item with ID: " + std::to_string(id), true);
+	BARE2D::Logger::getInstance()->log("ERROR: Failed to create item with ID: " + std::to_string(id), true);
 	return nullptr;
 }
 
 CombatModule::Attack* Factory::createAttack(unsigned int id, ::Entity* owner) {
-	XMLModule::AttackData d = XMLModule::XMLData::getAttackData(id);
+	XMLModule::AttackData d = getAttackData(id);
 	if(d.type == XMLModule::AttackType::MELEE) {
 		return new CombatModule::MeleeAttack(id, owner);
 	} else if(d.type == XMLModule::AttackType::RANGED) {
@@ -92,6 +86,6 @@ CombatModule::Attack* Factory::createAttack(unsigned int id, ::Entity* owner) {
 		return new CombatModule::MagicAttack(id, owner);
 	}
 
-	Logger::getInstance()->log("ERROR: Failed to create item with ID: " + std::to_string(id), true);
+	BARE2D::Logger::getInstance()->log("ERROR: Failed to create item with ID: " + std::to_string(id), true);
 	return nullptr;
 }

@@ -1,15 +1,16 @@
 #pragma once
 
-#include <Vertex.h>
-#include <GLTexture.h>
-#include <SpriteBatch.h>
-#include <SpriteFont.h>
-#include <ParticleEngine2D.h>
 #include <glm/glm.hpp>
 
-#include "AudioManager.h"
+#include <Vertex.hpp>
+#include <BumpyRenderer.hpp>
+#include <FontRenderer.hpp>
+#include <LuaScriptQueue.hpp>
+#include <LuaScript.hpp>
+#include <Texture.hpp>
+
+#include "GameAudioManager.h"
 #include "PresetValues.h"
-#include "ScriptQueue.h"
 
 #include "SaveDataTypes.h"
 
@@ -34,21 +35,15 @@ enum class TileIDs {
 
 class Tile;
 
-Tile* createTile(unsigned int			 id,
-				 glm::vec2				 pos,
-				 int					 layer,
-				 bool					 loadTex  = true,
-				 SaveDataTypes::MetaData metaData = SaveDataTypes::MetaData());
+Tile* createTile(unsigned int id, glm::vec2 pos, int layer);
 
 class Tile {
   public:
 	Tile();
-	Tile(glm::vec2 pos, unsigned int layer, unsigned int id, SaveDataTypes::MetaData data, bool loadTex);
-	Tile(glm::vec2 pos, unsigned int layer, TileIDs id, SaveDataTypes::MetaData data, bool loadTex);
+	Tile(glm::vec2 pos, unsigned int layer, unsigned int id);
+	Tile(glm::vec2 pos, unsigned int layer, TileIDs id);
 	virtual ~Tile() {
 	}
-
-	virtual void initParticles(GLEngine::ParticleEngine2D* engine);
 
 #ifdef DEV_CONTROLS
 	std::string getPrintout() {
@@ -58,26 +53,9 @@ class Tile {
 			   "LightLevel: Amb=" + std::to_string(m_ambientLight) + ", Sun=" + std::to_string(m_sunLight) +
 			   ", Emit=" + std::to_string(m_emittedLight) + "\n";
 		ret += "ExposedToSun: " + std::to_string(m_exposedToSun) + "\n";
-		//ret += "Raw Temperature: " + std::to_string(m_temperature) + ", Real Temperature: " + std::to_string(getHeat(world)) + "\n";
-		ret += "MetaData: " + m_metaData.getElements() + "\n";
 		return ret;
 	}
 #endif
-
-	virtual std::vector<ScriptingModule::Argument> generateLuaData() {
-		std::vector<ScriptingModule::Argument> args = {
-			{"blockX", std::to_string(m_pos.x)},
-			{"blockY", std::to_string(m_pos.y)},
-			{"blockLayer", std::to_string(m_layer)},
-			{"blockID",
-			 std::to_string(
-				 m_id)} // TODO: Implement metadata. Each element to the metadata can be an element in this table.
-		};
-
-		m_metaData.getLuaArguments(args);
-
-		return args;
-	}
 
 	glm::vec2 getPosition() const {
 		return m_pos;
@@ -86,10 +64,10 @@ class Tile {
 		return m_size;
 	}
 	GLuint getTextureID() const {
-		return m_textureId;
+		return m_texture.id;
 	}
 	GLuint getBumpMapID() const {
-		return m_bumpMapId;
+		return m_bumpmap.id;
 	}
 	unsigned int getID() const {
 		return m_id;
@@ -143,13 +121,6 @@ class Tile {
 	}
 	void setToDraw(bool draw) {
 		m_draw = draw;
-	}
-
-	void setMetaData(SaveDataTypes::MetaData& md) {
-		m_metaData = md;
-	}
-	SaveDataTypes::MetaData getMetaData() {
-		return m_metaData;
 	}
 	void setSize(glm::vec2 s) {
 		m_size = s;
@@ -218,20 +189,22 @@ class Tile {
 	void specialUpdate(
 		float time); // This is only called when the tile/surrounding tiles are changed. Calls updateScript
 	void		 tick(float tickTime, float& sunlight);
-	virtual void draw(GLEngine::SpriteBatch& sb, GLEngine::SpriteFont& sf, int& xOffset, int& depthDifference);
-	virtual void drawNormal(GLEngine::SpriteBatch& sb, int& xOffset, int& depthDifference);
-	virtual void drawGUI(GLEngine::SpriteBatch& sb, GLEngine::SpriteFont& sf, int& xOffset) {
+	virtual void draw(BARE2D::BumpyRenderer* renderer,
+					  BARE2D::FontRenderer*	 fontRenderer,
+					  int&					 xOffset,
+					  int&					 depthDifference);
+	virtual void drawGUI(BARE2D::BasicRenderer* renderer, BARE2D::FontRenderer* fontRenderer, int& xOffset) {
 	}
 
 	virtual void destroy();
 
 	void onInteract_WalkedOn() {
-		if(m_interactScriptID_walkedOn != -1)
-			ScriptingModule::ScriptQueue::activateScript(m_interactScriptID_walkedOn, generateLuaData());
+		if(m_interactScript_walkedOn.inited)
+			BARE2D::LuaScriptQueue::getInstance()->addLuaScript(m_interactScript_walkedOn);
 	}
 	void onInteract_RightClicked() {
-		if(m_interactScriptID_used != -1)
-			ScriptingModule::ScriptQueue::activateScript(m_interactScriptID_used, generateLuaData());
+		if(m_interactScript_used.inited)
+			BARE2D::LuaScriptQueue::getInstance()->addLuaScript(m_interactScript_used);
 	}
 	// ... More interact functions
 
@@ -246,25 +219,26 @@ class Tile {
 		m_pos = pos;
 	}
 
-	void handleMetaDataInit(SaveDataTypes::MetaData& data) {};
-
 	virtual void onUpdate() {
 	}
-	virtual void onDraw(GLEngine::SpriteBatch& sb, GLEngine::SpriteFont& sf, glm::vec4& pos, float& depth) {
+	virtual void onDraw(BARE2D::BumpyRenderer* renderer,
+						BARE2D::FontRenderer*  fontRenderer,
+						glm::vec4&			   pos,
+						float&				   depth) {
 	}
 	void onTick() {
-		if(m_tickScriptID != -1)
-			ScriptingModule::ScriptQueue::activateScript(m_tickScriptID, generateLuaData());
+		if(m_tickScript.inited)
+			BARE2D::LuaScriptQueue::getInstance()->addLuaScript(m_tickScript);
 	}
 	void onDestruction() {
 	}
 
-	unsigned int m_updateScriptID			 = (unsigned int)-1;
-	unsigned int m_tickScriptID				 = (unsigned int)-1;
-	unsigned int m_interactScriptID			 = (unsigned int)-1;
-	unsigned int m_destroyScriptID			 = (unsigned int)-1;
-	unsigned int m_interactScriptID_walkedOn = (unsigned int)-1;
-	unsigned int m_interactScriptID_used	 = (unsigned int)-1;
+	BARE2D::LuaScript m_updateScript;
+	BARE2D::LuaScript m_tickScript;
+	BARE2D::LuaScript m_interactScript;
+	BARE2D::LuaScript m_destroyScript;
+	BARE2D::LuaScript m_interactScript_walkedOn;
+	BARE2D::LuaScript m_interactScript_used;
 
 	void loadTexture();
 
@@ -274,13 +248,11 @@ class Tile {
 	unsigned int m_layer = 0; // Higher numbers are farther behind
 	glm::vec2	 m_size	 = glm::vec2(1, 1);
 
-	std::string m_texturePath;
-	std::string m_bumpMapPath;
+	BARE2D::Texture m_texture;
+	BARE2D::Texture m_bumpmap;
 
-	GLuint				  m_textureId	   = (GLuint)-1;
-	GLuint				  m_bumpMapId	   = (GLuint)-1;
-	GLEngine::ColourRGBA8 m_colour		   = GLEngine::ColourRGBA8(255.0f, 255.0f, 255.0f, 255.0f);
-	float				  m_depthForRender = 0.0f;
+	BARE2D::Colour m_colour			= BARE2D::Colour(255.0f, 255.0f, 255.0f, 255.0f);
+	float		   m_depthForRender = 0.0f;
 
 	float m_ambientLight =
 		0.0f; // Really should be inherited light or something, as this light is inherited from surrounding blocks
@@ -307,8 +279,6 @@ class Tile {
 	bool m_setLighting = false; // Has this light source set the neighbours' light values??
 
 	unsigned int m_id;
-
-	SaveDataTypes::MetaData m_metaData;
 
   private:
 	void init();

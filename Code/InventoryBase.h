@@ -1,10 +1,10 @@
 #pragma once
 
 #include <vector>
-#include <Camera2D.h>
-#include <GUI.h>
-#include <SpriteBatch.h>
-#include <SpriteFont.h>
+#include <Camera2D.hpp>
+#include <BARECEGUI.hpp>
+#include <BasicRenderer.hpp>
+#include <FontRenderer.hpp>
 
 #include "GUI_InventoryReceiver.h"
 
@@ -23,10 +23,10 @@ class InventoryBase {
 				  CEGUI::Window* parent			   = nullptr);
 	virtual ~InventoryBase();
 
-	void init(std::string name, bool autoResize, CEGUI::Window* parent);
-	void init(SaveDataTypes::InventoryData& data);
+	void		 init(std::string name, bool autoResize, CEGUI::Window* parent);
+	void		 init(SaveDataTypes::InventoryData& data);
 	virtual void initInventoryGUI();
-	void destroy(); // Actually destroys GUI windows used.
+	void		 destroy(); // Actually destroys GUI windows used.
 
 	bool addItem(Item* newItem);   // Returns false if the item didn't pass the test, true otherwise. Adds a gridItem.
 	void subtractItem(Item* item); // removes from both m_items and m_gridItems
@@ -63,8 +63,8 @@ class InventoryBase {
 
 	void updateWeight();
 	void update();
-	void draw(GLEngine::SpriteBatch& sb,
-			  GLEngine::SpriteFont&	 sf,
+	void draw(BARE2D::BasicRenderer* renderer,
+			  BARE2D::FontRenderer*	 fontRenderer,
 			  float					 x,
 			  float					 y,
 			  bool relative = true); // This moves the position of the CEGUI widgets to the in-game coords given. Useful.
@@ -97,7 +97,7 @@ class InventoryBase {
 	bool onDragDropItemRemoved(const CEGUI::EventArgs& e);
 	bool onDragDropItemAdded(const CEGUI::EventArgs& e);
 
-protected:
+  protected:
 	virtual void onItemAdded(const CEGUI::WindowEventArgs& e) {}; // the args are WindowEventArgs
 
 	float			   m_weight = 0.0f; // The average person can carry about 20kg of weight and still walk normally
@@ -116,8 +116,8 @@ protected:
 	bool m_automaticallyResizes = true;
 	bool m_initedGUI			= false;
 	bool m_movable				= true;
-	
-	std::string m_name = "";
+
+	std::string	   m_name	= "";
 	CEGUI::Window* m_parent = nullptr;
 
 	void createInventoryItem(Item* item); // Creates and adds a GUI_InventoryItem to the reciever.

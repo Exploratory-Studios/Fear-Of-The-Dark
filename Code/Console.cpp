@@ -10,14 +10,14 @@ Console::~Console() {
 	//dtor
 }
 
-void Console::init(ScriptingModule::Scripter* scripter, QuestModule::QuestManager* qm, GameplayScreen* gs) {
-	m_scripter = scripter;
+void Console::init(QuestModule::QuestManager* qm, GameplayScreen* gs) {
 	m_qm	   = qm;
 	m_gs	   = gs;
 
 	m_frame = static_cast<CEGUI::FrameWindow*>(Singletons::getGUI()->createWidget("FOTDSkin/FrameWindow",
 																				  glm::vec4(0.03f, 0.67f, 0.94f, 0.3f),
 																				  glm::vec4(0.0f),
+																				  nullptr,
 																				  "ConsoleFrameWindowMaster"));
 	m_frame->setDragMovingEnabled(false);
 	m_frame->setAlwaysOnTop(true);
@@ -27,20 +27,20 @@ void Console::init(ScriptingModule::Scripter* scripter, QuestModule::QuestManage
 	m_frame->setCloseButtonEnabled(false);
 
 	m_scrollable =
-		static_cast<CEGUI::ScrollablePane*>(Singletons::getGUI()->createWidget(m_frame,
-																			   "FOTDSkin/ScrollablePane",
+		static_cast<CEGUI::ScrollablePane*>(Singletons::getGUI()->createWidget("FOTDSkin/ScrollablePane",
 																			   glm::vec4(0.01f, 0.05f, 0.98f, 0.6f),
 																			   glm::vec4(0.0f),
+																			   m_frame,
 																			   "ConsoleScrollablePaneHistory"));
 	m_scrollable->setContentPaneAutoSized(true);
 	m_scrollable->setShowVertScrollbar(true);
 	m_scrollable->subscribeEvent(CEGUI::ScrollablePane::EventMouseWheel,
 								 CEGUI::Event::Subscriber(&Console::onScrollableMouseWheel, this));
 
-	m_editbox = static_cast<CEGUI::Editbox*>(Singletons::getGUI()->createWidget(m_frame,
-																				"FOTDSkin/Editbox",
+	m_editbox = static_cast<CEGUI::Editbox*>(Singletons::getGUI()->createWidget("FOTDSkin/Editbox",
 																				glm::vec4(0.01f, 0.7f, 0.98f, 0.25f),
 																				glm::vec4(0.0f),
+																				m_frame,
 																				"ConsoleEditbox"));
 	m_editbox->subscribeEvent(CEGUI::Editbox::EventKeyDown, CEGUI::Event::Subscriber(&Console::onEditboxInput, this));
 
@@ -59,7 +59,7 @@ void Console::hide() {
 }
 
 void Console::processCommand(QuestModule::QuestManager* qm, GameplayScreen* gs, std::string& command) {
-	m_scripter->executeCommand(command);
+	BARE2D::LuaScriptQueue::getInstance()->addLuaScript(command);
 }
 
 /// PRIVATE FUNCTIONS

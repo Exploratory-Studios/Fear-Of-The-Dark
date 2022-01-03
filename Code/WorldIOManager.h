@@ -5,12 +5,12 @@
 #include <boost/thread.hpp>
 #include <stdarg.h>
 
-#include <Window.h>
+#include <Window.hpp>
+#include <Logger.hpp>
 
 #include "PerlinNoise/PerlinNoise.h"
 
 #include "PresetValues.h"
-#include "Logging.h"
 
 #include "SaveDataTypes.h"
 
@@ -72,8 +72,6 @@ class WorldIOManager {
 		*/
 
 	unsigned int m_saveVersion = 1;
-
-	Logger* logger = nullptr;
 
 	float*		 m_progress		   = nullptr;
 	std::string* m_saveLoadMessage = nullptr;

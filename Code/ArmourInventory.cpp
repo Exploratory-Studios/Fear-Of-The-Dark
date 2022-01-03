@@ -28,16 +28,17 @@ void ArmourInventory::initInventoryGUI() {
 
 	if(m_parent) {
 		m_frameWindow =
-			static_cast<CEGUI::FrameWindow*>(Singletons::getGUI()->createWidget(m_parent,
-																				"FOTDSkin/FrameWindow",
+			static_cast<CEGUI::FrameWindow*>(Singletons::getGUI()->createWidget("FOTDSkin/FrameWindow",
 																				glm::vec4(0.0f, 0.0f, 1.0f, 1.0f),
 																				glm::vec4(0.0f),
+																				m_parent,
 																				m_name + "_Inventory"));
 	} else {
 		m_frameWindow =
 			static_cast<CEGUI::FrameWindow*>(Singletons::getGUI()->createWidget("FOTDSkin/FrameWindow",
 																				glm::vec4(-0.2f, -0.2f, 0.35f, 0.5f),
 																				glm::vec4(0.0f),
+																				nullptr,
 																				m_name + "_Inventory"));
 	}
 	m_frameWindow->setCloseButtonEnabled(false);
@@ -56,20 +57,20 @@ void ArmourInventory::initInventoryGUI() {
 	m_frameWindow->subscribeEvent(CEGUI::Window::EventMouseLeavesArea,
 								  CEGUI::Event::Subscriber(&InventoryBase::onMouseLeave, (InventoryBase*)this));
 
-	m_pane = static_cast<CEGUI::ScrollablePane*>(Singletons::getGUI()->createWidget(m_frameWindow,
-																					"FOTDSkin/ScrollablePane",
+	m_pane = static_cast<CEGUI::ScrollablePane*>(Singletons::getGUI()->createWidget("FOTDSkin/ScrollablePane",
 																					glm::vec4(0.0f, 0.0f, 1.0f, 1.0f),
 																					glm::vec4(0.0f),
+																					m_frameWindow,
 																					m_name + "_Inventory_PANE"));
 	m_pane->setMouseInputPropagationEnabled(true);
 
 	m_gridItems.clear();
 
 	m_grid = static_cast<CEGUI::GUI_InventoryReceiver*>(Singletons::getGUI()->createWidget(
-		m_pane,
 		"InventoryReceiver",
 		glm::vec4(0.05f, 0.05f, INVENTORY_BOX_WIDTH * 5.0f, INVENTORY_BOX_HEIGHT * 5.0f),
 		glm::vec4(0.0f),
+		m_pane,
 		m_name + "_Inventory_GRID"));
 	m_grid->setContentSize(INVENTORY_WIDTH, 5);
 	m_grid->setUserString("BlockImage", "FOTDSkin/InventoryBox");
@@ -86,6 +87,6 @@ void ArmourInventory::initInventoryGUI() {
 	m_initedGUI = true;
 
 	Singletons::getGUI()->setActiveContext(0); // Reset back to normal GUI context.
-	
+
 	m_grid->setVerificationFunction(&armourInventory_verification);
 }

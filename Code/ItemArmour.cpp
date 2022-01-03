@@ -1,10 +1,12 @@
 #include "ItemArmour.h"
 
+#include <XMLDataManager.hpp>
+
 #include "Animation.h"
 #include "EntityNPC.h"
 
-ItemArmour::ItemArmour(short unsigned int quantity, unsigned int armourID, bool loadTex) :
-	Item(quantity, armourID, loadTex) {
+ItemArmour::ItemArmour(short unsigned int quantity, unsigned int armourID) :
+	Item(quantity, armourID) {
 	init();
 }
 
@@ -12,19 +14,19 @@ ItemArmour::~ItemArmour() {
 }
 
 void ItemArmour::init() {
-	XMLModule::ItemArmourData d = XMLModule::XMLData::getItemArmourData(m_id);
+	XMLModule::ItemArmourData d = getItemArmourData(m_id);
 
 	m_animationIDs = d.animationIDs;
 	m_limbIndices  = d.limbIndices;
 	m_resistance   = d.resistance;
 	m_threshold	   = d.threshold;
-	m_tickScriptID = d.tickScriptID.getID();
+	m_tickScript = d.tickScript;
 }
 
 void ItemArmour::onTick(EntityNPC* owner) {
 	// Runs on-tick script
-	if(m_tickScriptID != (unsigned int)-1)
-		ScriptingModule::ScriptQueue::activateScript(m_tickScriptID, owner->generateLuaValues());
+	if(m_tickScript.inited)
+		BARE2D::LuaScriptQueue::getInstance()->addLuaScript(m_tickScript);
 }
 
 void ItemArmour::setLimbAnimations(AnimationModule::Body& body) {

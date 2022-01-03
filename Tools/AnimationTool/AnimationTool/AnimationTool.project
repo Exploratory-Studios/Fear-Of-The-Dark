@@ -281,4 +281,8 @@
       </Completion>
     </Configuration>
   </Settings>
+  <Dependencies Name="Debug"/>
+  <Dependencies Name="Release - Linux"/>
+  <Dependencies Name="Release - Windows"/>
+  <Dependencies Name="Release - Windows32"/>
 </CodeLite_Project>

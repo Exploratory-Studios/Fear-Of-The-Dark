@@ -3,8 +3,6 @@
 #include "Factory.h"
 #include "Singletons.h"
 
-#include "EventQueue.h"
-
 #include "World.h"
 #include "Tile.h"
 
@@ -15,7 +13,7 @@
 
 EntityManager::EntityManager() {
 	// Create the entity manager, log it so we know if multiple are (somehow) made
-	Logger::getInstance()->log("EntityManager constructed");
+	BARE2D::Logger::getInstance()->log("EntityManager constructed");
 }
 
 unsigned int EntityManager::getEntityIndex(Entity* entity) {
@@ -42,7 +40,8 @@ EntityManager::~EntityManager() {
 void EntityManager::init(World* world) {
 	// Init (obviously), and log it if we already inited.
 	if(m_inited) {
-		Logger::getInstance()->log("WARNING: EntityManager attempted to initialize after already doing so!", true);
+		BARE2D::Logger::getInstance()->log("WARNING: EntityManager attempted to initialize after already doing so!",
+										   true);
 		return;
 	}
 }
@@ -53,9 +52,10 @@ void EntityManager::dispose() {
 		delete e;
 	}
 
-	m_entitiesByUUID.clear(); // We don't need to delete these; they are just copies of the pointers in m_entities (already deleted)
+	m_entitiesByUUID
+		.clear(); // We don't need to delete these; they are just copies of the pointers in m_entities (already deleted)
 
-	Logger::getInstance()->log("EntityManager deconstructed");
+	BARE2D::Logger::getInstance()->log("EntityManager deconstructed");
 }
 
 void EntityManager::setPlayer(EntityPlayer* p) {
@@ -125,27 +125,11 @@ void EntityManager::addEntity(Entity* e) {
 	}
 
 	m_entitiesByUUID.insert(std::pair<std::string, Entity*>(e->getUUID(), e));
-
-	std::vector<ScriptingModule::Argument> args = {
-		ScriptingModule::Argument("entityUUID", e->getUUID()),
-		ScriptingModule::Argument("entityID", std::to_string(e->getID())),
-		ScriptingModule::Argument("entityX", std::to_string(e->getPosition().x)),
-		ScriptingModule::Argument("entityY", std::to_string(e->getPosition().y)),
-		ScriptingModule::Argument("entityLayer", std::to_string(e->getLayer()))};
-	EventModule::EventQueue::triggerEvent("addEntity", args);
 }
 
 void EntityManager::removeEntity(unsigned int index) {
 	/** REMOVES AND DELETES ENTITY, COMPLETELY HANDLING MEMORY MANAGEMENT
 	*/
-
-	std::vector<ScriptingModule::Argument> args = {
-		ScriptingModule::Argument("entityUUID", m_entities[index]->getUUID()),
-		ScriptingModule::Argument("entityID", std::to_string(m_entities[index]->getID())),
-		ScriptingModule::Argument("entityX", std::to_string(m_entities[index]->getPosition().x)),
-		ScriptingModule::Argument("entityY", std::to_string(m_entities[index]->getPosition().y)),
-		ScriptingModule::Argument("entityLayer", std::to_string(m_entities[index]->getLayer()))};
-	EventModule::EventQueue::triggerEvent("removeEntity", args);
 
 	auto a = m_entitiesByUUID.find(m_entities[index]->getUUID());
 	m_entitiesByUUID.erase(a);
@@ -163,10 +147,10 @@ void EntityManager::removeEntity(Entity* entity) {
 	removeEntity(getEntityIndex(entity));
 }
 
-void EntityManager::drawEntities(GLEngine::SpriteBatch&	  sb,
-								 GLEngine::SpriteFont&	  sf,
-								 GLEngine::DebugRenderer& dr,
-								 glm::vec4				  destRect) {
+void EntityManager::drawEntities(BARE2D::BumpyRenderer* renderer,
+								 BARE2D::FontRenderer*	fontRenderer,
+								 BARE2D::DebugRenderer* dr,
+								 glm::vec4				destRect) {
 	/**
 	    Draws an area of tiles at position destRect.xy, with width and height of destRect.z and destRect.w respectively.
 	    Negative coordinates are mapped to accomodate for 'crossover'
@@ -180,31 +164,10 @@ void EntityManager::drawEntities(GLEngine::SpriteBatch&	  sb,
 	}
 
 	for(unsigned int i = 0; i < m_entities.size(); i++) {
-		m_entities[i]->draw(sb,
+		m_entities[i]->draw(renderer,
 							Singletons::getWorld()->getTime(),
 							std::abs(diff[m_entities[i]->getLayer()]) + 1.0,
 							0.0f); /// TODO: Finish these entity functions up and improve!
-	}
-}
-
-void EntityManager::drawEntitiesNormal(GLEngine::SpriteBatch& sb, glm::vec4 destRect) {
-	/**
-	    Draws an area of tiles at position destRect.xy, with width and height of destRect.z and destRect.w respectively.
-	    Negative coordinates are mapped to accomodate for 'crossover'
-	    eg. destRect = (-10, 10, 20, 10) will draw tiles from x=(WORLD_SIZE - 10) to x=(-10 + 20) and y=(10) to y=(10 + 10)
-	*/
-
-	int playerLayer = m_player->getLayer();
-	int diff[WORLD_DEPTH];
-	for(int i = 0; i < WORLD_DEPTH; i++) {
-		diff[i] = playerLayer - i;
-	}
-
-	for(unsigned int i = 0; i < m_entities.size(); i++) {
-		m_entities[i]->drawNormal(sb,
-								  Singletons::getWorld()->getTime(),
-								  std::abs(diff[m_entities[i]->getLayer()]) + 1.0,
-								  0.0f); /// TODO: Finish these entity functions up and improve!
 	}
 }
 
@@ -292,7 +255,9 @@ void EntityManager::spawnEntities() {
 					for(int x1 = -1; !checkNext && x1 < 2; x1++) {
 						if(!Singletons::getWorld()->getTile((x + x1 + worldSize) % worldSize, y + y1, z)) {
 							checkNext = true;
-						} else if(Singletons::getWorld()->getTile((x + x1 + worldSize) % worldSize, y + y1, z)->isSolid()) {
+						} else if(Singletons::getWorld()
+									  ->getTile((x + x1 + worldSize) % worldSize, y + y1, z)
+									  ->isSolid()) {
 							checkNext = true;
 						}
 					}
@@ -324,8 +289,6 @@ void EntityManager::spawnEntities() {
 	for(int i = 0; i < positions.size(); i++) {
 		queueEntityToAdd(Factory::createEntity((unsigned int)EntityIDs::NPC_NEUTRAL_COMPANIONCUBE,
 											   glm::vec2(positions[i].x, positions[i].y),
-											   (int)positions[i].z,
-											   SaveDataTypes::MetaData(),
-											   true));
+											   (int)positions[i].z));
 	}
 }

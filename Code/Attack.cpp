@@ -1,25 +1,28 @@
 #include "Attack.h"
 
-#include "Entity.h"
-#include "EntityProjectile.h"
-#include "SaveDataTypes.h"
+#include <LuaScriptQueue.hpp>
+
+#include "CustomXMLTypes.h"
 
 #include "Singletons.h"
 #include "Factory.h"
+#include "CustomXMLTypes.h"
+#include "SaveDataTypes.h"
 
-#include <iostream>
+#include "Entity.h"
+#include "EntityProjectile.h"
 
 namespace CombatModule {
 
 	Attack::Attack(unsigned int attackID, ::Entity* owner) : m_owner(owner) {
-		XMLModule::AttackData d = XMLModule::XMLData::getAttackData(attackID);
+		XMLModule::AttackData d = getAttackData(attackID);
 
 		m_leadIn.init(d.leadInAnimationID);
 		m_leadOut.init(d.leadOutAnimationID);
 	}
 
 	MeleeAttack::MeleeAttack(unsigned int attackID, ::Entity* owner) : Attack(attackID, owner) {
-		XMLModule::MeleeAttackData d = XMLModule::XMLData::getMeleeAttackData(attackID);
+		XMLModule::MeleeAttackData d = getMeleeAttackData(attackID);
 
 		m_projectileID = d.projectileID;
 	}
@@ -28,8 +31,7 @@ namespace CombatModule {
 		glm::vec2	 pos   = m_owner->getPosition();
 		unsigned int layer = m_owner->getLayer();
 
-		EntityProjectile* e = static_cast<EntityProjectile*>(
-			Factory::createEntity(m_projectileID, pos, layer, SaveDataTypes::MetaData(), true));
+		EntityProjectile* e = static_cast<EntityProjectile*>(Factory::createEntity(m_projectileID, pos, layer));
 		e->setOwner(m_owner);
 
 		e->setPosition(m_owner->getPosition() + m_owner->getSize() / glm::vec2(2.0f) - e->getSize() / glm::vec2(2.0f) +
@@ -40,7 +42,7 @@ namespace CombatModule {
 	}
 
 	RangedAttack::RangedAttack(unsigned int attackID, ::Entity* owner) : Attack(attackID, owner) {
-		XMLModule::RangedAttackData d = XMLModule::XMLData::getRangedAttackData(attackID);
+		XMLModule::RangedAttackData d = getRangedAttackData(attackID);
 
 		m_projectileID	 = d.projectileID;
 		m_numProjectiles = d.numProjectiles;
@@ -51,8 +53,7 @@ namespace CombatModule {
 		glm::vec2	 pos   = m_owner->getPosition();
 		unsigned int layer = m_owner->getLayer();
 
-		EntityProjectile* e = static_cast<EntityProjectile*>(
-			Factory::createEntity(m_projectileID, pos, layer, SaveDataTypes::MetaData(), true));
+		EntityProjectile* e = static_cast<EntityProjectile*>(Factory::createEntity(m_projectileID, pos, layer));
 		e->setOwner(m_owner);
 
 		e->setPosition(m_owner->getPosition() + direction * e->getSize());
@@ -62,13 +63,13 @@ namespace CombatModule {
 	}
 
 	MagicAttack::MagicAttack(unsigned int attackID, ::Entity* owner) : Attack(attackID, owner) {
-		XMLModule::MagicAttackData d = XMLModule::XMLData::getMagicAttackData(attackID);
+		XMLModule::MagicAttackData d = getMagicAttackData(attackID);
 
-		m_scriptID = d.script.getID();
+		m_script = d.script;
 	}
 
 	void MagicAttack::execute(glm::vec2 direction) {
-		ScriptingModule::ScriptQueue::activateScript(m_scriptID, m_owner->generateLuaValues());
+		BARE2D::LuaScriptQueue::getInstance()->addLuaScript(m_script);
 	}
 
 }; // namespace CombatModule

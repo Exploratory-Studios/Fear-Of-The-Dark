@@ -4,7 +4,7 @@
 
 #include <glm/glm.hpp>
 #include <string>
-#include <ResourceManager.h>
+#include <ResourceManager.hpp>
 #include <iostream>
 
 namespace AnimationModule {
@@ -17,14 +17,12 @@ namespace AnimationModule {
 	}
 
 	void Animation::init(unsigned int id) {
-		XMLModule::AnimationData d = XMLModule::XMLData::getAnimationData(id);
+		XMLModule::AnimationData d = getAnimationData(id);
 
-		GLEngine::GLTexture tex = GLEngine::ResourceManager::getTexture(ASSETS_FOLDER_PATH + "/Textures/" + d.texture);
-		m_normalMapID =
-			GLEngine::ResourceManager::getTexture(ASSETS_FOLDER_PATH + "/Textures/BumpMaps/" + d.normalMap).id;
+		m_normalMapID = d.bumpmap.id;
 
-		m_textureID	  = tex.id;
-		float height  = tex.height;
+		m_textureID	  = d.texture.id;
+		float height  = d.texture.height;
 		float y		  = d.y;
 		m_frameWidth  = d.width;
 		m_frameHeight = d.height;
@@ -41,13 +39,13 @@ namespace AnimationModule {
 		//m_uv.z = (float)(frameHeight) / (float)(height);
 	}
 
-	void Animation::draw(::GLEngine::SpriteBatch& sb,
-						 GLEngine::ColourRGBA8	  colour,
-						 glm::vec4&				  destRect,
-						 float&					  depth,
-						 float&					  angle,
-						 glm::vec2&				  COR,
-						 bool					  flipped) {
+	void Animation::draw(BARE2D::BumpyRenderer* renderer,
+						 BARE2D::Colour			colour,
+						 glm::vec4&				destRect,
+						 float&					depth,
+						 float&					angle,
+						 glm::vec2&				COR,
+						 bool					flipped) {
 		glm::vec4 uv = m_uv;
 
 		uv.x = (float)(m_currentFrame * m_frameWidth) / (float)(m_width);
@@ -57,41 +55,22 @@ namespace AnimationModule {
 			uv.w *= -1;
 		}
 
-		sb.draw(destRect, uv, m_textureID, depth, colour, angle, COR);
+		renderer->draw(destRect, uv, m_textureID, m_normalMapID, depth, colour, angle, COR);
 	}
 
-	void Animation::draw(::GLEngine::SpriteBatch& sb,
-						 GLEngine::ColourRGBA8	  colour,
-						 glm::vec4&				  destRect,
-						 float&					  depth,
-						 glm::vec2				  direction) {
+	void Animation::draw(BARE2D::BumpyRenderer* renderer,
+						 BARE2D::Colour			colour,
+						 glm::vec4&				destRect,
+						 float&					depth,
+						 glm::vec2				direction) {
 		m_uv.x = (float)(m_currentFrame * m_frameWidth) / (float)(m_width);
 
-		sb.draw(destRect, m_uv, m_textureID, depth, colour, direction);
-	}
+		const glm::vec2 right(1.0f, 0.0f);
+		float			angle = acos(glm::dot(right, direction));
+		if(direction.y < 0.0f)
+			angle = -angle;
 
-	void Animation::drawNormal(::GLEngine::SpriteBatch& sb,
-							   glm::vec4&				destRect,
-							   float&					depth,
-							   float&					angle,
-							   glm::vec2&				COR,
-							   bool						flipped) {
-		glm::vec4 uv = m_uv;
-
-		uv.x = (float)(m_currentFrame * m_frameWidth) / (float)(m_width);
-
-		if(flipped) {
-			uv.y += uv.w;
-			uv.w *= -1;
-		}
-
-		sb.draw(destRect, uv, m_normalMapID, depth, GLEngine::ColourRGBA8(255, 255, 255, 255), angle, COR);
-	}
-
-	void Animation::drawNormal(::GLEngine::SpriteBatch& sb, glm::vec4& destRect, float& depth, glm::vec2 direction) {
-		m_uv.x = (float)(m_currentFrame * m_frameWidth) / (float)(m_width);
-
-		sb.draw(destRect, m_uv, m_normalMapID, depth, GLEngine::ColourRGBA8(255, 255, 255, 255), direction);
+		renderer->draw(destRect, m_uv, m_textureID, m_normalMapID, depth, colour, angle);
 	}
 
 	void Animation::tick() {
@@ -120,7 +99,7 @@ namespace AnimationModule {
 	}
 
 	void SkeletalAnimation::init(unsigned int id) {
-		XMLModule::SkeletalAnimationData d = XMLModule::XMLData::getSkeletalAnimationData(id);
+		XMLModule::SkeletalAnimationData d = getSkeletalAnimationData(id);
 
 		m_currentFrame = 0;
 
@@ -291,8 +270,8 @@ namespace AnimationModule {
 		}
 	}
 
-	void Limb::draw(GLEngine::SpriteBatch& sb,
-					GLEngine::ColourRGBA8  colour,
+	void Limb::draw(BARE2D::BumpyRenderer* renderer,
+					BARE2D::Colour		   colour,
 					glm::vec4			   destRect,
 					float&				   depth,
 					bool				   flipped) {
@@ -316,31 +295,7 @@ namespace AnimationModule {
 
 		glm::vec2 c(0.5f, 0.5f);
 
-		m_idleAnimation.draw(sb, colour, destRect, depth, angle, c, flipped);
-	}
-
-	void Limb::drawNormal(GLEngine::SpriteBatch& sb, glm::vec4 destRect, float& depth, bool flipped) {
-		// Transform based on centre of rotation
-		const glm::vec2 centre =
-			flipped ? glm::vec2(1.0f - m_centreOfRotation.x, m_centreOfRotation.y) : m_centreOfRotation;
-		const glm::vec2 offset = flipped ? glm::vec2(-m_offset.x, m_offset.y) : m_offset;
-		float			angle  = flipped ? M_PI - m_angle : m_angle;
-
-		float xDist = (offset.x + destRect.z / 2.0f) - centre.x * destRect.z;
-		float yDist = (offset.y + destRect.w / 2.0f) - centre.y * destRect.w;
-
-		if(flipped)
-			yDist *= -1;
-
-		destRect.x += xDist * std::cos(angle) - yDist * std::sin(angle) + centre.x * destRect.z;
-		destRect.y += xDist * std::sin(angle) + yDist * std::cos(angle) + centre.y * destRect.w;
-
-		destRect.x -= destRect.z / 2.0f;
-		destRect.y -= destRect.w / 2.0f;
-
-		glm::vec2 c(0.5f, 0.5f);
-
-		m_idleAnimation.drawNormal(sb, destRect, depth, angle, c, flipped);
+		m_idleAnimation.draw(renderer, colour, destRect, depth, angle, c, flipped);
 	}
 
 	bool Limb::isAnimationActive() {

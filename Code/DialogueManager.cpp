@@ -1,6 +1,6 @@
 #include "DialogueManager.h"
 
-#include "XMLData.h"
+#include <XMLDataManager.hpp>
 
 #include "QuestManager.h"
 
@@ -11,7 +11,7 @@ namespace DialogueModule {
 	ResponseFrame::ResponseFrame(CEGUI::FrameWindow* parent, unsigned int responseID, unsigned int index) {
 		// Gets text, and name from XMLData (index is used for placement)
 
-		XMLModule::DialogueResponseData d = XMLModule::XMLData::getDialogueResponseData(responseID);
+		XMLModule::DialogueResponseData d = getDialogueResponseData(responseID);
 
 		std::string text;
 		text = d.text;
@@ -34,10 +34,10 @@ namespace DialogueModule {
 		float padding = 0.05f;
 
 		m_button = static_cast<CEGUI::PushButton*>(
-			Singletons::getGUI()->createWidget(parent,
-											   "FOTDSkin/Button",
+			Singletons::getGUI()->createWidget("FOTDSkin/Button",
 											   glm::vec4(0.1f, 0.35f + (height + padding) * index, 0.8f, height),
 											   glm::vec4(0.0f),
+											   parent,
 											   "DialogueResponseFrame" + std::to_string(index)));
 		m_button->setText(text);
 	}
@@ -46,6 +46,7 @@ namespace DialogueModule {
 		m_frame = static_cast<CEGUI::FrameWindow*>(Singletons::getGUI()->createWidget("FOTDSkin/FrameWindow",
 																					  glm::vec4(0.1f, 0.6f, 0.8f, 0.3f),
 																					  glm::vec4(0.0f),
+																					  nullptr,
 																					  "DialogueMainFrame"));
 		m_frame->setCloseButtonEnabled(false);
 		m_frame->setDragMovingEnabled(false);
@@ -53,10 +54,10 @@ namespace DialogueModule {
 		m_frame->setTitleBarEnabled(false);
 
 		m_text =
-			static_cast<CEGUI::DefaultWindow*>(Singletons::getGUI()->createWidget(m_frame,
-																				  "FOTDSkin/Label",
+			static_cast<CEGUI::DefaultWindow*>(Singletons::getGUI()->createWidget("FOTDSkin/Label",
 																				  glm::vec4(0.1f, 0.1f, 0.8f, 0.3f),
 																				  glm::vec4(0.0f),
+																				  m_frame,
 																				  "DialogueMainFrameText"));
 
 		hide();
@@ -86,7 +87,7 @@ namespace DialogueModule {
 		deleteResponses();
 		generateResponses(questionID);
 
-		XMLModule::DialogueQuestionData d = XMLModule::XMLData::getDialogueQuestionData(questionID);
+		XMLModule::DialogueQuestionData d = getDialogueQuestionData(questionID);
 		m_text->setText(d.text);
 	}
 
@@ -101,13 +102,13 @@ namespace DialogueModule {
 		/// Should fetch the IDs of all responses for the question from the XMLData manager, check if the responses should be shown, then init only responses that should be shown.
 
 		// Fetch all IDs
-		XMLModule::DialogueQuestionData d = XMLModule::XMLData::getDialogueQuestionData(questionID);
+		XMLModule::DialogueQuestionData d = getDialogueQuestionData(questionID);
 
 		// Get responses that should be shown:
 		std::vector<unsigned int> shownResponses;
 		for(unsigned int i = 0; i < d.nextResponses.size(); i++) {
 			// Get response data
-			XMLModule::DialogueResponseData r = XMLModule::XMLData::getDialogueResponseData(d.nextResponses[i]);
+			XMLModule::DialogueResponseData r = getDialogueResponseData(d.nextResponses[i]);
 
 			// Check if all flags are true
 			bool shouldShow = true; // Stays true if all flags are true.

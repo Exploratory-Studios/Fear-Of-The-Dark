@@ -1,16 +1,19 @@
 #include "StartupScreen.h"
 
-#include <GLContextManager.h>
+#include <GLContextManager.hpp>
 
 #include "Options.h"
 
 /// Text FUNCTIONS
 
-void Text::draw(GLEngine::SpriteFont& sf, GLEngine::SpriteBatch& sb, float time, int activeSplashScreen) {
+void Text::draw(BARE2D::FontRenderer*  fontRenderer,
+				BARE2D::BasicRenderer* renderer,
+				float				   time,
+				int					   activeSplashScreen) {
 	if(m_splashScreen == activeSplashScreen) {
 		update(time);
-
-		sf.draw(sb, m_text.c_str(), m_pos, m_textScale, 0.0f, m_colour, GLEngine::Justification::MIDDLE);
+		/// TODO: Load font.
+		//fontRenderer.draw(renderer, m_text.c_str(), m_pos, m_textScale, 0.0f, m_colour, BARE2D::Justification::MIDDLE);
 	}
 }
 
@@ -35,15 +38,15 @@ void Text::update(float time) {
 
 /// Image FUNCTIONS
 
-void Image::draw(GLEngine::SpriteBatch& sb, float time, int activeSplashScreen) {
+void Image::draw(BARE2D::BasicRenderer* renderer, float time, int activeSplashScreen) {
 	if(m_splashScreen == activeSplashScreen) {
 		update(time);
 
-		sb.draw(glm::vec4(m_pos.x - m_size.x * 0.5f, m_pos.y - m_size.y * 0.5f, m_size.x, m_size.y),
-				glm::vec4(0.0f, 0.0f, 1.0f, 1.0f),
-				GLEngine::ResourceManager::getTexture(m_filepath).id,
-				0.0f,
-				m_colour);
+		renderer->draw(glm::vec4(m_pos.x - m_size.x * 0.5f, m_pos.y - m_size.y * 0.5f, m_size.x, m_size.y),
+					   glm::vec4(0.0f, 0.0f, 1.0f, 1.0f),
+					   BARE2D::ResourceManager::loadTexture(m_filepath).id,
+					   0.0f,
+					   m_colour);
 	}
 }
 
@@ -68,25 +71,26 @@ void Image::update(float time) {
 
 /// StartupScreen FUNCTIONS
 
-void StartupScreen::build() {
+void StartupScreen::initScreen() {
 }
 
-void StartupScreen::destroy() {
+void StartupScreen::destroyScreen() {
 }
 
 void StartupScreen::onEntry() {
 	Options::loadFromFile("Options.bin"); // Will never cause an issue; it just creates a file if one doesn't exist
 
-	initShaders();
+	std::string fragShader = ASSETS_FOLDER_PATH + "Shaders/textureShader.frag";
+	std::string vertShader = ASSETS_FOLDER_PATH + "Shaders/textureShader.vert";
 
-	m_spriteBatch.init();
-	m_spriteFont.init((ASSETS_FOLDER_PATH + "GUI/fonts/QuietHorror.ttf").c_str(), 96);
+	m_renderer = new BARE2D::BasicRenderer(fragShader, vertShader);
+	m_renderer->init();
 
-	m_camera.init(m_window->getScreenWidth(), m_window->getScreenHeight());
-	m_camera.setPosition(glm::vec2(m_window->getScreenWidth() / 2.0f, m_window->getScreenHeight() / 2.0f));
-	m_uiCamera.init(m_window->getScreenWidth(), m_window->getScreenHeight());
+	m_fontRenderer = new BARE2D::FontRenderer(fragShader, vertShader);
+	m_fontRenderer->init();
 
-	m_gui.init(ASSETS_FOLDER_PATH + "GUI", 1);
+	std::string guiPath = ASSETS_FOLDER_PATH + "GUI";
+	BARE2D::BARECEGUI::getInstance()->init(guiPath, 1);
 
 	initAnimations();
 	initUI();
@@ -95,17 +99,14 @@ void StartupScreen::onEntry() {
 void StartupScreen::onExit() {
 }
 
-void StartupScreen::update() {
-	m_camera.update();
-	m_uiCamera.update();
-	m_gui.update();
+void StartupScreen::update(double dt) {
 	checkInput();
 	m_time++;
 
 	if(m_time >= 15.0f * 60.0f && m_splashScreen + 1.0f < SPLASHSCREENS_NUM) {
 		m_splashScreenState = SplashScreenState::CHANGE_NEXT;
 	} else if(m_splashScreen + 1.0f >= SPLASHSCREENS_NUM) {
-		m_currentState = GLEngine::ScreenState::CHANGE_NEXT;
+		m_screenState = BARE2D::ScreenState::CHANGE_NEXT;
 	}
 
 	if(m_splashScreenState != SplashScreenState::NONE) {
@@ -125,40 +126,18 @@ void StartupScreen::draw() {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 
-	m_uiTextureProgram.use();
-
-	GLint textureUniform = m_uiTextureProgram.getUniformLocation("textureSampler");
-	glUniform1i(textureUniform, 0);
-	GLEngine::GLContextManager::getGLContext()->setActiveTexture(GL_TEXTURE0);
-
-	// Camera matrix
-	glm::mat4 projectionMatrix = m_camera.getCameraMatrix();
-	GLint	  pUniform		   = m_uiTextureProgram.getUniformLocation("P");
-	glUniformMatrix4fv(pUniform, 1, GL_FALSE, &projectionMatrix[0][0]);
-
-	m_spriteBatch.begin();
+	m_renderer->begin();
 
 	for(auto ATxt: m_textAnimations)
-		ATxt.draw(m_spriteFont, m_spriteBatch, m_time, m_splashScreen);
+		ATxt.draw(m_fontRenderer, m_renderer, m_time, m_splashScreen);
 	for(auto AImg: m_imageAnimations)
-		AImg.draw(m_spriteBatch, m_time, m_splashScreen);
+		AImg.draw(m_renderer, m_time, m_splashScreen);
 
-	m_spriteBatch.end();
-	m_spriteBatch.renderBatch();
-
-	m_uiTextureProgram.unuse();
+	m_renderer->end();
+	m_renderer->render();
 }
 
 /// StartupScreen PRIVATE FUNCTIONS
-
-void StartupScreen::initShaders() {
-	m_uiTextureProgram.compileShaders(ASSETS_FOLDER_PATH + "Shaders/textureShader.vert",
-									  ASSETS_FOLDER_PATH + "Shaders/textureShader.frag");
-	m_uiTextureProgram.addAttribute("vertexPosition");
-	m_uiTextureProgram.addAttribute("vertexColour");
-	m_uiTextureProgram.addAttribute("vertexUV");
-	m_uiTextureProgram.linkShaders();
-}
 
 void StartupScreen::initUI() {
 	SDL_ShowCursor(0);
@@ -166,47 +145,47 @@ void StartupScreen::initUI() {
 
 void StartupScreen::initAnimations() {
 	{
-		m_textAnimations.emplace_back(glm::vec2(m_window->getScreenWidth() / 2.0, m_window->getScreenHeight() * 0.75),
+		m_textAnimations.emplace_back(glm::vec2(m_window->getWidth() / 2.0, m_window->getHeight() * 0.75),
 									  2.0f,
 									  6.0f,
 									  3.0f,
-									  GLEngine::ColourRGBA8(255.0f, 255.0f, 255.0f, 255.0f),
+									  BARE2D::Colour(255.0f, 255.0f, 255.0f, 255.0f),
 									  "An experience by",
 									  glm::vec2(1.0f, 1.0f),
 									  SPLASHSCREEN_STUDIO);
-		m_textAnimations.emplace_back(glm::vec2(m_window->getScreenWidth() / 2.0, m_window->getScreenHeight() * 0.05),
+		m_textAnimations.emplace_back(glm::vec2(m_window->getWidth() / 2.0, m_window->getHeight() * 0.05),
 									  6.0f,
 									  10.0f,
 									  3.0f,
-									  GLEngine::ColourRGBA8(255.0f, 255.0f, 255.0f, 255.0f),
+									  BARE2D::Colour(255.0f, 255.0f, 255.0f, 255.0f),
 									  "Exploratory Studios",
 									  glm::vec2(1.25f, 1.25f),
 									  SPLASHSCREEN_STUDIO);
 
-		m_imageAnimations.emplace_back(glm::vec2(m_window->getScreenWidth() * 0.5f, m_window->getScreenHeight() * 0.5f),
+		m_imageAnimations.emplace_back(glm::vec2(m_window->getWidth() * 0.5f, m_window->getHeight() * 0.5f),
 									   2.0f,
 									   10.0f,
 									   3.0f,
-									   GLEngine::ColourRGBA8(200.0f, 200.0f, 200.0f, 255.0f),
+									   BARE2D::Colour(200.0f, 200.0f, 200.0f, 255.0f),
 									   ASSETS_FOLDER_PATH + "Textures/StartupScreens/Studio/Logo.png",
 									   glm::vec2(200.0f, 200.0f),
 									   SPLASHSCREEN_STUDIO);
 	}
 
 	{
-		m_textAnimations.emplace_back(glm::vec2(m_window->getScreenWidth() / 2.0, m_window->getScreenHeight() * 0.75),
+		m_textAnimations.emplace_back(glm::vec2(m_window->getWidth() / 2.0, m_window->getHeight() * 0.75),
 									  2.0f,
 									  6.0f,
 									  3.0f,
-									  GLEngine::ColourRGBA8(255.0f, 255.0f, 255.0f, 255.0f),
+									  BARE2D::Colour(255.0f, 255.0f, 255.0f, 255.0f),
 									  "This game uses",
 									  glm::vec2(1.0f, 1.0f),
 									  SPLASHSCREEN_OPENGL_SDL);
-		m_textAnimations.emplace_back(glm::vec2(m_window->getScreenWidth() / 2.0, m_window->getScreenHeight() * 0.05),
+		m_textAnimations.emplace_back(glm::vec2(m_window->getWidth() / 2.0, m_window->getHeight() * 0.05),
 									  6.0f,
 									  10.0f,
 									  3.0f,
-									  GLEngine::ColourRGBA8(255.0f, 255.0f, 255.0f, 255.0f),
+									  BARE2D::Colour(255.0f, 255.0f, 255.0f, 255.0f),
 									  "OpenGL 3.0 & SDL 2.0",
 									  glm::vec2(1.0f, 1.0f),
 									  SPLASHSCREEN_OPENGL_SDL);
@@ -214,17 +193,7 @@ void StartupScreen::initAnimations() {
 }
 
 void StartupScreen::checkInput() {
-	SDL_Event evnt;
-	while(SDL_PollEvent(&evnt)) {
-		m_game->onSDLEvent(evnt);
-		m_gui.onSDLEvent(evnt);
-		switch(evnt.type) {
-			case SDL_QUIT:
-				m_currentState = GLEngine::ScreenState::EXIT_APPLICATION;
-				break;
-			case SDL_KEYUP:
-				m_splashScreenState = SplashScreenState::CHANGE_NEXT;
-				break;
-		}
+	if(m_input->isKeyPressed(SDLK_SPACE)) {
+		m_splashScreenState = SplashScreenState::CHANGE_NEXT;
 	}
 }

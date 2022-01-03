@@ -1,10 +1,10 @@
 #include "Buff.h"
 
-#include <ResourceManager.h>
+#include <ResourceManager.hpp>
+#include <LuaScriptQueue.hpp>
+#include <XMLDataManager.hpp>
 
-#include "ScriptQueue.h"
-#include "XMLDataTypes.h"
-#include "XMLData.h"
+#include "CustomXMLTypes.h"
 
 #include "Entity.h"
 
@@ -17,24 +17,24 @@ Buff::Buff(Entity* owner, unsigned int id) {
 }
 
 void Buff::init() {
-	XMLModule::BuffData d = XMLModule::XMLData::getBuffData(m_id);
+	XMLModule::BuffData d = getBuffData(m_id);
 
-	m_textureId	  = GLEngine::ResourceManager::getTexture(d.texture).id;
+	m_textureId	  = d.texture.id;
 	m_duration	  = d.duration;
 	m_name		  = d.name;
 	m_description = d.description;
-	m_tickScript  = d.tickScript.getID();
+	m_tickScript  = d.tickScript;
 }
 
 void Buff::tick() {
 	if(isActive()) {
 		m_duration--;
-		ScriptingModule::ScriptQueue::activateScript(m_tickScript, m_owner->generateLuaValues());
+		BARE2D::LuaScriptQueue::getInstance()->addLuaScript(m_tickScript);
 	}
 }
 
-void Buff::draw(GLEngine::SpriteBatch& sb, glm::vec4& destRect, float& depth) {
-	sb.draw(destRect, glm::vec4(0.0f, 0.0f, 1.0f, 1.0f), m_textureId, depth, GLEngine::ColourRGBA8(255, 255, 255, 255));
+void Buff::draw(BARE2D::BasicRenderer* renderer, glm::vec4& destRect, float& depth) {
+	renderer->draw(destRect, glm::vec4(0.0f, 0.0f, 1.0f, 1.0f), m_textureId, depth, BARE2D::Colour(255, 255, 255, 255));
 }
 
 const std::string Buff::getName() const {

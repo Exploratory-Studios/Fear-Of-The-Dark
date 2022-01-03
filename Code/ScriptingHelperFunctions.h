@@ -4,9 +4,8 @@
 #include <string>
 #include <vector>
 
-#include "LuaHeaders.h"
-
-#include "ScriptQueue.h"
+#include <LuaScriptQueue.hpp>
+#include <LuaHeaders.hpp>
 
 class World;
 namespace QuestModule {
@@ -14,14 +13,6 @@ namespace QuestModule {
 }
 class GameplayScreen;
 class AudioManager;
-#include <ParticleEngine2D.h>
-namespace ScriptingModule {
-	class LuaScript;
-	class Script;
-} // namespace ScriptingModule
-namespace SaveDataTypes {
-	class MetaData;
-}
 class Entity;
 class Tile;
 
@@ -35,17 +26,7 @@ namespace ScriptingModule {
 
 	/// Wrapper functions:
 
-	void  pushDepsToRegistry(lua_State*					 L,
-							 QuestModule::QuestManager*	 qm,
-							 GameplayScreen*			 gs,
-							 AudioManager*				 am,
-							 GLEngine::ParticleEngine2D* p);
-	void  pushFunction(lua_State* L, lua_CFunction func, std::string name);
-	void  setUpvalue(lua_State* L, const char* key, void* ptr);
-	void* getUpvalue(lua_State* L, const char* key);
-	void  createArgumentsTable(lua_State* T, std::vector<Argument>& args);
-
-	void setBlock(World* world, unsigned int id, glm::vec2 pos, int layer, SaveDataTypes::MetaData metaData);
+	void setBlock(World* world, unsigned int id, glm::vec2 pos, int layer);
 	void removeBlock(World* world, int x, int y, unsigned int layer);
 	void showBlock(World* world, int x, int y, unsigned int layer);
 	void hideBlock(World* world, int x, int y, unsigned int layer);
@@ -85,10 +66,5 @@ namespace ScriptingModule {
 	std::vector<Entity*> areaEntityTarget(World*	world,
 										  glm::vec2 pos1,
 										  glm::vec2 pos2); // returns an array of entities' indices
-
-	void lua_pushintegertotable(lua_State* L, int index, int value);
-	void lua_pushnumbertotable(lua_State* L, int index, float value);
-	void lua_pushstringtotable(lua_State* L, int index, char* value);
-	void lua_pushthreadtotable(lua_State* L, int index, lua_State* thread);
 
 } // namespace ScriptingModule

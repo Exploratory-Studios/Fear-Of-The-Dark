@@ -1,8 +1,8 @@
 #pragma once
 
-#include <GUI.h>
-#include <Camera2D.h>
-#include <InputManager.h>
+#include <BARECEGUI.hpp>
+#include <Camera2D.hpp>
+#include <InputManager.hpp>
 
 #include "EntityNPC.h"
 
@@ -12,20 +12,20 @@ class EntityPlayer : public EntityNPC {
 	friend class WorldIOManager;
 
   public:
-	EntityPlayer(glm::vec2 pos, unsigned int layer, SaveDataTypes::MetaData data, bool loadTex);
+	EntityPlayer(glm::vec2 pos, unsigned int layer);
 	virtual ~EntityPlayer();
-	
+
 	void init();
 	void init(SaveDataTypes::EntityPlayerData& data); // For loading saves.
 
 	void initGUI(); /// TODO: Move GUI to GameplayScreen
 
-	virtual void onDraw(GLEngine::SpriteBatch& sb, float time, int layerDifference, float xOffset) override;
-	void		 drawGUI(GLEngine::SpriteBatch& sb, GLEngine::SpriteFont& sf);
+	virtual void onDraw(BARE2D::BumpyRenderer* renderer, float time, int layerDifference, float xOffset) override;
+	void		 drawGUI(BARE2D::BasicRenderer* renderer, BARE2D::FontRenderer* fontRenderer);
 
 	void updateStats(float timeStep);
 	void updateMouse(glm::vec2 mouseCoords);
-	void updateInput(GLEngine::InputManager* input);
+	void updateInput(BARE2D::InputManager* input);
 
 	/// Getters
 	float getSanity() {
@@ -82,7 +82,7 @@ class EntityPlayer : public EntityNPC {
 	bool m_questListOpen = false;
 	bool m_skillTreeOpen = false;
 
-	GLEngine::InputManager* m_input = nullptr; /// TODO: What the hell, past Davis??? Move this shit outta here!
+	BARE2D::InputManager* m_input = nullptr; /// TODO: What the hell, past Davis??? Move this shit outta here!
 
 	CEGUI::PopupMenu* m_statusBoxFrame = nullptr;
 	CEGUI::PopupMenu* m_buffBoxFrame   = nullptr;

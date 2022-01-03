@@ -1,9 +1,9 @@
 #pragma once
 
 #include <map>
-#include <SpriteBatch.h>
-#include <SpriteFont.h>
-#include <DebugRenderer.h>
+#include <BumpyRenderer.hpp>
+#include <FontRenderer.hpp>
+#include <DebugRenderer.hpp>
 #include <glm/glm.hpp>
 #include <string>
 #include <vector>
@@ -28,11 +28,10 @@ class EntityManager {
 	void queueEntityToRemove(std::string UUID);
 	void queueEntityToAdd(Entity* entity);
 
-	void drawEntities(GLEngine::SpriteBatch&   sb,
-					  GLEngine::SpriteFont&	   sf,
-					  GLEngine::DebugRenderer& dr,
+	void drawEntities(BARE2D::BumpyRenderer*   renderer,
+					  BARE2D::FontRenderer*	   fontRenderer,
+					  BARE2D::DebugRenderer* dr,
 					  glm::vec4				   destRect);
-	void drawEntitiesNormal(GLEngine::SpriteBatch& sb, glm::vec4 destRect);
 	void updateEntities(float timeStep); // Removes/adds necessary entities (determined by queues)
 	void tickEntities();
 

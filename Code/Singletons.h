@@ -1,10 +1,10 @@
 #pragma once
 
-#include <GUI.h>
-#include <Camera2D.h>
+#include <BARECEGUI.hpp>
+#include <Camera2D.hpp>
 
 #include "EntityManager.h"
-#include "AudioManager.h"
+#include "GameAudioManager.h"
 #include "World.h"
 
 class Singletons {
@@ -15,39 +15,36 @@ class Singletons {
 		m_entityManager = new EntityManager();
 		return m_entityManager;
 	}
-	
+
 	static void deleteEntityManager() {
 		if(m_entityManager)
 			delete m_entityManager;
 		m_entityManager = nullptr;
 	}
 
-	static AudioManager* getAudioManager() {
+	static GameAudioManager* getAudioManager() {
 		if(m_audioManager)
 			return m_audioManager;
-		m_audioManager = new AudioManager();
+		m_audioManager = new GameAudioManager();
 		return m_audioManager;
 	}
 
-	static GLEngine::GUI* getGUI() {
+	static BARE2D::BARECEGUI* getGUI() {
 		if(m_gui)
 			return m_gui;
-		m_gui = new GLEngine::GUI();
+		m_gui = BARE2D::BARECEGUI::getInstance();
 		return m_gui;
 	}
-	
+
 	static void destroyGUI() {
-		if(m_gui) {
-			m_gui->destroy();
-			delete m_gui;
-		}
 		m_gui = nullptr;
 	}
 
-	static GLEngine::Camera2D* getGameCamera() {
-		if(m_gameCamera)
-			return m_gameCamera;
-		m_gameCamera = new GLEngine::Camera2D();
+	static void setGameCamera(BARE2D::Camera2D* cam) {
+		m_gameCamera = cam;
+	}
+
+	static BARE2D::Camera2D* getGameCamera() {
 		return m_gameCamera;
 	}
 
@@ -71,9 +68,9 @@ class Singletons {
 	}
 
   private:
-	static EntityManager*	   m_entityManager;
-	static AudioManager*	   m_audioManager;
-	static GLEngine::GUI*	   m_gui;
-	static GLEngine::Camera2D* m_gameCamera;
-	static World*			   m_world;
+	static EntityManager*	  m_entityManager;
+	static GameAudioManager*  m_audioManager;
+	static BARE2D::BARECEGUI* m_gui;
+	static BARE2D::Camera2D*  m_gameCamera;
+	static World*			  m_world;
 };

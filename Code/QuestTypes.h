@@ -1,8 +1,7 @@
 #pragma once
 
-#include "XMLData.h"
-
-#include "LuaScript.h"
+#include <XMLDataManager.hpp>
+#include <LuaScript.hpp>
 
 namespace ScriptingModule {
 	class Scripter;
@@ -29,10 +28,9 @@ namespace QuestModule {
              - Make them available for read-only!
         **/
 	  public:
-		Objective(std::string& instructions, unsigned int& scriptID);
+		Objective(std::string& instructions, BARE2D::LuaScript& script);
 
-		void start(
-			ScriptingModule::Scripter* scripter); // Starts the confirmation "script", grabbing it's LuaScript pointer.
+		void start(); // Starts the confirmation "script", grabbing it's LuaScript pointer.
 		bool update();							  // Checks if confirmation "script" finished.
 
 		std::string getDisplayText();
@@ -41,8 +39,8 @@ namespace QuestModule {
 	  private:
 		std::string m_instructions;
 
-		unsigned int				m_confirmationScript;
-		ScriptingModule::LuaScript* m_confirmationScriptHandle = nullptr;
+		BARE2D::LuaScript				m_confirmationScript;
+		unsigned int m_confirmationScriptHandle = -1;
 	};
 
 	class Quest {
@@ -56,24 +54,24 @@ namespace QuestModule {
 	  public:
 		Quest(unsigned int id);
 
-		void start(ScriptingModule::Scripter* scripter);
-		void update(ScriptingModule::Scripter* scripter);
+		void start();
+		void update();
 
 		QuestState			   getState();
 		std::vector<Objective> getObjectives(
 			ObjectiveState state); // Returns a vector of objectives (copies) with visibility=visibilityLevel
 
 	  private:
-		void finish(ScriptingModule::Scripter* scripter);
+		void finish();
 
 		std::vector<unsigned int> getCurrentObjectives();
-		bool					  startObjective(ScriptingModule::Scripter* scripter, unsigned int i);
+		bool					  startObjective(unsigned int i);
 
 		void initObjectives(std::vector<unsigned int> objectiveData);
 
 		std::vector<Objective>		m_objectives;
 		std::vector<ObjectiveState> m_objectiveStates;
 		QuestState					m_state = QuestState::UNASSIGNED;
-		unsigned int				m_completionScript;
+		BARE2D::LuaScript				m_completionScript;
 	};
 } // namespace QuestModule

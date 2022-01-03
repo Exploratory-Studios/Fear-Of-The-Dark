@@ -5,6 +5,15 @@
       <![CDATA[00040001N0005Debug0000000000000001N0007DebugVB0000000000000001N0015Release - Linux0000000000000001N0017Release - Windows000000000000]]>
     </Plugin>
   </Plugins>
+  <Reconciliation>
+    <Regexes/>
+    <Excludepaths/>
+    <Ignorefiles/>
+    <Extensions>
+      <![CDATA[*.cpp;*.c;*.h;*.hpp;*.xrc;*.wxcp;*.fbp]]>
+    </Extensions>
+    <Topleveldir>/home/davis-dev/Documents/Programming/C++/CodingGithub/Fear-Of-The-Dark/Code</Topleveldir>
+  </Reconciliation>
   <VirtualDirectory Name="Questing">
     <File Name="../Assets/Questing/Readme"/>
   </VirtualDirectory>
@@ -23,7 +32,9 @@
     <File Name="Tile.cpp"/>
   </VirtualDirectory>
   <VirtualDirectory Name="Core">
-    <File Name="CircularVector.h"/>
+    <File Name="Categories.cpp"/>
+    <File Name="GameAudioManager.cpp"/>
+    <File Name="GameAudioManager.h"/>
     <File Name="Factory.h"/>
     <File Name="Factory.cpp"/>
     <File Name="Singletons.cpp"/>
@@ -38,25 +49,15 @@
     <File Name="Options.cpp"/>
     <File Name="Main.h"/>
     <File Name="Main.cpp"/>
-    <File Name="Logging.h"/>
-    <File Name="Logging.cpp"/>
     <File Name="ExtraFunctions.h"/>
     <File Name="Categories.h"/>
-    <File Name="AudioManager.h"/>
-    <File Name="AudioManager.cpp"/>
     <File Name="App.h"/>
     <File Name="App.cpp"/>
   </VirtualDirectory>
   <VirtualDirectory Name="Saving &amp; XML">
-    <File Name="XMLDataTypes.tpp"/>
-    <File Name="XMLDataTypes.h"/>
-    <File Name="XMLDataTypes.cpp"/>
-    <File Name="XMLData.h"/>
-    <File Name="XMLData.cpp"/>
+    <File Name="CustomXMLTypes.h"/>
     <File Name="SaveDataTypes.h"/>
     <File Name="SaveDataTypes.cpp"/>
-    <File Name="MetaData.h"/>
-    <File Name="MetaData.cpp"/>
   </VirtualDirectory>
   <VirtualDirectory Name="Screens">
     <File Name="ScreenIndices.h"/>
@@ -74,6 +75,8 @@
     <File Name="GameplayScreen.cpp"/>
   </VirtualDirectory>
   <VirtualDirectory Name="Entities">
+    <File Name="EntityFunctions.h"/>
+    <File Name="EntityFunctions.cpp"/>
     <File Name="EntityManager.cpp"/>
     <File Name="EntityManager.h"/>
     <File Name="EntityProjectile.h"/>
@@ -84,16 +87,14 @@
     <File Name="EntityNPC.cpp"/>
     <File Name="EntityItem.h"/>
     <File Name="EntityItem.cpp"/>
-    <File Name="Entities/EntityFunctions.h"/>
-    <File Name="Entities/EntityFunctions.cpp"/>
     <File Name="Entity.h"/>
     <File Name="Entity.cpp"/>
   </VirtualDirectory>
   <VirtualDirectory Name="Items">
-    <File Name="Items/ItemWeapon.cpp"/>
-    <File Name="Items/ItemWeapon.h"/>
-    <File Name="Items/ItemBlock.cpp"/>
-    <File Name="Items/ItemBlock.h"/>
+    <File Name="ItemWeapon.h"/>
+    <File Name="ItemWeapon.cpp"/>
+    <File Name="ItemBlock.h"/>
+    <File Name="ItemBlock.cpp"/>
     <File Name="ItemArmour.h"/>
     <File Name="Item.cpp"/>
     <File Name="ItemArmour.cpp"/>
@@ -128,14 +129,9 @@
     <File Name="Buff.h"/>
     <File Name="WorldIOManager.h"/>
     <File Name="World.h"/>
-    <File Name="ScriptQueue.h"/>
     <File Name="ScriptingHelperFunctions.h"/>
-    <File Name="ScripterMain.h"/>
     <File Name="QuestTypes.h"/>
     <File Name="QuestManager.h"/>
-    <File Name="LuaScript.h"/>
-    <File Name="LuaHeaders.h"/>
-    <File Name="EventQueue.h"/>
     <File Name="DialogueManager.h"/>
     <File Name="Console.h"/>
     <File Name="Attack.h"/>
@@ -146,16 +142,27 @@
     <File Name="WorldIOManager.cpp"/>
     <File Name="World.cpp"/>
     <File Name="ScriptingHelperFunctions.cpp"/>
-    <File Name="ScripterMain.cpp"/>
-    <File Name="ScriptQueue.cpp"/>
     <File Name="QuestTypes.cpp"/>
     <File Name="QuestManager.cpp"/>
-    <File Name="LuaScript.cpp"/>
-    <File Name="EventQueue.cpp"/>
     <File Name="Console.cpp"/>
   </VirtualDirectory>
   <Description/>
   <Dependencies/>
+  <Dependencies Name="Debug">
+    <Project Name="BARE2DEngine"/>
+  </Dependencies>
+  <Dependencies Name="DebugVB">
+    <Project Name="BARE2DEngine"/>
+  </Dependencies>
+  <Dependencies Name="Release - Linux">
+    <Project Name="BARE2DEngine"/>
+  </Dependencies>
+  <Dependencies Name="Release - Windows">
+    <Project Name="BARE2DEngine"/>
+  </Dependencies>
+  <Dependencies Name="Release - Windows32">
+    <Project Name="BARE2DEngine"/>
+  </Dependencies>
   <Settings Type="Executable">
     <GlobalSettings>
       <Compiler Options="-std=c++17" C_Options="" Assembler="">
@@ -167,22 +174,20 @@
       <ResourceCompiler Options=""/>
     </GlobalSettings>
     <Configuration Name="Debug" CompilerType="GCC" DebuggerType="GNU gdb debugger" Type="Executable" BuildCmpWithGlobalSettings="append" BuildLnkWithGlobalSettings="append" BuildResWithGlobalSettings="append">
-      <Compiler Options="-g3 -g -DDEV_CONTROLS -DDEBUG -DLINUX -fexceptions -DLUA_APICHECK " C_Options="" Assembler="" Required="yes" PreCompiledHeader="" PCHInCommandLine="no" PCHFlags="" PCHFlagsPolicy="0">
-        <IncludePath Value="Items"/>
+      <Compiler Options="-g3 -g -DDEV_CONTROLS -DDEBUG -DLINUX -fexceptions -DLUA_APICHECK" C_Options="" Assembler="" Required="yes" PreCompiledHeader="" PCHInCommandLine="no" PCHFlags="" PCHFlagsPolicy="0">
         <IncludePath Value="Code"/>
         <IncludePath Value="include"/>
-        <IncludePath Value="../../GLEngine"/>
+        <IncludePath Value="../BARE2DEngine/Source/"/>
         <IncludePath Value="/usr/include/x86_64-linux-gnu/cegui-0.8.7"/>
       </Compiler>
       <Linker Options="" Required="yes">
-        <LibraryPath Value="../../GLEngine/bin/Release/"/>
+        <LibraryPath Value="../BARE2DEngine/Debug/"/>
         <LibraryPath Value="/usr/lib/x86_64-linux-gnu/"/>
-        <LibraryPath Value="./"/>
         <Library Value="libboost_thread.a"/>
         <Library Value="libboost_filesystem.a"/>
         <Library Value="libboost_system.a"/>
         <Library Value="lua5.3"/>
-        <Library Value="libGLEngine.a"/>
+        <Library Value="libBARE2DEngine.a"/>
         <Library Value="CEGUIBase-0"/>
         <Library Value="CEGUIOpenGLRenderer-0"/>
         <Library Value="SDL2"/>
@@ -277,10 +282,9 @@
     </Configuration>
     <Configuration Name="Release - Linux" CompilerType="GCC" DebuggerType="GNU gdb debugger" Type="Executable" BuildCmpWithGlobalSettings="append" BuildLnkWithGlobalSettings="append" BuildResWithGlobalSettings="append">
       <Compiler Options="-fexpensive-optimizations -flto -O3 -DLINUX -fexceptions -DLUA_APICHECK " C_Options="" Assembler="" Required="yes" PreCompiledHeader="" PCHInCommandLine="no" PCHFlags="" PCHFlagsPolicy="0">
-        <IncludePath Value="Items"/>
         <IncludePath Value="Code"/>
         <IncludePath Value="include"/>
-        <IncludePath Value="../../GLEngine"/>
+        <IncludePath Value="../BARE2DEngine/Source"/>
         <IncludePath Value="/usr/include/x86_64-linux-gnu/cegui-0.8.7"/>
       </Compiler>
       <Linker Options="-flto -s" Required="yes">
@@ -451,11 +455,4 @@
       </Completion>
     </Configuration>
   </Settings>
-  <Dependencies Name="DebugVB"/>
-  <Dependencies Name="Release - Linux"/>
-  <Dependencies Name="Release - Windows"/>
-  <Dependencies Name="Release - Windows32"/>
-  <Dependencies Name="Debug">
-    <Project Name="GLEngine"/>
-  </Dependencies>
 </CodeLite_Project>

@@ -1,12 +1,13 @@
 #include "Tile.h"
 
-#include "World.h"
-
 #include <random>
 #include <boost/thread.hpp>
-#include <ResourceManager.h>
 
-#include "XMLData.h"
+#include <ResourceManager.hpp>
+#include <XMLDataManager.hpp>
+
+#include "CustomXMLTypes.h"
+#include "World.h"
 #include "Singletons.h"
 
 #include "TileContainer.h"
@@ -14,73 +15,46 @@
 Tile::Tile() {
 }
 
-Tile::Tile(glm::vec2 pos, unsigned int layer, unsigned int id, SaveDataTypes::MetaData data, bool loadTex) :
+Tile::Tile(glm::vec2 pos, unsigned int layer, unsigned int id) :
 	m_pos(pos), m_layer(layer), m_id(id) {
-	XMLModule::TileData t = XMLModule::XMLData::getTileData(id);
+	XMLModule::TileData t = getTileData(id);
 
-	m_texturePath				= ASSETS_FOLDER_PATH + "/Textures/" + t.texture;
-	m_bumpMapPath				= ASSETS_FOLDER_PATH + "/Textures/BumpMaps/" + t.bumpMap;
-	m_emittedLight				= t.emittedLight;
-	m_emittedHeat				= t.emittedHeat;
-	m_size						= t.size;
-	m_solid						= t.isSolid;
-	m_draw						= t.isDrawn;
-	m_natural					= t.isNatural;
-	m_transparent				= t.isTransparent;
-	m_updateScriptID			= t.updateScript.getID();
-	m_tickScriptID				= t.tickScript.getID();
-	m_interactScriptID_walkedOn = t.interactScript_walkedOn.getID();
-	m_interactScriptID_used		= t.interactScript_used.getID();
-
-	m_metaData = t.getMetaData();
-
-	if(loadTex && m_draw) {
-		loadTexture();
-	} else {
-		m_textureId = (GLuint)-1;
-	}
+	m_texture				  = t.texture;
+	m_bumpmap				  = t.bumpmap;
+	m_emittedLight			  = t.emittedLight;
+	m_emittedHeat			  = t.emittedHeat;
+	m_size					  = t.size;
+	m_solid					  = t.isSolid;
+	m_draw					  = t.isDrawn;
+	m_natural				  = t.isNatural;
+	m_transparent			  = t.isTransparent;
+	m_updateScript			  = t.updateScript;
+	m_tickScript			  = t.tickScript;
+	m_interactScript_walkedOn = t.interactScript_walkedOn;
+	m_interactScript_used	  = t.interactScript_used;
 
 	m_depthForRender = 0.1f + (m_layer * (1.0f / (float)(WORLD_DEPTH)) * 0.9f);
 }
 
-Tile::Tile(glm::vec2 pos, unsigned int layer, TileIDs id, SaveDataTypes::MetaData data, bool loadTex) :
+Tile::Tile(glm::vec2 pos, unsigned int layer, TileIDs id) :
 	m_pos(pos), m_layer(layer), m_id((unsigned int)id) {
-	XMLModule::TileData t = XMLModule::XMLData::getTileData((unsigned int)id);
+	XMLModule::TileData t = getTileData((unsigned int)id);
 
-	m_texturePath				= ASSETS_FOLDER_PATH + "/Textures/" + t.texture;
-	m_bumpMapPath				= ASSETS_FOLDER_PATH + "/Textures/BumpMaps/" + t.bumpMap;
-	m_emittedLight				= t.emittedLight;
-	m_emittedHeat				= t.emittedHeat;
-	m_size						= t.size;
-	m_solid						= t.isSolid;
-	m_draw						= t.isDrawn;
-	m_natural					= t.isNatural;
-	m_transparent				= t.isTransparent;
-	m_updateScriptID			= t.updateScript.getID();
-	m_tickScriptID				= t.tickScript.getID();
-	m_interactScriptID_walkedOn = t.interactScript_walkedOn.getID();
-	m_interactScriptID_used		= t.interactScript_used.getID();
-
-	m_metaData = t.getMetaData();
-
-	if(loadTex && m_draw) {
-		loadTexture();
-	} else {
-		m_textureId = (GLuint)-1;
-	}
+	m_texture				  = t.texture;
+	m_bumpmap				  = t.bumpmap;
+	m_emittedLight			  = t.emittedLight;
+	m_emittedHeat			  = t.emittedHeat;
+	m_size					  = t.size;
+	m_solid					  = t.isSolid;
+	m_draw					  = t.isDrawn;
+	m_natural				  = t.isNatural;
+	m_transparent			  = t.isTransparent;
+	m_updateScript			  = t.updateScript;
+	m_tickScript			  = t.tickScript;
+	m_interactScript_walkedOn = t.interactScript_walkedOn;
+	m_interactScript_used	  = t.interactScript_used;
 
 	m_depthForRender = 0.1f + (m_layer * (1.0f / (float)(WORLD_DEPTH)) * 0.9f);
-}
-
-void Tile::initParticles(GLEngine::ParticleEngine2D* engine) {
-	/*std::string fp = ASSETS_FOLDER_PATH + "/Textures/Blocks/Dirt.png";
-	std::string bm = ASSETS_FOLDER_PATH + "/Textures/BumpMaps/Dirt.png";
-	//m_walkParticleBatch = engine->getParticleBatch(MAX_TYPE_PARTICLES, 0.01f, fp, bm, updateParticle);*/ /// TODO: Move particle system to scripting system
-}
-
-void Tile::loadTexture() {
-	m_textureId = GLEngine::ResourceManager::getTexture(m_texturePath).id;
-	m_bumpMapId = GLEngine::ResourceManager::getTexture(m_bumpMapPath).id;
 }
 
 float Tile::getLight() {
@@ -193,8 +167,8 @@ void Tile::update(float time, bool updateLighting, float& sunlight) {
 }
 
 void Tile::specialUpdate(float time) {
-	if(m_updateScriptID != (unsigned int)-1)
-		ScriptingModule::ScriptQueue::activateScript(m_updateScriptID, generateLuaData());
+	if(m_updateScript.inited)
+		BARE2D::LuaScriptQueue::getInstance()->addLuaScript(m_updateScript);
 }
 
 void Tile::tick(float tickTime, float& sunlight) {
@@ -208,30 +182,16 @@ void Tile::tick(float tickTime, float& sunlight) {
 
 	onTick();
 }
-#include <iostream>
-void Tile::draw(GLEngine::SpriteBatch& sb, GLEngine::SpriteFont& sf, int& xOffset, int& depthDifference) {
+
+void Tile::draw(BARE2D::BumpyRenderer* renderer,
+				BARE2D::FontRenderer*  fontRenderer,
+				int&				   xOffset,
+				int&				   depthDifference) {
 	if(m_draw) {
-		if(m_textureId == (GLuint)-1) {
-			loadTexture();
-		}
-
 		glm::vec4 pos = glm::vec4(m_pos.x + xOffset, m_pos.y, m_size.x, m_size.y);
-		sb.draw(pos, glm::vec4(0.0f, 0.0f, 1.0f, 1.0f), m_textureId, m_depthForRender, m_colour);
+		renderer->draw(pos, glm::vec4(0.0f, 0.0f, 1.0f, 1.0f), m_texture.id, m_bumpmap.id, m_depthForRender, m_colour);
 
-		onDraw(sb, sf, pos, m_depthForRender);
-	}
-}
-
-void Tile::drawNormal(GLEngine::SpriteBatch& sb, int& xOffset, int& depthDifference) {
-	if(m_draw) {
-		if(m_bumpMapId == (GLuint)-1) {
-			loadTexture();
-		}
-
-		glm::vec4 pos = glm::vec4(m_pos.x + xOffset, m_pos.y, m_size.x, m_size.y);
-		sb.draw(pos, glm::vec4(0.0f, 0.0f, 1.0f, 1.0f), m_bumpMapId, m_depthForRender, m_colour);
-
-		//onDraw(sb, sf, pos, depth);
+		onDraw(renderer, fontRenderer, pos, m_depthForRender);
 	}
 }
 
@@ -381,7 +341,6 @@ SaveDataTypes::TileData Tile::getSaveData() {
 	SaveDataTypes::TileData d;
 	d.pos	   = m_pos;
 	d.id	   = m_id;
-	d.metaData = getMetaData();
 	d.layer	   = m_layer;
 	return d;
 }

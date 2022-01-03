@@ -1,7 +1,8 @@
 #pragma once
 
 #include <string>
-#include <SpriteBatch.h>
+#include <BasicRenderer.hpp>
+#include <LuaScript.hpp>
 
 class Entity;
 
@@ -11,7 +12,7 @@ class Buff {
 	void init();
 
 	void tick();
-	void draw(GLEngine::SpriteBatch& sb, glm::vec4& destRect, float& depth);
+	void draw(BARE2D::BasicRenderer* renderer, glm::vec4& destRect, float& depth);
 
 	const std::string  getName() const;
 	const std::string  getDescription() const;
@@ -23,7 +24,7 @@ class Buff {
 	unsigned int m_id;
 	std::string	 m_name;
 	std::string	 m_description;
-	unsigned int m_tickScript;
+	BARE2D::LuaScript m_tickScript;
 	GLuint		 m_textureId;
 	Entity*		 m_owner = nullptr;
 };

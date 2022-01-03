@@ -1,13 +1,13 @@
 #include "World.h"
 
 #include <cstdlib>
+
+#include <XMLDataManager.hpp>
+#include <ShaderProgram.hpp>
+
 #include "Tile.h"
 #include "FluidDomain.h"
 #include "EntityPlayer.h"
-
-#include "XMLData.h"
-
-#include "EventQueue.h"
 
 #include "Singletons.h"
 
@@ -31,7 +31,7 @@ World::~World() {
 			}
 		}
 	}
-	
+
 	Singletons::deleteEntityManager();
 }
 
@@ -73,8 +73,8 @@ void World::initFluids() {
 	}
 	m_fluidDomains.clear();
 
-	unsigned int fluidCount =
-		XMLModule::XMLData::getFluidCount(); // Number of fluids that can be placed, therefore number of domains we need.
+	unsigned int fluidCount = BARE2D::XMLDataManager::getDataCount(
+		"Fluid"); // Number of fluids that can be placed, therefore number of domains we need.
 
 	for(unsigned int i = 0; i < fluidCount; i++) {
 		m_fluidDomains.push_back(new FluidModule::FluidDomain(m_tiles, i));
@@ -92,11 +92,6 @@ void World::setTile(Tile* tile) {
 
 	specialUpdateTile(m_tiles[x][y][layer]);
 
-	std::vector<ScriptingModule::Argument> args = {ScriptingModule::Argument("blockID", std::to_string(id)),
-												   ScriptingModule::Argument("blockX", std::to_string(x)),
-												   ScriptingModule::Argument("blockY", std::to_string(y)),
-												   ScriptingModule::Argument("blockLayer", std::to_string(layer))};
-	EventModule::EventQueue::triggerEvent("setTile", args);
 	/*Tile* b = getTile(x, y, layer+1);
 	if(b) b->setNeedsSunCheck();
 	Tile* f = getTile(x, y, layer-1);
@@ -166,7 +161,7 @@ XMLModule::BiomeData World::getBiome(int x) {
 	unsigned int biomeID = m_biomesMap[chunkX];
 
 	// Get biome data from XML Data
-	return XMLModule::XMLData::getBiomeData(biomeID);
+	return getBiomeData(biomeID);
 }
 
 FluidModule::FluidDomain* World::getFluid(unsigned int index) {
@@ -238,7 +233,7 @@ void World::removeLight(Tile* t) {
 
 		m_lights.pop_back();
 	} else {
-		Logger::getInstance()->log("LIGHT NOT FOUND!", true);
+		BARE2D::Logger::getInstance()->log("LIGHT NOT FOUND!", true);
 	}
 }
 
@@ -313,28 +308,28 @@ void World::getRenderedLights(glm::vec4 destRect, float lights[MAX_LIGHTS_RENDER
 	}
 
 	for(int i = 0; i < MAX_LIGHTS_RENDERED; i++) {
-		glm::vec2 pos =
-			Singletons::getGameCamera()->convertWorldToScreen(glm::vec2(returnVal[i].x + 0.5f, returnVal[i].y + 0.5f));
+		glm::vec2 pos = Singletons::getGameCamera()->getViewedPositionFromScreenPosition(
+			glm::vec2(returnVal[i].x + 0.5f, returnVal[i].y + 0.5f));
 
 		lights[i * 3]	  = pos.x;
 		lights[i * 3 + 1] = pos.y;
 		lights[i * 3 + 2] =
-			returnVal[i].z * Singletons::getGameCamera()->getScale() * Singletons::getGameCamera()->getScale();
+			returnVal[i].z * Singletons::getGameCamera()->getScaleX() * Singletons::getGameCamera()->getScaleX();
 	}
 }
 
-void World::setLightsUniform(glm::vec4 destRect, GLEngine::GLSLProgram* textureProgram) {
+void World::setLightsUniform(glm::vec4 destRect, BARE2D::ShaderProgram* shader) {
 	float lights[MAX_LIGHTS_RENDERED * 3];
 	getRenderedLights(destRect, lights);
-	GLint textureUniform = textureProgram->getUniformLocation("lights");
-	glUniform3fv(textureUniform, MAX_LIGHTS_RENDERED, lights); /// TODO: Set define directive for 30 lights max.
+	//glUniform3fv(textureUniform, MAX_LIGHTS_RENDERED, lights); /// TODO: Set define directive for 30 lights max.
+
+	shader->setUniform("lights", lights, MAX_LIGHTS_RENDERED);
 }
 
-void World::drawTiles(GLEngine::SpriteBatch&   sb,
-					  GLEngine::SpriteFont&	   sf,
-					  GLEngine::DebugRenderer& dr,
-					  glm::vec4				   destRect,
-					  GLEngine::GLSLProgram*   textureProgram) {
+void World::drawTiles(BARE2D::BumpyRenderer* renderer,
+					  BARE2D::FontRenderer*	 fontRenderer,
+					  BARE2D::DebugRenderer* dr,
+					  glm::vec4				 destRect) {
 	/**
 	    Draws an area of tiles at position destRect.xy, with width and height of destRect.z and destRect.w respectively.
 	    Negative coordinates are mapped to accomodate for 'crossover'
@@ -358,8 +353,8 @@ void World::drawTiles(GLEngine::SpriteBatch&   sb,
 			for(unsigned int layer = 0; layer < WORLD_DEPTH; layer++) {
 				if(y >= 0) {
 					if(y < WORLD_HEIGHT) {
-						m_tiles[columnIndex][y][layer]->draw(sb, sf, offset, diff[layer]);
-						m_tiles[columnIndex][y][layer]->drawGUI(sb, sf, offset);
+						m_tiles[columnIndex][y][layer]->draw(renderer, fontRenderer, offset, diff[layer]);
+						m_tiles[columnIndex][y][layer]->drawGUI(renderer, fontRenderer, offset);
 						if(!m_tiles[columnIndex][y][layer]->isTransparent()) {
 							break;
 						}
@@ -370,36 +365,7 @@ void World::drawTiles(GLEngine::SpriteBatch&   sb,
 	}
 }
 
-void World::drawTilesNormal(GLEngine::SpriteBatch& sb, glm::vec4 destRect, GLEngine::GLSLProgram* textureProgram) {
-	EntityPlayer* player = Singletons::getEntityManager()->getPlayer();
-
-	int	  playerLayer = player->getLayer();
-	int	  diff[WORLD_DEPTH];
-	float blur[WORLD_DEPTH];
-	for(int i = 0; i < WORLD_DEPTH; i++) {
-		diff[i] = (playerLayer - i);
-	}
-
-	for(int x = destRect.x; x < destRect.z + destRect.x; x++) {
-		int columnIndex = (int)((x /*+destRect.x*/) + (getSize())) % getSize();
-		int offset		= (/*destRect.x + */ x) - columnIndex;
-
-		for(int y = destRect.y; y < destRect.w + destRect.y; y++) {
-			for(unsigned int layer = 0; layer < WORLD_DEPTH; layer++) {
-				if(y >= 0) {
-					if(y < WORLD_HEIGHT) {
-						m_tiles[columnIndex][y][layer]->drawNormal(sb, offset, diff[layer]);
-						if(!m_tiles[columnIndex][y][layer]->isTransparent()) {
-							break;
-						}
-					}
-				}
-			}
-		}
-	}
-}
-
-void World::drawTilesGUI(GLEngine::SpriteBatch& sb, GLEngine::SpriteFont& sf, glm::vec4 destRect) {
+void World::drawTilesGUI(BARE2D::BasicRenderer* renderer, BARE2D::FontRenderer* fontRenderer, glm::vec4 destRect) {
 	for(int x = destRect.x; x < destRect.z + destRect.x; x++) {
 		int columnIndex = (int)((x) + (getSize())) % getSize();
 		int offset		= (x)-columnIndex;
@@ -408,7 +374,7 @@ void World::drawTilesGUI(GLEngine::SpriteBatch& sb, GLEngine::SpriteFont& sf, gl
 			for(unsigned int layer = 0; layer < WORLD_DEPTH; layer++) {
 				if(y >= 0) {
 					if(y < WORLD_HEIGHT) {
-						m_tiles[columnIndex][y][layer]->drawGUI(sb, sf, offset);
+						m_tiles[columnIndex][y][layer]->drawGUI(renderer, fontRenderer, offset);
 					}
 				}
 			}
@@ -466,11 +432,11 @@ void World::tickTiles(glm::vec4 destRect) {
 	return;
 }
 
-void World::drawFluids(GLEngine::SpriteBatch& sb, glm::vec4& destRect) {
+void World::drawFluids(BARE2D::BumpyRenderer* renderer, glm::vec4& destRect) {
 	glDisable(GL_DEPTH_TEST); // Make sure that our fluids aren't blocked by... invisible fluids.
-	
+
 	for(unsigned int i = 0; i < m_fluidDomains.size(); i++) {
-		m_fluidDomains[i]->draw(sb, destRect);
+		m_fluidDomains[i]->draw(renderer, destRect);
 	}
 }
 
@@ -486,14 +452,14 @@ void World::updateFluids(float timeStep, glm::vec4& destRect) {
 	}
 }
 
-void World::drawDebug(GLEngine::DebugRenderer& dr, float xOffset) {
+void World::drawDebug(BARE2D::DebugRenderer* dr, float xOffset) {
 	//for(unsigned int i = 0; i < m_entities.size(); i++) {
 	//	m_entities[i]->debugDraw(dr, 0.0f); /// TODO: Finish these entity functions up and improve!
 	//}
 	//dr.end();
 }
 
-void World::drawSunlight(GLEngine::SpriteBatch& sb, glm::vec4 destRect) {
+void World::drawSunlight(BARE2D::BasicRenderer* renderer, glm::vec4 destRect) {
 	for(float y = destRect.y; y < (destRect.y + destRect.w); y++) {
 		if((int)y < 1) {
 			y = 0;
@@ -533,11 +499,11 @@ void World::drawSunlight(GLEngine::SpriteBatch& sb, glm::vec4 destRect) {
 			// Determine BR (bit 3)
 			corners |= (cornersVec.z > 0.0f) << 3;
 
-			sb.draw(glm::vec4((int)x, (int)y, 1.0f, 1.0f),
-					glm::vec4(0.0f, 0.0f, 1.0f, 1.0f),
-					0,
-					0.0f,
-					GLEngine::ColourRGBA8(light, corners, 255, 255));
+			renderer->draw(glm::vec4((int)x, (int)y, 1.0f, 1.0f),
+						   glm::vec4(0.0f, 0.0f, 1.0f, 1.0f),
+						   0,
+						   0.0f,
+						   BARE2D::Colour(light, corners, 255, 255));
 		}
 	}
 }

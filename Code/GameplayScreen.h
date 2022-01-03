@@ -1,13 +1,17 @@
 #pragma once
 
-#include <IGameScreen.h>
-#include <Window.h>
-#include <Camera2D.h>
-#include <GUI.h>
-#include <SpriteBatch.h>
-#include <DebugRenderer.h>
-#include <GLSLProgram.h>
-#include <SpriteFont.h>
+#include <Screen.hpp>
+#include <Window.hpp>
+#include <Camera2D.hpp>
+#include <BARECEGUI.hpp>
+#include <BumpyRenderer.hpp>
+#include <DebugRenderer.hpp>
+#include <ShaderProgram.hpp>
+#include <FBORenderer.hpp>
+#include <FontRenderer.hpp>
+#include <Logger.hpp>
+#include <ParticleEngine2D.hpp>
+#include <InputManager.hpp>
 
 #include <cstdio>
 
@@ -15,12 +19,10 @@
 
 #include "WorldIOManager.h"
 #include "QuestManager.h"
-#include "AudioManager.h"
-#include "ParticleEngine2D.h"
+#include "GameAudioManager.h"
 #include "DialogueManager.h"
 
 #include "ScreenIndices.h"
-#include "Logging.h"
 #include "Console.h"
 
 enum class GameState { PAUSE, PLAY };
@@ -28,42 +30,46 @@ enum class GameState { PAUSE, PLAY };
 class Scripter;
 class Console;
 
-class GameplayScreen : public GLEngine::IGameScreen {
-  public:
-	GameplayScreen(GLEngine::Window* window, WorldIOManager* WorldIOManager);
+class GameplayScreen : public BARE2D::Screen
+{
+public:
+	GameplayScreen(BARE2D::Window* window, WorldIOManager* WorldIOManager, BARE2D::InputManager* input);
 	virtual ~GameplayScreen();
 
 	virtual int	 getNextScreenIndex() const override;
-	virtual int	 getPreviousScreenIndex() const override;
-	virtual void build() override;
-	virtual void destroy() override;
+	virtual void initScreen() override;
+	virtual void destroyScreen() override;
 	virtual void onEntry() override;
 	virtual void onExit() override;
-	virtual void update() override;
+	virtual void update(double dt) override;
 	virtual void draw() override;
 
-	void setCameraLocked(bool setting) {
+	void setCameraLocked(bool setting)
+	{
 		m_cameraLocked = setting;
 	}
 
-	void setSmoothMoveTarget(glm::vec2 target) {
+	void setSmoothMoveTarget(glm::vec2 target)
+	{
 		m_smoothMoveTarget = target;
 	}
-	void setSmoothMoveSpeed(float speed) {
+	void setSmoothMoveSpeed(float speed)
+	{
 		m_smoothMoveSpeed = speed;
 	}
 
-	void pauseForCutscene() {
+	void pauseForCutscene()
+	{
 		m_cutscenePause = true; // Sets the world to not update stuff, but still display
 	}
-	void unpauseCutscene() {
+	void unpauseCutscene()
+	{
 		m_cutscenePause = false; // Sets the world back to normal
 	}
 
-  private:
+private:
 	void drawSkyToFBO(); /// These just draw to the FBOs, not to the screen.
 	void drawWorldToFBO();
-	void drawWorldNormalToFBO();
 	void drawWorldSunlightToFBO();
 	void drawParticlesToFBO();
 	void drawFluidsToFBO();
@@ -71,7 +77,6 @@ class GameplayScreen : public GLEngine::IGameScreen {
 	void drawPostToScreen();
 
 	void checkInput();
-	void initShaders();
 	void initUI();
 
 	void tick();
@@ -92,36 +97,26 @@ class GameplayScreen : public GLEngine::IGameScreen {
 
 	void updateScale();
 
-	GLEngine::Camera2D		   m_uiCamera;
-	GLEngine::Window*		   m_window = nullptr;
-	GLEngine::SpriteBatch	   m_spriteBatch;
-	GLEngine::ParticleEngine2D m_particle2d;
+	BARE2D::Camera2D		 m_uiCamera;
+	BARE2D::Window*			 m_window	= nullptr;
+	BARE2D::BumpyRenderer*	 m_renderer = nullptr;
+	BARE2D::ParticleEngine2D m_particle2d;
+	BARE2D::InputManager* m_inputManager = nullptr;
 
-	GLEngine::FrameBufferObject m_mainFBO;	   // Used for pretty post processing.
-	GLEngine::FrameBufferObject m_normalFBO;   // Used for noob-y normal mapping.
-	GLEngine::FrameBufferObject m_skyFBO;	   // Used for the spectacular sky!
-	GLEngine::FrameBufferObject m_particleFBO; // Used for partying particles!
-	GLEngine::FrameBufferObject m_sunlightFBO; // Used for seratonin-inducing sunlight!
-	GLEngine::FrameBufferObject m_fluidFBO;	   // Used for fantastic fluids!
+	BARE2D::FBORenderer* m_mainFBO	   = nullptr; // Used for pretty post processing.
+	BARE2D::FBORenderer* m_normalFBO   = nullptr; // Used for noob-y normal mapping.
+	BARE2D::FBORenderer* m_skyFBO	   = nullptr; // Used for the spectacular sky!
+	BARE2D::FBORenderer* m_particleFBO = nullptr; // Used for partying particles!
+	BARE2D::FBORenderer* m_sunlightFBO = nullptr; // Used for seratonin-inducing sunlight!
+	BARE2D::FBORenderer* m_fluidFBO	   = nullptr; // Used for fantastic fluids!
 
-	GLEngine::GLSLProgram m_textureProgram;
-	GLEngine::GLSLProgram m_fluidProgram; // Renders liquids
-	GLEngine::GLSLProgram m_uiTextureProgram;
-	GLEngine::GLSLProgram m_vignetteTextureProgram;
-	GLEngine::GLSLProgram m_skyTextureProgram;
-	GLEngine::GLSLProgram m_basicFBOTextureProgram;
-	GLEngine::GLSLProgram m_waterFBOProgram;
-	GLEngine::GLSLProgram m_postProcessor;	 // Adds lights!
-	GLEngine::GLSLProgram m_sunlightProgram; // Adds lights!
+	BARE2D::FontRenderer*  m_fontRenderer = nullptr;
+	BARE2D::DebugRenderer* m_dr			  = nullptr;
 
-	GLEngine::SpriteFont	m_spriteFont;
-	GLEngine::DebugRenderer m_dr;
-
-	ScriptingModule::Scripter*		 m_scripter		   = nullptr;
 	QuestModule::QuestManager*		 m_questManager	   = nullptr;
 	DialogueModule::DialogueManager* m_dialogueManager = nullptr;
 	WorldIOManager*					 m_WorldIOManager  = nullptr;
-	AudioManager*					 m_audio		   = nullptr;
+	GameAudioManager*				 m_audio		   = nullptr;
 
 	GameState m_gameState	  = GameState::PLAY;
 	GameState m_lastGameState = GameState::PLAY;
@@ -131,20 +126,17 @@ class GameplayScreen : public GLEngine::IGameScreen {
 
 	float m_time	  = 0.0f; // Used for animations, NOT DAYLIGHT
 	float m_frame	  = 0.0f;
-	float m_deltaTime = 1.0f;
 
 	int m_lastSongPlayed = 0;
 
 	float m_scale = MIN_ZOOM;
 
 	bool m_cutscenePause =
-		false; // This is a sort of 'soft' pause, meaning that only higher-level updating operations will be paused, such as collision, input, etc. (Blocks will still update like normal)
+	    false; // This is a sort of 'soft' pause, meaning that only higher-level updating operations will be paused, such as collision, input, etc. (Blocks will still update like normal)
 
 	bool m_debuggingInfo = false;
 
 	glm::vec2 m_lastPlayerPos = glm::vec2(0.0f);
-
-	Logger* logger = Logger::getInstance();
 
 	Console* m_console = nullptr;
 
@@ -160,7 +152,7 @@ class GameplayScreen : public GLEngine::IGameScreen {
 
 	bool m_cameraLocked = false; // Can the camera move with the player, or is it 'locked'?
 
-	unsigned int m_nextScreenIndex = SCREEN_INDEX_NO_SCREEN;
-	
+	unsigned int m_nextScreenIndex = SCREEN_INDEX_GAMEPLAY;
+
 	float variable = 0.0f;
 };

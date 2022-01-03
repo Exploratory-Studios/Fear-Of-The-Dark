@@ -1,7 +1,7 @@
 #pragma once
 
 /*
- *	This file holds all the differenct classes to save/load the world's state - Tiles w/ metadata, entities, etc.
+ *	This file holds all the differenct classes to save/load the world's state - Tiles, entities, etc.
  * 
  */
 
@@ -13,7 +13,6 @@
 #include <fstream>
 
 #include "PresetValues.h"
-#include "MetaData.h"
 
 class lua_State;
 class Entity;
@@ -26,37 +25,35 @@ class Item;
 namespace FluidModule {
 	class FluidDomain;
 	class DensityField;
-}
-namespace ScriptingModule {
-	class Argument;
-}
+} // namespace FluidModule
 
 namespace SaveDataTypes {
-	
+
 	class FluidDensityData {
-	public:
+	  public:
 		FluidDensityData();
 		FluidDensityData(FluidModule::DensityField cell);
-	
+
 		void save(std::ofstream& file);
 		void read(std::ifstream& file);
-		
+
 		unsigned int x, y;
-		float* densities = nullptr;
-		float* deltaDensities = nullptr;
-		bool inEquilibrium = false;
+		float*		 densities		= nullptr;
+		float*		 deltaDensities = nullptr;
+		bool		 inEquilibrium	= false;
 	};
-	
+
 	class FluidData {
-	public:
-		FluidData() {}
+	  public:
+		FluidData() {
+		}
 		FluidData(FluidModule::FluidDomain* domain);
 		void save(std::ofstream& file);
 		void read(std::ifstream& file);
-		
+
 		unsigned int id;
 		unsigned int xSize, ySize;
-		
+
 		std::vector<FluidDensityData> densityFields;
 	};
 
@@ -68,7 +65,6 @@ namespace SaveDataTypes {
 		glm::vec2	 pos;
 		float		 layer;
 		unsigned int id;
-		MetaData	 metaData;
 	};
 
 	struct ItemData {
@@ -81,7 +77,6 @@ namespace SaveDataTypes {
 
 		unsigned int id;
 		unsigned int quantity;
-		MetaData	 metaData;
 	};
 
 	struct InventoryData {
@@ -103,7 +98,6 @@ namespace SaveDataTypes {
 		unsigned int layer;
 		glm::vec2	 velocity;
 		unsigned int id;
-		MetaData	 md;
 
 	  protected:
 		EntityData() {

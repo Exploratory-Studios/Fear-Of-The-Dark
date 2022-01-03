@@ -1,7 +1,7 @@
 #include "MainScreen.h"
 
 #include "XMLData.h"
-#include "XMLDataTypes.h"
+#include "CustomXMLTypes.h"
 
 #include "Categories.h"
 

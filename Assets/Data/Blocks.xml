@@ -1,6 +1,6 @@
 <tile id="0" name="Air">
 	<emittedLight>0.000000</emittedLight>
-	<emittedHeat>0.000000</emittedHeat>
+	<emittedHeat>1.000000</emittedHeat>
 	<size>1.0,1.0</size>
 	<isSolid>0</isSolid>
 	<isDrawn>0</isDrawn>
@@ -9,7 +9,7 @@
 </tile>
 <tile id="1" name="Dirt">
 	<texture>Blocks/Dirt.png</texture>
-	<bumpMap>TestMap.png</bumpMap>
+	<bumpmap>BumpMaps/TestMap.png</bumpmap>
 	<emittedLight>0.000000</emittedLight>
 	<emittedHeat>0.000000</emittedHeat>
 	<size>1.0,1.0</size>
@@ -20,7 +20,7 @@
 </tile>
 <tile id="2" name="Grass">
 	<texture>Blocks/Grass.png</texture>
-	<bumpMap>TestMap1.png</bumpMap>
+	<bumpmap>BumpMaps/TestMap1.png</bumpmap>
 	<emittedLight>0.000000</emittedLight>
 	<emittedHeat>0.000000</emittedHeat>
 	<size>1.0,1.0</size>
@@ -32,7 +32,7 @@
 </tile>
 <tile id="4" name="Stone">
 	<texture>Blocks/Stone.png</texture>
-	<bumpMap>TestMap.png</bumpMap>
+	<bumpmap>BumpMaps/TestMap.png</bumpmap>
 	<emittedLight>0.000000</emittedLight>
 	<emittedHeat>0.000000</emittedHeat>
 	<size>1.0,1.0</size>
@@ -43,7 +43,7 @@
 </tile>
 <tile id="6" name="Torch">
 	<texture>Blocks/Torch.png</texture>
-	<bumpMap>Torch.png</bumpMap>
+	<bumpmap>BumpMaps/Torch.png</bumpmap>
 	<emittedLight>1.500000</emittedLight>
 	<emittedHeat>0.000000</emittedHeat>
 	<size>1.0,1.0</size>
@@ -55,7 +55,7 @@
 </tile>
 <tileContainer id="7" name="Chest">
 	<texture>Blocks/CarePackage.png</texture>
-	<bumpMap>LogMapR.png</bumpMap>
+	<bumpmap>BumpMaps/LogMapR.png</bumpmap>
 	<emittedLight>0.000000</emittedLight>
 	<emittedHeat>0.000000</emittedHeat>
 	<size>1.0,1.0</size>
@@ -67,7 +67,7 @@
 </tileContainer>
 <tile id="11" name="Water">
 	<texture>Blocks/Water.png</texture>
-	<bumpMap>Water.png</bumpMap>
+	<bumpmap>BumpMaps/Water.png</bumpmap>
 	<emittedLight>0.000000</emittedLight>
 	<emittedHeat>0.000000</emittedHeat>
 	<size>1.0,1.0</size>

@@ -1,5 +1,7 @@
 #include "GameplayScreen.h"
 
+#include <SDL2/SDL_timer.h>
+
 #include <GLContextManager.hpp>
 
 #include "GUI_InventoryReceiver.h"
@@ -15,8 +17,6 @@
 #include "NPCInventory.h"
 
 #include "Singletons.h"
-
-#include <SDL2/SDL_timer.h>
 
 #ifdef DEV_CONTROLS
 #include <iostream>
@@ -54,8 +54,8 @@ void GameplayScreen::onEntry()
 	m_dr = new BARE2D::DebugRenderer();
 	m_dr->init();
 
-	std::string textureFragShader = ASSETS_FOLDER_PATH + "Shaders/textureShader.frag";
-	std::string textureVertShader = ASSETS_FOLDER_PATH + "Shaders/textureShader.vert";
+	std::string textureFragShader = "Shaders/textureShader.frag";
+	std::string textureVertShader = "Shaders/textureShader.vert";
 
 	m_renderer = new BARE2D::BumpyRenderer(textureFragShader, textureVertShader);
 	m_renderer->init();
@@ -63,8 +63,8 @@ void GameplayScreen::onEntry()
 	m_fontRenderer = new BARE2D::FontRenderer(textureFragShader, textureVertShader);
 	m_fontRenderer->init();
 
-	std::string mainFS = ASSETS_FOLDER_PATH + "Shaders/postProcesser.frag";
-	std::string mainVS = ASSETS_FOLDER_PATH + "Shaders/postProcesser.vert";
+	std::string mainFS = "Shaders/postProcesser.frag";
+	std::string mainVS = "Shaders/postProcesser.vert";
 
 	m_mainFBO = new BARE2D::FBORenderer(mainFS,
 	                                    mainVS,
@@ -80,8 +80,8 @@ void GameplayScreen::onEntry()
 	                                      glm::vec2(m_window->getWidth(), m_window->getHeight()));
 	m_normalFBO->init();
 
-	std::string skyFS = ASSETS_FOLDER_PATH + "Shaders/skyShader.frag";
-	std::string skyVS = ASSETS_FOLDER_PATH + "Shaders/skyShader.vert";
+	std::string skyFS = "Shaders/skyShader.frag";
+	std::string skyVS = "Shaders/skyShader.vert";
 
 	m_skyFBO = new BARE2D::FBORenderer(skyFS,
 	                                   skyVS,
@@ -90,8 +90,8 @@ void GameplayScreen::onEntry()
 	                                   glm::vec2(m_window->getWidth(), m_window->getHeight()));
 	m_skyFBO->init();
 
-	std::string basicFS = ASSETS_FOLDER_PATH + "Shaders/superBasicShader.frag";
-	std::string basicVS = ASSETS_FOLDER_PATH + "Shaders/superBasicShader.vert";
+	std::string basicFS = "Shaders/superBasicShader.frag";
+	std::string basicVS = "Shaders/superBasicShader.vert";
 
 	m_sunlightFBO = new BARE2D::FBORenderer(basicFS,
 	                                        basicVS,
@@ -134,10 +134,14 @@ void GameplayScreen::onEntry()
 		glm::vec2 pos;
 		pos.x = 5;
 		while(!found) {
-			if(!Singletons::getWorld()->getTile(pos.x, pos.y, 0)->isSolid()) {
+			if(!(Singletons::getWorld()->getTile(pos.x, pos.y, 0)->isSolid())) {
 				found = true;
 			}
 			pos.y++;
+			if(pos.y >= WORLD_HEIGHT - 5) {
+				pos.x++;
+				pos.y = 0;
+			}
 		}
 
 		EntityPlayer* p = new EntityPlayer(pos, 0);
@@ -264,7 +268,7 @@ void GameplayScreen::draw()
 			sunPercentY = 0.8f * std::sin(3.1415f * 2.0f * ((float)Singletons::getWorld()->getTime() / DAY_LENGTH) +
 			                              3.1415f * 0.5f);
 
-			std::string sunPath = ASSETS_FOLDER_PATH + "/Textures/sun.png";
+			std::string sunPath = "sun.png";
 
 			GLuint sunID = BARE2D::ResourceManager::loadTexture(sunPath).id;
 
@@ -277,7 +281,7 @@ void GameplayScreen::draw()
 			                 1.0f,
 			                 BARE2D::Colour(255, 255, 255, 255));
 
-			std::string moonPath = ASSETS_FOLDER_PATH + "/Textures/UNDEFINED.png";
+			std::string moonPath = "UNDEFINED.png";
 
 			GLuint moonID = BARE2D::ResourceManager::loadTexture(moonPath).id;
 

@@ -160,7 +160,7 @@ void EntityPlayer::initGUI() {
 void EntityPlayer::onDraw(BARE2D::BumpyRenderer* renderer, float time, int layerDifference, float xOffset) {
 	if(m_selectedEntity) {
 		glm::vec4	fullUV(0.0f, 0.0f, 1.0f, 1.0f);
-		std::string cursorPath	= ASSETS_FOLDER_PATH + "GUI/Player/Cursor.png";
+		std::string cursorPath	= "GUI/Player/Cursor.png";
 		int			cursorImgId = BARE2D::ResourceManager::loadTexture(cursorPath).id;
 
 		glm::vec4 cursorDestRect(m_selectedEntity->getPosition().x + xOffset,
@@ -174,7 +174,7 @@ void EntityPlayer::onDraw(BARE2D::BumpyRenderer* renderer, float time, int layer
 					   BARE2D::Colour(255, 255, 255, 255));
 	} else if(m_selectedBlock) { // Cursor box selection
 		glm::vec4	fullUV(0.0f, 0.0f, 1.0f, 1.0f);
-		std::string cursorPath	= ASSETS_FOLDER_PATH + "GUI/Player/Cursor.png";
+		std::string cursorPath	= "GUI/Player/Cursor.png";
 		int			cursorImgId = BARE2D::ResourceManager::loadTexture(cursorPath).id;
 
 		glm::vec4 cursorDestRect(m_selectedBlock->getPosition().x + xOffset,

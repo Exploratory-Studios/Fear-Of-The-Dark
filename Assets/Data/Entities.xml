@@ -2,7 +2,7 @@
 
 <npc id="0" name="Player">
 	<texture>Entities/NPCs/PlayerLimbs.png</texture>
-	<bumpMap>BushGreen.png</bumpMap>
+	<bumpmap>BushGreen.png</bumpmap>
 	<size>1.5,4.0</size>
 	<isDamagedByFalls>1</isDamagedByFalls>
 	<isInvincible>1</isInvincible>
@@ -25,7 +25,7 @@
 </npc>
 <npc id="1" name="QuestGiverA">
 	<texture>Entities/NPCs/PlayerLimbs.png</texture>
-	<bumpMap>Mob0.png</bumpMap>
+	<bumpmap>Mob0.png</bumpmap>
 	<size>1.5,4.0</size>
 	<isDamagedByFalls>1</isDamagedByFalls>
 	<isInvincible>1</isInvincible>
@@ -39,7 +39,7 @@
 </npc>
 <npc id="2" name="CompanionCube">
 	<texture>Entities/NPCs/CompanionCube.png</texture>
-	<bumpMap>CompanionCube.png</bumpMap>
+	<bumpmap>CompanionCube.png</bumpmap>
 	<size>1.0,1.0</size>
 	<isDamagedByFalls>1</isDamagedByFalls>
 	<isInvincible>1</isInvincible>
@@ -54,7 +54,7 @@
 </npc>
 <npc id="3" name="Fox">
 	<texture>Entities/NPCs/FoxStanding.png</texture>
-	<bumpMap>FoxStandingMap.png</bumpMap>
+	<bumpmap>FoxStandingMap.png</bumpmap>
 	<size>1.0,1.0</size>
 	<isDamagedByFalls>1</isDamagedByFalls>
 	<isInvincible>1</isInvincible>
@@ -79,7 +79,7 @@
 
 <projectile name="TestProjectile" id="5">
 	<animationID>4</animationID>
-	<bumpMap>ProjectileBase.png</bumpMap>
+	<bumpmap>ProjectileBase.png</bumpmap>
 	<gravity>false</gravity>
 	<speed>0.1</speed>
 	<collides>1</collides>

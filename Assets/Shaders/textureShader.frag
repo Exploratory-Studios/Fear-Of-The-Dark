@@ -12,8 +12,6 @@ out vec4 color;
 uniform sampler2D textureSampler;
 
 void main() {
-	gl_FragDepth = fragmentPosition.z;
-
 	color = texture(textureSampler, fragmentUV.xy) * fragmentColour;
 
 	if(color.a < 0.05) {

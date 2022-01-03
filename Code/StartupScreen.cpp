@@ -7,9 +7,10 @@
 /// Text FUNCTIONS
 
 void Text::draw(BARE2D::FontRenderer*  fontRenderer,
-				BARE2D::BasicRenderer* renderer,
-				float				   time,
-				int					   activeSplashScreen) {
+                BARE2D::BasicRenderer* renderer,
+                float				   time,
+                int					   activeSplashScreen)
+{
 	if(m_splashScreen == activeSplashScreen) {
 		update(time);
 		/// TODO: Load font.
@@ -17,10 +18,11 @@ void Text::draw(BARE2D::FontRenderer*  fontRenderer,
 	}
 }
 
-void Text::update(float time) {
+void Text::update(float time)
+{
 	if(time >= m_startTime && time < m_endTime) {
 		float curFade = (-(m_startTime + m_fadeTime - time) + m_fadeTime) /
-						m_fadeTime; // time = 2, fadeTime = 1, startTime = 2, curFade = 1
+		                m_fadeTime; // time = 2, fadeTime = 1, startTime = 2, curFade = 1
 		if(curFade > 1.0f)
 			curFade = 1.0f;
 		if(curFade < 0.0f)
@@ -38,22 +40,24 @@ void Text::update(float time) {
 
 /// Image FUNCTIONS
 
-void Image::draw(BARE2D::BasicRenderer* renderer, float time, int activeSplashScreen) {
+void Image::draw(BARE2D::BasicRenderer* renderer, float time, int activeSplashScreen)
+{
 	if(m_splashScreen == activeSplashScreen) {
 		update(time);
 
 		renderer->draw(glm::vec4(m_pos.x - m_size.x * 0.5f, m_pos.y - m_size.y * 0.5f, m_size.x, m_size.y),
-					   glm::vec4(0.0f, 0.0f, 1.0f, 1.0f),
-					   BARE2D::ResourceManager::loadTexture(m_filepath).id,
-					   0.0f,
-					   m_colour);
+		               glm::vec4(0.0f, 0.0f, 1.0f, 1.0f),
+		               m_texture.id,
+		               0.0f,
+		               m_colour);
 	}
 }
 
-void Image::update(float time) {
+void Image::update(float time)
+{
 	if(time >= m_startTime && time < m_endTime) {
 		float curFade = (-(m_startTime + m_fadeTime - time) + m_fadeTime) /
-						m_fadeTime; // time = 2, fadeTime = 1, startTime = 2, curFade = 1
+		                m_fadeTime; // time = 2, fadeTime = 1, startTime = 2, curFade = 1
 		if(curFade > 1.0f)
 			curFade = 1.0f;
 		if(curFade < 0.0f)
@@ -71,17 +75,20 @@ void Image::update(float time) {
 
 /// StartupScreen FUNCTIONS
 
-void StartupScreen::initScreen() {
+void StartupScreen::initScreen()
+{
 }
 
-void StartupScreen::destroyScreen() {
+void StartupScreen::destroyScreen()
+{
 }
 
-void StartupScreen::onEntry() {
+void StartupScreen::onEntry()
+{
 	Options::loadFromFile("Options.bin"); // Will never cause an issue; it just creates a file if one doesn't exist
 
-	std::string fragShader = ASSETS_FOLDER_PATH + "Shaders/textureShader.frag";
-	std::string vertShader = ASSETS_FOLDER_PATH + "Shaders/textureShader.vert";
+	std::string fragShader = "Shaders/textureShader.frag";
+	std::string vertShader = "Shaders/textureShader.vert";
 
 	m_renderer = new BARE2D::BasicRenderer(fragShader, vertShader);
 	m_renderer->init();
@@ -96,10 +103,12 @@ void StartupScreen::onEntry() {
 	initUI();
 }
 
-void StartupScreen::onExit() {
+void StartupScreen::onExit()
+{
 }
 
-void StartupScreen::update(double dt) {
+void StartupScreen::update(double dt)
+{
 	checkInput();
 	m_time++;
 
@@ -122,15 +131,16 @@ void StartupScreen::update(double dt) {
 	}
 }
 
-void StartupScreen::draw() {
+void StartupScreen::draw()
+{
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 
 	m_renderer->begin();
 
-	for(auto ATxt: m_textAnimations)
+	for(auto ATxt : m_textAnimations)
 		ATxt.draw(m_fontRenderer, m_renderer, m_time, m_splashScreen);
-	for(auto AImg: m_imageAnimations)
+	for(auto AImg : m_imageAnimations)
 		AImg.draw(m_renderer, m_time, m_splashScreen);
 
 	m_renderer->end();
@@ -139,60 +149,64 @@ void StartupScreen::draw() {
 
 /// StartupScreen PRIVATE FUNCTIONS
 
-void StartupScreen::initUI() {
+void StartupScreen::initUI()
+{
 	SDL_ShowCursor(0);
 }
 
-void StartupScreen::initAnimations() {
+void StartupScreen::initAnimations()
+{
 	{
 		m_textAnimations.emplace_back(glm::vec2(m_window->getWidth() / 2.0, m_window->getHeight() * 0.75),
-									  2.0f,
-									  6.0f,
-									  3.0f,
-									  BARE2D::Colour(255.0f, 255.0f, 255.0f, 255.0f),
-									  "An experience by",
-									  glm::vec2(1.0f, 1.0f),
-									  SPLASHSCREEN_STUDIO);
+		                              2.0f,
+		                              6.0f,
+		                              3.0f,
+		                              BARE2D::Colour(255.0f, 255.0f, 255.0f, 255.0f),
+		                              "An experience by",
+		                              glm::vec2(1.0f, 1.0f),
+		                              SPLASHSCREEN_STUDIO);
 		m_textAnimations.emplace_back(glm::vec2(m_window->getWidth() / 2.0, m_window->getHeight() * 0.05),
-									  6.0f,
-									  10.0f,
-									  3.0f,
-									  BARE2D::Colour(255.0f, 255.0f, 255.0f, 255.0f),
-									  "Exploratory Studios",
-									  glm::vec2(1.25f, 1.25f),
-									  SPLASHSCREEN_STUDIO);
+		                              6.0f,
+		                              10.0f,
+		                              3.0f,
+		                              BARE2D::Colour(255.0f, 255.0f, 255.0f, 255.0f),
+		                              "Exploratory Studios",
+		                              glm::vec2(1.25f, 1.25f),
+		                              SPLASHSCREEN_STUDIO);
 
+		std::string logoPath = "/StartupScreens/Studio/Logo.png";
 		m_imageAnimations.emplace_back(glm::vec2(m_window->getWidth() * 0.5f, m_window->getHeight() * 0.5f),
-									   2.0f,
-									   10.0f,
-									   3.0f,
-									   BARE2D::Colour(200.0f, 200.0f, 200.0f, 255.0f),
-									   ASSETS_FOLDER_PATH + "Textures/StartupScreens/Studio/Logo.png",
-									   glm::vec2(200.0f, 200.0f),
-									   SPLASHSCREEN_STUDIO);
+		                               2.0f,
+		                               10.0f,
+		                               3.0f,
+		                               BARE2D::Colour(200.0f, 200.0f, 200.0f, 255.0f),
+		                               BARE2D::ResourceManager::loadTexture(logoPath),
+		                               glm::vec2(200.0f, 200.0f),
+		                               SPLASHSCREEN_STUDIO);
 	}
 
 	{
 		m_textAnimations.emplace_back(glm::vec2(m_window->getWidth() / 2.0, m_window->getHeight() * 0.75),
-									  2.0f,
-									  6.0f,
-									  3.0f,
-									  BARE2D::Colour(255.0f, 255.0f, 255.0f, 255.0f),
-									  "This game uses",
-									  glm::vec2(1.0f, 1.0f),
-									  SPLASHSCREEN_OPENGL_SDL);
+		                              2.0f,
+		                              6.0f,
+		                              3.0f,
+		                              BARE2D::Colour(255.0f, 255.0f, 255.0f, 255.0f),
+		                              "This game uses",
+		                              glm::vec2(1.0f, 1.0f),
+		                              SPLASHSCREEN_OPENGL_SDL);
 		m_textAnimations.emplace_back(glm::vec2(m_window->getWidth() / 2.0, m_window->getHeight() * 0.05),
-									  6.0f,
-									  10.0f,
-									  3.0f,
-									  BARE2D::Colour(255.0f, 255.0f, 255.0f, 255.0f),
-									  "OpenGL 3.0 & SDL 2.0",
-									  glm::vec2(1.0f, 1.0f),
-									  SPLASHSCREEN_OPENGL_SDL);
+		                              6.0f,
+		                              10.0f,
+		                              3.0f,
+		                              BARE2D::Colour(255.0f, 255.0f, 255.0f, 255.0f),
+		                              "OpenGL 3.0 & SDL 2.0",
+		                              glm::vec2(1.0f, 1.0f),
+		                              SPLASHSCREEN_OPENGL_SDL);
 	}
 }
 
-void StartupScreen::checkInput() {
+void StartupScreen::checkInput()
+{
 	if(m_input->isKeyPressed(SDLK_SPACE)) {
 		m_splashScreenState = SplashScreenState::CHANGE_NEXT;
 	}

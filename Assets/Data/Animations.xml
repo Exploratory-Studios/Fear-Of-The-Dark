@@ -1,6 +1,6 @@
 <animation name="Test_Torso" id="0">
 	<texture>/Entities/NPCs/PlayerLimbs.png</texture>
-	<normalMap>PlayerLimbsMap.png</normalMap>
+	<normalMap>BumpMaps/PlayerLimbsMap.png</normalMap>
 	<y>0</y>
 	<width>48</width>
 	<height>128</height>
@@ -8,7 +8,7 @@
 </animation>
 <animation name="Test_Arm" id="1">
 	<texture>/Entities/NPCs/PlayerLimbs.png</texture>
-	<normalMap>PlayerLimbsMap.png</normalMap>
+	<normalMap>BumpMaps/PlayerLimbsMap.png</normalMap>
 	<y>1</y>
 	<width>48</width>
 	<height>128</height>
@@ -16,7 +16,7 @@
 </animation>
 <animation name="Test_Leg0" id="2">
 	<texture>/Entities/NPCs/PlayerLimbs.png</texture>
-	<normalMap>PlayerLimbsMap.png</normalMap>
+	<normalMap>BumpMaps/PlayerLimbsMap.png</normalMap>
 	<y>2</y>
 	<width>48</width>
 	<height>128</height>
@@ -24,7 +24,7 @@
 </animation>
 <animation name="Test_Leg1" id="3">
 	<texture>/Entities/NPCs/PlayerLimbs.png</texture>
-	<normalMap>PlayerLimbsMap.png</normalMap>
+	<normalMap>BumpMaps/PlayerLimbsMap.png</normalMap>
 	<y>3</y>
 	<width>48</width>
 	<height>128</height>
@@ -32,7 +32,7 @@
 </animation>
 <animation name="Bullet0" id="4">
 	<texture>/Entities/Projectiles/ProjectileTestAnim.png</texture>
-	<normalMap>PlayerLimbsMap.png</normalMap>
+	<normalMap>BumpMaps/PlayerLimbsMap.png</normalMap>
 	<y>0</y>
 	<width>16</width>
 	<height>16</height>
@@ -40,7 +40,7 @@
 </animation>
 <animation name="Test_Torso" id="5">
 	<texture>/Entities/NPCs/Armour0.png</texture>
-	<normalMap>PlayerLimbsMap.png</normalMap>
+	<normalMap>BumpMaps/PlayerLimbsMap.png</normalMap>
 	<y>0</y>
 	<width>48</width>
 	<height>128</height>
@@ -48,7 +48,7 @@
 </animation>
 <animation name="Test_Arm" id="6">
 	<texture>/Entities/NPCs/Armour0.png</texture>
-	<normalMap>PlayerLimbsMap.png</normalMap>
+	<normalMap>BumpMaps/PlayerLimbsMap.png</normalMap>
 	<y>1</y>
 	<width>48</width>
 	<height>128</height>
@@ -56,7 +56,7 @@
 </animation>
 <animation name="Test_Leg0" id="7">
 	<texture>/Entities/NPCs/Armour0.png</texture>
-	<normalMap>PlayerLimbsMap.png</normalMap>
+	<normalMap>BumpMaps/PlayerLimbsMap.png</normalMap>
 	<y>2</y>
 	<width>48</width>
 	<height>128</height>
@@ -64,7 +64,7 @@
 </animation>
 <animation name="Test_Leg1" id="8">
 	<texture>/Entities/NPCs/Armour0.png</texture>
-	<normalMap>PlayerLimbsMap.png</normalMap>
+	<normalMap>BumpMaps/PlayerLimbsMap.png</normalMap>
 	<y>3</y>
 	<width>48</width>
 	<height>128</height>

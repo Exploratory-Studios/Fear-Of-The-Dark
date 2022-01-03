@@ -3,26 +3,32 @@
 #include <GLContextManager.hpp>
 
 WaitScreen::WaitScreen(BARE2D::Window* window, WorldIOManager* WorldIOManager) :
-	m_window(window), m_worldIOManager(WorldIOManager) {
+	m_window(window), m_worldIOManager(WorldIOManager)
+{
 }
 
-WaitScreen::~WaitScreen() {
+WaitScreen::~WaitScreen()
+{
 	//dtor
 }
 
-int WaitScreen::getNextScreenIndex() const {
+int WaitScreen::getNextScreenIndex() const
+{
 	return m_nextScreenIndex;
 }
 
-void WaitScreen::initScreen() {
+void WaitScreen::initScreen()
+{
 }
 
-void WaitScreen::destroyScreen() {
+void WaitScreen::destroyScreen()
+{
 }
 
-void WaitScreen::onEntry() {
-	std::string fragShader = ASSETS_FOLDER_PATH + "Shaders/textureShader.vert";
-	std::string vertShader = ASSETS_FOLDER_PATH + "Shaders/textureShader.frag";
+void WaitScreen::onEntry()
+{
+	std::string fragShader = "Shaders/textureShader.frag";
+	std::string vertShader = "Shaders/textureShader.vert";
 
 	m_renderer = new BARE2D::BasicRenderer(fragShader, vertShader);
 	m_renderer->init();
@@ -33,12 +39,14 @@ void WaitScreen::onEntry() {
 	initUI();
 }
 
-void WaitScreen::onExit() {
+void WaitScreen::onExit()
+{
 	m_renderer->destroy();
 	m_fontRenderer->destroy();
 }
 
-void WaitScreen::update(double dt) {
+void WaitScreen::update(double dt)
+{
 	BARE2D::BARECEGUI::getInstance()->update();
 
 	m_time++;
@@ -51,7 +59,8 @@ void WaitScreen::update(double dt) {
 	}
 }
 
-void WaitScreen::draw() {
+void WaitScreen::draw()
+{
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 
@@ -73,7 +82,8 @@ void WaitScreen::draw() {
 	m_renderer->render();
 }
 
-void WaitScreen::initUI() {
+void WaitScreen::initUI()
+{
 	BARE2D::BARECEGUI* gui = BARE2D::BARECEGUI::getInstance();
 	{
 		std::string guiPath = ASSETS_FOLDER_PATH + "GUI";
@@ -89,18 +99,18 @@ void WaitScreen::initUI() {
 
 	{
 		m_progressBar = static_cast<CEGUI::ProgressBar*>(gui->createWidget("FOTDSkin/ProgressBar",
-																		   glm::vec4(0.1f, 0.1f, 0.8f, 0.1f),
-																		   glm::vec4(0.0f),
-																		   nullptr,
-																		   "WaitScreenProgressBar"));
+		                glm::vec4(0.1f, 0.1f, 0.8f, 0.1f),
+		                glm::vec4(0.0f),
+		                nullptr,
+		                "WaitScreenProgressBar"));
 		m_progressBar->setText("[padding='l:0 t:15 r:0 b:0']Progress: ");
 		m_progressBar->setFont("QuietHorror-42");
 
 		m_messageBox = static_cast<CEGUI::DefaultWindow*>(gui->createWidget("FOTDSkin/Label",
-																			glm::vec4(0.1f, 0.2f, 0.8f, 0.2f),
-																			glm::vec4(0.0f),
-																			nullptr,
-																			"WaitScreenWaitMessage"));
+		               glm::vec4(0.1f, 0.2f, 0.8f, 0.2f),
+		               glm::vec4(0.0f),
+		               nullptr,
+		               "WaitScreenWaitMessage"));
 		m_messageBox->setText(m_worldIOManager->getMessage());
 	}
 }

@@ -32,7 +32,7 @@ const unsigned int ENTITY_SPAWN_RANGE = 50;
 
 #ifdef DEBUG
 const std::string HOME_PATH = std::string(
-	"../../.."); // For debugging purposes, so we don't have to copy/paste and deal with weird directories in git.
+                                  "../../.."); // For debugging purposes, so we don't have to copy/paste and deal with weird directories in git.
 #elif WINDOWS
 const std::string HOME_PATH = std::string((std::string)getenv("APPDATA") + "/Exploratory Studios/Fear Of The Dark");
 #elif LINUX
@@ -54,7 +54,7 @@ const unsigned int MAX_CHUNK_ENTITIES = 15;
 const unsigned int SPAWN_RATE		  = 10;
 
 const unsigned int MAX_TYPE_PARTICLES	= 300;
-const std::string  UNDEFINED_ASSET_PATH = std::string(ASSETS_FOLDER_PATH + "Textures/UNDEFINED.png");
+const std::string  UNDEFINED_ASSET_PATH = std::string("UNDEFINED.png");
 
 const unsigned int FLUID_PARTITION_SIZE					= 4;
 const float		   FLUID_AVG_CELL_EQUILIBRIUM_THRESHOLD = 0.0000125f;

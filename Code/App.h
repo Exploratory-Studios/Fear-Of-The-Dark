@@ -16,20 +16,23 @@
 #include <App.hpp>
 #include <ScreenList.hpp>
 
-class App : public BARE2D::App {
-  public:
+class App : public BARE2D::App
+{
+public:
 	App();
 	~App();
-	
+
 	void addScreens();
 
-  private:
-	std::unique_ptr<StartupScreen>	   m_startupScreen;
-	std::unique_ptr<MainMenuScreen>	   m_mainMenuScreen;
-	std::unique_ptr<OptionsMenuScreen> m_optionsMenuScreen;
-	std::unique_ptr<LoadScreen>		   m_loadScreen;
-	std::unique_ptr<WaitScreen>		   m_waitScreen;
-	std::unique_ptr<GameplayScreen>	   m_gameplayScreen;
+private:
+	void initXML();
+
+	StartupScreen* m_startupScreen = nullptr;
+	MainMenuScreen*	m_mainMenuScreen = nullptr;
+	OptionsMenuScreen* m_optionsMenuScreen = nullptr;
+	LoadScreen* m_loadScreen = nullptr;
+	WaitScreen*	m_waitScreen = nullptr;
+	GameplayScreen* m_gameplayScreen = nullptr;
 
 	WorldIOManager* m_WorldIOManager = new WorldIOManager();
 	Options*		m_options		 = new Options;

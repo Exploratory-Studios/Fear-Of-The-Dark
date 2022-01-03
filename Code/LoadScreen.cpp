@@ -21,8 +21,8 @@ void LoadScreen::destroyScreen() {
 }
 
 void LoadScreen::onEntry() {
-	std::string fragShader = ASSETS_FOLDER_PATH + "Shaders/textureShader.frag";
-	std::string vertShader = ASSETS_FOLDER_PATH + "Shaders/textureShader.vert";
+	std::string fragShader = "Shaders/textureShader.frag";
+	std::string vertShader = "Shaders/textureShader.vert";
 
 	m_renderer = new BARE2D::BasicRenderer(fragShader, vertShader);
 	m_renderer->init();

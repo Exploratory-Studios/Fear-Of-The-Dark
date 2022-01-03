@@ -8,10 +8,10 @@ out vec3 fragmentPosition;
 out vec4 fragmentColour;
 out vec2 fragmentUV;
 
-uniform mat4 P; // Our "camera"
+uniform mat4 projectionMatrix; // Our "camera"
 
 void main() {
-	gl_Position.xyz = (P * vec4(vertexPosition.xyz, 1.0)).xyz;
+	gl_Position.xyz = (projectionMatrix * vec4(vertexPosition.xyz, 1.0)).xyz;
 	gl_Position.w = 1.0; // Need to reset this
 
 	fragmentPosition = vertexPosition;

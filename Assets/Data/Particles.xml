@@ -1,6 +1,6 @@
 <particle id="0" name="Test">
 	<texture>Particles/particleTest.png</texture>
-	<bumpMap>particleTest.png</bumpMap>
+	<bumpmap>BumpMaps/particleTest.png</bumpmap>
 	<decayRate>0.002000</decayRate>
 	<script>
 		<script>particleUpdate.txt</script>
@@ -9,7 +9,7 @@
 </particle>
 <particle id="1" name="Flame">
 	<texture>Particles/Flame.png</texture>
-	<bumpMap>Flame.png</bumpMap>
+	<bumpmap>BumpMaps/Flame.png</bumpmap>
 	<decayRate>0.016000</decayRate>
 	<script>
 		<script>FlameParticleUpdate.lua</script>

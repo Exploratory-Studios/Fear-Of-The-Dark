@@ -14,36 +14,47 @@
 #include "Factory.h"
 #include "Singletons.h"
 
-void WorldIOManager::initLoadSaveStuff() {
+void WorldIOManager::initLoadSaveStuff()
+{
 	m_progress		  = new float(0.0f);
 	m_saveLoadMessage = new std::string("");
 }
 
-void WorldIOManager::loadWorld(std::string worldName) {
+void WorldIOManager::loadWorld(std::string worldName)
+{
 	Singletons::setWorld(nullptr); // Delete the world!
 	initLoadSaveStuff();
-	boost::thread t([=]() { P_loadWorld(worldName, Singletons::getWorld()); });
+	boost::thread t([ = ]() {
+		P_loadWorld(worldName, Singletons::getWorld());
+	});
 	t.detach();
 	//P_loadWorld(worldName);
 	//P_createWorld(1, worldName, false);
 }
 
-void WorldIOManager::saveWorld() {
+void WorldIOManager::saveWorld()
+{
 	initLoadSaveStuff();
-	boost::thread t([=]() { P_saveWorld(Singletons::getWorld()); });
+	boost::thread t([ = ]() {
+		P_saveWorld(Singletons::getWorld());
+	});
 	t.detach();
 	//P_saveWorld(worldName);
 }
 
-void WorldIOManager::createWorld(unsigned int seed, std::string worldName, bool isFlat, unsigned int width) {
+void WorldIOManager::createWorld(unsigned int seed, std::string worldName, bool isFlat, unsigned int width)
+{
 	Singletons::setWorld(nullptr); // Delete the world!
 	initLoadSaveStuff();
-	boost::thread t([=]() { P_createWorld(seed, worldName, isFlat, width); });
+	boost::thread t([ = ]() {
+		P_createWorld(seed, worldName, isFlat, width);
+	});
 	t.detach();
 	//P_createWorld(seed, worldName, isFlat);
 }
 
-void WorldIOManager::P_loadWorld(std::string worldName, World* world) {
+void WorldIOManager::P_loadWorld(std::string worldName, World* world)
+{
 	float startTime = (float)(std::clock()) / (float)(CLOCKS_PER_SEC / 1000);
 
 	setProgress(0.0f);
@@ -69,14 +80,14 @@ void WorldIOManager::P_loadWorld(std::string worldName, World* world) {
 		file.read(reinterpret_cast<char*>(&saveVersion), sizeof(unsigned int));
 
 		BARE2D::Logger::getInstance()->log("LOAD: Loaded Version: " + std::to_string(saveVersion) +
-											   ", Using Version: " + std::to_string(m_saveVersion),
-										   true);
+		                                   ", Using Version: " + std::to_string(m_saveVersion),
+		                                   true);
 
 		if(m_saveVersion != saveVersion) {
 			BARE2D::Logger::getInstance()->log("LOAD: Loaded Version Doesn't Match Current Loader Version. Quitting...",
-											   true);
+			                                   true);
 			BARE2D::throwFatalError(BARE2D::BAREError::FILE_FAILURE,
-									"Error loading from file: " + filepath + ": Save Version Mismatch");
+			                        "Error loading from file: " + filepath + ": Save Version Mismatch");
 		}
 	}
 
@@ -133,9 +144,9 @@ void WorldIOManager::P_loadWorld(std::string worldName, World* world) {
 
 						world->setTile_noEvent(tile);
 						setProgress(0.1f + 0.7f *
-											   (i * CHUNK_SIZE * WORLD_HEIGHT * WORLD_DEPTH +
-												x * WORLD_HEIGHT * WORLD_DEPTH + y * WORLD_DEPTH + k) /
-											   (chunks * CHUNK_SIZE * WORLD_HEIGHT * WORLD_DEPTH)); // 0.3
+						            (i * CHUNK_SIZE * WORLD_HEIGHT * WORLD_DEPTH +
+						             x * WORLD_HEIGHT * WORLD_DEPTH + y * WORLD_DEPTH + k) /
+						            (chunks * CHUNK_SIZE * WORLD_HEIGHT * WORLD_DEPTH)); // 0.3
 					}
 				}
 			}
@@ -166,8 +177,8 @@ void WorldIOManager::P_loadWorld(std::string worldName, World* world) {
 	float finishTime = (float)(std::clock()) / (float)(CLOCKS_PER_SEC / 1000);
 
 	BARE2D::Logger::getInstance()->log("LOAD: LOAD COMPLETED. FINISHED AT " + std::to_string(finishTime) + " (" +
-										   std::to_string(finishTime - startTime) + " milliseconds)",
-									   true);
+	                                   std::to_string(finishTime - startTime) + " milliseconds)",
+	                                   true);
 
 	setProgress(1.0f);
 
@@ -191,7 +202,8 @@ Chunks
 Fluids
 */ // stacksize is 8192 kbytes
 
-void WorldIOManager::P_saveWorld(World* world) {
+void WorldIOManager::P_saveWorld(World* world)
+{
 	std::string filepath = SAVES_PATH + world->getName() + ".bin";
 
 	BARE2D::Logger::getInstance()->log("SAVE: Starting World Save to File: " + filepath);
@@ -235,7 +247,7 @@ void WorldIOManager::P_saveWorld(World* world) {
 			for(int x = 0; x < CHUNK_SIZE; x++) {
 				for(int k = 0; k < WORLD_DEPTH; k++) {
 					chunkData[i].tiles[x][y][k] = world->getTile(x + i * CHUNK_SIZE, y, k)
-													  ->getSaveData(); // This gives data for ALL layers (recursive)
+					                              ->getSaveData(); // This gives data for ALL layers (recursive)
 				}
 			}
 		}
@@ -285,7 +297,7 @@ void WorldIOManager::P_saveWorld(World* world) {
 
 	{
 		// Fluids
-		unsigned int fluids = BARE2D::XMLDataManager::getDataCount("Fluid");
+		unsigned int fluids = BARE2D::XMLDataManager::getDataCount("fluid");
 		file.write(reinterpret_cast<char*>(&fluids), sizeof(unsigned int));
 		for(unsigned int i = 0; i < fluids; i++) {
 			SaveDataTypes::FluidData data(Singletons::getWorld()->m_fluidDomains[i]);
@@ -300,7 +312,8 @@ void WorldIOManager::P_saveWorld(World* world) {
 	file.close();
 }
 
-void WorldIOManager::P_createWorld(unsigned int seed, std::string worldName, bool isFlat, unsigned int width) {
+void WorldIOManager::P_createWorld(unsigned int seed, std::string worldName, bool isFlat, unsigned int width)
+{
 	World* w = new World(width, WORLD_HEIGHT, WORLD_DEPTH);
 
 	float startTime = (float)(std::clock()) / (float)(CLOCKS_PER_SEC / 1000);
@@ -336,7 +349,7 @@ void WorldIOManager::P_createWorld(unsigned int seed, std::string worldName, boo
 			highestPlace = place;
 
 		setMessage("Now generating biomes... \n(" + std::to_string(i) + "/" +
-				   std::to_string((w->getSize() / CHUNK_SIZE)) + ")");
+		           std::to_string((w->getSize() / CHUNK_SIZE)) + ")");
 
 		setProgress(0.05f * ((i + 1.0f) / (float)chunks));
 	}
@@ -348,7 +361,7 @@ void WorldIOManager::P_createWorld(unsigned int seed, std::string worldName, boo
 	for(int i = 0; i < chunks; i++) { // 0.05 progress
 		float placeMapped = (places[i] - lowestPlace) / (highestPlace - lowestPlace);
 
-		w->m_biomesMap[i] = std::ceil(placeMapped * (BARE2D::XMLDataManager::getDataCount("Biome") - 1));
+		w->m_biomesMap[i] = std::ceil(placeMapped * (BARE2D::XMLDataManager::getDataCount("biome") - 1));
 
 		setProgress(0.05f + 0.05f * ((i + 1.0f) / chunks));
 	}
@@ -376,7 +389,7 @@ void WorldIOManager::P_createWorld(unsigned int seed, std::string worldName, boo
 				for(int j = 0; j < CHUNK_SIZE; j++) {
 					float flatness = biome.flatness;
 
-					float extra = heightNoise.noise((j)*flatness / CHUNK_SIZE, 8.5, 3.7);
+					float extra = heightNoise.noise((j) * flatness / CHUNK_SIZE, 8.5, 3.7);
 					//extra += heightNoise.noise(i * j * i, i, 5.8);
 
 					unsigned int maxHeightDiff = biome.maxHeightDiff;
@@ -394,7 +407,7 @@ void WorldIOManager::P_createWorld(unsigned int seed, std::string worldName, boo
 					float prog			  = (float)progNumerator / (float)progDenominator;
 
 					setMessage("Setting block heights... \n(" + std::to_string(progNumerator) + "/" +
-							   std::to_string(progDenominator) + ")");
+					           std::to_string(progDenominator) + ")");
 					setProgress(0.1f + 0.1f * prog); // Ends at 0.2f
 				}
 			}
@@ -420,9 +433,9 @@ void WorldIOManager::P_createWorld(unsigned int seed, std::string worldName, boo
 					int avg_this = 0, avg_prev = 0;
 					for(unsigned int i = 0; i < affectedBlocks; i++) {
 						const unsigned int blockIndex_prev =
-							(prevChunk * CHUNK_SIZE * WORLD_DEPTH) + (0 * CHUNK_SIZE) + (CHUNK_SIZE - i - 1);
+						    (prevChunk * CHUNK_SIZE * WORLD_DEPTH) + (0 * CHUNK_SIZE) + (CHUNK_SIZE - i - 1);
 						const unsigned int blockIndex_this =
-							(chunk * CHUNK_SIZE * WORLD_DEPTH) + (0 * CHUNK_SIZE) + (i);
+						    (chunk * CHUNK_SIZE * WORLD_DEPTH) + (0 * CHUNK_SIZE) + (i);
 
 						avg_prev += tempHeights[blockIndex_prev] + previousBase;
 						avg_this += tempHeights[blockIndex_this] + baseHeight;
@@ -436,15 +449,15 @@ void WorldIOManager::P_createWorld(unsigned int seed, std::string worldName, boo
 					// That is to say, the at the edge of the chunk we should be very very close to the average. Further, we make smaller adjustments
 					for(unsigned int i = 0; i < affectedBlocks; i++) {
 						const unsigned int blockIndex_prev =
-							(prevChunk * CHUNK_SIZE * WORLD_DEPTH) + (layer * CHUNK_SIZE) + (CHUNK_SIZE - i - 1);
+						    (prevChunk * CHUNK_SIZE * WORLD_DEPTH) + (layer * CHUNK_SIZE) + (CHUNK_SIZE - i - 1);
 						const unsigned int blockIndex_this =
-							(chunk * CHUNK_SIZE * WORLD_DEPTH) + (layer * CHUNK_SIZE) + (i);
+						    (chunk * CHUNK_SIZE * WORLD_DEPTH) + (layer * CHUNK_SIZE) + (i);
 
 						// Adjustment = (y distance from avg)/(x distance from edge of chunk)
 						const int heightAdjustment_prev =
-							(avg_aim - (tempHeights[blockIndex_prev] + previousBase)) / (signed int)(i + 1);
+						    (avg_aim - (tempHeights[blockIndex_prev] + previousBase)) / (signed int)(i + 1);
 						const int heightAdjustment_this =
-							(avg_aim - (tempHeights[blockIndex_this] + baseHeight)) / (signed int)(i + 1);
+						    (avg_aim - (tempHeights[blockIndex_this] + baseHeight)) / (signed int)(i + 1);
 
 						// Actually apply the adjustment
 						tempHeights[blockIndex_prev] += heightAdjustment_prev;
@@ -464,7 +477,7 @@ void WorldIOManager::P_createWorld(unsigned int seed, std::string worldName, boo
 
 					float prog = (float)(chunk + layer * chunks) / (float)(chunks * WORLD_DEPTH);
 					setMessage("Smoothing Terrain... \n(" + std::to_string(chunk + layer * chunks) + "/" +
-							   std::to_string(chunks * WORLD_DEPTH) + ")");
+					           std::to_string(chunks * WORLD_DEPTH) + ")");
 					setProgress(0.2f + 0.1f * prog); // Ends at 0.3f;
 				}
 			}
@@ -507,7 +520,7 @@ void WorldIOManager::P_createWorld(unsigned int seed, std::string worldName, boo
 								for(unsigned int x = 0; x < FLUID_PARTITION_SIZE; x++) {
 									for(unsigned int y = 0; y < FLUID_PARTITION_SIZE; y++) {
 										w->getFluid((unsigned int)FluidModule::FluidIDs::WATER)
-											->setFluid(pos.x, pos.y, x, y, 1.4f);
+										->setFluid(pos.x, pos.y, x, y, 1.4f);
 									}
 								}
 							} else {
@@ -521,7 +534,7 @@ void WorldIOManager::P_createWorld(unsigned int seed, std::string worldName, boo
 						float prog			  = (float)progNumerator / (float)progDenominator;
 
 						setMessage("Placing Blocks... \n(" + std::to_string(progNumerator * WORLD_HEIGHT) + "/" +
-								   std::to_string(progDenominator * WORLD_HEIGHT) + ")");
+						           std::to_string(progDenominator * WORLD_HEIGHT) + ")");
 						setProgress(0.3f + 0.699f * prog); // Ends at 0.999f
 					}
 				}
@@ -552,8 +565,8 @@ void WorldIOManager::P_createWorld(unsigned int seed, std::string worldName, boo
 						}
 					}
 					setMessage("Placing blocks... \n(" +
-							   std::to_string(k * WORLD_HEIGHT + layer * w->getSize() * WORLD_HEIGHT) + "/" +
-							   std::to_string(w->getSize() * WORLD_HEIGHT * WORLD_DEPTH) + ")");
+					           std::to_string(k * WORLD_HEIGHT + layer * w->getSize() * WORLD_HEIGHT) + "/" +
+					           std::to_string(w->getSize() * WORLD_HEIGHT * WORLD_DEPTH) + ")");
 				}
 			}
 		}
@@ -563,12 +576,13 @@ void WorldIOManager::P_createWorld(unsigned int seed, std::string worldName, boo
 
 	float endTime = (float)(std::clock()) / (float)(CLOCKS_PER_SEC / 1000);
 	BARE2D::Logger::getInstance()->log("CREATE: Finished world creation at time: " + std::to_string(endTime) +
-									   " (Elapsed: " + std::to_string(endTime - startTime) + "ms)");
+	                                   " (Elapsed: " + std::to_string(endTime - startTime) + "ms)");
 
 	return;
 }
 
-void WorldIOManager::setWorldEra(unsigned int newEraID) {
+void WorldIOManager::setWorldEra(unsigned int newEraID)
+{
 	/**
 	    This function will affect the entire world in a way that simulates lots of time passing. This may include:
 	        - Buildings collapsing

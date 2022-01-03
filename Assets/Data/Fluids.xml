@@ -1,5 +1,5 @@
 <fluid name="Water" id="0">
-	<texture>"UNDEFINED.png"</texture>
+	<texture>UNDEFINED.png</texture>
 	<gravitationalConstant>0.9</gravitationalConstant>
 	<viscosity>0.4</viscosity>
 	<idealDensity>1.0</idealDensity>
@@ -10,7 +10,7 @@
 	<alpha>255</alpha>
 </fluid>
 <fluid name="Smoke" id="1">
-	<texture>"UNDEFINED.png"</texture>
+	<texture>UNDEFINED.png</texture>
 	<gravitationalConstant>-0.9</gravitationalConstant>
 	<viscosity>0.7</viscosity>
 	<idealDensity>1.0</idealDensity>

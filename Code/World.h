@@ -75,7 +75,7 @@ class World {
 	void updateTiles(glm::vec4 destRect);
 	void tickTiles(glm::vec4 destRect);
 
-	void drawFluids(BARE2D::BumpyRenderer* renderer, glm::vec4& destRect);
+	void drawFluids(BARE2D::BasicRenderer* renderer, glm::vec4& destRect);
 	void updateFluidTextures(glm::vec4& destRect);
 	void updateFluids(float timeStep, glm::vec4& destRect);
 

@@ -6,16 +6,20 @@ in vec2 fragmentUV;
 
 out vec4 colour;
 
-uniform sampler2D textureSampler;
-uniform sampler2D depthMap;
-uniform sampler2D sunlightMap;
-uniform sampler2D normalMap;
+uniform sampler2D colourTexture0; // Regular colour
+uniform sampler2D colourTexture1; // Normal maps
+uniform sampler2D colourTexture2; // sunlight
+uniform sampler2D depthTexture;
 
 const int MAX_LIGHTS = 30; // This is the max amnt of lights a scene can manage (MAX_LIGHTS_RENDERED)
 
 uniform vec3 lights[MAX_LIGHTS]; // First two components are XY, 3th is intensity
 
 uniform float playerDepth;
+
+uniform vec2 screenSizeU;
+uniform float sanity;
+uniform float time;
 
 const float Pi = 6.28318530718; // Pi*2
 
@@ -87,7 +91,11 @@ float getLight(float sun, vec3 fragmentNormal) { // first 3 are XYZ of average l
 }
 
 float getSunlight() {
-	return texture(sunlightMap, fragmentUV.xy).r;
+	return texture(colourTexture2, fragmentUV.xy).r;
+}
+
+float rand(vec2 co){
+    return fract(sin(dot(co.xy ,vec2(12.9898,78.233))) * 43758.5453);
 }
 
 void main() 
@@ -96,25 +104,32 @@ void main()
 		discard;
 	}
 
-	float depth = texture(depthMap, fragmentUV).r; // Get depth (It's set to the exact values that SpriteBatch wrote to the buffer with.) (0 is closest to camera, 1 is farthest)
+	float depth = texture(depthTexture, fragmentUV).r; // Get depth (It's set to the exact values that SpriteBatch wrote to the buffer with.) (0 is closest to camera, 1 is farthest)
 	float depthDiff = abs(playerDepth - depth); // Difference from player, for a focused effect when the player is on the same layer. (Just for blur)
 
 	// Depth
-	if(depthDiff > 0.1 && texture(textureSampler, fragmentUV.xy).a > 0.01) {
-		colour = blur(8.0, 2.0, 0.008 * depthDiff, textureSampler, fragmentUV);	
+	if(depthDiff > 0.1 && texture(colourTexture0, fragmentUV.xy).a > 0.01) {
+		colour = blur(8.0, 2.0, 0.008 * depthDiff, colourTexture0, fragmentUV);	
 	} else {
-		colour = texture(textureSampler, fragmentUV.xy);
+		colour = texture(colourTexture0, fragmentUV.xy);
 	}
 	float c = 1.0 / map(depth-0.1, 0.0, 0.9, 1.0, 4.0);
 	colour.rgb *= c;
 	
 	// Normal Mapping & Lighting
 	// Calculate normals
-	vec3 components = normalize(texture(normalMap, fragmentUV).rgb * 2.0 - 1.0);
+	vec3 components = normalize(texture(colourTexture1, fragmentUV).rgb * 2.0 - 1.0);
 	
 	float sun = getSunlight();
 	float intensity = getLight(sun, components);
 
 	colour.rgb *= intensity;
-	//colour.rgb *= colour.rgb; // Extremifies colours!
+	
+	// Now add the vignette effect
+	vec2 uv = fragmentPosition.xy / screenSizeU.xy;
+	uv *= 1.0 - uv.yx;
+	float vig = uv.x*uv.y*15.0;
+	vig = pow(vig, 0.05 + pow((1.0 - sanity), 0.5) + 0.1 * (sanity < 0.3 ? (mod(rand(vec2(time)), 100)) : 1.0));
+	
+	colour.rgb *= (1.0 - vig);
 }

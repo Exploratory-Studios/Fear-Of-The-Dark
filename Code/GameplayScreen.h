@@ -30,9 +30,8 @@ enum class GameState { PAUSE, PLAY };
 class Scripter;
 class Console;
 
-class GameplayScreen : public BARE2D::Screen
-{
-public:
+class GameplayScreen : public BARE2D::Screen {
+  public:
 	GameplayScreen(BARE2D::Window* window, WorldIOManager* WorldIOManager, BARE2D::InputManager* input);
 	virtual ~GameplayScreen();
 
@@ -44,37 +43,32 @@ public:
 	virtual void update(double dt) override;
 	virtual void draw() override;
 
-	void setCameraLocked(bool setting)
-	{
+	void setCameraLocked(bool setting) {
 		m_cameraLocked = setting;
 	}
 
-	void setSmoothMoveTarget(glm::vec2 target)
-	{
+	void setSmoothMoveTarget(glm::vec2 target) {
 		m_smoothMoveTarget = target;
 	}
-	void setSmoothMoveSpeed(float speed)
-	{
+	void setSmoothMoveSpeed(float speed) {
 		m_smoothMoveSpeed = speed;
 	}
 
-	void pauseForCutscene()
-	{
+	void pauseForCutscene() {
 		m_cutscenePause = true; // Sets the world to not update stuff, but still display
 	}
-	void unpauseCutscene()
-	{
+	void unpauseCutscene() {
 		m_cutscenePause = false; // Sets the world back to normal
 	}
 
-private:
-	void drawSkyToFBO(); /// These just draw to the FBOs, not to the screen.
-	void drawWorldToFBO();
-	void drawWorldSunlightToFBO();
-	void drawParticlesToFBO();
-	void drawFluidsToFBO();
-	void drawGUIToScreen(); // These two actually do draw to the screen.
-	void drawPostToScreen();
+  private:
+	void drawSky(); // These draw to whatever colour attachment that is active.
+	void drawSunMoon();
+	void drawWorld();
+	void drawWorldSunlight();
+	void drawParticles();
+	void drawFluids();
+	void drawGUI();
 
 	void checkInput();
 	void initUI();
@@ -82,7 +76,6 @@ private:
 	void tick();
 
 	void drawHUD();
-	void drawWorld();
 	void drawDebug();
 
 	glm::vec4 getScreenBox();
@@ -97,18 +90,20 @@ private:
 
 	void updateScale();
 
-	BARE2D::Camera2D		 m_uiCamera;
-	BARE2D::Window*			 m_window	= nullptr;
-	BARE2D::BumpyRenderer*	 m_renderer = nullptr;
+	BARE2D::Window*			 m_window = nullptr;
 	BARE2D::ParticleEngine2D m_particle2d;
-	BARE2D::InputManager* m_inputManager = nullptr;
+	BARE2D::InputManager*	 m_inputManager = nullptr;
 
-	BARE2D::FBORenderer* m_mainFBO	   = nullptr; // Used for pretty post processing.
-	BARE2D::FBORenderer* m_normalFBO   = nullptr; // Used for noob-y normal mapping.
-	BARE2D::FBORenderer* m_skyFBO	   = nullptr; // Used for the spectacular sky!
-	BARE2D::FBORenderer* m_particleFBO = nullptr; // Used for partying particles!
-	BARE2D::FBORenderer* m_sunlightFBO = nullptr; // Used for seratonin-inducing sunlight!
-	BARE2D::FBORenderer* m_fluidFBO	   = nullptr; // Used for fantastic fluids!
+	BARE2D::FBORenderer* m_mainFBO = nullptr; // Used for pretty post processing.
+	//BARE2D::FBORenderer* m_particleFBO = nullptr; // Used for partying particles!
+
+	BARE2D::BasicRenderer* m_basicRenderer = nullptr; // used in drawing the main FBO
+	BARE2D::BumpyRenderer* m_worldRenderer =
+		nullptr; // Used in drawing both normal maps and regular collour for the world - tiles, entities, etc.
+	BARE2D::BasicRenderer* m_skyRenderer = nullptr; // Used in rendering the background sky image
+	BARE2D::BasicRenderer* m_sunlightRenderer =
+		nullptr; // Used in rendering sunlight values to the main FBO's 2nd colour attachment (attachment #1)
+	BARE2D::BasicRenderer* m_fluidRenderer = nullptr; // Used in rendering fluids to the screen.
 
 	BARE2D::FontRenderer*  m_fontRenderer = nullptr;
 	BARE2D::DebugRenderer* m_dr			  = nullptr;
@@ -124,15 +119,15 @@ private:
 	glm::vec2 m_smoothMoveTarget;		// Only used by camera, set only by ScripterMain
 	float	  m_smoothMoveSpeed = 0.0f; // Only used by camera, set only by ScripterMain
 
-	float m_time	  = 0.0f; // Used for animations, NOT DAYLIGHT
-	float m_frame	  = 0.0f;
+	float m_time  = 0.0f; // Used for animations, NOT DAYLIGHT
+	float m_frame = 0.0f;
 
 	int m_lastSongPlayed = 0;
 
 	float m_scale = MIN_ZOOM;
 
 	bool m_cutscenePause =
-	    false; // This is a sort of 'soft' pause, meaning that only higher-level updating operations will be paused, such as collision, input, etc. (Blocks will still update like normal)
+		false; // This is a sort of 'soft' pause, meaning that only higher-level updating operations will be paused, such as collision, input, etc. (Blocks will still update like normal)
 
 	bool m_debuggingInfo = false;
 

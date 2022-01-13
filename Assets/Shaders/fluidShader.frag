@@ -5,18 +5,14 @@ in vec3 fragmentPosition;
 in vec4 fragmentColour;
 in vec2 fragmentUV;
 
+uniform float time;
+
 //This is the 3 component float vector that gets outputted to the screen
 //for each pixel.
-out vec4 color;
+out vec4 colour;
 
 uniform sampler2D textureSampler;
 
 void main() {
-	float opacity = texture(textureSampler, fragmentUV.xy).r;
-	
-	if(opacity <= 0.0001f) discard;
-	
-	float alpha = pow(opacity, (1.0/3.0));
-
-	color = vec4(1.0, 1.0, 1.0, alpha) * fragmentColour;
+	colour = texture(textureSampler, fragmentUV.xy) * vec4(vec3(sin(time/50+fragmentUV.x*20-fragmentUV.y*5) * 0.1 + 0.95).xyz, 1.0);
 }

@@ -30,7 +30,7 @@ namespace FluidModule {
 
 		void update();
 		void draw(
-			BARE2D::BumpyRenderer* renderer,
+			BARE2D::BasicRenderer* renderer,
 			glm::vec4&
 				destRect); // Does the actual drawing. We *must* updateTexture beforehand. Don't do it with draw, because it can unbind the texture from the FBO.
 		void updateTexture(glm::vec4& screenDestRect); // Updates the texture. Handles everything!

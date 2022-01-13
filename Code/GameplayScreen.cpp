@@ -19,34 +19,28 @@
 #include "Singletons.h"
 
 #ifdef DEV_CONTROLS
-#include <iostream>
-#include <regex>
+	#include <iostream>
+	#include <regex>
 #endif //DEV_CONTROLS
 
 GameplayScreen::GameplayScreen(BARE2D::Window* window, WorldIOManager* WorldIOManager, BARE2D::InputManager* input) :
-	m_window(window), m_WorldIOManager(WorldIOManager), m_inputManager(input)
-{
+	m_window(window), m_WorldIOManager(WorldIOManager), m_inputManager(input) {
 }
 
-GameplayScreen::~GameplayScreen()
-{
+GameplayScreen::~GameplayScreen() {
 }
 
-int GameplayScreen::getNextScreenIndex() const
-{
+int GameplayScreen::getNextScreenIndex() const {
 	return m_nextScreenIndex;
 }
 
-void GameplayScreen::initScreen()
-{
+void GameplayScreen::initScreen() {
 }
 
-void GameplayScreen::destroyScreen()
-{
+void GameplayScreen::destroyScreen() {
 }
 
-void GameplayScreen::onEntry()
-{
+void GameplayScreen::onEntry() {
 	initUI();
 
 	std::srand(std::time(NULL));
@@ -54,68 +48,55 @@ void GameplayScreen::onEntry()
 	m_dr = new BARE2D::DebugRenderer();
 	m_dr->init();
 
-	std::string textureFragShader = "Shaders/textureShader.frag";
-	std::string textureVertShader = "Shaders/textureShader.vert";
+	std::string postFS	   = "Shaders/postProcesser.frag";
+	std::string postVS	   = "Shaders/postProcesser.vert";
+	std::string textureFS  = "Shaders/textureShader.frag";
+	std::string textureVS  = "Shaders/textureShader.vert";
+	std::string skyFS	   = "Shaders/skyShader.frag";
+	std::string skyVS	   = "Shaders/skyShader.vert";
+	std::string basicFS	   = "Shaders/superBasicShader.frag";
+	std::string basicVS	   = "Shaders/superBasicShader.vert";
+	std::string sunlightFS = "Shaders/sunlightShader.frag";
+	std::string sunlightVS = "Shaders/sunlightShader.vert";
+	std::string fluidFS	   = "Shaders/fluidShader.frag";
+	std::string fluidVS	   = "Shaders/fluidShader.vert";
 
-	m_renderer = new BARE2D::BumpyRenderer(textureFragShader, textureVertShader);
-	m_renderer->init();
-
-	m_fontRenderer = new BARE2D::FontRenderer(textureFragShader, textureVertShader);
+	m_fontRenderer = new BARE2D::FontRenderer(basicFS, basicVS);
 	m_fontRenderer->init();
 
-	std::string mainFS = "Shaders/postProcesser.frag";
-	std::string mainVS = "Shaders/postProcesser.vert";
-
-	m_mainFBO = new BARE2D::FBORenderer(mainFS,
-	                                    mainVS,
-	                                    m_window->getWidth(),
-	                                    m_window->getHeight(),
-	                                    glm::vec2(m_window->getWidth(), m_window->getHeight()));
+	m_mainFBO = new BARE2D::FBORenderer(
+		postFS,
+		postVS,
+		m_window->getWidth(),
+		m_window->getHeight(),
+		glm::vec2(m_window->getWidth(), m_window->getHeight()),
+		3); // The main FBO has 3 colour attachments - one for colour, one for normals, and one for sunlight
 	m_mainFBO->init();
 
-	m_normalFBO = new BARE2D::FBORenderer(textureFragShader,
-	                                      textureVertShader,
-	                                      m_window->getWidth(),
-	                                      m_window->getHeight(),
-	                                      glm::vec2(m_window->getWidth(), m_window->getHeight()));
-	m_normalFBO->init();
+	m_basicRenderer = new BARE2D::BasicRenderer(basicFS, basicVS, m_window->getWidth(), m_window->getHeight());
+	m_basicRenderer->init();
 
-	std::string skyFS = "Shaders/skyShader.frag";
-	std::string skyVS = "Shaders/skyShader.vert";
+	m_worldRenderer = new BARE2D::BumpyRenderer(textureFS, textureVS, m_window->getWidth(), m_window->getHeight());
+	m_worldRenderer->init();
 
-	m_skyFBO = new BARE2D::FBORenderer(skyFS,
-	                                   skyVS,
-	                                   m_window->getWidth(),
-	                                   m_window->getHeight(),
-	                                   glm::vec2(m_window->getWidth(), m_window->getHeight()));
-	m_skyFBO->init();
+	m_skyRenderer = new BARE2D::BasicRenderer(skyFS, skyVS, m_window->getWidth(), m_window->getHeight());
+	m_skyRenderer->init();
 
-	std::string basicFS = "Shaders/superBasicShader.frag";
-	std::string basicVS = "Shaders/superBasicShader.vert";
+	m_sunlightRenderer = new BARE2D::BasicRenderer(sunlightFS, sunlightVS, m_window->getWidth(), m_window->getHeight());
+	m_sunlightRenderer->init();
 
-	m_sunlightFBO = new BARE2D::FBORenderer(basicFS,
-	                                        basicVS,
-	                                        m_window->getWidth(),
-	                                        m_window->getHeight(),
-	                                        glm::vec2(m_window->getWidth(), m_window->getHeight()));
-	m_sunlightFBO->init();
-
-	m_fluidFBO = new BARE2D::FBORenderer(basicFS,
-	                                     basicVS,
-	                                     m_window->getWidth(),
-	                                     m_window->getHeight(),
-	                                     glm::vec2(m_window->getWidth(), m_window->getHeight()));
-	m_fluidFBO->init();
+	m_fluidRenderer = new BARE2D::BasicRenderer(fluidFS, fluidVS, m_window->getWidth(), m_window->getHeight());
+	m_fluidRenderer->init();
 
 	// Link all the cameras together.
-	std::shared_ptr<BARE2D::Camera2D> fboCamera = m_mainFBO->getCamera();
-	m_normalFBO->setCamera(fboCamera);
-	m_skyFBO->setCamera(fboCamera);
-	m_sunlightFBO->setCamera(fboCamera);
-	m_fluidFBO->setCamera(fboCamera);
+	std::shared_ptr<BARE2D::Camera2D> gameCamera = m_basicRenderer->getCamera();
+	m_worldRenderer->setCamera(gameCamera);
+	m_skyRenderer->setCamera(gameCamera);
+	m_sunlightRenderer->setCamera(gameCamera);
+	m_fluidRenderer->setCamera(gameCamera);
 
 	m_scale = INITIAL_ZOOM;
-	Singletons::setGameCamera(m_renderer->getCamera().get());
+	Singletons::setGameCamera(gameCamera.get());
 	Singletons::getGameCamera()->setScale(m_scale, m_scale);
 	Singletons::getGameCamera()->init(m_window->getWidth(), m_window->getHeight());
 	Singletons::getGameCamera()->setPosition((glm::vec2(m_window->getWidth() / 2, m_window->getHeight() / 2)));
@@ -133,6 +114,7 @@ void GameplayScreen::onEntry()
 		bool	  found = false;
 		glm::vec2 pos;
 		pos.x = 5;
+		pos.y = 0;
 		while(!found) {
 			if(!(Singletons::getWorld()->getTile(pos.x, pos.y, 0)->isSolid())) {
 				found = true;
@@ -157,13 +139,11 @@ void GameplayScreen::onEntry()
 	tick();
 }
 
-void GameplayScreen::onExit()
-{
+void GameplayScreen::onExit() {
 	delete m_questManager;
 	delete m_dialogueManager;
 	delete m_console;
 
-	m_renderer->destroy();
 	m_fontRenderer->destroy();
 	m_dr->destroy();
 
@@ -172,8 +152,7 @@ void GameplayScreen::onExit()
 	Singletons::destroyGUI();
 }
 
-void GameplayScreen::update(double dt)
-{
+void GameplayScreen::update(double dt) {
 	Singletons::getWorld()->incrementTime();
 	m_particle2d.update(dt);
 
@@ -191,7 +170,7 @@ void GameplayScreen::update(double dt)
 
 		if(Singletons::getEntityManager()->getPlayer() && !m_cutscenePause) {
 			Singletons::getEntityManager()->getPlayer()->updateMouse(
-			    Singletons::getGameCamera()->getViewedPositionFromScreenPosition(m_inputManager->getMousePosition()));
+				Singletons::getGameCamera()->getViewedPositionFromScreenPosition(m_inputManager->getMousePosition()));
 			Singletons::getEntityManager()->getPlayer()->updateInput(m_inputManager);
 			/// TODO: Re-enable this -> m_world->getPlayer()->setCanInteract(!m_questManager->isDialogueActive());
 		}
@@ -209,16 +188,16 @@ void GameplayScreen::update(double dt)
 
 			if(std::abs((player->getPosition().x) - m_lastPlayerPos.x) >= (worldSize / 2)) {
 				int sign = ((player->getPosition().x + player->getSize().x / 2.0f) - m_lastPlayerPos.x) /
-				           std::abs((player->getPosition().x + player->getSize().x / 2.0f) - m_lastPlayerPos.x);
-				m_lastPlayerPos.x += (float)(worldSize) * sign;
+						   std::abs((player->getPosition().x + player->getSize().x / 2.0f) - m_lastPlayerPos.x);
+				m_lastPlayerPos.x += (float)(worldSize)*sign;
 				Singletons::getGameCamera()->setPosition(Singletons::getGameCamera()->getPosition() +
-				        glm::vec2((float)(worldSize)*sign, 0.0f));
+														 glm::vec2((float)(worldSize)*sign, 0.0f));
 			}
 			m_lastPlayerPos =
-			    (m_lastPlayerPos +
-			     ((player->getPosition() + player->getSize() / glm::vec2(2.0f)) - m_lastPlayerPos) / glm::vec2(4.0f));
+				(m_lastPlayerPos +
+				 ((player->getPosition() + player->getSize() / glm::vec2(2.0f)) - m_lastPlayerPos) / glm::vec2(4.0f));
 			Singletons::getGameCamera()->setPosition(
-			    m_lastPlayerPos); // If lastplayerpos is never updated, the camera is still 'locked' per say, but we can actually change the lastPlayerPos on purpose to get a smooth movement somewhere.
+				m_lastPlayerPos); // If lastplayerpos is never updated, the camera is still 'locked' per say, but we can actually change the lastPlayerPos on purpose to get a smooth movement somewhere.
 		} else {
 			m_lastPlayerPos = (m_lastPlayerPos + (m_smoothMoveTarget - m_lastPlayerPos) * m_smoothMoveSpeed);
 			Singletons::getGameCamera()->setPosition(m_lastPlayerPos);
@@ -226,10 +205,10 @@ void GameplayScreen::update(double dt)
 
 		if((int)Singletons::getGameCamera()->getPosition().x > worldSize) {
 			Singletons::getGameCamera()->setPosition(Singletons::getGameCamera()->getPosition() -
-			        glm::vec2((float)(worldSize), 0.0f));
+													 glm::vec2((float)(worldSize), 0.0f));
 		} else if((int)Singletons::getGameCamera()->getPosition().x < 0) {
 			Singletons::getGameCamera()->setPosition(Singletons::getGameCamera()->getPosition() +
-			        glm::vec2((float)(worldSize), 0.0f));
+													 glm::vec2((float)(worldSize), 0.0f));
 		}
 
 		if(m_scale > MIN_ZOOM && m_scale < MAX_ZOOM)
@@ -247,64 +226,35 @@ void GameplayScreen::update(double dt)
 		Singletons::getGUI()->update();
 }
 
-void GameplayScreen::draw()
-{
+void GameplayScreen::draw() {
 	glClearColor(1.0, 1.0, 1.0, 1.0);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 	{
 		// Sky
-		drawSkyToFBO(); // Readies the FBO.
-
-		m_skyFBO->render();
-
-		{
-			m_renderer->begin();
-
-			float sunPercentX, sunPercentY; // 0.45, 0.8f
-
-			sunPercentX = 0.45f * std::cos(3.1415f * 2.0f * ((float)Singletons::getWorld()->getTime() / DAY_LENGTH) +
-			                               3.1415f * 0.5f);
-			sunPercentY = 0.8f * std::sin(3.1415f * 2.0f * ((float)Singletons::getWorld()->getTime() / DAY_LENGTH) +
-			                              3.1415f * 0.5f);
-
-			std::string sunPath = "sun.png";
-
-			GLuint sunID = BARE2D::ResourceManager::loadTexture(sunPath).id;
-
-			m_renderer->draw(glm::vec4(m_window->getWidth() * (0.5f - sunPercentX) - 16.0f,
-			                           (sunPercentY)*m_window->getHeight(),
-			                           32.0f,
-			                           32.0f),
-			                 glm::vec4(0.0f, 0.0f, 1.0f, 1.0f),
-			                 sunID,
-			                 1.0f,
-			                 BARE2D::Colour(255, 255, 255, 255));
-
-			std::string moonPath = "UNDEFINED.png";
-
-			GLuint moonID = BARE2D::ResourceManager::loadTexture(moonPath).id;
-
-			m_renderer->draw(glm::vec4(m_window->getWidth() * (0.5f + sunPercentX) - 16.0f,
-			                           -(sunPercentY)*m_window->getHeight(),
-			                           32.0f,
-			                           32.0f),
-			                 glm::vec4(0.0f, 0.0f, 1.0f, 1.0f),
-			                 moonID,
-			                 1.0f,
-			                 BARE2D::Colour(0, 0, 255, 255));
-
-			m_renderer->end();
-			m_renderer->render();
-		}
+		drawSky();
+		//drawSunMoon();
 	}
 
-	{
-		drawWorldToFBO();
-		drawWorldSunlightToFBO(); // Draws to sunlight FBO.
-		drawParticlesToFBO();
+	m_mainFBO->begin();
 
-		m_renderer->begin();
+	glm::vec2 screenSizeUniform = glm::vec2(m_window->getWidth(), m_window->getHeight());
+	m_mainFBO->getShader()->setUniform("screenSizeU", &screenSizeUniform);
+
+	float sanityUniform = Singletons::getEntityManager()->getPlayer()->getSanity();
+	m_mainFBO->getShader()->setUniform("sanity", &sanityUniform);
+
+	m_mainFBO->getShader()->setUniform("time", &m_time);
+
+	float playerDepth =
+		0.1f + (Singletons::getEntityManager()->getPlayer()->getLayer() * (1.0f / (float)(WORLD_DEPTH)) * 0.9f);
+	m_mainFBO->getShader()->setUniform("playerDepth", &playerDepth);
+
+	{
+		/// FLOATING POINT ERROR IN DRAWWORLD
+		//drawWorld();
+		//drawWorldSunlight();
+		drawParticles();
 
 		/// TODO: Instead of having a bunch of different FBOs, have the master FBO have 3 colour attachments & a depth one.
 		/// One for regular colouring, one for the normal mapping, and one for sunlight.
@@ -318,155 +268,150 @@ void GameplayScreen::draw()
 		//BARE2D::GLContextManager::getContext()->setActiveTexture(GL_TEXTURE3);
 		//BARE2D::GLContextManager::getContext()->bindTexture(GL_TEXTURE_2D, m_normalFBO->getTexture());
 
-		float playerDepth =
-		    0.1f + (Singletons::getEntityManager()->getPlayer()->getLayer() * (1.0f / (float)(WORLD_DEPTH)) * 0.9f);
-		m_renderer->getShader()->setUniform("playerDepth", &playerDepth);
-
-		Singletons::getWorld()->setLightsUniform(getScreenBox() + glm::vec4(0.0f, 0.0f, 1.0f, 1.0f), m_renderer->getShader()); // sets "lights" uniform of vec3s
-
-		m_mainFBO->render();
-
-		m_renderer->end();
-		m_renderer->render();
+		//Singletons::getWorld()->setLightsUniform(getScreenBox() + glm::vec4(0.0f, 0.0f, 1.0f, 1.0f),
+		//										 m_mainFBO->getShader()); // sets "lights" uniform of vec3s
+		/// TODO: put other calls in here to draw to main FBO.
 	}
 
-	{
-		drawFluidsToFBO();
+	//drawFluids();
 
-		m_renderer->begin();
+	m_mainFBO->end();
+	m_mainFBO->render();
 
-		m_renderer->getShader()->setUniform("time", &m_time);
-
-		m_fluidFBO->render();
-
-		m_renderer->end();
-		m_renderer->render();
-	}
-
-	drawGUIToScreen(); // These two actually do draw to the screen.
-	drawPostToScreen();
+	//drawGUI();
 }
 
-void GameplayScreen::drawSkyToFBO()
-{
+void GameplayScreen::drawSky() {
 	float dayLight = cos((float)Singletons::getWorld()->getTime() / (DAY_LENGTH / 6.28318f)) / 2.0f + 0.5f;
 
-	m_skyFBO->begin();
-
-	glClearColor(0.3f * dayLight, 0.4f * dayLight, 1.0f * dayLight, 1.0f);
-	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
 	{
+		m_skyRenderer->begin();
 
-		m_renderer->begin();
+		glClearColor(0.3f * dayLight, 0.4f * dayLight, 1.0f * dayLight, 1.0f);
+		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 		glm::vec2 windowSizeUniform = glm::vec2(m_window->getWidth(), m_window->getHeight());
-		m_renderer->getShader()->setUniform("screenSizeU", &windowSizeUniform);
+		m_skyRenderer->getShader()->setUniform("screenSizeU", &windowSizeUniform);
 
 		float dayLightUniform = dayLight * 0.5f + 0.5f;
-		m_renderer->getShader()->setUniform("daylight", &dayLightUniform);
+		m_skyRenderer->getShader()->setUniform("daylight", &dayLightUniform);
 
 		float playerChunkX =
-		    std::fmod((Singletons::getEntityManager()->getPlayer()->getPosition().x + (float)CHUNK_SIZE),
-		              (float)CHUNK_SIZE);
+			std::fmod((Singletons::getEntityManager()->getPlayer()->getPosition().x + (float)CHUNK_SIZE),
+					  (float)CHUNK_SIZE);
+
 		float playerXPosUniform = playerChunkX / (float)(CHUNK_SIZE);
-		m_renderer->getShader()->setUniform("playerXPos", &playerXPosUniform);
+		m_skyRenderer->getShader()->setUniform("playerXPos", &playerXPosUniform);
 
 		float parallaxZoomUniform = 0.95f;
-		m_renderer->getShader()->setUniform("parallaxZoom", &parallaxZoomUniform);
+		m_skyRenderer->getShader()->setUniform("parallaxZoom", &parallaxZoomUniform);
 
-		int			playerX = (int)Singletons::getEntityManager()->getPlayer()->getPosition().x;
+		int playerX = (int)Singletons::getEntityManager()->getPlayer()->getPosition().x;
 
 		GLuint backgroundID = Singletons::getWorld()->getBiome(playerX).backgroundTexture.id;
 
-		m_renderer->draw(glm::vec4(0.0f, 0.0f, m_window->getWidth(), m_window->getHeight()),
-		                 glm::vec4(0.0f, 0.0f, 1.0f, 1.0f),
-		                 backgroundID,
-		                 1.0f,
-		                 BARE2D::Colour(255, 255, 255, 255));
+		m_skyRenderer->draw(glm::vec4(0.0f, 0.0f, m_window->getWidth(), m_window->getHeight()),
+							glm::vec4(0.0f, 0.0f, 1.0f, 1.0f),
+							backgroundID,
+							1.0f,
+							BARE2D::Colour(255, 255, 255, 255));
 
-		m_renderer->end();
-		m_renderer->render();
+		m_skyRenderer->end();
+		m_skyRenderer->render();
 	}
-
-	m_skyFBO->end();
 }
 
-void GameplayScreen::drawWorldToFBO()
-{
-	m_mainFBO->begin();
+void GameplayScreen::drawSunMoon() {
+	m_basicRenderer->begin();
 
+	float sunPercentX, sunPercentY; // 0.45, 0.8f
+
+	sunPercentX =
+		0.45f * std::cos(3.1415f * 2.0f * ((float)Singletons::getWorld()->getTime() / DAY_LENGTH) + 3.1415f * 0.5f);
+	sunPercentY =
+		0.8f * std::sin(3.1415f * 2.0f * ((float)Singletons::getWorld()->getTime() / DAY_LENGTH) + 3.1415f * 0.5f);
+
+	std::string sunPath = "sun.png";
+
+	GLuint sunID = BARE2D::ResourceManager::loadTexture(sunPath).id;
+
+	m_basicRenderer->draw(glm::vec4(m_window->getWidth() * (0.5f - sunPercentX) - 16.0f,
+									(sunPercentY)*m_window->getHeight(),
+									32.0f,
+									32.0f),
+						  glm::vec4(0.0f, 0.0f, 1.0f, 1.0f),
+						  sunID,
+						  1.0f,
+						  BARE2D::Colour(255, 255, 255, 255));
+
+	std::string moonPath = "UNDEFINED.png";
+
+	GLuint moonID = BARE2D::ResourceManager::loadTexture(moonPath).id;
+
+	m_basicRenderer->draw(glm::vec4(m_window->getWidth() * (0.5f + sunPercentX) - 16.0f,
+									-(sunPercentY)*m_window->getHeight(),
+									32.0f,
+									32.0f),
+						  glm::vec4(0.0f, 0.0f, 1.0f, 1.0f),
+						  moonID,
+						  1.0f,
+						  BARE2D::Colour(0, 0, 255, 255));
+
+	m_basicRenderer->end();
+	m_basicRenderer->render();
+}
+
+void GameplayScreen::drawWorld() {
 	glm::vec4 screenRect = getScreenBox();
 
 	{
 		{
 			// World: Tiles
 
-			m_renderer->begin();
+			m_worldRenderer->begin();
 
-			Singletons::getWorld()->drawTiles(m_renderer,
-			                                  m_fontRenderer,
-			                                  m_dr,
-			                                  screenRect);
-			Singletons::getEntityManager()->drawEntities(m_renderer, m_fontRenderer, m_dr, screenRect);
+			Singletons::getWorld()->drawTiles(m_worldRenderer, m_fontRenderer, m_dr, screenRect);
+			Singletons::getEntityManager()->drawEntities(m_worldRenderer, m_fontRenderer, m_dr, screenRect);
 
-			m_renderer->end();
-			m_renderer->render();
+			m_worldRenderer->end();
+			m_worldRenderer->render();
 		}
 	}
-
-	m_mainFBO->end();
 }
 
-void GameplayScreen::drawWorldSunlightToFBO()
-{
-	m_sunlightFBO->begin(); // Normal mapping begin
-	m_renderer->begin();
+void GameplayScreen::drawWorldSunlight() {
+	m_sunlightRenderer->begin();
 
-	Singletons::getWorld()->drawSunlight(m_renderer, getScreenBox());
+	Singletons::getWorld()->drawSunlight(m_sunlightRenderer, getScreenBox());
 
-	m_renderer->end();
-	m_renderer->render();
-	m_sunlightFBO->end(); // Normal mapping end.
+	m_sunlightRenderer->end();
+	m_sunlightRenderer->render();
 }
 
-void GameplayScreen::drawParticlesToFBO()
-{
-	m_mainFBO->begin();
+void GameplayScreen::drawParticles() {
 	{
 		// World: Particles
-		m_renderer->begin();
 		/// TODO: Particles
 		//m_particle2d.draw(&m_renderer, 0.0f);
-
-		m_renderer->end();
-		m_renderer->render();
 	}
-	m_mainFBO->end();
 }
 
-void GameplayScreen::drawFluidsToFBO()
-{
+void GameplayScreen::drawFluids() {
 	glm::vec4 screenRect = getScreenBox();
 	Singletons::getWorld()->updateFluidTextures(screenRect);
 
-	m_fluidFBO->begin();
+	m_fluidRenderer->begin();
 
 	glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-	m_renderer->begin();
+	Singletons::getWorld()->drawFluids(m_fluidRenderer, screenRect);
 
-	Singletons::getWorld()->drawFluids(m_renderer, screenRect);
-
-	m_renderer->end();
-	m_renderer->render();
-
-	m_fluidFBO->end();
+	m_fluidRenderer->end();
+	m_fluidRenderer->render();
 }
 
-void GameplayScreen::drawGUIToScreen()
-{
+void GameplayScreen::drawGUI() {
 	{
 		/// CEGUI Inventory GUI (Context 1)
 
@@ -478,22 +423,22 @@ void GameplayScreen::drawGUIToScreen()
 	{
 		/// Inventory Overlays
 
-		Singletons::getEntityManager()->getPlayer()->drawGUI(m_renderer, m_fontRenderer);
+		Singletons::getEntityManager()->getPlayer()->drawGUI(m_basicRenderer, m_fontRenderer);
 		glm::vec4 screenRect = getScreenBox();
 
-		m_renderer->begin();
+		Singletons::getWorld()->drawTilesGUI(m_basicRenderer, m_fontRenderer, screenRect);
 
-		Singletons::getWorld()->drawTilesGUI(m_renderer, m_fontRenderer, screenRect);
+		m_worldRenderer->begin();
 
 		if(Singletons::getEntityManager()->getPlayer()->isInventoryOpen())
 			Singletons::getEntityManager()->getPlayer()->display(
-			    m_renderer,
-			    glm::vec2(0.2f, 0.36f) *
-			    glm::vec2(Singletons::getGameCamera()->getScreenWidth(), Singletons::getGameCamera()->getScreenHeight()),
-			    80.0f);
+				m_worldRenderer,
+				glm::vec2(0.2f, 0.36f) * glm::vec2(Singletons::getGameCamera()->getScreenWidth(),
+												   Singletons::getGameCamera()->getScreenHeight()),
+				80.0f);
 
-		m_renderer->end();
-		m_renderer->render();
+		m_worldRenderer->end();
+		m_worldRenderer->render();
 	}
 
 	{
@@ -514,33 +459,9 @@ void GameplayScreen::drawGUIToScreen()
 	}
 }
 
-void GameplayScreen::drawPostToScreen()
-{
-	// Post
-	m_renderer->begin();
-
-	glm::vec2 screenSizeUniform = glm::vec2(m_window->getWidth(), m_window->getHeight());
-	m_renderer->getShader()->setUniform("screenSizeU", &screenSizeUniform);
-
-	float sanityUniform = Singletons::getEntityManager()->getPlayer()->getSanity();
-	m_renderer->getShader()->setUniform("sanity", &sanityUniform);
-
-	m_renderer->getShader()->setUniform("time", &m_time);
-
-	m_renderer->draw(glm::vec4(0.0f, 0.0f, m_window->getWidth(), m_window->getHeight()),
-	                 glm::vec4(0.0f, 0.0f, 1.0f, 1.0f),
-	                 0,
-	                 0.0f,
-	                 BARE2D::Colour(0, 0, 0, 0));
-
-	m_renderer->end();
-	m_renderer->render();
-}
-
 /// GameplayScreen PRIVATE FUNCTIONS
 
-void GameplayScreen::checkInput()
-{
+void GameplayScreen::checkInput() {
 	if(m_inputManager->isKeyPressed(SDLK_ESCAPE)) {
 		if(m_gameState == GameState::PAUSE) {
 			continueGame();
@@ -571,8 +492,7 @@ void GameplayScreen::checkInput()
 	}
 }
 
-void GameplayScreen::initUI()
-{
+void GameplayScreen::initUI() {
 	{
 		std::string guiPath = ASSETS_FOLDER_PATH + "GUI";
 		Singletons::getGUI()->init(guiPath, 2);
@@ -612,39 +532,39 @@ void GameplayScreen::initUI()
 	{
 		// Pause screen
 		CEGUI::PushButton* resumeButton =
-		    static_cast<CEGUI::PushButton*>(Singletons::getGUI()->createWidget("FOTDSkin/Button",
-		                                    glm::vec4(0.3f, 0.3f, 0.4f, 0.1f),
-		                                    glm::vec4(0.0f),
-		                                    nullptr,
-		                                    "PAUSE_RESUME_BUTTON"));
+			static_cast<CEGUI::PushButton*>(Singletons::getGUI()->createWidget("FOTDSkin/Button",
+																			   glm::vec4(0.3f, 0.3f, 0.4f, 0.1f),
+																			   glm::vec4(0.0f),
+																			   nullptr,
+																			   "PAUSE_RESUME_BUTTON"));
 		resumeButton->subscribeEvent(CEGUI::PushButton::EventClicked,
-		                             CEGUI::Event::Subscriber(&GameplayScreen::pause_resume_button_clicked, this));
+									 CEGUI::Event::Subscriber(&GameplayScreen::pause_resume_button_clicked, this));
 		resumeButton->setText("Resume Game");
 		resumeButton->disable();
 		resumeButton->hide();
 		m_pauseWidgets.push_back(static_cast<CEGUI::Window*>(resumeButton));
 
 		CEGUI::PushButton* saveButton =
-		    static_cast<CEGUI::PushButton*>(Singletons::getGUI()->createWidget("FOTDSkin/Button",
-		                                    glm::vec4(0.3f, 0.45f, 0.4f, 0.1f),
-		                                    glm::vec4(0.0f),
-		                                    nullptr,
-		                                    "PAUSE_SAVE_BUTTON"));
+			static_cast<CEGUI::PushButton*>(Singletons::getGUI()->createWidget("FOTDSkin/Button",
+																			   glm::vec4(0.3f, 0.45f, 0.4f, 0.1f),
+																			   glm::vec4(0.0f),
+																			   nullptr,
+																			   "PAUSE_SAVE_BUTTON"));
 		saveButton->subscribeEvent(CEGUI::PushButton::EventClicked,
-		                           CEGUI::Event::Subscriber(&GameplayScreen::pause_save_button_clicked, this));
+								   CEGUI::Event::Subscriber(&GameplayScreen::pause_save_button_clicked, this));
 		saveButton->setText("Save Game");
 		saveButton->disable();
 		saveButton->hide();
 		m_pauseWidgets.push_back(static_cast<CEGUI::Window*>(saveButton));
 
 		CEGUI::PushButton* quitButton =
-		    static_cast<CEGUI::PushButton*>(Singletons::getGUI()->createWidget("FOTDSkin/Button",
-		                                    glm::vec4(0.3f, 0.6f, 0.4f, 0.1f),
-		                                    glm::vec4(0.0f),
-		                                    nullptr,
-		                                    "PAUSE_QUIT_BUTTON"));
+			static_cast<CEGUI::PushButton*>(Singletons::getGUI()->createWidget("FOTDSkin/Button",
+																			   glm::vec4(0.3f, 0.6f, 0.4f, 0.1f),
+																			   glm::vec4(0.0f),
+																			   nullptr,
+																			   "PAUSE_QUIT_BUTTON"));
 		quitButton->subscribeEvent(CEGUI::PushButton::EventClicked,
-		                           CEGUI::Event::Subscriber(&GameplayScreen::pause_quit_button_clicked, this));
+								   CEGUI::Event::Subscriber(&GameplayScreen::pause_quit_button_clicked, this));
 		quitButton->setText("Save & Quit Game");
 		quitButton->disable();
 		quitButton->hide();
@@ -654,26 +574,25 @@ void GameplayScreen::initUI()
 #ifdef DEV_CONTROLS
 	{
 		m_fpsWidget =
-		    static_cast<CEGUI::DefaultWindow*>(Singletons::getGUI()->createWidget("FOTDSkin/Label",
-		                                       glm::vec4(0.05f, 0.05f, 0.9f, 0.9f),
-		                                       glm::vec4(0.0f),
-		                                       nullptr,
-		                                       "FPS_STRING_WIDGET"));
+			static_cast<CEGUI::DefaultWindow*>(Singletons::getGUI()->createWidget("FOTDSkin/Label",
+																				  glm::vec4(0.05f, 0.05f, 0.9f, 0.9f),
+																				  glm::vec4(0.0f),
+																				  nullptr,
+																				  "FPS_STRING_WIDGET"));
 		m_fpsWidget->setHorizontalAlignment(CEGUI::HorizontalAlignment::HA_LEFT);
 		m_fpsWidget->setVerticalAlignment(CEGUI::VerticalAlignment::VA_TOP);
 	}
 #endif //DEV_CONTROLS
 }
 
-void GameplayScreen::tick()
-{
+void GameplayScreen::tick() {
 	// Happens not every second, nor each frame, but somewhere in between.
 	Singletons::getWorld()->tickTiles(getScreenBox() + glm::vec4(-20.0f, -20.0f, 40.0f, 40.0f));
 	Singletons::getEntityManager()->tickEntities();
 
 	if(!BARE2D::AudioManager::getInstance()->isMusicPlaying()) {
 		float hour = (float)((int)m_time % DAY_LENGTH) / (float)DAY_LENGTH +
-		             0.5f; //(int)((m_time / TICK_RATE) + 12) % DAY_LENGTH;
+					 0.5f; //(int)((m_time / TICK_RATE) + 12) % DAY_LENGTH;
 
 		int randNum = std::rand() % 100;
 
@@ -698,8 +617,7 @@ void GameplayScreen::tick()
 	}
 }
 
-void GameplayScreen::updateScale()
-{
+void GameplayScreen::updateScale() {
 	m_scale += (float)m_inputManager->getMouseScrollwheelPosition() * m_scale / 20.0f;
 	if(m_scale < MIN_ZOOM) {
 		m_scale = MIN_ZOOM;
@@ -712,8 +630,7 @@ void GameplayScreen::updateScale()
 
 #ifdef DEV_CONTROLS
 
-void GameplayScreen::drawDebug()
-{
+void GameplayScreen::drawDebug() {
 	//if(Singletons::getEntityManager()->getPlayer()->getSelectedBlock()) {
 	EntityPlayer* p = Singletons::getEntityManager()->getPlayer();
 
@@ -727,7 +644,7 @@ void GameplayScreen::drawDebug()
 	std::string display = "";
 	if(p->getSelectedBlock())
 		display += "\nMouse x,y: " + std::to_string(p->getSelectedBlock()->getPosition().x) + "," +
-		           std::to_string(p->getSelectedBlock()->getPosition().y);
+				   std::to_string(p->getSelectedBlock()->getPosition().y);
 	//display += "\nSelected Block: Biome: " + biomeString + ", " + p->getSelectedBlock()->getPrintout();
 
 	m_fpsWidget->setText(display);
@@ -736,8 +653,7 @@ void GameplayScreen::drawDebug()
 
 #endif //DEV_CONTROLS
 
-void GameplayScreen::pauseGame()
-{
+void GameplayScreen::pauseGame() {
 	m_lastGameState = m_gameState;
 	m_gameState		= GameState::PAUSE;
 	for(unsigned int i = 0; i < m_pauseWidgets.size(); i++) {
@@ -747,8 +663,7 @@ void GameplayScreen::pauseGame()
 	}
 }
 
-void GameplayScreen::continueGame()
-{
+void GameplayScreen::continueGame() {
 	m_gameState = m_lastGameState;
 	for(unsigned int i = 0; i < m_pauseWidgets.size(); i++) {
 		m_pauseWidgets[i]->hide();
@@ -757,28 +672,24 @@ void GameplayScreen::continueGame()
 	}
 }
 
-bool GameplayScreen::pause_resume_button_clicked(const CEGUI::EventArgs& e)
-{
+bool GameplayScreen::pause_resume_button_clicked(const CEGUI::EventArgs& e) {
 	continueGame();
 	return true;
 }
 
-bool GameplayScreen::pause_save_button_clicked(const CEGUI::EventArgs& e)
-{
+bool GameplayScreen::pause_save_button_clicked(const CEGUI::EventArgs& e) {
 	m_WorldIOManager->saveWorld();
 	return true;
 }
 
-bool GameplayScreen::pause_quit_button_clicked(const CEGUI::EventArgs& e)
-{
+bool GameplayScreen::pause_quit_button_clicked(const CEGUI::EventArgs& e) {
 	pause_save_button_clicked(e);
 	m_nextScreenIndex = SCREEN_INDEX_MAINMENU;
 	m_screenState	  = BARE2D::ScreenState::CHANGE_NEXT;
 	return true;
 }
 
-glm::vec4 GameplayScreen::getScreenBox()
-{
+glm::vec4 GameplayScreen::getScreenBox() {
 	// Window coordinates
 	glm::vec2 topLeft(0.0f, 0.0f);
 	glm::vec2 bottomRight(m_window->getWidth(), m_window->getHeight());
@@ -787,10 +698,10 @@ glm::vec4 GameplayScreen::getScreenBox()
 	glm::vec2 gameplayCoordsBR = Singletons::getGameCamera()->getViewedPositionFromScreenPosition(bottomRight);
 
 	glm::vec4 ret = glm::vec4(gameplayCoordsTL.x,
-	                          gameplayCoordsBR.y,
-	                          gameplayCoordsBR.x - gameplayCoordsTL.x,
-	                          gameplayCoordsTL.y - gameplayCoordsBR.y) +
-	                glm::vec4(-1.5f, -1.5f, 3.0f, 3.0f);
+							  gameplayCoordsBR.y,
+							  gameplayCoordsBR.x - gameplayCoordsTL.x,
+							  gameplayCoordsTL.y - gameplayCoordsBR.y) +
+					glm::vec4(-1.5f, -1.5f, 3.0f, 3.0f);
 
 	if(std::abs(ret.x) > 10000 || std::abs(ret.y) > 1000) {
 		BARE2D::Logger::getInstance()->log("Err");

@@ -207,17 +207,17 @@ void EntityNPC::initLimbs() {
 	// Load skeletal animations
 	m_currentAttackAnim = new AnimationModule::SkeletalAnimation(); // Just allocate the memory.
 
-	if(data.idleAnimationID != -1) {
+	if(data.idleAnimationID != (unsigned int)-1) {
 		m_idleAnimation = new AnimationModule::SkeletalAnimation(data.idleAnimationID);
 		m_idleAnimation->setToLoop(true);
 	}
 
-	if(data.lowVelAnimationID != -1) {
+	if(data.lowVelAnimationID != (unsigned int)-1) {
 		m_lowVelAnimation = new AnimationModule::SkeletalAnimation(data.lowVelAnimationID);
 		m_lowVelAnimation->setToLoop(true);
 	}
 
-	if(data.flinchAnimationID != -1) {
+	if(data.flinchAnimationID != (unsigned int)-1) {
 		m_flinchAnimation = new AnimationModule::SkeletalAnimation(data.flinchAnimationID);
 		m_flinchAnimation->setToLoop(true);
 	}

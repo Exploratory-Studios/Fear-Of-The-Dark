@@ -7,14 +7,17 @@ in vec2 fragmentUV;
 
 //This is the 3 component float vector that gets outputted to the screen
 //for each pixel.
-out vec4 color;
+out vec4 colour0; // regular colour
+out vec4 colour1; // normal map
 
-uniform sampler2D textureSampler;
+uniform sampler2D textureSampler; // regular colour
+uniform sampler2D bumpmapSampler; // normal map
 
 void main() {
-	color = texture(textureSampler, fragmentUV.xy) * fragmentColour;
+	colour0 = texture(textureSampler, fragmentUV.xy) * fragmentColour;
+	colour1 = texture(bumpmapSampler, fragmentUV.xy);
 
-	if(color.a < 0.05) {
+	if(colour0.a < 0.05) {
 		discard;
 	}
 }

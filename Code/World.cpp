@@ -11,8 +11,7 @@
 
 #include "Singletons.h"
 
-World::World(unsigned int xSize, unsigned int ySize, unsigned int zSize)
-{
+World::World(unsigned int xSize, unsigned int ySize, unsigned int zSize) {
 	initTiles(xSize, ySize, zSize);
 	initFluids();
 
@@ -21,8 +20,7 @@ World::World(unsigned int xSize, unsigned int ySize, unsigned int zSize)
 	Singletons::getEntityManager()->init(this);
 }
 
-World::~World()
-{
+World::~World() {
 	//free(m_tiles);
 
 	for(unsigned int x = 0; x < m_tiles.size(); x++) {
@@ -37,8 +35,7 @@ World::~World()
 	Singletons::deleteEntityManager();
 }
 
-void World::initTiles(unsigned int xSize, unsigned int ySize, unsigned int zSize)
-{
+void World::initTiles(unsigned int xSize, unsigned int ySize, unsigned int zSize) {
 	// Clear tiles just in case we already did this.
 	for(unsigned int x = 0; x < m_tiles.size(); x++) {
 		for(unsigned int y = 0; y < m_tiles[x].size(); y++) {
@@ -69,8 +66,7 @@ void World::initTiles(unsigned int xSize, unsigned int ySize, unsigned int zSize
 	m_biomesMap.resize(xSize / CHUNK_SIZE);
 }
 
-void World::initFluids()
-{
+void World::initFluids() {
 	// Clear fluids, just in case we're doing this again.
 	for(unsigned int i = 0; i < m_fluidDomains.size(); i++) {
 		delete m_fluidDomains[i];
@@ -78,15 +74,14 @@ void World::initFluids()
 	m_fluidDomains.clear();
 
 	unsigned int fluidCount = BARE2D::XMLDataManager::getDataCount(
-	                              "fluid"); // Number of fluids that can be placed, therefore number of domains we need.
+		"fluid"); // Number of fluids that can be placed, therefore number of domains we need.
 
 	for(unsigned int i = 0; i < fluidCount; i++) {
 		m_fluidDomains.push_back(new FluidModule::FluidDomain(m_tiles, i));
 	}
 }
 
-void World::setTile(Tile* tile)
-{
+void World::setTile(Tile* tile) {
 	setTile_noEvent(tile);
 
 	unsigned int x, y, layer, id;
@@ -103,8 +98,7 @@ void World::setTile(Tile* tile)
 	if(f) f->setNeedsSunCheck();*/
 }
 
-void World::setTile_noEvent(Tile* tile)
-{
+void World::setTile_noEvent(Tile* tile) {
 	unsigned int x, y, layer;
 	x	  = tile->getPosition().x;
 	y	  = tile->getPosition().y;
@@ -150,8 +144,7 @@ void World::setTile_noEvent(Tile* tile)
 	}
 }
 
-Tile* World::getTile(int x, int y, int layer)
-{
+Tile* World::getTile(int x, int y, int layer) {
 	if(y < WORLD_HEIGHT && y >= 0) {
 		if(layer >= 0 && layer < WORLD_DEPTH) {
 			return m_tiles[(x + getSize()) % getSize()][y][layer];
@@ -160,8 +153,7 @@ Tile* World::getTile(int x, int y, int layer)
 	return nullptr;
 }
 
-XMLModule::BiomeData World::getBiome(int x)
-{
+XMLModule::BiomeData World::getBiome(int x) {
 	// Get chunk position
 	int chunkX = (unsigned int)(((x + CHUNK_SIZE) % m_biomesMap.size()) / CHUNK_SIZE);
 
@@ -172,13 +164,11 @@ XMLModule::BiomeData World::getBiome(int x)
 	return getBiomeData(biomeID);
 }
 
-FluidModule::FluidDomain* World::getFluid(unsigned int index)
-{
+FluidModule::FluidDomain* World::getFluid(unsigned int index) {
 	return m_fluidDomains[index];
 }
 
-void World::sortLights()
-{
+void World::sortLights() {
 	bool changed = true;
 	while(changed) {
 		changed = false;
@@ -193,8 +183,7 @@ void World::sortLights()
 	}
 }
 
-void World::addLight(Tile* t)
-{
+void World::addLight(Tile* t) {
 	/** ADDS TILE TO VECTOR, MAKES SURE IT'S SORTED */
 
 	/*
@@ -215,8 +204,7 @@ void World::addLight(Tile* t)
 	}
 }
 
-void World::removeLight(unsigned int index)
-{
+void World::removeLight(unsigned int index) {
 	/** REMOVES TILE FROM VECTOR. NOTHING MORE.
 	*/
 
@@ -227,8 +215,7 @@ void World::removeLight(unsigned int index)
 	m_lights.pop_back();
 }
 
-void World::removeLight(Tile* t)
-{
+void World::removeLight(Tile* t) {
 	/** REMOVES TILE FROM VECTOR. NOTHING MORE.
 	*/
 
@@ -250,8 +237,7 @@ void World::removeLight(Tile* t)
 	}
 }
 
-void World::getRenderedLights(glm::vec4 destRect, float lights[MAX_LIGHTS_RENDERED * 3])
-{
+void World::getRenderedLights(glm::vec4 destRect, float lights[MAX_LIGHTS_RENDERED * 3]) {
 	/*
 	    Gets all the lights that should be rendered this frame, using a viewport rectangle (destRect). Returns glm::vec3 array of length MAX_LIGHTS_RENDERED
 	    Algorithm:
@@ -297,12 +283,12 @@ void World::getRenderedLights(glm::vec4 destRect, float lights[MAX_LIGHTS_RENDER
 
 		if(append) {
 			glm::vec3 result =
-			    glm::vec3(centerXViewport + shortestDist, m_lights[i]->getPosition().y, m_lights[i]->getEmittedLight());
+				glm::vec3(centerXViewport + shortestDist, m_lights[i]->getPosition().y, m_lights[i]->getEmittedLight());
 			// 3.
 			if(added >= MAX_LIGHTS_RENDERED) {
 				glm::vec2 center(destRect.x + destRect.z / 2.0f, destRect.y + destRect.w / 2.0f);
 				float	  maxDist =
-				    glm::distance(glm::vec2(result.x, result.y), center); // Distance from the centre of the viewport
+					glm::distance(glm::vec2(result.x, result.y), center); // Distance from the centre of the viewport
 				int maxDistIndex = -1;
 				for(int i = 0; i < MAX_LIGHTS_RENDERED; i++) {
 					float IDistance = glm::distance(glm::vec2(returnVal[i].x, returnVal[i].y), center);
@@ -323,17 +309,16 @@ void World::getRenderedLights(glm::vec4 destRect, float lights[MAX_LIGHTS_RENDER
 
 	for(int i = 0; i < MAX_LIGHTS_RENDERED; i++) {
 		glm::vec2 pos = Singletons::getGameCamera()->getViewedPositionFromScreenPosition(
-		                    glm::vec2(returnVal[i].x + 0.5f, returnVal[i].y + 0.5f));
+			glm::vec2(returnVal[i].x + 0.5f, returnVal[i].y + 0.5f));
 
 		lights[i * 3]	  = pos.x;
 		lights[i * 3 + 1] = pos.y;
 		lights[i * 3 + 2] =
-		    returnVal[i].z * Singletons::getGameCamera()->getScaleX() * Singletons::getGameCamera()->getScaleX();
+			returnVal[i].z * Singletons::getGameCamera()->getScaleX() * Singletons::getGameCamera()->getScaleX();
 	}
 }
 
-void World::setLightsUniform(glm::vec4 destRect, BARE2D::ShaderProgram* shader)
-{
+void World::setLightsUniform(glm::vec4 destRect, BARE2D::ShaderProgram* shader) {
 	float lights[MAX_LIGHTS_RENDERED * 3];
 	getRenderedLights(destRect, lights);
 	//glUniform3fv(textureUniform, MAX_LIGHTS_RENDERED, lights); /// TODO: Set define directive for 30 lights max.
@@ -342,10 +327,9 @@ void World::setLightsUniform(glm::vec4 destRect, BARE2D::ShaderProgram* shader)
 }
 
 void World::drawTiles(BARE2D::BumpyRenderer* renderer,
-                      BARE2D::FontRenderer*	 fontRenderer,
-                      BARE2D::DebugRenderer* dr,
-                      glm::vec4				 destRect)
-{
+					  BARE2D::FontRenderer*	 fontRenderer,
+					  BARE2D::DebugRenderer* dr,
+					  glm::vec4				 destRect) {
 	/**
 	    Draws an area of tiles at position destRect.xy, with width and height of destRect.z and destRect.w respectively.
 	    Negative coordinates are mapped to accomodate for 'crossover'
@@ -381,11 +365,10 @@ void World::drawTiles(BARE2D::BumpyRenderer* renderer,
 	}
 }
 
-void World::drawTilesGUI(BARE2D::BasicRenderer* renderer, BARE2D::FontRenderer* fontRenderer, glm::vec4 destRect)
-{
+void World::drawTilesGUI(BARE2D::BasicRenderer* renderer, BARE2D::FontRenderer* fontRenderer, glm::vec4 destRect) {
 	for(int x = destRect.x; x < destRect.z + destRect.x; x++) {
 		int columnIndex = (int)((x) + (getSize())) % getSize();
-		int offset		= (x) - columnIndex;
+		int offset		= (x)-columnIndex;
 
 		for(int y = destRect.y; y < destRect.w + destRect.y; y++) {
 			for(unsigned int layer = 0; layer < WORLD_DEPTH; layer++) {
@@ -399,8 +382,7 @@ void World::drawTilesGUI(BARE2D::BasicRenderer* renderer, BARE2D::FontRenderer* 
 	}
 }
 
-void World::updateTiles(glm::vec4 destRect)
-{
+void World::updateTiles(glm::vec4 destRect) {
 	/**
 	    Simply updates an area of tiles at position destRect.xy, with width and height of destRect.z and destRect.w respectively.
 	    Negative coordinates are mapped to accomodate for 'crossover'
@@ -424,8 +406,7 @@ void World::updateTiles(glm::vec4 destRect)
 	}
 }
 
-void World::tickTiles(glm::vec4 destRect)
-{
+void World::tickTiles(glm::vec4 destRect) {
 	/**
 	    Simply ticks an area of tiles at position destRect.xy, with width and height of destRect.z and destRect.w respectively.
 	    Negative coordinates are mapped to accomodate for 'crossover'
@@ -451,8 +432,7 @@ void World::tickTiles(glm::vec4 destRect)
 	return;
 }
 
-void World::drawFluids(BARE2D::BumpyRenderer* renderer, glm::vec4& destRect)
-{
+void World::drawFluids(BARE2D::BasicRenderer* renderer, glm::vec4& destRect) {
 	glDisable(GL_DEPTH_TEST); // Make sure that our fluids aren't blocked by... invisible fluids.
 
 	for(unsigned int i = 0; i < m_fluidDomains.size(); i++) {
@@ -460,38 +440,33 @@ void World::drawFluids(BARE2D::BumpyRenderer* renderer, glm::vec4& destRect)
 	}
 }
 
-void World::updateFluidTextures(glm::vec4& destRect)
-{
+void World::updateFluidTextures(glm::vec4& destRect) {
 	for(unsigned int i = 0; i < m_fluidDomains.size(); i++) {
 		m_fluidDomains[i]->updateTexture(destRect);
 	}
 }
 
-void World::updateFluids(float timeStep, glm::vec4& destRect)
-{
+void World::updateFluids(float timeStep, glm::vec4& destRect) {
 	for(unsigned int i = 0; i < m_fluidDomains.size(); i++) {
 		m_fluidDomains[i]->update();
 	}
 }
 
-void World::drawDebug(BARE2D::DebugRenderer* dr, float xOffset)
-{
+void World::drawDebug(BARE2D::DebugRenderer* dr, float xOffset) {
 	//for(unsigned int i = 0; i < m_entities.size(); i++) {
 	//	m_entities[i]->debugDraw(dr, 0.0f); /// TODO: Finish these entity functions up and improve!
 	//}
 	//dr.end();
 }
 
-void World::drawSunlight(BARE2D::BasicRenderer* renderer, glm::vec4 destRect)
-{
+void World::drawSunlight(BARE2D::BasicRenderer* renderer, glm::vec4 destRect) {
 	for(float y = destRect.y; y < (destRect.y + destRect.w); y++) {
 		if((int)y < 1) {
 			y = 0;
-			continue;
 		}
 		if((int)y > WORLD_HEIGHT - 2) {
 			y = WORLD_HEIGHT - 1;
-			continue;
+			break;
 		}
 
 		for(float x = destRect.x; x < (destRect.x + destRect.z); x++) {
@@ -524,16 +499,15 @@ void World::drawSunlight(BARE2D::BasicRenderer* renderer, glm::vec4 destRect)
 			corners |= (cornersVec.z > 0.0f) << 3;
 
 			renderer->draw(glm::vec4((int)x, (int)y, 1.0f, 1.0f),
-			               glm::vec4(0.0f, 0.0f, 1.0f, 1.0f),
-			               0,
-			               0.0f,
-			               BARE2D::Colour(light, corners, 255, 255));
+						   glm::vec4(0.0f, 0.0f, 1.0f, 1.0f),
+						   0,
+						   0.0f,
+						   BARE2D::Colour(light, corners, 255, 255));
 		}
 	}
 }
 
-float World::getDistance(glm::vec2 point0, glm::vec2 point1)
-{
+float World::getDistance(glm::vec2 point0, glm::vec2 point1) {
 	float xDist;
 
 	if(point0.x < point1.x) {
@@ -555,8 +529,7 @@ float World::getDistance(glm::vec2 point0, glm::vec2 point1)
 
 /// PRIVATE FUNCTIONS BELOW
 
-void World::specialUpdateTile(Tile* origin)
-{
+void World::specialUpdateTile(Tile* origin) {
 	origin->specialUpdate(m_time);
 
 	glm::vec2 oPos = origin->getPosition();

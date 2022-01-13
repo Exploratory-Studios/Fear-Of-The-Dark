@@ -158,12 +158,23 @@ void EntityPlayer::initGUI() {
 }
 
 void EntityPlayer::onDraw(BARE2D::BumpyRenderer* renderer, float time, int layerDifference, float xOffset) {
+}
+
+void EntityPlayer::drawGUI(BARE2D::BasicRenderer* renderer, BARE2D::FontRenderer* fontRenderer) {
+	if(!m_initedGUI)
+		initGUI();
+
+	glm::vec4	   fullUV = glm::vec4(0.0f, 0.0f, 1.0f, 1.0f);
+	BARE2D::Colour fullColour(255, 255, 255, 255);
+
+	renderer->begin();
+
 	if(m_selectedEntity) {
 		glm::vec4	fullUV(0.0f, 0.0f, 1.0f, 1.0f);
 		std::string cursorPath	= "GUI/Player/Cursor.png";
 		int			cursorImgId = BARE2D::ResourceManager::loadTexture(cursorPath).id;
 
-		glm::vec4 cursorDestRect(m_selectedEntity->getPosition().x + xOffset,
+		glm::vec4 cursorDestRect(m_selectedEntity->getPosition().x,
 								 m_selectedEntity->getPosition().y,
 								 m_selectedEntity->getSize().x,
 								 m_selectedEntity->getSize().y);
@@ -177,7 +188,7 @@ void EntityPlayer::onDraw(BARE2D::BumpyRenderer* renderer, float time, int layer
 		std::string cursorPath	= "GUI/Player/Cursor.png";
 		int			cursorImgId = BARE2D::ResourceManager::loadTexture(cursorPath).id;
 
-		glm::vec4 cursorDestRect(m_selectedBlock->getPosition().x + xOffset,
+		glm::vec4 cursorDestRect(m_selectedBlock->getPosition().x,
 								 m_selectedBlock->getPosition().y,
 								 m_selectedBlock->getSize().x,
 								 m_selectedBlock->getSize().y);
@@ -187,16 +198,6 @@ void EntityPlayer::onDraw(BARE2D::BumpyRenderer* renderer, float time, int layer
 					   1.5f * (WORLD_DEPTH - m_layer),
 					   BARE2D::Colour(255, 255, 255, 255));
 	}
-}
-
-void EntityPlayer::drawGUI(BARE2D::BasicRenderer* renderer, BARE2D::FontRenderer* fontRenderer) {
-	if(!m_initedGUI)
-		initGUI();
-
-	glm::vec4	   fullUV = glm::vec4(0.0f, 0.0f, 1.0f, 1.0f);
-	BARE2D::Colour fullColour(255, 255, 255, 255);
-
-	renderer->begin();
 
 	/*{
 		// Hotbar
@@ -375,7 +376,7 @@ void EntityPlayer::updateInput(BARE2D::InputManager* input) {
 		if(m_velocity.x < MAX_SPEED) {
 			m_velocity.x += m_runSpeed * m_inventory->getSpeedMultiplier() * std::pow(m_stamina, 0.4f);
 		}
-		if(m_state != MovementState::LOW_VEL) {
+		if(m_state != MovementState::LOW_VEL && m_lowVelAnimation) {
 			m_state = MovementState::LOW_VEL;
 			m_body.changeAnimation(m_lowVelAnimation);
 			m_flippedTexture = false;
@@ -387,7 +388,7 @@ void EntityPlayer::updateInput(BARE2D::InputManager* input) {
 		if(m_velocity.x > -MAX_SPEED) {
 			m_velocity.x -= m_runSpeed * m_inventory->getSpeedMultiplier() * std::pow(m_stamina, 0.4f);
 		}
-		if(m_state != MovementState::LOW_VEL) {
+		if(m_state != MovementState::LOW_VEL && m_lowVelAnimation) {
 			m_state = MovementState::LOW_VEL;
 			m_body.changeAnimation(m_lowVelAnimation);
 			m_flippedTexture = true;

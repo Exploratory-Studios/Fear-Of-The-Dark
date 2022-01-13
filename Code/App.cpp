@@ -3,8 +3,7 @@
 #include "Singletons.h"
 #include "CustomXMLTypes.h"
 
-App::App()
-{
+App::App() {
 	getWindow()->setTitle("Fear Of The Dark");
 	getWindow()->setSize(1024, 624);
 
@@ -16,33 +15,30 @@ App::App()
 	initXML();
 }
 
-App::~App()
-{
+App::~App() {
 }
 
-void App::addScreens()
-{
+void App::addScreens() {
 	Singletons::createWorld();
 
-	m_startupScreen		= new StartupScreen(getWindow(), getInputManager()); /// 0
-	m_mainMenuScreen	= new MainMenuScreen(getWindow());				   /// 1
-	m_optionsMenuScreen = new OptionsMenuScreen(getWindow());				   /// 2
-	m_loadScreen		= new LoadScreen(getWindow(), m_WorldIOManager);	   /// 3
-	m_waitScreen		= new WaitScreen(getWindow(), m_WorldIOManager);	   /// 4
+	m_startupScreen		= new StartupScreen(getWindow(), getInputManager());					/// 0
+	m_mainMenuScreen	= new MainMenuScreen(getWindow());										/// 1
+	m_optionsMenuScreen = new OptionsMenuScreen(getWindow());									/// 2
+	m_loadScreen		= new LoadScreen(getWindow(), m_WorldIOManager);						/// 3
+	m_waitScreen		= new WaitScreen(getWindow(), m_WorldIOManager);						/// 4
 	m_gameplayScreen	= new GameplayScreen(getWindow(), m_WorldIOManager, getInputManager()); /// 5
 
 	/// MAKE SURE YOU ADD SCREENS IN THE ORDER OF THEIR INDICES
 
 	getScreenList()->addEntryScreen(m_startupScreen); /// 0
-	getScreenList()->addScreen(m_mainMenuScreen);		/// 1
-	getScreenList()->addScreen(m_optionsMenuScreen);	/// 2
-	getScreenList()->addScreen(m_loadScreen);			/// 3
-	getScreenList()->addScreen(m_waitScreen);			/// 4
-	getScreenList()->addScreen(m_gameplayScreen);		/// 5
+	getScreenList()->addScreen(m_mainMenuScreen);	  /// 1
+	getScreenList()->addScreen(m_optionsMenuScreen);  /// 2
+	getScreenList()->addScreen(m_loadScreen);		  /// 3
+	getScreenList()->addScreen(m_waitScreen);		  /// 4
+	getScreenList()->addScreen(m_gameplayScreen);	  /// 5
 }
 
-void App::initXML()
-{
+void App::initXML() {
 	// Register all the different types of data.
 	BARE2D::XMLDataManager::addDataType<XMLModule::TileData>();
 	BARE2D::XMLDataManager::addDataType<XMLModule::TileContainerData>();
@@ -76,7 +72,4 @@ void App::initXML()
 
 	// Load all the files.
 	BARE2D::XMLDataManager::loadXML(ASSETS_FOLDER_PATH + "/Data/");
-
-	XMLModule::TileData dat = getTileData(0);
-
 }

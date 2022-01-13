@@ -83,7 +83,7 @@ namespace FluidModule {
 		}
 	}
 
-	void FluidDomain::draw(BARE2D::BumpyRenderer* renderer, glm::vec4& destRect) {
+	void FluidDomain::draw(BARE2D::BasicRenderer* renderer, glm::vec4& destRect) {
 		glm::vec4 snapped =
 			glm::vec4(std::floor(destRect.x),
 					  std::floor(destRect.y),

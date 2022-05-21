@@ -12,20 +12,13 @@
 </lootDrop>
 
 <lootTable id="0" name="DirtOnlyTable">
-	<drops>
-		<dropID>0</dropID>
-	</drops>
+	<drops>{0}</drops>
 </lootTable>
 <lootTable id="1" name="TorchOnlyTable">
-	<drops>
-		<dropID>1</dropID>
-	</drops>
+	<drops>{1}</drops>
 </lootTable>
 <lootTable id="2" name="MixedTable">
-	<drops>
-		<dropID>0</dropID>
-		<dropID>1</dropID>
-	</drops>
+	<drops>{0}{1}</drops>
 </lootTable>
 <lootTable id="3" name="EmptyTable"/>
 

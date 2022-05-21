@@ -5,8 +5,7 @@
 
 #include "TileInventory.h"
 
-TileContainer::TileContainer(glm::vec2 pos, unsigned int layer, unsigned int id) :
-	Tile(pos, layer, id) {
+TileContainer::TileContainer(glm::vec2 pos, unsigned int layer, unsigned int id) : Tile(pos, layer, id) {
 	init(); // The parent constructor sets m_id
 }
 
@@ -36,7 +35,7 @@ void TileContainer::drawGUI(BARE2D::BasicRenderer* renderer, BARE2D::FontRendere
 		m_inventory->setToDraw(true);
 	}
 
-	glm::vec2 size = Singletons::getGameCamera()->getScreenSizeFromViewedSize(glm::vec2(3.0f, 3.0f));
+	glm::vec2 size = Singletons::getGameCamera()->getViewspaceCoord(glm::vec2(3.0f, 3.0f));
 	glm::vec4 destRect(0.0f, 0.0f, size.x, size.y);
 	m_inventory->setDestRect(destRect);
 

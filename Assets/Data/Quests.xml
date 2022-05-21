@@ -6,11 +6,7 @@
 		</script>
 		<isFile>0</isFile>
 	</completionScript>
-	<objectives>
-		<objectiveID>0</objectiveID>
-		<objectiveID>1</objectiveID>
-		<objectiveID>0</objectiveID>
-	</objectives>
+	<objectives>{0}{1}{0}</objectives>
 </quest>
 
 <questObjective id="0" name="test0Objective">

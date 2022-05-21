@@ -123,18 +123,18 @@ namespace ScriptingModule {
 
 	void camera_setPosition(GameplayScreen* gs, glm::vec2 pos) {
 		camera_setLocked(gs, true);
-		Singletons::getGameCamera()->setPosition(pos);
+		Singletons::getGameCamera()->setFocus(pos);
 	}
 
 	void camera_move(GameplayScreen* gs, glm::vec2 relPos) {
 		camera_setLocked(gs, true);
-		Singletons::getGameCamera()->setPosition(Singletons::getGameCamera()->getPosition() + relPos);
+		Singletons::getGameCamera()->offsetFocus(relPos);
 	}
 
 	void camera_smoothMove(GameplayScreen* gs, glm::vec2 relPos, float speed) {
 		camera_setLocked(gs, true);
 
-		glm::vec2 newPos = Singletons::getGameCamera()->getPosition() + relPos;
+		glm::vec2 newPos = Singletons::getGameCamera()->getFocus() + relPos;
 
 		gs->setSmoothMoveTarget(newPos);
 		gs->setSmoothMoveSpeed(speed);

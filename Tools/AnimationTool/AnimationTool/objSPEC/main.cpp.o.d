@@ -270,13 +270,6 @@ objSPEC/main.cpp.o: main.cpp ../../../../GLEngine/IMainGame.h \
  /usr/include/x86_64-linux-gnu/cegui-0.8.7/CEGUI/RendererModules/OpenGL/../../TextureTarget.h \
  /usr/include/x86_64-linux-gnu/cegui-0.8.7/CEGUI/RendererModules/OpenGL/GL.h \
  ../../../../GLEngine/Camera2D.h AugAnimation.h ../../../Code/Animation.h \
- ../../../Code/XMLData.h ../../../Code/ScriptQueue.h \
- ../../../../GLEngine/GLEngineErrors.h ../../../Code/Logging.h \
- ../../../Code/PresetValues.h ../../../../GLEngine/ResourceManager.h \
- ../../../../GLEngine/TextureCache.h ../../../../GLEngine/GLTexture.h \
- ../../../Code/Categories.h ../../../Code/SaveDataTypes.h \
- ../../../Code/MetaData.h ../../../Code/LuaHeaders.h \
- ../../../Code/XMLDataTypes.h ../../../Code/XMLDataTypes.tpp \
  ../../../../GLEngine/ScreenList.h
 
 ../../../../GLEngine/IMainGame.h:
@@ -838,33 +831,5 @@ MainScreen.h:
 AugAnimation.h:
 
 ../../../Code/Animation.h:
-
-../../../Code/XMLData.h:
-
-../../../Code/ScriptQueue.h:
-
-../../../../GLEngine/GLEngineErrors.h:
-
-../../../Code/Logging.h:
-
-../../../Code/PresetValues.h:
-
-../../../../GLEngine/ResourceManager.h:
-
-../../../../GLEngine/TextureCache.h:
-
-../../../../GLEngine/GLTexture.h:
-
-../../../Code/Categories.h:
-
-../../../Code/SaveDataTypes.h:
-
-../../../Code/MetaData.h:
-
-../../../Code/LuaHeaders.h:
-
-../../../Code/XMLDataTypes.h:
-
-../../../Code/XMLDataTypes.tpp:
 
 ../../../../GLEngine/ScreenList.h:

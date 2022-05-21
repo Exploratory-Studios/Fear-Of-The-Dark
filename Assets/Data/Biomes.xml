@@ -5,9 +5,7 @@
 	<maxTemperature>25.000000</maxTemperature>
 	<baseTemperature>-14.000000</baseTemperature>
 	<flatness>7.500000</flatness>
-	<entities>
-		<entityID>2</entityID>
-	</entities>
+	<entities>{2}</entities>
 </biome>
 <biome id="1" name="Arctic">
 	<backgroundTexture>BiomeBackgrounds/TestBackground.png</backgroundTexture>
@@ -16,9 +14,7 @@
 	<maxTemperature>-10.000000</maxTemperature>
 	<baseTemperature>-45.000000</baseTemperature>
 	<flatness>4.300000</flatness>
-	<entities>
-		<entityID>2</entityID>
-	</entities>
+	<entities>{2}</entities>
 </biome>
 <biome id="2" name="Australia">
 	<backgroundTexture>BiomeBackgrounds/TestBackground.png</backgroundTexture>
@@ -27,9 +23,7 @@
 	<maxTemperature>35.000000</maxTemperature>
 	<baseTemperature>10.000000</baseTemperature>
 	<flatness>1.500000</flatness>
-	<entities>
-		<entityID>2</entityID>
-	</entities>
+	<entities>{2}</entities>
 </biome>
 <biome id="3" name="USA">
 	<backgroundTexture>BiomeBackgrounds/TestBackground.png</backgroundTexture>
@@ -38,9 +32,7 @@
 	<maxTemperature>20.000000</maxTemperature>
 	<baseTemperature>10.000000</baseTemperature>
 	<flatness>6.200000</flatness>
-	<entities>
-		<entityID>2</entityID>
-	</entities>
+	<entities>{2}</entities>
 </biome>
 <biome id="4" name="Russia">
 	<backgroundTexture>BiomeBackgrounds/TestBackground.png</backgroundTexture>
@@ -49,9 +41,7 @@
 	<maxTemperature>10.000000</maxTemperature>
 	<baseTemperature>-15.000000</baseTemperature>
 	<flatness>1.750000</flatness>
-	<entities>
-		<entityID>2</entityID>
-	</entities>
+	<entities>{2}</entities>
 </biome>
 <biome id="5" name="North Africa">
 	<backgroundTexture>BiomeBackgrounds/TestBackground.png</backgroundTexture>
@@ -60,9 +50,7 @@
 	<maxTemperature>30.000000</maxTemperature>
 	<baseTemperature>10.000000</baseTemperature>
 	<flatness>8.500000</flatness>
-	<entities>
-		<entityID>2</entityID>
-	</entities>
+	<entities>{2}</entities>
 </biome>
 <biome id="6" name="South Africa">
 	<backgroundTexture>BiomeBackgrounds/TestBackground.png</backgroundTexture>
@@ -71,9 +59,7 @@
 	<maxTemperature>40.000000</maxTemperature>
 	<baseTemperature>10.000000</baseTemperature>
 	<flatness>0.500000</flatness>
-	<entities>
-		<entityID>2</entityID>
-	</entities>
+	<entities>{2}</entities>
 </biome>
 <biome id="7" name="Asia">
 	<backgroundTexture>BiomeBackgrounds/TestBackground.png</backgroundTexture>
@@ -82,8 +68,6 @@
 	<maxTemperature>25.000000</maxTemperature>
 	<baseTemperature>10.000000</baseTemperature>
 	<flatness>7.600000</flatness>
-	<entities>
-		<entityID>2</entityID>
-	</entities>
+	<entities>{2}</entities>
 </biome>
 

@@ -105,7 +105,7 @@ namespace FluidModule {
 			createTexture();
 
 		// Check if texture needs to be resized:
-		if(m_lastScale != Singletons::getGameCamera()->getScaleX()) {
+		if(m_lastScale != Singletons::getGameCamera()->getScale().x) {
 			// New scale is different, now to resize the texture:
 			// Find out how many blocks are in the x and y dimensions of the screen: (floats to conserve partial blocks - multiple cells to each block)
 			float blocksInScreenX = screenDestRect.z;
@@ -118,7 +118,7 @@ namespace FluidModule {
 			// Now we have the size, actually resize the texture
 			resizeTexture(cellsInScreenX, cellsInScreenY);
 
-			m_lastScale = Singletons::getGameCamera()->getScaleX();
+			m_lastScale = Singletons::getGameCamera()->getScale().y;
 		}
 
 		// Texture is the correct size, m_texture contains the right size info. Just call glTexImage2d(...)

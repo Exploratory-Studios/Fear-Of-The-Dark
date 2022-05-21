@@ -308,13 +308,13 @@ void World::getRenderedLights(glm::vec4 destRect, float lights[MAX_LIGHTS_RENDER
 	}
 
 	for(int i = 0; i < MAX_LIGHTS_RENDERED; i++) {
-		glm::vec2 pos = Singletons::getGameCamera()->getViewedPositionFromScreenPosition(
-			glm::vec2(returnVal[i].x + 0.5f, returnVal[i].y + 0.5f));
+		glm::vec2 pos =
+			Singletons::getGameCamera()->getViewspaceCoord(glm::vec2(returnVal[i].x + 0.5f, returnVal[i].y + 0.5f));
 
 		lights[i * 3]	  = pos.x;
 		lights[i * 3 + 1] = pos.y;
 		lights[i * 3 + 2] =
-			returnVal[i].z * Singletons::getGameCamera()->getScaleX() * Singletons::getGameCamera()->getScaleX();
+			returnVal[i].z * Singletons::getGameCamera()->getScale().x * Singletons::getGameCamera()->getScale().x;
 	}
 }
 

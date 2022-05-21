@@ -38,16 +38,8 @@
 <itemArmour id="9" name="Chestplate">
 	<texture>Items/Map.png</texture>
 	<weight>0.25</weight>
-	<animationIDs>
-		<animationID>5</animationID>
-		<animationID>7</animationID>
-		<animationID>5</animationID>
-	</animationIDs>
-	<limbIndices>
-		<limbIndex>0</limbIndex>
-		<limbIndex>2</limbIndex>
-		<limbIndex>4</limbIndex>
-	</limbIndices>
+	<animationIDs>{5}{7}{5}</animationIDs>
+	<limbIndices>{0}{2}{4}</limbIndices>
 	<threshold>1.0</threshold>
 	<resistance>2.0</resistance>
 </itemArmour>

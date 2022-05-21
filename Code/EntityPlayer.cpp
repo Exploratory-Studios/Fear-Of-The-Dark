@@ -244,7 +244,7 @@ void EntityPlayer::drawGUI(BARE2D::BasicRenderer* renderer, BARE2D::FontRenderer
 	} // Hotbar END*/
 
 	if(m_bagOpen) {
-		glm::vec2 size = Singletons::getGameCamera()->getScreenSizeFromViewedSize(glm::vec2(3.0f, 3.0f));
+		glm::vec2 size = Singletons::getGameCamera()->getViewspaceCoord(glm::vec2(3.0f, 3.0f));
 		glm::vec4 destRect(0.0f, 0.0f, size.x, size.y);
 		m_inventory->setDestRect(destRect);
 		m_inventory->draw(renderer, fontRenderer, m_position.x - m_size.x / 2.0f, m_position.y + m_size.y * 3.0f / 4.0f);

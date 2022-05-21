@@ -23,8 +23,8 @@ bool InventoryBase::onDoubleClick(const CEGUI::EventArgs& e) {
 bool InventoryBase::onMouseMove(const CEGUI::EventArgs& e) {
 	const CEGUI::MouseEventArgs args = static_cast<const CEGUI::MouseEventArgs&>(e);
 	if(m_grabbingGUI) {
-		m_destRect.x += args.moveDelta.d_x / Singletons::getGameCamera()->getScreenWidth();
-		m_destRect.y += args.moveDelta.d_y / Singletons::getGameCamera()->getScreenHeight();
+		m_destRect.x += args.moveDelta.d_x / Singletons::getGameCamera()->getViewspaceResolution().x;
+		m_destRect.y += args.moveDelta.d_y / Singletons::getGameCamera()->getViewspaceResolution().y;
 	}
 	return true;
 }
@@ -283,12 +283,11 @@ void InventoryBase::draw(BARE2D::BasicRenderer* renderer,
 			// Move the frame window
 
 			// Convert x and y
-			glm::vec2 screenCoords = Singletons::getGameCamera()->getViewedPositionFromScreenPosition(glm::vec2(x, y));
-			screenCoords.y		   = Singletons::getGameCamera()->getScreenHeight() - screenCoords.y;
+			glm::vec2 screenCoords = Singletons::getGameCamera()->getViewspaceCoord(glm::vec2(x, y));
+			screenCoords.y		   = Singletons::getGameCamera()->getViewspaceResolution().y - screenCoords.y;
 
 			// Convert screenCoords to percentages
-			glm::vec2 percentages = screenCoords / glm::vec2(Singletons::getGameCamera()->getScreenWidth(),
-															 Singletons::getGameCamera()->getScreenHeight());
+			glm::vec2 percentages = screenCoords / Singletons::getGameCamera()->getViewspaceResolution();
 			percentages.x += m_destRect.x;
 			percentages.y += m_destRect.y;
 
@@ -316,10 +315,11 @@ void InventoryBase::draw(BARE2D::BasicRenderer* renderer,
 				float bottomY = m_pane->getViewableArea().top() + m_frameWindow->getInnerRectClipper().top();
 				float topY	  = m_pane->getViewableArea().bottom() + m_frameWindow->getInnerRectClipper().top();
 
-				glm::vec4 destRect(screenCoords.x,
-								   Singletons::getGameCamera()->getScreenHeight() - screenCoords.y - screenSize.y,
-								   screenSize.x,
-								   screenSize.y);
+				glm::vec4 destRect(
+					screenCoords.x,
+					Singletons::getGameCamera()->getViewspaceResolution().y - screenCoords.y - screenSize.y,
+					screenSize.x,
+					screenSize.y);
 
 				std::string quantityStr = std::to_string(m_items[i]->getQuantity());
 

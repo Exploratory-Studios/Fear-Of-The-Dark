@@ -5,6 +5,7 @@
 ## Debug
 ProjectName            :=AnimationTool
 ConfigurationName      :=Debug
+WorkspaceConfiguration :=Linux Debug
 WorkspacePath          :=/home/davis-dev/Documents/Programming/C++/CodingGithub/Fear-Of-The-Dark/Code
 ProjectPath            :=/home/davis-dev/Documents/Programming/C++/CodingGithub/Fear-Of-The-Dark/Tools/AnimationTool/AnimationTool
 IntermediateDirectory  :=objSPEC
@@ -12,8 +13,8 @@ OutDir                 := $(IntermediateDirectory)
 CurrentFileName        :=
 CurrentFilePath        :=
 CurrentFileFullPath    :=
-User                   :=Davis-Dev
-Date                   :=17/07/20
+User                   :=Davis-dev
+Date                   :=21/05/22
 CodeLitePath           :=/home/davis-dev/.codelite
 LinkerName             :=/usr/bin/g++
 SharedObjectLinkerName :=/usr/bin/g++ -shared -fPIC
@@ -27,6 +28,7 @@ OutputSwitch           :=-o
 LibraryPathSwitch      :=-L
 PreprocessorSwitch     :=-D
 SourceSwitch           :=-c 
+OutputDirectory        :=Debug
 OutputFile             :=Debug/Tesst
 Preprocessors          :=
 ObjectSwitch           :=-o 
@@ -45,7 +47,7 @@ LibPath                := $(LibraryPathSwitch). $(LibraryPathSwitch)../../../../
 
 ##
 ## Common variables
-## AR, CXX, CC, AS, CXXFLAGS and CFLAGS can be overriden using an environment variables
+## AR, CXX, CC, AS, CXXFLAGS and CFLAGS can be overridden using an environment variable
 ##
 AR       := /usr/bin/ar rcu
 CXX      := /usr/bin/g++

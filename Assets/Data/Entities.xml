@@ -12,16 +12,8 @@
 	<faction>good</faction>
 	<idleAnimationID>2</idleAnimationID>
 	<lowVelAnimationID>3</lowVelAnimationID>
-	<skinAnimationIDs>
-		<skinAnimationID>0</skinAnimationID>
-		<skinAnimationID>1</skinAnimationID>
-		<skinAnimationID>2</skinAnimationID>
-		<skinAnimationID>3</skinAnimationID>
-		<skinAnimationID>0</skinAnimationID>
-	</skinAnimationIDs>
-	<attackIDs>
-		<attackID>0</attackID>
-	</attackIDs>
+	<skinAnimationIDs>{0}{1}{2}{3}{0}</skinAnimationIDs>
+	<attackIDs>{0}</attackIDs>
 </npc>
 <npc id="1" name="QuestGiverA">
 	<texture>Entities/NPCs/PlayerLimbs.png</texture>
@@ -33,9 +25,7 @@
 	<jumpHeight>4.500000</jumpHeight>
 	<maxHealth>100.000000</maxHealth>
 	<idleAnimationID>2</idleAnimationID>
-	<skinAnimationIDs>
-		<skinAnimationID>0</skinAnimationID>
-	</skinAnimationIDs>
+	<skinAnimationIDs>{0}</skinAnimationIDs>
 </npc>
 <npc id="2" name="CompanionCube">
 	<texture>Entities/NPCs/CompanionCube.png</texture>
@@ -48,9 +38,7 @@
 	<maxHealth>100.000000</maxHealth>
 	<faction>evil</faction>
 	<idleAnimationID>2</idleAnimationID>
-	<skinAnimationIDs>
-		<skinAnimationID>0</skinAnimationID>
-	</skinAnimationIDs>
+	<skinAnimationIDs>{0}</skinAnimationIDs>
 </npc>
 <npc id="3" name="Fox">
 	<texture>Entities/NPCs/FoxStanding.png</texture>
@@ -63,9 +51,7 @@
 	<maxHealth>100.000000</maxHealth>
 	<faction>bad</faction>
 	<idleAnimationID>2</idleAnimationID>
-	<skinAnimationIDs>
-		<skinAnimationID>0</skinAnimationID>
-	</skinAnimationIDs>
+	<skinAnimationIDs>{0}</skinAnimationIDs>
 </npc>
 
 <!-- Item Entities -->
@@ -87,7 +73,5 @@
 	<lifeTime>60</lifeTime>
 	<size>0.5,0.5</size>
 	<knockback>0.25</knockback>
-	<buffIDs>
-		<buffID>0</buffID>
-	</buffIDs>
+	<buffIDs>{0}</buffIDs>
 </projectile>

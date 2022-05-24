@@ -94,14 +94,14 @@ namespace FluidModule {
 								 0.0f,
 								 (float)m_usedTextureWidth / (float)m_allocatedTextureWidth,
 								 (float)m_usedTextureHeight / (float)m_allocatedTextureHeight),
-					   m_texture.id,
-					   1.0f,
+					   m_texture->id,
+					   0.0f,
 					   m_fluidColour);
 	}
 
 	void FluidDomain::updateTexture(glm::vec4& screenDestRect) {
 		// Check if texture exists yet lol
-		if(m_texture.filepath == "")
+		if(!m_texture)
 			createTexture();
 
 		// Check if texture needs to be resized:
@@ -126,49 +126,21 @@ namespace FluidModule {
 
 		updateTextureData(screenDestRect);
 
-		BARE2D::GLContextManager::getContext()->bindTexture(GL_TEXTURE_2D, m_texture.id);
-		glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
-
-		glTexSubImage2D(GL_TEXTURE_2D,
-						(GLint)0,
-						0,
-						0,
-						m_usedTextureWidth,
-						m_usedTextureHeight,
-						GL_RED,
-						GL_UNSIGNED_BYTE,
-						&((*m_textureData)[0]));
-
-		glPixelStorei(GL_UNPACK_ALIGNMENT, 4);
+		m_texture->setData(&((*m_textureData)[0]), 0, 0, m_usedTextureWidth, m_usedTextureHeight);
 	}
 
 	void FluidDomain::createTexture() {
 		m_textureData->resize(m_allocatedTextureWidth * m_allocatedTextureHeight,
 							  0); // Allocate all the texture we'll ever need.
 		m_textureData->shrink_to_fit();
-		/*BARE2D::Texture tex;
-		tex.width  = m_allocatedTextureWidth;
-		tex.height = m_allocatedTextureHeight;
-		m_texture =
-			BARE2D::ResourceManager::setMutableTexture("fluidTexture" + std::to_string(m_id), *m_textureData, GL_RED);
-		*/
-		// (Re)bind the texture object
-		BARE2D::GLContextManager::getContext()->bindTexture(GL_TEXTURE_2D, m_texture.id);
-		/// TODO: Actually do the mutable texture thing.
-		// Set to not wrap
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
 
-		if(m_smoothFluid) {
-			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-		} else {
-			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-		}
-
-		// Unbind
-		BARE2D::GLContextManager::getContext()->bindTexture(GL_TEXTURE_2D, 0);
+		std::string name = "fluidTexture" + std::to_string(m_id);
+		m_texture		 = BARE2D::ResourceManager::createMutableTexture(name,
+																	 m_allocatedTextureWidth,
+																	 m_allocatedTextureHeight,
+																	 m_smoothFluid ? GL_LINEAR : GL_NEAREST,
+																	 1,
+																	 GL_RED);
 	}
 
 	void FluidDomain::resizeTexture(unsigned int width, unsigned int height) {
@@ -225,10 +197,6 @@ namespace FluidModule {
 					unsigned int cellY = (addedCellY - addedFieldY * FLUID_PARTITION_SIZE);
 					(*m_textureData)[index] =
 						std::max(std::min(field->getDensityCell(cellX, cellY)->density * 255, 255.0f), 0.0f);
-
-					if(field->inEquilibrium == false) {
-						//(*m_textureData)[index] = 128;
-					}
 				} else {
 					(*m_textureData)[index] = 0;
 				}

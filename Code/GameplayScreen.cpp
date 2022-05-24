@@ -69,8 +69,9 @@ void GameplayScreen::onEntry() {
 		postVS,
 		m_window->getWidth(),
 		m_window->getHeight(),
-		3); // The main FBO has 3 colour attachments - one for colour, one for normals, and one for sunlight
+		3); // The main FBO has 4 colour attachments - one for colour, one for normals, one for sunlight, and one for fluids
 	m_mainFBO->init();
+	//m_mainFBO->getCamera()->setScale(m_window->getWidth() * 0.4f, m_window->getHeight() * 0.4f);
 
 	m_basicRenderer = new BARE2D::BasicRenderer(basicFS, basicVS, m_window->getWidth(), m_window->getHeight());
 	m_basicRenderer->init();
@@ -225,55 +226,36 @@ void GameplayScreen::draw() {
 
 	{
 		// Sky
-		//drawSunMoon();
+		drawSky();
+		drawSunMoon();
 	}
-
-	drawSky();
 
 	m_mainFBO->begin();
 
-	glm::vec2 screenSizeUniform = glm::vec2(m_window->getWidth(), m_window->getHeight());
-	m_mainFBO->getShader()->setUniform("screenSizeU", &screenSizeUniform);
-
-	float sanityUniform = Singletons::getEntityManager()->getPlayer()->getSanity();
-	m_mainFBO->getShader()->setUniform("sanity", &sanityUniform);
-
-	m_mainFBO->getShader()->setUniform("time", &m_time);
-
-	float playerDepth =
-		0.1f + (Singletons::getEntityManager()->getPlayer()->getLayer() * (1.0f / (float)(WORLD_DEPTH)) * 0.9f);
+	// Set uniform for player depth
+	float playerDepth = Singletons::getEntityManager()->getPlayer()->getDepth();
 	m_mainFBO->getShader()->setUniform("playerDepth", &playerDepth);
 
+	// Set uniform for player sanity
+	float playerSanity = Singletons::getEntityManager()->getPlayer()->getSanity();
+	m_mainFBO->getShader()->setUniform("playerSanity", &playerSanity);
+
+	// Set uniform for time
+	float time = m_time;
+	m_mainFBO->getShader()->setUniform("time", &time);
+
 	{
-		/// FLOATING POINT ERROR IN DRAWWORLD
-
-		/// TODO: Instead of having a bunch of different FBOs, have the master FBO have 3 colour attachments & a depth one.
-		/// One for regular colouring, one for the normal mapping, and one for sunlight.
-		/// Each shader can specify which attachment it is writing to - through clever use of 'out vec4 colour{0,1,2,3,4,5,6,7,8}'
-		// Depth is already automatically the last attachment (at GL_TEXTURE1 for this FBO with one attachment)
-		// Sunlight
-		//BARE2D::GLContextManager::getContext()->setActiveTexture(GL_TEXTURE2);
-		//BARE2D::GLContextManager::getContext()->bindTexture(GL_TEXTURE_2D, m_sunlightFBO->getTexture());
-
-		// Normal Map.
-		//BARE2D::GLContextManager::getContext()->setActiveTexture(GL_TEXTURE3);
-		//BARE2D::GLContextManager::getContext()->bindTexture(GL_TEXTURE_2D, m_normalFBO->getTexture());
-
-		//Singletons::getWorld()->setLightsUniform(getScreenBox() + glm::vec4(0.0f, 0.0f, 1.0f, 1.0f),
-		//										 m_mainFBO->getShader()); // sets "lights" uniform of vec3s
-		/// TODO: put other calls in here to draw to main FBO.
-
+		drawFluids();
 		drawWorld();
 		drawWorldSunlight();
+
 		//drawParticles();
 	}
-
-	//drawFluids();
 
 	m_mainFBO->end();
 	m_mainFBO->render();
 
-	//drawGUI();
+	drawGUI();
 }
 
 void GameplayScreen::drawSky() {
@@ -330,23 +312,27 @@ void GameplayScreen::drawSunMoon() {
 
 	GLuint sunID = BARE2D::ResourceManager::loadTexture(sunPath).id;
 
-	m_basicRenderer->draw(glm::vec4(m_window->getWidth() * (0.5f - sunPercentX) - 16.0f,
-									(sunPercentY)*m_window->getHeight(),
-									32.0f,
-									32.0f),
+	glm::vec4 destRectSun = glm::vec4(m_window->getWidth() * (0.5f - sunPercentX) - 16.0f,
+									  (sunPercentY)*m_window->getHeight(),
+									  32.0f,
+									  32.0f);
+
+	m_basicRenderer->draw(m_basicRenderer->getCamera()->getWorldspaceRect(destRectSun),
 						  glm::vec4(0.0f, 0.0f, 1.0f, 1.0f),
 						  sunID,
-						  1.0f,
+						  0.0f,
 						  BARE2D::Colour(255, 255, 255, 255));
 
 	std::string moonPath = "UNDEFINED.png";
 
 	GLuint moonID = BARE2D::ResourceManager::loadTexture(moonPath).id;
 
-	m_basicRenderer->draw(glm::vec4(m_window->getWidth() * (0.5f + sunPercentX) - 16.0f,
-									-(sunPercentY)*m_window->getHeight(),
-									32.0f,
-									32.0f),
+	glm::vec4 destRectMoon = glm::vec4(m_window->getWidth() * (0.5f + sunPercentX) - 16.0f,
+									   -(sunPercentY)*m_window->getHeight(),
+									   32.0f,
+									   32.0f);
+
+	m_basicRenderer->draw(m_basicRenderer->getCamera()->getWorldspaceRect(destRectMoon),
 						  glm::vec4(0.0f, 0.0f, 1.0f, 1.0f),
 						  moonID,
 						  1.0f,
@@ -692,6 +678,9 @@ bool GameplayScreen::pause_quit_button_clicked(const CEGUI::EventArgs& e) {
 glm::vec4 GameplayScreen::getScreenBox() {
 	glm::vec4 ret = Singletons::getGameCamera()->getWorldspaceRect(
 		glm::vec4(0.0f, 0.0f, m_window->getWidth(), m_window->getHeight()));
+
+	// Adjustment for +-tile width on edges of window
+	ret += glm::vec4(-1.0f, -1.0f, 2.0f, 2.0f);
 
 	return ret;
 }

@@ -32,7 +32,7 @@ Tile::Tile(glm::vec2 pos, unsigned int layer, unsigned int id) : m_pos(pos), m_l
 	m_interactScript_walkedOn = t.interactScript_walkedOn;
 	m_interactScript_used	  = t.interactScript_used;
 
-	m_depthForRender = 0.1f + (m_layer * (1.0f / (float)(WORLD_DEPTH)) * 0.9f);
+	m_depthForRender = 0.1f + (m_layer * (1.0f / (float)(WORLD_DEPTH))) * 0.9f;
 }
 
 Tile::Tile(glm::vec2 pos, unsigned int layer, TileIDs id) : m_pos(pos), m_layer(layer), m_id((unsigned int)id) {
@@ -52,7 +52,7 @@ Tile::Tile(glm::vec2 pos, unsigned int layer, TileIDs id) : m_pos(pos), m_layer(
 	m_interactScript_walkedOn = t.interactScript_walkedOn;
 	m_interactScript_used	  = t.interactScript_used;
 
-	m_depthForRender = 0.1f + (m_layer * (1.0f / (float)(WORLD_DEPTH)) * 0.9f);
+	m_depthForRender = 0.1f * (m_layer * (1.0f / (float)(WORLD_DEPTH))) * 0.9f;
 }
 
 float Tile::getLight() {

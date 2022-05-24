@@ -14,10 +14,10 @@ const unsigned int FRAME_RATE = 60;
 const float INITIAL_ZOOM = 25.0f;
 
 #ifndef DEV_CONTROLS
-const float MIN_ZOOM = 20.0f;
+const float MIN_ZOOM = 10.0f;
 const float MAX_ZOOM = 80.0f;
 #else
-const float		  MIN_ZOOM	= 20.0f;
+const float		  MIN_ZOOM	= 10.0f;
 const float		  MAX_ZOOM	= 100.0f;
 #endif // DEV_CONTROLS
 

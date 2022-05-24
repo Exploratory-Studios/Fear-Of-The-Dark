@@ -16,8 +16,4 @@ uniform sampler2D bumpmapSampler; // normal map
 void main() {
 	colour0 = texture(textureSampler, fragmentUV.xy) * fragmentColour;
 	colour1 = texture(bumpmapSampler, fragmentUV.xy);
-
-	if(colour0.a < 0.05) {
-		discard;
-	}
 }

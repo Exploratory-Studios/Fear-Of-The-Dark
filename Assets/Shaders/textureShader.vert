@@ -10,14 +10,14 @@ out vec3 fragmentPosition;
 out vec4 fragmentColour;
 out vec2 fragmentUV;
 
-uniform mat4 projectionMatrix; // "Perspective"
+uniform mat4 projectionMatrix = mat4(1.0); // "Perspective"
 
 void main() {
     //Set the x,y,z position on the screen
     gl_Position.xy = (projectionMatrix * vec4(vertexPosition, 1.0)).xy;
     gl_Position.z = vertexPosition.z;
 
-    //Indicate that the coordinates are normalized
+    // Indicate that the coordinates are normalized
     gl_Position.w = 1.0;
 
     fragmentPosition = vertexPosition;

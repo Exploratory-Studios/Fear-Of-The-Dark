@@ -4,7 +4,7 @@
 #include <glm/glm.hpp>
 
 #include <BumpyRenderer.hpp>
-#include <Texture.hpp>
+#include <MutableTexture.hpp>
 
 #include "DensityField.h"
 
@@ -74,7 +74,7 @@ namespace FluidModule {
 		void updateTextureData(glm::vec4& screenDestRect);			 // Creates the array for texture assignment
 
 		unsigned int				m_id;
-		BARE2D::Texture				m_texture;
+		BARE2D::MutableTexture*		m_texture = nullptr;
 		BARE2D::Colour				m_fluidColour;
 		std::vector<unsigned char>* m_textureData;
 		unsigned int				m_usedTextureWidth, m_usedTextureHeight;

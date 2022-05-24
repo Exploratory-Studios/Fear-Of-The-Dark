@@ -10,7 +10,7 @@ out vec3 fragmentPosition;
 out vec4 fragmentColour;
 out vec2 fragmentUV;
 
-uniform mat4 projectionMatrix; // "Perspective"
+uniform mat4 projectionMatrix = mat4(1.0); // "Perspective"
 
 void main() {
     //Set the x,y,z position on the screen

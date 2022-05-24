@@ -114,6 +114,8 @@
 /home/davis-dev/Documents/Programming/C++/CodingGithub/BARE2DEngine/Source/BasicRenderer.cpp
 /home/davis-dev/Documents/Programming/C++/CodingGithub/BARE2DEngine/Source/FBORenderer.cpp
 /home/davis-dev/Documents/Programming/C++/CodingGithub/BARE2DEngine/Source/BumpyRenderer.cpp
+/home/davis-dev/Documents/Programming/C++/CodingGithub/BARE2DEngine/Source/TexturelessRenderer.hpp
+/home/davis-dev/Documents/Programming/C++/CodingGithub/BARE2DEngine/Source/TexturelessRenderer.cpp
 /home/davis-dev/Documents/Programming/C++/CodingGithub/BARE2DEngine/Source/Font.cpp
 /home/davis-dev/Documents/Programming/C++/CodingGithub/BARE2DEngine/Source/Font.hpp
 /home/davis-dev/Documents/Programming/C++/CodingGithub/BARE2DEngine/Source/MutableTexture.cpp

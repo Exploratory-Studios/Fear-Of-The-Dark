@@ -5,6 +5,7 @@
 #include <Camera2D.hpp>
 #include <BARECEGUI.hpp>
 #include <BumpyRenderer.hpp>
+#include <TexturelessRenderer.hpp>
 #include <DebugRenderer.hpp>
 #include <ShaderProgram.hpp>
 #include <FBORenderer.hpp>
@@ -100,8 +101,8 @@ class GameplayScreen : public BARE2D::Screen {
 	BARE2D::BasicRenderer* m_basicRenderer = nullptr; // used in drawing the main FBO
 	BARE2D::BumpyRenderer* m_worldRenderer =
 		nullptr; // Used in drawing both normal maps and regular collour for the world - tiles, entities, etc.
-	BARE2D::BasicRenderer* m_skyRenderer = nullptr; // Used in rendering the background sky image
-	BARE2D::BasicRenderer* m_sunlightRenderer =
+	BARE2D::BasicRenderer*		 m_skyRenderer = nullptr; // Used in rendering the background sky image
+	BARE2D::TexturelessRenderer* m_sunlightRenderer =
 		nullptr; // Used in rendering sunlight values to the main FBO's 2nd colour attachment (attachment #1)
 	BARE2D::BasicRenderer* m_fluidRenderer = nullptr; // Used in rendering fluids to the screen.
 

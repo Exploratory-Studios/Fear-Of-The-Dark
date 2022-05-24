@@ -459,7 +459,7 @@ void World::drawDebug(BARE2D::DebugRenderer* dr, float xOffset) {
 	//dr.end();
 }
 
-void World::drawSunlight(BARE2D::BasicRenderer* renderer, glm::vec4 destRect) {
+void World::drawSunlight(BARE2D::TexturelessRenderer* renderer, glm::vec4 destRect) {
 	for(float y = destRect.y; y < (destRect.y + destRect.w); y++) {
 		if((int)y < 1) {
 			y = 0;
@@ -498,11 +498,7 @@ void World::drawSunlight(BARE2D::BasicRenderer* renderer, glm::vec4 destRect) {
 			// Determine BR (bit 3)
 			corners |= (cornersVec.z > 0.0f) << 3;
 
-			renderer->draw(glm::vec4((int)x, (int)y, 1.0f, 1.0f),
-						   glm::vec4(0.0f, 0.0f, 1.0f, 1.0f),
-						   0,
-						   0.0f,
-						   BARE2D::Colour(light, corners, 255, 255));
+			renderer->draw(glm::vec4((int)x, (int)y, 1.0f, 1.0f), 0.0f, BARE2D::Colour(light, corners, 255, 255));
 		}
 	}
 }

@@ -2,6 +2,7 @@
 
 #include <DebugRenderer.hpp>
 #include <BumpyRenderer.hpp>
+#include <TexturelessRenderer.hpp>
 #include <FontRenderer.hpp>
 #include <Camera2D.hpp>
 
@@ -80,8 +81,8 @@ class World {
 	void updateFluids(float timeStep, glm::vec4& destRect);
 
 	void drawParticles(BARE2D::BumpyRenderer* renderer);
-	void drawSunlight(BARE2D::BasicRenderer* renderer,
-					  glm::vec4				 destRect); // Just draws the sunlight value into the rgb components.
+	void drawSunlight(BARE2D::TexturelessRenderer* renderer,
+					  glm::vec4					   destRect); // Just draws the sunlight value into the rgb components.
 
 	void drawDebug(BARE2D::DebugRenderer* dr, float xOffset);
 

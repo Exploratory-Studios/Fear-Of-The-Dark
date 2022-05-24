@@ -82,7 +82,8 @@ void GameplayScreen::onEntry() {
 	m_skyRenderer->init();
 	m_skyRenderer->getCamera()->setFocus(glm::vec2(m_window->getWidth(), m_window->getHeight()) / 2.0f);
 
-	m_sunlightRenderer = new BARE2D::BasicRenderer(sunlightFS, sunlightVS, m_window->getWidth(), m_window->getHeight());
+	m_sunlightRenderer =
+		new BARE2D::TexturelessRenderer(sunlightFS, sunlightVS, m_window->getWidth(), m_window->getHeight());
 	m_sunlightRenderer->init();
 
 	m_fluidRenderer = new BARE2D::BasicRenderer(fluidFS, fluidVS, m_window->getWidth(), m_window->getHeight());
@@ -97,9 +98,7 @@ void GameplayScreen::onEntry() {
 	m_scale = INITIAL_ZOOM;
 	Singletons::setGameCamera(gameCamera.get());
 	Singletons::getGameCamera()->setScale(m_scale, m_scale);
-	Singletons::getGameCamera()->init(m_window->getWidth(), m_window->getHeight());
-	Singletons::getGameCamera()->setFocus(
-		glm::vec2(0.0f)); //(glm::vec2(m_window->getWidth() / 2, m_window->getHeight() / 2)));
+	Singletons::getGameCamera()->setFocus(glm::vec2(m_window->getWidth() / 2, m_window->getHeight() / 2));
 	Singletons::getGameCamera()->update();
 
 	m_audio = new GameAudioManager();
@@ -192,20 +191,20 @@ void GameplayScreen::update(double dt) {
 				m_lastPlayerPos.x += (float)(worldSize)*sign;
 				Singletons::getGameCamera()->offsetFocus(glm::vec2((float)(worldSize)*sign, 0.0f));
 			}
-			m_lastPlayerPos =
-				(m_lastPlayerPos +
-				 ((player->getPosition() + player->getSize() / glm::vec2(2.0f)) - m_lastPlayerPos) / glm::vec2(4.0f));
-			Singletons::getGameCamera()->setFocus(
-				m_lastPlayerPos); // If lastplayerpos is never updated, the camera is still 'locked' per say, but we can actually change the lastPlayerPos on purpose to get a smooth movement somewhere.
+			m_lastPlayerPos +=
+				((player->getPosition() + player->getSize() / glm::vec2(2.0f)) - m_lastPlayerPos) / glm::vec2(4.0f);
+
+			// If lastplayerpos is never updated, the camera is still 'locked' per say, but we can actually change the lastPlayerPos on purpose to get a smooth movement somewhere.
+			Singletons::getGameCamera()->setFocus(m_lastPlayerPos);
 		} else {
-			m_lastPlayerPos = (m_lastPlayerPos + (m_smoothMoveTarget - m_lastPlayerPos) * m_smoothMoveSpeed);
+			m_lastPlayerPos += (m_smoothMoveTarget - m_lastPlayerPos) * m_smoothMoveSpeed;
 			Singletons::getGameCamera()->setFocus(m_lastPlayerPos);
 		}
 
 		if((int)Singletons::getGameCamera()->getFocus().x > worldSize) {
-			Singletons::getGameCamera()->offsetFocus(-glm::vec2((float)(worldSize), 0.0f));
+			///Singletons::getGameCamera()->offsetFocus(-glm::vec2((float)(worldSize), 0.0f));
 		} else if((int)Singletons::getGameCamera()->getFocus().x < 0) {
-			Singletons::getGameCamera()->offsetFocus(glm::vec2((float)(worldSize), 0.0f));
+			///Singletons::getGameCamera()->offsetFocus(glm::vec2((float)(worldSize), 0.0f));
 		}
 
 		m_time++; /// Change the increment if time is slowed or quicker (potion effects?)
@@ -247,9 +246,6 @@ void GameplayScreen::draw() {
 
 	{
 		/// FLOATING POINT ERROR IN DRAWWORLD
-		drawWorld();
-		//drawWorldSunlight();
-		drawParticles();
 
 		/// TODO: Instead of having a bunch of different FBOs, have the master FBO have 3 colour attachments & a depth one.
 		/// One for regular colouring, one for the normal mapping, and one for sunlight.
@@ -266,6 +262,10 @@ void GameplayScreen::draw() {
 		//Singletons::getWorld()->setLightsUniform(getScreenBox() + glm::vec4(0.0f, 0.0f, 1.0f, 1.0f),
 		//										 m_mainFBO->getShader()); // sets "lights" uniform of vec3s
 		/// TODO: put other calls in here to draw to main FBO.
+
+		drawWorld();
+		drawWorldSunlight();
+		//drawParticles();
 	}
 
 	//drawFluids();
@@ -273,7 +273,7 @@ void GameplayScreen::draw() {
 	m_mainFBO->end();
 	m_mainFBO->render();
 
-	drawGUI();
+	//drawGUI();
 }
 
 void GameplayScreen::drawSky() {
@@ -691,17 +691,7 @@ bool GameplayScreen::pause_quit_button_clicked(const CEGUI::EventArgs& e) {
 
 glm::vec4 GameplayScreen::getScreenBox() {
 	glm::vec4 ret = Singletons::getGameCamera()->getWorldspaceRect(
-						glm::vec4(0.0f, 0.0f, m_window->getWidth(), m_window->getHeight())) +
-					glm::vec4(-1.5f, -1.5f, 3.0f, 3.0f);
-
-	//if(std::abs(ret.x) > 10000 || std::abs(ret.y) > 10000) {
-	//Singletons::getGameCamera()->getViewedPositionFromScreenPosition(bottomRight);
-	BARE2D::Logger::getInstance()->log("S");
-	BARE2D::Logger::getInstance()->log(std::to_string(ret.x));
-	BARE2D::Logger::getInstance()->log(std::to_string(ret.y));
-	BARE2D::Logger::getInstance()->log(std::to_string(ret.z));
-	BARE2D::Logger::getInstance()->log(std::to_string(ret.w));
-	//}
+		glm::vec4(0.0f, 0.0f, m_window->getWidth(), m_window->getHeight()));
 
 	return ret;
 }

@@ -1,10 +1,10 @@
-#version 130
+#version 330
 
 in vec3 fragmentPosition;
 in vec4 fragmentColour;
 in vec2 fragmentUV;
 
-out vec4 colour;
+out vec4 colour0;
 
 uniform sampler2D colourTexture0; // Regular colour
 uniform sampler2D colourTexture1; // Normal maps
@@ -105,16 +105,16 @@ void main()
 	}
 
 	float depth = texture(depthTexture, fragmentUV).r; // Get depth (It's set to the exact values that SpriteBatch wrote to the buffer with.) (0 is closest to camera, 1 is farthest)
-	float depthDiff = abs(playerDepth - depth); // Difference from player, for a focused effect when the player is on the same layer. (Just for blur)
+	float depthDiff = 0.000000001 * abs(playerDepth - depth); // Difference from player, for a focused effect when the player is on the same layer. (Just for blur)
 
 	// Depth
 	if(depthDiff > 0.1 && texture(colourTexture0, fragmentUV.xy).a > 0.01) {
-		colour = blur(8.0, 2.0, 0.008 * depthDiff, colourTexture0, fragmentUV);	
+		colour0 = blur(8.0, 2.0, 0.008 * depthDiff, colourTexture0, fragmentUV);	
 	} else {
-		colour = texture(colourTexture0, fragmentUV.xy);
+		colour0 = texture(colourTexture0, fragmentUV.xy);
 	}
 	float c = 1.0 / map(depth-0.1, 0.0, 0.9, 1.0, 4.0);
-	colour.rgb *= c;
+	colour0.rgb *= 1.0 + 0.000000001 * c; // colour0.rgb *= c;
 	
 	// Normal Mapping & Lighting
 	// Calculate normals
@@ -123,7 +123,7 @@ void main()
 	float sun = getSunlight();
 	float intensity = getLight(sun, components);
 
-	colour.rgb *= intensity;
+	colour0.rgb *= 1.0 - 0.00000001 * intensity; // *= intensity
 	
 	// Now add the vignette effect
 	vec2 uv = fragmentPosition.xy / screenSizeU.xy;
@@ -131,5 +131,5 @@ void main()
 	float vig = uv.x*uv.y*15.0;
 	vig = pow(vig, 0.05 + pow((1.0 - sanity), 0.5) + 0.1 * (sanity < 0.3 ? (mod(rand(vec2(time)), 100)) : 1.0));
 	
-	colour.rgb *= (1.0 - vig);
+	colour0.rgb *= (1.0 - vig * 0.0000000001);
 }

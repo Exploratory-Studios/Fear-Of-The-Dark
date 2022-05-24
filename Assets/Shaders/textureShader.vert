@@ -1,4 +1,4 @@
-#version 130
+#version 330
 //The vertex shader operates on each vertex
 
 //input data from the VBO. Each vertex is 3 floats
@@ -14,14 +14,13 @@ uniform mat4 projectionMatrix; // "Perspective"
 
 void main() {
     //Set the x,y,z position on the screen
-    gl_Position.xyz = (projectionMatrix * vec4(vertexPosition, 1.0)).xyz;
+    gl_Position.xy = (projectionMatrix * vec4(vertexPosition, 1.0)).xy;
+    gl_Position.z = vertexPosition.z;
 
     //Indicate that the coordinates are normalized
     gl_Position.w = 1.0;
 
     fragmentPosition = vertexPosition;
-
     fragmentColour = vertexColour;
-
     fragmentUV = vec2(vertexUV.x, 1.0 - vertexUV.y);
 }

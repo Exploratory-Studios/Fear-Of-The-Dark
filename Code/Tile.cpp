@@ -15,8 +15,7 @@
 Tile::Tile() {
 }
 
-Tile::Tile(glm::vec2 pos, unsigned int layer, unsigned int id) :
-	m_pos(pos), m_layer(layer), m_id(id) {
+Tile::Tile(glm::vec2 pos, unsigned int layer, unsigned int id) : m_pos(pos), m_layer(layer), m_id(id) {
 	XMLModule::TileData t = getTileData(id);
 
 	m_texture				  = t.texture;
@@ -36,8 +35,7 @@ Tile::Tile(glm::vec2 pos, unsigned int layer, unsigned int id) :
 	m_depthForRender = 0.1f + (m_layer * (1.0f / (float)(WORLD_DEPTH)) * 0.9f);
 }
 
-Tile::Tile(glm::vec2 pos, unsigned int layer, TileIDs id) :
-	m_pos(pos), m_layer(layer), m_id((unsigned int)id) {
+Tile::Tile(glm::vec2 pos, unsigned int layer, TileIDs id) : m_pos(pos), m_layer(layer), m_id((unsigned int)id) {
 	XMLModule::TileData t = getTileData((unsigned int)id);
 
 	m_texture				  = t.texture;
@@ -339,9 +337,9 @@ void Tile::calculateSunlight(float sunlight) {
 
 SaveDataTypes::TileData Tile::getSaveData() {
 	SaveDataTypes::TileData d;
-	d.pos	   = m_pos;
-	d.id	   = m_id;
-	d.layer	   = m_layer;
+	d.pos	= m_pos;
+	d.id	= m_id;
+	d.layer = m_layer;
 	return d;
 }
 

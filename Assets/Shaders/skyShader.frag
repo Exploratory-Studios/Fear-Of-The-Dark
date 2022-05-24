@@ -7,7 +7,7 @@ in vec2 fragmentUV;
 
 //This is the 3 component float vector that gets outputted to the screen
 //for each pixel.
-out vec4 color;
+out vec4 colour0;
 
 uniform sampler2D textureSampler;
 
@@ -37,7 +37,7 @@ void main() {
 	float playerDepth = clamp((-abs(playerXPos - 0.5) * 1.1 + 0.5) * 2.0, 0.0, 1.0);
 	vec4 textureColour = texture(textureSampler, vec2(uv.x, 1.0-uv.y)) * daylight * pow(playerDepth, 1.0 / 3.0);
 
-	color = textureColour * daylight;
+	colour0 = textureColour * daylight;
 }
 
 /* Standalone sun effect:
@@ -54,7 +54,7 @@ uniform float time;
 	float EL = 1.0 / pow(dist(fragmentPosition.xy,sunPos) * sunMult, gradient) * skyMult;
 	vec4 sunEffect = vec4(EL * 0.3 * daylight, EL * 0.4 * daylight, EL * daylight, 1.0-textureColour.a);
 
-	color = sunEffect;
+	colour0 = sunEffect;
 */
 
 

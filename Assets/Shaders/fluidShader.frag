@@ -9,10 +9,10 @@ uniform float time;
 
 //This is the 3 component float vector that gets outputted to the screen
 //for each pixel.
-out vec4 colour;
+out vec4 colour0;
 
 uniform sampler2D textureSampler;
 
 void main() {
-	colour = texture(textureSampler, fragmentUV.xy) * vec4(vec3(sin(time/50+fragmentUV.x*20-fragmentUV.y*5) * 0.1 + 0.95).xyz, 1.0);
+	colour0 = texture(textureSampler, fragmentUV.xy) * vec4(vec3(sin(time/50+fragmentUV.x*20-fragmentUV.y*5) * 0.1 + 0.95).xyz, 1.0);
 }

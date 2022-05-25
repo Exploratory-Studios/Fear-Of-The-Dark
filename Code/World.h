@@ -11,6 +11,7 @@
 #include "Categories.h"
 #include "PresetValues.h"
 
+#include "TileAlignedTexture.hpp"
 #include "CustomXMLTypes.h"
 
 class Entity;
@@ -81,8 +82,8 @@ class World {
 	void updateFluids(float timeStep, glm::vec4& destRect);
 
 	void drawParticles(BARE2D::BumpyRenderer* renderer);
-	void drawSunlight(BARE2D::TexturelessRenderer* renderer,
-					  glm::vec4					   destRect); // Just draws the sunlight value into the rgb components.
+	void drawSunlight(BARE2D::BasicRenderer* renderer,
+					  glm::vec4				 destRect); // Just draws the sunlight value into the rgb components.
 
 	void drawDebug(BARE2D::DebugRenderer* dr, float xOffset);
 
@@ -126,12 +127,16 @@ class World {
 	std::vector<unsigned int>
 		m_biomesMap; // Simply a 1d vector of biome IDs, which can be mapped onto the world by referencing each "chunk"'s size
 
-	unsigned long int m_time	 = 0; // Tick time
-	unsigned long int m_frame	 = 0; // frames that have passed
-	float			  m_sunlight = 0.0f;
+	unsigned long int m_time  = 0; // Tick time
+	unsigned long int m_frame = 0; // frames that have passed
 
 	unsigned int m_worldEra		= 0;
 	unsigned int m_nextWorldEra = 0; // If this is different than m_worldEra, trigger WorldIOManager to advance time.
 
 	std::string m_name;
+
+	// For sunlight
+	float						m_sunlight		 = 0.0f;
+	std::vector<unsigned char>* m_sunTextureData = nullptr;
+	TileAlignedTexture*			m_sunTexture	 = nullptr;
 };

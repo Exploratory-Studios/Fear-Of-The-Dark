@@ -459,8 +459,24 @@ void World::drawDebug(BARE2D::DebugRenderer* dr, float xOffset) {
 	//dr.end();
 }
 
-void World::drawSunlight(BARE2D::TexturelessRenderer* renderer, glm::vec4 destRect) {
-	for(float y = destRect.y; y < (destRect.y + destRect.w); y++) {
+void World::drawSunlight(BARE2D::BasicRenderer* renderer, glm::vec4 destRect) {
+	if(!m_sunTexture) {
+		m_sunTexture	 = new TileAlignedTexture("sunlightTexture", 60, 40, 2, 2, GL_LINEAR, 1, GL_RED);
+		m_sunTextureData = new std::vector<unsigned char>();
+		// Allocate all the texture we'll ever need.
+		m_sunTextureData->resize(m_sunTexture->getWidth() * m_sunTexture->getHeight(), 0);
+		m_sunTextureData->shrink_to_fit();
+	}
+	// Make sure we're sized correctly.
+	float scale = Singletons::getGameCamera()->getScale().x;
+	m_sunTexture->updateSize(scale, destRect);
+	m_sunTextureData->resize(m_sunTexture->getWidth() * m_sunTexture->getHeight(), 0);
+	m_sunTextureData->shrink_to_fit();
+
+	unsigned int width	= m_sunTexture->getWidth();
+	unsigned int height = m_sunTexture->getHeight();
+	for(unsigned int yIndex = 0; yIndex < height - 1; yIndex += 2) {
+		float y = destRect.y + (float)yIndex / 2.0f;
 		if((int)y < 1) {
 			y = 0;
 		}
@@ -469,38 +485,31 @@ void World::drawSunlight(BARE2D::TexturelessRenderer* renderer, glm::vec4 destRe
 			break;
 		}
 
-		for(float x = destRect.x; x < (destRect.x + destRect.z); x++) {
-			// Loop though all tiles in the destRect.
+		// Need to write to a texture, in the same way that we do for fluids. This way, OpenGL can do the interpolation.
 
-			/*
-			 *
-			 * Each corner can be described in a bit. 4 bits for four corners. Room for expansion.
-			 *
-			 * */
+		// Now actually update the data to put in the texture
+		// Loop through every tile
+		for(float xIndex = 0; xIndex < width - 1; xIndex += 2) {
+			float x = destRect.x + (float)xIndex / 2.0f;
+			// Get the tile
+			Tile*	  t		  = m_tiles[((int)x + getSize()) % getSize()][(int)y][0];
+			glm::vec4 corners = t->getSunlightCorners(); // clockwise from TL
 
-			// Determine actual light value (R)
-			Tile* t = m_tiles[((int)x + getSize()) % getSize()][(int)y][0];
+			unsigned int index = yIndex * width + xIndex;
 
-			int light = (t->getSunlight() * 255.0f);
-
-			int corners = 0; // Describes whether each corner is lit. (G)
-
-			// Determine TL (bit 0)
-			glm::vec4 cornersVec = t->getSunlightCorners();
-			corners |= (cornersVec.x > 0.0f);
-
-			// Determine TR (bit 1)
-			corners |= (cornersVec.y > 0.0f) << 1;
-
-			// Determine BL (bit 2)
-			corners |= (cornersVec.w > 0.0f) << 2;
-
-			// Determine BR (bit 3)
-			corners |= (cornersVec.z > 0.0f) << 3;
-
-			renderer->draw(glm::vec4((int)x, (int)y, 1.0f, 1.0f), 0.0f, BARE2D::Colour(light, corners, 255, 255));
+			(*m_sunTextureData)[index]			   = corners.w * 255;
+			(*m_sunTextureData)[index + 1]		   = corners.z * 255;
+			(*m_sunTextureData)[index + width]	   = corners.x * 255;
+			(*m_sunTextureData)[index + width + 1] = corners.y * 255;
 		}
 	}
+
+	// Put the data in!
+	m_sunTexture->updateData(&((*m_sunTextureData)[0]));
+
+	// Draw
+	BARE2D::Colour white(255, 255, 255, 255);
+	m_sunTexture->render(renderer, destRect, white);
 }
 
 float World::getDistance(glm::vec2 point0, glm::vec2 point1) {

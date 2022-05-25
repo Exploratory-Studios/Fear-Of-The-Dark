@@ -69,7 +69,7 @@ void GameplayScreen::onEntry() {
 		postVS,
 		m_window->getWidth(),
 		m_window->getHeight(),
-		3); // The main FBO has 4 colour attachments - one for colour, one for normals, one for sunlight, and one for fluids
+		4); // The main FBO has 4 colour attachments - one for colour, one for normals, one for sunlight, and one for fluids
 	m_mainFBO->init();
 	//m_mainFBO->getCamera()->setScale(m_window->getWidth() * 0.4f, m_window->getHeight() * 0.4f);
 
@@ -83,8 +83,7 @@ void GameplayScreen::onEntry() {
 	m_skyRenderer->init();
 	m_skyRenderer->getCamera()->setFocus(glm::vec2(m_window->getWidth(), m_window->getHeight()) / 2.0f);
 
-	m_sunlightRenderer =
-		new BARE2D::TexturelessRenderer(sunlightFS, sunlightVS, m_window->getWidth(), m_window->getHeight());
+	m_sunlightRenderer = new BARE2D::BasicRenderer(sunlightFS, sunlightVS, m_window->getWidth(), m_window->getHeight());
 	m_sunlightRenderer->init();
 
 	m_fluidRenderer = new BARE2D::BasicRenderer(fluidFS, fluidVS, m_window->getWidth(), m_window->getHeight());
@@ -245,9 +244,26 @@ void GameplayScreen::draw() {
 	m_mainFBO->getShader()->setUniform("time", &time);
 
 	{
-		drawFluids();
-		drawWorld();
+		glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
+		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+		m_mainFBO->disableAttachments();
+
+		m_mainFBO->enableAttachment(2);
 		drawWorldSunlight();
+		m_mainFBO->disableAttachment(2);
+
+		m_mainFBO->enableAttachment(1);
+		m_mainFBO->enableAttachment(3);
+		drawFluids();
+		m_mainFBO->disableAttachment(1);
+		m_mainFBO->disableAttachment(3);
+
+		m_mainFBO->enableAttachment(0);
+		m_mainFBO->enableAttachment(1);
+		drawWorld();
+
+		m_mainFBO->enableAttachments();
 
 		//drawParticles();
 	}
@@ -363,6 +379,10 @@ void GameplayScreen::drawWorld() {
 void GameplayScreen::drawWorldSunlight() {
 	m_sunlightRenderer->begin();
 
+	glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+	glDisable(GL_DEPTH_TEST);
+
 	Singletons::getWorld()->drawSunlight(m_sunlightRenderer, getScreenBox());
 
 	m_sunlightRenderer->end();
@@ -385,6 +405,7 @@ void GameplayScreen::drawFluids() {
 
 	glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+	glDisable(GL_DEPTH_TEST);
 
 	Singletons::getWorld()->drawFluids(m_fluidRenderer, screenRect);
 
@@ -451,10 +472,12 @@ void GameplayScreen::checkInput() {
 	}
 
 #ifdef DEV_CONTROLS
-	if(m_inputManager->isKeyPressed(SDLK_BACKSLASH)) {
+	if(m_inputManager->isKeyPressed(SDLK_BACKSLASH) && !m_console->isShown()) {
 		m_console->show();
+	} else if(m_inputManager->isKeyPressed(SDLK_BACKSLASH) && m_console->isShown()) {
+		m_console->hide();
 	}
-	if(m_inputManager->isKeyPressed(SDLK_F1)) {
+	if(m_inputManager->isKeyPressed(SDLK_F6)) {
 		m_debuggingInfo = !m_debuggingInfo;
 		m_fpsWidget->setVisible(m_debuggingInfo);
 	}
@@ -464,10 +487,10 @@ void GameplayScreen::checkInput() {
 	}
 #endif // DEV_CONTROLS
 
-	if(m_inputManager->isKeyPressed(SDLK_F4)) {
+	if(m_inputManager->isKeyPressed(SDLK_F7)) {
 		//m_gameState = GameState::PAUSE;
 		m_WorldIOManager->saveWorld();
-	} else if(m_inputManager->isKeyPressed(SDLK_F5)) {
+	} else if(m_inputManager->isKeyPressed(SDLK_F8)) {
 		m_WorldIOManager->loadWorld(Singletons::getWorld()->getName());
 	}
 

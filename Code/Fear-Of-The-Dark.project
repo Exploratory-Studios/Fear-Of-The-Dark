@@ -32,6 +32,8 @@
     <File Name="Tile.cpp"/>
   </VirtualDirectory>
   <VirtualDirectory Name="Core">
+    <File Name="TileAlignedTexture.cpp"/>
+    <File Name="TileAlignedTexture.hpp"/>
     <File Name="Categories.cpp"/>
     <File Name="GameAudioManager.cpp"/>
     <File Name="GameAudioManager.h"/>

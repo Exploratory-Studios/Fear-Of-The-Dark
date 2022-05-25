@@ -9,7 +9,8 @@ out vec4 colour0;
 uniform sampler2D colourTexture0; // Regular colour
 uniform sampler2D colourTexture1; // Normal maps
 uniform sampler2D colourTexture2; // sunlight
-uniform sampler2D depthTexture;
+uniform sampler2D colourTexture3; // fluids
+//uniform sampler2D depthTexture;
 
 const int MAX_LIGHTS = 30; // This is the max amnt of lights a scene can manage (MAX_LIGHTS_RENDERED)
 
@@ -99,12 +100,18 @@ float rand(vec2 co){
     return fract(sin(dot(co.xy ,vec2(12.9898,78.233))) * 43758.5453);
 }
 
+float vignette_alpha(vec2 uv, float threshold) {
+	float dist = distance(uv, vec2(0.5));
+	if(dist < threshold) {
+		return 1.0;
+	}
+	float inv_sqrt_2 = 1.0/sqrt(2.0);
+	float max_length = 0.8; // If we put inv_sqrt_2 here, we get that the corners of the screen are always black and that looks bad.
+	float inv_neg_threshold = 1.0/(max_length - threshold);
+	return 1.0 - inv_neg_threshold * (dist - threshold);
+}
+
 void main() {
-	// Small optimization to remove undrawn elements
-	//if(fragmentColour.a < 0.05) {
-	//	discard;
-	//}
-	
 	// Basic colour
 	colour0 = texture(colourTexture0, fragmentUV.xy);
 	
@@ -117,26 +124,22 @@ void main() {
 		colour0 = blur(8.0, 2.0, 0.008 * depthDifference, colourTexture0, fragmentUV);
 	} // else do nothing, we've already read the colour.
 	
+	// Fluids
+	vec4 fluid = texture(colourTexture3, fragmentUV.xy);
+	colour0 = colour0 * (1.0 - fluid.a) + fluid * fluid.a;
+	
 	// Normal mapping + Lighting
 	vec3 components = normalize(texture(colourTexture1, fragmentUV.xy).rgb * 2.0 - 1.0);
 	colour0.rgb *= getLight(getSunlight(), components);
 	
 	// Vignette
-	float dist = distance(fragmentUV.xy, vec2(0.5));
-    float vignette = 1.0 - dist / 0.5;
-    vignette += (playerSanity * 0.4);
-    if(vignette > 1.0) {
-        vignette = 1.0;
-    }
+	float sanity = abs(playerSanity * cos(time/360.0/5.0));
+    float vignette = pow(vignette_alpha(fragmentUV.xy, sanity*1.0/sqrt(2.0)), 2.0);
     vec2 norm = normalize(vec2(0.5) - fragmentUV.xy);
-    if(playerSanity < 0.3) {
-        vignette += rand(vec2(time) * norm) * (0.35 - playerSanity) / 2.0;
-        vignette -= rand(norm/1000.0 * time) * (0.3 - playerSanity);
+    if(sanity < 0.3) {
+        vignette += rand(vec2(time) * norm) * (0.35 - sanity) / 2.0;
+        vignette -= rand(norm/1000.0 * time) * (0.3 - sanity);
     }
-    colour0.rgb *= vignette;
-    
-    float newAlpha = colour0.a + 1.0 - vignette;
-    newAlpha = clamp(newAlpha, 0.0, 1.0);
-    
-    colour0.a = newAlpha;	
+    colour0.rgb = colour0.rgb * (vignette) + vec3(0.0) * (1.0 - vignette);
+    colour0.a = max(colour0.a, (1.0 - vignette));
 }

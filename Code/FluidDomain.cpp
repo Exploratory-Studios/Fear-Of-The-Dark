@@ -84,19 +84,7 @@ namespace FluidModule {
 	}
 
 	void FluidDomain::draw(BARE2D::BasicRenderer* renderer, glm::vec4& destRect) {
-		glm::vec4 snapped =
-			glm::vec4(std::floor(destRect.x),
-					  std::floor(destRect.y),
-					  std::ceil(destRect.z * (float)FLUID_PARTITION_SIZE) / (float)FLUID_PARTITION_SIZE,
-					  std::ceil(destRect.w * (float)FLUID_PARTITION_SIZE) / (float)FLUID_PARTITION_SIZE);
-		renderer->draw(snapped,
-					   glm::vec4(0.0f,
-								 0.0f,
-								 (float)m_usedTextureWidth / (float)m_allocatedTextureWidth,
-								 (float)m_usedTextureHeight / (float)m_allocatedTextureHeight),
-					   m_texture->id,
-					   0.0f,
-					   m_fluidColour);
+		m_texture->render(renderer, destRect, m_fluidColour);
 	}
 
 	void FluidDomain::updateTexture(glm::vec4& screenDestRect) {
@@ -104,54 +92,31 @@ namespace FluidModule {
 		if(!m_texture)
 			createTexture();
 
-		// Check if texture needs to be resized:
-		if(m_lastScale != Singletons::getGameCamera()->getScale().x) {
-			// New scale is different, now to resize the texture:
-			// Find out how many blocks are in the x and y dimensions of the screen: (floats to conserve partial blocks - multiple cells to each block)
-			float blocksInScreenX = screenDestRect.z;
-			float blocksInScreenY = screenDestRect.w;
+		// Resize
+		m_texture->updateSize(Singletons::getGameCamera()->getScale().x, screenDestRect);
+		m_textureData->resize(m_texture->getWidth() * m_texture->getHeight(), 0);
+		m_textureData->shrink_to_fit();
 
-			// Find how many cells are in the x and y dimensions of the texture (1 cell = 1 pixel)
-			unsigned int cellsInScreenX = std::ceil(blocksInScreenX * FLUID_PARTITION_SIZE);
-			unsigned int cellsInScreenY = std::ceil(blocksInScreenY * FLUID_PARTITION_SIZE);
-
-			// Now we have the size, actually resize the texture
-			resizeTexture(cellsInScreenX, cellsInScreenY);
-
-			m_lastScale = Singletons::getGameCamera()->getScale().y;
-		}
-
-		// Texture is the correct size, m_texture contains the right size info. Just call glTexImage2d(...)
-		// ... Or in our case, use the ResourceManager::setTexture call from GLEngine! Thanks, past Davis!
-
+		// Update info
 		updateTextureData(screenDestRect);
-
-		m_texture->setData(&((*m_textureData)[0]), 0, 0, m_usedTextureWidth, m_usedTextureHeight);
+		m_texture->updateData(&((*m_textureData)[0]));
 	}
 
 	void FluidDomain::createTexture() {
-		m_textureData->resize(m_allocatedTextureWidth * m_allocatedTextureHeight,
-							  0); // Allocate all the texture we'll ever need.
-		m_textureData->shrink_to_fit();
-
 		std::string name = "fluidTexture" + std::to_string(m_id);
-		m_texture		 = BARE2D::ResourceManager::createMutableTexture(name,
-																	 m_allocatedTextureWidth,
-																	 m_allocatedTextureHeight,
-																	 m_smoothFluid ? GL_LINEAR : GL_NEAREST,
-																	 1,
-																	 GL_RED);
-	}
 
-	void FluidDomain::resizeTexture(unsigned int width, unsigned int height) {
-		// Change the texture object's dimensions for posterity.
-		m_usedTextureWidth	= width;
-		m_usedTextureHeight = height;
+		m_texture = new TileAlignedTexture(name,
+										   60,
+										   40,
+										   FLUID_PARTITION_SIZE,
+										   FLUID_PARTITION_SIZE,
+										   m_smoothFluid ? GL_LINEAR : GL_NEAREST,
+										   1,
+										   GL_RED);
 
-		m_textureData->resize(width * height, 0);
+		// Allocate all the texture we'll ever need.
+		m_textureData->resize(m_texture->getWidth() * m_texture->getHeight(), 0);
 		m_textureData->shrink_to_fit();
-
-		// When we call glTexSubImage2D, it resizes the actual texture.
 	}
 
 	void FluidDomain::updateTextureData(glm::vec4& screenDestRect) {
@@ -178,17 +143,17 @@ namespace FluidModule {
 
 		// Texturedata->size = textureDataWidthFields * FLUID_PARTITION_SIZE * textureDataHeightFields * FLUID_PARTITION_SIZE
 
-		for(unsigned int addedCellY = 0; addedCellY < m_usedTextureHeight; addedCellY++) {
+		for(unsigned int addedCellY = 0; addedCellY < m_texture->getHeight(); addedCellY++) {
 			unsigned int addedFieldY = addedCellY / FLUID_PARTITION_SIZE;
 			unsigned int fieldY		 = densityFieldY0 + addedFieldY;
 			if(!(0 <= fieldY && fieldY < WORLD_HEIGHT))
 				continue; // Out of worldly bounds.
 
-			for(unsigned int addedCellX = 0; addedCellX < m_usedTextureWidth; addedCellX++) {
+			for(unsigned int addedCellX = 0; addedCellX < m_texture->getWidth(); addedCellX++) {
 				unsigned int addedFieldX = addedCellX / FLUID_PARTITION_SIZE;
 				unsigned int fieldX = (densityFieldX0 + addedFieldX + m_densityFields.size()) % m_densityFields.size();
 
-				unsigned int index = addedCellX + m_usedTextureWidth * addedCellY; // GL-space index
+				unsigned int index = addedCellX + m_texture->getWidth() * addedCellY; // GL-space index
 
 				DensityField* field = m_densityFields[fieldX][fieldY];
 

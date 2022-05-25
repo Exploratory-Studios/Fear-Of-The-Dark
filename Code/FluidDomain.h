@@ -7,6 +7,7 @@
 #include <MutableTexture.hpp>
 
 #include "DensityField.h"
+#include "TileAlignedTexture.hpp"
 
 class Tile;
 
@@ -73,19 +74,16 @@ namespace FluidModule {
 		void resizeTexture(unsigned int width, unsigned int height); // Resizes the texture. For use with shifting scale
 		void updateTextureData(glm::vec4& screenDestRect);			 // Creates the array for texture assignment
 
-		unsigned int				m_id;
-		BARE2D::MutableTexture*		m_texture = nullptr;
-		BARE2D::Colour				m_fluidColour;
-		std::vector<unsigned char>* m_textureData;
-		unsigned int				m_usedTextureWidth, m_usedTextureHeight;
-		unsigned int				m_allocatedTextureWidth = 60 * FLUID_PARTITION_SIZE,
-					 m_allocatedTextureHeight				= 40 * FLUID_PARTITION_SIZE;
-		float m_idealDensity								= 1.0f;
-		float m_gravityConstant								= 0.7f;
-		float m_trickleConstant								= 0.4f; // Controls the random L/R movement of fluid
-		float m_viscosity									= 0.5f; // Higher numbers are equal to slower movement.
+		unsigned int m_id;
 
-		float m_lastScale = 0; // The last camera scale. Used to adjust texture size.
+		TileAlignedTexture*			m_texture = nullptr; // 60x40
+		std::vector<unsigned char>* m_textureData;
+		BARE2D::Colour				m_fluidColour;
+
+		float m_idealDensity	= 1.0f;
+		float m_gravityConstant = 0.7f;
+		float m_trickleConstant = 0.4f; // Controls the random L/R movement of fluid
+		float m_viscosity		= 0.5f; // Higher numbers are equal to slower movement.
 
 		std::vector<std::vector<DensityField*>> m_densityFields;
 		std::vector<DensityField*>				m_brokenEquilibriums;

@@ -21,8 +21,6 @@ void main() {
     gl_Position.w = 1.0;
 
     fragmentPosition = vertexPosition;
-
     fragmentColour = vertexColour;
-
     fragmentUV = vec2(vertexUV.x, vertexUV.y); // Doesn't even invert Y.
 }

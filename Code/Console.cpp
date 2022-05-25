@@ -11,8 +11,8 @@ Console::~Console() {
 }
 
 void Console::init(QuestModule::QuestManager* qm, GameplayScreen* gs) {
-	m_qm	   = qm;
-	m_gs	   = gs;
+	m_qm = qm;
+	m_gs = gs;
 
 	m_frame = static_cast<CEGUI::FrameWindow*>(Singletons::getGUI()->createWidget("FOTDSkin/FrameWindow",
 																				  glm::vec4(0.03f, 0.67f, 0.94f, 0.3f),
@@ -78,8 +78,6 @@ bool Console::onEditboxInput(const CEGUI::EventArgs& e) {
 			command.pop_back();
 		m_editbox->setText(command);
 		return true;
-	} else if(newArgs.scancode == CEGUI::Key::Backslash) {
-		hide();
 	} else if(newArgs.scancode == CEGUI::Key::ArrowUp) {
 		if(m_historySelection > 0 && m_commandHistory.size() > 0) {
 			m_historySelection--;

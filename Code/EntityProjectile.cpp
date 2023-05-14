@@ -27,7 +27,7 @@ void EntityProjectile::init() {
 	m_speed				= d.speed;
 	m_damage			= d.damage;
 	m_collideWithBlocks = d.collides;
-	m_gravity			= d.gravity;
+	m_gravity			= !d.floating;
 	m_lifeTime			= d.lifeTime;
 	m_knockback			= d.knockback;
 	m_buffIDs			= d.buffIDs;

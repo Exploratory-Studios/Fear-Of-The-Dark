@@ -1,10 +1,30 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <CodeLite_Project Name="Fear-Of-The-Dark" Version="11000">
+  <VirtualDirectory Name="XML">
+    <File Name="../Assets/Data/Structures.xml"/>
+    <File Name="../Assets/Data/Quests.xml"/>
+    <File Name="../Assets/Data/Particles.xml"/>
+    <File Name="../Assets/Data/Loot.xml"/>
+    <File Name="../Assets/Data/Items.xml"/>
+    <File Name="../Assets/Data/Fluids.xml"/>
+    <File Name="../Assets/Data/Eras.xml"/>
+    <File Name="../Assets/Data/Entities.xml"/>
+    <File Name="../Assets/Data/Dialogue.xml"/>
+    <File Name="../Assets/Data/Buffs.xml"/>
+    <File Name="../Assets/Data/Blocks.xml"/>
+    <File Name="../Assets/Data/Biomes.xml"/>
+    <File Name="../Assets/Data/Attacks.xml"/>
+    <File Name="../Assets/Data/Animations.xml"/>
+  </VirtualDirectory>
   <Plugins>
     <Plugin Name="qmake">
       <![CDATA[00040001N0005Debug0000000000000001N0007DebugVB0000000000000001N0015Release - Linux0000000000000001N0017Release - Windows000000000000]]>
     </Plugin>
   </Plugins>
+  <VirtualDirectory Name="Misc Objects">
+    <File Name="Map.cpp"/>
+    <File Name="Map.hpp"/>
+  </VirtualDirectory>
   <Reconciliation>
     <Regexes/>
     <Excludepaths/>

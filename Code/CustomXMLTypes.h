@@ -113,13 +113,13 @@ namespace XMLModule {
 				new BARE2D::Attribute<BARE2D::LuaScript>("updateScript", BARE2D::AttributeType::SCRIPT, &updateScript);
 			BARE2D::Attribute<BARE2D::LuaScript>* tickA =
 				new BARE2D::Attribute<BARE2D::LuaScript>("tickScript", BARE2D::AttributeType::SCRIPT, &tickScript);
-			BARE2D::Attribute<bool>* gravityA =
-				new BARE2D::Attribute<bool>("gravity", BARE2D::AttributeType::BOOL, &gravity);
+			BARE2D::Attribute<bool>* floatingA =
+				new BARE2D::Attribute<bool>("floating", BARE2D::AttributeType::BOOL, &floating);
 
 			addAttribute(sizeA);
 			addAttribute(updateA);
 			addAttribute(tickA);
-			addAttribute(gravityA);
+			addAttribute(floatingA);
 		}
 
 		~EntityData() {
@@ -132,7 +132,7 @@ namespace XMLModule {
 		glm::vec2		  size = glm::vec2(1.0f);
 		BARE2D::LuaScript updateScript, tickScript;
 		EntityType		  type;
-		bool			  gravity = true;
+		bool			  floating = false;
 	};
 
 	class EntityNPCData : public EntityData {

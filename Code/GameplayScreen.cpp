@@ -601,17 +601,24 @@ void GameplayScreen::tick() {
 
 		int randNum = std::rand() % 100;
 
-		if(hour > 4.0f / 24.0f && hour < 9.0f / 24.0f) { // Morning (4am-9am)
+		float morningStart	 = 5.0f / 24.0f;
+		float dayStart		 = 10.0f / 24.0f;
+		float afternoonStart = 14.0f / 24.0f;
+		float nightStart	 = 20.0f / 24.0f;
+		float nightmareStart = 24.0f / 24.0f;
+		float nightmareEnd	 = 1.0f / 24.0f;
+
+		if(hour > morningStart && hour < dayStart) { // Morning (4am-9am)
 			if(MORNING_MUSIC_LENGTH > 0)
 				m_audio->playMorningSong(randNum % MORNING_MUSIC_LENGTH);
-		} else if(hour > 9.0f / 24.0f && hour < 16.0f / 24.0f) { // Day (9am-4pm)
+		} else if(hour > dayStart && hour < afternoonStart) { // Day (9am-4pm)
 			if(DAY_MUSIC_LENGTH > 0)
 				m_audio->playDaySong(randNum % DAY_MUSIC_LENGTH);
-		} else if(hour > 16.0f / 24.0f && hour < 21.0f / 24.0f) { // Afternoon (4pm-9pm)
+		} else if(hour > afternoonStart && hour < nightStart) { // Afternoon (4pm-9pm)
 			if(AFTERNOON_MUSIC_LENGTH > 0)
 				m_audio->playAfternoonSong(randNum % AFTERNOON_MUSIC_LENGTH);
-		} else if(hour > 21.0f / 24.0f || hour < 4.0f / 24.0f) { // Night (9pm-4am) (Overlap requires OR logic)
-			if(hour >= 0.0f && hour <= 1.0f / 24.0f) {			 // Nightmare hour (Midnight-1am)
+		} else if(hour > nightStart || hour < morningStart) {	 // Night (9pm-4am) (Overlap requires OR logic)
+			if(hour >= nightmareStart && hour <= nightmareEnd) { // Nightmare hour (Midnight-1am)
 				if(NIGHT_MUSIC_LENGTH > 0)
 					m_audio->playNightmareSong(randNum % NIGHTMARE_MUSIC_LENGTH);
 			} else {

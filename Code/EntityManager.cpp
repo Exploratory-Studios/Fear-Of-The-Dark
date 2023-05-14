@@ -31,6 +31,7 @@ unsigned int EntityManager::getEntityIndex(Entity* entity) {
 				return r;
 		}
 	}
+	return (unsigned int)-1;
 }
 
 EntityManager::~EntityManager() {

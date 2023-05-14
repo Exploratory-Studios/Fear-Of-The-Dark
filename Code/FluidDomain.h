@@ -93,14 +93,6 @@ namespace FluidModule {
 
 		void updateDensityFields(); // Loop through fields and only update the non-nullptrs who don't have the equilibrium flag set
 		void updateDensityField(unsigned fieldX, unsigned fieldY);
-		// Loops through all FluidCells in density field, propagating them into their deltafields
-		float getReceivedDensityFromNeighbour(unsigned int fieldX,
-											  unsigned int fieldY,
-											  unsigned int cellX,
-											  unsigned int cellY,
-											  int		   cellXMod,
-											  int		   cellYMod,
-											  float		   neighbourSum);
 		// Calculates how much density is traded to this cell (@x, y) from its neighbour (@x+xMod, y+ymod)
 
 		DensityField* getRelativeField(unsigned int fieldX0, unsigned int fieldY0, int fieldXOffset, int fieldYOffset);
@@ -129,7 +121,6 @@ namespace FluidModule {
 										int			 cellXOffset,
 										int			 cellYOffset);
 		// Returns a FluidCell address to some cell relative to cell0 in field0
-
 		float getRelativeDeltaCellDensity(unsigned int fieldX0,
 										  unsigned int fieldY0,
 										  unsigned int cellX0,

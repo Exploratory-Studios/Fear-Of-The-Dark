@@ -2,8 +2,8 @@
  "file_mask": "*.cpp;*.h;*.hpp;*.cxx;*.cc;*.hxx",
  "ignore_spec": "/.git/;/.svn/;/build/;/build-;/CPack_Packages/;/CMakeFiles/",
  "codelite_indexer": "/usr/bin/codelite-ctags",
- "limit_results": 500,
- "search_path": ["/usr/include", "/usr/include/c++/9", "/usr/include/c++/9/backward", "/usr/include/x86_64-linux-gnu", "/usr/include/x86_64-linux-gnu/c++/9", "/usr/lib/gcc/x86_64-linux-gnu/9/include", "/usr/local/include"],
+ "limit_results": 150,
+ "search_path": ["/usr/include", "/usr/include/c++/12.1.1", "/usr/include/c++/12.1.1/backward", "/usr/include/c++/12.1.1/x86_64-pc-linux-gnu", "/usr/include/c++/12.2.0", "/usr/include/c++/12.2.0/backward", "/usr/include/c++/12.2.0/x86_64-pc-linux-gnu", "/usr/include/c++/12.2.1", "/usr/include/c++/12.2.1/backward", "/usr/include/c++/12.2.1/x86_64-pc-linux-gnu", "/usr/include/c++/9", "/usr/include/c++/9/backward", "/usr/include/x86_64-linux-gnu", "/usr/include/x86_64-linux-gnu/c++/9", "/usr/lib/gcc/x86_64-linux-gnu/9/include", "/usr/lib/gcc/x86_64-pc-linux-gnu/12.1.1/include", "/usr/lib/gcc/x86_64-pc-linux-gnu/12.1.1/include-fixed", "/usr/lib/gcc/x86_64-pc-linux-gnu/12.2.0/include", "/usr/lib/gcc/x86_64-pc-linux-gnu/12.2.0/include-fixed", "/usr/lib/gcc/x86_64-pc-linux-gnu/12.2.1/include", "/usr/lib/gcc/x86_64-pc-linux-gnu/12.2.1/include-fixed", "/usr/local/include"],
  "types": [{
    "key": "std::unique_ptr::pointer",
    "value": "_Tp"

@@ -30,6 +30,7 @@ enum class GameState { PAUSE, PLAY };
 
 class Scripter;
 class Console;
+class Map;
 
 class GameplayScreen : public BARE2D::Screen {
   public:
@@ -113,6 +114,7 @@ class GameplayScreen : public BARE2D::Screen {
 	DialogueModule::DialogueManager* m_dialogueManager = nullptr;
 	WorldIOManager*					 m_WorldIOManager  = nullptr;
 	GameAudioManager*				 m_audio		   = nullptr;
+	Map*							 m_worldMap		   = nullptr;
 
 	GameState m_gameState	  = GameState::PLAY;
 	GameState m_lastGameState = GameState::PLAY;

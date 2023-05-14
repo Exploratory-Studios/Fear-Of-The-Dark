@@ -460,35 +460,7 @@ namespace FluidModule {
 			}
 		}
 	}
-
-	float FluidDomain::getReceivedDensityFromNeighbour(unsigned int fieldX,
-													   unsigned int fieldY,
-													   unsigned int cellX,
-													   unsigned int cellY,
-													   int			cellXMod,
-													   int			cellYMod,
-													   float		neighbourSum) {
-		// Calculates how much density is traded between this cell (@x, y) and its neighbour (@xn, yn)
-		/*float idealDens = m_idealDensity;
-		if(cellYMod == -1) {
-			idealDens -= m_gravityConstant;
-		} else if(cellYMod == 1) {
-			idealDens += m_gravityConstant;
-		}
-
-		float selfDens = m_densityFields[fieldX][fieldY]->getDensityCell(cellX, cellY)->density;
-
-		float densityNeedSum += idealDens - selfDens;
-
-		float neighbourDensityNeed =
-			idealDens - getRelativeCellDensity(fieldX, fieldY, cellX, cellY, cellXMod, cellYMod);
-
-		// (Roughly) (neighbour_density_weight) * (self_density). Pretty simple, really.
-		float tradedDensity = (neighbourDensityNeed / densityNeedSum) * (selfDens);
-
-		return std::max(tradedDensity, 0.0f);*/
-	}
-
+	
 	DensityField* FluidDomain::getRelativeField(unsigned int fieldX0,
 												unsigned int fieldY0,
 												int			 fieldXOffset,

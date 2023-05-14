@@ -29,6 +29,7 @@ void EntityItem::init() {
 	m_updateScript = d.updateScript;
 	m_tickScript   = d.tickScript;
 	m_itemId	   = d.item;
+	m_gravity 	   = !d.floating;
 }
 
 void EntityItem::init(SaveDataTypes::EntityItemData& data) {
